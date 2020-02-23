@@ -1,0 +1,135 @@
+/* Window control buttons block */
+#window-buttons-area {
+    padding-left: 14px; 
+}
+/* Light Theme style for window contoll buttons */
+.notion-light-theme .window-buttons {
+    background: rgb(255, 255, 255);
+    color: black;
+    border: 0;
+    margin: 0px 0px 0px 9px;
+    width: 32px;
+    line-height: 26px;
+    border-radius: 4px;
+    font-size: 16px;
+    transition-duration: 0.2s;
+    font-weight: bold;
+}
+.notion-light-theme .window-buttons:hover {
+    background: rgb(239, 239, 239);
+}
+/* Light Theme style for window contoll buttons */
+
+
+/* Dark Theme style for window contoll buttons */
+.notion-dark-theme .window-buttons {
+    background: rgb(47, 52, 55);
+    border: 0;
+    margin: 0px 0px 0px 9px;
+    width: 32px;
+    line-height: 26px;
+    border-radius: 4px;
+    font-size: 16px;
+    transition-duration: 0.2s;
+}
+.notion-dark-theme .window-buttons:hover {
+    background: rgb(71, 76, 80);
+}
+/* Dark Theme style for window contoll buttons */
+
+
+
+/* To make cursor style as pointer when hover on scrollbar */
+.notion-scroller {
+    cursor: auto;
+}
+/* Scrollbar size */
+::-webkit-scrollbar {
+    width: 5px; /* To change vertical scrollbar width */
+    height: 12px; /* To change horizontal scrollbar height */
+}
+/* Element where vertical and horizontal scrollbars converge */
+::-webkit-scrollbar-corner{
+    background-color: transparent;
+}
+
+/* Light Theme style for Scrollbars */
+.notion-light-theme ::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #afafaf;
+}
+.notion-light-theme ::-webkit-scrollbar-track {
+    border-radius: 5px;
+    background-color: #e4e4e4;
+}
+.notion-light-theme ::-webkit-scrollbar-thumb:hover{
+    background: #969696;
+}
+/* Light Theme style for Scrollbars */
+
+
+/* Dark Theme style for Scrollbars */
+.notion-dark-theme ::-webkit-scrollbar-track {
+    border-radius: 5px; 
+    background-color: #3d3d42;
+}
+.notion-dark-theme ::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-color: #5d5d5d;
+}
+.notion-dark-theme ::-webkit-scrollbar-thumb:hover{
+    background: #868686;
+}
+/* Dark Theme style for Scrollbars */
+
+
+
+/* Changing table padding to make it more wider */
+[style^="flex-shrink: 0; flex-grow: 1; width: 100%; max-width: 100%; display: flex; align-items: center; flex-direction: column; font-size: 16px; color: rgba(255, 255, 255, 0.9); padding: 0px 96px 30vh;"] .notion-table-view, 
+[class="notion-scroller"]>.notion-table-view {
+    padding-left: 35px !important;
+    padding-right: 15px !important;
+    min-width: 0% !important;
+}
+/* Changing the width of horizontal scroller, because of wider table */
+[style^="flex-shrink: 0; flex-grow: 1; width: 100%; max-width: 100%; display: flex; align-items: center; flex-direction: column; font-size: 16px; color: rgba(255, 255, 255, 0.9); padding: 0px 96px 30vh;"] .notion-selectable .notion-scroller.horizontal::-webkit-scrollbar-track {
+    margin-left: 10px;
+    margin-right: 10px;
+}
+/* Hide "+" button when you hover on table row, because of it's useless for me, and this buttons takes like 15px from the left side of table */
+[style^="flex-shrink: 0; flex-grow: 1; width: 100%; max-width: 100%; display: flex; align-items: center; flex-direction: column; font-size: 16px; color: rgba(255, 255, 255, 0.9); padding: 0px 96px 30vh;"] .notion-table-view [style^="opacity:"]>[role="button"], 
+[class="notion-scroller"]>.notion-table-view [style^="opacity:"]>[role="button"] {
+    display:none !important;
+}
+
+/* Same as with table. Makes board view more wider */
+.notion-board-view {
+    padding-left: 10px !important;
+    padding-right: 10px !important;
+}
+/* Changing content block position, less height - higher content block */
+[style^="position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 30vh;"] {
+    height: 12vh !important;
+}
+/* Changing cover image height to match higher content block */
+[style^="position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 30vh;"] img {
+    height: 20vh !important;
+}
+/* Changing table columns width */
+[data-block-id^="PutYourIDHere"]>[style^="display: flex; position: absolute; background: rgb(47, 52, 55); z-index: 82; height: 33px; color: rgba(255, 255, 255, 0.6);"]>div:nth-child(1)>div:nth-child(10)>div:nth-child(1),
+[data-block-id^="PutYourIDHere"]>[style^="position: relative; min-width: calc(100% - 192px);"]>[data-block-id]>div:nth-child(10),
+[data-block-id^="PutYourIDHere"]>div:nth-child(5)>div:nth-child(10){
+    width: 45px !important;
+}
+/* Hiding selection, because of changing columns width bugs selection inside table */
+[data-block-id^="PutYourIDHere"] [style^="position: absolute; top: 0px; left: 0px; pointer-events: none;"]:not(.notion-presence-container) {
+    display: none;
+}
+
+/* Changing table header icons to make it smaller */
+[style^="display: flex; position: absolute; background: rgb(47, 52, 55); z-index: 82; height: 33px; color: rgba(255, 255, 255, 0.6);"] div:nth-child(1) svg {
+    height: 10px !important;
+    width: 10px !important;
+    margin-right: -4px;
+}
+
