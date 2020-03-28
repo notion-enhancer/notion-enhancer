@@ -16,7 +16,7 @@ _(forked by [@dragonwocky](https://github.com/dragonwocky).)_
 
 - bugfix: wider table & the "+" button not working in database pages.
 
-> [notion-enhancer.v4.1.zip](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d239a3cf-d553-4ef3-ab04-8b47892d9f9a/Notion_Customization_v4.1.zip)
+> 📥 [notion-enhancer.v4.1.zip](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/d239a3cf-d553-4ef3-ab04-8b47892d9f9a/Notion_Customization_v4.1.zip)
 
 ### v0.4.0
 
@@ -33,7 +33,7 @@ _(forked by [@dragonwocky](https://github.com/dragonwocky).)_
 - new: app startup options.
 - ~~style: smaller table icons.~~
 
-> [notion-enhancer.v3.zip](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b01aa446-5727-476a-a25e-395472bfb1be/NotionScriptsV3.zip)
+> 📥 [notion-enhancer.v3.zip](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/b01aa446-5727-476a-a25e-395472bfb1be/NotionScriptsV3.zip)
 
 ### v0.2.0
 
