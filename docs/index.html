@@ -1,0 +1,267 @@
+<!DOCTYPE html><!-- Documentative--><!-- (c) 2020 dragonwocky <thedragonring.bod@gmail.com>--><!-- (https://dragonwocky.me/) under the MIT license--><html prefix="og: http://ogp.me/ns#"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>notion enhancer</title><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Nunito+Sans"><link rel="stylesheet" href="docs.css"><script src="docs.js"></script><link rel="icon" href="resources/notion.ico" media="(prefers-color-scheme: dark)"><link rel="icon" href="resources/notion.ico"><meta name="title" content="notion enhancer"><meta name="description" content="an enhancer/customiser for the all-in-one productivity workspace notion.so"><meta name="theme-color" content="rgb(75, 133, 209)"><meta property="og:type" content="article"><meta property="og:url" content="https://dragonwocky.me/notion-enhancer/index.html"><meta property="og:title" content="notion enhancer"><meta property="og:site_name" content="notion enhancer"><meta property="og:description" content="an enhancer/customiser for the all-in-one productivity workspace notion.so"><meta property="og:image" content="https://dragonwocky.me/notion-enhancer/resources/notion.ico"><meta property="twitter:card" content="summary"></head><body><aside class="menu"><div><div class="title"><h1>notion enhancer</h1><picture class="icon"><source srcset="resources/notion.ico" media="(prefers-color-scheme: dark)"><img src="resources/notion.ico"></picture></div></div><ul class="nav"><li class="entry"><a href="#notion-enhancer">notion enhancer</a><ul><li class="level-2"><a href="#installation">installation</a></li><li class="level-2"><a href="#this-is-a-fork">this is a fork</a></li><li class="level-2"><a href="#features">features</a></li><li class="level-3"><a href="#titlebar">titlebar</a></li><li class="level-3"><a href="#nicer-scrollbars">nicer scrollbars</a></li><li class="level-3"><a href="#hotkey">hotkey</a></li><li class="level-3"><a href="#tray">tray</a></li><li class="level-2"><a href="#styling">styling</a></li><li class="level-4"><a href="#wider-page-view">wider page view</a></li><li class="level-4"><a href="#thinner-cover-image">thinner cover image</a></li><li class="level-4"><a href="#table-columns-below-100px">table columns below 100px</a></li><li class="level-4"><a href="#hide--new-table-row">hide '+ new' table row</a></li><li class="level-4"><a href="#hide-calculations-table-row">hide calculations table row</a></li><li class="level-4"><a href="#hide--new-board-row">hide '+ new' board row</a></li><li class="level-4"><a href="#hide-board-view-hidden-columns">hide board view hidden columns</a></li><li class="level-4"><a href="#hide-board-view-add-a-group">hide board view 'add a group'</a></li><li class="level-4"><a href="#centre-align-table-column-headers">centre-align table column headers</a></li><li class="level-4"><a href="#smaller-table-column-header-icons">smaller table column header icons</a></li><li class="level-4"><a href="#remove-icons-from-table-column-headers">remove icons from table column headers</a></li><li class="level-4"><a href="#removingdecreasing-side-padding-for-tables">removing/decreasing side padding for tables</a></li><li class="level-4"><a href="#removingdecreasing-side-padding-for-boards">removing/decreasing side padding for boards</a></li></ul></li><li class="entry"><p>resources</p></li><li class="entry"><a href="changelog.html">changelog</a></li><li class="entry"><a href="https://github.com/dragonwocky/notion-enhancer/blob/master/LICENSE">license</a></li><li class="entry"><a href="https://github.com/dragonwocky/notion-enhancer/">github</a></li><li class="entry"><a href="https://dragonwocky.me/">me (dragonwocky)</a></li></ul><p class="mark"><a href="https://dragonwocky.me/documentative">docs by documentative</a></p></aside><div class="wrapper"><div class="toggle"><button>☰</button><h1>notion enhancer</h1></div><article class="documentative"><div class="content">
+    
+          <section class="block">
+            <h1 id="notion-enhancer">
+              <a href="#notion-enhancer">notion enhancer</a>
+            </h1>
+        <p>an enhancer/customiser for the all-in-one productivity workspace <a href="https://www.notion.so/">notion.so</a></p>
+
+          </section>
+          <section class="block">
+            <h2 id="installation">
+              <a href="#installation">installation</a>
+            </h2>
+        <p>currently, only win10 is supported. it is possible to run this script via the wsl to modify the win10 notion app.</p>
+<p>(the <a href="#styling">styles</a> should also work for the web version.
+these can be installed via an extension like <a href="https://chrome.google.com/webstore/detail/stylus/clngdbkpkpeebahjckkjfobafhncgmne?hl=en">stylus</a>
+or a built-in feature like <a href="https://www.userchrome.org/">userChrome.css</a>.)</p>
+<ol>
+<li>install <a href="https://nodejs.org/en/">node.js</a> (if using the wsl, it is recommended to install via <a href="https://github.com/nvm-sh/nvm#install--update-script">nvm</a>.)</li>
+<li>install <a href="https://www.python.org/">python</a> (if using the wsl, follow <a href="https://docs.python-guide.org/starting/install3/linux/">this guide</a>.)</li>
+<li>reboot.</li>
+<li>in cmd (on windows) or bash (with wsl), run <code>npm install -g asar</code> (check installation by running <code>asar</code>).</li>
+<li>download + extract this enhancer to a location it can safely remain (this must be in the windows filesystem,
+even if you are running the script from the wsl).</li>
+<li>ensure notion is closed.</li>
+<li>optional: to remove previous versions of notion enhancer, run <code>cleaner.py</code></li>
+<li>optional: modify the <code>resources/user.css</code> files to your liking.</li>
+<li>run <code>customiser.py</code> to build changes.</li>
+</ol>
+<p>done: run notion and enjoy</p>
+<p><strong>oh no, now my app won&#39;t open!</strong></p>
+<ol>
+<li>kill any notion tasks in the task manager (<code>ctrl+shift+esc</code>).</li>
+<li>run <code>cleaner.py</code>.</li>
+<li>reboot.</li>
+<li>follow instructions above (ensuring notion <em>isn&#39;t</em> running! again, check task manager).</li>
+</ol>
+
+          </section>
+          <section class="block">
+            <h2 id="this-is-a-fork">
+              <a href="#this-is-a-fork">this is a fork</a>
+            </h2>
+        <p>credit where credit is due, this was originally made by Uzver (github: <a href="https://github.com/TarasokUA">@TarasokUA</a>,
+telegram: <a href="https://t.me/UserFromUkraine">UserFromUkraine</a>, discord: Uzver#8760).</p>
+<p>he has approved my go-ahead with this fork, as he himself no longer wishes to continue development on the project.</p>
+
+          </section>
+          <section class="block">
+            <h2 id="features">
+              <a href="#features">features</a>
+            </h2>
+        
+          </section>
+          <section class="block">
+            <h3 id="titlebar">
+              <a href="#titlebar">titlebar</a>
+            </h3>
+        <p>default windows titlebar/frame has been replaced by one more fitting to the theme of the app.</p>
+<p>this includes the addition of an extra button, &quot;always on top&quot;
+symbolised with an arrow (4th from the right). when toggled to point up,
+notion will remain the top visible window even if not focused.</p>
+<p>to customise which characters are used for these buttons, open in the <code>resources/preload.js</code> file,
+find the relevant button (read the comments) and replace its icon with your chosen unicode character (e.g.
+replacing <code>element.innerHTML = &#39;▢&#39;;</code> -&gt; <code>element.innerHTML = &#39;🙄&#39;;</code>).</p>
+
+          </section>
+          <section class="block">
+            <h3 id="nicer-scrollbars">
+              <a href="#nicer-scrollbars">nicer scrollbars</a>
+            </h3>
+        <p>i mean, yeah. get rid of those ugly default scrollbars and use nice inconspicuous
+ones that actually look as if they&#39;re part of notion.</p>
+<p>to add these to the web version, copy lines 43 - 87 from <code>user.css</code> into your css customiser.</p>
+
+          </section>
+          <section class="block">
+            <h3 id="hotkey">
+              <a href="#hotkey">hotkey</a>
+            </h3>
+        <p>by default, <code>ctrl+shift+a</code> (will hide/show all notion windows to/from the tray).</p>
+<p>to set your own, open <code>customiser.py</code> and change line 16 (<code>hotkey = &#39;ctrl+shift+a&#39;</code>)
+to your preference. you will need to run or re-run <code>customiser.py</code> afterwards.</p>
+
+          </section>
+          <section class="block">
+            <h3 id="tray">
+              <a href="#tray">tray</a>
+            </h3>
+        <ul>
+<li>single-click to toggle app visibility. right click to open menu.</li>
+<li>settings will be saved in <code>%localappdata%/Programs/Notion/resources/app/user-preferences.json</code></li>
+<li><strong>run on startup</strong>: run notion on boot/startup. (default: true)</li>
+<li><strong>hide on open</strong>: hide the launch of notion to the tray. (default: false)</li>
+<li><strong>open maximised</strong>: maximise the app on open. (default: false)</li>
+<li><strong>close to tray</strong>: app will close to the tray when the <code>⨉</code> button is pressed rather than closing outright. (default: false)</li>
+</ul>
+
+          </section>
+          <section class="block">
+            <h2 id="styling">
+              <a href="#styling">styling</a>
+            </h2>
+        <p>due to <code>customiser.py</code> setting up a direct link to <code>resources/user.css</code>,
+changes will be applied instantly on notion reload
+(no need to re-run <code>customiser.py</code> every time you want to change some styles).</p>
+<p>these should also work for the web version, if copied into your css customiser.</p>
+<p>css below will work for every instance of the element, but if you wish to hide only a specific element
+(e.g. the &#39;+ new&#39; table row) it is recommended that you prepend each selector with <code>[data-block-id=&#39;ID&#39;]</code> (<a href="https://www.youtube.com/watch?v=6V7eqShm_4w">video tutorial on fetching IDs</a>).</p>
+
+          </section>
+          <section class="block">
+            <h4 id="wider-page-view">
+              <a href="#wider-page-view">wider page view</a>
+            </h4>
+        <pre><code class="lang-css"><span class="hljs-selector-class">.notion-peek-renderer</span> &gt; <span class="hljs-selector-tag">div</span><span class="hljs-selector-pseudo">:nth-child(2)</span> {
+  <span class="hljs-attribute">max-width</span>: <span class="hljs-number">85vw</span> <span class="hljs-meta">!important</span>;
+}</code></pre>
+
+          </section>
+          <section class="block">
+            <h4 id="thinner-cover-image">
+              <a href="#thinner-cover-image">thinner cover image</a>
+            </h4>
+        <pre><code class="lang-css"><span class="hljs-selector-attr">[style^=<span class="hljs-string">'position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 30vh;'</span>]</span> {
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">12vh</span> <span class="hljs-meta">!important</span>;
+}
+<span class="hljs-selector-attr">[style^=<span class="hljs-string">'position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 30vh;'</span>]</span>
+  <span class="hljs-selector-tag">img</span> {
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">20vh</span> <span class="hljs-meta">!important</span>;
+}</code></pre>
+
+          </section>
+          <section class="block">
+            <h4 id="table-columns-below-100px">
+              <a href="#table-columns-below-100px">table columns below 100px</a>
+            </h4>
+        <p><strong>not recommended!</strong> this is unreliable and will cause bugs.
+coincidentally, this is also what the youtube video linked above shows how to do.
+as it is a per-table-column style, unlike all others here, it must be prepended with the block ID.</p>
+<pre><code class="lang-css"><span class="hljs-selector-attr">[data-block-id^=<span class="hljs-string">'ID'</span>]</span>
+  &gt; <span class="hljs-selector-attr">[style^=<span class="hljs-string">'display: flex; position: absolute; background: rgb(47, 52, 55); z-index: 82; height: 33px; color: rgba(255, 255, 255, 0.6);'</span>]</span>
+  &gt; <span class="hljs-selector-tag">div</span><span class="hljs-selector-pseudo">:nth-child(1)</span>
+  &gt; <span class="hljs-selector-tag">div</span><span class="hljs-selector-pseudo">:nth-child(10)</span>
+  &gt; <span class="hljs-selector-tag">div</span><span class="hljs-selector-pseudo">:nth-child(1)</span>,
+<span class="hljs-selector-attr">[data-block-id^=<span class="hljs-string">'ID'</span>]</span>
+  &gt; <span class="hljs-selector-attr">[style^=<span class="hljs-string">'position: relative; min-width: calc(100% - 192px);'</span>]</span>
+  &gt; <span class="hljs-selector-attr">[data-block-id]</span>
+  &gt; <span class="hljs-selector-tag">div</span><span class="hljs-selector-pseudo">:nth-child(10)</span>,
+<span class="hljs-selector-attr">[data-block-id^=<span class="hljs-string">'ID'</span>]</span> &gt; <span class="hljs-selector-tag">div</span><span class="hljs-selector-pseudo">:nth-child(5)</span> &gt; <span class="hljs-selector-tag">div</span><span class="hljs-selector-pseudo">:nth-child(10)</span> {
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">45px</span> <span class="hljs-meta">!important</span>;
+}
+<span class="hljs-selector-attr">[data-block-id^=<span class="hljs-string">'ID'</span>]</span>
+  <span class="hljs-selector-attr">[style^=<span class="hljs-string">'position: absolute; top: 0px; left: 0px; pointer-events: none;'</span>]</span><span class="hljs-selector-pseudo">:not(.notion-presence-container)</span> {
+  <span class="hljs-attribute">display</span>: none;
+}</code></pre>
+
+          </section>
+          <section class="block">
+            <h4 id="hide--new-table-row">
+              <a href="#hide--new-table-row">hide '+ new' table row</a>
+            </h4>
+        <pre><code class="lang-css"><span class="hljs-selector-class">.notion-table-view-add-row</span> {
+  <span class="hljs-attribute">display</span>: none <span class="hljs-meta">!important</span>;
+}</code></pre>
+
+          </section>
+          <section class="block">
+            <h4 id="hide-calculations-table-row">
+              <a href="#hide-calculations-table-row">hide calculations table row</a>
+            </h4>
+        <pre><code class="lang-css"><span class="hljs-selector-attr">[]</span> <span class="hljs-selector-class">.notion-table-view-add-row</span> + <span class="hljs-selector-tag">div</span> {
+  <span class="hljs-attribute">display</span>: none <span class="hljs-meta">!important</span>;
+}</code></pre>
+
+          </section>
+          <section class="block">
+            <h4 id="hide--new-board-row">
+              <a href="#hide--new-board-row">hide '+ new' board row</a>
+            </h4>
+        <pre><code class="lang-css"><span class="hljs-selector-class">.notion-board-group</span>
+  <span class="hljs-selector-attr">[style=<span class="hljs-string">'user-select: none; transition: background 120ms ease-in 0s; cursor: pointer; display: inline-flex; align-items: center; flex-shrink: 0; white-space: nowrap; height: 32px; border-radius: 3px; font-size: 14px; line-height: 1.2; min-width: 0px; padding-left: 6px; padding-right: 8px; color: rgba(255, 255, 255, 0.4); width: 100%;'</span>]</span> {
+  <span class="hljs-attribute">display</span>: none <span class="hljs-meta">!important</span>;
+}</code></pre>
+
+          </section>
+          <section class="block">
+            <h4 id="hide-board-view-hidden-columns">
+              <a href="#hide-board-view-hidden-columns">hide board view hidden columns</a>
+            </h4>
+        <pre><code class="lang-css"><span class="hljs-selector-class">.notion-board-view</span> &gt; <span class="hljs-selector-attr">[data-block-id]</span> &gt; <span class="hljs-selector-tag">div</span><span class="hljs-selector-pseudo">:nth-last-child(2)</span>,
+<span class="hljs-selector-class">.notion-board-view</span> &gt; <span class="hljs-selector-attr">[data-block-id]</span> &gt; <span class="hljs-selector-tag">div</span><span class="hljs-selector-pseudo">:first-child</span> &gt; <span class="hljs-selector-tag">div</span><span class="hljs-selector-pseudo">:nth-last-child(2)</span> {
+  <span class="hljs-attribute">display</span>: none <span class="hljs-meta">!important</span>;
+}</code></pre>
+
+          </section>
+          <section class="block">
+            <h4 id="hide-board-view-add-a-group">
+              <a href="#hide-board-view-add-a-group">hide board view 'add a group'</a>
+            </h4>
+        <pre><code class="lang-css"><span class="hljs-selector-class">.notion-board-view</span> &gt; <span class="hljs-selector-attr">[data-block-id]</span> &gt; <span class="hljs-selector-tag">div</span><span class="hljs-selector-pseudo">:last-child</span>,
+<span class="hljs-selector-class">.notion-board-view</span> &gt; <span class="hljs-selector-attr">[data-block-id]</span> &gt; <span class="hljs-selector-tag">div</span><span class="hljs-selector-pseudo">:first-child</span> &gt; <span class="hljs-selector-tag">div</span><span class="hljs-selector-pseudo">:last-child</span> {
+  <span class="hljs-attribute">display</span>: none <span class="hljs-meta">!important</span>;
+}</code></pre>
+
+          </section>
+          <section class="block">
+            <h4 id="centre-align-table-column-headers">
+              <a href="#centre-align-table-column-headers">centre-align table column headers</a>
+            </h4>
+        <pre><code class="lang-css"><span class="hljs-selector-class">.notion-table-view-header-cell</span> &gt; <span class="hljs-selector-tag">div</span> &gt; <span class="hljs-selector-tag">div</span> {
+  <span class="hljs-attribute">margin</span>: <span class="hljs-number">0px</span> auto;
+}</code></pre>
+
+          </section>
+          <section class="block">
+            <h4 id="smaller-table-column-header-icons">
+              <a href="#smaller-table-column-header-icons">smaller table column header icons</a>
+            </h4>
+        <pre><code class="lang-css"><span class="hljs-selector-attr">[style^=<span class="hljs-string">'display: flex; position: absolute; background: rgb(47, 52, 55); z-index: 82; height: 33px; color: rgba(255, 255, 255, 0.6);'</span>]</span>
+  <span class="hljs-selector-tag">div</span><span class="hljs-selector-pseudo">:nth-child(1)</span>
+  <span class="hljs-selector-tag">svg</span> {
+  <span class="hljs-attribute">height</span>: <span class="hljs-number">10px</span> <span class="hljs-meta">!important</span>;
+  <span class="hljs-attribute">width</span>: <span class="hljs-number">10px</span> <span class="hljs-meta">!important</span>;
+  <span class="hljs-attribute">margin-right</span>: -<span class="hljs-number">4px</span>;
+}</code></pre>
+
+          </section>
+          <section class="block">
+            <h4 id="remove-icons-from-table-column-headers">
+              <a href="#remove-icons-from-table-column-headers">remove icons from table column headers</a>
+            </h4>
+        <pre><code class="lang-css"><span class="hljs-selector-class">.notion-table-view-header-cell</span> <span class="hljs-selector-attr">[style^=<span class="hljs-string">'margin-right: 6px;'</span>]</span> {
+  <span class="hljs-attribute">display</span>: none <span class="hljs-meta">!important</span>;
+}</code></pre>
+
+          </section>
+          <section class="block">
+            <h4 id="removingdecreasing-side-padding-for-tables">
+              <a href="#removingdecreasing-side-padding-for-tables">removing/decreasing side padding for tables</a>
+            </h4>
+        <pre><code class="lang-css"><span class="hljs-selector-attr">[style^=<span class="hljs-string">'flex-shrink: 0; flex-grow: 1; width: 100%; max-width: 100%; display: flex; align-items: center; flex-direction: column; font-size: 16px; color: rgba(255, 255, 255, 0.9); padding: 0px 96px 30vh;'</span>]</span>
+  <span class="hljs-selector-class">.notion-table-view</span>,
+<span class="hljs-selector-attr">[class=<span class="hljs-string">'notion-scroller'</span>]</span> &gt; <span class="hljs-selector-class">.notion-table-view</span> {
+  <span class="hljs-attribute">padding-left</span>: <span class="hljs-number">35px</span> <span class="hljs-meta">!important</span>;
+  <span class="hljs-attribute">padding-right</span>: <span class="hljs-number">15px</span> <span class="hljs-meta">!important</span>;
+  <span class="hljs-attribute">min-width</span>: <span class="hljs-number">0%</span> <span class="hljs-meta">!important</span>;
+}
+<span class="hljs-selector-attr">[style^=<span class="hljs-string">'flex-shrink: 0; flex-grow: 1; width: 100%; max-width: 100%; display: flex; align-items: center; flex-direction: column; font-size: 16px; color: rgba(255, 255, 255, 0.9); padding: 0px 96px 30vh;'</span>]</span>
+  <span class="hljs-selector-class">.notion-selectable</span>
+  <span class="hljs-selector-class">.notion-scroller</span><span class="hljs-selector-class">.horizontal</span><span class="hljs-selector-pseudo">::-webkit-scrollbar-track</span> {
+  <span class="hljs-attribute">margin-left</span>: <span class="hljs-number">10px</span>;
+  <span class="hljs-attribute">margin-right</span>: <span class="hljs-number">10px</span>;
+}</code></pre>
+
+          </section>
+          <section class="block">
+            <h4 id="removingdecreasing-side-padding-for-boards">
+              <a href="#removingdecreasing-side-padding-for-boards">removing/decreasing side padding for boards</a>
+            </h4>
+        <pre><code class="lang-css"><span class="hljs-selector-class">.notion-board-view</span> {
+  <span class="hljs-attribute">padding-left</span>: <span class="hljs-number">10px</span> <span class="hljs-meta">!important</span>;
+  <span class="hljs-attribute">padding-right</span>: <span class="hljs-number">10px</span> <span class="hljs-meta">!important</span>;
+}</code></pre>
+
+    </section></div><footer class="footer"><hr><p><a href="https://github.com/dragonwocky/notion-enhancer/blob/master/README.md">Edit on GitHub</a> // © 2020 dragonwocky &amp; Uzver, under the <a href="https://choosealicense.com/licenses/mit/">MIT license</a>.</p>
+</footer><nav><a class="next" href="changelog.html">ᐅ</a></nav></article></div></body></html>

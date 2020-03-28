@@ -1,0 +1,87 @@
+/*
+ * Notion Enhancer
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
+ * (c) 2020 TarasokUA
+ * (https://dragonwocky.me/) under the MIT license
+ */
+
+/* window control buttons: block */
+#window-buttons-area {
+  padding-left: 14px;
+}
+/* window control buttons: light theme */
+.notion-light-theme .window-buttons {
+  background: rgb(255, 255, 255);
+  color: black;
+  border: 0;
+  margin: 0px 0px 0px 9px;
+  width: 32px;
+  line-height: 26px;
+  border-radius: 4px;
+  font-size: 16px;
+  transition-duration: 0.2s;
+  font-weight: bold;
+}
+.notion-light-theme .window-buttons:hover {
+  background: rgb(239, 239, 239);
+}
+/* window control buttons: dark theme */
+.notion-dark-theme .window-buttons {
+  background: rgb(47, 52, 55);
+  border: 0;
+  margin: 0px 0px 0px 9px;
+  width: 32px;
+  line-height: 26px;
+  border-radius: 4px;
+  font-size: 16px;
+  transition-duration: 0.2s;
+}
+.notion-dark-theme .window-buttons:hover {
+  background: rgb(71, 76, 80);
+}
+
+/* scrollbar: pointer */
+.notion-scroller {
+  cursor: auto;
+}
+/* scrollbar: size */
+::-webkit-scrollbar {
+  width: 8px; /* for vertical */
+  height: 8px; /* for horizontal */
+}
+/* scrollbar: light theme */
+.notion-light-theme ::-webkit-scrollbar-corner {
+  background-color: #afafaf; /* for overlap */
+}
+.notion-light-theme ::-webkit-scrollbar-thumb {
+  background-color: #afafaf;
+}
+.notion-light-theme ::-webkit-scrollbar-track {
+  background-color: #e4e4e4;
+}
+.notion-light-theme ::-webkit-scrollbar-thumb:hover {
+  background: #969696;
+}
+/* scrollbar: dark theme */
+.notion-dark-theme ::-webkit-scrollbar-corner {
+  background-color: #3d3d42; /* for overlap */
+}
+.notion-dark-theme ::-webkit-scrollbar-track {
+  background-color: #3d3d42;
+}
+.notion-dark-theme ::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+  background-color: #5d5d5d;
+}
+.notion-dark-theme ::-webkit-scrollbar-thumb:hover {
+  background: #868686;
+}
+/* rounded borders */
+.notion-dark-theme ::-webkit-scrollbar-track:vertical,
+.notion-light-theme ::-webkit-scrollbar-track:vertical {
+  border-radius: 5px 5px 0 0;
+}
+.notion-dark-theme ::-webkit-scrollbar-track:horizontal,
+.notion-light-theme ::-webkit-scrollbar-track:horizontal {
+  border-radius: 5px 0 0 5px;
+}

@@ -1,0 +1,499 @@
+/*
+ * Documentative Styling
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
+ * (https://dragonwocky.me/) under the MIT license
+ */
+:root {
+  --primary: #4b85d1;
+  --absolute: #000;
+  --contrast: #fff;
+  --text: rgba(0, 0, 0, 0.84);
+  --link: var(--primary);
+  --grey: #6f6f6f;
+  --bg: #fbfcfc;
+  --box: #f2f3f4;
+  --code: #f7f9f9;
+  --button: #eee;
+  --border: #e5e7e9;
+  --shadow: #eee;
+  --glow: transparent;
+  --scroll: #e9e9e9;
+  --hover: #dedede;
+  --code-lang: #555;
+  --hljs-html: #000080;
+  --hljs-attr: #008080;
+  --hljs-obj: #2c426b;
+  --hljs-string: #d14;
+  --hljs-builtin: #0086b3;
+  --hljs-keyword: rgba(0, 0, 0, 0.84);
+  --hljs-selector: #900;
+  --hljs-type: #458;
+  --hljs-regex: #009926;
+  --hljs-symbol: #990073;
+  --hljs-meta: #999;
+  --hljs-comment: #707070;
+  --hljs-deletion: #e8b9b8;
+  --hljs-deletion-text: #4c232d;
+  --hljs-addition: #b9e0d3;
+  --hljs-addition-text: #1e4839;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --absolute: #fff;
+    --contrast: #000;
+    --text: #ddd;
+    --link: #a6c3e8;
+    --grey: #52555c;
+    --bg: #0e0f0f;
+    --box: #050505;
+    --code: #000;
+    --button: #2d2d2d;
+    --border: #2d2e2f;
+    --shadow: #070707;
+    --glow: var(--primary);
+    --scroll: #202225;
+    --hover: #36393f;
+    --code-lang: #ccc;
+    --hljs-html: #46db8c;
+    --hljs-attr: #dd1111;
+    --hljs-obj: #c6cbda;
+    --hljs-string: #abcdef;
+    --hljs-builtin: #b8528d;
+    /* bd1a79, 926956 */
+    --hljs-keyword: #2d8b59;
+    --hljs-comment: #a0a0a0;
+    --hljs-deletion: #4c232d;
+    --hljs-deletion-text: #e8b9b8;
+    --hljs-addition: #1e4839;
+    --hljs-addition-text: #b9e0d3;
+  }
+}
+* {
+  box-sizing: border-box;
+  word-break: break-word;
+  text-decoration: none;
+  text-size-adjust: 100%;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+body {
+  color: var(--text);
+  background-color: var(--bg);
+  font-family: 'Nunito Sans', sans-serif;
+}
+::-webkit-scrollbar {
+  width: 2px;
+  height: 2px;
+}
+::-webkit-scrollbar-corner,
+::-webkit-scrollbar-track {
+  background-color: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background-color: var(--scroll);
+  border-radius: 5px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--hover);
+}
+aside {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--box);
+  overflow-x: auto;
+}
+aside .title {
+  display: flex;
+  flex-direction: row;
+}
+aside .title h1 {
+  font: 1.8em 'Source Code Pro', monospace;
+  margin: 0 0 1em 1.5rem;
+  padding: 1em 8px 2.5px 0;
+  letter-spacing: -2px;
+  border-bottom: 5px solid var(--primary);
+  color: var(--absolute);
+}
+aside .title .icon {
+  margin: auto 0.5em;
+}
+aside .title .icon img {
+  width: 2.5em;
+  margin: auto 0.5em;
+}
+aside > ul:first-child > li:first-child {
+  padding-top: 1em;
+}
+aside ul {
+  list-style-type: none;
+  padding-inline-start: 0;
+  margin: 0;
+}
+aside ul li p {
+  font-weight: bold;
+  letter-spacing: -0.5px;
+  margin-bottom: 0;
+  padding: 2px 1.3em;
+  font-size: 1.1em;
+  color: var(--hljs-comment);
+}
+aside ul li a {
+  color: var(--text);
+  padding-bottom: 0.1em 5em;
+  display: block;
+  padding: 2px 1.5em;
+}
+aside ul li a:hover,
+aside ul li a:active {
+  background: var(--scroll);
+}
+aside ul li a.active {
+  color: var(--link);
+  font-weight: bold;
+  text-shadow: 0 0 0.75em var(--glow);
+}
+aside ul li.entry > a {
+  text-decoration: underline var(--border);
+}
+aside ul li.level-1 > a {
+  padding-left: 1.75em;
+}
+aside ul li.level-2 > a {
+  padding-left: calc(1.5em + calc(0.75em * 1));
+}
+aside ul li.level-3 > a {
+  padding-left: calc(1.5em + calc(0.75em * 2));
+}
+aside ul li.level-4 > a {
+  padding-left: calc(1.5em + calc(0.75em * 3));
+}
+aside ul li.level-5 > a {
+  padding-left: calc(1.5em + calc(0.75em * 4));
+}
+aside ul li.level-6 > a {
+  padding-left: calc(1.5em + calc(0.75em * 5));
+}
+aside .mark {
+  text-align: right;
+  margin-top: auto;
+  padding: 1.5em 1.5em 2px 1.5em;
+  font-size: 0.8em;
+}
+aside .mark a {
+  color: var(--grey);
+}
+.wrapper {
+  height: 100%;
+  width: 100%;
+  overflow-y: hidden;
+}
+.wrapper .documentative {
+  height: 100%;
+  overflow-y: auto;
+  padding: 0 1.5em;
+  padding-bottom: 4em;
+  display: flex;
+  flex-direction: column;
+}
+.wrapper .documentative .block {
+  margin: 1.5em;
+  word-wrap: break-word;
+}
+.wrapper .documentative .block:first-child {
+  margin: 0 1.5em 1.5em 1.5em;
+}
+.wrapper .documentative .example {
+  margin-top: 1em;
+  padding: 1em;
+  background-color: var(--box);
+  box-shadow: 0.4em 0.4em 1em var(--shadow);
+}
+.wrapper .documentative .example p:first-child {
+  margin-top: 0;
+}
+.wrapper .documentative .example p:last-child {
+  margin-bottom: 0;
+}
+.wrapper .documentative nav {
+  width: 75%;
+  position: fixed;
+  bottom: 1em;
+  right: 0;
+  pointer-events: none;
+}
+.wrapper .documentative nav .prev {
+  float: left;
+  padding-right: 0.13em;
+}
+.wrapper .documentative nav .next {
+  float: right;
+  padding-left: 0.13em;
+}
+.wrapper .documentative nav .prev,
+.wrapper .documentative nav .next {
+  opacity: 1;
+  transition: opacity 200ms ease;
+  pointer-events: all;
+  border-radius: 50%;
+  width: 1.75em;
+  height: 1.75em;
+  margin: 0 1em;
+  font: 1.5em 'Source Code Pro', monospace;
+  line-height: 1.75em;
+  text-align: center;
+  color: var(--text);
+  text-shadow: none !important;
+  background-color: var(--button);
+}
+.wrapper .documentative .footer {
+  text-align: right;
+  color: var(--grey);
+  margin: auto 1.5em 0;
+}
+.wrapper .documentative .footer hr {
+  border-color: var(--grey);
+}
+.wrapper .documentative .footer a {
+  color: var(--grey);
+  font-weight: bold;
+  text-shadow: none;
+  text-decoration: dotted underline;
+}
+.wrapper .documentative h1,
+.wrapper .documentative h2,
+.wrapper .documentative h3,
+.wrapper .documentative h4,
+.wrapper .documentative h5,
+.wrapper .documentative h6 {
+  margin: 0;
+  padding-top: 1em;
+}
+.wrapper .documentative h1 a,
+.wrapper .documentative h2 a,
+.wrapper .documentative h3 a,
+.wrapper .documentative h4 a,
+.wrapper .documentative h5 a,
+.wrapper .documentative h6 a {
+  color: var(--text);
+  text-shadow: none;
+}
+.wrapper .documentative h1 {
+  padding-top: 1.5em;
+}
+.wrapper .documentative a {
+  color: var(--link);
+  text-shadow: 0 0 0.75em var(--glow);
+}
+.wrapper .documentative blockquote {
+  margin-left: 0;
+  padding-left: 1em;
+  border-left: 0.25em solid var(--border);
+}
+.wrapper .documentative h1 + table,
+.wrapper .documentative h2 + table,
+.wrapper .documentative h3 + table,
+.wrapper .documentative h4 + table,
+.wrapper .documentative h5 + table,
+.wrapper .documentative h6 + table {
+  margin-top: 1em;
+}
+.wrapper .documentative table {
+  width: 100%;
+  border-collapse: collapse;
+}
+.wrapper .documentative table,
+.wrapper .documentative th,
+.wrapper .documentative td {
+  padding: 0.2em 0.7em;
+  border: 1px solid var(--border);
+}
+.wrapper .documentative code {
+  padding: 0.5em;
+  background-color: var(--code);
+  border-radius: 5px;
+  overflow-x: auto;
+  position: relative;
+  display: block;
+  font-family: 'Source Code Pro', monospace;
+}
+.wrapper .documentative *:not(pre) > code {
+  line-height: 2.5em;
+  font-size: 0.75em;
+  display: inline;
+}
+.wrapper .documentative pre {
+  position: relative;
+}
+.wrapper .documentative pre code {
+  padding: 1.8em;
+  position: static;
+  font-size: 0.8em;
+}
+.wrapper .documentative pre code::before {
+  position: absolute;
+  right: 0;
+  top: 0;
+  color: var(--code-lang);
+  font-size: 0.65em;
+  padding: 0.5em 0.8em;
+}
+@media (min-width: 769px) {
+  body {
+    display: grid;
+    grid-template-columns: 25% 75%;
+  }
+  aside::-webkit-scrollbar-corner,
+  aside::-webkit-scrollbar-track {
+    background-color: var(--bg);
+  }
+  .toggle {
+    display: none;
+  }
+}
+@media (max-width: 768px) {
+  aside {
+    z-index: 1;
+    height: 100%;
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: calc(4.5em - 100%);
+    width: calc(100% - 4.5em);
+    transition: left 300ms ease;
+  }
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    position: fixed;
+    top: 0;
+    left: 0;
+    transition: left 300ms ease;
+  }
+  .wrapper .documentative {
+    flex-shrink: 1;
+  }
+  .wrapper .documentative nav {
+    width: 100%;
+  }
+  .wrapper .toggle {
+    display: flex;
+    flex-direction: row;
+    flex-shrink: 0;
+    padding: 0.8em 0;
+    background-color: var(--box);
+  }
+  .wrapper .toggle h1 {
+    letter-spacing: -2px;
+    font-size: 1.8em;
+    padding-top: 1.5px;
+    margin: auto 1.5rem auto 0;
+  }
+  .wrapper .toggle button {
+    font-size: 1.8em;
+    width: 2.5em;
+    margin: auto 0.5em;
+    color: var(--absolute);
+    border: none;
+    background: none;
+    text-align: center;
+    transition: transform 150ms ease;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+  }
+  .wrapper .toggle button:hover,
+  .wrapper .toggle button:focus {
+    color: var(--text);
+  }
+  .wrapper .toggle button:active {
+    transform: scale(0.95);
+  }
+  .mobilemenu aside {
+    left: 0;
+  }
+  .mobilemenu .wrapper {
+    left: calc(100% - 4.75em);
+  }
+  .mobilemenu .wrapper .prev,
+  .mobilemenu .wrapper .next {
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
+.hljs-subst {
+  color: var(--text);
+}
+.hljs-comment,
+.hljs-quote {
+  color: var(--hljs-comment);
+  font-style: italic;
+}
+.hljs-keyword,
+.hljs-selector-tag {
+  color: var(--hljs-keyword);
+  font-weight: bold;
+}
+.hljs-attr {
+  color: var(--hljs-obj);
+}
+.hljs-number,
+.hljs-literal,
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag .hljs-attr {
+  color: var(--hljs-attr);
+}
+.hljs-string,
+.hljs-doctag {
+  color: var(--hljs-string);
+}
+.hljs-name,
+.hljs-attribute {
+  color: var(--hljs-html);
+}
+.hljs-built_in,
+.hljs-builtin-name {
+  color: var(--hljs-builtin);
+}
+.hljs-title,
+.hljs-section,
+.hljs-selector-id {
+  color: var(--hljs-selector);
+  font-weight: bold;
+}
+.hljs-type,
+.hljs-class .hljs-title {
+  color: var(--hljs-type);
+  font-weight: bold;
+}
+.hljs-regexp,
+.hljs-link {
+  color: var(--hljs-regex);
+}
+.hljs-symbol,
+.hljs-bullet {
+  color: var(--hljs-symbol);
+}
+.hljs-meta {
+  color: var(--hljs-meta);
+  font-weight: bold;
+}
+.hljs-deletion {
+  background: var(--hljs-deletion);
+  color: var(--hljs-deletion-text);
+}
+.hljs-addition {
+  background: var(--hljs-addition);
+  color: var(--hljs-addition-text);
+}
+.hljs-emphasis {
+  font-style: italic;
+}
+.hljs-strong {
+  font-weight: bold;
+}
+.documentative pre .lang-css::before { content: 'CSS'; }

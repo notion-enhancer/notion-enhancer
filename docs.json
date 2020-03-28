@@ -1,0 +1,34 @@
+{
+  "title": "notion enhancer",
+  "primary": "rgb(75, 133, 209)",
+  "git": "https://github.com/dragonwocky/notion-enhancer/blob/master/",
+  "footer": "[Edit on GitHub](__git__) // © 2020 dragonwocky & Uzver, under the [MIT license](https://choosealicense.com/licenses/mit/).",
+  "card": {
+    "description": "an enhancer/customiser for the all-in-one productivity workspace notion.so",
+    "url": "https://dragonwocky.me/notion-enhancer/"
+  },
+  "icon": {
+    "light": "resources/notion.ico"
+  },
+  "overwrite": true,
+  "exclude": [
+    "cleaner.py",
+    "customiser.py",
+    "resources/hotkey.js",
+    "resources/preload.js",
+    "resources/store.js",
+    "resources/user.css",
+    ".gitignore"
+  ],
+  "nav": [
+    ["index.html", "README.md"],
+    "resources",
+    ["changelog.html", "CHANGELOG.md"],
+    [
+      "license",
+      "https://github.com/dragonwocky/notion-enhancer/blob/master/LICENSE"
+    ],
+    ["github", "https://github.com/dragonwocky/notion-enhancer/"],
+    ["me (dragonwocky)", "https://dragonwocky.me/"]
+  ]
+}
