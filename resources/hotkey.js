@@ -97,7 +97,7 @@ function enhancements() {
     }
   });
 
-  const hotkey = '$$$hotkey$$$'; // will be set by python script
+  const hotkey = '___hotkey___'; // will be set by python script
   electron_1.globalShortcut.register(hotkey, () => {
     const windows = electron_1.BrowserWindow.getAllWindows();
     if (windows.some(win => !win.isVisible())) {

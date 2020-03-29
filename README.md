@@ -10,8 +10,8 @@ currently, only win10 is supported. it is possible to run this script via the ws
 these can be installed via an extension like [stylus](https://chrome.google.com/webstore/detail/stylus/clngdbkpkpeebahjckkjfobafhncgmne?hl=en)
 or a built-in feature like [userChrome.css](https://www.userchrome.org/).)
 
-1. install [node.js](https://nodejs.org/en/) (if using the wsl, it is recommended to install via [nvm](https://github.com/nvm-sh/nvm#install--update-script).)
-2. install [python](https://www.python.org/) (if using the wsl, follow [this guide](https://docs.python-guide.org/starting/install3/linux/).)
+1. install [node.js](https://nodejs.org/en/) (if using the wsl, it is recommended to install via [nvm](https://github.com/nvm-sh/nvm#install--update-script)).
+2. install [python](https://www.python.org/) (if using the wsl, follow [this guide](https://docs.python-guide.org/starting/install3/linux/)).
 3. reboot.
 4. in cmd (on windows) or bash (with wsl), run `npm install -g asar` (check installation by running `asar`).
 5. [download this enhancer](https://github.com/dragonwocky/notion-enhancer/archive/master.zip) & extract to a location it can safely remain (this must be in the windows filesystem,

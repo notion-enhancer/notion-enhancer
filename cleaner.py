@@ -17,10 +17,8 @@ from time import sleep
 # '###'                             = warnings
 # '>'                               = exit
 
-bold = subprocess.run(
-    ['tput', 'bold'], stdout=subprocess.PIPE).stdout.rstrip().decode('utf-8')
-normal = subprocess.run(
-    ['tput', 'sgr0'], stdout=subprocess.PIPE).stdout.rstrip().decode('utf-8')
+bold = '\033[1m'
+normal = '\033[0m'
 
 print(f'{bold}=== NOTION ENHANCER CLEANING LOG ==={normal}\n')
 try:
@@ -31,8 +29,8 @@ try:
                 ['cmd.exe', '/c', 'echo', '%localappdata%'], stdout=subprocess.PIPE).stdout \
             .rstrip().decode('utf-8')[3:].replace('\\', '/') + '/Programs/Notion/resources'
     elif sys.platform == 'win32':
-        filepath = subprocess.run(['echo', '%localappdata%'], stdout=subprocess.PIPE).stdout \
-            .rstrip().decode('utf-8').replace('\\', '/') + ' /Programs/Notion/resources'
+        filepath = subprocess.run(['echo', '%localappdata%'], shell=True, capture_output=True).stdout \
+            .rstrip().decode('utf-8').replace('\\', '/') + '/Programs/Notion/resources'
     else:
         print(' > script not compatible with your os!\n   (report this to dragonwocky#8449 on discord)')
         exit()

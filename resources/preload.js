@@ -14,7 +14,7 @@
 require('electron').remote.getGlobal('setTimeout')(() => {
   /* style injection */
   const fs = require('fs'),
-    css = fs.readFileSync('$$$user.css$$$'), // will be set by python script
+    css = fs.readFileSync('___user.css___'), // will be set by python script
     style = document.createElement('style'),
     head = document.getElementsByTagName('head')[0];
   if (!head) return;

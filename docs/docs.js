@@ -169,7 +169,7 @@ class Scrollnav {
 const construct = () => {
   if (
     location.pathname.endsWith('index.html') &&
-    window.location.protocol === 'https:'
+    window.location.protocol !== 'file:'
   )
     location.replace('./' + location.hash);
 

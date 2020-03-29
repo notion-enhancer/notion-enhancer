@@ -22,23 +22,23 @@ hotkey = 'ctrl+shift+a'
 # '##'                             = warnings
 # '>'                               = exit
 
-bold = subprocess.run(
-    ['tput', 'bold'], stdout=subprocess.PIPE).stdout.rstrip().decode('utf-8')
-normal = subprocess.run(
-    ['tput', 'sgr0'], stdout=subprocess.PIPE).stdout.rstrip().decode('utf-8')
+bold = '\033[1m'
+normal = '\033[0m'
 
 print(f'{bold}=== NOTION ENHANCER CUSTOMISATION LOG ==={normal}\n')
 
 try:
     filepath = ''
+    __folder__ = os.path.dirname(os.path.abspath(__file__)).replace('\\', '/')
     if 'microsoft' in platform.uname()[3].lower() and sys.platform == 'linux':
         filepath = '/mnt/c/' + \
             subprocess.run(
                 ['cmd.exe', '/c', 'echo', '%localappdata%'], stdout=subprocess.PIPE).stdout \
             .rstrip().decode('utf-8')[3:].replace('\\', '/') + '/Programs/Notion/resources'
+        __folder__ = 'C:/' + __folder__[6:]
     elif sys.platform == 'win32':
-        filepath = subprocess.run(['echo', '%localappdata%'], stdout=subprocess.PIPE).stdout \
-            .rstrip().decode('utf-8').replace('\\', '/') + ' /Programs/Notion/resources'
+        filepath = subprocess.run(['echo', '%localappdata%'], shell=True, capture_output=True).stdout \
+            .rstrip().decode('utf-8').replace('\\', '/') + '/Programs/Notion/resources'
     else:
         print(' > script not compatible with your os!\n   (report this to dragonwocky#8449 on discord)')
         exit()
@@ -46,7 +46,7 @@ try:
     if os.path.isfile(filepath + '/app.asar'):
         print(' ...unpacking app.asar')
         subprocess.run(['asar', 'extract', filepath +
-                        '/app.asar', filepath + '/app'])
+                        '/app.asar', filepath + '/app'], shell=(True if sys.platform == 'win32' else False))
         print(' ...renaming asar.app to asar.app.bak')
         os.rename(filepath + '/app.asar', filepath + '/app.asar.bak')
     else:
@@ -78,8 +78,7 @@ try:
             print(' ...linking to ./resources/user.css')
             with open('./resources/preload.js') as insert:
                 append.write(insert.read().replace(
-                    '$$$user.css$$$', 'C:/' +
-                    os.getcwd().replace('\\', ' / ')[6:]
+                    '___user.css___',                    __folder__
                     + '/resources/user.css'))
     else:
         print(
@@ -155,7 +154,7 @@ try:
         with open(filepath + '/app/main/main.js', 'a') as append:
             with open('./resources/hotkey.js') as insert:
                 append.write('\n' + insert.read().replace(
-                    '$$$hotkey$$$', hotkey))
+                    '___hotkey___', hotkey))
         print(
             f' ...copying tray icon ./resources/notion.ico to {filepath}/app/main/')
         copyfile('./resources/notion.ico', filepath + '/app/main/notion.ico')
