@@ -51,37 +51,24 @@
 }
 /* scrollbar: light theme */
 .notion-light-theme ::-webkit-scrollbar-corner {
-  background-color: #afafaf; /* for overlap */
+  background-color: transparent; /* for overlap */
 }
 .notion-light-theme ::-webkit-scrollbar-thumb {
-  background-color: #afafaf;
-}
-.notion-light-theme ::-webkit-scrollbar-track {
-  background-color: #e4e4e4;
+  border-radius: 5px;
+  background-color: #d9d8d6;
+  border: 1px solid #cacac8;
 }
 .notion-light-theme ::-webkit-scrollbar-thumb:hover {
-  background: #969696;
+  background: #cacac8;
 }
 /* scrollbar: dark theme */
 .notion-dark-theme ::-webkit-scrollbar-corner {
-  background-color: #3d3d42; /* for overlap */
-}
-.notion-dark-theme ::-webkit-scrollbar-track {
-  background-color: #3d3d42;
+  background-color: transparent; /* for overlap */
 }
 .notion-dark-theme ::-webkit-scrollbar-thumb {
   border-radius: 5px;
-  background-color: #5d5d5d;
+  background-color: #505457;
 }
 .notion-dark-theme ::-webkit-scrollbar-thumb:hover {
-  background: #868686;
-}
-/* rounded borders */
-.notion-dark-theme ::-webkit-scrollbar-track:vertical,
-.notion-light-theme ::-webkit-scrollbar-track:vertical {
-  border-radius: 5px 5px 0 0;
-}
-.notion-dark-theme ::-webkit-scrollbar-track:horizontal,
-.notion-light-theme ::-webkit-scrollbar-track:horizontal {
-  border-radius: 5px 0 0 5px;
+  background: #696d6f;
 }

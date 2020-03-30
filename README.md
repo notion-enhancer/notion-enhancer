@@ -49,7 +49,7 @@ notion will remain the top visible window even if not focused.
 
 to customise which characters are used for these buttons, open in the `resources/preload.js` file,
 find the relevant button (read the comments) and replace its icon with your chosen unicode character (e.g.
-replacing `element.innerHTML = '▢';` -> `element.innerHTML = '🙄';`).
+replacing `element.innerHTML = '▢';` with `element.innerHTML = '🙄';`).
 
 ### nicer scrollbars
 
@@ -58,13 +58,14 @@ ones that actually look as if they're part of notion.
 
 to add these to the web version, copy lines 43 - 87 from `user.css` into your css customiser.
 
-### hotkey
+### hotkeys
 
-- **toggle all notion windows to/from the tray**: `CmdOrCtrl+Shift+A` by default.
-  to set your own, open `customiser.py` and change line 16 (`hotkey = 'ctrl+shift+a'`)
-  to your preference. you will need to run or re-run `customiser.py` afterwards.
 - **reload window**: in addition to the built-in `CmdOrCtrl+R` reload,
   you can now reload a window with `F5`.
+- **toggle all notion windows to/from the tray**: `CmdOrCtrl+Shift+A` by default.
+
+  to set your own toggle hotkey, open `customiser.py` and change line 16 (`hotkey = 'CmdOrCtrl+Shift+A'`)
+  to your preference. you will need to run or re-run `customiser.py` afterwards.
 
 ### tray
 
@@ -73,7 +74,8 @@ to add these to the web version, copy lines 43 - 87 from `user.css` into your cs
 - **run on startup**: run notion on boot/startup. (default: true)
 - **hide on open**: hide the launch of notion to the tray. (default: false)
 - **open maximised**: maximise the app on open. (default: false)
-- **close to tray**: app will close to the tray when the `⨉` button is pressed rather than closing outright. (default: false)
+- **close to tray**: close window to tray rather than closing outright
+  on click of `⨉`. does not apply if multiple notion windows are open. (default: false)
 
 ## styling
 

@@ -8,18 +8,10 @@
     "url": "https://dragonwocky.me/notion-enhancer/"
   },
   "icon": {
-    "light": "resources/notion.ico"
+    "light": "web-logo.svg"
   },
   "overwrite": true,
-  "exclude": [
-    "cleaner.py",
-    "customiser.py",
-    "resources/hotkey.js",
-    "resources/preload.js",
-    "resources/store.js",
-    "resources/user.css",
-    ".gitignore"
-  ],
+  "exclude": ["cleaner.py", "customiser.py", "resources/*", ".gitignore"],
   "nav": [
     ["index.html", "README.md"],
     "resources",

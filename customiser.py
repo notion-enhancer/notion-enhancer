@@ -12,7 +12,6 @@ import subprocess
 from shutil import copyfile
 from time import sleep
 
-
 # for toggling notion visibility
 hotkey = 'CmdOrCtrl+Shift+A'
 
@@ -157,7 +156,8 @@ try:
                     '___hotkey___', hotkey))
         print(
             f' ...copying tray icon ./resources/notion.ico to {filepath}/app/main/')
-        copyfile('./resources/notion.ico', filepath + '/app/main/notion.ico')
+        copyfile('./resources/notion.ico',
+                 filepath + '/app/main/notion.ico')
         print(
             f' ...copying datastore wrapper ./resources/store.js to {filepath}/app/')
         copyfile('./resources/store.js', filepath + '/app/store.js')

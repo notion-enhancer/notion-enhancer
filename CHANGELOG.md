@@ -8,7 +8,9 @@ but can still easily be enabled by following instructions in the [docs](README.m
 - new: running from the wsl.
 - new: reload window with f5.
 - improved: code has been refactored and cleaned up,
-  inc. file renaming.
+  inc. file renaming and a `customiser.py` that doesn't require
+  a run of `cleaner.py` to build updates.
+  improved: scrollbar colours that fit better with notion's theming.
 - bugfix: un-break having multiple notion windows open.
 
 _(forked by [@dragonwocky](https://github.com/dragonwocky).)_
