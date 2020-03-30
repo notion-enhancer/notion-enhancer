@@ -60,10 +60,11 @@ to add these to the web version, copy lines 43 - 87 from `user.css` into your cs
 
 ### hotkey
 
-by default, `ctrl+shift+a` (will hide/show all notion windows to/from the tray).
-
-to set your own, open `customiser.py` and change line 16 (`hotkey = 'ctrl+shift+a'`)
-to your preference. you will need to run or re-run `customiser.py` afterwards.
+- **toggle all notion windows to/from the tray**: `CmdOrCtrl+Shift+A` by default.
+  to set your own, open `customiser.py` and change line 16 (`hotkey = 'ctrl+shift+a'`)
+  to your preference. you will need to run or re-run `customiser.py` afterwards.
+- **reload window**: in addition to the built-in `CmdOrCtrl+R` reload,
+  you can now reload a window with `F5`.
 
 ### tray
 
@@ -141,7 +142,7 @@ as it is a per-table-column style, unlike all others here, it must be prepended 
 #### hide calculations table row
 
 ```css
-[] .notion-table-view-add-row + div {
+.notion-table-view-add-row + div {
   display: none !important;
 }
 ```

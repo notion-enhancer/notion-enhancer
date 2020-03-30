@@ -5,7 +5,8 @@ but can still easily be enabled by following instructions in the [docs](README.m
 
 ### v0.5.0 (wip)
 
-- new: running from the WSL.
+- new: running from the wsl.
+- new: reload window with f5.
 - improved: code has been refactored and cleaned up,
   inc. file renaming.
 - bugfix: un-break having multiple notion windows open.

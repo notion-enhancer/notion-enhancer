@@ -78,9 +78,13 @@ ones that actually look as if they&#39;re part of notion.</p>
             <h3 id="hotkey">
               <a href="#hotkey">hotkey</a>
             </h3>
-        <p>by default, <code>ctrl+shift+a</code> (will hide/show all notion windows to/from the tray).</p>
-<p>to set your own, open <code>customiser.py</code> and change line 16 (<code>hotkey = &#39;ctrl+shift+a&#39;</code>)
-to your preference. you will need to run or re-run <code>customiser.py</code> afterwards.</p>
+        <ul>
+<li><strong>toggle all notion windows to/from the tray</strong>: <code>CmdOrCtrl+Shift+A</code> by default.
+to set your own, open <code>customiser.py</code> and change line 16 (<code>hotkey = &#39;ctrl+shift+a&#39;</code>)
+to your preference. you will need to run or re-run <code>customiser.py</code> afterwards.</li>
+<li><strong>reload window</strong>: in addition to the built-in <code>CmdOrCtrl+R</code> reload,
+you can now reload a window with <code>F5</code>.</li>
+</ul>
 
           </section>
           <section class="block">
@@ -169,7 +173,7 @@ as it is a per-table-column style, unlike all others here, it must be prepended 
             <h4 id="hide-calculations-table-row">
               <a href="#hide-calculations-table-row">hide calculations table row</a>
             </h4>
-        <pre><code class="lang-css"><span class="hljs-selector-attr">[]</span> <span class="hljs-selector-class">.notion-table-view-add-row</span> + <span class="hljs-selector-tag">div</span> {
+        <pre><code class="lang-css"><span class="hljs-selector-class">.notion-table-view-add-row</span> + <span class="hljs-selector-tag">div</span> {
   <span class="hljs-attribute">display</span>: none <span class="hljs-meta">!important</span>;
 }</code></pre>
 

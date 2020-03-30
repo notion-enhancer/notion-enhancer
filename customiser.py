@@ -14,12 +14,12 @@ from time import sleep
 
 
 # for toggling notion visibility
-hotkey = 'ctrl+shift+a'
+hotkey = 'CmdOrCtrl+Shift+A'
 
 # f'{bold}=== title ==={normal}'    = headers
 # '*'                               = information
 # '...'                             = actions
-# '##'                             = warnings
+# '##'                              = warnings
 # '>'                               = exit
 
 bold = '\033[1m'

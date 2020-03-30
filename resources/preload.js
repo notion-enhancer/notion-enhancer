@@ -22,12 +22,13 @@ require('electron').remote.getGlobal('setTimeout')(() => {
   style.innerHTML = css;
   head.appendChild(style);
 
-  /* window control buttons */
-  const intervalID = setInterval(insertbuttons, 100);
-  function insertbuttons() {
+  const intervalID = setInterval(injection, 100);
+  function injection() {
     if (document.querySelector('div.notion-topbar > div') == undefined) return;
 
     const appwindow = require('electron').remote.getCurrentWindow();
+
+    /* window control buttons */
     let node = document.querySelector('div.notion-topbar > div'),
       element = document.createElement('div');
     element.id = 'window-buttons-area';
@@ -82,5 +83,12 @@ require('electron').remote.getGlobal('setTimeout')(() => {
     node.appendChild(element);
 
     clearInterval(intervalID);
+
+    /* reload window */
+    document.defaultView.addEventListener(
+      'keyup',
+      ev => void (ev.code === 'F5' ? appwindow.reload() : 0),
+      true
+    );
   }
 }, 100);
