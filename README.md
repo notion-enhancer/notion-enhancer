@@ -64,8 +64,8 @@ to add these to the web version, copy lines 43 - 87 from `user.css` into your cs
   you can now reload a window with `F5`.
 - **toggle all notion windows to/from the tray**: `CmdOrCtrl+Shift+A` by default.
 
-  to set your own toggle hotkey, open `customiser.py` and change line 16 (`hotkey = 'CmdOrCtrl+Shift+A'`)
-  to your preference. you will need to run or re-run `customiser.py` afterwards.
+to set your own toggle hotkey, open `customiser.py` and change line 16 (`hotkey = 'CmdOrCtrl+Shift+A'`)
+to your preference. you will need to run or re-run `customiser.py` afterwards.
 
 ### tray
 
