@@ -21,7 +21,7 @@ or a built-in feature like [userChrome.css](https://www.userchrome.org/).)
 8. optional: modify the `resources/user.css` files to your liking.
 9. run `customiser.py` to build changes.
 
-done: run notion and enjoy
+done: run notion and enjoy.
 
 **oh no, now my app won't open!**
 
@@ -77,7 +77,7 @@ to add these to the web version, copy lines 43 - 87 from `user.css` into your cs
 - **close to tray**: close window to tray rather than closing outright
   on click of `⨉`. does not apply if multiple notion windows are open. (default: false)
 
-## styling
+### styling
 
 due to `customiser.py` setting up a direct link to `resources/user.css`,
 changes will be applied instantly on notion reload
@@ -230,3 +230,12 @@ as it is a per-table-column style, unlike all others here, it must be prepended 
   padding-right: 10px !important;
 }
 ```
+
+## other details
+
+i have an unhealthy habit of avoiding capital letters. nothing enforces this, i just do it.
+
+the notion logo belongs entirely to the notion team, and was sourced from their
+[media kit](https://www.notion.so/Media-Kit-205535b1d9c4440497a3d7a2ac096286).
+
+if you have any questions, check [my website](https://dragonwocky.me/) for contact details.

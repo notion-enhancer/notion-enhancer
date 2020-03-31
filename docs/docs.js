@@ -1,5 +1,5 @@
 /*
- * Documentative Scripts
+ * Documentative
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
  * (https://dragonwocky.me/) under the MIT license
  */
@@ -16,125 +16,109 @@ class Scrollnav {
       throw Error('scrollnav: only 1 instance per page allowed!');
     Scrollnav.prototype.INITIATED = true;
 
+    this.ID;
+    this.ticking = [];
     this._menu = menu;
     this._content = content;
-    this._sections = [...this._menu.querySelectorAll('ul li a')]
-      .map(el => {
-        try {
-          return this._content.querySelector(el.getAttribute('href'))
-            .parentElement;
-        } catch {
-          return null;
-        }
-      })
-      .filter(el => el);
-    this._topheading = this._sections[0].children[0];
+    this._links = [];
+    this._sections = [...this._menu.querySelectorAll('ul li a')].reduce(
+      (list, link) => {
+        if (!link.getAttribute('href').startsWith('#')) return list;
+        let section = this._content.querySelector(link.getAttribute('href'));
+        if (!section) return list;
 
-    this._scrolling = [];
-    this.build();
-  }
-  async build() {
-    this._content.addEventListener('scroll', this.scrollwatcher.bind(this));
-
-    window.onhashchange = this.hashwatcher.bind(this);
-    [...this._menu.querySelectorAll('ul li a')]
-      .filter(el => el.getAttribute('href').startsWith('#'))
-      .forEach(el => {
-        el.onclick = async ev => {
+        this._links.push(link);
+        link.onclick = async ev => {
           ev.preventDefault();
-          this.set(el.getAttribute('href'));
-          this.scroll(() => {
-            let offset = this._content.querySelector(el.getAttribute('href'))
-              .parentElement.offsetTop;
-            if (offset < this._content.clientHeight / 2) offset = 0;
-            this._content.scroll({
-              top: offset,
-              behavior: 'smooth'
-            });
-          });
+          const ID = link.getAttribute('href');
+          this.highlightHeading(ID);
+          this.scrollContent(ID);
+          this.setHash(ID);
         };
-      });
 
-    this.set();
-    this.showmenu();
-    await this.scroll(() => {
-      const ID = location.hash || '#' + this._topheading.id;
-      try {
-        this._content.querySelector(ID).parentElement.scrollIntoView(true);
-      } catch {
-        location.hash = '';
+        return [...list, section];
+      },
+      []
+    );
+    this._topheading = `#${this._sections[0].id}`;
+
+    window.onhashchange = this.watchHash.bind(this);
+    this._content.addEventListener('scroll', ev => {
+      if (!this.ticking.length) {
+        this.ticking.push(1);
+        requestAnimationFrame(() => {
+          this.watchScroll(ev);
+          this.ticking.pop();
+        });
       }
     });
+
+    this.set(null, false);
+    return this;
   }
 
-  set(ID) {
-    if (!ID || typeof ID !== 'string')
-      ID = location.hash || this._topheading.id;
-    if (!ID.startsWith('#')) ID = '#' + ID;
-    if (!this._menu.querySelector(`[href="${ID}"]`))
-      ID = '#' + this._topheading.id;
-    clearTimeout(this.hashloc);
-    this.hashloc = setTimeout(() => {
-      this._menu
-        .querySelectorAll('ul li a')
-        .forEach(el =>
-          el.getAttribute('href') === ID
-            ? el.classList.add('active')
-            : el.classList.remove('active')
-        );
-      if (history.replaceState) {
-        history.replaceState(
-          null,
-          null,
-          ID === '#' + this._topheading.id ? '#' : ID
-        );
-        if (ID === '#' + this._topheading.id)
-          this._content.scroll({
-            top: 0,
-            behavior: 'smooth'
-          });
-      } else this._content.querySelector(ID).parentElement.scrollIntoView(true);
-    }, 100);
+  set(ID, smooth) {
+    this.highlightHeading(ID);
+    this.scrollMenu(ID, smooth);
+    this.scrollContent(ID, smooth);
+    this.setHash(ID);
   }
-  scroll(func) {
-    return new Promise((resolve, reject) => {
-      try {
-        this._scrolling.push(true);
-        func();
-        setTimeout(() => {
-          this._scrolling.pop();
-          resolve(true);
-        }, 750);
-      } catch (err) {
-        reject(err);
-      }
+
+  parseID(ID) {
+    if (!ID || typeof ID !== 'string') ID = location.hash || this._topheading;
+    if (!ID.startsWith('#')) ID = `#${ID}`;
+    if (!this._links.find(el => el.getAttribute('href') === ID))
+      ID = this._topheading;
+    this.ID = ID;
+    return ID;
+  }
+  highlightHeading(ID) {
+    this.parseID(ID);
+    this._links.forEach(el =>
+      el.getAttribute('href') === this.ID
+        ? el.classList.add('active')
+        : el.classList.remove('active')
+    );
+    return true;
+  }
+
+  watchHash(ev) {
+    ev.preventDefault();
+    if (ev.newURL !== ev.oldURL) {
+      this.set();
+    }
+  }
+  setHash(ID) {
+    if (!history.replaceState) return false;
+    this.parseID(ID);
+    history.replaceState(null, null, ID === this._topheading ? '#' : this.ID);
+    return true;
+  }
+
+  scrollContent(ID, smooth = true) {
+    this.ticking.push(1);
+    this.parseID(ID);
+    let offset = this._sections.find(el => `#${el.id}` === this.ID).offsetTop;
+    if (offset < this._content.clientHeight / 2) offset = 0;
+    this._content.scroll({
+      top: offset,
+      behavior: smooth ? 'smooth' : 'auto'
     });
+    setTimeout(() => this.ticking.pop(), 1000);
+    return true;
   }
-  showmenu(ID) {
-    if (!ID || typeof ID !== 'string')
-      ID = location.hash || this._topheading.id;
-    if (!ID.startsWith('#')) ID = '#' + ID;
-    if (!this._menu.querySelector(`[href="${ID}"]`))
-      ID = '#' + this._topheading.id;
-    let offset = this._menu.querySelector(`[href="${ID}"]`).parentElement
+  scrollMenu(ID, smooth = true) {
+    this.parseID(ID);
+    let offset = this._links.find(el => el.getAttribute('href') === this.ID)
       .offsetTop;
     if (offset < this._menu.clientHeight / 2) offset = 0;
-    clearTimeout(this.menupos);
     this._menu.scroll({
       top: offset,
-      behavior: 'smooth'
+      behavior: smooth ? 'smooth' : 'auto'
     });
+    return true;
   }
-
-  hashwatcher(ev) {
-    ev.preventDefault();
-    if (ev.newURL === ev.oldURL) return;
-    this.set();
-    this.showmenu();
-  }
-
-  scrollwatcher() {
-    if (this._scrolling.length) return;
+  watchScroll(ev) {
     const viewport = this._content.clientHeight,
       ID = this._sections.reduce(
         (carry, el) => {
@@ -159,17 +143,25 @@ class Scrollnav {
           return pixels > carry[0] ? [pixels, el] : carry;
         },
         [0, null]
-      )[1].children[0].id;
-
-    this.set(ID);
-    this.showmenu(ID);
+      )[1].id;
+    this.ID = ID;
+    this.scrollMenu(this.ID);
+    clearTimeout(this.afterScroll);
+    this.afterScroll = setTimeout(
+      () => void (this.highlightHeading(this.ID) && this.setHash(this.ID)),
+      100
+    );
   }
 }
 
+let constructed = false;
 const construct = () => {
+  if (document.readyState !== 'complete' || constructed) return false;
+  constructed = true;
+
   if (
     location.pathname.endsWith('index.html') &&
-    window.location.protocol !== 'file:'
+    window.location.protocol === 'https:'
   )
     location.replace('./' + location.hash);
 
@@ -197,6 +189,5 @@ const construct = () => {
   }
 };
 
-if (document.readyState === 'complete') {
-  construct();
-} else document.addEventListener('DOMContentLoaded', construct);
+construct();
+document.addEventListener('readystatechange', construct);
