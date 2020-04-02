@@ -8,6 +8,7 @@
 /* window control buttons: block */
 #window-buttons-area {
   padding-left: 14px;
+  user-select: none;
 }
 /* window control buttons: light theme */
 .notion-light-theme .window-buttons {
