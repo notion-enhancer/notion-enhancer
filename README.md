@@ -56,7 +56,7 @@ replacing `element.innerHTML = '▢';` with `element.innerHTML = '🙄';`).
 i mean, yeah. get rid of those ugly default scrollbars and use nice inconspicuous
 ones that actually look as if they're part of notion.
 
-to add these to the web version, copy lines 43 - 87 from `user.css` into your css customiser.
+to add these to the web version, copy lines 44 - 75 from `user.css` into your css customiser.
 
 ### hotkeys
 
