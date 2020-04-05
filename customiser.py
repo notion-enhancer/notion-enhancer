@@ -28,13 +28,16 @@ print(f'{bold}=== NOTION ENHANCER CUSTOMISATION LOG ==={normal}\n')
 
 try:
     filepath = ''
-    __folder__ = os.path.dirname(os.path.abspath(__file__)).replace('\\', '/')
+    __folder__ = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/')
+    print(__folder__)
     if 'microsoft' in platform.uname()[3].lower() and sys.platform == 'linux':
         filepath = '/mnt/c/' + \
             subprocess.run(
                 ['cmd.exe', '/c', 'echo', '%localappdata%'], stdout=subprocess.PIPE).stdout \
             .rstrip().decode('utf-8')[3:].replace('\\', '/') + '/Programs/Notion/resources'
-        __folder__ = 'C:/' + __folder__[6:]
+        drive = __folder__[5].capitalize() if __folder__.startswith(
+            '/mnt/') else 'C'
+        __folder__ = drive + ':/' + __folder__[6:]
     elif sys.platform == 'win32':
         filepath = subprocess.run(['echo', '%localappdata%'], shell=True, capture_output=True).stdout \
             .rstrip().decode('utf-8').replace('\\', '/') + '/Programs/Notion/resources'
