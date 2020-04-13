@@ -29,7 +29,6 @@ print(f'{bold}=== NOTION ENHANCER CUSTOMISATION LOG ==={normal}\n')
 try:
     filepath = ''
     __folder__ = os.path.dirname(os.path.realpath(__file__)).replace('\\', '/')
-    print(__folder__)
     if 'microsoft' in platform.uname()[3].lower() and sys.platform == 'linux':
         filepath = '/mnt/c/' + \
             subprocess.run(
