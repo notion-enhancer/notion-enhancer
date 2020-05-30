@@ -108,7 +108,8 @@ css below will work for every instance of the element, but if you wish to hide o
 [style*='background: rgb(47, 52, 55)'] {
   background: rgb(10, 10, 10) !important;
 }
-/* hovered buttons */
+/* hovered buttons + table column titles */
+.notion-table-view > :first-child > :first-child,
 [style*='background: rgb(71, 76, 80)'],
 [style*='background: rgb(98, 102, 104)'] {
   background: rgb(15, 15, 15) !important;
