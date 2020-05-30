@@ -5,10 +5,11 @@ but can still easily be enabled by following instructions in the [docs](README.m
 
 ### v0.5.1 (wip)
 
-- new: hide discussions (thanks to [u/Roosmaryn](https://www.reddit.com/user/Roosmaryn/))
-- new: custom colour theming, demonstrated via the dark+ theme.
-- new: custom fonts.
-- new: font resizing.
+- docs: custom colour theming, demonstrated via the dark+ theme.
+- docs: custom fonts.
+- docs: font resizing.
+- docs: hide discussions (thanks to [u/Roosmaryn](https://www.reddit.com/user/Roosmaryn/))
+- bugfix: specify UTF-8 encoding to prevent gbk codec errors (thanks to [@etnperlong](https://github.com/etnperlong))
 
 ### v0.5.0 (2020-05-23)
 
