@@ -146,7 +146,7 @@ css below will work for every instance of the element, but if you wish to hide o
 }
 ```
 
-### font resizing
+#### font resizing
 
 **not recommended:** this can mess up container sizes.
 it is suggested to instead use `ctrl+` or `ctrl-` to scale everything up/down.
