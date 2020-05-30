@@ -135,6 +135,7 @@ css below will work for every instance of the element, but if you wish to hide o
 **styles must be added to the top of the `user.css` file, so that nothing (other than comments) is above them @import statement**
 
 ```css
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&family=Oxygen&family=Roboto+Slab:wght@300&display=swap');
 .notion-app-inner {
   font-family: 'Oxygen', sans-serif !important;
 }

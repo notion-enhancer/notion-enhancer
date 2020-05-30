@@ -163,7 +163,8 @@ changes will be applied instantly on notion reload
               <a href="#custom-fonts">custom fonts</a>
             </h4>
         <p><strong>styles must be added to the top of the <code>user.css</code> file, so that nothing (other than comments) is above them @import statement</strong></p>
-<pre><code class="lang-css"><span class="hljs-selector-class">.notion-app-inner</span> {
+<pre><code class="lang-css"><span class="hljs-keyword">@import</span> url(<span class="hljs-string">'https://fonts.googleapis.com/css2?family=Fira+Code&amp;family=Oxygen&amp;family=Roboto+Slab:wght@300&amp;display=swap'</span>);
+<span class="hljs-selector-class">.notion-app-inner</span> {
   <span class="hljs-attribute">font-family</span>: <span class="hljs-string">'Oxygen'</span>, sans-serif <span class="hljs-meta">!important</span>;
 }
 <span class="hljs-selector-attr">[style*=<span class="hljs-string">'monospace;'</span>]</span> {
