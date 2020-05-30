@@ -88,6 +88,96 @@ these should also work for the web version, if copied into your css customiser.
 css below will work for every instance of the element, but if you wish to hide only a specific element
 (e.g. the '+ new' table row) it is recommended that you prepend each selector with `[data-block-id='ID']` ([video tutorial on fetching IDs](https://www.youtube.com/watch?v=6V7eqShm_4w)).
 
+#### dark+ theme
+
+```css
+/*** dark+ ***/
+.notion-dark-theme .window-buttons {
+  background: rgb(10, 10, 10);
+}
+.notion-dark-theme .window-buttons:hover {
+  background: rgb(23, 23, 23);
+}
+/* sidebar */
+[style*='background: rgb(55, 60, 63)'],
+[style*='background: rgb(80, 85, 88)'] {
+  background: rgb(0, 0, 0) !important;
+}
+/* main content */
+.notion-body.dark,
+[style*='background: rgb(47, 52, 55)'] {
+  background: rgb(10, 10, 10) !important;
+}
+/* hovered buttons */
+[style*='background: rgb(71, 76, 80)'],
+[style*='background: rgb(98, 102, 104)'] {
+  background: rgb(15, 15, 15) !important;
+  box-shadow: 0 0 0 0.5px rgba(78, 78, 78, 0.7);
+}
+/* database elements: e.g. view select, calendar event */
+[style*='background: rgb(63, 68, 71)'] {
+  background: rgb(4, 4, 4) !important;
+  border: 0.5px solid rgba(59, 59, 59, 0.7);
+}
+```
+
+#### hide discussions (comment threads at the top of each page)
+
+```css
+.notion-page-view-discussion {
+  display: none !important;
+}
+```
+
+#### custom fonts
+
+**styles must be added to the top of the `user.css` file, so that nothing (other than comments) is above them @import statement**
+
+```css
+.notion-app-inner {
+  font-family: 'Oxygen', sans-serif !important;
+}
+[style*='monospace;'] {
+  font-family: 'Fira Code', monospace !important;
+}
+[style*=', serif;'] {
+  font-family: 'Roboto Slab', serif !important;
+}
+```
+
+### font resizing
+
+**not recommended:** this can mess up container sizes.
+it is suggested to instead use `ctrl+` or `ctrl-` to scale everything up/down.
+
+```css
+/* font sizes */
+:root {
+  --font-scale: 1;
+}
+.notion-app-inner {
+  font-size: calc(var(--font-scale) * 16px) !important;
+}
+[style*='font-size: 40px'] {
+  font-size: calc(var(--font-scale) * 40px) !important;
+}
+[style*='font-size: 16px'] {
+  font-size: calc(var(--font-scale) * 16px) !important;
+}
+[style*='font-size: 14px'] {
+  font-size: calc(var(--font-scale) * 14px) !important;
+}
+[style*='font-size: 12px'] {
+  font-size: calc(var(--font-scale) * 12px) !important;
+}
+[style*='font-size: 11px'] {
+  font-size: calc(var(--font-scale) * 11px) !important;
+}
+[style*='font-size: 1.25em'] {
+  font-size: calc(var(--font-scale) * 1.25em) !important;
+}
+```
+
 #### wider page view
 
 ```css
@@ -232,8 +322,6 @@ as it is a per-table-column style, unlike all others here, it must be prepended 
 ```
 
 ## other details
-
-i have an unhealthy habit of avoiding capital letters. nothing enforces this, i just do it.
 
 the notion logo belongs entirely to the notion team, and was sourced from their
 [media kit](https://www.notion.so/Media-Kit-205535b1d9c4440497a3d7a2ac096286).

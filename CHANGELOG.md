@@ -3,6 +3,13 @@
 if something is ~~crossed out~~, then it is no longer a feature included by default,
 but can still easily be enabled by following instructions in the [docs](README.md).
 
+### v0.5.1 (wip)
+
+- new: hide discussions (thanks to [u/Roosmaryn](https://www.reddit.com/user/Roosmaryn/))
+- new: custom colour theming, demonstrated via the dark+ theme.
+- new: custom fonts.
+- new: font resizing.
+
 ### v0.5.0 (2020-05-23)
 
 - new: running from the wsl.

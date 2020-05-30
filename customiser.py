@@ -1,5 +1,5 @@
 
-# Notion Enhancer
+# notion-enhancer
 # (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
 # (c) 2020 TarasokUA
 # (https://dragonwocky.me/) under the MIT license

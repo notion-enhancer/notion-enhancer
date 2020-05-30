@@ -1,7 +1,7 @@
 /* === INJECTION MARKER === */
 
 /*
- * Notion Enhancer
+ * notion-enhancer
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
  * (c) 2020 TarasokUA
  * (https://dragonwocky.me/) under the MIT license
@@ -70,8 +70,8 @@ require('electron').remote.getGlobal('setTimeout')(() => {
       const store = new (require(path.join(__dirname, '..', 'store.js')))({
         config: 'user-preferences',
         defaults: {
-          tray: false
-        }
+          tray: false,
+        },
       });
       if (
         store.get('tray') &&
@@ -87,7 +87,7 @@ require('electron').remote.getGlobal('setTimeout')(() => {
     /* reload window */
     document.defaultView.addEventListener(
       'keyup',
-      ev => void (ev.code === 'F5' ? appwindow.reload() : 0),
+      (ev) => void (ev.code === 'F5' ? appwindow.reload() : 0),
       true
     );
   }

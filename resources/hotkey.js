@@ -1,7 +1,7 @@
 /* === INJECTION MARKER === */
 
 /*
- * Notion Enhancer
+ * notion-enhancer
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
  * (c) 2020 TarasokUA
  * (https://dragonwocky.me/) under the MIT license
@@ -22,14 +22,14 @@ function enhancements() {
       defaults: {
         openhidden: false,
         maximised: false,
-        tray: false
-      }
+        tray: false,
+      },
     }),
     states = {
       startup: electron_1.app.getLoginItemSettings().openAtLogin,
       openhidden: store.get('openhidden'),
       maximised: store.get('maximised'),
-      tray: store.get('tray')
+      tray: store.get('tray'),
     };
 
   tray = new Tray(path.join(__dirname, './notion.ico'));
@@ -42,7 +42,7 @@ function enhancements() {
       click: () =>
         contextMenu.getMenuItemById('startup').checked
           ? electron_1.app.setLoginItemSettings({ openAtLogin: true })
-          : electron_1.app.setLoginItemSettings({ openAtLogin: false })
+          : electron_1.app.setLoginItemSettings({ openAtLogin: false }),
     },
     {
       id: 'openhidden',
@@ -52,7 +52,7 @@ function enhancements() {
       click: () =>
         contextMenu.getMenuItemById('openhidden').checked
           ? store.set('openhidden', true)
-          : store.set('openhidden', false)
+          : store.set('openhidden', false),
     },
     {
       id: 'maximised',
@@ -62,7 +62,7 @@ function enhancements() {
       click: () =>
         contextMenu.getMenuItemById('maximised').checked
           ? store.set('maximised', true)
-          : store.set('maximised', false)
+          : store.set('maximised', false),
     },
     {
       id: 'tray',
@@ -72,15 +72,15 @@ function enhancements() {
       click: () =>
         contextMenu.getMenuItemById('tray').checked
           ? store.set('tray', true)
-          : store.set('tray', false)
+          : store.set('tray', false),
     },
     {
-      type: 'separator'
+      type: 'separator',
     },
     {
       label: '(x) quit',
-      role: 'quit'
-    }
+      role: 'quit',
+    },
   ]);
   tray.setContextMenu(contextMenu);
 
@@ -100,10 +100,10 @@ function enhancements() {
   const hotkey = '___hotkey___'; // will be set by python script
   electron_1.globalShortcut.register(hotkey, () => {
     const windows = electron_1.BrowserWindow.getAllWindows();
-    if (windows.some(win => !win.isVisible())) {
+    if (windows.some((win) => !win.isVisible())) {
       if (contextMenu.getMenuItemById('maximised').checked) {
-        windows.forEach(win => win.maximize());
-      } else windows.forEach(win => win.show());
-    } else windows.forEach(win => win.hide());
+        windows.forEach((win) => win.maximize());
+      } else windows.forEach((win) => win.show());
+    } else windows.forEach((win) => win.hide());
   });
 }
