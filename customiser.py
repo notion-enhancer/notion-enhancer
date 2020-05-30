@@ -61,7 +61,7 @@ try:
 
     if os.path.isfile(filepath + '/app/renderer/preload.js'):
         print(f' ...adding preload.js to {filepath}/app/renderer/preload.js')
-        with open(filepath + '/app/renderer/preload.js') as content:
+        with open(filepath + '/app/renderer/preload.js', 'r', encoding='UTF-8') as content:
             if '/* === INJECTION MARKER === */' in content.read():
                 print(' * preload.js already added. replacing it.')
                 content.seek(0)
@@ -70,14 +70,14 @@ try:
                     if '/* === INJECTION MARKER === */' in line:
                         break
                     original += line
-                with open(filepath + '/app/renderer/preload.js', 'w') as write:
+                with open(filepath + '/app/renderer/preload.js', 'w', encoding='UTF-8') as write:
                     write.writelines(original)
             else:
-                with open(filepath + '/app/renderer/preload.js', 'a') as append:
+                with open(filepath + '/app/renderer/preload.js', 'a', encoding='UTF-8') as append:
                     append.write('\n\n')
-        with open(filepath + '/app/renderer/preload.js', 'a') as append:
+        with open(filepath + '/app/renderer/preload.js', 'a', encoding='UTF-8') as append:
             print(' ...linking to ./resources/user.css')
-            with open('./resources/preload.js') as insert:
+            with open('./resources/preload.js', 'r', encoding='UTF-8') as insert:
                 append.write(insert.read().replace(
                     '___user.css___',                    __folder__
                     + '/resources/user.css'))
@@ -86,7 +86,7 @@ try:
             f' * {filepath}/app/renderer/preload.js was not found: step skipped.')
 
     if os.path.isfile(filepath + '/app/main/createWindow.js'):
-        with open(filepath + '/app/main/createWindow.js') as content:
+        with open(filepath + '/app/main/createWindow.js', 'r', encoding='UTF-8') as content:
             content = content.read()
             print(
                 f' ...making window frameless @ {filepath}/app/main/createWindow.js')
@@ -110,14 +110,14 @@ try:
                     { window.show(); if (store.get('maximised')) window.maximize(); }
                 /* === INJECTION END === */
             """)
-            with open(filepath + '/app/main/createWindow.js', 'w') as write:
+            with open(filepath + '/app/main/createWindow.js', 'w', encoding='UTF-8') as write:
                 write.write(content)
     else:
         print(
             f' * {filepath}/app/main/createWindow.js was not found: step skipped.')
 
     if os.path.isfile(filepath + '/app/renderer/index.js'):
-        with open(filepath + '/app/renderer/index.js') as content:
+        with open(filepath + '/app/renderer/index.js', 'r', encoding='UTF-8') as content:
             print(
                 f' ...adjusting drag area for frameless window in {filepath}/app/renderer/index.js')
             content = content.read()
@@ -126,20 +126,20 @@ try:
                 'right: 0', 'right: 420').replace(
                 'top: 0', 'top: 1 ').replace(
                 'height: 34', 'height: 16')
-            with open(filepath + '/app/renderer/index.js', 'w') as write:
+            with open(filepath + '/app/renderer/index.js', 'w', encoding='UTF-8') as write:
                 write.write(content)
     else:
         print(
             f' * {filepath}/app/renderer/index.js was not found: step skipped.')
 
     if os.path.isfile(filepath + '/app/main/main.js'):
-        with open(filepath + '/app/main/main.js') as content:
+        with open(filepath + '/app/main/main.js', 'r', encoding='UTF-8') as content:
             print(
                 f' ...adding tray support (inc. context menu with settings) to {filepath}/app/main/main.js')
             print(
                 f' ...adding window toggle hotkey to {filepath}/app/main/main.js')
             content = content.read()
-            with open(filepath + '/app/main/main.js', 'w') as write:
+            with open(filepath + '/app/main/main.js', 'w', encoding='UTF-8') as write:
                 if '/* === INJECTION MARKER === */' in content:
                     print(' * hotkey.js already added. replacing it.')
                     original = []
@@ -152,8 +152,8 @@ try:
                     write.write(content.replace(
                         'electron_1.app.on("ready", handleReady);',
                         'electron_1.app.on("ready", () => handleReady() && enhancements());') + '\n')
-        with open(filepath + '/app/main/main.js', 'a') as append:
-            with open('./resources/hotkey.js') as insert:
+        with open(filepath + '/app/main/main.js', 'a', encoding='UTF-8') as append:
+            with open('./resources/hotkey.js', 'r', encoding='UTF-8') as insert:
                 append.write('\n' + insert.read().replace(
                     '___hotkey___', hotkey))
         print(
