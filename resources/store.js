@@ -10,26 +10,34 @@
 const path = require('path'),
   fs = require('fs');
 
-class Store {
-  constructor(opts) {
-    this.path = path.join(__dirname, opts.config + '.json');
-    this.data = parseDataFile(this.path, opts.defaults);
-  }
-  get(key) {
-    return this.data[key];
-  }
-  set(key, val) {
-    this.data[key] = val;
-    fs.writeFileSync(this.path, JSON.stringify(this.data));
-  }
-}
-
-function parseDataFile(path, defaults) {
+function getJSON(from) {
   try {
-    return JSON.parse(fs.readFileSync(path));
-  } catch (error) {
-    return defaults;
+    return JSON.parse(fs.readFileSync(from));
+  } catch {
+    return {};
   }
 }
 
-module.exports = Store;
+module.exports = (opts) => {
+  opts = {
+    config: 'user-preferences',
+    defaults: {},
+    ...opts,
+  };
+  const config = path.join(__dirname, opts.config + '.json');
+  return new Proxy(
+    {},
+    {
+      get(obj, prop) {
+        obj = { ...opts.defaults, ...getJSON(config) };
+        return obj[prop];
+      },
+      set(obj, prop, val) {
+        obj = { ...opts.defaults, ...getJSON(config) };
+        obj[prop] = val;
+        fs.writeFileSync(config, JSON.stringify(obj));
+        return true;
+      },
+    }
+  );
+};

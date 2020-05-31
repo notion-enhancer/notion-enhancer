@@ -6,6 +6,8 @@ an enhancer/customiser for the all-in-one productivity workspace [notion.so](htt
 
 currently, only win10 is supported. it is possible to run this script via the wsl to modify the win10 notion app.
 
+python scripts must be run from the bash terminal or windows command prompt - directly opening/running them may not work.
+
 (the [styles](#styling) should also work for the web version.
 these can be installed via an extension like [stylus](https://chrome.google.com/webstore/detail/stylus/clngdbkpkpeebahjckkjfobafhncgmne?hl=en)
 or a built-in feature like [userChrome.css](https://www.userchrome.org/).)
@@ -18,7 +20,7 @@ or a built-in feature like [userChrome.css](https://www.userchrome.org/).)
    even if you are running the script from the wsl).
 6. ensure notion is closed.
 7. optional: to remove previous versions of notion enhancer, run `cleaner.py`
-8. optional: modify the `resources/user.css` files to your liking.
+8. optional: modify the `resources/user.css` file to your liking (see [styling](#styling)).
 9. run `customiser.py` to build changes.
 
 done: run notion and enjoy.
@@ -69,13 +71,17 @@ to your preference. you will need to run or re-run `customiser.py` afterwards.
 
 ### tray
 
-- single-click to toggle app visibility. right click to open menu.
-- settings will be saved in `%localappdata%/Programs/Notion/resources/app/user-preferences.json`
+single-click to toggle app visibility. right click to open menu.
+
+settings will be saved in `%localappdata%/Programs/Notion/resources/app/user-preferences.json`
+
 - **run on startup**: run notion on boot/startup. (default: true)
 - **hide on open**: hide the launch of notion to the tray. (default: false)
 - **open maximised**: maximise the app on open. (default: false)
 - **close to tray**: close window to tray rather than closing outright
   on click of `⨉`. does not apply if multiple notion windows are open. (default: false)
+- **load theme.css**: loads the custom colour theme file.
+  see [colour theming](#colour-theming) for more information. (default: false)
 
 ### styling
 
@@ -86,41 +92,19 @@ changes will be applied instantly on notion reload
 these should also work for the web version, if copied into your css customiser.
 
 css below will work for every instance of the element, but if you wish to hide only a specific element
-(e.g. the '+ new' table row) it is recommended that you prepend each selector with `[data-block-id='ID']` ([video tutorial on fetching IDs](https://www.youtube.com/watch?v=6V7eqShm_4w)).
+(e.g. the '+ new' table row) it is recommended that you prepend each selector with
+`[data-block-id='ID']` ([video tutorial on fetching IDs](https://www.youtube.com/watch?v=6V7eqShm_4w)).
 
-#### dark+ theme
+#### colour theming
 
-```css
-/*** dark+ ***/
-.notion-dark-theme .window-buttons {
-  background: rgb(10, 10, 10);
-}
-.notion-dark-theme .window-buttons:hover {
-  background: rgb(23, 23, 23);
-}
-/* sidebar */
-[style*='background: rgb(55, 60, 63)'],
-[style*='background: rgb(80, 85, 88)'] {
-  background: rgb(0, 0, 0) !important;
-}
-/* main content */
-.notion-body.dark,
-[style*='background: rgb(47, 52, 55)'] {
-  background: rgb(10, 10, 10) !important;
-}
-/* hovered buttons + table column titles */
-.notion-table-view > :first-child > :first-child,
-[style*='background: rgb(71, 76, 80)'],
-[style*='background: rgb(98, 102, 104)'] {
-  background: rgb(15, 15, 15) !important;
-  box-shadow: 0 0 0 0.5px rgba(78, 78, 78, 0.7);
-}
-/* database elements: e.g. view select, calendar event */
-[style*='background: rgb(63, 68, 71)'] {
-  background: rgb(4, 4, 4) !important;
-  border: 0.5px solid rgba(59, 59, 59, 0.7);
-}
-```
+this replaces the default notion dark theme. the provided theme file is my custom dark+ theme:
+if you have another you wish to share, please contact me. if a few themes are provided i will
+set up a distribution method (either including as optional themes or sharing on the website).
+
+to enable, see the [tray](#tray) options.
+
+to modify, enter the `theme.css` file and change the colour values within the `:root {}` - value names
+should describe what each colour will affect.
 
 #### hide discussions (comment threads at the top of each page)
 
@@ -132,7 +116,8 @@ css below will work for every instance of the element, but if you wish to hide o
 
 #### custom fonts
 
-**styles must be added to the top of the `user.css` file, so that nothing (other than comments) is above them @import statement**
+**the @import statement must be added to the top of the `user.css` file (with nothing above it**
+**except comments or other @import statements)**
 
 ```css
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code&family=Oxygen&family=Roboto+Slab:wght@300&display=swap');

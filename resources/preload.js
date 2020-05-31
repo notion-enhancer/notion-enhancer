@@ -12,19 +12,35 @@
 // DO NOT REMOVE THE INJECTION MARKER ABOVE
 
 require('electron').remote.getGlobal('setTimeout')(() => {
-  /* style injection */
   const fs = require('fs'),
-    css = fs.readFileSync('___user.css___'), // will be set by python script
-    style = document.createElement('style'),
-    head = document.getElementsByTagName('head')[0];
-  if (!head) return;
-  style.type = 'text/css';
-  style.innerHTML = css;
-  head.appendChild(style);
+    path = require('path'),
+    store = require(path.join(__dirname, '..', 'store.js'))({
+      config: 'user-preferences',
+      defaults: {
+        openhidden: false,
+        maximised: false,
+        tray: false,
+        theme: false,
+      },
+    });
 
   const intervalID = setInterval(injection, 100);
   function injection() {
     if (document.querySelector('div.notion-topbar > div') == undefined) return;
+    clearInterval(intervalID);
+
+    /* style injection */
+    const head = document.getElementsByTagName('head')[0],
+      css = ['user'];
+    if (store.theme) css.push('theme');
+    console.table(store);
+    css.forEach((file) => {
+      file = fs.readFileSync(`☃☃☃assets☃☃☃/${file}.css`); // will be set by python script
+      let style = document.createElement('style');
+      style.type = 'text/css';
+      style.innerHTML = file;
+      head.appendChild(style);
+    });
 
     const appwindow = require('electron').remote.getCurrentWindow();
 
@@ -56,9 +72,16 @@ require('electron').remote.getGlobal('setTimeout')(() => {
     // maximise
     element = document.createElement('button');
     element.classList.add('window-buttons');
-    element.innerHTML = '▢';
-    element.onclick = () =>
-      appwindow.isMaximized() ? appwindow.unmaximize() : appwindow.maximize();
+    element.innerHTML = appwindow.isMaximized() ? '🗗' : '🗖';
+    element.onclick = function () {
+      if (appwindow.isMaximized()) {
+        appwindow.unmaximize();
+        this.innerHTML = '🗖';
+      } else {
+        appwindow.maximize();
+        this.innerHTML = '🗗';
+      }
+    };
     node.appendChild(element);
 
     // close
@@ -67,22 +90,14 @@ require('electron').remote.getGlobal('setTimeout')(() => {
     element.classList.add('window-buttons');
     element.innerHTML = '⨉';
     element.onclick = () => {
-      const store = new (require(path.join(__dirname, '..', 'store.js')))({
-        config: 'user-preferences',
-        defaults: {
-          tray: false,
-        },
-      });
       if (
-        store.get('tray') &&
+        store.tray &&
         require('electron').remote.BrowserWindow.getAllWindows().length === 1
       ) {
         appwindow.hide();
       } else appwindow.close();
     };
     node.appendChild(element);
-
-    clearInterval(intervalID);
 
     /* reload window */
     document.defaultView.addEventListener(

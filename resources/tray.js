@@ -17,28 +17,22 @@ let tray;
 function enhancements() {
   const { Tray, Menu } = require('electron'),
     path = require('path'),
-    store = new (require(path.join(__dirname, '..', 'store.js')))({
+    store = require(path.join(__dirname, '..', 'store.js'))({
       config: 'user-preferences',
       defaults: {
         openhidden: false,
         maximised: false,
         tray: false,
+        theme: false,
       },
-    }),
-    states = {
-      startup: electron_1.app.getLoginItemSettings().openAtLogin,
-      openhidden: store.get('openhidden'),
-      maximised: store.get('maximised'),
-      tray: store.get('tray'),
-    };
-
-  tray = new Tray(path.join(__dirname, './notion.ico'));
+    });
+  tray = new Tray(path.join(__dirname, 'notion.ico'));
   const contextMenu = Menu.buildFromTemplate([
     {
       id: 'startup',
       label: 'run on startup',
       type: 'checkbox',
-      checked: states.startup,
+      checked: electron_1.app.getLoginItemSettings().openAtLogin,
       click: () =>
         contextMenu.getMenuItemById('startup').checked
           ? electron_1.app.setLoginItemSettings({ openAtLogin: true })
@@ -48,31 +42,43 @@ function enhancements() {
       id: 'openhidden',
       label: 'hide on open',
       type: 'checkbox',
-      checked: states.openhidden,
+      checked: store.openhidden,
       click: () =>
         contextMenu.getMenuItemById('openhidden').checked
-          ? store.set('openhidden', true)
-          : store.set('openhidden', false),
+          ? (store.openhidden = true)
+          : (store.openhidden = false),
     },
     {
       id: 'maximised',
       label: 'open maximised',
       type: 'checkbox',
-      checked: states.maximised,
+      checked: store.maximised,
       click: () =>
         contextMenu.getMenuItemById('maximised').checked
-          ? store.set('maximised', true)
-          : store.set('maximised', false),
+          ? (store.maximised = true)
+          : (store.maximised = false),
     },
     {
       id: 'tray',
       label: 'close to tray',
       type: 'checkbox',
-      checked: states.tray,
+      checked: store.tray,
       click: () =>
         contextMenu.getMenuItemById('tray').checked
-          ? store.set('tray', true)
-          : store.set('tray', false),
+          ? (store.tray = true)
+          : (store.tray = false),
+    },
+    {
+      id: 'theme',
+      label: 'load theme.css',
+      type: 'checkbox',
+      checked: store.theme,
+      click: () => {
+        contextMenu.getMenuItemById('theme').checked
+          ? (store.theme = true)
+          : (store.theme = false);
+        electron_1.BrowserWindow.getAllWindows().forEach((win) => win.reload());
+      },
     },
     {
       type: 'separator',
@@ -86,22 +92,18 @@ function enhancements() {
 
   tray.on('click', function () {
     const win = electron_1.BrowserWindow.getAllWindows()[0];
-    if (win.isVisible()) {
-      if (win.isMinimized()) {
-        win.show();
-      } else win.hide();
-    } else {
-      if (contextMenu.getMenuItemById('maximised').checked) {
-        win.maximize();
-      } else win.show();
-    }
+    if ((win.isVisible() && win.isMinimized()) || !store.maximised) {
+      win.show();
+    } else if (win.isVisible()) {
+      win.hide();
+    } else win.maximize();
   });
 
-  const hotkey = '___hotkey___'; // will be set by python script
+  const hotkey = '☃☃☃hotkey☃☃☃'; // will be set by python script
   electron_1.globalShortcut.register(hotkey, () => {
     const windows = electron_1.BrowserWindow.getAllWindows();
     if (windows.some((win) => !win.isVisible())) {
-      if (contextMenu.getMenuItemById('maximised').checked) {
+      if (store.maximised) {
         windows.forEach((win) => win.maximize());
       } else windows.forEach((win) => win.show());
     } else windows.forEach((win) => win.hide());

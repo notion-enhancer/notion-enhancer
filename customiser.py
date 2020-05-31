@@ -79,8 +79,8 @@ try:
             print(' ...linking to ./resources/user.css')
             with open('./resources/preload.js', 'r', encoding='UTF-8') as insert:
                 append.write(insert.read().replace(
-                    '___user.css___',                    __folder__
-                    + '/resources/user.css'))
+                    '☃☃☃assets☃☃☃',  __folder__
+                    + '/resources'))
     else:
         print(
             f' * {filepath}/app/renderer/preload.js was not found: step skipped.')
@@ -99,15 +99,15 @@ try:
                              'window.show()', content, flags=re.DOTALL).replace('window.show()', """
                 /* === INJECTION START === */
                 const path = require('path'),
-                    store = new (require(path.join(__dirname, '..', 'store.js')))({
-                    config: 'user-preferences',
-                    defaults: {
-                        openhidden: false,
-                        maximised: false
-                    }
+                    store = require(path.join(__dirname, '..', 'store.js'))({
+                        config: 'user-preferences',
+                        defaults: {
+                            openhidden: false,
+                            maximised: false
+                        }
                     });
-                if (!store.get('openhidden') || electron_1.BrowserWindow.getAllWindows().some(win => win.isVisible()))
-                    { window.show(); if (store.get('maximised')) window.maximize(); }
+                if (!store.openhidden || electron_1.BrowserWindow.getAllWindows().some(win => win.isVisible()))
+                    { window.show(); if (store.maximised) window.maximize(); }
                 /* === INJECTION END === */
             """)
             with open(filepath + '/app/main/createWindow.js', 'w', encoding='UTF-8') as write:
@@ -141,7 +141,7 @@ try:
             content = content.read()
             with open(filepath + '/app/main/main.js', 'w', encoding='UTF-8') as write:
                 if '/* === INJECTION MARKER === */' in content:
-                    print(' * hotkey.js already added. replacing it.')
+                    print(' * tray.js already added. replacing it.')
                     original = []
                     for line in content.splitlines():
                         if '/* === INJECTION MARKER === */' in line:
@@ -153,9 +153,9 @@ try:
                         'electron_1.app.on("ready", handleReady);',
                         'electron_1.app.on("ready", () => handleReady() && enhancements());') + '\n')
         with open(filepath + '/app/main/main.js', 'a', encoding='UTF-8') as append:
-            with open('./resources/hotkey.js', 'r', encoding='UTF-8') as insert:
+            with open('./resources/tray.js', 'r', encoding='UTF-8') as insert:
                 append.write('\n' + insert.read().replace(
-                    '___hotkey___', hotkey))
+                    '☃☃☃hotkey☃☃☃', hotkey))
         print(
             f' ...copying tray icon ./resources/notion.ico to {filepath}/app/main/')
         copyfile('./resources/notion.ico',
