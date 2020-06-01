@@ -90,22 +90,20 @@ function enhancements() {
   ]);
   tray.setContextMenu(contextMenu);
 
-  tray.on('click', function () {
-    const win = electron_1.BrowserWindow.getAllWindows()[0];
-    if ((win.isVisible() && win.isMinimized()) || !store.maximised) {
-      win.show();
-    } else if (win.isVisible()) {
-      win.hide();
-    } else win.maximize();
-  });
-
-  const hotkey = '☃☃☃hotkey☃☃☃'; // will be set by python script
-  electron_1.globalShortcut.register(hotkey, () => {
+  tray.on('click', () => {
     const windows = electron_1.BrowserWindow.getAllWindows();
-    if (windows.some((win) => !win.isVisible())) {
-      if (store.maximised) {
-        windows.forEach((win) => win.maximize());
-      } else windows.forEach((win) => win.show());
-    } else windows.forEach((win) => win.hide());
+    if (windows.some((win) => win.isVisible()))
+      windows.forEach((win) => win.hide());
+    else if (store.maximised) windows.forEach((win) => win.maximize());
+    else windows.forEach((win) => win.show());
+  });
+  const hotkey = '☃☃☃hotkey☃☃☃'; // will be set by python script;
+  electron_1.globalShortcut.register(hotkey, () => {
+    const windows = electron_1.BrowserWindow.getAllWindows(),
+      focused = electron_1.BrowserWindow.getFocusedWindow();
+    if (windows.some((win) => win.isVisible() && focused))
+      windows.forEach((win) => win.hide());
+    else if (store.maximised) windows.forEach((win) => win.maximize());
+    else windows.forEach((win) => win.show());
   });
 }
