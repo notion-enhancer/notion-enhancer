@@ -3,13 +3,14 @@
 if something is ~~crossed out~~, then it is no longer a feature included by default,
 but can still easily be enabled by following instructions in the [docs](README.md).
 
-### v0.5.1 (wip)
+### v0.6.0 (wip)
 
-- docs: custom colour theming, demonstrated via the dark+ theme.
 - docs: custom fonts.
 - docs: font resizing.
 - docs: hide discussions (thanks to [u/Roosmaryn](https://www.reddit.com/user/Roosmaryn/))
-- bugfix: specify UTF-8 encoding to prevent gbk codec errors (thanks to [@etnperlong](https://github.com/etnperlong))
+- new: custom colour theming, demonstrated via the dark+ theme.
+- improved: if hotkey is pressed while notion is unfocused, it will bring it to the front rather than hiding it.
+- bugfix: specify UTF-8 encoding to prevent multibyte/gbk codec errors (thanks to [@etnperlong](https://github.com/etnperlong))
 
 ### v0.5.0 (2020-05-23)
 
@@ -17,7 +18,7 @@ but can still easily be enabled by following instructions in the [docs](README.m
 - new: reload window with f5.
 - improved: code has been refactored and cleaned up,
   inc. file renaming and a `customiser.py` that doesn't require
-  a run of `cleaner.py` to build updates.
+  a run of `cleaner.py` to build modifications.
   improved: scrollbar colours that fit better with notion's theming.
 - bugfix: un-break having multiple notion windows open.
 

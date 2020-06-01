@@ -34,7 +34,6 @@
   --theme-text_purple: rgb(154, 109, 215);
   --theme-text_pink: rgb(226, 85, 161);
   --theme-text_red: rgb(218, 47, 35);
-  --theme-bg_default: rgba(37, 37, 37, 0.815);
   --theme-bg_gray: rgba(126, 128, 129, 0.5);
   --theme-bg_brown: #50331f;
   --theme-bg_orange: rgba(255, 155, 0, 0.58);
@@ -48,7 +47,8 @@
 
 /** backgrounds **/
 
-[style*='background: rgb(55, 60, 63)'] {
+[style*='background: rgb(55, 60, 63)'],
+[style*='background: rgba(69, 75, 78, 0.3)'] {
   background: var(--theme-sidebar) !important;
 }
 .notion-dark-theme .window-buttons,
@@ -65,6 +65,7 @@
 .notion-table-view > :first-child > :first-child,
 .notion-dark-theme .window-buttons:hover,
 [style*='background: rgb(71, 76, 80)'],
+[style*='background: rgb(80, 85, 88)'],
 [style*='background: rgb(98, 102, 104)'] {
   background: var(--theme-button) !important;
   box-shadow: 0 0 0 0.5px var(--theme-button_border);
@@ -101,10 +102,6 @@
 }
 [style*='background: rgb(235, 87, 87)'] {
   background: var(--theme-primary-indicator) !important;
-}
-
-[style*='background: rgb(80, 85, 88)'] {
-  background: var(--theme-bg_default) !important;
 }
 
 [style*='background: rgba(151, 154, 155, 0.5)'],
