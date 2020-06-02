@@ -27,6 +27,9 @@ to enable, see the [tray](README.md#tray) options.
 to modify, enter the `theme.css` file and change the colour values within the `:root {}` - value names
 should describe what each colour will affect.
 
+![](screenshots/theme.jpg)
+_image: the dark+ theme_
+
 ### hide discussions (comment threads at the top of each page)
 
 ```css
@@ -35,10 +38,19 @@ should describe what each colour will affect.
 }
 ```
 
+![](screenshots/hidediscussion-after.jpg)
+_image: after_
+
+![](screenshots/hidediscussion-before.jpg)
+_image: before_
+
 ### custom fonts
 
 **the `@import` statement must be added to the top of the file (with nothing above it**
 **except comments or other `@import` statements)**
+
+to change the fonts, change the font-family property. there are
+plenty of other fonts that can be found on google fonts or that may be on your system already.
 
 ```css
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code&family=Oxygen&family=Roboto+Slab:wght@300&display=swap');
@@ -53,15 +65,22 @@ should describe what each colour will affect.
 }
 ```
 
+![](screenshots/customfonts-after.jpg)
+_image: after_
+
+![](screenshots/customfonts-before.jpg)
+_image: before_
+
 ### font resizing
 
 **not recommended:** this can mess up container sizes.
 it is suggested to instead use `ctrl+` or `ctrl-` to scale everything up/down.
 
+to change the size, change the value of `--font-scale`.
+
 ```css
-/* font sizes */
 :root {
-  --font-scale: 1;
+  --font-scale: 1.4;
 }
 .notion-app-inner {
   font-size: calc(var(--font-scale) * 16px) !important;
@@ -85,6 +104,9 @@ it is suggested to instead use `ctrl+` or `ctrl-` to scale everything up/down.
   font-size: calc(var(--font-scale) * 1.25em) !important;
 }
 ```
+
+![](screenshots/fontresizing.jpg)
+_image: after_
 
 ### wider page view
 

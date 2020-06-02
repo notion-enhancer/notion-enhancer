@@ -45,13 +45,6 @@ additionally, if you ever need to change or reset your notion build, the `custom
 
 unless you're sure you know what you're doing (if you have to ask, you probably don't) then do not delete anything.
 
-## this is a fork
-
-credit where credit is due, this was originally made by Uzver (github: [@TarasokUA](https://github.com/TarasokUA),
-telegram: [UserFromUkraine](https://t.me/UserFromUkraine), discord: Uzver#8760).
-
-he has approved my go-ahead with this fork, as he himself no longer wishes to continue development on the project.
-
 ## features
 
 ### titlebar
@@ -72,6 +65,12 @@ i mean, yeah. get rid of those ugly default scrollbars and use nice inconspicuou
 ones that actually look as if they're part of notion.
 
 to add these to the web version, copy lines 44 - 75 from `user.css` into your css customiser.
+
+![](screenshots/default-before.jpg)
+_image: before enhancement_
+
+![](screenshots/default-after.jpg)
+_image: after default enhancement_
 
 ### hotkeys
 
@@ -96,7 +95,20 @@ settings will be saved in `%localappdata%/Programs/Notion/resources/app/user-pre
 - **load theme.css**: loads the custom colour theme file.
   see [colour theming](STYLING.md#colour-theming) for more information. (default: false)
 
+![](screenshots/tray.jpg)
+_image: open application tray_
+
 ## styling
+
+custom appearances can be applied to the app via the `resources/user.css` and `resources/theme.css` files. for more information,
+and a list of various optional styling changes, see [the page on styling](STYLING.md).
+
+## this is a fork
+
+credit where credit is due, this was originally made by Uzver (github: [@TarasokUA](https://github.com/TarasokUA),
+telegram: [UserFromUkraine](https://t.me/UserFromUkraine), discord: Uzver#8760).
+
+he has approved my go-ahead with this fork, as he himself no longer wishes to continue development on the project.
 
 ## other details
 
