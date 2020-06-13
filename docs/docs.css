@@ -294,6 +294,9 @@ aside .mark a {
   padding-left: 1em;
   border-left: 0.25em solid var(--border);
 }
+.wrapper .documentative img {
+  max-width: 100%;
+}
 .wrapper .documentative h1 + table,
 .wrapper .documentative h2 + table,
 .wrapper .documentative h3 + table,
@@ -495,4 +498,6 @@ aside .mark a {
 .hljs-strong {
   font-weight: bold;
 }
-.documentative pre .lang-css::before { content: 'CSS'; }
+.documentative pre .lang-css::before {
+  content: 'CSS';
+}
