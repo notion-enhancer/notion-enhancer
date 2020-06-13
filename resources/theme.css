@@ -101,7 +101,7 @@
   background: var(--theme-primary_click) !important;
 }
 [style*='background: rgb(235, 87, 87)'] {
-  background: var(--theme-primary-indicator) !important;
+  background: var(--theme-primary_indicator) !important;
 }
 
 [style*='background: rgba(151, 154, 155, 0.5)'],

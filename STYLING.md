@@ -38,11 +38,11 @@ _image: the dark+ theme_
 }
 ```
 
-![](screenshots/hidediscussion-after.jpg)
-_image: after_
-
 ![](screenshots/hidediscussion-before.jpg)
 _image: before_
+
+![](screenshots/hidediscussion-after.jpg)
+_image: after_
 
 ### custom fonts
 
@@ -65,11 +65,11 @@ plenty of other fonts that can be found on google fonts or that may be on your s
 }
 ```
 
-![](screenshots/customfonts-after.jpg)
-_image: after_
-
 ![](screenshots/customfonts-before.jpg)
 _image: before_
+
+![](screenshots/customfonts-after.jpg)
+_image: after_
 
 ### font resizing
 
@@ -108,13 +108,19 @@ to change the size, change the value of `--font-scale`.
 ![](screenshots/fontresizing.jpg)
 _image: after_
 
-### wider page view
+### wider page preview
 
 ```css
 .notion-peek-renderer > div:nth-child(2) {
   max-width: 85vw !important;
 }
 ```
+
+![](screenshots/widerpreview-before.jpg)
+_image: before_
+
+![](screenshots/widerpreview-after.jpg)
+_image: after_
 
 ### thinner cover image
 
@@ -124,9 +130,15 @@ _image: after_
 }
 [style^='position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 30vh;']
   img {
-  height: 20vh !important;
+  height: 12vh !important;
 }
 ```
+
+![](screenshots/thinnercover-before.jpg)
+_image: before_
+
+![](screenshots/thinnercover-after.jpg)
+_image: after_
 
 ### table columns below 100px
 
@@ -161,6 +173,12 @@ as it is a per-table-column style, unlike all others here, it must be prepended 
 }
 ```
 
+![](screenshots/table-before.jpg)
+_image: before_
+
+![](screenshots/hideaddrow-after.jpg)
+_image: after_
+
 ### hide calculations table row
 
 ```css
@@ -168,6 +186,12 @@ as it is a per-table-column style, unlike all others here, it must be prepended 
   display: none !important;
 }
 ```
+
+![](screenshots/table-before.jpg)
+_image: before_
+
+![](screenshots/hidecalculationsrow-after.jpg)
+_image: after_
 
 ### hide '+ new' board row
 

@@ -2,6 +2,8 @@
 
 an enhancer/customiser for the all-in-one productivity workspace [notion.so](https://www.notion.so/)
 
+_note: this is currently an unreleased version of the enhancer, which adds some cool things like colour theming and improves on some existing features. it is stable, and so has been pushed out for use. once i've done some more fine-tuning and finished taking screenshots of everything i will release this officially as v0.6.0._
+
 ## installation
 
 currently, only win10 is supported. it is possible to run this script via the wsl to modify the win10 notion app.
