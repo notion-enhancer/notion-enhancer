@@ -52,8 +52,8 @@ try:
             unpacking_asar = False
             print(' * app.asar was already unpacked: checking version.')
             cleaning_asar = True
-            if os.path.isfile(filepath + '/ENHANCER_VERSION.txt'):
-                with open(filepath + '/ENHANCER_VERSION.txt', 'r', encoding='UTF-8') as content:
+            if os.path.isfile(filepath + '/app/ENHANCER_VERSION.txt'):
+                with open(filepath + '/app/ENHANCER_VERSION.txt', 'r', encoding='UTF-8') as content:
                     if content.read() == enhancer_version:
                         cleaning_asar = False
             if cleaning_asar:
@@ -86,7 +86,7 @@ try:
                         '/app.asar', filepath + '/app'], shell=(True if sys.platform == 'win32' else False))
         print(' ...renaming asar.app to asar.app.bak')
         os.rename(filepath + '/app.asar', filepath + '/app.asar.bak')
-        with open(filepath + '/ENHANCER_VERSION.txt', 'w', encoding='UTF-8') as write:
+        with open(filepath + '/app/ENHANCER_VERSION.txt', 'w', encoding='UTF-8') as write:
             write.write(enhancer_version)
 
     if os.path.isfile(filepath + '/app/renderer/preload.js'):
