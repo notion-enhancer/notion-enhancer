@@ -19,7 +19,7 @@ or a built-in feature like [userChrome.css](https://www.userchrome.org/).)
 5. [download this enhancer](https://github.com/dragonwocky/notion-enhancer/archive/master.zip) & extract to a location it can safely remain (this must be in the windows filesystem,
    even if you are running the script from the wsl).
 6. ensure notion is closed.
-7. optional: to remove previous versions of notion enhancer, run `cleaner.py`
+7. optional: to remove previous applications of the notion enhancer, run `cleaner.py`
 8. optional: modify the `resources/user.css` file to your liking (see [styling](#styling)).
 9. run `customiser.py` to build changes.
 
@@ -31,10 +31,6 @@ done: run notion and enjoy.
 2. run `cleaner.py`.
 3. reboot.
 4. follow instructions above (ensuring notion _isn't_ running! again, check task manager).
-
-**i'm updating from an old version of the enhancer?**
-
-you must first run `cleaner.py` before running `customiser.py`.
 
 **i tried opening the python file but it just closed instantly and nothing happened?**
 
@@ -80,7 +76,7 @@ _image: after default enhancement_
   you can now reload a window with `F5`.
 - **toggle all notion windows to/from the tray**: `CmdOrCtrl+Shift+A` by default.
 
-to set your own toggle hotkey, open `customiser.py` and change line 16 (`hotkey = 'CmdOrCtrl+Shift+A'`)
+to set your own toggle hotkey, open `customiser.py` and change line 19 (`hotkey = 'CmdOrCtrl+Shift+A'`)
 to your preference. you will need to run or re-run `customiser.py` afterwards.
 
 ### tray

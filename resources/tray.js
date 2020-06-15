@@ -9,7 +9,7 @@
 
 // adds: tray support (inc. context menu with settings), window toggle hotkey
 
-// DO NOT REMOVE THE INJECTION MARKER ABOVE.
+// DO NOT REMOVE THE MARKERS ABOVE.
 // DO NOT CHANGE THE NAME OF THE 'enhancements()' FUNCTION.
 
 let tray;
@@ -90,20 +90,22 @@ function enhancements() {
   ]);
   tray.setContextMenu(contextMenu);
 
+  function showWindows(windows) {
+    if (store.maximised)
+      windows.forEach((win) => [win.maximize(), win.focus()]);
+    else windows.forEach((win) => win.show());
+  }
   tray.on('click', () => {
     const windows = electron_1.BrowserWindow.getAllWindows();
     if (windows.some((win) => win.isVisible()))
       windows.forEach((win) => win.hide());
-    else if (store.maximised) windows.forEach((win) => win.maximize());
-    else windows.forEach((win) => win.show());
+    else showWindows(windows);
   });
-  const hotkey = '☃☃☃hotkey☃☃☃'; // will be set by python script;
-  electron_1.globalShortcut.register(hotkey, () => {
-    const windows = electron_1.BrowserWindow.getAllWindows(),
-      focused = electron_1.BrowserWindow.getFocusedWindow();
-    if (windows.some((win) => win.isVisible() && focused))
-      windows.forEach((win) => win.hide());
-    else if (store.maximised) windows.forEach((win) => win.maximize());
-    else windows.forEach((win) => win.show());
+  // hotkey will be set by python script
+  electron_1.globalShortcut.register('☃☃☃hotkey☃☃☃', () => {
+    const windows = electron_1.BrowserWindow.getAllWindows();
+    if (windows.some((win) => win.isFocused() && win.isVisible()))
+      windows.forEach((win) => [win.blur(), win.hide()]);
+    else showWindows(windows);
   });
 }

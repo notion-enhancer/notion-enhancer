@@ -9,22 +9,22 @@ import os
 import sys
 import platform
 import subprocess
-from shutil import copyfile
+from shutil import copyfile, rmtree
 from time import sleep
+
+# to smooth the update process
+enhancer_version = '0.6.0~beta2'
 
 # for toggling notion visibility
 hotkey = 'CmdOrCtrl+Shift+A'
 
-# f'{bold}=== title ==={normal}'    = headers
+# '=== title ==='                   = headers
 # '*'                               = information
 # '...'                             = actions
 # '##'                              = warnings
 # '>'                               = exit
 
-bold = '\033[1m'
-normal = '\033[0m'
-
-print(f'{bold}=== NOTION ENHANCER CUSTOMISATION LOG ==={normal}\n')
+print('=== NOTION ENHANCER CUSTOMISATION LOG ===\n')
 
 try:
     filepath = ''
@@ -44,20 +44,50 @@ try:
         print(' > script not compatible with your os!\n   (report this to dragonwocky#8449 on discord)')
         exit()
 
-    if os.path.isfile(filepath + '/app.asar'):
+    unpacking_asar = True
+    if not os.path.isfile(filepath + '/app.asar'):
+        print(f' ## file {filepath}/app.asar not found!')
+        print(' * attempting to locate')
+        if os.path.exists(filepath + '/app'):
+            unpacking_asar = False
+            print(' * app.asar was already unpacked: checking version.')
+            cleaning_asar = True
+            if os.path.isfile(filepath + '/ENHANCER_VERSION.txt'):
+                with open(filepath + '/ENHANCER_VERSION.txt', 'r', encoding='UTF-8') as content:
+                    if content.read() == enhancer_version:
+                        cleaning_asar = False
+            if cleaning_asar:
+                unpacking_asar = True
+                print(' * version does not match: cleaning.')
+                if os.path.exists(filepath + '/app'):
+                    print(
+                        f' ...removing folder {filepath}/app/')
+                    rmtree(filepath + '/app')
+                else:
+                    print(
+                        f' * {filepath}/app/ was not found: step skipped.')
+                if os.path.isfile(filepath + '/app.asar.bak'):
+                    print(' ...renaming asar.app.bak to asar.app')
+                    os.rename(filepath + '/app.asar.bak',
+                              filepath + '/app.asar')
+                else:
+                    print(
+                        f' * {filepath}/app.asar.bak was not found: exiting. notion install is corrupted.')
+                    exit()
+            else:
+                print(' * version matches: continuing.')
+        else:
+            print(
+                ' > nothing found: exiting. notion install is either corrupted or non-existent.')
+            exit()
+    if unpacking_asar:
         print(' ...unpacking app.asar')
         subprocess.run(['asar', 'extract', filepath +
                         '/app.asar', filepath + '/app'], shell=(True if sys.platform == 'win32' else False))
         print(' ...renaming asar.app to asar.app.bak')
         os.rename(filepath + '/app.asar', filepath + '/app.asar.bak')
-    else:
-        print(f' ## file {filepath}/app.asar not found!')
-        print(' * attempting to locate')
-        if os.path.exists(filepath + '/app'):
-            print(' * app.asar was already unpacked: step skipped.')
-        else:
-            print(' > nothing found: exiting.')
-            exit()
+        with open(filepath + '/ENHANCER_VERSION.txt', 'w', encoding='UTF-8') as write:
+            write.write(enhancer_version)
 
     if os.path.isfile(filepath + '/app/renderer/preload.js'):
         print(f' ...adding preload.js to {filepath}/app/renderer/preload.js')
@@ -167,9 +197,9 @@ try:
         print(
             f' * {filepath}/app/main/main.js was not found: step skipped.')
 
-    print(f'\n{bold}>>> SUCCESSFULLY CUSTOMISED <<<{normal}')
+    print('\n>>> SUCCESSFULLY CUSTOMISED <<<')
 
 except Exception as e:
-    print(f'\n{bold}### ERROR ###{normal}\n{str(e)}')
+    print(f'\n### ERROR ###\n{str(e)}')
 
-print(f'\n{bold}=== END OF LOG ==={normal}')
+print('\n=== END OF LOG ===')

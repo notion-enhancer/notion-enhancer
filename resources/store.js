@@ -5,7 +5,8 @@
  * (https://dragonwocky.me/) under the MIT license
  */
 
-// a wrapper for accessing data stored in a JSON file
+// a wrapper for accessing data stored in a JSON file.
+// editing this WILL break things if you don't know what you're doing.
 
 const path = require('path'),
   fs = require('fs');

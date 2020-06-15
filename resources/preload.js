@@ -9,7 +9,7 @@
 
 // adds: custom styles, nicer window control buttons
 
-// DO NOT REMOVE THE INJECTION MARKER ABOVE
+// DO NOT REMOVE THE MARKERS ABOVE.
 
 require('electron').remote.getGlobal('setTimeout')(() => {
   const fs = require('fs'),
@@ -33,7 +33,6 @@ require('electron').remote.getGlobal('setTimeout')(() => {
     const head = document.getElementsByTagName('head')[0],
       css = ['user'];
     if (store.theme) css.push('theme');
-    console.table(store);
     css.forEach((file) => {
       file = fs.readFileSync(`☃☃☃assets☃☃☃/${file}.css`); // will be set by python script
       let style = document.createElement('style');
@@ -52,44 +51,43 @@ require('electron').remote.getGlobal('setTimeout')(() => {
     node = document.querySelector('#window-buttons-area');
 
     // always-on-top
-    element = document.createElement('button');
-    element.classList.add('window-buttons');
-    element.innerHTML = '🠛';
-    element.onclick = function () {
+    const alwaysontopEl = document.createElement('button');
+    alwaysontopEl.classList.add('window-buttons', 'btn-alwaysontop');
+    alwaysontopEl.innerHTML = '🠛';
+    alwaysontopEl.onclick = function () {
       const state = appwindow.isAlwaysOnTop();
       appwindow.setAlwaysOnTop(!state);
       this.innerHTML = state ? '🠛' : '🠙';
     };
-    node.appendChild(element);
+    node.appendChild(alwaysontopEl);
 
     // minimise
-    element = document.createElement('button');
-    element.classList.add('window-buttons');
-    element.innerHTML = '⚊';
-    element.onclick = () => appwindow.minimize();
-    node.appendChild(element);
+    const minimizeEl = document.createElement('button');
+    minimizeEl.classList.add('window-buttons', 'btn-minimize');
+    minimizeEl.innerHTML = '⚊';
+    minimizeEl.onclick = () => appwindow.minimize();
+    node.appendChild(minimizeEl);
 
     // maximise
-    element = document.createElement('button');
-    element.classList.add('window-buttons');
-    element.innerHTML = appwindow.isMaximized() ? '🗗' : '🗖';
-    element.onclick = function () {
-      if (appwindow.isMaximized()) {
-        appwindow.unmaximize();
-        this.innerHTML = '🗖';
-      } else {
-        appwindow.maximize();
-        this.innerHTML = '🗗';
-      }
+    const maximiseEl = document.createElement('button'),
+      maximiseIcon = () => (appwindow.isMaximized() ? '🗗' : '🗖');
+    maximiseEl.classList.add('window-buttons', 'btn-maximize');
+    maximiseEl.innerHTML = maximiseIcon();
+    maximiseEl.onclick = function () {
+      if (appwindow.isMaximized()) appwindow.unmaximize();
+      else appwindow.maximize();
+      this.innerHTML = maximiseIcon();
     };
-    node.appendChild(element);
+    node.appendChild(maximiseEl);
+    require('electron').remote.app.on('browser-window-focus', (event, win) => {
+      if (win.id == appwindow.id) maximiseEl.innerHTML = maximiseIcon();
+    });
 
     // close
-    const path = require('path');
-    element = document.createElement('button');
-    element.classList.add('window-buttons');
-    element.innerHTML = '⨉';
-    element.onclick = () => {
+    const closeEl = document.createElement('button');
+    closeEl.classList.add('window-buttons');
+    closeEl.innerHTML = '⨉';
+    closeEl.onclick = () => {
       if (
         store.tray &&
         require('electron').remote.BrowserWindow.getAllWindows().length === 1
@@ -97,7 +95,7 @@ require('electron').remote.getGlobal('setTimeout')(() => {
         appwindow.hide();
       } else appwindow.close();
     };
-    node.appendChild(element);
+    node.appendChild(closeEl);
 
     /* reload window */
     document.defaultView.addEventListener(
