@@ -21,7 +21,7 @@ or a built-in feature like [userChrome.css](https://www.userchrome.org/).)
 6. ensure notion is closed.
 7. optional: to remove previous applications of the notion enhancer, run `cleaner.py`
 8. optional: modify the `resources/user.css` file to your liking (see [styling](#styling)).
-9. run `customiser.py` to build changes.
+9. run `customiser.py` to build changes. (for linux run with sudo)
 
 done: run notion and enjoy.
 

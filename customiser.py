@@ -40,6 +40,8 @@ try:
     elif sys.platform == 'win32':
         filepath = subprocess.run(['echo', '%localappdata%'], shell=True, capture_output=True).stdout \
             .rstrip().decode('utf-8').replace('\\', '/') + '/Programs/Notion/resources'
+    elif sys.platform == 'linux':
+        filepath = '/opt/notion-app'
     else:
         print(' > script not compatible with your os!\n   (report this to dragonwocky#8449 on discord)')
         exit()
@@ -196,6 +198,13 @@ try:
     else:
         print(
             f' * {filepath}/app/main/main.js was not found: step skipped.')
+
+    if sys.platform == 'linux':
+        print(f' ...patching app launcher {filepath}/notion-app')
+        subprocess.call(['sed', '-i', 's/app\.asar/app/', '/usr/bin/notion-app'])
+        # patch this too just in case
+        subprocess.call(['sed', '-i', 's/app\.asar/app/', f'{filepath}/notion-app'])
+
 
     print('\n>>> SUCCESSFULLY CUSTOMISED <<<')
 
