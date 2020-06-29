@@ -8,6 +8,7 @@ pylint = "*"
 autopep8 = "*"
 
 [packages]
+pyasar = "*"
 
 [requires]
 python_version = "3.6"

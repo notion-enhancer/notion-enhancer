@@ -289,13 +289,13 @@ aside .mark a {
   color: var(--link);
   text-shadow: 0 0 0.75em var(--glow);
 }
+.wrapper .documentative img {
+  max-width: 100%;
+}
 .wrapper .documentative blockquote {
   margin-left: 0;
   padding-left: 1em;
   border-left: 0.25em solid var(--border);
-}
-.wrapper .documentative img {
-  max-width: 100%;
 }
 .wrapper .documentative h1 + table,
 .wrapper .documentative h2 + table,
@@ -498,6 +498,4 @@ aside .mark a {
 .hljs-strong {
   font-weight: bold;
 }
-.documentative pre .lang-css::before {
-  content: 'CSS';
-}
+.documentative pre .lang-css::before { content: 'CSS'; }

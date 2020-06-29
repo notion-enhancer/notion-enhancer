@@ -9,8 +9,13 @@ but can still easily be enabled by following instructions in the [docs](README.m
 - docs: font resizing.
 - docs: hide discussions (thanks to [u/Roosmaryn](https://www.reddit.com/user/Roosmaryn/))
 - new: custom colour theming, demonstrated via the dark+ theme.
+- new: linux support (thanks for [@Blacksuan19](https://github.com/Blacksuan19)).
 - improved: if hotkey is pressed while notion is unfocused, it will bring it to the front rather than hiding it.
 - bugfix: specify UTF-8 encoding to prevent multibyte/gbk codec errors (thanks to [@etnperlong](https://github.com/etnperlong))
+
+//todo
+
+- stop window buttons breaking at smaller widths
 
 ### v0.5.0 (2020-05-23)
 
