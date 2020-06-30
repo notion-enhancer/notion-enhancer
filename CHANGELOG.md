@@ -5,15 +5,17 @@ but can still easily be enabled by following instructions in the [docs](README.m
 
 ### v0.6.0 (2020-06-30)
 
-- docs: custom fonts.
-- docs: font resizing.
-- docs: hide discussions (thanks to [u/Roosmaryn](https://www.reddit.com/user/Roosmaryn/))
+- style: custom fonts.
+- style: font resizing.
+- style: hide discussions (thanks to [u/Roosmaryn](https://www.reddit.com/user/Roosmaryn/))
 - new: custom colour theming, demonstrated via the dark+ theme.
 - new: linux support (thanks for [@Blacksuan19](https://github.com/Blacksuan19)).
 - improved: if hotkey is pressed while notion is unfocused, it will bring it to the front rather than hiding it.
 - improved: stop window buttons breaking at smaller widths.
 - improved: more obviously visible drag area.
 - bugfix: specify UTF-8 encoding to prevent multibyte/gbk codec errors (thanks to [@etnperlong](https://github.com/etnperlong))
+
+> 📥 [notion-enhancer.v0.6.0.zip](https://github.com/dragonwocky/notion-enhancer/archive/v0.6.0.zip)
 
 ### v0.5.0 (2020-05-23)
 
@@ -24,6 +26,8 @@ but can still easily be enabled by following instructions in the [docs](README.m
   a run of `cleaner.py` to build modifications.
   improved: scrollbar colours that fit better with notion's theming.
 - bugfix: un-break having multiple notion windows open.
+
+> 📥 [notion-enhancer.v0.5.0.zip](https://github.com/dragonwocky/notion-enhancer/archive/v0.5.0.zip)
 
 _(forked by [@dragonwocky](https://github.com/dragonwocky).)_
 
