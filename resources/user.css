@@ -5,15 +5,58 @@
  * (https://dragonwocky.me/) under the MIT license
  */
 
-/* window control buttons: block */
-#window-buttons-area {
-  padding-left: 14px;
-  user-select: none;
+/* window control buttons */
+.window-dragarea {
+  height: 10px;
+  width: 100%;
 }
-/* window control buttons: light theme */
-.notion-light-theme .window-buttons {
-  background: rgb(255, 255, 255);
-  color: black;
+.notion-light-theme .window-dragarea {
+  background: #e6e6e6;
+}
+.notion-dark-theme .window-dragarea {
+  background: #272d2f;
+}
+.window-topbar-container {
+  display: flex;
+  flex-direction: row-reverse;
+  user-select: none;
+  -webkit-app-region: drag;
+}
+.window-topbar-container > :last-child,
+.window-buttons-area {
+  display: flex;
+  align-items: center;
+  height: 45px;
+}
+.window-topbar-container > :last-child {
+  padding-left: 12px;
+}
+.window-buttons-area {
+  justify-content: flex-end;
+  padding-right: 12px;
+  font-size: 14px;
+}
+@media (max-width: 760px) {
+  .window-topbar-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+  .titlebar-draggable-area {
+    top: 10px;
+  }
+  .window-topbar-container > :last-child {
+    grid-row: 1;
+  }
+  .notion-topbar {
+    grid-column-start: span 2;
+  }
+  .notion-topbar > div {
+    padding-right: 12px !important;
+  }
+}
+/* window control buttons */
+.window-button {
+  background: transparent;
   border: 0;
   margin: 0px 0px 0px 9px;
   width: 32px;
@@ -21,23 +64,16 @@
   border-radius: 4px;
   font-size: 16px;
   transition-duration: 0.2s;
+}
+/* window control buttons: light theme */
+.notion-light-theme .window-button {
   font-weight: bold;
 }
-.notion-light-theme .window-buttons:hover {
+.notion-light-theme .window-button:hover {
   background: rgb(239, 239, 239);
 }
 /* window control buttons: dark theme */
-.notion-dark-theme .window-buttons {
-  background: rgb(47, 52, 55);
-  border: 0;
-  margin: 0px 0px 0px 9px;
-  width: 32px;
-  line-height: 26px;
-  border-radius: 4px;
-  font-size: 16px;
-  transition-duration: 0.2s;
-}
-.notion-dark-theme .window-buttons:hover {
+.notion-dark-theme .window-button:hover {
   background: rgb(71, 76, 80);
 }
 

@@ -3,7 +3,7 @@
 if something is ~~crossed out~~, then it is no longer a feature included by default,
 but can still easily be enabled by following instructions in the [docs](README.md).
 
-### v0.6.0 (wip)
+### v0.6.0 (2020-06-30)
 
 - docs: custom fonts.
 - docs: font resizing.
@@ -11,11 +11,9 @@ but can still easily be enabled by following instructions in the [docs](README.m
 - new: custom colour theming, demonstrated via the dark+ theme.
 - new: linux support (thanks for [@Blacksuan19](https://github.com/Blacksuan19)).
 - improved: if hotkey is pressed while notion is unfocused, it will bring it to the front rather than hiding it.
+- improved: stop window buttons breaking at smaller widths.
+- improved: more obviously visible drag area.
 - bugfix: specify UTF-8 encoding to prevent multibyte/gbk codec errors (thanks to [@etnperlong](https://github.com/etnperlong))
-
-//todo
-
-- stop window buttons breaking at smaller widths
 
 ### v0.5.0 (2020-05-23)
 

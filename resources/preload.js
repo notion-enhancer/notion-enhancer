@@ -18,7 +18,7 @@ require('electron').remote.getGlobal('setTimeout')(() => {
       config: 'user-preferences',
       defaults: {
         openhidden: false,
-        maximised: false,
+        maximized: false,
         tray: false,
         theme: false,
       },
@@ -40,62 +40,96 @@ require('electron').remote.getGlobal('setTimeout')(() => {
       style.innerHTML = file;
       head.appendChild(style);
     });
+    document.body.classList.add('enhanced');
 
     const appwindow = require('electron').remote.getCurrentWindow();
 
     /* window control buttons */
-    let node = document.querySelector('div.notion-topbar > div'),
-      element = document.createElement('div');
-    element.id = 'window-buttons-area';
-    node.appendChild(element);
-    node = document.querySelector('#window-buttons-area');
+    const buttons = document.createElement('div'),
+      dragarea = document.createElement('div');
+    dragarea.className = 'window-dragarea';
+    document
+      .querySelector('.notion-topbar')
+      .parentElement.appendChild(dragarea);
+    buttons.className = 'window-topbar-container';
+    buttons.innerHTML = `
+        <div class="window-buttons-area">
+          <button class="window-button btn-alwaysontop"></button>
+          <button class="window-button btn-minimize"></button>
+          <button class="window-button btn-maximize"></button>
+          <button class="window-button btn-close"></button>
+        </div>
+      `;
+    document.querySelector('.notion-topbar').parentElement.appendChild(buttons);
+    document
+      .querySelector('.window-topbar-container')
+      .appendChild(document.querySelector('.notion-topbar'));
+    document
+      .querySelector('.window-topbar-container')
+      .appendChild(
+        document.querySelector('.notion-history-back-button').parentElement
+      );
 
-    // always-on-top
-    const alwaysontopEl = document.createElement('button');
-    alwaysontopEl.classList.add('window-buttons', 'btn-alwaysontop');
-    alwaysontopEl.innerHTML = '🠛';
-    alwaysontopEl.onclick = function () {
-      const state = appwindow.isAlwaysOnTop();
-      appwindow.setAlwaysOnTop(!state);
-      this.innerHTML = state ? '🠛' : '🠙';
-    };
-    node.appendChild(alwaysontopEl);
+    const button_icons = {
+        alwaysontop() {
+          return appwindow.isAlwaysOnTop() ? '🠙' : '🠛';
+        },
+        minimize() {
+          return '⚊';
+        },
+        maximize() {
+          return appwindow.isMaximized() ? '🗗' : '🗖';
+        },
+        close() {
+          return '⨉';
+        },
+      },
+      button_actions = {
+        alwaysontop() {
+          appwindow.setAlwaysOnTop(!appwindow.isAlwaysOnTop());
+          this.innerHTML = button_icons.alwaysontop();
+        },
+        minimize() {
+          appwindow.minimize();
+        },
+        maximize() {
+          appwindow.isMaximized()
+            ? appwindow.unmaximize()
+            : appwindow.maximize();
+          this.innerHTML = button_icons.maximize();
+        },
+        close() {
+          if (
+            store.tray &&
+            require('electron').remote.BrowserWindow.getAllWindows().length ===
+              1
+          ) {
+            appwindow.hide();
+          } else appwindow.close();
+        },
+      },
+      button_elements = {
+        alwaysontop: document.querySelector('.window-button.btn-alwaysontop'),
+        minimize: document.querySelector('.window-button.btn-minimize'),
+        maximize: document.querySelector('.window-button.btn-maximize'),
+        close: document.querySelector('.window-button.btn-close'),
+      };
 
-    // minimise
-    const minimizeEl = document.createElement('button');
-    minimizeEl.classList.add('window-buttons', 'btn-minimize');
-    minimizeEl.innerHTML = '⚊';
-    minimizeEl.onclick = () => appwindow.minimize();
-    node.appendChild(minimizeEl);
+    button_elements.alwaysontop.innerHTML = button_icons.alwaysontop();
+    button_elements.alwaysontop.onclick = button_actions.alwaysontop;
 
-    // maximise
-    const maximiseEl = document.createElement('button'),
-      maximiseIcon = () => (appwindow.isMaximized() ? '🗗' : '🗖');
-    maximiseEl.classList.add('window-buttons', 'btn-maximize');
-    maximiseEl.innerHTML = maximiseIcon();
-    maximiseEl.onclick = function () {
-      if (appwindow.isMaximized()) appwindow.unmaximize();
-      else appwindow.maximize();
-      this.innerHTML = maximiseIcon();
-    };
-    node.appendChild(maximiseEl);
-    require('electron').remote.app.on('browser-window-focus', (event, win) => {
-      if (win.id == appwindow.id) maximiseEl.innerHTML = maximiseIcon();
-    });
+    button_elements.minimize.innerHTML = button_icons.minimize();
+    button_elements.minimize.onclick = button_actions.minimize;
 
-    // close
-    const closeEl = document.createElement('button');
-    closeEl.classList.add('window-buttons');
-    closeEl.innerHTML = '⨉';
-    closeEl.onclick = () => {
-      if (
-        store.tray &&
-        require('electron').remote.BrowserWindow.getAllWindows().length === 1
-      ) {
-        appwindow.hide();
-      } else appwindow.close();
-    };
-    node.appendChild(closeEl);
+    button_elements.maximize.innerHTML = button_icons.maximize();
+    button_elements.maximize.onclick = button_actions.maximize;
+    setInterval(() => {
+      if (button_elements.maximize.innerHTML != button_icons.maximize())
+        button_elements.maximize.innerHTML = button_icons.maximize();
+    }, 1000);
+
+    button_elements.close.innerHTML = button_icons.close();
+    button_elements.close.onclick = button_actions.close;
 
     /* reload window */
     document.defaultView.addEventListener(

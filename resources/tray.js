@@ -21,7 +21,7 @@ function enhancements() {
       config: 'user-preferences',
       defaults: {
         openhidden: false,
-        maximised: false,
+        maximized: false,
         tray: false,
         theme: false,
       },
@@ -49,14 +49,14 @@ function enhancements() {
           : (store.openhidden = false),
     },
     {
-      id: 'maximised',
+      id: 'maximized',
       label: 'open maximised',
       type: 'checkbox',
-      checked: store.maximised,
+      checked: store.maximized,
       click: () =>
-        contextMenu.getMenuItemById('maximised').checked
-          ? (store.maximised = true)
-          : (store.maximised = false),
+        contextMenu.getMenuItemById('maximized').checked
+          ? (store.maximized = true)
+          : (store.maximized = false),
     },
     {
       id: 'tray',
@@ -91,7 +91,7 @@ function enhancements() {
   tray.setContextMenu(contextMenu);
 
   function showWindows(windows) {
-    if (store.maximised)
+    if (store.maximized)
       windows.forEach((win) => [win.maximize(), win.focus()]);
     else windows.forEach((win) => win.show());
   }

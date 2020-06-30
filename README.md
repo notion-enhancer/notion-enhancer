@@ -58,7 +58,7 @@ unless you're sure you know what you're doing (if you have to ask, you probably 
 this is probably a bug. please submit a
 [bug report](https://github.com/dragonwocky/notion-enhancer/issues/new?assignees=&labels=bug&template=bug-report.md&title=).
 
-**I have a new feature idea for the enhancer!**
+**can the enhancer do \_\_\_?**
 
 experienced problems with the notion app, or just want to add something a bit more to it? please submit a
 [feature request](https://github.com/dragonwocky/notion-enhancer/issues/new?assignees=&labels=enhancement&template=feature-request.md&title=).
@@ -74,8 +74,8 @@ symbolised with an arrow (4th from the right). when toggled to point up,
 notion will remain the top visible window even if not focused.
 
 to customise which characters are used for these buttons, open in the `resources/preload.js` file,
-find the relevant button (read the comments) and replace its icon with your chosen unicode character (e.g.
-replacing `element.innerHTML = '⨉';` with `element.innerHTML = '🙄';`).
+find the relevant button icon (lines 80 - 111) and replace it with your chosen unicode character (e.g.
+replacing `return '⨉';` with `return '🙄';`).
 
 ### nicer scrollbars
 
@@ -105,7 +105,7 @@ single-click to toggle app visibility. right click to open menu.
 
 - **run on startup**: run notion on boot/startup. (default: true)
 - **hide on open**: hide the launch of notion to the tray. (default: false)
-- **open maximised**: maximise the app on open. (default: false)
+- **open maximised**: maximize the app on open. (default: false)
 - **close to tray**: close window to tray rather than closing outright
   on click of `⨉`. does not apply if multiple notion windows are open. (default: false)
 - **load theme.css**: loads the custom colour theme file.

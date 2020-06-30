@@ -135,11 +135,11 @@ try:
                         config: 'user-preferences',
                         defaults: {
                             openhidden: false,
-                            maximised: false
+                            maximized: false
                         }
                     });
                 if (!store.openhidden || electron_1.BrowserWindow.getAllWindows().some(win => win.isVisible()))
-                    { window.show(); if (store.maximised) window.maximize(); }
+                    { window.show(); if (store.maximized) window.maximize(); }
                 /* === INJECTION END === */
             """)
             with open(filepath + '/app/main/createWindow.js', 'w', encoding='UTF-8') as write:
@@ -153,11 +153,10 @@ try:
             print(
                 f' ...adjusting drag area for frameless window in {filepath}/app/renderer/index.js')
             content = content.read()
-            top = content.rfind('top')
-            content = content[:top] + content[top:].replace(
-                'right: 0', 'right: 420').replace(
-                'top: 0', 'top: 1 ').replace(
-                'height: 34', 'height: 16')
+            loc = content.rfind('dragRegionStyle')
+            content = content[:loc] + content[loc:] \
+                .replace('top: 0', 'top: 1', 1) \
+                .replace('height: 34', 'height: 10', 1)
             with open(filepath + '/app/renderer/index.js', 'w', encoding='UTF-8') as write:
                 write.write(content)
     else:
@@ -199,12 +198,13 @@ try:
         print(
             f' * {filepath}/app/main/main.js was not found: step skipped.')
 
-    if sys.platform == 'linux':
+    if sys.platform == 'linux' and 'microsoft' not in platform.uname()[3].lower():
         print(f' ...patching app launcher {filepath}/notion-app')
-        subprocess.call(['sed', '-i', 's/app\.asar/app/', '/usr/bin/notion-app'])
+        subprocess.call(
+            ['sed', '-i', 's/app\.asar/app/', '/usr/bin/notion-app'])
         # patch this too just in case
-        subprocess.call(['sed', '-i', 's/app\.asar/app/', f'{filepath}/notion-app'])
-
+        subprocess.call(['sed', '-i', 's/app\.asar/app/',
+                         f'{filepath}/notion-app'])
 
     print('\n>>> SUCCESSFULLY CUSTOMISED <<<')
 
