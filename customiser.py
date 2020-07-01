@@ -28,20 +28,22 @@ print('=== NOTION ENHANCER CUSTOMISATION LOG ===\n')
 
 try:
     filepath = ''
-    __folder__ = os.path.dirname(os.path.realpath(__file__))
+    __dirname__ = os.path.dirname(__file__)
+    enhancer_folder = os.path.realpath(__dirname__)
     if 'microsoft' in platform.uname()[3].lower() and sys.platform == 'linux':
         filepath = '/mnt/c/' + \
             subprocess.run(
                 ['cmd.exe', '/c', 'echo', '%localappdata%'], stdout=subprocess.PIPE).stdout \
             .rstrip().decode('utf-8')[3:].replace('\\', '/') + '/Programs/Notion/resources'
-        drive = __folder__[5].capitalize() if __folder__.startswith(
+        drive = enhancer_folder[5].capitalize() if enhancer_folder.startswith(
             '/mnt/') else 'C'
-        __folder__ = drive + ':/' + __folder__[6:]
+        enhancer_folder = drive + ':/' + enhancer_folder[6:]
     elif sys.platform == 'win32':
         filepath = subprocess.run(['echo', '%localappdata%'], shell=True, capture_output=True).stdout \
             .rstrip().decode('utf-8') + '\\Programs\\Notion\\resources'
     elif sys.platform == 'linux':
-        filepath = '/opt/notion-app'
+        filepath = '/opt/notion-app' if os.path.exists(
+            '/opt/notion-app') else '/opt/notion'
     elif sys.platform == 'darwin':
         filepath = '/Applications/Notion.app/Contents/Resources'
     else:
@@ -112,11 +114,11 @@ try:
                 with open(os.path.join(filepath, "app", "renderer", "preload.js"), 'a', encoding='UTF-8') as append:
                     append.write('\n\n')
         with open(os.path.join(filepath, "app", "renderer", "preload.js"), 'a', encoding='UTF-8') as append:
-            print(' ...linking to ./resources/user.css')
-            with open('./resources/preload.js', 'r', encoding='UTF-8') as insert:
+            print(
+                f' ...linking to {os.path.join(".", "resources", "user.css")}')
+            with open(os.path.join(__dirname__, 'resources', 'preload.js'), 'r', encoding='UTF-8') as insert:
                 append.write(insert.read().replace(
-                    '☃☃☃assets☃☃☃',  __folder__
-                    + '/resources'))
+                    '☃☃☃assets☃☃☃', enhancer_folder + '/resources'))
     else:
         print(
             f' * {os.path.join(filepath, "app","renderer","preload.js")} was not found: step skipped.')
@@ -188,16 +190,16 @@ try:
                         'electron_1.app.on("ready", handleReady);',
                         'electron_1.app.on("ready", () => handleReady() && enhancements());') + '\n')
         with open(os.path.join(filepath, "app", "main", "main.js"), 'a', encoding='UTF-8') as append:
-            with open('./resources/tray.js', 'r', encoding='UTF-8') as insert:
+            with open(os.path.join(__dirname__, 'resources', 'tray.js'), 'r', encoding='UTF-8') as insert:
                 append.write('\n' + insert.read().replace(
                     '☃☃☃hotkey☃☃☃', hotkey))
         print(
-            f' ...copying tray icon ./resources/notion.ico to {os.path.join(filepath, "app")}main/')
-        copyfile('./resources/notion.ico',
+            f' ...copying tray icon {os.path.join(".", "resources", "notion.ico")} to {os.path.join(filepath, "app", "main")}')
+        copyfile(os.path.join(__dirname__, 'resources', 'notion.ico'),
                  os.path.join(filepath, "app", "main", "notion.ico"))
         print(
-            f' ...copying datastore wrapper ./resources/store.js to {os.path.join(filepath, "app")}')
-        copyfile('./resources/store.js',
+            f' ...copying datastore wrapper {os.path.join(".", "resources", "store.js")} to {os.path.join(filepath, "app")}')
+        copyfile(os.path.join(__dirname__, 'resources', 'store.js'),
                  os.path.join(filepath, "app", "store.js"))
     else:
         print(
@@ -207,10 +209,8 @@ try:
         print(
             f' ...patching app launcher')
         subprocess.call(
-            ['sed', '-i', r's/app\.asar/app/', '/usr/bin/notion-app'])
-        # patch this too just in case
-        subprocess.call(['sed', '-i', r's/app\.asar/app/',
-                         os.path.join(filepath, "notion-app")])
+            ['sed', '-i', r's/electron\sapp\.asar/electron\sapp/',
+             '/usr/bin/notion-app' if os.path.exists('/usr/bin/notion-app') else '/usr/bin/notion'])
 
     print('\n>>> SUCCESSFULLY CUSTOMISED <<<')
 

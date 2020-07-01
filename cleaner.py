@@ -56,13 +56,15 @@ try:
             f' * {os.path.join(filepath, "app.asar.bak")} was not found: step skipped.')
 
     if sys.platform == 'linux' and 'microsoft' not in platform.uname()[3].lower():
-        print(
-            f' ...patching app launcher')
-        subprocess.call(
-            ['sed', '-i', r's/app/app\.asar/', '/usr/bin/notion-app'])
-        # patch this too just in case
-        subprocess.call(['sed', '-i', r's/app/app\.asar/',
-                         os.path.join(filepath, "notion-app")])
+        bin_path = '/usr/bin/notion-app' if os.path.exists(
+            '/usr/bin/notion-app') else '/usr/bin/notion'
+        with open(bin_path, 'r', encoding='UTF-8') as launcher:
+            if 'app.asar' not in launcher:
+                print(
+                    f' ...patching app launcher')
+                subprocess.call(
+                    ['sed', '-i', r's/electron\sapp/electron\sapp\.asar/',
+                     bin_path])
 
     print(f'\n{bold}>>> SUCCESSFULLY CLEANED <<<{normal}')
 
