@@ -110,7 +110,7 @@
   background: var(--theme-primary) !important;
 }
 [style*='background: rgb(6, 156, 205)'] {
-  background: var(--theme-primary-hover) !important;
+  background: var(--theme-primary_hover) !important;
 }
 [style*='background: rgb(0, 141, 190)'] {
   background: var(--theme-primary_click) !important;

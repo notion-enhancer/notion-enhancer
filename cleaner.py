@@ -30,29 +30,43 @@ try:
             .rstrip().decode('utf-8')[3:].replace('\\', '/') + '/Programs/Notion/resources'
     elif sys.platform == 'win32':
         filepath = subprocess.run(['echo', '%localappdata%'], shell=True, capture_output=True).stdout \
-            .rstrip().decode('utf-8').replace('\\', '/') + '/Programs/Notion/resources'
+            .rstrip().decode('utf-8') + '\\Programs\\Notion\\resources'
+    elif sys.platform == 'linux':
+        filepath = '/opt/notion-app'
+    elif sys.platform == 'darwin':
+        filepath = '/Applications/Notion.app/Contents/Resources'
     else:
         print(' > script not compatible with your os!\n   (report this to dragonwocky#8449 on discord)')
         exit()
 
-    if os.path.exists(filepath + '/app'):
+    if os.path.exists(os.path.join(filepath, 'app')):
         print(
-            f' ...removing folder {filepath}/app/')
-        rmtree(filepath + '/app')
+            f' ...removing folder {os.path.join(filepath, "app")}')
+        rmtree(os.path.join(filepath, 'app'))
     else:
         print(
-            f' * {filepath}/app/ was not found: step skipped.')
+            f' * {os.path.join(filepath, "app")} was not found: step skipped.')
 
-    if os.path.isfile(filepath + '/app.asar.bak'):
+    if os.path.isfile(os.path.join(filepath, 'app.asar.bak')):
         print(' ...renaming asar.app.bak to asar.app')
-        os.rename(filepath + '/app.asar.bak', filepath + '/app.asar')
+        os.rename(os.path.join(filepath, 'app.asar.bak'),
+                  os.path.join(filepath, 'app.asar'))
     else:
         print(
-            f' * {filepath}/app.asar.bak was not found: step skipped.')
+            f' * {os.path.join(filepath, "app.asar.bak")} was not found: step skipped.')
+
+    if sys.platform == 'linux' and 'microsoft' not in platform.uname()[3].lower():
+        print(
+            f' ...patching app launcher')
+        subprocess.call(
+            ['sed', '-i', r's/app/app\.asar/', '/usr/bin/notion-app'])
+        # patch this too just in case
+        subprocess.call(['sed', '-i', r's/app/app\.asar/',
+                         os.path.join(filepath, "notion-app")])
 
     print(f'\n{bold}>>> SUCCESSFULLY CLEANED <<<{normal}')
 
 except Exception as e:
-    print(f'\n{bold}### ERROR ###{normal}\n{str(e)}')
+    print(f'\n{bold}### ERROR (report this to dragonwocky#8449 on discord) ###{normal}\n{str(e)}')
 
 print(f'\n{bold}=== END OF LOG ==={normal}')

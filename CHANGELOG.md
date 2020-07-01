@@ -3,17 +3,27 @@
 if something is ~~crossed out~~, then it is no longer a feature included by default,
 but can still easily be enabled by following instructions in the [docs](README.md).
 
+### v0.6.1 (wip)
+
+- new: semi-mac support? installs, but can't confirm changes have taken effect.
+- bugfix: `cleaner.py` patched for linux.
+- bugfix: odd mix of `\\` and `/` being used for windows filepaths.
+
+//todo
+
+- bugfix: app crashes when sidebar is toggled
+
 ### v0.6.0 (2020-06-30)
 
 - style: custom fonts.
 - style: font resizing.
-- style: hide discussions (thanks to [u/Roosmaryn](https://www.reddit.com/user/Roosmaryn/))
+- style: hide discussions (thanks to [u/Roosmaryn](https://www.reddit.com/user/Roosmaryn/)).
 - new: custom colour theming, demonstrated via the dark+ theme.
-- new: linux support (thanks for [@Blacksuan19](https://github.com/Blacksuan19)).
+- new: linux support (thanks to [@Blacksuan19](https://github.com/Blacksuan19)).
 - improved: if hotkey is pressed while notion is unfocused, it will bring it to the front rather than hiding it.
 - improved: stop window buttons breaking at smaller widths.
 - improved: more obviously visible drag area.
-- bugfix: specify UTF-8 encoding to prevent multibyte/gbk codec errors (thanks to [@etnperlong](https://github.com/etnperlong))
+- bugfix: specify UTF-8 encoding to prevent multibyte/gbk codec errors (thanks to [@etnperlong](https://github.com/etnperlong)).
 
 > 📥 [notion-enhancer.v0.6.0.zip](https://github.com/dragonwocky/notion-enhancer/archive/v0.6.0.zip)
 

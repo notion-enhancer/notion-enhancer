@@ -89,6 +89,7 @@ function enhancements() {
     },
   ]);
   tray.setContextMenu(contextMenu);
+  tray.setToolTip('notion enhancements');
 
   function showWindows(windows) {
     if (store.maximized)
