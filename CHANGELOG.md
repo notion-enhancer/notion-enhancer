@@ -8,10 +8,7 @@ but can still easily be enabled by following instructions in the [docs](README.m
 - new: semi-mac support? installs, but can't confirm changes have taken effect.
 - bugfix: `cleaner.py` patched for linux.
 - bugfix: odd mix of `\\` and `/` being used for windows filepaths.
-
-//todo
-
-- bugfix: app crashes when sidebar is toggled
+- bugfix: app no longer crashes when sidebar is toggled.
 
 ### v0.6.0 (2020-06-30)
 

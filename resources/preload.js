@@ -44,31 +44,27 @@ require('electron').remote.getGlobal('setTimeout')(() => {
 
     const appwindow = require('electron').remote.getCurrentWindow();
 
-    /* window control buttons */
-    const buttons = document.createElement('div'),
+    /* titlebar */
+    const buttons = document.createElement('span'),
       dragarea = document.createElement('div');
     dragarea.className = 'window-dragarea';
-    document
-      .querySelector('.notion-topbar')
-      .parentElement.appendChild(dragarea);
-    buttons.className = 'window-topbar-container';
+    document.querySelector('.notion-topbar').prepend(dragarea);
+    buttons.className = 'window-buttons-area';
     buttons.innerHTML = `
-        <div class="window-buttons-area">
-          <button class="window-button btn-alwaysontop"></button>
-          <button class="window-button btn-minimize"></button>
-          <button class="window-button btn-maximize"></button>
-          <button class="window-button btn-close"></button>
-        </div>
-      `;
-    document.querySelector('.notion-topbar').parentElement.appendChild(buttons);
+      <button class="window-button btn-alwaysontop"></button>
+      <button class="window-button btn-minimize"></button>
+      <button class="window-button btn-maximize"></button>
+      <button class="window-button btn-close"></button>
+    `;
     document
-      .querySelector('.window-topbar-container')
-      .appendChild(document.querySelector('.notion-topbar'));
+      .querySelector('.notion-topbar > div[style*="display: flex"]')
+      .appendChild(buttons);
     document
-      .querySelector('.window-topbar-container')
-      .appendChild(
-        document.querySelector('.notion-history-back-button').parentElement
-      );
+      .querySelector('.notion-history-back-button')
+      .parentElement.nextSibling.classList.add('notion-topbar-breadcrumb');
+    document
+      .querySelector('.notion-topbar-share-menu')
+      .parentElement.classList.add('notion-topbar-actions');
 
     const button_icons = {
         alwaysontop() {
@@ -131,7 +127,7 @@ require('electron').remote.getGlobal('setTimeout')(() => {
     button_elements.close.innerHTML = button_icons.close();
     button_elements.close.onclick = button_actions.close;
 
-    /* reload window */
+    /* hotkey: reload window */
     document.defaultView.addEventListener(
       'keyup',
       (ev) => void (ev.code === 'F5' ? appwindow.reload() : 0),

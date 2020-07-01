@@ -69,7 +69,7 @@ symbolised with an arrow (4th from the right). when toggled to point up,
 notion will remain the top visible window even if not focused.
 
 to customise which characters are used for these buttons, open in the `resources/preload.js` file,
-find the relevant button icon (lines 80 - 111) and replace it with your chosen unicode character (e.g.
+find the relevant button icon (lines 69 - 82) and replace it with your chosen unicode character (e.g.
 replacing `return '⨉';` with `return '🙄';`).
 
 ### nicer scrollbars
@@ -77,7 +77,7 @@ replacing `return '⨉';` with `return '🙄';`).
 i mean, yeah. get rid of those ugly default scrollbars and use nice inconspicuous
 ones that actually look as if they're part of notion.
 
-to add these to the web version, copy lines 44 - 75 from `user.css` into your css customiser.
+to add these to the web version, copy lines 74 - 105 from `user.css` into your css customiser.
 
 ![](screenshots/app-unenhanced.jpg)
 _image: before enhancement_
