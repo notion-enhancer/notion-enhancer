@@ -61,7 +61,9 @@ require('electron').remote.getGlobal('setTimeout')(() => {
       .appendChild(buttons);
     document
       .querySelector('.notion-history-back-button')
-      .parentElement.nextSibling.classList.add('notion-topbar-breadcrumb');
+      .parentElement.nextElementSibling.classList.add(
+        'notion-topbar-breadcrumb'
+      );
     document
       .querySelector('.notion-topbar-share-menu')
       .parentElement.classList.add('notion-topbar-actions');
