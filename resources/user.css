@@ -58,7 +58,9 @@
   border-radius: 4px;
   font-size: 16px;
   transition-duration: 0.2s;
+  cursor: default;
 }
+
 /* window control buttons: light theme */
 .notion-light-theme .window-button {
   font-weight: bold;
@@ -66,9 +68,17 @@
 .notion-light-theme .window-button:hover {
   background: rgb(239, 239, 239);
 }
+
 /* window control buttons: dark theme */
 .notion-dark-theme .window-button:hover {
   background: rgb(71, 76, 80);
+}
+
+/* set close button to red on hover */
+
+.btn-close:hover{
+  background: #E81123 !important;
+  color: white;
 }
 
 /* scrollbar: pointer */
