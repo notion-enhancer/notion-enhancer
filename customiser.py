@@ -13,7 +13,7 @@ from shutil import copyfile, rmtree
 from time import sleep
 
 # to smooth the update process
-enhancer_version = '0.6.1~beta1'
+enhancer_version = '0.6.1~beta2'
 
 # for toggling notion visibility
 hotkey = 'CmdOrCtrl+Shift+A'
@@ -37,7 +37,7 @@ try:
             .rstrip().decode('utf-8')[3:].replace('\\', '/') + '/Programs/Notion/resources'
         drive = enhancer_folder[5].capitalize() if enhancer_folder.startswith(
             '/mnt/') else 'C'
-        enhancer_folder = drive + ':/' + enhancer_folder[6:]
+        enhancer_folder = drive + ':\\' + enhancer_folder[6:]
     elif sys.platform == 'win32':
         filepath = subprocess.run(['echo', '%localappdata%'], shell=True, capture_output=True).stdout \
             .rstrip().decode('utf-8') + '\\Programs\\Notion\\resources'
@@ -118,22 +118,22 @@ try:
                 f' ...linking to {os.path.join(".", "resources", "user.css")}')
             with open(os.path.join(__dirname__, 'resources', 'preload.js'), 'r', encoding='UTF-8') as insert:
                 append.write(insert.read().replace(
-                    '☃☃☃assets☃☃☃', enhancer_folder + '/resources'))
+                    '☃☃☃assets☃☃☃', os.path.join(enhancer_folder, 'resources').replace('\\', '/'))
     else:
         print(
             f' * {os.path.join(filepath, "app","renderer","preload.js")} was not found: step skipped.')
 
     if os.path.isfile(os.path.join(filepath, "app", "main", "createWindow.js")):
         with open(os.path.join(filepath, "app", "main", "createWindow.js"), 'r', encoding='UTF-8') as content:
-            content = content.read()
+            content=content.read()
             print(
                 f' ...making window frameless @ {os.path.join(filepath, "app", "main", "createWindow.js")}')
             if '{ frame: false, show: false' not in content:
-                content = content.replace(
+                content=content.replace(
                     '{ show: false', '{ frame: false, show: false')
             print(
                 f' ...adding "open hidden" capabilities to {os.path.join(filepath, "app", "main", "createWindow.js")}')
-            content = re.sub('\\s*\\/\\* === INJECTION START === \\*\\/.*?\\/\\* === INJECTION END === \\*\\/\\s*',
+            content=re.sub('\\s*\\/\\* === INJECTION START === \\*\\/.*?\\/\\* === INJECTION END === \\*\\/\\s*',
                              'window.show()', content, flags=re.DOTALL).replace('window.show()', """
                 /* === INJECTION START === */
                 const path = require('path'),
@@ -158,10 +158,10 @@ try:
         with open(os.path.join(filepath, "app", "renderer", "index.js"), 'r', encoding='UTF-8') as content:
             print(
                 f' ...adjusting drag area for frameless window in {os.path.join(filepath, "app", "renderer", "index.js")}')
-            content = content.read()
-            loc = content.rfind('dragRegionStyle')
-            content = content[:loc] + content[loc:] \
-                .replace('top: 0', 'top: 1', 1) \
+            content=content.read()
+            loc=content.rfind('dragRegionStyle')
+            content=content[:loc] + content[loc:]
+                .replace('top: 0', 'top: 1', 1)
                 .replace('height: 34', 'height: 10', 1)
             with open(os.path.join(filepath, "app", "renderer", "index.js"), 'w', encoding='UTF-8') as write:
                 write.write(content)
@@ -175,11 +175,11 @@ try:
                 f' ...adding tray support (inc. context menu with settings) to {os.path.join(filepath, "app", "main", "main.js")}')
             print(
                 f' ...adding window toggle hotkey to {os.path.join(filepath, "app", "main", "main.js")}')
-            content = content.read()
+            content=content.read()
             with open(os.path.join(filepath, "app", "main", "main.js"), 'w', encoding='UTF-8') as write:
                 if '/* === INJECTION MARKER === */' in content:
                     print(' * tray.js already added. replacing it.')
-                    original = []
+                    original=[]
                     for line in content.splitlines():
                         if '/* === INJECTION MARKER === */' in line:
                             break
