@@ -63,7 +63,7 @@ try:
                 print(
                     f' ...patching app launcher')
                 subprocess.call(
-                    ['sed', '-i', r's/electron\sapp/electron\sapp\.asar/',
+                    ['sed', '-i', r's/electron\ app/electron\ app\.asar/',
                      bin_path])
 
     print(f'\n{bold}>>> SUCCESSFULLY CLEANED <<<{normal}')

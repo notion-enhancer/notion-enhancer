@@ -194,9 +194,9 @@ try:
                 append.write('\n' + insert.read().replace(
                     '☃☃☃hotkey☃☃☃', hotkey))
         print(
-            f' ...copying tray icon {os.path.join(".", "resources", "notion.ico")} to {os.path.join(filepath, "app", "main")}')
-        copyfile(os.path.join(__dirname__, 'resources', 'notion.ico'),
-                 os.path.join(filepath, "app", "main", "notion.ico"))
+            f' ...copying tray icon {os.path.join(".", "logo.png")} to {os.path.join(filepath, "app", "main")}')
+        copyfile(os.path.join(__dirname__, 'logo.png'),
+                 os.path.join(filepath, "app", "main", "logo.png"))
         print(
             f' ...copying datastore wrapper {os.path.join(".", "resources", "store.js")} to {os.path.join(filepath, "app")}')
         copyfile(os.path.join(__dirname__, 'resources', 'store.js'),
@@ -209,7 +209,7 @@ try:
         print(
             f' ...patching app launcher')
         subprocess.call(
-            ['sed', '-i', r's/electron\sapp\.asar/electron\sapp/',
+            ['sed', '-i', r's/electron\ app\.asar/electron\ app/',
              '/usr/bin/notion-app' if os.path.exists('/usr/bin/notion-app') else '/usr/bin/notion'])
 
     print('\n>>> SUCCESSFULLY CUSTOMISED <<<')

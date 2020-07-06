@@ -26,47 +26,49 @@ function enhancements() {
         theme: false,
       },
     });
-  tray = new Tray(path.join(__dirname, 'notion.ico'));
+  tray = new Tray(path.join(__dirname, 'logo.png'));
   const contextMenu = Menu.buildFromTemplate([
     {
       id: 'startup',
       label: 'run on startup',
       type: 'checkbox',
       checked: electron_1.app.getLoginItemSettings().openAtLogin,
-      click: () =>
-        contextMenu.getMenuItemById('startup').checked
+      click: () => {
+        contextMenu.getMenuItemById('openhidden').checked
           ? electron_1.app.setLoginItemSettings({ openAtLogin: true })
-          : electron_1.app.setLoginItemSettings({ openAtLogin: false }),
+          : electron_1.app.setLoginItemSettings({ openAtLogin: false });
+        // tray.setContextMenu(contextMenu);
+      },
     },
     {
       id: 'openhidden',
       label: 'hide on open',
       type: 'checkbox',
       checked: store.openhidden,
-      click: () =>
-        contextMenu.getMenuItemById('openhidden').checked
-          ? (store.openhidden = true)
-          : (store.openhidden = false),
+      click: () => {
+        store.openhidden = contextMenu.getMenuItemById('openhidden').checked;
+        // tray.setContextMenu(contextMenu);
+      },
     },
     {
       id: 'maximized',
       label: 'open maximised',
       type: 'checkbox',
       checked: store.maximized,
-      click: () =>
-        contextMenu.getMenuItemById('maximized').checked
-          ? (store.maximized = true)
-          : (store.maximized = false),
+      click: () => {
+        store.maximized = contextMenu.getMenuItemById('maximized').checked;
+        // tray.setContextMenu(contextMenu);
+      },
     },
     {
       id: 'tray',
       label: 'close to tray',
       type: 'checkbox',
       checked: store.tray,
-      click: () =>
-        contextMenu.getMenuItemById('tray').checked
-          ? (store.tray = true)
-          : (store.tray = false),
+      click: () => {
+        store.tray = contextMenu.getMenuItemById('tray').checked;
+        // tray.setContextMenu(contextMenu);
+      },
     },
     {
       id: 'theme',
@@ -74,10 +76,9 @@ function enhancements() {
       type: 'checkbox',
       checked: store.theme,
       click: () => {
-        contextMenu.getMenuItemById('theme').checked
-          ? (store.theme = true)
-          : (store.theme = false);
+        store.theme = contextMenu.getMenuItemById('theme').checked;
         electron_1.BrowserWindow.getAllWindows().forEach((win) => win.reload());
+        // tray.setContextMenu(contextMenu);
       },
     },
     {
