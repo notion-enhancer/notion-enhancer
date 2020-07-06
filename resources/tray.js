@@ -15,7 +15,7 @@
 let tray;
 
 function enhancements() {
-  const { Tray, Menu } = require('electron'),
+  const { Tray, Menu, nativeImage } = require('electron'),
     path = require('path'),
     store = require(path.join(__dirname, '..', 'store.js'))({
       config: 'user-preferences',
@@ -26,7 +26,12 @@ function enhancements() {
         theme: false,
       },
     });
-  tray = new Tray(path.join(__dirname, 'logo.png'));
+  tray = new Tray(
+    new nativeImage.createFromPath(path.join(__dirname, 'logo.png')).resize({
+      width: 16,
+      height: 16,
+    })
+  );
   const contextMenu = Menu.buildFromTemplate([
     {
       id: 'startup',
