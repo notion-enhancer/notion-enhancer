@@ -32,7 +32,8 @@ try:
         filepath = subprocess.run(['echo', '%localappdata%'], shell=True, capture_output=True).stdout \
             .rstrip().decode('utf-8') + '\\Programs\\Notion\\resources'
     elif sys.platform == 'linux':
-        filepath = '/opt/notion-app'
+        filepath = '/opt/notion-app' if os.path.exists(
+            '/opt/notion-app') else '/opt/notion'
     elif sys.platform == 'darwin':
         filepath = '/Applications/Notion.app/Contents/Resources'
     else:
