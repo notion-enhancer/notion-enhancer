@@ -13,7 +13,7 @@ from shutil import copyfile, rmtree
 from time import sleep
 
 # to smooth the update process
-enhancer_version = '0.6.1~beta2'
+enhancer_version = '0.6.1~beta3'
 
 # for toggling notion visibility
 hotkey = 'CmdOrCtrl+Shift+A'
