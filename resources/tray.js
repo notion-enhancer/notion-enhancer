@@ -15,7 +15,8 @@
 let tray;
 
 function enhancements() {
-  const { Tray, Menu, nativeImage } = require('electron'),
+  const { Tray, Menu, nativeImage, app } = require('electron'),
+    isMac = process.platform === 'darwin',
     path = require('path'),
     store = require(path.join(__dirname, '..', 'store.js'))({
       config: 'user-preferences',
@@ -42,7 +43,7 @@ function enhancements() {
         contextMenu.getMenuItemById('openhidden').checked
           ? electron_1.app.setLoginItemSettings({ openAtLogin: true })
           : electron_1.app.setLoginItemSettings({ openAtLogin: false });
-        // tray.setContextMenu(contextMenu);
+        tray.setContextMenu(contextMenu);
       },
     },
     {
@@ -52,7 +53,7 @@ function enhancements() {
       checked: store.openhidden,
       click: () => {
         store.openhidden = contextMenu.getMenuItemById('openhidden').checked;
-        // tray.setContextMenu(contextMenu);
+        tray.setContextMenu(contextMenu);
       },
     },
     {
@@ -62,7 +63,7 @@ function enhancements() {
       checked: store.maximized,
       click: () => {
         store.maximized = contextMenu.getMenuItemById('maximized').checked;
-        // tray.setContextMenu(contextMenu);
+        tray.setContextMenu(contextMenu);
       },
     },
     {
@@ -72,7 +73,7 @@ function enhancements() {
       checked: store.tray,
       click: () => {
         store.tray = contextMenu.getMenuItemById('tray').checked;
-        // tray.setContextMenu(contextMenu);
+        tray.setContextMenu(contextMenu);
       },
     },
     {
@@ -83,7 +84,7 @@ function enhancements() {
       click: () => {
         store.theme = contextMenu.getMenuItemById('theme').checked;
         electron_1.BrowserWindow.getAllWindows().forEach((win) => win.reload());
-        // tray.setContextMenu(contextMenu);
+        tray.setContextMenu(contextMenu);
       },
     },
     {
@@ -97,22 +98,28 @@ function enhancements() {
   tray.setContextMenu(contextMenu);
   tray.setToolTip('notion enhancements');
 
-  function showWindows(windows) {
-    if (store.maximized)
-      windows.forEach((win) => [win.maximize(), win.focus()]);
+  function showWindows() {
+    const windows = electron_1.BrowserWindow.getAllWindows();
+    if (isMac) app.show();
+    if (store.maximized) windows.forEach((win) => [win.maximize()]);
     else windows.forEach((win) => win.show());
+    app.focus({ steal: true });
+  }
+  function hideWindows() {
+    const windows = electron_1.BrowserWindow.getAllWindows();
+    windows.forEach((win) => [win.isFocused() && win.blur(), win.hide()]);
+    if (isMac) app.hide();
   }
   tray.on('click', () => {
     const windows = electron_1.BrowserWindow.getAllWindows();
-    if (windows.some((win) => win.isVisible()))
-      windows.forEach((win) => win.hide());
-    else showWindows(windows);
+    if (windows.some((win) => win.isVisible())) hideWindows();
+    else showWindows();
   });
   // hotkey will be set by python script
-  electron_1.globalShortcut.register('☃☃☃hotkey☃☃☃', () => {
+  electron_1.globalShortcut.register('CmdOrCtrl+Shift+A', () => {
     const windows = electron_1.BrowserWindow.getAllWindows();
     if (windows.some((win) => win.isFocused() && win.isVisible()))
-      windows.forEach((win) => [win.blur(), win.hide()]);
-    else showWindows(windows);
+      hideWindows();
+    else showWindows();
   });
 }
