@@ -36,7 +36,7 @@ function enhancements() {
   const contextMenu = Menu.buildFromTemplate([
     {
       id: 'startup',
-      label: 'run on startup',
+      label: 'Run on Startup',
       type: 'checkbox',
       checked: electron_1.app.getLoginItemSettings().openAtLogin,
       click: () => {
@@ -48,7 +48,7 @@ function enhancements() {
     },
     {
       id: 'openhidden',
-      label: 'hide on open',
+      label: 'Hide on Open',
       type: 'checkbox',
       checked: store.openhidden,
       click: () => {
@@ -58,7 +58,7 @@ function enhancements() {
     },
     {
       id: 'maximized',
-      label: 'open maximised',
+      label: 'Open Maximised',
       type: 'checkbox',
       checked: store.maximized,
       click: () => {
@@ -68,7 +68,7 @@ function enhancements() {
     },
     {
       id: 'tray',
-      label: 'close to tray',
+      label: 'Close to Tray',
       type: 'checkbox',
       checked: store.tray,
       click: () => {
@@ -78,7 +78,7 @@ function enhancements() {
     },
     {
       id: 'theme',
-      label: 'load theme.css',
+      label: 'Load Custom Theme',
       type: 'checkbox',
       checked: store.theme,
       click: () => {
@@ -91,12 +91,12 @@ function enhancements() {
       type: 'separator',
     },
     {
-      label: '(x) quit',
+      label: 'Quit',
       role: 'quit',
     },
   ]);
   tray.setContextMenu(contextMenu);
-  tray.setToolTip('notion enhancements');
+  tray.setToolTip('Notion Enhancements');
 
   function showWindows() {
     const windows = electron_1.BrowserWindow.getAllWindows();

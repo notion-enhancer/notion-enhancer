@@ -22,7 +22,8 @@ require('electron').remote.getGlobal('setTimeout')(() => {
         tray: false,
         theme: false,
       },
-    });
+    }),
+    isMac = process.platform === 'darwin';
 
   const intervalID = setInterval(injection, 100);
   function injection() {
@@ -52,10 +53,13 @@ require('electron').remote.getGlobal('setTimeout')(() => {
     buttons.className = 'window-buttons-area';
     buttons.innerHTML = `
       <button class="window-button btn-alwaysontop"></button>
-      <button class="window-button btn-minimize"></button>
-      <button class="window-button btn-maximize"></button>
-      <button class="window-button btn-close"></button>
     `;
+    if (!isMac)
+      buttons.innerHTML += `
+        <button class="window-button btn-minimize"></button>
+        <button class="window-button btn-maximize"></button>
+        <button class="window-button btn-close"></button>
+      `;
     document
       .querySelector('.notion-topbar > div[style*="display: flex"]')
       .appendChild(buttons);
@@ -96,12 +100,13 @@ require('electron').remote.getGlobal('setTimeout')(() => {
             : appwindow.maximize();
           this.innerHTML = button_icons.maximize();
         },
-        close() {
+        close(event = null) {
           if (
             store.tray &&
             require('electron').remote.BrowserWindow.getAllWindows().length ===
               1
           ) {
+            if (event) event.preventDefault();
             appwindow.hide();
           } else appwindow.close();
         },
@@ -116,18 +121,21 @@ require('electron').remote.getGlobal('setTimeout')(() => {
     button_elements.alwaysontop.innerHTML = button_icons.alwaysontop();
     button_elements.alwaysontop.onclick = button_actions.alwaysontop;
 
-    button_elements.minimize.innerHTML = button_icons.minimize();
-    button_elements.minimize.onclick = button_actions.minimize;
+    if (!isMac) {
+      button_elements.minimize.innerHTML = button_icons.minimize();
+      button_elements.minimize.onclick = button_actions.minimize;
 
-    button_elements.maximize.innerHTML = button_icons.maximize();
-    button_elements.maximize.onclick = button_actions.maximize;
-    setInterval(() => {
-      if (button_elements.maximize.innerHTML != button_icons.maximize())
-        button_elements.maximize.innerHTML = button_icons.maximize();
-    }, 1000);
+      button_elements.maximize.innerHTML = button_icons.maximize();
+      button_elements.maximize.onclick = button_actions.maximize;
+      setInterval(() => {
+        if (button_elements.maximize.innerHTML != button_icons.maximize())
+          button_elements.maximize.innerHTML = button_icons.maximize();
+      }, 1000);
 
-    button_elements.close.innerHTML = button_icons.close();
-    button_elements.close.onclick = button_actions.close;
+      button_elements.close.innerHTML = button_icons.close();
+      button_elements.close.onclick = button_actions.close;
+    }
+    appwindow.on('close', button_actions.close);
 
     /* hotkey: reload window */
     document.defaultView.addEventListener(
