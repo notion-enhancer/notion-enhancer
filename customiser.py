@@ -104,10 +104,10 @@ try:
         with open(os.path.join(filepath, 'app', 'ENHANCER_VERSION.txt'), 'w', encoding='UTF-8') as write:
             write.write(enhancer_version)
 
-    if os.path.isfile(os.path.join(filepath, "app", "renderer", "preload.js")):
+    if os.path.isfile(os.path.join(filepath, 'app', 'renderer', 'preload.js')):
         print(
             f' ...adding preload.js to {os.path.join(filepath, "app","renderer","preload.js")}')
-        with open(os.path.join(filepath, "app", "renderer", "preload.js"), 'r', encoding='UTF-8') as content:
+        with open(os.path.join(filepath, 'app', 'renderer', 'preload.js'), 'r', encoding='UTF-8') as content:
             if '/* === INJECTION MARKER === */' in content.read():
                 print(' * preload.js already added. replacing it.')
                 content.seek(0)
@@ -116,12 +116,12 @@ try:
                     if '/* === INJECTION MARKER === */' in line:
                         break
                     original += line
-                with open(os.path.join(filepath, "app", "renderer", "preload.js"), 'w', encoding='UTF-8') as write:
+                with open(os.path.join(filepath, 'app', 'renderer', 'preload.js'), 'w', encoding='UTF-8') as write:
                     write.writelines(original)
             else:
-                with open(os.path.join(filepath, "app", "renderer", "preload.js"), 'a', encoding='UTF-8') as append:
+                with open(os.path.join(filepath, 'app', 'renderer', 'preload.js'), 'a', encoding='UTF-8') as append:
                     append.write('\n\n')
-        with open(os.path.join(filepath, "app", "renderer", "preload.js"), 'a', encoding='UTF-8') as append:
+        with open(os.path.join(filepath, 'app', 'renderer', 'preload.js'), 'a', encoding='UTF-8') as append:
             print(
                 f' ...linking to {os.path.join(".", "resources", "user.css")}')
             with open(os.path.join(__dirname__, 'resources', 'preload.js'), 'r', encoding='UTF-8') as insert:

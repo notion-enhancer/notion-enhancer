@@ -17,6 +17,7 @@ let tray;
 function enhancements() {
   const { Tray, Menu, nativeImage, app } = require('electron'),
     isMac = process.platform === 'darwin',
+    isWin = process.platform.includes('win'),
     path = require('path'),
     store = require(path.join(__dirname, '..', 'store.js'))({
       config: 'user-preferences',
@@ -28,12 +29,14 @@ function enhancements() {
       },
     });
   tray = new Tray(
-    isMac
-      ? new nativeImage.createFromPath('☃☃☃resources☃☃☃/icons/mac.png').resize({
-          width: 16,
-          height: 16,
-        })
-      : '☃☃☃resources☃☃☃/icons/tray.ico'
+    isWin
+      ? '☃☃☃resources☃☃☃/icons/windows.ico'
+      : new nativeImage.createFromPath('☃☃☃resources☃☃☃/icons/tray.png').resize(
+          {
+            width: 16,
+            height: 16,
+          }
+        )
   );
   const contextMenu = Menu.buildFromTemplate([
     {
