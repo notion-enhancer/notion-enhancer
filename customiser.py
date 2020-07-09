@@ -126,7 +126,8 @@ try:
                 f' ...linking to {os.path.join(".", "resources", "user.css")}')
             with open(os.path.join(__dirname__, 'resources', 'preload.js'), 'r', encoding='UTF-8') as insert:
                 append.write(insert.read().replace(
-                    '☃☃☃resources☃☃☃', os.path.join(enhancer_folder, 'resources').replace('\\', '/')))
+                    '☃☃☃resources☃☃☃', os.path.join(enhancer_folder, 'resources').replace('\\', '/'))
+                    .replace('☃☃☃version☃☃☃', enhancer_version))
     else:
         print(
             f' * {os.path.join(filepath, "app","renderer","preload.js")} was not found: step skipped.')

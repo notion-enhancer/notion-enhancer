@@ -167,8 +167,39 @@ require('electron').remote.getGlobal('setTimeout')(() => {
           el.outerHTML = `<span>${el.getAttribute('alt')}</span>`;
         });
       });
-      observer.observe(document, { childList: true, subtree: true });
+      observer.observe(document, {
+        childList: true,
+        subtree: true,
+      });
     }
+
+    /* update checker */
+    fetch(
+      `https://api.github.com/repos/dragonwocky/notion-enhancer/releases/latest`
+    )
+      .then((res) => res.json())
+      .then((res) => {
+        const local_version = '☃☃☃version☃☃☃'.split('~')[0],
+          repo_version = res.tag_name.slice(1);
+        // compare func from https://github.com/substack/semver-compare
+        if (
+          local_version != repo_version &&
+          [local_version, repo_version].sort((a, b) => {
+            var pa = a.split('.');
+            var pb = b.split('.');
+            for (var i = 0; i < 3; i++) {
+              var na = Number(pa[i]);
+              var nb = Number(pb[i]);
+              if (na > nb) return 1;
+              if (nb > na) return -1;
+              if (!isNaN(na) && isNaN(nb)) return 1;
+              if (isNaN(na) && !isNaN(nb)) return -1;
+            }
+            return 0;
+          })[0] == local_version
+        )
+          alert('notion-enhancer update available!');
+      });
 
     /* hotkey: reload window */
     document.defaultView.addEventListener(
