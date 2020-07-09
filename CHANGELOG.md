@@ -15,7 +15,7 @@ but can still easily be enabled by following instructions in the [docs](README.m
 - bugfix: odd mix of `\\` and `/` being used for windows filepaths.
 - bugfix: app no longer crashes when sidebar is toggled.
 
-known remaining/confirmed issues:
+known/confirmed remaining issues:
 
 - russian symbols not supported by UTF-8
 

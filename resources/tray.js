@@ -47,7 +47,6 @@ function enhancements() {
         contextMenu.getMenuItemById('startup').checked
           ? electron_1.app.setLoginItemSettings({ openAtLogin: true })
           : electron_1.app.setLoginItemSettings({ openAtLogin: false });
-        tray.setContextMenu(contextMenu);
       },
     },
     {
@@ -57,7 +56,6 @@ function enhancements() {
       checked: store.openhidden,
       click: () => {
         store.openhidden = contextMenu.getMenuItemById('openhidden').checked;
-        tray.setContextMenu(contextMenu);
       },
     },
     {
@@ -67,7 +65,6 @@ function enhancements() {
       checked: store.maximized,
       click: () => {
         store.maximized = contextMenu.getMenuItemById('maximized').checked;
-        tray.setContextMenu(contextMenu);
       },
     },
     {
@@ -77,7 +74,6 @@ function enhancements() {
       checked: store.tray,
       click: () => {
         store.tray = contextMenu.getMenuItemById('tray').checked;
-        tray.setContextMenu(contextMenu);
       },
     },
     {
@@ -88,7 +84,6 @@ function enhancements() {
       click: () => {
         store.theme = contextMenu.getMenuItemById('theme').checked;
         electron_1.BrowserWindow.getAllWindows().forEach((win) => win.reload());
-        tray.setContextMenu(contextMenu);
       },
     },
     {
