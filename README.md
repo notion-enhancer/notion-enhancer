@@ -117,8 +117,10 @@ single-click to toggle app visibility. right click to open menu.
   on click of `⨉`. does not apply if multiple notion windows are open. (default: false)
 - **load theme.css**: loads the custom colour theme file.
   see [colour theming](STYLING.md#colour-theming) for more information. (default: false)
+- **use system emoji**: reverts notion to using normal emojis, rather than the twitter emojiset. (default: false)
 
 ![](screenshots/app-tray.jpg)
+
 _image: open application tray_
 
 ## styling

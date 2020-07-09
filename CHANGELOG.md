@@ -3,8 +3,9 @@
 if something is ~~crossed out~~, then it is no longer a feature included by default,
 but can still easily be enabled by following instructions in the [docs](README.md).
 
-### v0.6.1 (wip)
+### v0.7.0 (2020-07-09)
 
+- new: tray option to use system default emojis (instead of twitter's emojiset).
 - new: mac support (identical functionality to others platforms with the
   exception of the native minimise/maximise/close buttons being kept, as they integrate
   better with the OS while not being out-of-place in notion).
@@ -15,10 +16,6 @@ but can still easily be enabled by following instructions in the [docs](README.m
 - bugfix: tray now operates as expected on linux.
 - bugfix: odd mix of `\\` and `/` being used for windows filepaths.
 - bugfix: app no longer crashes when sidebar is toggled.
-
-known/confirmed remaining issues:
-
-- russian symbols not supported by UTF-8
 
 ### v0.6.0 (2020-06-30)
 

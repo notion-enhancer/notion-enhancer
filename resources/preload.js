@@ -21,6 +21,7 @@ require('electron').remote.getGlobal('setTimeout')(() => {
         maximized: false,
         tray: false,
         theme: false,
+        emoji: false,
       },
     }),
     isMac = process.platform === 'darwin';
@@ -150,6 +151,23 @@ require('electron').remote.getGlobal('setTimeout')(() => {
 
       button_elements.close.innerHTML = button_icons.close();
       button_elements.close.onclick = button_actions.close;
+    }
+
+    /* emoji */
+    if (store.emoji) {
+      const observer = new MutationObserver((list, observer) => {
+        document
+          .querySelectorAll('.notion-record-icon .notion-emoji')
+          .forEach((el) => {
+            el.outerHTML = `<span style="font-size: 0.9em; position: relative; bottom: 0.1em; right: 0.05em">
+                ${el.getAttribute('alt')}
+              </span>`;
+          });
+        document.querySelectorAll('.notion-emoji').forEach((el) => {
+          el.outerHTML = `<span>${el.getAttribute('alt')}</span>`;
+        });
+      });
+      observer.observe(document, { childList: true, subtree: true });
     }
 
     /* hotkey: reload window */

@@ -26,6 +26,7 @@ function enhancements() {
         maximized: false,
         tray: false,
         theme: false,
+        emoji: false,
       },
     });
   tray = new Tray(
@@ -84,6 +85,16 @@ function enhancements() {
       checked: store.theme,
       click: () => {
         store.theme = contextMenu.getMenuItemById('theme').checked;
+        electron_1.BrowserWindow.getAllWindows().forEach((win) => win.reload());
+      },
+    },
+    {
+      id: 'emoji',
+      label: 'Use system emoji',
+      type: 'checkbox',
+      checked: store.emoji,
+      click: () => {
+        store.emoji = contextMenu.getMenuItemById('emoji').checked;
         electron_1.BrowserWindow.getAllWindows().forEach((win) => win.reload());
       },
     },

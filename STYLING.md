@@ -18,7 +18,8 @@ css below will work for every instance of the element, but if you wish to hide o
 
 ## general/app-wide
 
-![](screenshots/app-default.jpg)
+![](screenshots/app-enhanced.jpg)
+
 _image: the default post-customisation appearance_
 
 ### colour theming
@@ -33,6 +34,7 @@ to modify, enter the `theme.css` file and change the colour values within the `:
 should describe what each colour will affect.
 
 ![](screenshots/theme-dark+.jpg)
+
 _image: the dark+ theme_
 
 ### hide discussions (comment threads at the top of each page)
@@ -44,9 +46,11 @@ _image: the dark+ theme_
 ```
 
 ![](screenshots/discussion-default.jpg)
+
 _image: before styling_
 
 ![](screenshots/discussion-hidden.jpg)
+
 _image: after styling_
 
 ### custom fonts
@@ -71,6 +75,7 @@ plenty of other fonts that can be found on google fonts or that may be on your s
 ```
 
 ![](screenshots/fonts-custom.jpg)
+
 _image: after styling_
 
 ### font resizing
@@ -108,6 +113,7 @@ to change the size, change the value of `--font-scale`.
 ```
 
 ![](screenshots/fonts-resized.jpg)
+
 _image: after styling_
 
 ### wider page preview
@@ -119,9 +125,11 @@ _image: after styling_
 ```
 
 ![](screenshots/preview-default.jpg)
+
 _image: before styling_
 
 ![](screenshots/preview-wider.jpg)
+
 _image: after styling_
 
 ### thinner cover image
@@ -137,14 +145,17 @@ _image: after styling_
 ```
 
 ![](screenshots/cover-default.jpg)
+
 _image: before styling_
 
 ![](screenshots/cover-thinner.jpg)
+
 _image: after styling_
 
 ## tables
 
 ![](screenshots/table-before.jpg)
+
 _image: before styling_
 
 ### table columns below 100px
@@ -174,6 +185,7 @@ to see how to do this, watch [this video](https://www.youtube.com/watch?v=6V7eqS
 ```
 
 ![](screenshots/table-columnunder100px.jpg)
+
 _image: after styling_
 
 ### hide '+ new' table row
@@ -185,6 +197,7 @@ _image: after styling_
 ```
 
 ![](screenshots/table-hideaddrow.jpg)
+
 _image: after styling_
 
 ### hide calculations table row
@@ -196,6 +209,7 @@ _image: after styling_
 ```
 
 ![](screenshots/table-hidecalculationsrow.jpg)
+
 _image: after styling_
 
 ### centre-align table column headers
@@ -207,6 +221,7 @@ _image: after styling_
 ```
 
 ![](screenshots/table-centredheaders.jpg)
+
 _image: after styling_
 
 ### smaller table column header icons
@@ -222,6 +237,7 @@ _image: after styling_
 ```
 
 ![](screenshots/table-smallercolumnicons.jpg)
+
 _image: after styling_
 
 ### remove icons from table column headers
@@ -233,6 +249,7 @@ _image: after styling_
 ```
 
 ![](screenshots/table-hidecolumnicons.jpg)
+
 _image: after styling_
 
 ### removing/decreasing side padding for tables
@@ -254,11 +271,13 @@ _image: after styling_
 ```
 
 ![](screenshots/table-shrinkpadding.jpg)
+
 _image: after styling_
 
 ## boards
 
 ![](screenshots/board-default.jpg)
+
 _image: before styling_
 
 ### hide '+ new' board row
@@ -271,6 +290,7 @@ _image: before styling_
 ```
 
 ![](screenshots/board-hideaddnew.jpg)
+
 _image: after styling_
 
 ### hide board view hidden columns
@@ -283,6 +303,7 @@ _image: after styling_
 ```
 
 ![](screenshots/board-hidehidden.jpg)
+
 _image: after styling_
 
 ### hide board view 'add a group'
@@ -295,6 +316,7 @@ _image: after styling_
 ```
 
 ![](screenshots/board-hideaddgroup.jpg)
+
 _image: after styling_
 
 ### removing/decreasing side padding for boards
@@ -307,4 +329,5 @@ _image: after styling_
 ```
 
 ![](screenshots/board-shrinkpadding.jpg)
+
 _image: after styling_
