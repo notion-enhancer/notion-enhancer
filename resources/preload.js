@@ -35,7 +35,7 @@ require('electron').remote.getGlobal('setTimeout')(() => {
       css = ['user'];
     if (store.theme) css.push('theme');
     css.forEach((file) => {
-      file = fs.readFileSync(`☃☃☃assets☃☃☃/${file}.css`); // will be set by python script
+      file = fs.readFileSync(`☃☃☃resources☃☃☃/${file}.css`); // will be set by python script
       let style = document.createElement('style');
       style.type = 'text/css';
       style.innerHTML = file;
@@ -72,18 +72,34 @@ require('electron').remote.getGlobal('setTimeout')(() => {
       .querySelector('.notion-topbar-share-menu')
       .parentElement.classList.add('notion-topbar-actions');
 
-    const button_icons = {
+    const button_icons_raw = {
+        alwaysontop_on: fs.readFileSync(
+          '☃☃☃resources☃☃☃/icons/alwaysontop_on.svg'
+        ),
+        alwaysontop_off: fs.readFileSync(
+          '☃☃☃resources☃☃☃/icons/alwaysontop_off.svg'
+        ),
+        minimize: fs.readFileSync('☃☃☃resources☃☃☃/icons/minimise.svg'),
+        maximize_on: fs.readFileSync('☃☃☃resources☃☃☃/icons/maximise_on.svg'),
+        maximize_off: fs.readFileSync('☃☃☃resources☃☃☃/icons/maximise_off.svg'),
+        close: fs.readFileSync('☃☃☃resources☃☃☃/icons/close.svg'),
+      },
+      button_icons = {
         alwaysontop() {
-          return appwindow.isAlwaysOnTop() ? '🠙' : '🠛';
+          return appwindow.isAlwaysOnTop()
+            ? button_icons_raw.alwaysontop_on
+            : button_icons_raw.alwaysontop_off; // '🠙' : '🠛'
         },
         minimize() {
-          return '⚊';
+          return button_icons_raw.minimize; // '⚊'
         },
         maximize() {
-          return appwindow.isMaximized() ? '🗗' : '🗖';
+          return appwindow.isMaximized()
+            ? button_icons_raw.maximize_on
+            : button_icons_raw.maximize_off; // '🗗' : '🗖'
         },
         close() {
-          return '⨉';
+          return button_icons_raw.close; // '⨉'
         },
       },
       button_actions = {
@@ -117,6 +133,8 @@ require('electron').remote.getGlobal('setTimeout')(() => {
         maximize: document.querySelector('.window-button.btn-maximize'),
         close: document.querySelector('.window-button.btn-close'),
       };
+
+    console.log(button_icons_raw);
 
     button_elements.alwaysontop.innerHTML = button_icons.alwaysontop();
     button_elements.alwaysontop.onclick = button_actions.alwaysontop;

@@ -118,7 +118,7 @@ try:
                 f' ...linking to {os.path.join(".", "resources", "user.css")}')
             with open(os.path.join(__dirname__, 'resources', 'preload.js'), 'r', encoding='UTF-8') as insert:
                 append.write(insert.read().replace(
-                    '☃☃☃assets☃☃☃', os.path.join(enhancer_folder, 'resources').replace('\\', '/')))
+                    '☃☃☃resources☃☃☃', os.path.join(enhancer_folder, 'resources').replace('\\', '/')))
     else:
         print(
             f' * {os.path.join(filepath, "app","renderer","preload.js")} was not found: step skipped.')
@@ -192,11 +192,9 @@ try:
         with open(os.path.join(filepath, "app", "main", "main.js"), 'a', encoding='UTF-8') as append:
             with open(os.path.join(__dirname__, 'resources', 'tray.js'), 'r', encoding='UTF-8') as insert:
                 append.write('\n' + insert.read().replace(
-                    '☃☃☃hotkey☃☃☃', hotkey))
-        print(
-            f' ...copying tray icon {os.path.join(".", "logo.png")} to {os.path.join(filepath, "app", "main")}')
-        copyfile(os.path.join(__dirname__, 'logo.png'),
-                 os.path.join(filepath, "app", "main", "logo.png"))
+                    '☃☃☃hotkey☃☃☃', hotkey).replace(
+                    '☃☃☃resources☃☃☃', os.path.join(enhancer_folder, 'resources').replace('\\', '/'))
+                )
         print(
             f' ...copying datastore wrapper {os.path.join(".", "resources", "store.js")} to {os.path.join(filepath, "app")}')
         copyfile(os.path.join(__dirname__, 'resources', 'store.js'),

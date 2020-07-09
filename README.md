@@ -65,12 +65,8 @@ experienced problems with the notion app, or just want to add something a bit mo
 default windows titlebar/frame has been replaced by one more fitting to the theme of the app.
 
 this includes the addition of an extra button, "always on top"
-symbolised with an arrow (4th from the right). when toggled to point up,
+symbolised with an arrow. when toggled to point up,
 notion will remain the top visible window even if not focused.
-
-to customise which characters are used for these buttons, open in the `resources/preload.js` file,
-find the relevant button icon (lines 69 - 82) and replace it with your chosen unicode character (e.g.
-replacing `return '⨉';` with `return '🙄';`).
 
 ### nicer scrollbars
 

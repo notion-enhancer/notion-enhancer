@@ -28,19 +28,23 @@ function enhancements() {
       },
     });
   tray = new Tray(
-    new nativeImage.createFromPath(path.join(__dirname, 'logo.png')).resize({
-      width: 16,
-      height: 16,
-    })
+    isMac
+      ? new nativeImage.createFromPath('☃☃☃resources☃☃☃/icons/logo.png').resize(
+          {
+            width: 16,
+            height: 16,
+          }
+        )
+      : '☃☃☃resources☃☃☃/icons/tray.ico'
   );
   const contextMenu = Menu.buildFromTemplate([
     {
       id: 'startup',
-      label: 'Run on Startup',
+      label: 'Run on startup',
       type: 'checkbox',
       checked: electron_1.app.getLoginItemSettings().openAtLogin,
       click: () => {
-        contextMenu.getMenuItemById('openhidden').checked
+        contextMenu.getMenuItemById('startup').checked
           ? electron_1.app.setLoginItemSettings({ openAtLogin: true })
           : electron_1.app.setLoginItemSettings({ openAtLogin: false });
         tray.setContextMenu(contextMenu);
@@ -48,7 +52,7 @@ function enhancements() {
     },
     {
       id: 'openhidden',
-      label: 'Hide on Open',
+      label: 'Hide on open',
       type: 'checkbox',
       checked: store.openhidden,
       click: () => {
@@ -58,7 +62,7 @@ function enhancements() {
     },
     {
       id: 'maximized',
-      label: 'Open Maximised',
+      label: 'Open maximised',
       type: 'checkbox',
       checked: store.maximized,
       click: () => {
@@ -68,7 +72,7 @@ function enhancements() {
     },
     {
       id: 'tray',
-      label: 'Close to Tray',
+      label: 'Close to tray',
       type: 'checkbox',
       checked: store.tray,
       click: () => {
@@ -78,7 +82,7 @@ function enhancements() {
     },
     {
       id: 'theme',
-      label: 'Load Custom Theme',
+      label: 'Load theme.css',
       type: 'checkbox',
       checked: store.theme,
       click: () => {

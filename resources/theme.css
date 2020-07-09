@@ -85,6 +85,9 @@
   background: var(--theme-button) !important;
   box-shadow: 0 0 0 0.5px var(--theme-button_border);
 }
+.window-button.btn-close:hover {
+  background: #e81123 !important;
+}
 
 [style*='background: rgb(63, 68, 71)'] {
   background: var(--theme-card) !important;

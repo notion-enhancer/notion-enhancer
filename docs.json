@@ -8,7 +8,7 @@
     "url": "https://dragonwocky.me/notion-enhancer/"
   },
   "icon": {
-    "light": "logo.png"
+    "light": "notion.png"
   },
   "overwrite": true,
   "exclude": [

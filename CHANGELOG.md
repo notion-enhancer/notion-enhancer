@@ -5,10 +5,19 @@ but can still easily be enabled by following instructions in the [docs](README.m
 
 ### v0.6.1 (wip)
 
-- new: semi-mac support? installs, but can't confirm changes have taken effect.
+- new: mac support (identical functionality to others platforms with the
+  exception of the native minimise/maximise/close buttons being kept, as they integrate
+  better with the OS while not being out-of-place in notion).
+- improved: replaced button symbols with svgs for multi-platform support.
+- improved: window close button is now red on hover (thanks to [@torchatlas](https://github.com/torchatlas)).
 - bugfix: `cleaner.py` patched for linux.
+- bugfix: tray now operates as expected on linux.
 - bugfix: odd mix of `\\` and `/` being used for windows filepaths.
 - bugfix: app no longer crashes when sidebar is toggled.
+
+known remaining/confirmed issues:
+
+- russian symbols not supported by UTF-8
 
 ### v0.6.0 (2020-06-30)
 

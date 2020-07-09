@@ -58,7 +58,25 @@
   border-radius: 4px;
   font-size: 16px;
   transition-duration: 0.2s;
-  cursor: default;
+  cursor: default; /* -- not sure? on windows native window buttons have the default cursor,
+                         but other buttons in the titlebar have cursor: pointer */
+}
+.window-button svg {
+  margin-top: 8px;
+  width: 14px;
+  height: 14px;
+}
+.window-button svg path {
+  fill: currentColor;
+}
+.window-button svg line {
+  stroke: currentColor;
+}
+.window-button.btn-close:hover {
+  background: #e81123 !important;
+}
+.window-button.btn-close:hover svg line {
+  stroke: white;
 }
 
 /* window control buttons: light theme */
@@ -72,13 +90,6 @@
 /* window control buttons: dark theme */
 .notion-dark-theme .window-button:hover {
   background: rgb(71, 76, 80);
-}
-
-/* set close button to red on hover */
-
-.btn-close:hover{
-  background: #E81123 !important;
-  color: white;
 }
 
 /* scrollbar: pointer */
