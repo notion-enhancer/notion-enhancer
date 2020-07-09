@@ -17,7 +17,7 @@ let tray;
 function enhancements() {
   const { Tray, Menu, nativeImage, app } = require('electron'),
     isMac = process.platform === 'darwin',
-    isWin = process.platform.includes('win'),
+    isWin = process.platform === 'win32',
     path = require('path'),
     store = require(path.join(__dirname, '..', 'store.js'))({
       config: 'user-preferences',
