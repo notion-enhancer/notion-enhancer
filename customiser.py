@@ -13,7 +13,7 @@ from shutil import copyfile, rmtree
 from time import sleep
 
 # to smooth the update process
-enhancer_version = '0.6.1~beta3'
+enhancer_version = '0.6.1~beta4'
 
 # for toggling notion visibility
 hotkey = 'CmdOrCtrl+Shift+A'
@@ -149,11 +149,22 @@ try:
                         config: 'user-preferences',
                         defaults: {
                             openhidden: false,
-                            maximized: false
+                            maximized: false,
+                            tray: false,
                         }
                     });
                 if (!store.openhidden || electron_1.BrowserWindow.getAllWindows().some(win => win.isVisible()))
                     { window.show(); if (store.maximized) window.maximize(); }
+                let appQuit = false;
+                window.on('close', (e) => {
+                    if (appQuit || !store.tray) window = null;
+                    else {
+                        e.preventDefault();
+                        window.hide();
+                    }
+                });
+                electron_1.app.on('activate', () => window.show());
+                electron_1.app.on('before-quit', () => (appQuit = true));
                 /* === INJECTION END === */
             """)
             with open(os.path.join(filepath, "app", "main", "createWindow.js"), 'w', encoding='UTF-8') as write:

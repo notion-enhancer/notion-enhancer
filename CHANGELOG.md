@@ -8,6 +8,7 @@ but can still easily be enabled by following instructions in the [docs](README.m
 - new: mac support (identical functionality to others platforms with the
   exception of the native minimise/maximise/close buttons being kept, as they integrate
   better with the OS while not being out-of-place in notion).
+- new: notion-deb-builder support for linux.
 - improved: replaced button symbols with svgs for multi-platform support.
 - improved: window close button is now red on hover (thanks to [@torchatlas](https://github.com/torchatlas)).
 - bugfix: `cleaner.py` patched for linux.

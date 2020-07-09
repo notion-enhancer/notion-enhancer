@@ -2,13 +2,13 @@
 
 an enhancer/customiser for the all-in-one productivity workspace [notion.so](https://www.notion.so/)
 
-## installation
+## supported clients
 
 there are a lot of ways to use notion. some official clients, many not.
 
 the enhancer supports:
 
-- the windows/mac versions of the app downloadable from [https://notion.so/desktop](https://notion.so/desktop).
+- the [official windows/mac releases](https://notion.so/desktop).
 - the arch linux AUR [notion-app](https://aur.archlinux.org/packages/notion-app/) package
 - the linux [notion-app](https://github.com/jaredallard/notion-app) installer
 - the debian [notion-deb-builder](https://github.com/davidbailey00/notion-deb-builder/tree/229f2868e117e81858618783b83babd00c595000).
@@ -28,6 +28,8 @@ these can be installed via an extension like [stylus](https://chrome.google.com/
 or a built-in feature like [userChrome.css](https://www.userchrome.org/).)
 
 if the script is run from the WSL, it will enhance the windows version of the app.
+
+## installation
 
 1. install node.js: [windows/macOS](https://nodejs.org/en/download/), [linux/WSL](https://github.com/mklement0/n-install).
 2. install python: [windows/macOS](https://www.python.org/downloads/), [linux/WSL](https://docs.python-guide.org/starting/install3/linux/).

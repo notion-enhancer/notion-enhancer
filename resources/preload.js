@@ -151,7 +151,6 @@ require('electron').remote.getGlobal('setTimeout')(() => {
       button_elements.close.innerHTML = button_icons.close();
       button_elements.close.onclick = button_actions.close;
     }
-    appwindow.on('close', button_actions.close);
 
     /* hotkey: reload window */
     document.defaultView.addEventListener(
