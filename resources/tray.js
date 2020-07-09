@@ -29,12 +29,10 @@ function enhancements() {
     });
   tray = new Tray(
     isMac
-      ? new nativeImage.createFromPath('☃☃☃resources☃☃☃/icons/logo.png').resize(
-          {
-            width: 16,
-            height: 16,
-          }
-        )
+      ? new nativeImage.createFromPath('☃☃☃resources☃☃☃/icons/mac.png').resize({
+          width: 16,
+          height: 16,
+        })
       : '☃☃☃resources☃☃☃/icons/tray.ico'
   );
   const contextMenu = Menu.buildFromTemplate([

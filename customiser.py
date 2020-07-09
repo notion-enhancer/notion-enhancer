@@ -42,12 +42,20 @@ try:
         filepath = subprocess.run(['echo', '%localappdata%'], shell=True, capture_output=True).stdout \
             .rstrip().decode('utf-8') + '\\Programs\\Notion\\resources'
     elif sys.platform == 'linux':
-        filepath = '/opt/notion-app' if os.path.exists(
-            '/opt/notion-app') else '/opt/notion'
+        if os.path.exists('/opt/notion-app'):
+            filepath = '/opt/notion-app'
+        elif os.path.exists('/opt/notion'):
+            filepath = '/opt/notion'
+        elif os.path.exists('/usr/lib/notion-desktop/resources'):
+            filepath = '/usr/lib/notion-desktop/resources'
     elif sys.platform == 'darwin':
         filepath = '/Applications/Notion.app/Contents/Resources'
     else:
         print(' > script not compatible with your os!\n   (report this to dragonwocky#8449 on discord)')
+        exit()
+    if not filepath or not os.path.exists(filepath):
+        print(
+            ' > nothing found: exiting. notion install is either corrupted or non-existent.')
         exit()
 
     unpacking_asar = True

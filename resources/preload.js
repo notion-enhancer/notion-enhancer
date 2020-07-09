@@ -134,8 +134,6 @@ require('electron').remote.getGlobal('setTimeout')(() => {
         close: document.querySelector('.window-button.btn-close'),
       };
 
-    console.log(button_icons_raw);
-
     button_elements.alwaysontop.innerHTML = button_icons.alwaysontop();
     button_elements.alwaysontop.onclick = button_actions.alwaysontop;
 

@@ -11,16 +11,28 @@
             <h2>
               <a href="#installation">installation</a>
             </h2>
-        <p>currently, both windows and linux are supported. it is possible to run this script via the WSL to modify the windows notion app.</p>
-<p><strong>want macOS to be supported too? let me know, and I can work with you to get it going.</strong></p>
-<p>for linux users, the notion-app (<a href="https://aur.archlinux.org/packages/notion-app/#" title="">arch linux</a>,
-<a href="https://github.com/jaredallard/notion-app#" title="">others e.g. ubuntu</a>) package will wrap/run the macOS version of the notion app with electron.</p>
+        <p>there are a lot of ways to use notion. some official clients, many not.</p>
+<p>the enhancer supports:</p>
+<ul>
+<li>the windows/mac versions of the app downloadable from <a href="https://notion.so/desktop#" title="">https://notion.so/desktop</a>.</li>
+<li>the arch linux AUR <a href="https://aur.archlinux.org/packages/notion-app/#" title="">notion-app</a> package</li>
+<li>the linux <a href="https://github.com/jaredallard/notion-app#" title="">notion-app</a> installer</li>
+<li>the debian <a href="https://github.com/davidbailey00/notion-deb-builder/tree/229f2868e117e81858618783b83babd00c595000#" title="">notion-deb-builder</a>.</li>
+</ul>
+<p>there are others, yes. the enhancer does not support them. you should not expect them to work.
+if for some reason you need to use one of them instead of the above listed ones, open a
+<a href="https://github.com/dragonwocky/notion-enhancer/issues/new?assignees=&labels=enhancement&template=platform-support.md&title=#" title="">platform support</a> request.</p>
+<p>please do not modify the enhancer code specifically to work for your installation.
+if you have the know-how to do so, instead open a pull request with your changes
+so that proper support can be added for all users of that client.</p>
+<p>mobile clients are not supported and due to system limitations/restrictions cannot be.</p>
 <p>(the <a href="#styling" title="">styles</a> should also work for the web version.
 these can be installed via an extension like <a href="https://chrome.google.com/webstore/detail/stylus/clngdbkpkpeebahjckkjfobafhncgmne?hl=en#" title="">stylus</a>
 or a built-in feature like <a href="https://www.userchrome.org/#" title="">userChrome.css</a>.)</p>
+<p>if the script is run from the WSL, it will enhance the windows version of the app.</p>
 <ol>
-<li>install node.js: <a href="https://nodejs.org/en/download/#" title="">windows</a>, <a href="https://github.com/mklement0/n-install#" title="">linux/WSL</a>.</li>
-<li>install python: <a href="https://www.python.org/downloads/windows/#" title="">windows</a>, <a href="https://docs.python-guide.org/starting/install3/linux/#" title="">linux/WSL</a>.</li>
+<li>install node.js: <a href="https://nodejs.org/en/download/#" title="">windows/macOS</a>, <a href="https://github.com/mklement0/n-install#" title="">linux/WSL</a>.</li>
+<li>install python: <a href="https://www.python.org/downloads/#" title="">windows/macOS</a>, <a href="https://docs.python-guide.org/starting/install3/linux/#" title="">linux/WSL</a>.</li>
 <li>reboot.</li>
 <li>in the appropriate terminal/command line, run <code>npm install -g asar</code> (check installation by running <code>asar</code>).</li>
 <li><a href="https://github.com/dragonwocky/notion-enhancer/archive/master.zip#" title="">download this enhancer</a> &amp; extract

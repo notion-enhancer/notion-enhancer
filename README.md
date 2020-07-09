@@ -4,19 +4,33 @@ an enhancer/customiser for the all-in-one productivity workspace [notion.so](htt
 
 ## installation
 
-currently, both windows and linux are supported. it is possible to run this script via the WSL to modify the windows notion app.
+there are a lot of ways to use notion. some official clients, many not.
 
-**want macOS to be supported too? let me know, and I can work with you to get it going.**
+the enhancer supports:
 
-for linux users, the notion-app ([arch linux](https://aur.archlinux.org/packages/notion-app/),
-[others e.g. ubuntu](https://github.com/jaredallard/notion-app)) package will wrap/run the macOS version of the notion app with electron.
+- the windows/mac versions of the app downloadable from [https://notion.so/desktop](https://notion.so/desktop).
+- the arch linux AUR [notion-app](https://aur.archlinux.org/packages/notion-app/) package
+- the linux [notion-app](https://github.com/jaredallard/notion-app) installer
+- the debian [notion-deb-builder](https://github.com/davidbailey00/notion-deb-builder/tree/229f2868e117e81858618783b83babd00c595000).
+
+there are others, yes. the enhancer does not support them. you should not expect them to work.
+if for some reason you need to use one of them instead of the above listed ones, open a
+[platform support](https://github.com/dragonwocky/notion-enhancer/issues/new?assignees=&labels=enhancement&template=platform-support.md&title=) request.
+
+please do not modify the enhancer code specifically to work for your installation.
+if you have the know-how to do so, instead open a pull request with your changes
+so that proper support can be added for all users of that client.
+
+mobile clients are not supported and due to system limitations/restrictions cannot be.
 
 (the [styles](#styling) should also work for the web version.
 these can be installed via an extension like [stylus](https://chrome.google.com/webstore/detail/stylus/clngdbkpkpeebahjckkjfobafhncgmne?hl=en)
 or a built-in feature like [userChrome.css](https://www.userchrome.org/).)
 
-1. install node.js: [windows](https://nodejs.org/en/download/), [linux/WSL](https://github.com/mklement0/n-install).
-2. install python: [windows](https://www.python.org/downloads/windows/), [linux/WSL](https://docs.python-guide.org/starting/install3/linux/).
+if the script is run from the WSL, it will enhance the windows version of the app.
+
+1. install node.js: [windows/macOS](https://nodejs.org/en/download/), [linux/WSL](https://github.com/mklement0/n-install).
+2. install python: [windows/macOS](https://www.python.org/downloads/), [linux/WSL](https://docs.python-guide.org/starting/install3/linux/).
 3. reboot.
 4. in the appropriate terminal/command line, run `npm install -g asar` (check installation by running `asar`).
 5. [download this enhancer](https://github.com/dragonwocky/notion-enhancer/archive/master.zip) & extract
