@@ -1,0 +1,38 @@
+{
+  "name": "notion-enhancer",
+  "version": "0.8.0-beta",
+  "description": "an enhancer/customiser for the all-in-one productivity workspace notion.so",
+  "main": "index.js",
+  "bin": {
+    "notion-enhancer": "index.js"
+  },
+  "scripts": {
+    "test": "echo \"no test specified\""
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dragonwocky/notion-enhancer.git"
+  },
+  "keywords": [
+    "notion",
+    "productivity",
+    "mod",
+    "loader",
+    "enhancer",
+    "hack",
+    "macOS",
+    "windows",
+    "linux"
+  ],
+  "author": "dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/dragonwocky/notion-enhancer/issues"
+  },
+  "homepage": "https://dragonwocky.me/notion-enhancer",
+  "dependencies": {
+    "asar": "^3.0.3",
+    "cac": "^6.5.12",
+    "fs-extra": "^9.0.1"
+  }
+}
