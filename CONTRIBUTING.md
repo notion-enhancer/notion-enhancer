@@ -38,7 +38,7 @@ git checkout js
 
 using npm? globally link via `npm link`.
 
-using yarn? globally link via `yarn link` (the output of `yarn global bin` must be in PATH).
+using yarn? globally link via `yarn && yarn link` (the output of `yarn global bin` must be in PATH).
 
 the downloaded folder is now directly linked to the `notion-enhancer` command.
 
@@ -57,20 +57,20 @@ depending on the content and scale of a contribution, it may constitute an updat
 to keep a consistent code but informative style it is preferred to name variables with
 `snake_case`, functions/methods with `camelCase`, and classes with `PascalCase`.
 
-for information on how to create a theme or module, check the [docs](README.md).
+for information on how to create a theme or module, check the [docs](DOCUMENTATION.md).
 
 ## review
 
 active core devs will manually look through each pull request and communicate with contributors before merging to
 make sure it is a) safe, b) functional and c) bug-free.
 
-**a)** system details (e.g. IP, clipboard) + notion user data are considered private unless directly shared by the user.
+**a) safe:** system details (e.g. IP, clipboard) + notion user data are considered private unless directly shared by the user.
 none of this should be accessed or transmitted to an external server.
 
-**b)** is there a better way to do this? can extra dependencies be removed or replaced by newer web technologies?
+**b) functional:** is there a better way to do this? can extra dependencies be removed or replaced by newer web technologies?
 how can this be made as user-friendly as possible?
 
-**c)** where possible, code should be tested on a variety of platforms in a variety of situations so it can be
+**c) bug-free:** where possible, code should be tested on a variety of platforms in a variety of situations so it can be
 confirmed that it won't break anything for the user and is robust enough to handle use by both
 power-users and non-tech-savvy users.
 

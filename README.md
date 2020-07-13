@@ -1,7 +1,7 @@
 # readme placeholder
 
-ended up here? this is a wip version of the enhancer, and this file is yet to be written.
-if you're interested in the project, switch back to the [master branch](https://github.com/dragonwocky/notion-enhancer).
+ended up here? this is a wip version of the enhancer, and this file is yet to be completed.
+if you're interested in using the project, switch back to the [master branch](https://github.com/dragonwocky/notion-enhancer).
 for support, contact me on discord `dragonwocky#8449` or open an issue here in the repo.
 
 want to contribute? check the the [contribution guidelines](CONTRIBUTING.md).
@@ -22,9 +22,6 @@ extension?
 3. ensure no notion processes are running (you may want to check the task manager to make sure), and try running one of these commands:
 
    ```
-   notion-enhancer v0.8.0-beta
-   https://github.com/dragonwocky/notion-enhancer
-
    Usage:
      $ notion-enhancer <command> [options]
 
