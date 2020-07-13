@@ -1,23 +1,23 @@
 /*
  * notion-enhancer
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
- * (c) 2020 TarasokUA
  * (https://dragonwocky.me/notion-enhancer) under the MIT license
  */
 
 'use strict';
 const os = require('os'),
+  path = require('path'),
   fs = require('fs-extra'),
   exec = require('util').promisify(require('child_process').exec);
 
-function is_wsl() {
+function isWSL() {
   return (
     process.platform == 'linux' &&
     os.release().toLowerCase().includes('microsoft')
   );
 }
 
-async function get_notion() {
+async function getNotion() {
   let folder = '';
   switch (process.platform) {
     case 'darwin':
@@ -27,7 +27,7 @@ async function get_notion() {
       folder = process.env.LOCALAPPDATA + '\\Programs\\Notion\\resources';
       break;
     case 'linux':
-      if (is_wsl()) {
+      if (isWSL()) {
         const { stdout } = await exec('cmd.exe /c echo %localappdata%'),
           drive = stdout[0];
         folder = `/mnt/${drive.toLowerCase()}${stdout
@@ -68,4 +68,18 @@ function readline() {
   });
 }
 
-module.exports = { get_notion, is_wsl, readline };
+function getJSON(from) {
+  try {
+    return fs.readJsonSync(from);
+  } catch (err) {
+    return {};
+  }
+}
+
+module.exports = {
+  getNotion,
+  isWSL,
+  readline,
+  getJSON,
+  data_folder: path.join(os.homedir(), '.notion-enhancer'),
+};

@@ -4,7 +4,7 @@
   "description": "an enhancer/customiser for the all-in-one productivity workspace notion.so",
   "main": "index.js",
   "bin": {
-    "notion-enhancer": "index.js"
+    "notion-enhancer": "bin.js"
   },
   "scripts": {
     "test": "echo \"no test specified\""
