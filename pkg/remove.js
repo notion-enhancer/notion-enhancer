@@ -9,9 +9,17 @@ const os = require('os'),
   fs = require('fs-extra'),
   path = require('path'),
   exec = require('util').promisify(require('child_process').exec),
-  helpers = require('./helpers.js');
+  { getNotion, readline, data_folder } = require('./helpers.js');
 
-let __notion = helpers.getNotion();
+// '=== title ==='
+// ' ...information'
+// ' * warning'
+// ' > prompt'
+// ' -> response'
+// ' ~~ exit'
+// '### error ###'
+
+let __notion = getNotion();
 
 module.exports = async function (yes) {
   console.info('=== NOTION RESTORATION LOG ===');
@@ -35,14 +43,14 @@ module.exports = async function (yes) {
         if (!yes) {
           do {
             process.stdout.write(' > overwrite? [Y/n]: ');
-            write = await helpers.readline();
+            write = await readline();
           } while (write && !['y', 'n'].includes(write.toLowerCase()));
           write = !write || write.toLowerCase() == 'y';
         } else write = true;
         console.info(
           write
-            ? ' ...overwriting app.asar with app.asar.bak'
-            : ' ...removing app.asar.bak'
+            ? ' -> overwriting app.asar with app.asar.bak'
+            : ' -> removing app.asar.bak'
         );
       }
 
@@ -55,11 +63,21 @@ module.exports = async function (yes) {
       );
     } else console.warn(` * ${asar_bak} not found: step skipped.`);
 
-    const data_ = path.join(__notion, 'app');
-    if (await fs.pathExists(app_folder)) {
-      console.info(` ...removing folder ${app_folder}`);
-      file_operations.push(fs.remove(app_folder));
-    } else console.warn(` * ${app_folder} not found: step skipped.`);
+    if (await fs.pathExists(data_folder)) {
+      console.log(` ...data folder ${data_folder} found.`);
+      let write = true;
+      if (!yes) {
+        do {
+          process.stdout.write(' > delete? [Y/n]: ');
+          write = await readline();
+        } while (write && !['y', 'n'].includes(write.toLowerCase()));
+        write = !write || write.toLowerCase() == 'y';
+      } else write = true;
+      console.info(
+        write ? ` -> deleting ${data_folder}` : ` -> keeping ${data_folder}`
+      );
+      if (write) file_operations.push(fs.remove(data_folder));
+    } else console.warn(` * ${data_folder} not found: step skipped.`);
 
     await Promise.all(file_operations);
 

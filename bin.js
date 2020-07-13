@@ -14,6 +14,7 @@ const meta = require('./package.json'),
 // ' ...information'
 // ' * warning'
 // ' > prompt'
+// ' -> response'
 // ' ~~ exit'
 // '### error ###'
 
