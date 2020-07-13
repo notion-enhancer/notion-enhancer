@@ -4,15 +4,15 @@
  * (https://dragonwocky.me/) under the MIT license
  */
 
-// a wrapper for accessing data stored in a JSON file.
-
+'use strict';
 const path = require('path'),
   fs = require('fs-extra'),
   { getJSON, data_folder } = require('./helpers.js');
 
+// a wrapper for accessing data stored in a JSON file.
 module.exports = (namespace, defaults = {}) => {
-  namespace = path.join(data_folder, 'data', namespace + '.json');
-  fs.ensureDirSync(path.join(data_folder, 'data'));
+  namespace = path.join(data_folder, namespace + '.json');
+  fs.ensureDirSync(data_folder);
 
   const getData = () => ({ ...defaults, ...getJSON(namespace) });
   return new Proxy(defaults, {

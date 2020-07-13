@@ -5,57 +5,58 @@
  */
 
 'use strict';
-const os = require('os'),
-  fs = require('fs-extra'),
+const fs = require('fs-extra'),
   path = require('path'),
-  exec = require('util').promisify(require('child_process').exec),
-  { getNotion, readline, data_folder } = require('./helpers.js');
+  helpers = require('./helpers.js');
 
-// '=== title ==='
-// ' ...information'
-// ' * warning'
-// ' > prompt'
-// ' -> response'
-// ' ~~ exit'
-// '### error ###'
+// === title ===
+//  ...information
+//  * warning
+//  > prompt
+//  -- response
+//  ~~ exit
+// ### error ###
 
-let __notion = getNotion();
-
-module.exports = async function (yes) {
-  console.info('=== NOTION RESTORATION LOG ===');
+let __notion = helpers.getNotion();
+module.exports = async function ({ overwrite_asar, delete_data } = {}) {
   try {
     const file_operations = [];
     __notion = await __notion;
 
+    // extracted asar: modded
     const app_folder = path.join(__notion, 'app');
     if (await fs.pathExists(app_folder)) {
       console.info(` ...removing folder ${app_folder}`);
       file_operations.push(fs.remove(app_folder));
     } else console.warn(` * ${app_folder} not found: step skipped.`);
 
+    // restoring original asar
     const asar_bak = path.join(__notion, 'app.asar.bak');
     if (await fs.pathExists(asar_bak)) {
       console.info(' ...moving asar.app.bak to app.asar');
 
-      let write = true;
       if (await fs.pathExists(path.join(__notion, 'app.asar'))) {
         console.warn(' * app.asar already exists!');
-        if (!yes) {
+        if (overwrite_asar === undefined) {
           do {
             process.stdout.write(' > overwrite? [Y/n]: ');
-            write = await readline();
-          } while (write && !['y', 'n'].includes(write.toLowerCase()));
-          write = !write || write.toLowerCase() == 'y';
-        } else write = true;
+            overwrite_asar = await helpers.readline();
+          } while (
+            overwrite_asar &&
+            !['y', 'n'].includes(overwrite_asar.toLowerCase())
+          );
+          overwrite_asar =
+            !overwrite_asar || overwrite_asar.toLowerCase() == 'y';
+        }
         console.info(
-          write
-            ? ' -> overwriting app.asar with app.asar.bak'
-            : ' -> removing app.asar.bak'
+          overwrite_asar
+            ? ' -- overwriting app.asar with app.asar.bak'
+            : ' -- removing app.asar.bak'
         );
       }
 
       file_operations.push(
-        write
+        overwrite_asar || overwrite_asar === undefined
           ? fs.move(asar_bak, path.join(__notion, 'app.asar'), {
               overwrite: true,
             })
@@ -63,24 +64,32 @@ module.exports = async function (yes) {
       );
     } else console.warn(` * ${asar_bak} not found: step skipped.`);
 
-    if (await fs.pathExists(data_folder)) {
-      console.log(` ...data folder ${data_folder} found.`);
-      let write = true;
-      if (!yes) {
+    // cleaning data folder: ~/.notion-enhancer
+    if (await fs.pathExists(helpers.data_folder)) {
+      console.log(` ...data folder ${helpers.data_folder} found.`);
+      if (delete_data === undefined) {
         do {
           process.stdout.write(' > delete? [Y/n]: ');
-          write = await readline();
-        } while (write && !['y', 'n'].includes(write.toLowerCase()));
-        write = !write || write.toLowerCase() == 'y';
-      } else write = true;
+          delete_data = await helpers.readline();
+        } while (
+          delete_data &&
+          !['y', 'n'].includes(delete_data.toLowerCase())
+        );
+        delete_data = !delete_data || delete_data.toLowerCase() == 'y';
+      }
       console.info(
-        write ? ` -> deleting ${data_folder}` : ` -> keeping ${data_folder}`
+        delete_data
+          ? ` -- deleting ${helpers.data_folder}`
+          : ` -- keeping ${helpers.data_folder}`
       );
-      if (write) file_operations.push(fs.remove(data_folder));
-    } else console.warn(` * ${data_folder} not found: step skipped.`);
+      if (delete_data) {
+        file_operations.push(fs.remove(helpers.data_folder));
+      } else fs.remove(path.join(helpers.data_folder, 'version.txt'));
+    } else console.warn(` * ${helpers.data_folder} not found: step skipped.`);
 
     await Promise.all(file_operations);
 
+    // patching launch script target of custom wrappers
     if (
       [
         '/opt/notion-app', // https://aur.archlinux.org/packages/notion-app/
@@ -103,9 +112,12 @@ module.exports = async function (yes) {
         }
       }
     }
+
+    console.info(' ~~ success.');
+    return true;
   } catch (err) {
-    console.error(`### ERROR ###\n${err}`);
+    console.error('### ERROR ###');
+    console.error(err);
+    return false;
   }
-  console.info(' ~~ success.');
-  console.info('=== END OF LOG ===');
 };

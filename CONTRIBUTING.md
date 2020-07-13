@@ -23,7 +23,8 @@ following them shows respect to the developer/s spending their free time on it, 
 
 > mobile clients cannot currently be modded.
 
-**know your way around notion/electron/js/css and have some code to contribute?** great! read below to for recommendations on how to create a helpful pull request and what happens with your code afterwards.
+**know your way around notion/electron/js/css and have some code to contribute?** great! read below to for recommendations
+on how to create a helpful pull request and what happens with your code afterwards.
 
 ## testing
 
@@ -41,28 +42,37 @@ using yarn? globally link via `yarn link` (the output of `yarn global bin` must 
 
 the downloaded folder is now directly linked to the `notion-enhancer` command.
 
-no written tests are included with the enhancer: i don't have the experience/skill with them yet to use them effectively. if you can add some for your code, though, go ahead!
+no written tests are included with the enhancer: i don't have the experience/skill with them yet to use them effectively.
+if you can add some for your code, though, go ahead!
 
 ## conventions
 
-the enhancer can be categorised as a **core** with extended by included **modules**.
+the enhancer can be categorised as a **core** extended by included **modules**.
+the core can be further split into the **installer** and the **modloader**.
+modules are either **extensions** or **themes**.
 
 each module is separately versioned, following the [semver](https://semver.org/) scheme.
 depending on the content and scale of a contribution, it may constitute an update on its own or may be merged into a larger update.
 
-to keep a consistent code style it is preferred to name variables with `snake_case` and functions/methods with `camelCase`.
+to keep a consistent code but informative style it is preferred to name variables with
+`snake_case`, functions/methods with `camelCase`, and classes with `PascalCase`.
 
 for information on how to create a theme or module, check the [docs](README.md).
 
 ## review
 
-core devs (at the moment: me) will manually look through each pull request and communicate with contributors before merging to make sure it is a) safe, b) functional and c) bug-free.
+active core devs will manually look through each pull request and communicate with contributors before merging to
+make sure it is a) safe, b) functional and c) bug-free.
 
-**a)** system details (e.g. IP, clipboard) + notion user data are considered private unless directly shared by the user. none of this should be accessed or transmitted to an external server.
+**a)** system details (e.g. IP, clipboard) + notion user data are considered private unless directly shared by the user.
+none of this should be accessed or transmitted to an external server.
 
-**b)** is there a better way to do this? can extra dependencies be removed or replaced by newer web technologies? how can this be made as user-friendly as possible?
+**b)** is there a better way to do this? can extra dependencies be removed or replaced by newer web technologies?
+how can this be made as user-friendly as possible?
 
-**c)** where possible, code should be tested on a variety of platforms in a variety of situations so it can be confirmed that it won't break anything for the user and is robust enough to handle use by both power-users and non-tech-savvy users.
+**c)** where possible, code should be tested on a variety of platforms in a variety of situations so it can be
+confirmed that it won't break anything for the user and is robust enough to handle use by both
+power-users and non-tech-savvy users.
 
 ## translating
 
