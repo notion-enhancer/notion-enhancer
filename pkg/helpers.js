@@ -23,7 +23,19 @@ class EnhancerError extends Error {
 const is_wsl =
     process.platform == 'linux' &&
     os.release().toLowerCase().includes('microsoft'),
+  // ~/.notion-enhancer absolute path.
   data_folder = path.join(os.homedir(), '.notion-enhancer');
+
+// transform a wsl filepath to its relative windows filepath if necessary.
+// every file path inserted by hack.js should be put through this.
+function realpath(wsl_path) {
+  if (!is_wsl) return wsl_path;
+  wsl_path = fs.realpathSync(wsl_path);
+  if (wsl_path.startsWith('/mnt/')) {
+    wsl_path = `${wsl_path[5].toUpperCase()}:${wsl_path.slice(6)}`;
+  } else wsl_path = `//wsl$/${process.env.WSL_DISTRO_NAME}${wsl_path}`;
+  return wsl_path;
+}
 
 // wait for console input, returns keys when enter pressed.
 function readline() {
@@ -105,6 +117,7 @@ module.exports = {
   EnhancerError,
   is_wsl,
   data_folder,
+  realpath,
   readline,
   getNotion,
   getJSON,

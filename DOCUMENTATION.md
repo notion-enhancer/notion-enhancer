@@ -14,64 +14,99 @@ _and explore the contents of your local extracted `app.asar`._
 _explore out [the existing modules](https://github.com/dragonwocky/notion-enhancer/tree/js/mods/)_
 _for examples of how the below is implemented._
 
-each directory in the `mods` folder is considered a module, with the entry point `mod.js`.
-this file must have its exports set to an object that defines metadata,
-configurable options for the menu, code to be run in both the back- and front- ends of the app,
-and styling.
+each directory in the `mods` folder is considered a module, and consist of 5 files:
+
+| file          | description                                                                                                                                                          |
+| ------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `meta.js`     | **required:** entry point, describes the module                                                                                                                      |
+| `hack.js`     | **optional:** executed on enhancement (useful for e.g. find/replace on files, modding that can't be done just through insertion)                                     |
+| `main.js`     | **optional:** executed on app launch in the "main" process (singular, shared between all apps - consider it a backend) of `app/main/main.js`                         |
+| `renderer.js` | **optional:** executed on window launch in the "renderer" process (per-window, the client-side js one might expect to run on a website) of `app/renderer/preload.js` |
+| `styles.css`  | **optional:** css file automatically inserted into each app window via the `enhancement://` protocol                                                                 |
+
+### meta
 
 `module.exports =`
 
-| key      | value                              | desc                                                                                                                      | required |
-| -------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------- | -------- |
-| id       | uuidv4 string                      |                                                                                                                           | ✔️       |
-| type     | 'extension', 'theme'               |                                                                                                                           | ✔️       |
-| name     | string                             |                                                                                                                           | ✔️       |
-| desc     | string                             |                                                                                                                           |          |
-| version  | semver string (e.g. '0.3.7')       |                                                                                                                           | ✔️       |
-| author   | github username string             |                                                                                                                           | ✔️       |
-| thumb    | relative file string, url          |                                                                                                                           |          |
-| options  | [ array of { option: see below } ] | options made available in the enhancer menu (accessible from the tray)                                                    |          |
-| styles   | relative file string               | css file automatically inserted into each app window via the `enhancement://` protocol                                    |          |
-| main     | function(store, electron)          | executed on app launch in the "main" process (singular, shared between all apps - consider it a backend)                  |          |
-| renderer | function(store)                    | executed on window launch in the "renderer" process (per-window, the client-side js one might expect to run on a website) |          |
-| hack     | function(store, helpers)           | executed on enhancement (useful for e.g. find/replace on files, modding that can't be done just through insertion)        |          |
+| key       | value                                                                                           | type            |
+| --------- | ----------------------------------------------------------------------------------------------- | --------------- |
+| id        | **required:** uuidv4                                                                            | _string_        |
+| type      | **required:** 'extension' or 'theme'                                                            | _string_        |
+| name      | **required:** short name (e.g. 'frameless window')                                              | _string_        |
+| desc      | **optional:** 1-3 sentence description of what the module is/does                               | _string_        |
+| version   | **required:** semver (e.g. '0.3.7')                                                             | _string_        |
+| author    | **required:** github username                                                                   | _string_        |
+| thumbnail | **optional:** image: relative file or url                                                       | _string_        |
+| options   | **optional:** see below: options made available in the enhancer menu (accessible from the tray) | _array<object>_ |
 
-`{ option }`
+`module.exports.options =`
 
-| key   | value                                                                            | desc                                                 | required |
-| ----- | -------------------------------------------------------------------------------- | ---------------------------------------------------- | -------- |
-| name  | string                                                                           | key to save value to the mod **`store`** (see below) | ✔️       |
-| type  | 'toggle', 'select', 'input', 'file'                                              |                                                      | ✔️       |
-| value | type.toggle = true, false. type.select = [array of strings]. type.input = string | default value or possible values                     |          |
+| key   | value                                                         | type      |
+| ----- | ------------------------------------------------------------- | --------- |
+| key   | **required:** key to save value to the mod `store`            | _string_  |
+| type  | **required:** 'toggle', 'select', 'input' or 'file'           | _string_  |
+| label | **required:** short description of option to be shown in menu | _string_  |
+| value | **optional:** default or possible value/s for option          | see below |
 
-the **`store`** argument allows access to the module settings/options, saved to `~/.notion-enhancer/id.json`.
-it can be initialised with `store(defaults)`, then used as if it were a normal object.
-it will automatically sync with the JSON file.
+`module.exports.options.value =`
 
-the **`helpers`** argument exposes the shared variables/classes/functions in the `helpers.js` file.
+| option type | value           |
+| ----------- | --------------- |
+| toggle      | _boolean_       |
+| select      | _array<string>_ |
+| input       | _string_        |
+| file        | none            |
+
+### scripting
+
+`hack.js`
 
 ```js
+module.exports = function (store, __notion) {};
+```
+
+`main.js` `renderer.js`
+
+```js
+module.exports = function (store) {};
+```
+
+the **`store`** argument allows access to the module settings/options defined in `meta.js`, set in the menu,
+or used internally by the module. each module store is saved to + automatically syncs with `~/.notion-enhancer/id.json`.
+it can be initialised with `const data = store({ defaults })`, then used as if it were a normal object.
+
+the **`__notion`** argument gives the filepath of the app parent folder.
+use it for e.g. find/replace on pre-existing app code in `__notion/app/renderer/createWindow.js`
+to make the window frameless.
+
+shared variables/classes/functions in the `helpers.js` file: for consistency of error handling and
+cross-platform functionality these **should** be used to achieve their purpose.
+
+```js
+require('../../pkg/helpers.js');
+
 {
   // used to differentiate between "enhancer failed" and "code broken" errors.
   class EnhancerError {},
   // checks if being run on the windows subsystem for linux:
   // used to modify windows notion app.
   is_wsl,
-  // ~/.notion-enhancer
+  // ~/.notion-enhancer absolute path.
   data_folder,
+  // transform a wsl filepath to its relative windows filepath if necessary.
+  // every file path inserted by hack.js should be put through this.
+  realpath(wsl_path),
   // wait for console input, returns keys when enter pressed.
   readline(),
-  // gets possible system notion app filepaths.
+  // gets notion app filepath (the __notion argument above).
   getNotion(),
-  // read JSON from a file, fall back to empty obj.
+  // attempts to read a JSON file, falls back to empty object.
   getJSON(file),
   // promisified https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback
   exec(command, options),
 }
 ```
 
-the **`electron`** argument provides access to the [electron](https://www.npmjs.com/package/electron) module.
-
-## theming
+#### styling
 
 css vars to be documented
