@@ -10,7 +10,7 @@ const os = require('os'),
   fs = require('fs-extra'),
   exec = require('util').promisify(require('child_process').exec);
 
-// used to differentiate between informative errors and "enhancer-is-dying" errors.
+// used to differentiate between "enhancer failed" and "code broken" errors.
 class EnhancerError extends Error {
   constructor(message) {
     super(message);

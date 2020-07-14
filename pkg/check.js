@@ -13,7 +13,7 @@ const fs = require('fs-extra'),
 // handle pre-existing installations: app.asar modded? with which enhancer version?
 
 let __notion = helpers.getNotion();
-module.exports = async function ({ overwrite_version } = {}) {
+module.exports = async function () {
   __notion = await __notion;
 
   const version_path = path.join(__notion, 'app', 'ENHANCER_VERSION.txt'),
