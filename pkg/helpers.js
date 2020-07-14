@@ -28,26 +28,13 @@ const is_wsl =
 
 // transform a wsl filepath to its relative windows filepath if necessary.
 // every file path inserted by hack.js should be put through this.
-function realpath(wsl_path) {
-  if (!is_wsl) return wsl_path;
-  wsl_path = fs.realpathSync(wsl_path);
-  if (wsl_path.startsWith('/mnt/')) {
-    wsl_path = `${wsl_path[5].toUpperCase()}:${wsl_path.slice(6)}`;
-  } else wsl_path = `//wsl$/${process.env.WSL_DISTRO_NAME}${wsl_path}`;
-  return wsl_path;
-}
-
-// wait for console input, returns keys when enter pressed.
-function readline() {
-  return new Promise((res, rej) => {
-    process.stdin.resume();
-    process.stdin.setEncoding('utf8');
-    process.stdin.on('data', (key) => {
-      if (key === '\u0003') process.exit(); // CTRL+C
-      process.stdin.pause();
-      res(key.trim());
-    });
-  });
+function realpath(hack_path) {
+  if (!is_wsl) return hack_path;
+  hack_path = fs.realpathSync(hack_path);
+  if (hack_path.startsWith('/mnt/')) {
+    hack_path = `${hack_path[5].toUpperCase()}:${hack_path.slice(6)}`;
+  } else hack_path = `//wsl$/${process.env.WSL_DISTRO_NAME}${hack_path}`;
+  return hack_path;
 }
 
 // gets possible system notion app filepaths.
@@ -113,13 +100,26 @@ function getJSON(from) {
   }
 }
 
+// wait for console input, returns keys when enter pressed.
+function readline() {
+  return new Promise((res, rej) => {
+    process.stdin.resume();
+    process.stdin.setEncoding('utf8');
+    process.stdin.on('data', (key) => {
+      if (key === '\u0003') process.exit(); // CTRL+C
+      process.stdin.pause();
+      res(key.trim());
+    });
+  });
+}
+
 module.exports = {
   EnhancerError,
   is_wsl,
   data_folder,
   realpath,
-  readline,
   getNotion,
   getJSON,
+  readline,
   exec,
 };
