@@ -28,16 +28,16 @@ each directory in the `mods` folder is considered a module, and consist of 5 fil
 
 `module.exports =`
 
-| key       | value                                                                                           | type            |
-| --------- | ----------------------------------------------------------------------------------------------- | --------------- |
-| id        | **required:** uuidv4                                                                            | _string_        |
-| type      | **required:** 'extension' or 'theme'                                                            | _string_        |
-| name      | **required:** short name (e.g. 'frameless window')                                              | _string_        |
-| desc      | **optional:** 1-3 sentence description of what the module is/does                               | _string_        |
-| version   | **required:** semver (e.g. '0.3.7')                                                             | _string_        |
-| author    | **required:** github username                                                                   | _string_        |
-| thumbnail | **optional:** image: relative file or url                                                       | _string_        |
-| options   | **optional:** see below: options made available in the enhancer menu (accessible from the tray) | _array<object>_ |
+| key       | value                                                                                           | type              |
+| --------- | ----------------------------------------------------------------------------------------------- | ----------------- |
+| id        | **required:** uuidv4                                                                            | _string_          |
+| type      | **required:** 'extension' or 'theme'                                                            | _string_          |
+| name      | **required:** short name (e.g. 'frameless window')                                              | _string_          |
+| desc      | **optional:** 1-3 sentence description of what the module is/does                               | _string_          |
+| version   | **required:** semver (e.g. '0.3.7')                                                             | _string_          |
+| author    | **required:** github username                                                                   | _string_          |
+| thumbnail | **optional:** image: relative file or url                                                       | _string_          |
+| options   | **optional:** see below: options made available in the enhancer menu (accessible from the tray) | _array\<object\>_ |
 
 `module.exports.options =`
 
