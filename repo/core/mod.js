@@ -7,7 +7,7 @@
 module.exports = {
   id: '0f0bf8b6-eae6-4273-b307-8fc43f2ee082',
   type: 'core',
-  name: 'notion-enhancer',
+  name: 'notion-enhancer core',
   version: require('../../package.json').version,
   author: 'dragonwocky',
   thumb:
