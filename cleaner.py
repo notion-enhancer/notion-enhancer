@@ -1,4 +1,3 @@
-
 # notion-enhancer
 # (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
 # (c) 2020 TarasokUA
@@ -25,12 +24,12 @@ try:
     filepath = ''
     if 'microsoft' in platform.uname()[3].lower() and sys.platform == 'linux':
         filepath = '/mnt/c/' + \
-            subprocess.run(
-                ['cmd.exe', '/c', 'echo', '%localappdata%'], stdout=subprocess.PIPE).stdout \
-            .rstrip().decode('utf-8')[3:].replace('\\', '/') + '/Programs/Notion/resources'
+                   subprocess.run(
+                       ['cmd.exe', '/c', 'echo', '%localappdata%'], stdout=subprocess.PIPE).stdout \
+                       .rstrip().decode('utf-8')[3:].replace('\\', '/') + '/Programs/Notion/resources'
     elif sys.platform == 'win32':
         filepath = subprocess.run(['echo', '%localappdata%'], shell=True, capture_output=True).stdout \
-            .rstrip().decode('utf-8') + '\\Programs\\Notion\\resources'
+                       .rstrip().decode('utf-8') + '\\Programs\\Notion\\resources'
     elif sys.platform == 'linux':
         filepath = '/opt/notion-app' if os.path.exists(
             '/opt/notion-app') else '/opt/notion'
@@ -57,23 +56,15 @@ try:
             f' * {os.path.join(filepath, "app.asar.bak")} was not found: step skipped.')
 
     if sys.platform == 'linux' and 'microsoft' not in platform.uname()[3].lower():
-        path = ''
-        if os.path.exists('/opt/notion-app/notion-app'):
-            path = '/opt/notion-app/notion-app'
-        elif os.path.exists('/usr/bin/notion-app'):
-            path = '/usr/bin/notion-app'
-        elif os.path.exists('/usr/bin/notion'):
-            path = '/usr/bin/notion'
-        else:
-            raise ValueError("Couldn't find the app launcher")
-        with open(path, 'r', encoding='UTF-8') as launcher:
-            contents = launcher.read()
-            if 'app.asar' not in contents:
-                print(
-                    f' ...patching app launcher')
-                subprocess.call(
-                    ['sed', '-i', r's/electron6\ app/electron6\ app\.asar/',
-                     path])
+        pathlist = ['/usr/bin/notion-app', '/usr/bin/notion', '/opt/notion-app/notion-app']
+        # get all the possible paths where the launcher may be located
+        for path in pathlist:
+            if os.path.exists(path):
+                with open(path, 'r', encoding='UTF-8') as launcher:
+                    contents = launcher.read()
+                    if 'app.asar' not in contents:
+                        print(f' ...patching app launcher in {path}')
+                        subprocess.call(['sed', '-i', r's/electron6\ app/electron6\ app\.asar/', path])
 
     print(f'\n{bold}>>> SUCCESSFULLY CLEANED <<<{normal}')
 
