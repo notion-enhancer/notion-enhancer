@@ -14,7 +14,7 @@ _and explore the contents of your local extracted `app.asar`._
 _explore [the existing modules](https://github.com/dragonwocky/notion-enhancer/tree/js/mods/)_
 _for examples of implementing what's described below._
 
-each directory in the `mods` folder is considered a module, with the entry points `mod.js` and `styles.css`
+each directory in the `mods` folder is considered a module, with the entry points `mod.js` and `styles.css`.
 
 | file         | description                                                                                          |
 | ------------ | ---------------------------------------------------------------------------------------------------- |

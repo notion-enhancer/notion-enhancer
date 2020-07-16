@@ -8,6 +8,8 @@
 const fs = require('fs-extra'),
   path = require('path'),
   { readdirIterator } = require('readdir-enhanced'),
+  { promisify } = require('util'),
+  { exec } = require('child_process'),
   helpers = require('./helpers.js'),
   { version } = require('../package.json');
 
@@ -64,7 +66,7 @@ module.exports = async function ({ overwrite_version } = {}) {
         'bin',
         'asar.js'
       );
-    await helpers.exec(
+    await promisify(exec)(
       `"${asar_exec}" extract "${asar_app}" "${path.resolve(__notion, 'app')}"`
     );
     fs.move(asar_app, path.resolve(__notion, 'app.asar.bak'));

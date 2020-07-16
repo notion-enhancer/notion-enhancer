@@ -7,7 +7,8 @@
 'use strict';
 const fs = require('fs-extra'),
   path = require('path'),
-  helpers = require('./helpers.js');
+  helpers = require('./helpers.js'),
+  store = require('./store.js');
 
 let __notion = helpers.getNotion();
 module.exports = async function (__file) {
@@ -30,6 +31,8 @@ module.exports = async function (__file) {
         !['extension', 'theme', 'core'].includes(mod.type)
       )
         throw Error;
+      if (mod.hacks && mod.hacks[__file])
+        mod.hacks[__file]((defaults) => store(mod.id, defaults));
       loaded_mods.push(mod.name);
     } catch (err) {
       invalid_mods.push(dir);

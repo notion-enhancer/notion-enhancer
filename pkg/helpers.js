@@ -8,7 +8,8 @@
 const os = require('os'),
   path = require('path'),
   fs = require('fs-extra'),
-  exec = require('util').promisify(require('child_process').exec);
+  { exec, execSync } = require('child_process'),
+  { promisify } = require('util');
 
 // used to differentiate between "enhancer failed" and "code broken" errors.
 class EnhancerError extends Error {
@@ -24,7 +25,21 @@ const is_wsl =
     process.platform === 'linux' &&
     os.release().toLowerCase().includes('microsoft'),
   // ~/.notion-enhancer absolute path.
-  data_folder = path.resolve(os.homedir(), '.notion-enhancer');
+  data_folder = path.resolve(
+    is_wsl
+      ? (() => {
+          const stdout = execSync('cmd.exe /c echo %systemdrive%%homepath%', {
+              encoding: 'utf8',
+            }),
+            drive = stdout[0];
+          return `/mnt/${drive.toLowerCase()}${stdout
+            .replace(/\\/g, '/')
+            .slice(2)
+            .trim()}`;
+        })()
+      : os.homedir(),
+    '.notion-enhancer'
+  );
 
 // transform a wsl filepath to its relative windows filepath if necessary.
 // every file path inserted by hack.js should be put through this.
@@ -49,7 +64,9 @@ async function getNotion() {
       break;
     case 'linux':
       if (is_wsl) {
-        const { stdout } = await exec('cmd.exe /c echo %localappdata%'),
+        const { stdout } = await promisify(exec)(
+            'cmd.exe /c echo %localappdata%'
+          ),
           drive = stdout[0];
         folder = `/mnt/${drive.toLowerCase()}${stdout
           .replace(/\\/g, '/')
@@ -121,5 +138,4 @@ module.exports = {
   getNotion,
   getJSON,
   readline,
-  exec,
 };

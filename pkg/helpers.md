@@ -107,17 +107,3 @@ if (overwrite) {
   // do stuff
 } else console.info(' -- keeping file: skipping step.');
 ```
-
----
-
-```js
-async function exec(command[, options]) {
- return child_process;
-}
-```
-
-use `helpers.exec()` to execute shell commands. it is a promisified version of node.js's
-[child_process.exec(command[, options][, callback])](https://nodejs.org/api/child_process.html#child_process_child_process_exec_command_options_callback).
-
-primarily used for internal processes (e.g. unpacking asar, fetching windows app path from the wsl).
-for security reasons this should not be used by modules.
