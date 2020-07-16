@@ -56,8 +56,8 @@ try:
             f' * {os.path.join(filepath, "app.asar.bak")} was not found: step skipped.')
 
     if sys.platform == 'linux' and 'microsoft' not in platform.uname()[3].lower():
-        pathlist = ['/usr/bin/notion-app', '/usr/bin/notion', '/opt/notion-app/notion-app']
-        # get all the possible paths where the launcher may be located
+        pathlist = ('/usr/bin/notion-app', '/usr/bin/notion', '/opt/notion-app/notion-app')
+        # check all the possible paths where the launcher may be located
         for path in pathlist:
             if os.path.exists(path):
                 with open(path, 'r', encoding='UTF-8') as launcher:

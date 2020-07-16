@@ -224,15 +224,12 @@ try:
             f' * {os.path.join(filepath, "app", "main", "main.js")} was not found: step skipped.')
 
     if sys.platform == 'linux' and 'microsoft' not in platform.uname()[3].lower():
-        def patch(dest):
-            print(f' ...patching app launcher in {path}')
-            subprocess.call(['sed', '-i', r's/electron6\ app\.asar/electron6\ app/', dest])
-
-        pathlist = ['/usr/bin/notion-app', '/usr/bin/notion', '/opt/notion-app/notion-app']
+        pathlist = ('/usr/bin/notion-app', '/usr/bin/notion', '/opt/notion-app/notion-app')
         # check all the paths where the launcher may be located
         for path in pathlist:
             if os.path.exists(path):
-                patch(path)
+                print(f' ...patching app launcher in {path}')
+                subprocess.call(['sed', '-i', r's/electron6\ app\.asar/electron6\ app/', path])
 
     print('\n>>> SUCCESSFULLY CUSTOMISED <<<')
 
