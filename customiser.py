@@ -226,9 +226,17 @@ try:
     if sys.platform == 'linux' and 'microsoft' not in platform.uname()[3].lower():
         print(
             f' ...patching app launcher')
+        s = ''
+        if os.path.exists('/opt/notion-app/notion-app'):
+            s = '/opt/notion-app/notion-app'
+        elif os.path.exists('/usr/bin/notion-app'):
+            s = '/usr/bin/notion-app'
+        elif os.path.exists('/usr/bin/notion'):
+            s = '/usr/bin/notion'
+        else:
+            raise ValueError("Couldn't find the app launcher")
         subprocess.call(
-            ['sed', '-i', r's/electron\ app\.asar/electron\ app/',
-             '/usr/bin/notion-app' if os.path.exists('/usr/bin/notion-app') else '/usr/bin/notion'])
+            ['sed', '-i', r's/electron6\ app\.asar/electron6\ app/', s])
 
     print('\n>>> SUCCESSFULLY CUSTOMISED <<<')
 
