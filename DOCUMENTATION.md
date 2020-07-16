@@ -6,8 +6,6 @@ for support, contact me on discord `dragonwocky#8449` or open an issue here in t
 
 want to contribute? check the the [contribution guidelines](CONTRIBUTING.md).
 
----
-
 ## module creation
 
 _to understand best how notion's app works, check out [the electron docs](https://www.electronjs.org/docs/)_
@@ -22,8 +20,6 @@ each directory in the `mods` folder is considered a module, with the entry point
 | ------------ | ---------------------------------------------------------------------------------------------------- |
 | `mod.js`     | **required:** describes the module and contains functional javascript                                |
 | `styles.css` | **optional:** css file automatically inserted into each app window via the `enhancement://` protocol |
-
----
 
 ### mod.js
 
@@ -86,7 +82,7 @@ access to the module settings/options defined in `mod.js` (those set in the menu
 or used internally by the module). each module store is saved to + automatically syncs with `~/.notion-enhancer/id.json`.
 it can be initialised with `const data = store({ defaults })`, then used as if it were a normal object.
 
-this hack is applied to whichever file is set as the function key. these can be found within the `app` folder.
+this hack is applied to whichever file (`.js`-only) is set as the function key. these can be found within the `app` folder.
 
 files under the `main` folder are executed on app launch in a process shared
 between all app windows (consider it a backend). files under the `renderer` folder are
@@ -117,8 +113,6 @@ module.exports.hacks = {
 #### the `enhancement://` protocol
 
 to be documented
-
----
 
 ## styling
 

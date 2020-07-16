@@ -101,7 +101,7 @@ do {
   // ask for a Y/n until a valid answer is received.
   // pressing enter without input is assumed to be a "yes".
 } while (overwrite && !['y', 'n'].includes(overwrite.toLowerCase()));
-overwrite = !overwrite || overwrite.toLowerCase() == 'y';
+overwrite = !overwrite || overwrite.toLowerCase() === 'y';
 if (overwrite) {
   console.info(' -- overwriting file.');
   // do stuff

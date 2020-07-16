@@ -21,10 +21,10 @@ class EnhancerError extends Error {
 // checks if being run on the windows subsystem for linux:
 // used to modify windows notion app.
 const is_wsl =
-    process.platform == 'linux' &&
+    process.platform === 'linux' &&
     os.release().toLowerCase().includes('microsoft'),
   // ~/.notion-enhancer absolute path.
-  data_folder = path.join(os.homedir(), '.notion-enhancer');
+  data_folder = path.resolve(os.homedir(), '.notion-enhancer');
 
 // transform a wsl filepath to its relative windows filepath if necessary.
 // every file path inserted by hack.js should be put through this.
@@ -72,15 +72,15 @@ async function getNotion() {
     );
   // check if actual app files are present.
   // if app/app.asar are missing but app.asar.bak present it will be moved to app.asar
-  const app_asar = path.join(folder, 'app.asar');
+  const app_asar = path.resolve(folder, 'app.asar');
   if (
     !(
       (await fs.pathExists(folder)) &&
       ((await fs.pathExists(app_asar)) ||
-        (await fs.pathExists(path.join(folder, 'app'))))
+        (await fs.pathExists(path.resolve(folder, 'app'))))
     )
   ) {
-    const asar_bak = path.join(folder, 'app.asar.bak');
+    const asar_bak = path.resolve(folder, 'app.asar.bak');
     if (await fs.pathExists(asar_bak)) {
       await fs.move(asar_bak, app_asar);
     } else

@@ -11,7 +11,7 @@ const path = require('path'),
 
 // a wrapper for accessing data stored in a JSON file.
 module.exports = (namespace, defaults = {}) => {
-  namespace = path.join(data_folder, namespace + '.json');
+  namespace = path.resolve(data_folder, namespace + '.json');
   fs.ensureDirSync(data_folder);
 
   const getData = () => ({ ...defaults, ...getJSON(namespace) });

@@ -24,18 +24,18 @@ module.exports = async function ({ overwrite_asar, delete_data } = {}) {
     __notion = await __notion;
 
     // extracted asar: modded
-    const app_folder = path.join(__notion, 'app');
+    const app_folder = path.resolve(__notion, 'app');
     if (await fs.pathExists(app_folder)) {
       console.info(` ...removing folder ${app_folder}`);
       file_operations.push(fs.remove(app_folder));
     } else console.warn(` * ${app_folder} not found: step skipped.`);
 
     // restoring original asar
-    const asar_bak = path.join(__notion, 'app.asar.bak');
+    const asar_bak = path.resolve(__notion, 'app.asar.bak');
     if (await fs.pathExists(asar_bak)) {
       console.info(' ...moving asar.app.bak to app.asar');
 
-      if (await fs.pathExists(path.join(__notion, 'app.asar'))) {
+      if (await fs.pathExists(path.resolve(__notion, 'app.asar'))) {
         console.warn(' * app.asar already exists!');
         if (overwrite_asar === undefined) {
           do {
@@ -46,7 +46,7 @@ module.exports = async function ({ overwrite_asar, delete_data } = {}) {
             !['y', 'n'].includes(overwrite_asar.toLowerCase())
           );
           overwrite_asar =
-            !overwrite_asar || overwrite_asar.toLowerCase() == 'y';
+            !overwrite_asar || overwrite_asar.toLowerCase() === 'y';
         }
         console.info(
           overwrite_asar
@@ -57,7 +57,7 @@ module.exports = async function ({ overwrite_asar, delete_data } = {}) {
 
       file_operations.push(
         overwrite_asar || overwrite_asar === undefined
-          ? fs.move(asar_bak, path.join(__notion, 'app.asar'), {
+          ? fs.move(asar_bak, path.resolve(__notion, 'app.asar'), {
               overwrite: true,
             })
           : fs.remove(asar_bak)
@@ -75,7 +75,7 @@ module.exports = async function ({ overwrite_asar, delete_data } = {}) {
           delete_data &&
           !['y', 'n'].includes(delete_data.toLowerCase())
         );
-        delete_data = !delete_data || delete_data.toLowerCase() == 'y';
+        delete_data = !delete_data || delete_data.toLowerCase() === 'y';
       }
       console.info(
         delete_data
@@ -84,7 +84,7 @@ module.exports = async function ({ overwrite_asar, delete_data } = {}) {
       );
       if (delete_data) {
         file_operations.push(fs.remove(helpers.data_folder));
-      } else fs.remove(path.join(helpers.data_folder, 'version.txt'));
+      } else fs.remove(path.resolve(helpers.data_folder, 'version.txt'));
     } else console.warn(` * ${helpers.data_folder} not found: step skipped.`);
 
     await Promise.all(file_operations);

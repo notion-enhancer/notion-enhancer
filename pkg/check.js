@@ -16,17 +16,17 @@ let __notion = helpers.getNotion();
 module.exports = async function () {
   __notion = await __notion;
 
-  const version_path = path.join(__notion, 'app', 'ENHANCER_VERSION.txt'),
+  const version_path = path.resolve(__notion, 'app', 'ENHANCER_VERSION.txt'),
     installed_version = (await fs.pathExists(version_path))
       ? await fs.readFile(version_path, 'utf8')
       : '?.?.?';
-  if (await fs.pathExists(path.join(__notion, 'app.asar'))) {
+  if (await fs.pathExists(path.resolve(__notion, 'app.asar'))) {
     return {
       msg: `notion-enhancer has not been applied.`,
       code: 0,
     };
   }
-  return installed_version == version
+  return installed_version === version
     ? {
         msg: `notion-enhancer v${version} applied.`,
         code: 1,

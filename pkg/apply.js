@@ -7,6 +7,7 @@
 'use strict';
 const fs = require('fs-extra'),
   path = require('path'),
+  { readdirIterator } = require('readdir-enhanced'),
   helpers = require('./helpers.js'),
   { version } = require('../package.json');
 
@@ -40,7 +41,7 @@ module.exports = async function ({ overwrite_version } = {}) {
           !['y', 'n'].includes(overwrite_version.toLowerCase())
         );
         overwrite_version =
-          !overwrite_version || overwrite_version.toLowerCase() == 'y';
+          !overwrite_version || overwrite_version.toLowerCase() === 'y';
         if (!overwrite_version) {
           console.info(' ~~ keeping previous version: exiting.');
           return false;
@@ -54,8 +55,8 @@ module.exports = async function ({ overwrite_version } = {}) {
         });
     }
     console.info(' ...unpacking app.asar');
-    const asar_app = path.join(__notion, 'app.asar'),
-      asar_exec = path.join(
+    const asar_app = path.resolve(__notion, 'app.asar'),
+      asar_exec = path.resolve(
         __dirname,
         '..',
         'node_modules',
@@ -64,9 +65,9 @@ module.exports = async function ({ overwrite_version } = {}) {
         'asar.js'
       );
     await helpers.exec(
-      `"${asar_exec}" extract "${asar_app}" "${path.join(__notion, 'app')}"`
+      `"${asar_exec}" extract "${asar_app}" "${path.resolve(__notion, 'app')}"`
     );
-    fs.move(asar_app, path.join(__notion, 'app.asar.bak'));
+    fs.move(asar_app, path.resolve(__notion, 'app.asar.bak'));
 
     // patching launch script target of custom wrappers
     if (
@@ -92,39 +93,29 @@ module.exports = async function ({ overwrite_version } = {}) {
       }
     }
 
-    const mods = await fs.readdir(path.join(__dirname, '..', 'mods')),
-      invalid_mods = [],
-      loaded_mods = [];
-    for (let dir of mods) {
-      try {
-        const mod = require(`../mods/${dir}/mod.js`);
-        if (
-          !mod.id ||
-          !mod.name ||
-          !mod.version ||
-          !mod.author ||
-          !['extension', 'theme', 'core'].includes(mod.type)
-        )
-          throw Error;
-        loaded_mods.push(mod.name);
-        console.log(mod.renderer.toString());
-      } catch (err) {
-        invalid_mods.push(dir);
+    for await (let insertion_target of readdirIterator(
+      path.resolve(__notion, 'app'),
+      {
+        deep: (stats) => stats.path.indexOf('node_modules') === -1,
+        filter: (stats) => stats.isFile() && stats.path.endsWith('.js'),
       }
+    )) {
+      insertion_target = path.resolve(__notion, 'app', insertion_target);
+      fs.appendFile(
+        insertion_target,
+        `\n\n//notion-enhancer\nrequire('${helpers.realpath(
+          __dirname
+        )}/loader.js')(__filename);`
+      );
     }
-    if (loaded_mods.length)
-      console.info(
-        `<notion-enhancer> enhancements loaded: ${loaded_mods.join(', ')}.`
-      );
-    if (invalid_mods.length)
-      console.error(
-        `<notion-enhancer> invalid mods found: ${invalid_mods.join(', ')}.`
-      );
 
     // not resolved, nothing depends on it so it's just a "let it do its thing"
     console.info(' ...recording enhancement version.');
-    fs.outputFile(path.join(__notion, 'app', 'ENHANCER_VERSION.txt'), version);
-    fs.outputFile(path.join(helpers.data_folder, 'version.txt'), version);
+    fs.outputFile(
+      path.resolve(__notion, 'app', 'ENHANCER_VERSION.txt'),
+      version
+    );
+    fs.outputFile(path.resolve(helpers.data_folder, 'version.txt'), version);
 
     console.info(' ~~ success.');
     return true;
