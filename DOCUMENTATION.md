@@ -21,6 +21,10 @@ each directory in the `mods` folder is considered a module, with the entry point
 | `mod.js`     | **required:** describes the module and contains functional javascript                                |
 | `styles.css` | **optional:** css file automatically inserted into each app window via the `enhancement://` protocol |
 
+> a module that with the primary function of being a hack should be categorised as an extension,
+> while a module that with the primary function of adding styles should be categorised as a theme
+> in the `mod.js` `type` setting.
+
 ### mod.js
 
 ```js
@@ -112,8 +116,15 @@ module.exports.hacks = {
 
 #### the `enhancement://` protocol
 
-to be documented
+any files within the `mods` folder can be used via the `enhancement://` protocol.
 
-## styling
+for example, accessing an image file within the frameless mod: `<img src="enhancement://frameless/minimise.svg">`.
 
-to be documented
+## styles.css
+
+styles can be used for custom element insertions, generally hiding/re-spacing elements,
+and particularly: colour theming.
+
+the enhancer has been designed with theming in mind, so as much of notion's colours
+and typography as possible (both for the light and dark themes) have been mapped out
+using css variables - check these out in the `mods/core/theme.css` and `mods/dark+/styles.css` files.

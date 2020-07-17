@@ -107,7 +107,9 @@ module.exports = async function ({ overwrite_asar, delete_data } = {}) {
         if (!bin_script.includes('app.asar')) {
           await fs.outputFile(
             bin_path,
-            bin_script.replace('electron app\n', 'electron app.asar\n')
+            bin_script
+              .replace('electron app\n', 'electron app.asar\n')
+              .replace('electron6 app\n', 'electron6 app.asar\n')
           );
         }
       }
