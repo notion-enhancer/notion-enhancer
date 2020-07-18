@@ -55,7 +55,7 @@ primarily used for internal handling of filepaths (e.g. for the modloader).
 ---
 
 ```js
-async function getNotion() {
+function getNotion() {
   return notion_app_path;
 }
 ```

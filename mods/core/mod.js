@@ -23,7 +23,7 @@ module.exports = {
     'https://camo.githubusercontent.com/5c5bca9e987d986b8cc7e51066f90c6f8a84af08/68747470733a2f2f63646e2e646973636f72646170702e636f6d2f6174746163686d656e74732f3733313634373938343332333931393933332f3733313732373235393239353032333132342f494d475f323137302e6a7067',
   options: [],
   hacks: {
-    // 'main/main.js': require('./tray.js')(defaults),
+    'main/main.js': require('./tray.js')(defaults),
     'renderer/preload.js': function (store) {
       const data = store({ name: 'dragonwocky' });
       console.log(data.name);

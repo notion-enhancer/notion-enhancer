@@ -21,21 +21,20 @@ let __notion = helpers.getNotion();
 module.exports = async function ({ overwrite_asar, delete_data } = {}) {
   try {
     const file_operations = [];
-    __notion = await __notion;
 
     // extracted asar: modded
-    const app_folder = path.resolve(__notion, 'app');
+    const app_folder = path.normalize(`${__notion}/app`);
     if (await fs.pathExists(app_folder)) {
       console.info(` ...removing folder ${app_folder}`);
       file_operations.push(fs.remove(app_folder));
     } else console.warn(` * ${app_folder} not found: step skipped.`);
 
     // restoring original asar
-    const asar_bak = path.resolve(__notion, 'app.asar.bak');
+    const asar_bak = path.normalize(`${__notion}/app.asar.bak`);
     if (await fs.pathExists(asar_bak)) {
       console.info(' ...moving asar.app.bak to app.asar');
 
-      if (await fs.pathExists(path.resolve(__notion, 'app.asar'))) {
+      if (await fs.pathExists(path.normalize(`${__notion}/app.asar`))) {
         console.warn(' * app.asar already exists!');
         if (overwrite_asar === undefined) {
           do {
@@ -57,7 +56,7 @@ module.exports = async function ({ overwrite_asar, delete_data } = {}) {
 
       file_operations.push(
         overwrite_asar || overwrite_asar === undefined
-          ? fs.move(asar_bak, path.resolve(__notion, 'app.asar'), {
+          ? fs.move(asar_bak, path.normalize(`${__notion}/app.asar`), {
               overwrite: true,
             })
           : fs.remove(asar_bak)
@@ -84,7 +83,7 @@ module.exports = async function ({ overwrite_asar, delete_data } = {}) {
       );
       if (delete_data) {
         file_operations.push(fs.remove(helpers.data_folder));
-      } else fs.remove(path.resolve(helpers.data_folder, 'version.txt'));
+      } else fs.remove(path.normalize(`${helpers.data_folder}/version.txt`));
     } else console.warn(` * ${helpers.data_folder} not found: step skipped.`);
 
     await Promise.all(file_operations);

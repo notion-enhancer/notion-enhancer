@@ -25,20 +25,21 @@ const is_wsl =
     process.platform === 'linux' &&
     os.release().toLowerCase().includes('microsoft'),
   // ~/.notion-enhancer absolute path.
-  data_folder = path.resolve(
-    is_wsl
-      ? (() => {
-          const stdout = execSync('cmd.exe /c echo %systemdrive%%homepath%', {
-              encoding: 'utf8',
-            }),
-            drive = stdout[0];
-          return `/mnt/${drive.toLowerCase()}${stdout
-            .replace(/\\/g, '/')
-            .slice(2)
-            .trim()}`;
-        })()
-      : os.homedir(),
-    '.notion-enhancer'
+  data_folder = path.normalize(
+    `${
+      is_wsl
+        ? (() => {
+            const stdout = execSync('cmd.exe /c echo %systemdrive%%homepath%', {
+                encoding: 'utf8',
+              }),
+              drive = stdout[0];
+            return `/mnt/${drive.toLowerCase()}${stdout
+              .replace(/\\/g, '/')
+              .slice(2)
+              .trim()}`;
+          })()
+        : os.homedir()
+    }/.notion-enhancer`
   );
 
 // transform a wsl filepath to its relative windows filepath if necessary.
@@ -53,7 +54,7 @@ function realpath(hack_path) {
 }
 
 // gets possible system notion app filepaths.
-async function getNotion() {
+function getNotion() {
   let folder = '';
   switch (process.platform) {
     case 'darwin':
@@ -64,9 +65,9 @@ async function getNotion() {
       break;
     case 'linux':
       if (is_wsl) {
-        const { stdout } = await promisify(exec)(
-            'cmd.exe /c echo %localappdata%'
-          ),
+        const stdout = execSync('cmd.exe /c echo %localappdata%', {
+            encoding: 'utf8',
+          }),
           drive = stdout[0];
         folder = `/mnt/${drive.toLowerCase()}${stdout
           .replace(/\\/g, '/')
@@ -78,7 +79,7 @@ async function getNotion() {
           '/opt/notion-app', // https://aur.archlinux.org/packages/notion-app/
           '/opt/notion', // https://github.com/jaredallard/notion-app
         ]) {
-          if (await fs.pathExists(loc)) folder = loc;
+          if (fs.pathExistsSync(loc)) folder = loc;
         }
       }
   }
@@ -89,17 +90,17 @@ async function getNotion() {
     );
   // check if actual app files are present.
   // if app/app.asar are missing but app.asar.bak present it will be moved to app.asar
-  const app_asar = path.resolve(folder, 'app.asar');
+  const app_asar = path.normalize(`${folder}/app.asar`);
   if (
     !(
-      (await fs.pathExists(folder)) &&
-      ((await fs.pathExists(app_asar)) ||
-        (await fs.pathExists(path.resolve(folder, 'app'))))
+      fs.pathExistsSync(folder) &&
+      (fs.pathExistsSync(app_asar) ||
+        fs.pathExistsSync(path.normalize(`${folder}/app`)))
     )
   ) {
-    const asar_bak = path.resolve(folder, 'app.asar.bak');
-    if (await fs.pathExists(asar_bak)) {
-      await fs.move(asar_bak, app_asar);
+    const asar_bak = path.normalize(`${__notion}/app.asar.bak`);
+    if (fs.pathExistsSync(asar_bak)) {
+      fs.moveSync(asar_bak, app_asar);
     } else
       throw new EnhancerError(
         'nothing found: notion installation is either corrupted or non-existent.'

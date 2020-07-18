@@ -24,7 +24,6 @@ const fs = require('fs-extra'),
 let __notion = helpers.getNotion();
 module.exports = async function ({ overwrite_version } = {}) {
   try {
-    __notion = await __notion;
     await fs.ensureDir(helpers.data_folder);
 
     // handle pre-existing installations: app.asar present? version set in data folder? overwrite?
@@ -57,19 +56,16 @@ module.exports = async function ({ overwrite_version } = {}) {
         });
     }
     console.info(' ...unpacking app.asar');
-    const asar_app = path.resolve(__notion, 'app.asar'),
-      asar_exec = path.resolve(
-        __dirname,
-        '..',
-        'node_modules',
-        'asar',
-        'bin',
-        'asar.js'
+    const asar_app = path.normalize(`${__notion}/app.asar`),
+      asar_exec = path.normalize(
+        `${__dirname}/../node_modules/asar/bin/asar.js`
       );
     await promisify(exec)(
-      `"${asar_exec}" extract "${asar_app}" "${path.resolve(__notion, 'app')}"`
+      `"${asar_exec}" extract "${asar_app}" "${path.normalize(
+        `${__notion}/app`
+      )}"`
     );
-    fs.move(asar_app, path.resolve(__notion, 'app.asar.bak'));
+    fs.move(asar_app, path.normalize(`${__notion}/app.asar.bak`));
 
     // patching launch script target of custom wrappers
     if (
@@ -98,28 +94,31 @@ module.exports = async function ({ overwrite_version } = {}) {
     }
 
     for await (let insertion_target of readdirIterator(
-      path.resolve(__notion, 'app'),
+      path.normalize(`${__notion}/app`),
       {
         deep: (stats) => stats.path.indexOf('node_modules') === -1,
         filter: (stats) => stats.isFile() && stats.path.endsWith('.js'),
       }
     )) {
-      insertion_target = path.resolve(__notion, 'app', insertion_target);
+      insertion_target = path.normalize(`${__notion}/app/${insertion_target}`);
       fs.appendFile(
         insertion_target,
         `\n\n//notion-enhancer\nrequire('${helpers.realpath(
           __dirname
-        )}/loader.js')();`
+        )}/loader.js')(__filename);`
       );
     }
 
     // not resolved, nothing depends on it so it's just a "let it do its thing"
     console.info(' ...recording enhancement version.');
     fs.outputFile(
-      path.resolve(__notion, 'app', 'ENHANCER_VERSION.txt'),
+      path.normalize(`${__notion}/app/ENHANCER_VERSION.txt`),
       version
     );
-    fs.outputFile(path.resolve(helpers.data_folder, 'version.txt'), version);
+    fs.outputFile(
+      path.normalize(`${helpers.data_folder}/version.txt`),
+      version
+    );
 
     console.info(' ~~ success.');
     return true;

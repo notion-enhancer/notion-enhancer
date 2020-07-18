@@ -8,19 +8,16 @@
 const fs = require('fs-extra'),
   path = require('path'),
   helpers = require('./helpers.js'),
-  store = require('./store.js'),
-  caller = require('caller-path');
+  store = require('./store.js');
 
 let __notion = helpers.getNotion();
-module.exports = async function () {
-  let __file = caller();
-  __notion = await __notion;
+module.exports = function (__file) {
   __file = __file
-    .slice(path.resolve(__notion, 'app').length + 1)
+    .slice(path.normalize(`${__notion}/app`).length + 1)
     .replace(/\\/g, '/');
 
   const modules = {
-    source: await fs.readdir(path.resolve(__dirname, '..', 'mods')),
+    source: fs.readdirSync(path.normalize(`${__dirname}/../mods`)),
     invalid: [],
     loaded: [],
   };
@@ -42,9 +39,9 @@ module.exports = async function () {
           );
         if (
           __file === 'renderer/preload.js' &&
-          (await fs.pathExists(
-            path.resolve(__dirname, '..', 'mods', dir, 'styles.css')
-          ))
+          fs.pathExistsSync(
+            path.normalize(`${__dirname}/../mods/${dir}/styles.css`)
+          )
         ) {
           document.addEventListener('readystatechange', (event) => {
             if (document.readyState !== 'complete') return false;
@@ -66,11 +63,8 @@ module.exports = async function () {
       .session.fromPartition('persist:notion')
       .protocol.registerFileProtocol('enhancement', (req, callback) => {
         callback({
-          path: path.resolve(
-            __dirname,
-            '..',
-            'mods',
-            req.url.slice('enhancement://'.length)
+          path: path.normalize(
+            `${__dirname}/../mods/${req.url.slice('enhancement://'.length)}`
           ),
         });
       });
