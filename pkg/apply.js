@@ -109,7 +109,7 @@ module.exports = async function ({ overwrite_version } = {}) {
         insertion_target,
         `\n\n//notion-enhancer\nrequire('${helpers.realpath(
           __dirname
-        )}/loader.js')(__filename);`
+        )}/loader.js')();`
       );
     }
 

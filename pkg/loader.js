@@ -8,10 +8,12 @@
 const fs = require('fs-extra'),
   path = require('path'),
   helpers = require('./helpers.js'),
-  store = require('./store.js');
+  store = require('./store.js'),
+  caller = require('caller-path');
 
 let __notion = helpers.getNotion();
-module.exports = async function (__file) {
+module.exports = async function () {
+  let __file = caller();
   __notion = await __notion;
   __file = __file
     .slice(path.resolve(__notion, 'app').length + 1)
@@ -35,7 +37,9 @@ module.exports = async function (__file) {
         throw Error;
       if (mod.type === 'core' || store('mods', { [mod.id]: false })[mod.id]) {
         if (mod.hacks && mod.hacks[__file])
-          mod.hacks[__file]((defaults) => store(mod.id, defaults));
+          mod.hacks[__file]((...args) =>
+            args.length === 1 ? store(mod.id, args[0]) : store(args[0], args[1])
+          );
         if (
           __file === 'renderer/preload.js' &&
           (await fs.pathExists(

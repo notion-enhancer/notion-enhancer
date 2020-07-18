@@ -4,15 +4,18 @@ ended up here? this is a wip version of the enhancer, and this file is yet to be
 if you're interested in using the project, switch back to the [master branch](https://github.com/dragonwocky/notion-enhancer).
 for support, contact me on discord `dragonwocky#8449` or open an issue here in the repo.
 
-want to contribute? check the the [contribution guidelines](CONTRIBUTING.md).
+want to contribute? check the [contribution guidelines](CONTRIBUTING.md).
 
 ## module creation
 
 _to understand best how notion's app works, check out [the electron docs](https://www.electronjs.org/docs/)_
 _and explore the contents of your local extracted `app.asar`._
 
-_explore [the existing modules](https://github.com/dragonwocky/notion-enhancer/tree/js/mods/)_
-_for examples of implementing what's described below._
+_look through [the existing modules](https://github.com/dragonwocky/notion-enhancer/tree/js/mods/)_
+_for examples of implementing the stuff described below._
+
+_testing modules requires running a dev version of the enhancer_
+_(again, see the [contribution guidelines](CONTRIBUTING.md)). a better system is in the works._
 
 each directory in the `mods` folder is considered a module, with the entry points `mod.js` and `styles.css`.
 

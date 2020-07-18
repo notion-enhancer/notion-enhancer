@@ -33,6 +33,7 @@
   "dependencies": {
     "asar": "^3.0.3",
     "cac": "^6.5.12",
+    "caller-path": "^3.0.0",
     "fs-extra": "^9.0.1",
     "readdir-enhanced": "^6.0.3"
   }
