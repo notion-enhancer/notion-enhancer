@@ -5,10 +5,11 @@
  */
 
 const defaults = {
-  openhidden: false,
+  openhidden: true,
   maximized: false,
-  close_to_tray: false,
+  close_to_tray: true,
   frameless: true,
+  smooth_scrollbars: true,
   hotkey: 'CmdOrCtrl+Shift+A',
 };
 
@@ -26,12 +27,6 @@ module.exports = {
   hacks: {
     'main/main.js': require('./tray.js')(defaults),
     'main/createWindow.js': require('./window.js')(defaults),
-    'renderer/preload.js': function (store, __exports) {
-      const window = require('electron').remote.getCurrentWindow();
-      document.defaultView.addEventListener('keyup', (event) => {
-        if (event.code === 'F5') window.reload();
-        // if (event.code === 'F4' && event.altKey) window.close();
-      });
-    },
+    'renderer/preload.js': require('./titlebar.js')(defaults),
   },
 };

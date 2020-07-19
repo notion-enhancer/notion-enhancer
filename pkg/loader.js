@@ -63,15 +63,18 @@ module.exports = function (__file, __exports) {
   }
 
   if (__file === 'main/main.js') {
-    require('electron')
-      .session.fromPartition('persist:notion')
-      .protocol.registerFileProtocol('enhancement', (req, callback) => {
-        callback({
-          path: path.resolve(
-            `${__dirname}/../mods/${req.url.slice('enhancement://'.length)}`
-          ),
+    const electron = require('electron');
+    electron.app.whenReady().then(() => {
+      electron.session
+        .fromPartition('persist:notion')
+        .protocol.registerFileProtocol('enhancement', (req, callback) => {
+          callback({
+            path: path.resolve(
+              `${__dirname}/../mods/${req.url.slice('enhancement://'.length)}`
+            ),
+          });
         });
-      });
+    });
   }
 
   if (__file === 'renderer/preload.js') {
