@@ -8,7 +8,7 @@
 let tray;
 
 module.exports = (defaults) =>
-  function (store) {
+  function (store, __exports) {
     const electron = require('electron'),
       path = require('path'),
       is_mac = process.platform === 'darwin',
@@ -18,9 +18,9 @@ module.exports = (defaults) =>
     electron.app.on('ready', () => {
       tray = new electron.Tray(
         is_win
-          ? path.normalize(`${__dirname}/windows.ico`)
+          ? path.resolve(`${__dirname}/icons/windows.ico`)
           : new electron.nativeImage.createFromPath(
-              path.normalize(`${__dirname}/mac+linux.png`)
+              path.resolve(`${__dirname}/icons/mac+linux.png`)
             ).resize({
               width: 16,
               height: 16,
@@ -31,10 +31,20 @@ module.exports = (defaults) =>
         {
           type: 'normal',
           label: 'Bug Report',
+          click: () => {
+            electron.shell.openExternal(
+              'https://github.com/dragonwocky/notion-enhancer/issues/new?labels=bug&template=bug-report.md'
+            );
+          },
         },
         {
           type: 'normal',
           label: 'Feature Request',
+          click: () => {
+            electron.shell.openExternal(
+              'https://github.com/dragonwocky/notion-enhancer/issues/new?labels=enhancement&template=feature-request.md'
+            );
+          },
         },
         {
           type: 'separator',
@@ -42,6 +52,11 @@ module.exports = (defaults) =>
         {
           type: 'normal',
           label: 'Docs',
+          click: () => {
+            electron.shell.openExternal(
+              'https://github.com/dragonwocky/notion-enhancer/tree/js'
+            );
+          },
         },
         {
           type: 'normal',
@@ -70,6 +85,7 @@ module.exports = (defaults) =>
         windows.forEach((win) => [win.isFocused() && win.blur(), win.hide()]);
         if (is_mac) electron.app.hide();
       }
+
       tray.on('click', () => {
         const windows = electron.BrowserWindow.getAllWindows();
         if (windows.some((win) => win.isVisible())) hideWindows();
