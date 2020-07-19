@@ -1,0 +1,34 @@
+/*
+ * notion-enhancer
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
+ * (c) 2020 TarasokUA
+ * (https://dragonwocky.me/) under the MIT license
+ */
+
+.smooth-scrollbars .notion-scroller {
+  cursor: auto;
+}
+.smooth-scrollbars ::-webkit-scrollbar {
+  width: 8px; /* vertical */
+  height: 8px; /* horizontal */
+}
+.smooth-scrollbars ::-webkit-scrollbar-corner {
+  background-color: transparent; /* overlap */
+}
+.smooth-scrollbars ::-webkit-scrollbar-thumb {
+  border-radius: 5px;
+}
+
+.smooth-scrollbars .notion-light-theme ::-webkit-scrollbar-thumb {
+  background-color: #d9d8d6;
+  border: 1px solid #cacac8;
+}
+.smooth-scrollbars .notion-light-theme ::-webkit-scrollbar-thumb:hover {
+  background: #cacac8;
+}
+.smooth-scrollbars .notion-dark-theme ::-webkit-scrollbar-thumb {
+  background-color: #505457;
+}
+.smooth-scrollbars .notion-dark-theme ::-webkit-scrollbar-thumb:hover {
+  background: #696d6f;
+}

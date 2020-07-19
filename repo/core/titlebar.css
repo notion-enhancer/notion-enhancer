@@ -1,0 +1,86 @@
+/*
+ * notion-enhancer
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
+ * (c) 2020 TarasokUA
+ * (https://dragonwocky.me/) under the MIT license
+ */
+
+.frameless .notion-topbar {
+  height: 55px !important;
+}
+
+.frameless .window-dragarea {
+  height: 10px;
+  width: 100%;
+}
+.frameless .notion-light-theme .window-dragarea {
+  background: #e6e6e6;
+}
+.frameless .notion-dark-theme .window-dragarea {
+  background: #272d2f;
+}
+
+.window-buttons-area {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
+@media (max-width: 760px) {
+  .notion-topbar {
+    height: 95px !important;
+  }
+  .notion-topbar > :nth-child(2) {
+    display: grid !important;
+    height: 85px !important;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+  }
+  .window-buttons-area {
+    grid-row: 1;
+    grid-column: 9 / span end;
+    justify-content: flex-end;
+  }
+  .notion-topbar-breadcrumb {
+    grid-row: 2;
+    grid-column: 1 / span 8;
+  }
+  .notion-topbar-actions {
+    grid-row: 2;
+    grid-column: 9 / span end;
+    justify-content: flex-end;
+  }
+}
+
+.window-button {
+  background: transparent;
+  border: 0;
+  margin: 0px 0px 0px 9px;
+  width: 32px;
+  line-height: 26px;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: background 0.2s;
+  cursor: default;
+}
+.window-button svg {
+  margin-top: 8px;
+  width: 14px;
+  height: 14px;
+}
+.window-button svg path {
+  fill: currentColor;
+}
+.window-button svg line {
+  stroke: currentColor;
+}
+.notion-light-theme .window-button:hover {
+  background: rgb(239, 239, 239);
+}
+.notion-dark-theme .window-button:hover {
+  background: rgb(71, 76, 80);
+}
+.window-button.btn-close:hover {
+  background: #e81123;
+}
+.window-button.btn-close:hover svg line {
+  stroke: white;
+}

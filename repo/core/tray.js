@@ -61,6 +61,7 @@ module.exports = (defaults) =>
         {
           type: 'normal',
           label: 'Enhancements',
+          // will open menu
         },
         {
           type: 'separator',

@@ -9,9 +9,8 @@ module.exports = (defaults) =>
   function (store, __exports) {
     const electron = require('electron'),
       allWindows = electron.BrowserWindow.getAllWindows,
-      createWindow = __exports.createWindow,
+      // createWindow = __exports.createWindow,
       path = require('path'),
-      is_mac = process.platform === 'darwin',
       settings = store(defaults),
       helpers = require('../../pkg/helpers.js'),
       __notion = helpers.getNotion();
