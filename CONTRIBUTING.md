@@ -6,20 +6,19 @@ these guidelines are designed for smooth communication, management and developme
 following them shows respect to the developer/s spending their free time on it, and makes it easiest for them to improve the tool.
 
 **found a bug / something isn't working as expected?** create a
-[bug report](https://github.com/dragonwocky/notion-enhancer/issues/new?assignees=&labels=bug&template=bug-report.md&title=).
+[bug report](https://github.com/dragonwocky/notion-enhancer/issues/new?labels=bug&template=bug-report.md).
 
 > SECURITY ISSUE? (e.g. PERSONAL/NOTION DATA BEING INTERFERED WITH)
 > EMAIL ME INSTEAD: [thedragonring.bod@gmail.com](mailto:thedragonring.bod@gmail.com)
 
 **have a cool new feature idea / there's something you just wish you could do?** submit a
-[feature request](https://github.com/dragonwocky/notion-enhancer/issues/new?assignees=&labels=enhancement&template=feature-request.md&title=).
+[feature request](https://github.com/dragonwocky/notion-enhancer/issues/new?labels=enhancement&template=feature-request.md).
 
-> enhancements are applied only locally.
-> features should be designed only to improve the user experience -
-> affecting the way notion internals work is against their ToS.
+> enhancements are applied only locally -
+> features should be designed only to improve the user experience.
 
 **using a not-yet-supported operating system or notion installation?** ask for
-[platform support](https://github.com/dragonwocky/notion-enhancer/issues/new?assignees=&labels=enhancement&template=platform-support.md&title=).
+[platform support](https://github.com/dragonwocky/notion-enhancer/issues/new?labels=enhancement&template=platform-support.md).
 
 > mobile clients cannot currently be modded.
 

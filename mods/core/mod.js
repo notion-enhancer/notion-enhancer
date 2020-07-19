@@ -7,7 +7,8 @@
 const defaults = {
   openhidden: false,
   maximized: false,
-  tray: false,
+  close_to_tray: false,
+  frameless: true,
   hotkey: 'CmdOrCtrl+Shift+A',
 };
 
@@ -24,10 +25,13 @@ module.exports = {
   options: [],
   hacks: {
     'main/main.js': require('./tray.js')(defaults),
-    'renderer/preload.js': function (store) {
-      const data = store({ name: 'dragonwocky' });
-      console.log(data.name);
-      data.name = 'tom';
+    'main/createWindow.js': require('./window.js')(defaults),
+    'renderer/preload.js': function (store, __exports) {
+      const window = require('electron').remote.getCurrentWindow();
+      document.defaultView.addEventListener('keyup', (event) => {
+        if (event.code === 'F5') window.reload();
+        // if (event.code === 'F4' && event.altKey) window.close();
+      });
     },
   },
 };

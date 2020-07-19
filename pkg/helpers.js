@@ -25,7 +25,7 @@ const is_wsl =
     process.platform === 'linux' &&
     os.release().toLowerCase().includes('microsoft'),
   // ~/.notion-enhancer absolute path.
-  data_folder = path.normalize(
+  data_folder = path.resolve(
     `${
       is_wsl
         ? (() => {
@@ -86,19 +86,19 @@ function getNotion() {
   if (!folder)
     throw new EnhancerError(
       'platform not supported: open a request in the github repo:\n' +
-        'https://github.com/dragonwocky/notion-enhancer/issues/new?assignees=&labels=enhancement&template=platform-support.md'
+        'https://github.com/dragonwocky/notion-enhancer/issues/new?labels=enhancement&template=platform-support.md'
     );
   // check if actual app files are present.
   // if app/app.asar are missing but app.asar.bak present it will be moved to app.asar
-  const app_asar = path.normalize(`${folder}/app.asar`);
+  const app_asar = path.resolve(`${folder}/app.asar`);
   if (
     !(
       fs.pathExistsSync(folder) &&
       (fs.pathExistsSync(app_asar) ||
-        fs.pathExistsSync(path.normalize(`${folder}/app`)))
+        fs.pathExistsSync(path.resolve(`${folder}/app`)))
     )
   ) {
-    const asar_bak = path.normalize(`${__notion}/app.asar.bak`);
+    const asar_bak = path.resolve(`${__notion}/app.asar.bak`);
     if (fs.pathExistsSync(asar_bak)) {
       fs.moveSync(asar_bak, app_asar);
     } else

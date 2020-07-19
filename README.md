@@ -48,7 +48,7 @@ want to contribute? check the the [contribution guidelines](CONTRIBUTING.md).
 (it can also be run from the wsl to apply enhancements to the windows app.)
 
 **using a not-yet-supported operating system or notion installation?** ask for
-[platform support](https://github.com/dragonwocky/notion-enhancer/issues/new?assignees=&labels=enhancement&template=platform-support.md&title=).
+[platform support](https://github.com/dragonwocky/notion-enhancer/issues/new?labels=enhancement&template=platform-support.md).
 
 mobile clients are not supported and due to system limitations/restrictions cannot be.
 

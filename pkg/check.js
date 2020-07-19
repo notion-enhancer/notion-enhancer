@@ -14,11 +14,11 @@ const fs = require('fs-extra'),
 
 let __notion = helpers.getNotion();
 module.exports = async function () {
-  const version_path = path.normalize(`${__notion}/app/ENHANCER_VERSION.txt`),
+  const version_path = path.resolve(`${__notion}/app/ENHANCER_VERSION.txt`),
     installed_version = (await fs.pathExists(version_path))
       ? await fs.readFile(version_path, 'utf8')
       : '?.?.?';
-  if (await fs.pathExists(path.normalize(`${__notion}/app.asar`))) {
+  if (await fs.pathExists(path.resolve(`${__notion}/app.asar`))) {
     return {
       msg: `notion-enhancer has not been applied.`,
       code: 0,

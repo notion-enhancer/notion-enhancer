@@ -84,10 +84,14 @@ module.exports = {
 
 #### hacks
 
-each "hack" is a function taking a single **`store`** argument, which allows
-access to the module settings/options defined in `mod.js` (those set in the menu,
-or used internally by the module). each module store is saved to + automatically syncs with `~/.notion-enhancer/id.json`.
-it can be initialised with `const data = store({ defaults })`, then used as if it were a normal object.
+each "hack" is a function taking 2 arguments.
+
+1. the **`store`** argument, which allows access to the module
+   settings/options defined in `mod.js` (those set in the menu, or used internally by the module).
+   each module store is saved to + automatically syncs with `~/.notion-enhancer/id.json`.
+   it can be initialised with `const settings = store({ defaults })`, then used as if it were a normal object.
+2. the **`__exports`** argument, which is the `module.exports` of the file being modded.
+   this can be used to call or replace functions from notion.
 
 this hack is applied to whichever file (`.js`-only) is set as the function key. these can be found within the `app` folder.
 
@@ -104,11 +108,11 @@ e.g.
 
 ```js
 // sayhi.js
-module.exports = function (store) {
+module.exports = function (store, __exports) {
   document.addEventListener('readystatechange', (event) => {
     if (document.readyState !== 'complete') return false;
-    const data = store({ name: 'dragonwocky' });
-    console.log(data.name);
+    const settings = store({ name: 'dragonwocky' });
+    console.log(settings.name);
   });
 };
 // mod.js
