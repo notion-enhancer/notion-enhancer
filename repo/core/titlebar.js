@@ -33,8 +33,7 @@ module.exports = (defaults) =>
         document.body.classList.add('frameless');
 
         // draggable area
-        const dragarea = document.createElement('div'),
-          sidebar = document.querySelector('.notion-sidebar');
+        const dragarea = document.createElement('div');
         dragarea.className = 'window-dragarea';
         document.querySelector('.notion-topbar').prepend(dragarea);
         document.documentElement.style.setProperty(
@@ -43,8 +42,9 @@ module.exports = (defaults) =>
         );
         let sidebar_width;
         setInterval(() => {
+          const sidebar = document.querySelector('.notion-sidebar');
           let new_width =
-            sidebar.style.opacity === '0' ? '0px' : sidebar.style.width;
+            sidebar.style.height === 'auto' ? '0px' : sidebar.style.width;
           if (sidebar_width !== new_width) {
             sidebar_width = new_width;
             electron.ipcRenderer.sendToHost(
@@ -124,6 +124,12 @@ module.exports = (defaults) =>
           btn
         ]()}</button>`;
       }
+      if (settings.frameless && !is_mac)
+        setInterval(async () => {
+          const icon = await buttons.icons.maximize(),
+            el = buttons.element.querySelector('.btn-maximize');
+          if (el.innerHTML != icon) el.innerHTML = icon;
+        }, 100);
 
       document
         .querySelector('.notion-topbar > div[style*="display: flex"]')
@@ -141,12 +147,5 @@ module.exports = (defaults) =>
         document.querySelector(`.window-button.btn-${btn}`).onclick =
           buttons.actions[btn];
       }
-
-      // if (!isMac) {
-      //   setInterval(() => {
-      //     if (button_elements.maximize.innerHTML != buttons.icons.maximize())
-      //       button_elements.maximize.innerHTML = buttons.icons.maximize();
-      //   }, 1000);
-      // }
     }
   };
