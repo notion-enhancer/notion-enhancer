@@ -14,9 +14,9 @@ module.exports = (defaults) =>
       is_mac = process.platform === 'darwin',
       settings = store(defaults);
 
+    // additional hotkeys
     document.defaultView.addEventListener('keyup', (event) => {
       if (event.code === 'F5') window.reload();
-      // if (event.code === 'F4' && event.altKey) window.close();
     });
 
     const attempt = setInterval(enhance, 500);
@@ -24,16 +24,37 @@ module.exports = (defaults) =>
       if (!document.querySelector('.notion-frame')) return;
       clearInterval(attempt);
 
+      // scrollbars
       if (settings.smooth_scrollbars)
         document.body.classList.add('smooth-scrollbars');
 
+      // frameless
       if (settings.frameless) {
         document.body.classList.add('frameless');
-        const dragarea = document.createElement('div');
+
+        // draggable area
+        const dragarea = document.createElement('div'),
+          sidebar = document.querySelector('.notion-sidebar');
         dragarea.className = 'window-dragarea';
         document.querySelector('.notion-topbar').prepend(dragarea);
+        document.documentElement.style.setProperty(
+          '--dragarea-height',
+          `${settings.dragarea_height}px`
+        );
+        let sidebar_width;
+        setInterval(() => {
+          let new_width =
+            sidebar.style.opacity === '0' ? '0px' : sidebar.style.width;
+          if (sidebar_width !== new_width) {
+            sidebar_width = new_width;
+            electron.ipcRenderer.sendToHost(
+              `enhancer:sidebar-width-${sidebar_width}`
+            );
+          }
+        }, 100);
       }
 
+      // window buttons
       const buttons = {
         element: document.createElement('span'),
         insert: ['alwaysontop'],
@@ -89,14 +110,8 @@ module.exports = (defaults) =>
             browser.isMaximized() ? browser.unmaximize() : browser.maximize();
             this.innerHTML = await buttons.icons.maximize();
           },
-          close(event = null) {
-            if (
-              settings.close_to_tray &&
-              electron.remote.BrowserWindow.getAllWindows().length === 1
-            ) {
-              if (event) event.preventDefault();
-              browser.hide();
-            } else browser.close();
+          close() {
+            browser.close();
           },
         },
       };
