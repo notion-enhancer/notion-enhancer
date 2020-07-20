@@ -6,11 +6,11 @@
  */
 
 .frameless .notion-topbar {
-  height: 55px !important;
+  height: calc(var(--dragarea-height, 10px) + 45px) !important;
 }
 
 .frameless .window-dragarea {
-  height: 10px;
+  height: var(--dragarea-height, 10px);
   width: 100%;
 }
 .frameless .notion-light-theme .window-dragarea {
@@ -26,12 +26,12 @@
   font-size: 14px;
 }
 @media (max-width: 760px) {
-  .notion-topbar {
-    height: 95px !important;
+  .frameless .notion-topbar {
+    height: calc(var(--dragarea-height, 10px) + 80px) !important;
   }
-  .notion-topbar > :nth-child(2) {
+  .frameless .notion-topbar > :nth-child(2) {
+    height: 80px !important;
     display: grid !important;
-    height: 85px !important;
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
   }
   .window-buttons-area {

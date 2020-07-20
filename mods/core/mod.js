@@ -9,6 +9,7 @@ const defaults = {
   maximized: false,
   close_to_tray: true,
   frameless: true,
+  dragarea_height: 12.5,
   smooth_scrollbars: true,
   hotkey: 'CmdOrCtrl+Shift+A',
 };
@@ -27,6 +28,7 @@ module.exports = {
   hacks: {
     'main/main.js': require('./tray.js')(defaults),
     'main/createWindow.js': require('./window.js')(defaults),
+    'renderer/index.js': require('./dragarea.js')(defaults),
     'renderer/preload.js': require('./titlebar.js')(defaults),
   },
 };
