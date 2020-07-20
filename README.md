@@ -1,4 +1,4 @@
-# readme placeholder
+# readme
 
 ended up here? this is a wip version of the enhancer, and this file is yet to be completed.
 if you're interested in using the project, switch back to the [master branch](https://github.com/dragonwocky/notion-enhancer).

@@ -22,9 +22,8 @@ module.exports = (defaults) =>
           if (event.channel.startsWith('enhancer:sidebar-width-'))
             dragarea.setAttribute(
               'style',
-              `${default_styles} left: height: ${
-                settings.dragarea_height
-              }px; ${event.channel.slice('enhancer:sidebar-width-'.length)};`
+              `${default_styles} height: ${settings.dragarea_height}px; left: ${
+                event.channel.slice('enhancer:sidebar-width-'.length)};`
             );
         });
     };
