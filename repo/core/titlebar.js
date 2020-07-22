@@ -37,7 +37,7 @@ module.exports = (defaults) =>
         dragarea.className = 'window-dragarea';
         document.querySelector('.notion-topbar').prepend(dragarea);
         document.documentElement.style.setProperty(
-          '--dragarea-height',
+          '--configured-dragarea_height',
           `${settings.dragarea_height}px`
         );
         let sidebar_width;
