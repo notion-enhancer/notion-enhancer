@@ -19,16 +19,18 @@
   border-radius: 5px;
 }
 
-.smooth-scrollbars .notion-light-theme ::-webkit-scrollbar-thumb {
-  background-color: #d9d8d6;
-  border: 1px solid #cacac8;
-}
-.smooth-scrollbars .notion-light-theme ::-webkit-scrollbar-thumb:hover {
-  background: #cacac8;
-}
 .smooth-scrollbars .notion-dark-theme ::-webkit-scrollbar-thumb {
-  background-color: #505457;
+  background-color: var(--theme_dark-scrollbar);
+  border: var(--theme_dark-scrollbar-border);
 }
 .smooth-scrollbars .notion-dark-theme ::-webkit-scrollbar-thumb:hover {
-  background: #696d6f;
+  background: var(--theme_dark-scrollbar_hover);
+}
+
+.smooth-scrollbars .notion-light-theme ::-webkit-scrollbar-thumb {
+  background-color: var(--theme_light-scrollbar);
+  border: 1px solid var(--theme_light-scrollbar-border);
+}
+.smooth-scrollbars .notion-light-theme ::-webkit-scrollbar-thumb:hover {
+  background: var(--theme_light-scrollbar_hover);
 }

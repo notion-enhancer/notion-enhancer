@@ -6,28 +6,22 @@
  */
 
 .frameless .notion-topbar {
-  height: calc(var(--dragarea-height, 10px) + 45px) !important;
+  height: calc(var(--configured-dragarea_height, 10px) + 45px) !important;
 }
-
 .frameless .window-dragarea {
-  height: var(--dragarea-height, 10px);
+  height: var(--configured-dragarea_height, 10px);
   width: 100%;
 }
-.frameless .notion-light-theme .window-dragarea {
-  background: #e6e6e6;
-}
 .frameless .notion-dark-theme .window-dragarea {
-  background: #272d2f;
+  background: var(--theme_dark-dragarea);
+}
+.frameless .notion-light-theme .window-dragarea {
+  background: var(--theme_light-dragarea);
 }
 
-.window-buttons-area {
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-}
 @media (max-width: 760px) {
   .frameless .notion-topbar {
-    height: calc(var(--dragarea-height, 10px) + 80px) !important;
+    height: calc(var(--configured-dragarea_height, 10px) + 80px) !important;
   }
   .frameless .notion-topbar > :nth-child(2) {
     height: 80px !important;
@@ -50,6 +44,11 @@
   }
 }
 
+.window-buttons-area {
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+}
 .window-button {
   background: transparent;
   border: 0;
@@ -72,15 +71,25 @@
 .window-button svg line {
   stroke: currentColor;
 }
-.notion-light-theme .window-button:hover {
-  background: rgb(239, 239, 239);
-}
+
 .notion-dark-theme .window-button:hover {
-  background: rgb(71, 76, 80);
+  background: var(--theme_dark-button_hover);
+  box-shadow: 0 0 0 0.5px var(--theme_dark-button_hover-border);
 }
-.window-button.btn-close:hover {
-  background: #e81123;
+.notion-dark-theme .window-button.btn-close:hover {
+  background: var(--theme_dark-button_close);
 }
-.window-button.btn-close:hover svg line {
-  stroke: white;
+.notion-dark-theme .window-button.btn-close:hover svg line {
+  stroke: var(--theme_dark-button_close-fill);
+}
+
+.notion-light-theme .window-button.btn-close:hover {
+  background: var(--theme_light-button_close);
+}
+.notion-light-theme .window-button.btn-close:hover svg line {
+  stroke: var(--theme_light-button_close-fill);
+}
+.notion-light-theme .window-button:hover {
+  background: var(--theme_light-button_hover);
+  box-shadow: 0 0 0 0.5px var(--theme_light-button_hover-border);
 }
