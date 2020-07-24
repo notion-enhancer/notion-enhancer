@@ -2,6 +2,7 @@
  * notion-enhancer
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
  * (c) 2020 TarasokUA
+ * (c) 2020 Arecsu
  * (https://dragonwocky.me/) under the MIT license
  */
 
@@ -92,4 +93,20 @@
 .notion-light-theme .window-button:hover {
   background: var(--theme_light-button_hover);
   box-shadow: 0 0 0 0.5px var(--theme_light-button_hover-border);
+}
+
+/* hide topbar when sidebar is hidden */
+.notion-sidebar-container[style*='width: 0px;'] + .notion-frame {
+  height: calc(
+    100% - (var(--configured-dragarea_height, 10px) + 45px)
+  ) !important;
+}
+.notion-sidebar-container[style*='width: 0px;'] + .notion-frame .notion-topbar {
+  opacity: 0 !important;
+  transition: opacity 200ms ease-in-out !important;
+}
+.notion-sidebar-container[style*='width: 0px;']
+  + .notion-frame
+  .notion-topbar:hover {
+  opacity: 1 !important;
 }

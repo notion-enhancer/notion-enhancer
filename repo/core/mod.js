@@ -9,7 +9,7 @@ const defaults = {
   maximized: false,
   close_to_tray: true,
   frameless: true,
-  dragarea_height: 12.5,
+  dragarea_height: 15,
   smooth_scrollbars: true,
   hotkey: 'CmdOrCtrl+Shift+A',
 };
@@ -29,6 +29,6 @@ module.exports = {
     'main/main.js': require('./tray.js')(defaults),
     'main/createWindow.js': require('./window.js')(defaults),
     'renderer/index.js': require('./dragarea.js')(defaults),
-    'renderer/preload.js': require('./titlebar.js')(defaults),
+    'renderer/preload.js': require('./client.js')(defaults),
   },
 };

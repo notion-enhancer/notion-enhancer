@@ -19,14 +19,29 @@ module.exports = (defaults) =>
       if (event.code === 'F5') window.reload();
     });
 
-    const attempt = setInterval(enhance, 500);
+    const interval_attempts = {
+      enhance: setInterval(enhance, 500),
+    };
     async function enhance() {
       if (!document.querySelector('.notion-frame')) return;
-      clearInterval(attempt);
+      clearInterval(interval_attempts.enhance);
 
       // scrollbars
-      if (settings.smooth_scrollbars)
+      if (settings.smooth_scrollbars) {
         document.body.classList.add('smooth-scrollbars');
+        interval_attempts.patchScrollbars = setInterval(patchScrollbars, 50);
+        function patchScrollbars() {
+          const sidebar = document.querySelector(
+            '.notion-scroller.vertical[style*="overflow: hidden auto;"]'
+          );
+          if (!sidebar) return;
+          clearInterval(interval_attempts.patchScrollbars);
+          sidebar.style.overflow = '';
+          setTimeout(() => {
+            sidebar.style.overflow = 'hidden auto';
+          }, 1);
+        }
+      }
 
       // frameless
       if (settings.frameless) {
@@ -38,11 +53,14 @@ module.exports = (defaults) =>
         document.querySelector('.notion-topbar').prepend(dragarea);
         document.documentElement.style.setProperty(
           '--configured-dragarea_height',
-          `${settings.dragarea_height}px`
+          `${settings.dragarea_height + 2}px`
         );
         let sidebar_width;
-        setInterval(() => {
+        interval_attempts.patchDragarea = setInterval(patchDragarea, 50);
+        function patchDragarea() {
           const sidebar = document.querySelector('.notion-sidebar');
+          if (!sidebar) return;
+          clearInterval(interval_attempts.patchDragarea);
           let new_width =
             sidebar.style.height === 'auto' ? '0px' : sidebar.style.width;
           if (sidebar_width !== new_width) {
@@ -51,7 +69,8 @@ module.exports = (defaults) =>
               `enhancer:sidebar-width-${sidebar_width}`
             );
           }
-        }, 100);
+        }
+        setInterval(() => {}, 100);
       }
 
       // window buttons
