@@ -17,7 +17,9 @@ module.exports = function (__file, __exports) {
     .replace(/\\/g, '/');
 
   const modules = {
-    source: fs.readdirSync(path.resolve(`${__dirname}/../mods`)),
+    source: fs
+      .readdirSync(path.resolve(`${__dirname}/../mods`))
+      .filter((dir) => !dir.startsWith('.')),
     invalid: [],
     loaded: [],
   };

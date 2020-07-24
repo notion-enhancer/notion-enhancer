@@ -1,0 +1,24 @@
+/*
+ * notion-enhancer
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
+ * (c) 2020 Arecsu
+ * (https://dragonwocky.me/) under the MIT license
+ */
+
+.notion-link-token span {
+  border-bottom: none !important;
+}
+.notion-link-token:before {
+  content: '[';
+  opacity: 0.7;
+  transition: opacity 100ms ease-in;
+}
+.notion-link-token:after {
+  content: ']';
+  opacity: 0.7;
+  transition: opacity 100ms ease-in;
+}
+.notion-link-token:hover::before,
+.notion-link-token:hover::after {
+  opacity: 1;
+}
