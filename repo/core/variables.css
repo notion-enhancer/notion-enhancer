@@ -1,0 +1,200 @@
+/*
+ * notion-enhancer
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
+ * (c) 2020 TarasokUA
+ * (c) 2020 Arecsu
+ * (c) 2020 u/zenith_illinois
+ * (https://dragonwocky.me/) under the MIT license
+ */
+
+:root {
+  /** dark **/
+
+  --theme_dark--main: rgb(47, 52, 55);
+  --theme_dark--sidebar: rgb(55, 60, 63);
+  --theme_dark--dragarea: #272d2f;
+  --theme_dark--preview-width: 977px;
+  --theme_dark--preview_banner-height: 20vh;
+  --theme_dark--page_banner-height: 30vh;
+
+  --theme_dark--font_sans: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Helvetica, 'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji',
+    'Segoe UI Symbol';
+  --theme_dark--font_serif: Lyon-Text, Georgia, YuMincho, 'Yu Mincho',
+    'Hiragino Mincho ProN', 'Hiragino Mincho Pro', 'Songti TC', 'Songti SC',
+    SimSun, 'Nanum Myeongjo', NanumMyeongjo, Batang, serif;
+  --theme_dark--font_mono: iawriter-mono, Nitti, Menlo, Courier, monospace;
+  --theme_dark--font_code: SFMono-Regular, Consolas, 'Liberation Mono', Menlo,
+    Courier, monospace;
+
+  --theme_dark--scrollbar: #505457;
+  --theme_dark--scrollbar-border: transparent;
+  --theme_dark--scrollbar_hover: #696d6f;
+
+  --theme_dark--card: rgb(63, 68, 71);
+  --theme_dark--card-border: rgb(63, 68, 71);
+  --theme_dark--table-border: rgba(255, 255, 255, 0.1);
+  --theme_dark--button_hover: rgb(71, 76, 80);
+  --theme_dark--button_hover-border: transparent;
+  --theme_dark--button_close: #e81123;
+  --theme_dark--button_close-fill: white;
+
+  --theme_dark--selected: rgba(46, 170, 220, 0.2);
+  --theme_dark--primary: rgb(46, 170, 220);
+  --theme_dark--primary_hover: rgb(6, 156, 205);
+  --theme_dark--primary_click: rgb(0, 141, 190);
+  --theme_dark--primary_indicator: rgb(235, 87, 87);
+
+  --theme_dark--todo_empty-border: currentColor;
+  --theme_dark--todo_ticked: currentColor;
+  --theme_dark--todo_ticked-background: var(--theme_dark--primary);
+  --theme_dark--todo_hover-background: rgb(71, 76, 80);
+
+  --theme_dark--danger_text: rgb(235, 87, 87);
+  --theme_dark--danger_border: rgba(235, 87, 87, 0.5);
+
+  --theme_dark--text: rgba(255, 255, 255, 0.9);
+  --theme_dark--text_ui: rgba(255, 255, 255, 0.6);
+  --theme_dark--text_ui_info: rgba(255, 255, 255, 0.4);
+
+  --theme_dark--text_gray: rgba(151, 154, 155, 0.95);
+  --theme_dark--text_brown: rgb(147, 114, 100);
+  --theme_dark--text_orange: rgb(255, 163, 68);
+  --theme_dark--text_yellow: rgb(255, 220, 73);
+  --theme_dark--text_green: rgb(77, 171, 154);
+  --theme_dark--text_blue: rgb(82, 156, 202);
+  --theme_dark--text_purple: rgb(154, 109, 215);
+  --theme_dark--text_pink: rgb(226, 85, 161);
+  --theme_dark--text_red: rgb(255, 115, 105);
+  --theme_dark--bg_gray: rgba(151, 154, 155, 0.5);
+  --theme_dark--bg_brown: rgba(147, 114, 100, 0.5);
+  --theme_dark--bg_orange: rgba(255, 163, 68, 0.5);
+  --theme_dark--bg_yellow: rgba(255, 220, 73, 0.5);
+  --theme_dark--bg_green: rgba(77, 171, 154, 0.5);
+  --theme_dark--bg_blue: rgba(82, 156, 202, 0.5);
+  --theme_dark--bg_purple: rgba(154, 109, 215, 0.5);
+  --theme_dark--bg_pink: rgba(226, 85, 161, 0.5);
+  --theme_dark--bg_red: rgba(255, 115, 105, 0.5);
+  --theme_dark--line_gray: rgb(69, 75, 78);
+  --theme_dark--line_brown: rgb(67, 64, 64);
+  --theme_dark--line_orange: rgb(89, 74, 58);
+  --theme_dark--line_yellow: rgb(89, 86, 59);
+  --theme_dark--line_green: rgb(53, 76, 75);
+  --theme_dark--line_blue: rgb(54, 73, 84);
+  --theme_dark--line_purple: rgb(68, 63, 87);
+  --theme_dark--line_pink: rgb(83, 59, 76);
+  --theme_dark--line_red: rgb(89, 65, 65);
+
+  --theme_dark--code_inline-text: #eb5757;
+  --theme_dark--code_inline-background: rgba(135, 131, 120, 0.15);
+  --theme_dark--code_text: var(--theme_dark--text);
+  --theme_dark--code-background: rgb(63, 68, 71);
+  --theme_dark--code_function: rgba(255, 255, 255, 0.9);
+  --theme_dark--code_keyword: hsl(350, 40%, 70%);
+  --theme_dark--code_tag: hsl(350, 40%, 70%);
+  --theme_dark--code_operator: hsl(40, 90%, 60%);
+  --theme_dark--code_property: hsl(350, 40%, 70%);
+  --theme_dark--code_builtin: hsl(75, 70%, 60%);
+  --theme_dark--code_attr-name: hsl(75, 70%, 60%);
+  --theme_dark--code_comment: hsl(30, 20%, 50%);
+  --theme_dark--code_punctuation: rgba(255, 255, 255, 0.9);
+  --theme_dark--code_doctype: hsl(30, 20%, 50%);
+  --theme_dark--code_number: hsl(350, 40%, 70%);
+  --theme_dark--code_string: hsl(75, 70%, 60%);
+  --theme_dark--code_attr-value: hsl(350, 40%, 70%);
+
+  /** light **/
+
+  --theme_light--main: white;
+  --theme_light--sidebar: rgb(247, 246, 243);
+  --theme_light--dragarea: rgba(55, 53, 47, 0.04);
+  --theme_light--preview-width: 977px;
+  --theme_light--preview_banner-height: 20vh;
+  --theme_light--page_banner-height: 30vh;
+
+  --theme_light--font_sans: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Helvetica, 'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji',
+    'Segoe UI Symbol';
+  --theme_light--font_serif: Lyon-Text, Georgia, YuMincho, 'Yu Mincho',
+    'Hiragino Mincho ProN', 'Hiragino Mincho Pro', 'Songti TC', 'Songti SC',
+    SimSun, 'Nanum Myeongjo', NanumMyeongjo, Batang, serif;
+  --theme_light--font_mono: iawriter-mono, Nitti, Menlo, Courier, monospace;
+  --theme_light--font_code: SFMono-Regular, Consolas, 'Liberation Mono', Menlo,
+    Courier, monospace;
+
+  --theme_light--scrollbar: #d9d8d6;
+  --theme_light--scrollbar-border: #cacac8;
+  --theme_light--scrollbar_hover: #cacac8;
+
+  --theme_light--card: rgb(247, 246, 243);
+  --theme_light--card-border: rgb(247, 246, 243);
+  --theme_light--table-border: rgba(55, 53, 47, 0.16);
+  --theme_light--button_hover: rgba(55, 53, 47, 0.08);
+  --theme_light--button_hover-border: transparent;
+  --theme_light--button_close: #e81123;
+  --theme_light--button_close-fill: white;
+
+  --theme_light--selected: rgba(46, 170, 220, 0.2);
+  --theme_light--primary: rgb(46, 170, 220);
+  --theme_light--primary_hover: rgb(6, 156, 205);
+  --theme_light--primary_click: rgb(0, 141, 190);
+  --theme_light--primary_indicator: rgb(235, 87, 87);
+
+  --theme_light--todo_empty-border: currentColor;
+  --theme_light--todo_ticked: currentColor;
+  --theme_light--todo_ticked-background: var(--theme_light--primary);
+  --theme_light--todo_hover-background: rgba(55, 53, 47, 0.08);
+
+  --theme_light--danger_text: rgb(235, 87, 87);
+  --theme_light--danger_border: rgba(235, 87, 87, 0.5);
+
+  --theme_light--text: rgb(55, 53, 47);
+  --theme_light--text_ui: rgba(55, 53, 47, 0.6);
+  --theme_light--text_ui_info: rgba(55, 53, 47, 0.4);
+
+  --theme_light--text_gray: rgb(155, 154, 151);
+  --theme_light--text_brown: rgb(100, 71, 58);
+  --theme_light--text_orange: rgb(217, 115, 13);
+  --theme_light--text_yellow: rgb(223, 171, 1);
+  --theme_light--text_green: rgb(15, 123, 108);
+  --theme_light--text_blue: rgb(11, 110, 153);
+  --theme_light--text_purple: rgb(105, 64, 165);
+  --theme_light--text_pink: rgb(173, 26, 114);
+  --theme_light--text_red: rgb(224, 62, 62);
+  --theme_light--bg_gray: rgb(235, 236, 237);
+  --theme_light--bg_brown: rgb(233, 229, 227);
+  --theme_light--bg_orange: rgb(250, 235, 221);
+  --theme_light--bg_yellow: rgb(251, 243, 219);
+  --theme_light--bg_green: rgb(221, 237, 234);
+  --theme_light--bg_blue: rgb(221, 235, 241);
+  --theme_light--bg_purple: rgb(234, 228, 242);
+  --theme_light--bg_pink: rgb(244, 223, 235);
+  --theme_light--bg_red: rgb(251, 228, 228);
+  --theme_light--line_gray: rgb(235, 236, 237);
+  --theme_light--line_brown: rgb(233, 229, 227);
+  --theme_light--line_orange: rgb(250, 235, 221);
+  --theme_light--line_yellow: rgb(251, 243, 219);
+  --theme_light--line_green: rgb(221, 237, 234);
+  --theme_light--line_blue: rgb(221, 235, 241);
+  --theme_light--line_purple: rgb(105, 64, 165);
+  --theme_light--line_pink: rgb(244, 223, 235);
+  --theme_light--line_red: rgb(251, 228, 228);
+
+  --theme_light--code_inline-text: #eb5757;
+  --theme_light--code_inline-background: rgba(135, 131, 120, 0.15);
+  --theme_light--code_text: var(--theme_light--text);
+  --theme_light--code-background: rgb(247, 246, 243);
+  --theme_light--code_function: #dd4a68;
+  --theme_light--code_keyword: #07a;
+  --theme_light--code_tag: #905;
+  --theme_light--code_operator: #9a6e3a;
+  --theme_light--code_property: #905;
+  --theme_light--code_builtin: #690;
+  --theme_light--code_attr-name: #690;
+  --theme_light--code_comment: slategray;
+  --theme_light--code_punctuation: #999;
+  --theme_light--code_doctype: slategray;
+  --theme_light--code_number: #905;
+  --theme_light--code_string: #690;
+  --theme_light--code_attr-value: #07a;
+}

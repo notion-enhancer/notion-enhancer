@@ -20,17 +20,17 @@
 }
 
 .smooth-scrollbars .notion-dark-theme ::-webkit-scrollbar-thumb {
-  background-color: var(--theme_dark-scrollbar);
-  border: var(--theme_dark-scrollbar-border);
+  background-color: var(--theme_dark--scrollbar);
+  border: var(--theme_dark--scrollbar-border);
 }
 .smooth-scrollbars .notion-dark-theme ::-webkit-scrollbar-thumb:hover {
-  background: var(--theme_dark-scrollbar_hover);
+  background: var(--theme_dark--scrollbar_hover);
 }
 
 .smooth-scrollbars .notion-light-theme ::-webkit-scrollbar-thumb {
-  background-color: var(--theme_light-scrollbar);
-  border: 1px solid var(--theme_light-scrollbar-border);
+  background-color: var(--theme_light--scrollbar);
+  border: 1px solid var(--theme_light--scrollbar-border);
 }
 .smooth-scrollbars .notion-light-theme ::-webkit-scrollbar-thumb:hover {
-  background: var(--theme_light-scrollbar_hover);
+  background: var(--theme_light--scrollbar_hover);
 }

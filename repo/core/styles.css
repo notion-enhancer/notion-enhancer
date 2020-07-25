@@ -1,10 +1,12 @@
 /*
  * notion-enhancer
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
- * (c) 2020 TarasokUA
  * (https://dragonwocky.me/) under the MIT license
  */
 
-@import './theme.css';
+@import './variables.css';
+@import './dark.css';
+@import './light.css';
+@import './shared.css';
 @import './scrollbars.css';
 @import './titlebar.css';

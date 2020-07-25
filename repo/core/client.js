@@ -70,7 +70,6 @@ module.exports = (defaults) =>
             );
           }
         }
-        setInterval(() => {}, 100);
       }
 
       // window buttons
