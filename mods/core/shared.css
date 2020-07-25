@@ -1,0 +1,50 @@
+/*
+ * notion-enhancer
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
+ * (c) 2020 TarasokUA
+ * (c) 2020 Arecsu
+ * (c) 2020 u/zenith_illinois
+ * (https://dragonwocky.me/) under the MIT license
+ */
+
+/* prevent block hover options overlaying topbar */
+*:not([style*='z-index']) {
+  z-index: 1;
+}
+
+/* fix highlight padding: this isn't a typo */
+[style*='background:rgb('] {
+  padding-bottom: 3px !important;
+}
+
+/* smooth transitions */
+.notion-calendar-view-day,
+.DayPicker-Day--today:not(.DayPicker-Day--selected):not(.DayPicker-Day--value):not(.DayPicker-Day--start):not(.DayPicker-Day--end),
+.DayPicker-Day.DayPicker-Day--start.DayPicker-Day--selected,
+.DayPicker:not(.DayPicker--interactionDisabled) .DayPicker-Day--outside:hover,
+.DayPicker:not(.DayPicker--interactionDisabled)
+  .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--value):not(.DayPicker-Day--start):not(.DayPicker-Day--end) {
+  transition: all 200ms ease !important;
+}
+.notion-token-remove-button {
+  transition: opacity 200ms ease !important;
+}
+.notion-to_do-block > div > div > div[style*='background:'] {
+  transition: background 200ms ease !important;
+}
+
+/* normalise inline-table size */
+.notion-page-content .notion-collection_view-block {
+  width: 100% !important;
+}
+.notion-page-content
+  .notion-collection_view-block
+  [style*='min-width: calc(100% - 192px);'],
+.notion-page-content
+  .notion-collection_view-block
+  [style*='min-width: 708px;'] {
+  min-width: 100% !important;
+}
+.notion-page-content .notion-collection_view-block > div {
+  padding: 0 1px;
+}
