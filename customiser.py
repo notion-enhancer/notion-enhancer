@@ -96,8 +96,11 @@ try:
             exit()
     if unpacking_asar:
         print(' ...unpacking app.asar')
-        subprocess.run(['asar', 'extract', os.path.join(filepath, 'app.asar'), os.path.join(
+        result = subprocess.run(['asar', 'extract', os.path.join(filepath, 'app.asar'), os.path.join(
             filepath, 'app')], shell=(True if sys.platform == 'win32' else False))
+        if result.returncode != 0:
+            print('> failed to find asar. install using \'npm install -g asar\'')
+            exit()
         print(' ...renaming asar.app to asar.app.bak')
         os.rename(os.path.join(filepath, 'app.asar'),
                   os.path.join(filepath, 'app.asar.bak'))
