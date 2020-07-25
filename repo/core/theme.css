@@ -250,6 +250,9 @@
   .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--selected):not(.DayPicker-Day--value):not(.DayPicker-Day--start):not(.DayPicker-Day--end) {
   transition: all 200ms ease !important;
 }
+.notion-token-remove-button {
+  transition: opacity 200ms ease !important;
+}
 
 /* fix inline-tables in pages (?) */
 .notion-page-content .notion-collection_view-block {
@@ -275,8 +278,10 @@
 /** colours **/
 
 .notion-dark-theme ::selection,
-.notion-dark-theme [style*='background: rgba(46, 170, 220,'],
-.notion-dark-theme [style*='background-color: rgba(46, 170, 220,'] {
+.notion-dark-theme
+  [style*='background: rgba(46, 170, 220,']:not([style*='background: rgba(46, 170, 220, 0)']),
+.notion-dark-theme
+  [style*='background-color: rgba(46, 170, 220,']:not([style*='background-color: rgba(46, 170, 220, 0)']) {
   background: var(--theme_dark-selected) !important;
 }
 
@@ -287,6 +292,10 @@
 .notion-dark-theme
   [style*='box-shadow: rgb(46, 170, 220) 0px 0px 0px 2px inset'] {
   box-shadow: var(--theme_dark-primary) 0px 0px 0px 2px inset !important;
+}
+.notion-dark-theme .notion-focusable:focus-within {
+  box-shadow: var(--theme_dark-primary) 0px 0px 0px 1px inset,
+    var(--theme_dark-primary_hover) 0px 0px 0px 2px !important;
 }
 .notion-dark-theme [style*='background: rgb(6, 156, 205)'] {
   background: var(--theme_dark-primary_hover) !important;
