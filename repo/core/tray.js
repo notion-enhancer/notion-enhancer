@@ -89,6 +89,25 @@ module.exports = (defaults) =>
 
       tray.on('click', () => {
         const windows = electron.BrowserWindow.getAllWindows();
+
+        for (let browser of windows) {
+          browser.webContents.sendInputEvent({
+            type: 'keyDown',
+            modifiers: ['control', 'shift'],
+            key: 'L',
+          });
+          browser.webContents.sendInputEvent({
+            type: 'char',
+            modifiers: ['control', 'shift'],
+            key: 'L',
+          });
+          browser.webContents.sendInputEvent({
+            type: 'keyUp',
+            modifiers: ['control', 'shift'],
+            key: 'L',
+          });
+        }
+
         if (windows.some((win) => win.isVisible())) hideWindows();
         else showWindows();
       });

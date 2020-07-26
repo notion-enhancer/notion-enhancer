@@ -12,6 +12,7 @@
 
   --theme_dark--main: rgb(47, 52, 55);
   --theme_dark--sidebar: rgb(55, 60, 63);
+  --theme_dark--overlay: rgba(15, 15, 15, 0.6);
   --theme_dark--dragarea: #272d2f;
   --theme_dark--preview-width: 977px;
   --theme_dark--preview_banner-height: 20vh;
@@ -47,6 +48,7 @@
 
   --theme_dark--todo_empty-border: currentColor;
   --theme_dark--todo_ticked: currentColor;
+  --theme_dark--todo_ticked-fill: white;
   --theme_dark--todo_ticked-background: var(--theme_dark--primary);
   --theme_dark--todo_hover-background: rgb(71, 76, 80);
 
@@ -107,6 +109,7 @@
 
   --theme_light--main: white;
   --theme_light--sidebar: rgb(247, 246, 243);
+  --theme_light--overlay: rgba(15, 15, 15, 0.6);
   --theme_light--dragarea: rgba(55, 53, 47, 0.04);
   --theme_light--preview-width: 977px;
   --theme_light--preview_banner-height: 20vh;
@@ -142,6 +145,7 @@
 
   --theme_light--todo_empty-border: currentColor;
   --theme_light--todo_ticked: currentColor;
+  --theme_light--todo_ticked-fill: white;
   --theme_light--todo_ticked-background: var(--theme_light--primary);
   --theme_light--todo_hover-background: rgba(55, 53, 47, 0.08);
 

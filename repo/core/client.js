@@ -12,7 +12,13 @@ module.exports = (defaults) =>
       path = require('path'),
       fs = require('fs-extra'),
       is_mac = process.platform === 'darwin',
-      settings = store(defaults);
+      settings = store(defaults),
+      helpers = require('../../pkg/helpers.js'),
+      __notion = helpers.getNotion(),
+      notionIpc = require(`${__notion.replace(
+        /\\/g,
+        '/'
+      )}/app/helpers/notionIpc.js`);
 
     // additional hotkeys
     document.defaultView.addEventListener('keyup', (event) => {
@@ -39,9 +45,38 @@ module.exports = (defaults) =>
           sidebar.style.overflow = '';
           setTimeout(() => {
             sidebar.style.overflow = 'hidden auto';
-          }, 1);
+          }, 10);
         }
       }
+
+      // ctrl+f theming
+      function setTheme() {
+        const mode = JSON.parse(localStorage.theme).mode,
+          style = (prop) =>
+            getComputedStyle(document.body).getPropertyValue(prop);
+        notionIpc.sendNotionToIndex('search:set-theme', {
+          'mode': mode,
+          'colors': {
+            'white': style(`--theme_${mode}--todo_ticked-fill`),
+            'blue': style(`--theme_${mode}--primary`),
+          },
+          'borderRadius': 3,
+          'textColor': style(`--theme_${mode}--text`),
+          'popoverBackgroundColor': style(`--theme_${mode}--card`),
+          'popoverBoxShadow': `0 0 0 1px ${style(
+            `--theme_${mode}--overlay`
+          )}, 0 3px 6px ${style(`--theme_${mode}--overlay`)}`,
+          'inputBoxShadow': `box-shadow: ${style(
+            `--theme_${mode}--primary`
+          )} 0px 0px 0px 1px inset, ${style(
+            `--theme_${mode}--primary_hover`
+          )} 0px 0px 0px 2px !important`,
+          'inputBackgroundColor': style(`--theme_${mode}--main`),
+          'dividerColor': style(`--theme_${mode}--table-border`),
+          'shadowOpacity': 0.2,
+        });
+      }
+      setInterval(setTheme, 100);
 
       // frameless
       if (settings.frameless) {

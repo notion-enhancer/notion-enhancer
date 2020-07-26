@@ -10,13 +10,18 @@
 /** general ui **/
 
 .notion-dark-theme [style*='background: rgb(55, 60, 63)'],
-.notion-dark-theme [style*='background: rgba(69, 75, 78, 0.3)'] {
+.notion-dark-theme [style*='background: rgba(69, 75, 78, 0.3)'],
+.notion-dark-theme [style*='background: rgb(120, 123, 123)'] {
   background: var(--theme_dark--sidebar) !important;
 }
 .notion-body.dark,
 .notion-dark-theme [style*='background: rgb(47, 52, 55)'],
 .notion-dark-theme [style*='background-color: rgb(47, 52, 55)'] {
   background: var(--theme_dark--main) !important;
+}
+
+.notion-dark-theme [style*='background: rgba(15, 15, 15, 0.6)'] {
+  background: var(--theme_dark--overlay) !important;
 }
 
 .notion-dark-theme .notion-peek-renderer > div:nth-child(2) {
@@ -107,7 +112,8 @@
 }
 
 .notion-dark-theme [style*='background: rgb(71, 76, 80)'],
-.notion-dark-theme [style*='background: rgb(80, 85, 88)'] {
+.notion-dark-theme [style*='background: rgb(80, 85, 88)'],
+.notion-dark-theme [style*='background: rgb(98, 102, 104)'] {
   background: var(--theme_dark--button_hover) !important;
   box-shadow: 0 0 0 0.5px var(--theme_dark--button_hover-border);
 }
