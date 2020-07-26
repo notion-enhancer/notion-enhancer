@@ -5,7 +5,7 @@
  */
 
 const defaults = {
-  openhidden: true,
+  openhidden: false,
   maximized: false,
   close_to_tray: true,
   frameless: true,
@@ -27,8 +27,8 @@ module.exports = {
   options: [],
   hacks: {
     'main/main.js': require('./tray.js')(defaults),
-    'main/createWindow.js': require('./window.js')(defaults),
-    'renderer/index.js': require('./dragarea.js')(defaults),
+    'main/createWindow.js': require('./create.js')(defaults),
+    'renderer/index.js': require('./render.js')(defaults),
     'renderer/preload.js': require('./client.js')(defaults),
   },
 };

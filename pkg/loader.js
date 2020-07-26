@@ -60,6 +60,7 @@ module.exports = function (__file, __exports) {
       }
       modules.loaded.push(mod.name);
     } catch (err) {
+      // console.error(err);
       modules.invalid.push(dir);
     }
   }
