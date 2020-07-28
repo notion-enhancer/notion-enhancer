@@ -5,7 +5,7 @@
  * (https://dragonwocky.me/) under the MIT license
  */
 
-let tray;
+let tray, enhancer_menu;
 
 module.exports = (defaults) =>
   function (store, __exports) {
@@ -13,7 +13,9 @@ module.exports = (defaults) =>
       path = require('path'),
       is_mac = process.platform === 'darwin',
       is_win = process.platform === 'win32',
-      settings = store(defaults);
+      settings = store(defaults),
+      helpers = require('../../pkg/helpers.js'),
+      __notion = helpers.getNotion();
 
     electron.app.on('ready', () => {
       tray = new electron.Tray(
@@ -26,6 +28,41 @@ module.exports = (defaults) =>
               height: 16,
             })
       );
+
+      function calculateWindowPos(width, height) {
+        const screen = electron.screen.getDisplayNearestPoint({
+          x: tray.getBounds().x,
+          y: tray.getBounds().y,
+        });
+        // left
+        if (screen.workArea.x > 0)
+          // The workspace starts more on the right
+          return {
+            x: screen.workArea.x,
+            y: screen.workArea.height - height,
+          };
+        // top
+        if (screen.workArea.y > 0)
+          return {
+            x: Math.round(
+              tray.getBounds().x + tray.getBounds().width / 2 - width / 2
+            ),
+            y: screen.workArea.y,
+          };
+        // right
+        if (screen.workArea.width < screen.bounds.width)
+          return {
+            x: screen.workArea.width - width,
+            y: screen.bounds.height - height,
+          };
+        // bottom
+        return {
+          x: Math.round(
+            tray.getBounds().x + tray.getBounds().width / 2 - width / 2
+          ),
+          y: screen.workArea.height - height,
+        };
+      }
 
       const contextMenu = electron.Menu.buildFromTemplate([
         {
@@ -61,7 +98,34 @@ module.exports = (defaults) =>
         {
           type: 'normal',
           label: 'Enhancements',
-          // will open menu
+          click: () => {
+            const window_state = require(`${__notion.replace(
+              /\\/g,
+              '/'
+            )}/app/node_modules/electron-window-state/index.js`)({
+              file: 'menu-windowstate.json',
+              defaultWidth: 275,
+              defaultHeight: 600,
+            });
+            electron.shell.openExternal(JSON.stringify(window_state));
+            enhancer_menu = new electron.BrowserWindow({
+              show: true,
+              frame: false,
+              x:
+                window_state.x ||
+                calculateWindowPos(window_state.width, window_state.height).x,
+              y:
+                window_state.y ||
+                calculateWindowPos(window_state.width, window_state.height).y,
+              width: window_state.width,
+              height: window_state.height,
+              webPreferences: {
+                nodeIntegration: true,
+                session: electron.session.fromPartition('persist:notion'),
+              },
+            });
+            enhancer_menu.loadURL('enhancement://core/menu.html');
+          },
         },
         {
           type: 'separator',
@@ -89,25 +153,6 @@ module.exports = (defaults) =>
 
       tray.on('click', () => {
         const windows = electron.BrowserWindow.getAllWindows();
-
-        for (let browser of windows) {
-          browser.webContents.sendInputEvent({
-            type: 'keyDown',
-            modifiers: ['control', 'shift'],
-            key: 'L',
-          });
-          browser.webContents.sendInputEvent({
-            type: 'char',
-            modifiers: ['control', 'shift'],
-            key: 'L',
-          });
-          browser.webContents.sendInputEvent({
-            type: 'keyUp',
-            modifiers: ['control', 'shift'],
-            key: 'L',
-          });
-        }
-
         if (windows.some((win) => win.isVisible())) hideWindows();
         else showWindows();
       });

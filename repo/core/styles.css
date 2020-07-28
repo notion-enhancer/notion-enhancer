@@ -4,9 +4,9 @@
  * (https://dragonwocky.me/) under the MIT license
  */
 
-@import './variables.css';
-@import './dark.css';
-@import './light.css';
-@import './shared.css';
-@import './scrollbars.css';
-@import './titlebar.css';
+@import './css/variables.css';
+@import './css/dark.css';
+@import './css/light.css';
+@import './css/shared.css';
+@import './css/scrollbars.css';
+@import './css/titlebar.css';
