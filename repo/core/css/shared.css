@@ -56,3 +56,9 @@
 .notion-page-content .notion-collection_view-block > div {
   padding: 0 1px;
 }
+
+/* fix button resizing */
+.notion-collection_view-block [role='button'],
+.notion-collection_view_page-block [role='button'] {
+  border-width: 0 !important;
+}
