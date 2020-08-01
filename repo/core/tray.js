@@ -5,6 +5,8 @@
  * (https://dragonwocky.me/) under the MIT license
  */
 
+'use strict';
+
 let tray, enhancer_menu;
 
 module.exports = (defaults) =>
@@ -29,6 +31,11 @@ module.exports = (defaults) =>
             })
       );
 
+      electron.ipcMain.on('enhancer:set-theme', (event, arg) => {
+        if (!enhancer_menu) return;
+        enhancer_menu.webContents.send('enhancer:set-theme', arg);
+      });
+
       function calculateWindowPos(width, height) {
         const screen = electron.screen.getDisplayNearestPoint({
           x: tray.getBounds().x,
@@ -36,7 +43,6 @@ module.exports = (defaults) =>
         });
         // left
         if (screen.workArea.x > 0)
-          // The workspace starts more on the right
           return {
             x: screen.workArea.x,
             y: screen.workArea.height - height,
@@ -99,11 +105,13 @@ module.exports = (defaults) =>
           type: 'normal',
           label: 'Enhancements',
           click: () => {
+            if (enhancer_menu) return enhancer_menu.show();
             const window_state = require(`${__notion.replace(
               /\\/g,
               '/'
             )}/app/node_modules/electron-window-state/index.js`)({
               file: 'menu-windowstate.json',
+              path: helpers.data_folder,
               defaultWidth: 275,
               defaultHeight: 600,
             });
@@ -111,6 +119,8 @@ module.exports = (defaults) =>
             enhancer_menu = new electron.BrowserWindow({
               show: true,
               frame: false,
+              backgroundColor: '#ffffff',
+              titleBarStyle: 'hiddenInset',
               x:
                 window_state.x ||
                 calculateWindowPos(window_state.width, window_state.height).x,
@@ -120,11 +130,16 @@ module.exports = (defaults) =>
               width: window_state.width,
               height: window_state.height,
               webPreferences: {
+                preload: path.resolve(`${__dirname}/menu.js`),
                 nodeIntegration: true,
                 session: electron.session.fromPartition('persist:notion'),
               },
             });
             enhancer_menu.loadURL('enhancement://core/menu.html');
+            enhancer_menu.on('close', (e) => {
+              window_state.saveState(enhancer_menu);
+              enhancer_menu = null;
+            });
           },
         },
         {

@@ -4,6 +4,8 @@
  * (https://dragonwocky.me/) under the MIT license
  */
 
+'use strict';
+
 module.exports = (defaults) =>
   function (store, __exports) {
     const __start = window['__start'],
@@ -21,15 +23,11 @@ module.exports = (defaults) =>
       document
         .getElementById('notion')
         .addEventListener('ipc-message', (event) => {
-          if (event.channel.startsWith('enhancer:sidebar-width-'))
-            dragarea.setAttribute(
-              'style',
-              `${default_styles} top: 2px; height: ${
-                settings.dragarea_height
-              }px; left: ${event.channel.slice(
-                'enhancer:sidebar-width-'.length
-              )};`
-            );
+          if (event.channel !== 'enhancer:sidebar-width') return;
+          dragarea.setAttribute(
+            'style',
+            `${default_styles} top: 2px; height: ${settings.dragarea_height}px; left: ${event.args[0]};`
+          );
         });
     };
   };

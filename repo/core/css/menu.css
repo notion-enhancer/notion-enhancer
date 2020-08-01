@@ -1,0 +1,69 @@
+/*
+ * notion-enhancer
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
+ * (https://dragonwocky.me/) under the MIT license
+ */
+
+@import './buttons.css';
+@import './scrollbars.css';
+
+* {
+  box-sizing: border-box;
+  word-break: break-word;
+  text-decoration: none;
+  text-size-adjust: 100%;
+}
+html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.notion-dark-theme * {
+  outline-color: var(--theme_dark--card-border);
+}
+.notion-light-theme * {
+  outline-color: var(--theme_light--card-border);
+}
+
+.notion-dark-theme {
+  background: var(--theme_dark--main);
+}
+.notion-light-theme {
+  background: var(--theme_light--main);
+}
+
+.notion-dark-theme,
+.notion-dark-theme button {
+  color: var(--theme_dark--text);
+  font-family: var(--theme_dark--font_sans);
+}
+.notion-light-theme,
+.notion-light-theme button {
+  color: var(--theme_light--text);
+  font-family: var(--theme_light--font_sans);
+}
+
+#menu-titlebar {
+  display: flex;
+  padding: 0.4em;
+  -webkit-app-region: drag;
+}
+#menu-titlebar button {
+  -webkit-app-region: no-drag;
+}
+#menu-titlebar :first-child {
+  margin-left: auto;
+}
+.notion-dark-theme #menu-titlebar {
+  background: var(--theme_dark--dragarea);
+}
+.notion-light-theme #menu-titlebar {
+  background: var(--theme_light--dragarea);
+}
+
+main {
+  padding: 1em;
+}
