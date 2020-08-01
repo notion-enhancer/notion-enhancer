@@ -6,6 +6,8 @@
  * (https://dragonwocky.me/) under the MIT license
  */
 
+@import 'buttons.css';
+
 .frameless .notion-topbar {
   height: calc(var(--configured-dragarea_height, 10px) + 45px) !important;
 }
@@ -43,56 +45,6 @@
     grid-column: 9 / span end;
     justify-content: flex-end;
   }
-}
-
-.window-buttons-area {
-  display: flex;
-  align-items: center;
-  font-size: 14px;
-}
-.window-button {
-  background: transparent;
-  border: 0;
-  margin: 0px 0px 0px 9px;
-  width: 32px;
-  line-height: 26px;
-  border-radius: 4px;
-  font-size: 16px;
-  transition: background 0.2s;
-  cursor: default;
-}
-.window-button svg {
-  margin-top: 8px;
-  width: 14px;
-  height: 14px;
-}
-.window-button svg path {
-  fill: currentColor;
-}
-.window-button svg line {
-  stroke: currentColor;
-}
-
-.notion-dark-theme .window-button:hover {
-  background: var(--theme_dark--button_hover);
-  box-shadow: 0 0 0 0.5px var(--theme_dark--button_hover-border);
-}
-.notion-dark-theme .window-button.btn-close:hover {
-  background: var(--theme_dark--button_close);
-}
-.notion-dark-theme .window-button.btn-close:hover svg line {
-  stroke: var(--theme_dark--button_close-fill);
-}
-
-.notion-light-theme .window-button.btn-close:hover {
-  background: var(--theme_light--button_close);
-}
-.notion-light-theme .window-button.btn-close:hover svg line {
-  stroke: var(--theme_light--button_close-fill);
-}
-.notion-light-theme .window-button:hover {
-  background: var(--theme_light--button_hover);
-  box-shadow: 0 0 0 0.5px var(--theme_light--button_hover-border);
 }
 
 /* hide topbar when sidebar is hidden */

@@ -5,10 +5,15 @@
  * (https://dragonwocky.me/) under the MIT license
  */
 
+'use strict';
+
 module.exports = (defaults) =>
   function (store, __exports) {
     const electron = require('electron'),
-      allWindows = electron.BrowserWindow.getAllWindows,
+      allWindows = () =>
+        electron.BrowserWindow.getAllWindows().filter(
+          (win) => win.getTitle() !== 'notion-enhancer menu'
+        ),
       // createWindow = __exports.createWindow,
       path = require('path'),
       settings = store(defaults),

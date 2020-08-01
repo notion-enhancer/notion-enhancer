@@ -7,6 +7,7 @@
  */
 
 'use strict';
+
 const cli = require('cac')(),
   { EnhancerError } = require('./pkg/helpers.js');
 

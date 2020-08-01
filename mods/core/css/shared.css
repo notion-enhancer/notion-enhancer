@@ -39,6 +39,14 @@
 }
 .notion-page-content
   .notion-collection_view-block
+  [style*='padding-left: 96px'],
+.notion-page-content
+  .notion-collection_view-block
+  [style*='padding-left: 126px'] {
+  padding-left: 0 !important;
+}
+.notion-page-content
+  .notion-collection_view-block
   [style*='min-width: calc(100% - 192px);'],
 .notion-page-content
   .notion-collection_view-block

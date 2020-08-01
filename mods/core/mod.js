@@ -4,6 +4,8 @@
  * (https://dragonwocky.me/) under the MIT license
  */
 
+'use strict';
+
 const defaults = {
   openhidden: false,
   maximized: false,
@@ -31,4 +33,5 @@ module.exports = {
     'renderer/index.js': require('./render.js')(defaults),
     'renderer/preload.js': require('./client.js')(defaults),
   },
+  defaults,
 };

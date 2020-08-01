@@ -3,6 +3,8 @@
 these shared variables/classes/functions (used for consistency of error handling and
 cross-platform functionality) were previously documented in the [module-creation docs](../DOCUMENTATION.md).
 however, to ensure things can be toggled on/off no non-core code is executed on enhancement.
+this does made certain modding more difficult, but with some clever code the same results can be achieved.
+
 it is unlikely any of these will need to be used, so they were removed from the main docs in
 an attempt to keep things as simple as possible.
 
@@ -61,7 +63,6 @@ function getNotion() {
 ```
 
 use `await helpers.getNotion()` to get the notion app parent folder path
-(used to acquire the \_\_notion argument above).
 
 primarily used for internal modding of the app (e.g. to apply the modloader and patch launch scripts).
 

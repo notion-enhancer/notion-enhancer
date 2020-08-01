@@ -5,6 +5,7 @@
  */
 
 'use strict';
+
 const path = require('path'),
   fs = require('fs-extra'),
   { getJSON, data_folder } = require('./helpers.js');

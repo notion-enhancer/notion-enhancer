@@ -5,6 +5,7 @@
  */
 
 'use strict';
+
 const os = require('os'),
   path = require('path'),
   fs = require('fs-extra'),
@@ -43,7 +44,6 @@ const is_wsl =
   );
 
 // transform a wsl filepath to its relative windows filepath if necessary.
-// every file path inserted by hack.js should be put through this.
 function realpath(hack_path) {
   if (!is_wsl) return hack_path;
   hack_path = fs.realpathSync(hack_path);
