@@ -62,9 +62,21 @@ function getNotion() {
 }
 ```
 
-use `await helpers.getNotion()` to get the notion app parent folder path
+use `await helpers.getNotion()` to get the notion app parent folder path.
 
 primarily used for internal modding of the app (e.g. to apply the modloader and patch launch scripts).
+
+---
+
+```js
+function getEnhancements() {
+  return { loaded, invalid, dirs, IDs };
+}
+```
+
+use `helpers.getEnhancements()` to list all available extensions/themes.
+
+primarily used for internal moadloading/configuration of the app (e.g. in the menu).
 
 ---
 

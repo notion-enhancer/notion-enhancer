@@ -109,6 +109,40 @@ function getNotion() {
   return folder;
 }
 
+// lists/fetches all available extensions + themes
+function getEnhancements() {
+  const modules = {
+    loaded: [],
+    invalid: [],
+    dirs: fs
+      .readdirSync(path.resolve(`${__dirname}/../mods`))
+      .filter((dir) => !dir.startsWith('.')),
+    IDs: [],
+  };
+  for (let dir of modules.dirs) {
+    try {
+      const mod = require(`../mods/${dir}/mod.js`);
+      if (
+        !mod.id ||
+        modules.IDs.includes(mod.id) ||
+        !mod.name ||
+        !mod.version ||
+        !mod.author ||
+        !['extension', 'theme', 'core'].includes(mod.type)
+      )
+        throw Error;
+      modules.loaded.push({
+        ...mod,
+        dir,
+      });
+    } catch (err) {
+      // console.error(err);
+      modules.invalid.push(dir);
+    }
+  }
+  return modules;
+}
+
 // attempts to read a JSON file, falls back to empty object.
 function getJSON(from) {
   try {
@@ -137,6 +171,7 @@ module.exports = {
   data_folder,
   realpath,
   getNotion,
+  getEnhancements,
   getJSON,
   readline,
 };
