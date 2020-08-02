@@ -60,6 +60,7 @@ module.exports = (defaults) =>
           allWindows().some((win) => win.isVisible() && win.id != window.id)
         ) {
           window.show();
+          window.focus();
           if (settings.maximized) window.maximize();
           if (
             (focused_window && focused_window.isFullScreen()) ||

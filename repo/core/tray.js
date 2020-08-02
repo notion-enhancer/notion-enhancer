@@ -119,7 +119,6 @@ module.exports = (defaults) =>
             enhancer_menu = new electron.BrowserWindow({
               show: true,
               frame: false,
-              backgroundColor: '#ffffff',
               titleBarStyle: 'hiddenInset',
               x:
                 window_state.x ||
