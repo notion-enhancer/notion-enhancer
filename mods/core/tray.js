@@ -35,6 +35,7 @@ module.exports = (defaults) =>
         if (!enhancer_menu) return;
         enhancer_menu.webContents.send('enhancer:set-theme', arg);
       });
+      electron.ipcMain.on('enhancer:open-extension-menu', openExtensionMenu);
 
       function calculateWindowPos(width, height) {
         const screen = electron.screen.getDisplayNearestPoint({
@@ -68,6 +69,43 @@ module.exports = (defaults) =>
           ),
           y: screen.workArea.height - height,
         };
+      }
+
+      function openExtensionMenu() {
+        if (enhancer_menu) return enhancer_menu.show();
+        const window_state = require(`${__notion.replace(
+          /\\/g,
+          '/'
+        )}/app/node_modules/electron-window-state/index.js`)({
+          file: 'menu-windowstate.json',
+          path: helpers.data_folder,
+          defaultWidth: 275,
+          defaultHeight: 600,
+        });
+        electron.shell.openExternal(JSON.stringify(window_state));
+        enhancer_menu = new electron.BrowserWindow({
+          show: true,
+          frame: false,
+          titleBarStyle: 'hiddenInset',
+          x:
+            window_state.x ||
+            calculateWindowPos(window_state.width, window_state.height).x,
+          y:
+            window_state.y ||
+            calculateWindowPos(window_state.width, window_state.height).y,
+          width: window_state.width,
+          height: window_state.height,
+          webPreferences: {
+            preload: path.resolve(`${__dirname}/menu.js`),
+            nodeIntegration: true,
+            session: electron.session.fromPartition('persist:notion'),
+          },
+        });
+        enhancer_menu.loadURL('enhancement://core/menu.html');
+        enhancer_menu.on('close', (e) => {
+          window_state.saveState(enhancer_menu);
+          enhancer_menu = null;
+        });
       }
 
       const contextMenu = electron.Menu.buildFromTemplate([
@@ -104,42 +142,8 @@ module.exports = (defaults) =>
         {
           type: 'normal',
           label: 'Enhancements',
-          click: () => {
-            if (enhancer_menu) return enhancer_menu.show();
-            const window_state = require(`${__notion.replace(
-              /\\/g,
-              '/'
-            )}/app/node_modules/electron-window-state/index.js`)({
-              file: 'menu-windowstate.json',
-              path: helpers.data_folder,
-              defaultWidth: 275,
-              defaultHeight: 600,
-            });
-            electron.shell.openExternal(JSON.stringify(window_state));
-            enhancer_menu = new electron.BrowserWindow({
-              show: true,
-              frame: false,
-              titleBarStyle: 'hiddenInset',
-              x:
-                window_state.x ||
-                calculateWindowPos(window_state.width, window_state.height).x,
-              y:
-                window_state.y ||
-                calculateWindowPos(window_state.width, window_state.height).y,
-              width: window_state.width,
-              height: window_state.height,
-              webPreferences: {
-                preload: path.resolve(`${__dirname}/menu.js`),
-                nodeIntegration: true,
-                session: electron.session.fromPartition('persist:notion'),
-              },
-            });
-            enhancer_menu.loadURL('enhancement://core/menu.html');
-            enhancer_menu.on('close', (e) => {
-              window_state.saveState(enhancer_menu);
-              enhancer_menu = null;
-            });
-          },
+          accelerator: 'CommandOrControl+E',
+          click: openExtensionMenu,
         },
         {
           type: 'separator',

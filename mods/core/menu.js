@@ -9,14 +9,23 @@
 const __mod = require('./mod.js'),
   store = require('../../pkg/store.js'),
   helpers = require('../../pkg/helpers.js'),
-  electron = require('electron');
+  electron = require('electron'),
+  browser = electron.remote.getCurrentWindow();
 
 window['__start'] = async () => {
   const buttons = require('./buttons.js');
   document.querySelector('#menu-titlebar').appendChild(buttons.element);
 
+  document.defaultView.addEventListener('keyup', (event) => {
+    if (event.code === 'F5') window.reload();
+    if (event.key === 'e' && (event.ctrlKey || event.metaKey)) {
+      electron.remote.BrowserWindow.getAllWindows()[0].show();
+      browser.close();
+    }
+  });
+
   electron.ipcRenderer.on('enhancer:set-theme', (event, theme) => {
-    document.body.className = `notion-${theme.mode}-theme smooth-scrollbars`;
+    document.body.className = `notion-${theme.mode}-theme`;
     for (const style of theme.rules)
       document.body.style.setProperty(style[0], style[1]);
   });
@@ -85,6 +94,7 @@ window['__start'] = async () => {
       ).prepend();
     });
 
+  // mod loader
   const modules = helpers.getEnhancements();
   if (modules.loaded.length)
     console.info(
@@ -99,5 +109,45 @@ window['__start'] = async () => {
         .map((mod) => `<b>${mod}</b>`)
         .join(', ')}.`
     ).append();
+  }
+
+  // mod options
+  function markdown(string) {
+    return snarkdown(
+      string
+        .split('\n')
+        .map((line) => line.trim())
+        .join('<br>')
+    ).replace(/([^\\])?~~([^\n]*[^\\])~~/g, '$1<s>$2</s>');
+  }
+  const $modules = document.querySelector('#modules');
+  for (let mod of modules.loaded.sort((a, b) =>
+    store('mods', { [mod.id]: { pinned: false } }).pinned
+      ? 1
+      : a.name.localeCompare(b.name)
+  )) {
+    $modules.append(
+      createElement(`
+      <section class="${
+        mod.type === 'core' ||
+        store('mods', { [mod.id]: { enabled: false } }).enabled
+          ? 'enabled'
+          : 'disabled'
+      }" id="${mod.id}">
+        <h3>${mod.name}</h3>
+        <p class="tags">${mod.tags
+          .map((tag) => (tag.startsWith('#') ? tag : `#${tag}`))
+          .join(' ')}</p>
+        <p class="desc">${markdown(mod.desc)}</p>
+        <p>
+          <a href="https://github.com/${mod.author}" class="author">
+            <img src="https://github.com/${mod.author}.png" />
+            ${mod.author}
+          </a>
+          <span class="version">v${mod.version}</span>
+        </p>
+      </section>
+    `)
+    );
   }
 };

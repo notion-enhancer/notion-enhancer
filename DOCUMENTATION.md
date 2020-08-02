@@ -36,12 +36,11 @@ each directory in the `mods` folder is considered a module, with the entry point
 // of this file's exported object.
 module.exports = {
   id: String of uuidv4,
-  type: String in ['extension', 'theme'],
   name: String of short_name,
-  desc: String of paragraph,
+  tags?: Array<String> of categories,
+  desc: String of markdown,
   version: String of semver,
   author: String of github_username,
-  thumbnail?: String of [relative_file, url],
   options?: {
     key: String,
     label: String,
@@ -54,17 +53,16 @@ module.exports = {
 };
 ```
 
-| key       | value                                                                                           | type              |
-| --------- | ----------------------------------------------------------------------------------------------- | ----------------- |
-| id        | **required:** uuidv4                                                                            | _string_          |
-| type      | **required:** 'extension' or 'theme'                                                            | _string_          |
-| name      | **required:** short name (e.g. 'frameless window')                                              | _string_          |
-| desc      | **optional:** 1-3 sentence description of what the module is/does.                              | _string_          |
-| version   | **required:** semver (e.g. '0.3.7')                                                             | _string_          |
-| author    | **required:** github username                                                                   | _string_          |
-| thumbnail | **optional:** image: relative file or url                                                       | _string_          |
-| options   | **optional:** see below: options made available in the enhancer menu (accessible from the tray) | _array\<object\>_ |
-| hacks     | **optional:** see below: code inserted at various points                                        | _object_          |
+| key     | value                                                                                              | type              |
+| ------- | -------------------------------------------------------------------------------------------------- | ----------------- |
+| id      | **required:** uuidv4                                                                               | _string_          |
+| name    | **required:** short name (e.g. 'frameless window')                                                 | _string_          |
+| tags    | **required:** categories/type (e.g. 'extension', 'theme', 'light', 'dark')                         | _array\<string\>_ |
+| desc    | **optional:** 1-3 sentence description of what the module is/does, with basic markdown formatting. | _string_          |
+| version | **required:** semver (e.g. '0.3.7')                                                                | _string_          |
+| author  | **required:** github username                                                                      | _string_          |
+| options | **optional:** see below: options made available in the enhancer menu (accessible from the tray)    | _array\<object\>_ |
+| hacks   | **optional:** see below: code inserted at various points                                           | _object_          |
 
 #### options
 

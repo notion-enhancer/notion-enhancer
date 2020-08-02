@@ -21,30 +21,30 @@ module.exports = (defaults) =>
     // additional hotkeys
     document.defaultView.addEventListener('keyup', (event) => {
       if (event.code === 'F5') window.reload();
+      if (event.key === 'e' && (event.ctrlKey || event.metaKey))
+        electron.ipcRenderer.send('enhancer:open-extension-menu');
     });
 
-    const interval_attempts = {
-      enhance: setInterval(enhance, 500),
-    };
+    const attempt_interval = setInterval(enhance, 500);
     async function enhance() {
       if (!document.querySelector('.notion-frame')) return;
-      clearInterval(interval_attempts.enhance);
+      clearInterval(attempt_interval);
 
       // scrollbars
       if (settings.smooth_scrollbars) {
         document.body.classList.add('smooth-scrollbars');
-        interval_attempts.patchScrollbars = setInterval(patchScrollbars, 50);
-        function patchScrollbars() {
-          const sidebar = document.querySelector(
-            '.notion-scroller.vertical[style*="overflow: hidden auto;"]'
-          );
-          if (!sidebar) return;
-          clearInterval(interval_attempts.patchScrollbars);
-          sidebar.style.overflow = '';
-          setTimeout(() => {
-            sidebar.style.overflow = 'hidden auto';
-          }, 10);
-        }
+        // interval_attempts.patchScrollbars = setInterval(patchScrollbars, 100);
+        // function patchScrollbars() {
+        //   const sidebar = document.querySelector(
+        //     '.notion-scroller.vertical[style*="overflow: hidden auto;"]'
+        //   );
+        //   if (!sidebar) return;
+        //   clearInterval(interval_attempts.patchScrollbars);
+        //   sidebar.style.overflow = '';
+        //   setTimeout(() => {
+        //     sidebar.style.overflow = 'hidden auto';
+        //   }, 10);
+        // }
       }
 
       // frameless

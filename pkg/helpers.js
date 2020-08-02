@@ -127,8 +127,7 @@ function getEnhancements() {
         modules.IDs.includes(mod.id) ||
         !mod.name ||
         !mod.version ||
-        !mod.author ||
-        !['extension', 'theme', 'core'].includes(mod.type)
+        !mod.author
       )
         throw Error;
       modules.loaded.push({

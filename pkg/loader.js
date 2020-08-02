@@ -48,7 +48,10 @@ module.exports = function (__file, __exports) {
         document.querySelector('head').appendChild(style);
       });
     }
-    if (mod.type === 'core' || store('mods', { [mod.id]: false })[mod.id]) {
+    if (
+      mod.type === 'core' ||
+      store('mods', { [mod.id]: { enabled: false } })[mod.id]
+    ) {
       if (mod.hacks && mod.hacks[__file])
         mod.hacks[__file](
           (...args) =>
