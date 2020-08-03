@@ -1,0 +1,206 @@
+/*
+ * notion-enhancer
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
+ * (https://dragonwocky.me/) under the MIT license
+ */
+
+@import './variables.css';
+
+.notion-dark-theme {
+  --theme_local--main: var(--theme_dark--main);
+  --theme_local--sidebar: var(--theme_dark--sidebar);
+  --theme_local--overlay: var(--theme_dark--overlay);
+  --theme_local--dragarea: var(--theme_dark--dragarea);
+  --theme_local--preview-width: var(--theme_dark--preview-width);
+  --theme_local--preview_banner-height: var(
+    --theme_dark--preview_banner-height
+  );
+  --theme_local--page_banner-height: var(--theme_dark--page_banner-height);
+
+  --theme_local--font_sans: var(--theme_dark--font_sans);
+  --theme_local--font_serif: var(--theme_dark--font_serif);
+  --theme_local--font_mono: var(--theme_dark--font_mono);
+  --theme_local--font_code: var(--theme_dark--font_code);
+
+  --theme_local--scrollbar: var(--theme_dark--scrollbar);
+  --theme_local--scrollbar-border: var(--theme_dark--scrollbar-border);
+  --theme_local--scrollbar_hover: var(--theme_dark--scrollbar_hover);
+
+  --theme_local--card: var(--theme_dark--card);
+  --theme_local--card-border: var(--theme_dark--card-border);
+  --theme_local--table-border: var(--theme_dark--table-border);
+  --theme_local--button_hover: var(--theme_dark--button_hover);
+  --theme_local--button_hover-border: var(--theme_dark--button_hover-border);
+  --theme_local--button_close: var(--theme_dark--button_close);
+  --theme_local--button_close-fill: var(--theme_dark--button_close-fill);
+
+  --theme_local--selected: var(--theme_dark--selected);
+  --theme_local--primary: var(--theme_dark--primary);
+  --theme_local--primary_hover: var(--theme_dark--primary_hover);
+  --theme_local--primary_click: var(--theme_dark--primary_click);
+  --theme_local--primary_indicator: var(--theme_dark--primary_indicator);
+
+  --theme_local--todo_empty-border: var(--theme_dark--todo_empty-border);
+  --theme_local--todo_ticked: var(--theme_dark--todo_ticked);
+  --theme_local--todo_ticked-fill: var(--theme_dark--todo_ticked-fill);
+  --theme_local--todo_ticked-background: var(
+    --theme_dark--todo_ticked-background
+  );
+  --theme_local--todo_hover-background: var(
+    --theme_dark--todo_hover-background
+  );
+
+  --theme_local--danger_text: var(--theme_dark--danger_text);
+  --theme_local--danger_border: var(--theme_dark--danger_border);
+
+  --theme_local--text: var(--theme_dark--text);
+  --theme_local--text_ui: var(--theme_dark--text_ui);
+  --theme_local--text_ui_info: var(--theme_dark--text_ui_info);
+
+  --theme_local--text_gray: var(--theme_dark--text_gray);
+  --theme_local--text_brown: var(--theme_dark--text_brown);
+  --theme_local--text_orange: var(--theme_dark--text_orange);
+  --theme_local--text_yellow: var(--theme_dark--text_yellow);
+  --theme_local--text_green: var(--theme_dark--text_green);
+  --theme_local--text_blue: var(--theme_dark--text_blue);
+  --theme_local--text_purple: var(--theme_dark--text_purple);
+  --theme_local--text_pink: var(--theme_dark--text_pink);
+  --theme_local--text_red: var(--theme_dark--text_red);
+  --theme_local--bg_gray: var(--theme_dark--bg_gray);
+  --theme_local--bg_brown: var(--theme_dark--bg_brown);
+  --theme_local--bg_orange: var(--theme_dark--bg_orange);
+  --theme_local--bg_yellow: var(--theme_dark--bg_yellow);
+  --theme_local--bg_green: var(--theme_dark--bg_green);
+  --theme_local--bg_blue: var(--theme_dark--bg_blue);
+  --theme_local--bg_purple: var(--theme_dark--bg_purple);
+  --theme_local--bg_pink: var(--theme_dark--bg_pink);
+  --theme_local--bg_red: var(--theme_dark--bg_red);
+  --theme_local--line_gray: var(--theme_dark--line_gray);
+  --theme_local--line_brown: var(--theme_dark--line_brown);
+  --theme_local--line_orange: var(--theme_dark--line_orange);
+  --theme_local--line_yellow: var(--theme_dark--line_yellow);
+  --theme_local--line_green: var(--theme_dark--line_green);
+  --theme_local--line_blue: var(--theme_dark--line_blue);
+  --theme_local--line_purple: var(--theme_dark--line_purple);
+  --theme_local--line_pink: var(--theme_dark--line_pink);
+  --theme_local--line_red: var(--theme_dark--line_red);
+
+  --theme_local--code_inline-text: var(--theme_dark--code_inline-text);
+  --theme_local--code_inline-background: var(
+    --theme_dark--code_inline-background
+  );
+  --theme_local--code_text: var(--theme_dark--code_text);
+  --theme_local--code-background: var(--theme_dark--code-background);
+  --theme_local--code_function: var(--theme_dark--code_function);
+  --theme_local--code_keyword: var(--theme_dark--code_keyword);
+  --theme_local--code_tag: var(--theme_dark--code_tag);
+  --theme_local--code_operator: var(--theme_dark--code_operator);
+  --theme_local--code_property: var(--theme_dark--code_property);
+  --theme_local--code_builtin: var(--theme_dark--code_builtin);
+  --theme_local--code_attr-name: var(--theme_dark--code_attr-name);
+  --theme_local--code_comment: var(--theme_dark--code_comment);
+  --theme_local--code_punctuation: var(--theme_dark--code_punctuation);
+  --theme_local--code_doctype: var(--theme_dark--code_doctype);
+  --theme_local--code_number: var(--theme_dark--code_number);
+  --theme_local--code_string: var(--theme_dark--code_string);
+  --theme_local--code_attr-value: var(--theme_dark--code_attr-value);
+}
+.notion-light-theme {
+  --theme_local--main: var(--theme_light--main);
+  --theme_local--sidebar: var(--theme_light--sidebar);
+  --theme_local--overlay: var(--theme_light--overlay);
+  --theme_local--dragarea: var(--theme_light--dragarea);
+  --theme_local--preview-width: var(--theme_light--preview-width);
+  --theme_local--preview_banner-height: var(
+    --theme_light--preview_banner-height
+  );
+  --theme_local--page_banner-height: var(--theme_light--page_banner-height);
+
+  --theme_local--font_sans: var(--theme_light--font_sans);
+  --theme_local--font_serif: var(--theme_light--font_serif);
+  --theme_local--font_mono: var(--theme_light--font_mono);
+  --theme_local--font_code: var(--theme_light--font_code);
+
+  --theme_local--scrollbar: var(--theme_light--scrollbar);
+  --theme_local--scrollbar-border: var(--theme_light--scrollbar-border);
+  --theme_local--scrollbar_hover: var(--theme_light--scrollbar_hover);
+
+  --theme_local--card: var(--theme_light--card);
+  --theme_local--card-border: var(--theme_light--card-border);
+  --theme_local--table-border: var(--theme_light--table-border);
+  --theme_local--button_hover: var(--theme_light--button_hover);
+  --theme_local--button_hover-border: var(--theme_light--button_hover-border);
+  --theme_local--button_close: var(--theme_light--button_close);
+  --theme_local--button_close-fill: var(--theme_light--button_close-fill);
+
+  --theme_local--selected: var(--theme_light--selected);
+  --theme_local--primary: var(--theme_light--primary);
+  --theme_local--primary_hover: var(--theme_light--primary_hover);
+  --theme_local--primary_click: var(--theme_light--primary_click);
+  --theme_local--primary_indicator: var(--theme_light--primary_indicator);
+
+  --theme_local--todo_empty-border: var(--theme_light--todo_empty-border);
+  --theme_local--todo_ticked: var(--theme_light--todo_ticked);
+  --theme_local--todo_ticked-fill: var(--theme_light--todo_ticked-fill);
+  --theme_local--todo_ticked-background: var(
+    --theme_light--todo_ticked-background
+  );
+  --theme_local--todo_hover-background: var(
+    --theme_light--todo_hover-background
+  );
+
+  --theme_local--danger_text: var(--theme_light--danger_text);
+  --theme_local--danger_border: var(--theme_light--danger_border);
+
+  --theme_local--text: var(--theme_light--text);
+  --theme_local--text_ui: var(--theme_light--text_ui);
+  --theme_local--text_ui_info: var(--theme_light--text_ui_info);
+
+  --theme_local--text_gray: var(--theme_light--text_gray);
+  --theme_local--text_brown: var(--theme_light--text_brown);
+  --theme_local--text_orange: var(--theme_light--text_orange);
+  --theme_local--text_yellow: var(--theme_light--text_yellow);
+  --theme_local--text_green: var(--theme_light--text_green);
+  --theme_local--text_blue: var(--theme_light--text_blue);
+  --theme_local--text_purple: var(--theme_light--text_purple);
+  --theme_local--text_pink: var(--theme_light--text_pink);
+  --theme_local--text_red: var(--theme_light--text_red);
+  --theme_local--bg_gray: var(--theme_light--bg_gray);
+  --theme_local--bg_brown: var(--theme_light--bg_brown);
+  --theme_local--bg_orange: var(--theme_light--bg_orange);
+  --theme_local--bg_yellow: var(--theme_light--bg_yellow);
+  --theme_local--bg_green: var(--theme_light--bg_green);
+  --theme_local--bg_blue: var(--theme_light--bg_blue);
+  --theme_local--bg_purple: var(--theme_light--bg_purple);
+  --theme_local--bg_pink: var(--theme_light--bg_pink);
+  --theme_local--bg_red: var(--theme_light--bg_red);
+  --theme_local--line_gray: var(--theme_light--line_gray);
+  --theme_local--line_brown: var(--theme_light--line_brown);
+  --theme_local--line_orange: var(--theme_light--line_orange);
+  --theme_local--line_yellow: var(--theme_light--line_yellow);
+  --theme_local--line_green: var(--theme_light--line_green);
+  --theme_local--line_blue: var(--theme_light--line_blue);
+  --theme_local--line_purple: var(--theme_light--line_purple);
+  --theme_local--line_pink: var(--theme_light--line_pink);
+  --theme_local--line_red: var(--theme_light--line_red);
+
+  --theme_local--code_inline-text: var(--theme_light--code_inline-text);
+  --theme_local--code_inline-background: var(
+    --theme_light--code_inline-background
+  );
+  --theme_local--code_text: var(--theme_light--code_text);
+  --theme_local--code-background: var(--theme_light--code-background);
+  --theme_local--code_function: var(--theme_light--code_function);
+  --theme_local--code_keyword: var(--theme_light--code_keyword);
+  --theme_local--code_tag: var(--theme_light--code_tag);
+  --theme_local--code_operator: var(--theme_light--code_operator);
+  --theme_local--code_property: var(--theme_light--code_property);
+  --theme_local--code_builtin: var(--theme_light--code_builtin);
+  --theme_local--code_attr-name: var(--theme_light--code_attr-name);
+  --theme_local--code_comment: var(--theme_light--code_comment);
+  --theme_local--code_punctuation: var(--theme_light--code_punctuation);
+  --theme_local--code_doctype: var(--theme_light--code_doctype);
+  --theme_local--code_number: var(--theme_light--code_number);
+  --theme_local--code_string: var(--theme_light--code_string);
+  --theme_local--code_attr-value: var(--theme_light--code_attr-value);
+}
