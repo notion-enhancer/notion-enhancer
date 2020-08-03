@@ -53,16 +53,16 @@ module.exports = {
 };
 ```
 
-| key     | value                                                                                              | type              |
-| ------- | -------------------------------------------------------------------------------------------------- | ----------------- |
-| id      | **required:** uuidv4                                                                               | _string_          |
-| name    | **required:** short name (e.g. 'frameless window')                                                 | _string_          |
-| tags    | **required:** categories/type (e.g. 'extension', 'theme', 'light', 'dark')                         | _array\<string\>_ |
-| desc    | **optional:** 1-3 sentence description of what the module is/does, with basic markdown formatting. | _string_          |
-| version | **required:** semver (e.g. '0.3.7')                                                                | _string_          |
-| author  | **required:** github username                                                                      | _string_          |
-| options | **optional:** see below: options made available in the enhancer menu (accessible from the tray)    | _array\<object\>_ |
-| hacks   | **optional:** see below: code inserted at various points                                           | _object_          |
+| key     | value                                                                                           | type              |
+| ------- | ----------------------------------------------------------------------------------------------- | ----------------- |
+| id      | **required:** uuidv4                                                                            | _string_          |
+| name    | **required:** short name (e.g. 'frameless window')                                              | _string_          |
+| tags    | **required:** categories/type (e.g. 'extension', 'theme', 'light', 'dark')                      | _array\<string\>_ |
+| desc    | **optional:** 1-3 sentence description of what the module is/does, with basic markdown support. | _string_          |
+| version | **required:** semver (e.g. '0.3.7')                                                             | _string_          |
+| author  | **required:** github username                                                                   | _string_          |
+| options | **optional:** see below: options made available in the enhancer menu (accessible from the tray) | _array\<object\>_ |
+| hacks   | **optional:** see below: code inserted at various points                                        | _object_          |
 
 #### options
 
@@ -86,7 +86,7 @@ each "hack" is a function taking 2 arguments.
 
 1. the **`store`** argument, which allows access to the module
    settings/options defined in `mod.js` (those set in the menu, or used internally by the module).
-   each module store is saved to + automatically syncs with `~/.notion-enhancer/id.json`.
+   each module store is automatically saved to + loaded from `~/.notion-enhancer/id.json`.
    it can be initialised with `const settings = store({ defaults })`, then used as if it were a normal object.
 2. the **`__exports`** argument, which is the `module.exports` of the file being modded.
    this can be used to call or replace functions from notion.

@@ -18,10 +18,7 @@ window['__start'] = async () => {
 
   document.defaultView.addEventListener('keyup', (event) => {
     if (event.code === 'F5') window.reload();
-    if (event.key === 'e' && (event.ctrlKey || event.metaKey)) {
-      electron.remote.BrowserWindow.getAllWindows()[0].show();
-      browser.close();
-    }
+    if (event.key === 'e' && (event.ctrlKey || event.metaKey)) browser.close();
   });
 
   electron.ipcRenderer.on('enhancer:set-theme', (event, theme) => {
@@ -113,28 +110,69 @@ window['__start'] = async () => {
 
   // mod options
   function markdown(string) {
-    return snarkdown(
-      string
-        .split('\n')
-        .map((line) => line.trim())
-        .join('<br>')
-    ).replace(/([^\\])?~~([^\n]*[^\\])~~/g, '$1<s>$2</s>');
+    return string
+      .split('\n')
+      .map((line) =>
+        line
+          // todo: stop e.g. whole chunk of ~~thin~~g~~ being selected
+          .trim()
+          // ~~strikethrough~~
+          .replace(/([^\\])?~~([^\n]*[^\\])~~/g, '$1<s>$2</s>')
+          // __underline__
+          .replace(/([^\\])?__([^\n]*[^\\])__/g, '$1<u>$2</u>')
+          // **bold**
+          .replace(/([^\\])?\*\*([^\n]*[^\\])\*\*/g, '$1<b>$2</b>')
+          // *italic*
+          .replace(/([^\\])?\*([^\n]*[^\\])\*/g, '$1<i>$2</i>')
+          // _italic_
+          .replace(/([^\\])?_([^\n]*[^\\])_/g, '$1<i>$2</i>')
+          // `code`
+          .replace(/([^\\])?`([^\n]*[^\\])`/g, '$1<code>$2</code>')
+          // ![image_title](source)
+          .replace(
+            /([^\\])?\!\[([^\n]*[^\\]?)\]\(([^\n]*[^\\])\)/g,
+            '$1<img alt="" src="$3">$2</a>'
+          )
+          // [link](destination)
+          .replace(
+            /([^\\])?\[([^\n]*[^\\])\]\(([^\n]*[^\\])\)/g,
+            '$1<a href="$3">$2</a>'
+          )
+      )
+      .join('<br>');
   }
   const $modules = document.querySelector('#modules');
-  for (let mod of modules.loaded.sort((a, b) =>
-    store('mods', { [mod.id]: { pinned: false } }).pinned
+  for (let mod of modules.loaded.sort((a, b) => {
+    return a.tags.includes('core') ||
+      store('mods', { [a.id]: { pinned: false } }).pinned
+      ? -1
+      : b.tags.includes('core') ||
+        store('mods', { [b.id]: { pinned: false } }).pinned
       ? 1
-      : a.name.localeCompare(b.name)
-  )) {
-    $modules.append(
-      createElement(`
+      : a.name.localeCompare(b.name);
+  })) {
+    const menuStore = store('mods', { [mod.id]: { enabled: false } });
+    mod.store = store(mod.id);
+    mod.elem = createElement(`
       <section class="${
-        mod.type === 'core' ||
-        store('mods', { [mod.id]: { enabled: false } }).enabled
+        mod.tags.includes('core') || menuStore[mod.id].enabled
           ? 'enabled'
           : 'disabled'
       }" id="${mod.id}">
-        <h3>${mod.name}</h3>
+        <h3 ${
+          mod.tags.includes('core')
+            ? `>${mod.name}`
+            : `class="toggle">
+          <input type="checkbox" id="enable_${mod.id}" ${
+                menuStore[mod.id].enabled ? 'checked' : ''
+              } />
+          <label for="enable_${mod.id}">
+            ${mod.name}
+            <div class="switch">
+              <div class="dot"></div>
+            </div>
+          </label>`
+        }</h3>
         <p class="tags">${mod.tags
           .map((tag) => (tag.startsWith('#') ? tag : `#${tag}`))
           .join(' ')}</p>
@@ -147,7 +185,12 @@ window['__start'] = async () => {
           <span class="version">v${mod.version}</span>
         </p>
       </section>
-    `)
-    );
+    `);
+    const $enable = mod.elem.querySelector(`#enable_${mod.id}`);
+    if ($enable)
+      $enable.addEventListener('click', (event) => {
+        menuStore[mod.id].enabled = $enable.checked;
+      });
+    $modules.append(mod.elem);
   }
 };

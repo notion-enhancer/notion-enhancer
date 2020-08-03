@@ -15,19 +15,25 @@ module.exports = (namespace, defaults = {}) => {
   namespace = path.resolve(`${data_folder}/${namespace}.json`);
   fs.ensureDirSync(data_folder);
 
-  const getData = () => ({ ...defaults, ...getJSON(namespace) });
-  // fs.writeJsonSync(namespace, getData());
-
-  return new Proxy(defaults, {
-    get(obj, prop) {
-      obj = getData();
-      return obj[prop];
-    },
-    set(obj, prop, val) {
-      obj = getData();
-      obj[prop] = val;
-      fs.writeJsonSync(namespace, obj);
-      return true;
-    },
-  });
+  let data;
+  const saveData = () => fs.writeJsonSync(namespace, data),
+    handler = {
+      get(obj, prop) {
+        if (prop === 'isProxy') return true;
+        if (
+          typeof obj[prop] === 'object' &&
+          obj[prop] !== null &&
+          !obj[prop].isProxy
+        )
+          obj[prop] = new Proxy(obj[prop], handler);
+        return obj[prop];
+      },
+      set(obj, prop, val) {
+        obj[prop] = val;
+        saveData();
+        return true;
+      },
+    };
+  data = new Proxy({ ...defaults, ...getJSON(namespace) }, handler);
+  return data;
 };

@@ -35,23 +35,23 @@ module.exports = function (__file, __exports) {
   const modules = helpers.getEnhancements();
   for (let mod of modules.loaded) {
     if (
-      __file === 'renderer/preload.js' &&
-      fs.pathExistsSync(
-        path.resolve(`${__dirname}/../mods/${mod.dir}/styles.css`)
-      )
+      (mod.tags || []).includes('core') ||
+      store('mods', { [mod.id]: { enabled: false } })[mod.id].enabled
     ) {
-      document.addEventListener('readystatechange', (event) => {
-        if (document.readyState !== 'complete') return false;
-        const style = document.createElement('link');
-        style.rel = 'stylesheet';
-        style.href = `enhancement://${mod.dir}/styles.css`;
-        document.querySelector('head').appendChild(style);
-      });
-    }
-    if (
-      mod.type === 'core' ||
-      store('mods', { [mod.id]: { enabled: false } })[mod.id]
-    ) {
+      if (
+        __file === 'renderer/preload.js' &&
+        fs.pathExistsSync(
+          path.resolve(`${__dirname}/../mods/${mod.dir}/styles.css`)
+        )
+      ) {
+        document.addEventListener('readystatechange', (event) => {
+          if (document.readyState !== 'complete') return false;
+          const style = document.createElement('link');
+          style.rel = 'stylesheet';
+          style.href = `enhancement://${mod.dir}/styles.css`;
+          document.querySelector('head').appendChild(style);
+        });
+      }
       if (mod.hacks && mod.hacks[__file])
         mod.hacks[__file](
           (...args) =>
