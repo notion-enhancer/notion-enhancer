@@ -9,12 +9,12 @@
   border-bottom: none !important;
 }
 .notion-link-token:before {
-  content: '[';
+  content: '[[';
   opacity: 0.7;
   transition: opacity 100ms ease-in;
 }
 .notion-link-token:after {
-  content: ']';
+  content: ']]';
   opacity: 0.7;
   transition: opacity 100ms ease-in;
 }

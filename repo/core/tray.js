@@ -144,6 +144,22 @@ module.exports = (store, __exports) => {
         click: openExtensionMenu,
       },
       {
+        type: 'normal',
+        label: 'New Window',
+        click: () => {
+          require('./create.js')(
+            store,
+            require(path.resolve(`${__notion}/app/main/createWindow.js`))
+          )(
+            '',
+            electron.BrowserWindow.getAllWindows().find(
+              (win) => win !== enhancer_menu
+            )
+          );
+        },
+        accelerator: 'CommandOrControl+Shift+N',
+      },
+      {
         type: 'separator',
       },
       {

@@ -8,6 +8,8 @@
 
 const store = require('../../pkg/store.js'),
   helpers = require('../../pkg/helpers.js'),
+  fs = require('fs-extra'),
+  path = require('path'),
   electron = require('electron'),
   browser = electron.remote.getCurrentWindow();
 
@@ -17,7 +19,7 @@ window['__start'] = async () => {
 
   document.defaultView.addEventListener('keyup', (event) => {
     if (event.code === 'F5') window.reload();
-    if (event.key === 'e' && (event.ctrlKey || event.metaKey)) browser.close();
+    if ((event.ctrlKey || event.metaKey) && event.key === 'e') browser.close();
   });
 
   electron.ipcRenderer.on('enhancer:set-theme', (event, theme) => {
@@ -68,11 +70,11 @@ window['__start'] = async () => {
       if (version.local == version.repo) return;
       // compare func from https://github.com/substack/semver-compare
       version.sorted = [version.local, version.repo].sort((a, b) => {
-        var pa = a.split('.');
-        var pb = b.split('.');
-        for (var i = 0; i < 3; i++) {
-          var na = Number(pa[i]);
-          var nb = Number(pb[i]);
+        const pa = a.split('.'),
+          pb = b.split('.');
+        for (let i = 0; i < 3; i++) {
+          let na = Number(pa[i]),
+            nb = Number(pb[i]);
           if (na > nb) return 1;
           if (nb > na) return -1;
           if (!isNaN(na) && isNaN(nb)) return 1;
@@ -133,7 +135,7 @@ window['__start'] = async () => {
           // ![image_title](source)
           .replace(
             /([^\\])?\!\[([^\]]*[^\\\]]?)\]\(([^)]*[^\\)])\)/g,
-            '$1<img alt="" src="$3">$2</img>'
+            '$1<img alt="$2" src="$3">'
           )
           // [link](destination)
           .replace(
@@ -153,7 +155,7 @@ window['__start'] = async () => {
     if (modified_notice) return;
     modified_notice = createAlert(
       'info',
-      `changes may not apply until app restart.`
+      `changes may not fully apply until app restart.`
     );
     modified_notice.append();
   }
@@ -193,7 +195,7 @@ window['__start'] = async () => {
           <div class="desc">${markdown(mod.desc)}</div>
           <p>
             <a href="https://github.com/${mod.author}" class="author">
-              <img src="https://github.com/${mod.author}.png" />
+              <img src="https://github.com/${mod.author}.png">
               ${mod.author}
             </a>
             <span class="version">v${mod.version}</span>
@@ -210,7 +212,9 @@ window['__start'] = async () => {
         menuStore[mod.id].enabled = $enable.checked;
         mod.elem.className = menuStore[mod.id].enabled ? 'enabled' : 'disabled';
       });
+
     const $options = mod.elem.querySelector('.options');
+    let file_icon;
     if ($options)
       for (const opt of mod.options) {
         let $opt;
@@ -219,21 +223,17 @@ window['__start'] = async () => {
             $opt = createElement(`
               <p class="toggle">
                 <input type="checkbox" id="toggle_${mod.id}--${opt.key}"
-                ${store(mod.id)[opt.key] ? 'checked' : ''} />
+                ${
+                  store(mod.id, { [opt.key]: opt.value })[opt.key]
+                    ? 'checked'
+                    : ''
+                } />
                 <label for="toggle_${mod.id}--${opt.key}">
                   <span class="name">${opt.label}</span>
                   <span class="switch"><span class="dot"></span></span>
                 </label>
               </p>
             `);
-            const $opt_checkbox = $opt.querySelector(
-              `#toggle_${mod.id}--${opt.key}`
-            );
-            $opt_checkbox.addEventListener('change', (event) => {
-              store(mod.id)[opt.key] = $opt_checkbox.checked;
-              modified();
-            });
-            $options.appendChild($opt);
             break;
           case 'select':
             $opt = createElement(`
@@ -246,21 +246,83 @@ window['__start'] = async () => {
                 </select>
               </p>
             `);
-            const $opt_select = $opt.querySelector(
-              `#select_${mod.id}--${opt.key}`
-            );
-            $opt_select.value = store(mod.id)[opt.key];
-            $opt_select.addEventListener('change', (event) => {
-              store(mod.id)[opt.key] = $opt_select.value;
-              modified();
-            });
-            $options.appendChild($opt);
             break;
           case 'input':
+            $opt = createElement(`
+              <p class="input">
+                <label for="input_${mod.id}--${opt.key}">${opt.label}</label>
+                <input type="${
+                  typeof opt.value === 'number' ? 'number' : 'text'
+                }" id="input_${mod.id}--${opt.key}">
+              </p>
+            `);
             break;
           case 'file':
+            if (!file_icon)
+              file_icon = await fs.readFile(
+                path.resolve(`${__dirname}/icons/file.svg`)
+              );
+            $opt = createElement(`
+              <p class="file">
+              <input type="file" id="file_${mod.id}--${opt.key}"
+              ${
+                opt.extensions
+                  ? ` accept="${opt.extensions
+                      .map((ext) => (ext.startsWith('.') ? ext : `.${ext}`))
+                      .join(',')}"`
+                  : ''
+              }>
+                <label for="file_${mod.id}--${opt.key}">
+                  <span class="label">
+                    <span class="name">${opt.label}</span>
+                    <button class="clear"></button>
+                  </span>
+                  <span class="choose">
+                    ${file_icon}
+                    <span class="path">${
+                      store(mod.id)[opt.key]
+                        ? store(mod.id)[opt.key].split(path.sep).reverse()[0]
+                        : 'choose a file...'
+                    }</span>
+                  </span>
+                </label>
+              </p>
+            `);
+            $opt.querySelector('.clear').addEventListener('click', (event) => {
+              store(mod.id)[opt.key] = '';
+              $opt.querySelector('.path').innerText = store(mod.id)[opt.key]
+                ? store(mod.id)[opt.key].split(path.sep).reverse()[0]
+                : 'choose a file...';
+            });
             break;
         }
+
+        if (opt.type !== 'file') {
+          $opt.querySelector(
+            `#${opt.type}_${mod.id}--${opt.key}`
+          ).value = store(mod.id, {
+            [opt.key]: opt.type === 'select' ? opt.value[0] : opt.value,
+          })[opt.key];
+        }
+        $opt
+          .querySelector(`#${opt.type}_${mod.id}--${opt.key}`)
+          .addEventListener('change', (event) => {
+            if (opt.type === 'toggle') {
+              store(mod.id)[opt.key] = event.target.checked;
+            } else if (opt.type === 'file') {
+              if (event.target.files.length)
+                store(mod.id)[opt.key] = event.target.files[0].path;
+              $opt.querySelector('.path').innerText = store(mod.id)[opt.key]
+                ? store(mod.id)[opt.key].split(path.sep).reverse()[0]
+                : 'choose a file...';
+            } else
+              store(mod.id)[opt.key] =
+                typeof opt.value === 'number'
+                  ? Number(event.target.value)
+                  : event.target.value;
+            modified();
+          });
+        $options.appendChild($opt);
       }
     $modules.append(mod.elem);
   }

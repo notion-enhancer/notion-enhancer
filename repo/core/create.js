@@ -18,7 +18,7 @@ module.exports = (store, __exports) => {
     helpers = require('../../pkg/helpers.js'),
     __notion = helpers.getNotion();
 
-  __exports.createWindow = function (relativeUrl) {
+  __exports.createWindow = function (relativeUrl, focused_window) {
     if (!relativeUrl) relativeUrl = '';
     const window_state = require(`${__notion.replace(
         /\\/g,
@@ -32,8 +32,9 @@ module.exports = (store, __exports) => {
         y: window_state.y,
         width: window_state.width,
         height: window_state.height,
-      },
-      focused_window = electron.BrowserWindow.getFocusedWindow();
+      };
+    focused_window =
+      focused_window || electron.BrowserWindow.getFocusedWindow();
     if (focused_window && !focused_window.isMaximized()) {
       rect.x = focused_window.getPosition()[0] + 20;
       rect.y = focused_window.getPosition()[1] + 20;
@@ -81,4 +82,5 @@ module.exports = (store, __exports) => {
     window.loadURL(__exports.getIndexUrl(relativeUrl));
     return window;
   };
+  return __exports.createWindow;
 };
