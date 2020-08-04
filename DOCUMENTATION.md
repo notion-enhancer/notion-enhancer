@@ -66,12 +66,13 @@ module.exports = {
 
 #### options
 
-| key   | value                                                              | type      |
-| ----- | ------------------------------------------------------------------ | --------- |
-| key   | **required:** key to save value to the mod `store`                 | _string_  |
-| label | **required:** short description/name of option to be shown in menu | _string_  |
-| type  | **required:** input type (see below)                               | _string_  |
-| value | **optional:** default or possible value/s for option               | see below |
+| key        | value                                                                                    | type              |
+| ---------- | ---------------------------------------------------------------------------------------- | ----------------- |
+| key        | **required:** key to save value to the mod `store`                                       | _string_          |
+| label      | **required:** short description/name of option to be shown in menu                       | _string_          |
+| type       | **required:** input type (see below)                                                     | _string_          |
+| extensions | **optional:** allowed file extensions (only use with a file option), e.g. `['js', 'ts']` | _array\<string\>_ |
+| value      | **optional:** default or possible value/s for option                                     | see below         |
 
 | type   | value             |
 | ------ | ----------------- |
@@ -79,6 +80,8 @@ module.exports = {
 | select | _array\<string\>_ |
 | input  | _string_          |
 | file   | none              |
+
+> the file option stores only a filepath, not the file itself.
 
 #### hacks
 

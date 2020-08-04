@@ -205,6 +205,7 @@ s {
   font-size: 0.9em;
 }
 #modules section .desc p {
+  font-size: inherit;
   margin: 0;
 }
 #modules section .desc blockquote {
@@ -265,7 +266,16 @@ s {
   margin-bottom: 0.5em;
 }
 
-select {
+.toggle *,
+.input *,
+.select *,
+.file * {
+  cursor: pointer;
+}
+.select select,
+.input input[type='text'],
+.input input[type='number'],
+.file input[type='file'] + label .choose {
   width: 100%;
   margin: 0.25em 0;
   font-size: 0.9rem;
@@ -274,20 +284,59 @@ select {
   color: var(--theme_local--text);
   background: var(--theme_local--main);
 }
-
-.toggle * {
-  cursor: pointer;
+.select select:focus,
+.input input[type='text']:focus,
+.input input[type='number']:focus,
+.file input[type='file']:focus + label .choose,
+.file input[type='file'] + label .choose:hover {
+  outline: var(--theme_local--table-border) solid 2px;
 }
-.toggle input {
+.file input[type='file'],
+.toggle input[type='checkbox'] {
   display: none;
 }
-.toggle input + label {
+
+.input input[type='text'],
+.input input[type='number'] {
+  padding: 0.4rem;
+  cursor: text;
+}
+
+.file input[type='file'] + label .label {
+  position: relative;
   display: flex;
 }
-.toggle input + label .name {
+.file input[type='file'] + label .label .name {
+  flex-basis: calc(100% - 1.5rem);
+}
+.file input[type='file'] + label .label .clear {
+  font-size: 1rem;
+  position: absolute;
+  top: 0.4em;
+  right: 0;
+  width: 1em;
+  height: 0.1em;
+  border: 0.35em solid var(--theme_local--card);
+  background: currentColor;
+}
+.file input[type='file'] + label .choose {
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+}
+.file input[type='file'] + label .choose svg {
+  padding-top: 0.5em;
+  height: 1.25em;
+  width: 1.25em;
+}
+
+.toggle input[type='checkbox'] + label {
+  display: flex;
+}
+.toggle input[type='checkbox'] + label .name {
   flex-basis: calc(100% - 2.25em);
 }
-.toggle input + label .switch {
+.toggle input[type='checkbox'] + label .switch {
   position: relative;
   margin-top: 0.5em;
   float: right;
@@ -296,7 +345,7 @@ select {
   background: var(--theme_local--main);
   border-radius: 5px;
 }
-.toggle input + label .switch:before {
+.toggle input[type='checkbox'] + label .switch::before {
   content: '';
   position: absolute;
   left: 0;
@@ -312,7 +361,7 @@ select {
   opacity: var(--menu--toggle_opacity, 0);
   transition: opacity 300ms;
 }
-.toggle input + label .switch .dot {
+.toggle input[type='checkbox'] + label .switch .dot {
   position: absolute;
   width: 1em;
   height: 1em;
@@ -323,7 +372,7 @@ select {
   background: var(--theme_local--todo_ticked-fill);
   box-shadow: 2px 1px 4px var(--theme_local--table-border);
 }
-.toggle input:checked + label {
+.toggle input[type='checkbox']:checked + label {
   --menu--toggle_offset: 1em;
   --menu--toggle_opacity: 1;
 }
