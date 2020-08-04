@@ -60,7 +60,6 @@ main {
 }
 main section {
   border-radius: 2px;
-  padding: 0.75em;
   margin-bottom: 0.75em;
 }
 
@@ -118,6 +117,7 @@ s {
 
 #alerts [role='alert'] {
   display: flex;
+  padding: 0.75em;
 }
 #alerts [role='alert']::before {
   content: '!';
@@ -180,6 +180,12 @@ s {
   background: var(--theme_local--sidebar);
   border: 1px solid var(--theme_local--table-border);
 }
+#modules section > div {
+  padding: 0.75em;
+}
+.notion-light-theme #modules section {
+  background: var(--theme_local--main);
+}
 
 #modules section h3,
 #modules section p {
@@ -187,6 +193,13 @@ s {
   font-size: 1rem;
 }
 
+/* #modules section .meta .toggle input + label .switch:before {
+  background: linear-gradient(
+    90deg,
+    var(--theme_local--text_green),
+    var(--theme_local--bg_green)
+  );
+} */
 #modules section .desc {
   margin: 0.3em 0 0.4em 0;
   font-size: 0.9em;
@@ -236,11 +249,43 @@ s {
 
 /* module options */
 
+#modules .disabled .options {
+  display: none;
+}
+#modules section .options {
+  border-top: 1px solid var(--theme_local--table-border);
+  background: var(--theme_local--card);
+}
+#modules section .options p {
+  font-size: 0.9em;
+}
+#modules section .options p:not(:last-child) {
+  padding-bottom: 0.5em;
+  border-bottom: 0.5px solid var(--theme_local--table-border);
+  margin-bottom: 0.5em;
+}
+
+select {
+  width: 100%;
+  margin: 0.25em 0;
+  font-size: 0.9rem;
+  padding: 0.4rem 0.2rem;
+  border: none;
+  color: var(--theme_local--text);
+  background: var(--theme_local--main);
+}
+
 .toggle * {
   cursor: pointer;
 }
 .toggle input {
   display: none;
+}
+.toggle input + label {
+  display: flex;
+}
+.toggle input + label .name {
+  flex-basis: calc(100% - 2.25em);
 }
 .toggle input + label .switch {
   position: relative;
@@ -248,7 +293,7 @@ s {
   float: right;
   height: 0.65em;
   width: 2em;
-  background: var(--theme_local--card);
+  background: var(--theme_local--main);
   border-radius: 5px;
 }
 .toggle input + label .switch:before {

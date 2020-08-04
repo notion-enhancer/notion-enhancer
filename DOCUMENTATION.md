@@ -41,12 +41,12 @@ module.exports = {
   desc: String of markdown,
   version: String of semver,
   author: String of github_username,
-  options?: {
+  options?: Array<{
     key: String,
     label: String,
     type: String in ['toggle', 'select', 'input', 'file'],
     value: Boolean or Array<String> or String or null
-  },
+  }>,
   hacks?: {
     [k: 'insert-point' (e.g. 'main/createWindow.js')]: function (store) {}
   }
@@ -87,7 +87,7 @@ each "hack" is a function taking 2 arguments.
 1. the **`store`** argument, which allows access to the module
    settings/options defined in `mod.js` (those set in the menu, or used internally by the module).
    each module store is automatically saved to + loaded from `~/.notion-enhancer/id.json`.
-   it can be initialised with `const settings = store({ defaults })`, then used as if it were a normal object.
+   it can be initialised/accessed with `store({ defaults })`, then used as if it were a normal object.
 2. the **`__exports`** argument, which is the `module.exports` of the file being modded.
    this can be used to call or replace functions from notion.
 
@@ -109,8 +109,7 @@ e.g.
 module.exports = function (store, __exports) {
   document.addEventListener('readystatechange', (event) => {
     if (document.readyState !== 'complete') return false;
-    const settings = store({ name: 'dragonwocky' });
-    console.log(settings.name);
+    console.log(store({ name: 'dragonwocky' }).name);
   });
 };
 // mod.js

@@ -6,14 +6,13 @@
 
 'use strict';
 
-const __mod = require('./mod.js'),
-  store = require('../../pkg/store.js'),
+const store = require('../../pkg/store.js'),
   helpers = require('../../pkg/helpers.js'),
   electron = require('electron'),
   browser = electron.remote.getCurrentWindow();
 
 window['__start'] = async () => {
-  const buttons = require('./buttons.js');
+  const buttons = require('./buttons.js')(() => ({ frameless: true }));
   document.querySelector('#menu-titlebar').appendChild(buttons.element);
 
   document.defaultView.addEventListener('keyup', (event) => {
@@ -61,10 +60,11 @@ window['__start'] = async () => {
   )
     .then((res) => res.json())
     .then((res) => {
-      const version = {
-        local: __mod.version.split(/[~-]/g)[0],
-        repo: res.tag_name.slice(1),
-      };
+      const raw_v = require('./mod.js').version,
+        version = {
+          local: raw_v.split(/[~-]/g)[0],
+          repo: res.tag_name.slice(1),
+        };
       if (version.local == version.repo) return;
       // compare func from https://github.com/substack/semver-compare
       version.sorted = [version.local, version.repo].sort((a, b) => {
@@ -87,7 +87,7 @@ window['__start'] = async () => {
              run <code>npm i -g notion-enhancer</code><br>
              (or <code>yarn global add notion-enhancer</code>),<br>
              <u>and</u> <code>notion-enhancer apply</code>.`
-          : `local build <b>v${__mod.version}</b> is unstable.`
+          : `local build <b>v${raw_v}</b> is unstable.`
       ).prepend();
     });
 
@@ -108,13 +108,12 @@ window['__start'] = async () => {
     ).append();
   }
 
-  // mod options
+  // mod info + options
   function markdown(string) {
     const parsed = string
       .split('\n')
       .map((line) =>
         line
-          // todo: stop e.g. whole chunk of ~~thin~~g~~ being selected
           .trim()
           .replace(/\s+/g, ' ')
           // > quote
@@ -148,56 +147,121 @@ window['__start'] = async () => {
       .join('');
     return parsed;
   }
+
+  let modified_notice;
+  function modified() {
+    if (modified_notice) return;
+    modified_notice = createAlert(
+      'info',
+      `changes may not apply until app restart.`
+    );
+    modified_notice.append();
+  }
+
   const $modules = document.querySelector('#modules');
-  for (let mod of modules.loaded.sort((a, b) => {
-    return a.tags.includes('core') ||
-      store('mods', { [a.id]: { pinned: false } }).pinned
+  for (let mod of modules.loaded.sort((a, b) =>
+    a.tags.includes('core') ||
+    store('mods', { [a.id]: { pinned: false } }).pinned
       ? -1
       : b.tags.includes('core') ||
         store('mods', { [b.id]: { pinned: false } }).pinned
       ? 1
-      : a.name.localeCompare(b.name);
-  })) {
+      : a.name.localeCompare(b.name)
+  )) {
     const menuStore = store('mods', { [mod.id]: { enabled: false } });
-    mod.store = store(mod.id);
     mod.elem = createElement(`
       <section class="${
         mod.tags.includes('core') || menuStore[mod.id].enabled
           ? 'enabled'
           : 'disabled'
       }" id="${mod.id}">
-        <h3 ${
-          mod.tags.includes('core')
-            ? `>${mod.name}`
-            : `class="toggle">
-          <input type="checkbox" id="enable_${mod.id}" ${
-                menuStore[mod.id].enabled ? 'checked' : ''
-              } />
-          <label for="enable_${mod.id}">
-            ${mod.name}
-            <div class="switch">
-              <div class="dot"></div>
-            </div>
-          </label>`
-        }</h3>
-        <p class="tags">${mod.tags
-          .map((tag) => (tag.startsWith('#') ? tag : `#${tag}`))
-          .join(' ')}</p>
-        <div class="desc">${markdown(mod.desc)}</div>
-        <p>
-          <a href="https://github.com/${mod.author}" class="author">
-            <img src="https://github.com/${mod.author}.png" />
-            ${mod.author}
-          </a>
-          <span class="version">v${mod.version}</span>
-        </p>
+        <div class="meta">
+          <h3 ${
+            mod.tags.includes('core')
+              ? `>${mod.name}`
+              : `class="toggle">
+            <input type="checkbox" id="enable_${mod.id}"
+            ${menuStore[mod.id].enabled ? 'checked' : ''} />
+            <label for="enable_${mod.id}">
+              <span class="name">${mod.name}</span>
+              <span class="switch"><span class="dot"></span></span>
+            </label>`
+          }</h3>
+          <p class="tags">${mod.tags
+            .map((tag) => (tag.startsWith('#') ? tag : `#${tag}`))
+            .join(' ')}</p>
+          <div class="desc">${markdown(mod.desc)}</div>
+          <p>
+            <a href="https://github.com/${mod.author}" class="author">
+              <img src="https://github.com/${mod.author}.png" />
+              ${mod.author}
+            </a>
+            <span class="version">v${mod.version}</span>
+          </p>
+        </div>
+        ${
+          mod.options && mod.options.length ? '<div class="options"></div>' : ''
+        }
       </section>
     `);
     const $enable = mod.elem.querySelector(`#enable_${mod.id}`);
     if ($enable)
       $enable.addEventListener('click', (event) => {
         menuStore[mod.id].enabled = $enable.checked;
+        mod.elem.className = menuStore[mod.id].enabled ? 'enabled' : 'disabled';
       });
+    const $options = mod.elem.querySelector('.options');
+    if ($options)
+      for (const opt of mod.options) {
+        let $opt;
+        switch (opt.type) {
+          case 'toggle':
+            $opt = createElement(`
+              <p class="toggle">
+                <input type="checkbox" id="toggle_${mod.id}--${opt.key}"
+                ${store(mod.id)[opt.key] ? 'checked' : ''} />
+                <label for="toggle_${mod.id}--${opt.key}">
+                  <span class="name">${opt.label}</span>
+                  <span class="switch"><span class="dot"></span></span>
+                </label>
+              </p>
+            `);
+            const $opt_checkbox = $opt.querySelector(
+              `#toggle_${mod.id}--${opt.key}`
+            );
+            $opt_checkbox.addEventListener('change', (event) => {
+              store(mod.id)[opt.key] = $opt_checkbox.checked;
+              modified();
+            });
+            $options.appendChild($opt);
+            break;
+          case 'select':
+            $opt = createElement(`
+              <p class="select">
+                <label for="select_${mod.id}--${opt.key}">${opt.label}</label>
+                <select id="select_${mod.id}--${opt.key}">
+                  ${opt.value
+                    .map((val) => `<option value="${val}">${val}</option>`)
+                    .join('')}
+                </select>
+              </p>
+            `);
+            const $opt_select = $opt.querySelector(
+              `#select_${mod.id}--${opt.key}`
+            );
+            $opt_select.value = store(mod.id)[opt.key];
+            $opt_select.addEventListener('change', (event) => {
+              store(mod.id)[opt.key] = $opt_select.value;
+              modified();
+            });
+            $options.appendChild($opt);
+            break;
+          case 'input':
+            break;
+          case 'file':
+            break;
+        }
+      }
     $modules.append(mod.elem);
   }
 };

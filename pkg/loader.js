@@ -52,14 +52,22 @@ module.exports = function (__file, __exports) {
           document.querySelector('head').appendChild(style);
         });
       }
-      if (mod.hacks && mod.hacks[__file])
+      if (mod.hacks && mod.hacks[__file]) {
+        mod.defaults = {};
+        for (let opt of mod.options || [])
+          mod.defaults[opt.key] = Array.isArray(opt.value)
+            ? opt.value[0]
+            : opt.value;
         mod.hacks[__file](
           (...args) =>
-            args.length === 1
-              ? store(mod.id, args[0])
-              : store(args[0], args[1]),
+            !args.length
+              ? store(mod.id, mod.defaults)
+              : args.length === 1
+              ? store(mod.id, { ...mod.defaults, ...args[0] })
+              : store(args[0], { ...mod.defaults, ...args[1] }),
           __exports
         );
+      }
     }
   }
 };

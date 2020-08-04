@@ -127,7 +127,11 @@ function getEnhancements() {
         modules.IDs.includes(mod.id) ||
         !mod.name ||
         !mod.version ||
-        !mod.author
+        !mod.author ||
+        (mod.options &&
+          !mod.options.every((opt) =>
+            ['toggle', 'select', 'input', 'file'].includes(opt.type)
+          ))
       )
         throw Error;
       modules.loaded.push({
