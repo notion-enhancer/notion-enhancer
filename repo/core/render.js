@@ -6,28 +6,28 @@
 
 'use strict';
 
-module.exports = (defaults) =>
-  function (store, __exports) {
-    const __start = window['__start'],
-      settings = store(defaults);
+module.exports = (store, __exports) => {
+  const __start = window['__start'];
 
-    window['__start'] = function () {
-      __start();
-      const dragarea = document.querySelector(
-          '#root [style*="-webkit-app-region: drag"]'
-        ),
-        default_styles = dragarea.getAttribute('style');
+  window['__start'] = function () {
+    __start();
+    const dragarea = document.querySelector(
+        '#root [style*="-webkit-app-region: drag"]'
+      ),
+      default_styles = dragarea.getAttribute('style');
 
-      // document.body.innerText = document.body.innerHTML;
+    // document.body.innerText = document.body.innerHTML;
 
-      document
-        .getElementById('notion')
-        .addEventListener('ipc-message', (event) => {
-          if (event.channel !== 'enhancer:sidebar-width') return;
-          dragarea.setAttribute(
-            'style',
-            `${default_styles} top: 2px; height: ${settings.dragarea_height}px; left: ${event.args[0]};`
-          );
-        });
-    };
+    document
+      .getElementById('notion')
+      .addEventListener('ipc-message', (event) => {
+        if (event.channel !== 'enhancer:sidebar-width') return;
+        dragarea.setAttribute(
+          'style',
+          `${default_styles} top: 2px; height: ${
+            store().dragarea_height
+          }px; left: ${event.args[0]};`
+        );
+      });
   };
+};
