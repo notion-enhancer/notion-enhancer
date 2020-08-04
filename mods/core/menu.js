@@ -110,36 +110,43 @@ window['__start'] = async () => {
 
   // mod options
   function markdown(string) {
-    return string
+    const parsed = string
       .split('\n')
       .map((line) =>
         line
           // todo: stop e.g. whole chunk of ~~thin~~g~~ being selected
           .trim()
+          .replace(/\s+/g, ' ')
+          // > quote
+          .replace(/^>\s+(.+)$/g, '<blockquote>$1</blockquote>')
           // ~~strikethrough~~
-          .replace(/([^\\])?~~([^\n]*[^\\])~~/g, '$1<s>$2</s>')
+          .replace(/([^\\])?~~((?:(?!~~).)*[^\\])~~/g, '$1<s>$2</s>')
           // __underline__
-          .replace(/([^\\])?__([^\n]*[^\\])__/g, '$1<u>$2</u>')
+          .replace(/([^\\])?__((?:(?!__).)*[^\\])__/g, '$1<u>$2</u>')
           // **bold**
-          .replace(/([^\\])?\*\*([^\n]*[^\\])\*\*/g, '$1<b>$2</b>')
+          .replace(/([^\\])?\*\*((?:(?!\*\*).)*[^\\])\*\*/g, '$1<b>$2</b>')
           // *italic*
-          .replace(/([^\\])?\*([^\n]*[^\\])\*/g, '$1<i>$2</i>')
+          .replace(/([^\\])?\*([^*]*[^\\*])\*/g, '$1<i>$2</i>')
           // _italic_
-          .replace(/([^\\])?_([^\n]*[^\\])_/g, '$1<i>$2</i>')
+          .replace(/([^\\])?_([^_]*[^\\_])_/g, '$1<i>$2</i>')
           // `code`
-          .replace(/([^\\])?`([^\n]*[^\\])`/g, '$1<code>$2</code>')
+          .replace(/([^\\])?`([^`]*[^\\`])`/g, '$1<code>$2</code>')
           // ![image_title](source)
           .replace(
-            /([^\\])?\!\[([^\n]*[^\\]?)\]\(([^\n]*[^\\])\)/g,
-            '$1<img alt="" src="$3">$2</a>'
+            /([^\\])?\!\[([^\]]*[^\\\]]?)\]\(([^)]*[^\\)])\)/g,
+            '$1<img alt="" src="$3">$2</img>'
           )
           // [link](destination)
           .replace(
-            /([^\\])?\[([^\n]*[^\\])\]\(([^\n]*[^\\])\)/g,
+            /([^\\])?\[([^\]]*[^\\\]]?)\]\(([^)]*[^\\)])\)/g,
             '$1<a href="$3">$2</a>'
           )
       )
-      .join('<br>');
+      .map((line) =>
+        line.startsWith('<blockquote>') ? line : `<p>${line}</p>`
+      )
+      .join('');
+    return parsed;
   }
   const $modules = document.querySelector('#modules');
   for (let mod of modules.loaded.sort((a, b) => {
@@ -176,7 +183,7 @@ window['__start'] = async () => {
         <p class="tags">${mod.tags
           .map((tag) => (tag.startsWith('#') ? tag : `#${tag}`))
           .join(' ')}</p>
-        <p class="desc">${markdown(mod.desc)}</p>
+        <div class="desc">${markdown(mod.desc)}</div>
         <p>
           <a href="https://github.com/${mod.author}" class="author">
             <img src="https://github.com/${mod.author}.png" />

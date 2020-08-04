@@ -83,6 +83,9 @@ code {
 u {
   text-decoration: underline;
 }
+s {
+  text-decoration: line-through;
+}
 
 /* titlebar */
 
@@ -188,22 +191,29 @@ u {
   margin: 0.3em 0 0.4em 0;
   font-size: 0.9em;
 }
+#modules section .desc p {
+  margin: 0;
+}
+#modules section .desc blockquote {
+  margin: 0.3em 0;
+  border-left: 0.3em solid var(--theme_local--table-border);
+  padding-left: 0.7em;
+}
+
 #modules section .desc a {
   color: currentColor;
   text-decoration: underline dotted;
 }
-#modules section .desc s {
-  text-decoration: line-through;
-}
+
 #modules section .desc img {
   width: 100%;
   max-width: 20em;
   margin: 0.5em 0;
 }
-#modules section .desc img:first-child {
+#modules section .desc :first-child img:first-child {
   margin-top: 0;
 }
-#modules section .desc img:last-child {
+#modules section .desc :last-child img:last-child {
   margin-bottom: 0;
 }
 
