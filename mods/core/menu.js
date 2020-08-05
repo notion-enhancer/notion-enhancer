@@ -20,6 +20,25 @@ window['__start'] = async () => {
   document.defaultView.addEventListener('keyup', (event) => {
     if (event.code === 'F5') window.reload();
     if ((event.ctrlKey || event.metaKey) && event.key === 'e') browser.close();
+    if (!(event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey) {
+      if (
+        document.activeElement.parentElement.id === 'tags' &&
+        event.key === 'Enter'
+      )
+        document.activeElement.click();
+      if (document.activeElement.tagName.toLowerCase() === 'input') {
+        if (document.activeElement.type === 'checkbox' && event.key === 'Enter')
+          document.activeElement.checked = !document.activeElement.checked;
+        if (
+          ['Escape', 'Enter'].includes(event.key) &&
+          document.activeElement.type !== 'checkbox' &&
+          (document.activeElement.parentElement.id !== 'search' ||
+            event.key === 'Escape')
+        )
+          document.activeElement.blur();
+      } else if (event.key === '/')
+        document.querySelector('#search > input').focus();
+    }
   });
 
   electron.ipcRenderer.on('enhancer:set-theme', (event, theme) => {
@@ -34,7 +53,8 @@ window['__start'] = async () => {
     return template.content.firstElementChild;
   }
   function createAlert(type, message) {
-    if (!type) throw Error('<notion-enhancer>: no alert type specified');
+    if (!type)
+      throw Error('<notion-enhancer> @ createAlert: no alert type specified');
     const el = createElement(`
       <section class="${type}" role="alert">
         <p>${message}</p>
@@ -110,6 +130,70 @@ window['__start'] = async () => {
     ).append();
   }
 
+  // search
+  const search_query = {
+    enabled: true,
+    disabled: true,
+    tags: new Set(
+      modules.loaded
+        .map((mod) => mod.tags)
+        .flat()
+        .sort()
+    ),
+  };
+  function search() {
+    modules.loaded.forEach((mod) => {
+      const $search_input = document.querySelector('#search > input');
+      if (
+        (mod.elem.classList.contains('enabled') && !search_query.enabled) ||
+        (mod.elem.classList.contains('disabled') && !search_query.disabled) ||
+        !mod.tags.some((tag) => search_query.tags.has(tag)) ||
+        ($search_input.value &&
+          !(
+            mod.name +
+            mod.tags.map((tag) => `#${tag}`).join(' ') +
+            mod.desc
+          ).includes($search_input.value))
+      )
+        return (mod.elem.style.display = 'none');
+      mod.elem.style.display = 'block';
+    });
+  }
+  document.querySelector('#search > input').addEventListener('input', search);
+
+  function createTag(tagname, onclick, colour) {
+    if (!tagname)
+      throw Error('<notion-enhancer> @ createTag: no tagname specified');
+    if (!onclick)
+      throw Error('<notion-enhancer> @ createTag: no action specified');
+    const el = createElement(
+      `<span class="selected" ${
+        colour ? `style="--tag_colour: ${colour}" ` : ''
+      }tabindex="0">${tagname}</span>`
+    );
+    document.querySelector('#tags').append(el);
+    el.addEventListener('click', (event) => {
+      el.className = el.className === 'selected' ? '' : 'selected';
+      onclick(el.className === 'selected');
+    });
+    return el;
+  }
+  createTag(
+    'enabled',
+    (state) => [(search_query.enabled = state), search()],
+    'var(--theme_local--bg_green)'
+  );
+  createTag(
+    'disabled',
+    (state) => [(search_query.disabled = state), search()],
+    'var(--theme_local--bg_red)'
+  );
+  for (let tag of search_query.tags)
+    createTag(`#${tag}`, (state) => [
+      state ? search_query.tags.add(tag) : search_query.tags.delete(tag),
+      search(),
+    ]);
+
   // mod info + options
   function markdown(string) {
     const parsed = string
@@ -135,7 +219,7 @@ window['__start'] = async () => {
           // ![image_title](source)
           .replace(
             /([^\\])?\!\[([^\]]*[^\\\]]?)\]\(([^)]*[^\\)])\)/g,
-            '$1<img alt="$2" src="$3">'
+            `$1<img alt="$2" src="$3" onerror="this.outerHTML=''">`
           )
           // [link](destination)
           .replace(
@@ -195,7 +279,9 @@ window['__start'] = async () => {
           <div class="desc">${markdown(mod.desc)}</div>
           <p>
             <a href="https://github.com/${mod.author}" class="author">
-              <img src="https://github.com/${mod.author}.png">
+              <img src="https://github.com/${
+                mod.author
+              }.png" onerror="this.src='./icons/user.png'">
               ${mod.author}
             </a>
             <span class="version">v${mod.version}</span>
@@ -211,6 +297,7 @@ window['__start'] = async () => {
       $enable.addEventListener('click', (event) => {
         menuStore[mod.id].enabled = $enable.checked;
         mod.elem.className = menuStore[mod.id].enabled ? 'enabled' : 'disabled';
+        search();
       });
 
     const $options = mod.elem.querySelector('.options');
@@ -326,4 +413,10 @@ window['__start'] = async () => {
       }
     $modules.append(mod.elem);
   }
+
+  document
+    .querySelectorAll('input[type="checkbox"]')
+    .forEach((checkbox) =>
+      checkbox.addEventListener('click', (event) => event.target.blur())
+    );
 };

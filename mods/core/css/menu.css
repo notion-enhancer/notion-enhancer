@@ -22,10 +22,9 @@
   word-break: break-word;
   text-decoration: none;
   text-size-adjust: 100%;
+  color: var(--theme_local--text);
+  font-family: var(--theme_local--font_sans);
   outline-color: var(--theme_local--card-border);
-}
-*:active {
-  outline: none;
 }
 html,
 body {
@@ -64,12 +63,6 @@ main section {
 }
 
 /* inline formatting */
-
-body,
-button {
-  color: var(--theme_local--text);
-  font-family: var(--theme_local--font_sans);
-}
 
 code {
   border-radius: 0.1em;
@@ -174,6 +167,62 @@ s {
   border: 1px solid rgba(0, 0, 0, 0.1);
 }
 
+/* search */
+
+#search {
+  position: relative;
+  margin-bottom: 0.75em;
+}
+
+#search > svg {
+  position: absolute;
+  width: 1em;
+  height: 1em;
+  top: 1.3em;
+  left: 1em;
+}
+#search > svg path {
+  fill: var(--theme_local--text_ui_info);
+}
+#search > input {
+  width: 100%;
+  padding: 1em 1.4em 1em 2.8em;
+  font: 1em var(--font);
+  background: var(--theme_local--card);
+  border: 1px solid var(--theme_local--table-border);
+  color: var(--theme_local--text);
+  border-radius: 2px;
+}
+#search > input::placeholder {
+  font-weight: bold;
+  color: var(--theme_local--text_ui_info);
+}
+#search > input:focus {
+  box-shadow: var(--theme_local--table-border) 0.04em 0.04em,
+    var(--theme_local--table-border) -0.04em -0.04em,
+    var(--theme_local--table-border) -0.04em 0.04em,
+    var(--theme_local--table-border) 0.04em -0.04em;
+  outline: none;
+}
+
+#search #tags > span {
+  cursor: pointer;
+  display: inline-block;
+  font-size: 0.8em;
+  padding: 0.2em 0.5em;
+  margin-top: 0.5em;
+  background: var(--theme_local--card);
+  border-radius: 2px;
+  transition: background 200ms;
+  user-select: none;
+}
+#search #tags > span:not(:last-child) {
+  margin-right: 0.5em;
+}
+#search #tags > .selected {
+  background: var(--tag_colour, var(--theme_local--primary_click));
+}
+
 /* module meta */
 
 #modules section {
@@ -193,13 +242,21 @@ s {
   font-size: 1rem;
 }
 
-/* #modules section .meta .toggle input + label .switch:before {
+/* #modules section .meta .toggle input + label .switch::before {
   background: linear-gradient(
     90deg,
     var(--theme_local--text_green),
     var(--theme_local--bg_green)
   );
+}
+#modules section .meta .toggle input + label .switch {
+  background: linear-gradient(
+    90deg,
+    var(--theme_local--text_red),
+    var(--theme_local--bg_red)
+  );
 } */
+
 #modules section .desc {
   margin: 0.3em 0 0.4em 0;
   font-size: 0.9em;
@@ -293,7 +350,10 @@ s {
 }
 .file input[type='file'],
 .toggle input[type='checkbox'] {
-  display: none;
+  opacity: 0;
+  width: 0.1px;
+  height: 0.1px;
+  position: fixed;
 }
 
 .input input[type='text'],
@@ -344,6 +404,7 @@ s {
   width: 2em;
   background: var(--theme_local--main);
   border-radius: 5px;
+  transition: background 300ms;
 }
 .toggle input[type='checkbox'] + label .switch::before {
   content: '';
@@ -371,6 +432,13 @@ s {
   transition: transform 350ms, box-shadow 350ms;
   background: var(--theme_local--todo_ticked-fill);
   box-shadow: 2px 1px 4px var(--theme_local--table-border);
+}
+.toggle input[type='checkbox']:checked:focus + label .switch {
+  background: none !important;
+}
+.toggle input[type='checkbox']:focus + label .switch::before,
+.toggle input[type='checkbox']:focus + label .switch .dot {
+  border: 1px solid var(--theme_local--card-border);
 }
 .toggle input[type='checkbox']:checked + label {
   --menu--toggle_offset: 1em;

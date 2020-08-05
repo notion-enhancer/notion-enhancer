@@ -8,9 +8,9 @@
 
 module.exports = {
   id: '0f0bf8b6-eae6-4273-b307-8fc43f2ee082',
-  tags: ['core', 'extension'],
+  tags: ['core'],
   name: 'notion-enhancer core',
-  desc: 'what makes this whole thing possible: cli, modloader, menu, & tray.',
+  desc: 'the cli, modloader, menu, & tray.',
   version: require('../../package.json').version,
   author: 'dragonwocky',
   options: [
