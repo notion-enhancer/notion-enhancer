@@ -46,6 +46,7 @@
   height: var(--theme_dark--page_banner-height) !important;
 }
 
+.notion-dark-theme,
 .notion-dark-theme [style*='Segoe UI'] {
   font-family: var(--theme_dark--font_sans) !important;
 }
@@ -311,6 +312,9 @@
 }
 .notion-dark-theme .notion-code-block .token.operator {
   color: var(--theme_dark--code_operator) !important;
+}
+.notion-dark-theme .notion-code-block .token.important {
+  color: var(--theme_dark--code_important) !important;
 }
 .notion-dark-theme .notion-code-block .token.property {
   color: var(--theme_dark--code_property) !important;

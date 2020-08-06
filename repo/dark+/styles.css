@@ -1,0 +1,104 @@
+/*
+ * notion-enhancer
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
+ * (https://dragonwocky.me/) under the MIT license
+ */
+
+:root {
+  --theme_dark--main: rgb(5, 5, 5);
+  --theme_dark--sidebar: rgb(1, 1, 1);
+  /* --theme_dark--overlay: rgba(15, 15, 15, 0.6); */
+  --theme_dark--dragarea: #030303;
+  /* --theme_dark--preview-width: 977px;
+  --theme_dark--preview_banner-height: 20vh;
+  --theme_dark--page_banner-height: 30vh; */
+
+  /* --theme_dark--font_sans: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Helvetica, 'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji',
+    'Segoe UI Symbol';
+  --theme_dark--font_serif: Lyon-Text, Georgia, YuMincho, 'Yu Mincho',
+    'Hiragino Mincho ProN', 'Hiragino Mincho Pro', 'Songti TC', 'Songti SC',
+    SimSun, 'Nanum Myeongjo', NanumMyeongjo, Batang, serif;
+  --theme_dark--font_mono: iawriter-mono, Nitti, Menlo, Courier, monospace;
+  --theme_dark--font_code: SFMono-Regular, Consolas, 'Liberation Mono', Menlo,
+    Courier, monospace; */
+
+  --theme_dark--scrollbar: #232425;
+  --theme_dark--scrollbar-border: transparent;
+  --theme_dark--scrollbar_hover: #373838;
+
+  --theme_dark--selected: rgba(241, 91, 91, 0.2);
+  --theme_dark--primary: rgb(177, 24, 24);
+  --theme_dark--primary_hover: rgb(202, 26, 26);
+  --theme_dark--primary_click: rgb(219, 41, 41);
+  --theme_dark--primary_indicator: rgb(202, 26, 26);
+
+  --theme_dark--card: rgb(4, 4, 4);
+  --theme_dark--card-border: rgba(10, 10, 10, 0.7);
+  --theme_dark--table-border: rgba(255, 255, 255, 0.1);
+  --theme_dark--button: rgb(15, 15, 15);
+  --theme_dark--button_hover: rgb(32, 32, 32);
+  --theme_dark--button-border: rgba(78, 78, 78, 0.7);
+  /* --theme_dark--button_close: #e81123;
+  --theme_dark--button_close-fill: white; */
+
+  /* --theme_dark--todo_empty-border: currentColor;
+  --theme_dark--todo_ticked: currentColor;
+  --theme_dark--todo_ticked-fill: white;
+  --theme_dark--todo_ticked-background: var(--theme_dark--primary);
+  --theme_dark--todo_hover-background: rgb(71, 76, 80);
+
+  --theme_dark--danger_text: rgb(235, 87, 87);
+  --theme_dark--danger_border: rgba(235, 87, 87, 0.5); */
+
+  --theme_dark--text: rgb(228, 228, 228);
+  --theme_dark--text_ui: rgba(211, 211, 211, 0.637);
+  --theme_dark--text_ui_info: rgba(211, 211, 211, 0.466);
+
+  --theme_dark--text_gray: rgba(151, 154, 155, 0.95);
+  --theme_dark--text_brown: rgb(147, 114, 100);
+  --theme_dark--text_orange: rgb(255, 163, 68);
+  --theme_dark--text_yellow: rgb(255, 220, 73);
+  --theme_dark--text_green: rgb(50, 169, 104);
+  --theme_dark--text_blue: rgb(82, 156, 202);
+  --theme_dark--text_purple: rgb(154, 109, 215);
+  --theme_dark--text_pink: rgb(226, 85, 161);
+  --theme_dark--text_red: rgb(218, 47, 35);
+  --theme_dark--bg_gray: rgba(126, 128, 129, 0.5);
+  --theme_dark--bg_brown: #50331f;
+  --theme_dark--bg_orange: rgba(255, 155, 0, 0.58);
+  --theme_dark--bg_yellow: rgba(183, 155, 0, 1);
+  --theme_dark--bg_green: rgb(50, 129, 47);
+  --theme_dark--bg_blue: rgba(0, 90, 146, 0.71);
+  --theme_dark--bg_purple: rgba(91, 49, 148, 0.74);
+  --theme_dark--bg_pink: rgba(243, 61, 159, 0.5);
+  --theme_dark--bg_red: rgb(122, 20, 20);
+  --theme_dark--line_gray: rgba(126, 128, 129, 0.301);
+  --theme_dark--line_brown: #50331fad;
+  --theme_dark--line_orange: rgba(255, 153, 0, 0.315);
+  --theme_dark--line_yellow: rgba(183, 156, 0, 0.445);
+  --theme_dark--line_green: rgba(50, 129, 47, 0.39);
+  --theme_dark--line_blue: rgba(0, 90, 146, 0.521);
+  --theme_dark--line_purple: rgba(90, 49, 148, 0.349);
+  --theme_dark--line_pink: rgba(243, 61, 158, 0.301);
+  --theme_dark--line_red: rgba(122, 20, 20, 0.623);
+
+  --theme_dark--code_inline-text: #7dc582;
+  --theme_dark--code_inline-background: rgb(8, 8, 8)
+  --theme_dark--code_text: var(--theme_dark--text);
+  --theme_dark--code-background: rgb(8, 8, 8);
+  --theme_dark--code_function: #c7e1ff;
+  --theme_dark--code_keyword: #c397d8;
+  --theme_dark--code_tag: #82aed8;
+  --theme_dark--code_operator: rgb(166, 175, 201);
+  --theme_dark--code_important: #da265f;
+  --theme_dark--code_property: #82aed8;
+  --theme_dark--code_builtin: #ff6294;
+  --theme_dark--code_attr-name: #ff6294;
+  --theme_dark--code_comment: rgb(166, 175, 201);
+  --theme_dark--code_punctuation: rgb(166, 175, 201);
+  --theme_dark--code_doctype: rgb(166, 175, 201);
+  --theme_dark--code_number: #c397d8;
+  --theme_dark--code_string: #7dc582;
+  --theme_dark--code_attr-value: #7dc582;
+}

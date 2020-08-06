@@ -95,6 +95,7 @@
   --theme_dark--code_keyword: hsl(350, 40%, 70%);
   --theme_dark--code_tag: hsl(350, 40%, 70%);
   --theme_dark--code_operator: hsl(40, 90%, 60%);
+  --theme_dark--code_important: #e90;
   --theme_dark--code_property: hsl(350, 40%, 70%);
   --theme_dark--code_builtin: hsl(75, 70%, 60%);
   --theme_dark--code_attr-name: hsl(75, 70%, 60%);
@@ -192,6 +193,7 @@
   --theme_light--code_keyword: #07a;
   --theme_light--code_tag: #905;
   --theme_light--code_operator: #9a6e3a;
+  --theme_light--code_important: #e90;
   --theme_light--code_property: #905;
   --theme_light--code_builtin: #690;
   --theme_light--code_attr-name: #690;

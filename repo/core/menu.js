@@ -298,6 +298,7 @@ window['__start'] = async () => {
         menuStore[mod.id].enabled = $enable.checked;
         mod.elem.className = menuStore[mod.id].enabled ? 'enabled' : 'disabled';
         search();
+        modified();
       });
 
     const $options = mod.elem.querySelector('.options');
