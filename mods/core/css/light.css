@@ -47,6 +47,7 @@
   height: var(--theme_light--page_banner-height) !important;
 }
 
+.notion-light-theme,
 .notion-light-theme [style*='Segoe UI'] {
   font-family: var(--theme_light--font_sans) !important;
 }
@@ -313,6 +314,9 @@
 }
 .notion-light-theme .notion-code-block .token.operator {
   color: var(--theme_light--code_operator) !important;
+}
+.notion-light-theme .notion-code-block .token.important {
+  color: var(--theme_dark--code_important) !important;
 }
 .notion-light-theme .notion-code-block .token.property {
   color: var(--theme_light--code_property) !important;
