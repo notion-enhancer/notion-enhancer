@@ -1,0 +1,155 @@
+/*
+ * notion-enhancer
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2020 Arecsu
+ * under the MIT license
+ */
+
+@import url('https://rsms.me/inter/inter.css');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&display=swap');
+
+:root {
+  /** dark **/
+
+  --theme_dark--main: #131313;
+  --theme_dark--sidebar: #171717;
+  --theme_dark--overlay: rgba(15, 15, 15, 0.6);
+  --theme_dark--dragarea: rgb(15, 15, 15);
+  /* --theme_dark--preview-width: 977px;
+  --theme_dark--preview-padding: 8em;
+  --theme_dark--preview_banner-height: 20vh;
+  --theme_dark--page_banner-height: 30vh; */
+
+  --theme_dark--font_sans: 'Inter', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Helvetica, 'Apple Color Emoji', Arial, sans-serif,
+    'Segoe UI Emoji', 'Segoe UI Symbol';
+  /* --theme_dark--font_serif: Lyon-Text, Georgia, YuMincho, 'Yu Mincho',
+    'Hiragino Mincho ProN', 'Hiragino Mincho Pro', 'Songti TC', 'Songti SC',
+    SimSun, 'Nanum Myeongjo', NanumMyeongjo, Batang, serif; */
+  --theme_dark--font_mono: 'Roboto Mono', iawriter-mono, Nitti, Menlo, Courier,
+    monospace;
+  --theme_dark--font_code: 'Roboto Mono', SFMono-Regular, Consolas,
+    'Liberation Mono', Menlo, Courier, monospace;
+
+  /* 1.3 supreme ratio. https://www.modularscale.com/ */
+  --theme_dark--font-title_size: 33px;
+  --theme_dark--font-heading1_size: 33px;
+  --theme_dark--font-heading2_size: 25.3px;
+  --theme_dark--font-heading3_size: 19.5px;
+  --theme_dark--font-body_size: 15px;
+  --theme_dark--font-code_size: 13.5px;
+
+  --theme_dark--scrollbar: #232425;
+  --theme_dark--scrollbar-border: transparent;
+  --theme_dark--scrollbar_hover: #373838;
+
+  --theme_dark--card: #252525;
+  --theme_dark--card-border: none;
+  --theme_dark--table-border: rgba(78, 78, 78, 0.7);
+  --theme_dark--button_hover: rgb(15, 15, 15);
+  --theme_dark--button_hover-border: transparent;
+  --theme_dark--button_close: #e81123;
+  --theme_dark--button_close-fill: white;
+
+  --theme_dark--selected: #52525244;
+  --theme_dark--primary: #404040;
+  --theme_dark--primary_hover: #f3f3f3;
+  --theme_dark--primary_click: #f3f3f3;
+  --theme_dark--primary_indicator: #6d6d6d;
+
+  --theme_dark--todo_empty-border: currentColor;
+  --theme_dark--todo_ticked: currentColor;
+  --theme_dark--todo_ticked-fill: white;
+  --theme_dark--todo_ticked-background: var(--theme_dark--primary);
+  --theme_dark--todo_hover-background: #484848;
+
+  --theme_dark--danger_text: #ce535f;
+  --theme_dark--danger_border: #8c3d3d;
+
+  --theme_dark--text: #dadada;
+  --theme_dark--text_ui: #dadadad0;
+  --theme_dark--text_ui_info: #dadadab4;
+
+  --theme_dark--text_gray: #858585;
+  --theme_dark--text_brown: #484848;
+  --theme_dark--text_orange: #ec9873;
+  --theme_dark--text_yellow: #e2c06f;
+  --theme_dark--text_green: #92b178;
+  --theme_dark--text_blue: #88c5c5;
+  --theme_dark--text_purple: #719cca;
+  --theme_dark--text_pink: #d285aa;
+  --theme_dark--text_red: #ce535f;
+  --theme_dark--bg_gray: #585858;
+  --theme_dark--bg_brown: #333333;
+  --theme_dark--bg_orange: #9a5a3f;
+  --theme_dark--bg_yellow: #b58a46;
+  --theme_dark--bg_green: #657953;
+  --theme_dark--bg_blue: #3a6d6d;
+  --theme_dark--bg_purple: #355475;
+  --theme_dark--bg_pink: #8e4b63;
+  --theme_dark--bg_red: #8c3d3d;
+  --theme_dark--line_gray: #585858;
+  --theme_dark--line_brown: #333333;
+  --theme_dark--line_orange: #9a5a3f;
+  --theme_dark--line_yellow: #b58a46;
+  --theme_dark--line_green: #657953;
+  --theme_dark--line_blue: #3a6d6d;
+  --theme_dark--line_purple: #355475;
+  --theme_dark--line_pink: #8e4b63;
+  --theme_dark--line_red: #8c3d3d;
+
+  --theme_dark--code_inline-text: var(--theme_dark--text);
+  --theme_dark--code_inline-background: #333333;
+  --theme_dark--code_text: var(--theme_dark--text);
+  --theme_dark--code-background: #0e0e0e;
+  --theme_dark--code_function: var(--theme_dark--text_purple);
+  --theme_dark--code_keyword: var(--theme_dark--text_pink);
+  --theme_dark--code_tag: var(--theme_dark--text_pink);
+  --theme_dark--code_operator: var(--theme_dark--text_yellow);
+  --theme_dark--code_important: var(--theme_dark--text_yellow);
+  --theme_dark--code_property: var(--theme_dark--text_pink);
+  --theme_dark--code_builtin: var(--theme_dark--text_yellow);
+  --theme_dark--code_attr-name: var(--theme_dark--text_yellow);
+  --theme_dark--code_comment: var(--theme_dark--text_gray);
+  --theme_dark--code_punctuation: var(--theme_dark--text_gray);
+  --theme_dark--code_doctype: var(--theme_dark--text_gray);
+  --theme_dark--code_number: var(--theme_dark--text_blue);
+  --theme_dark--code_string: var(--theme_dark--text_orange);
+  --theme_dark--code_attr-value: var(--theme_dark--text_orange);
+}
+
+.notion-dark-theme [placeholder='Heading 1'],
+.notion-dark-theme [placeholder='Heading 2'],
+.notion-dark-theme [placeholder='Heading 3'] {
+  padding: 3px 1px !important;
+}
+
+.notion-quote-block {
+  padding-top: 10px;
+  padding-right: 2px;
+  padding-bottom: 12px;
+  padding-left: 2px;
+}
+
+.notion-selectable.notion-text-block {
+  margin-top: 5px !important;
+}
+
+/* increase page width */
+.notion-frame .notion-scroller [style*='width: 900px;'] {
+  width: 1000px !important;
+}
+
+/* add space at the bottom of the main frame when sidebar is hidden
+ * -- matches space at top for titlebar */
+.notion-frame {
+  transition: height 300ms ease 0s;
+}
+.notion-sidebar-container[style*='width: 0px;'] + .notion-frame {
+  height: calc(100vh - 40px) !important;
+}
+
+/* hide sidebar "new page" button */
+.notion-sidebar > [style*='flex: 0 0 auto; margin-top: auto;'] {
+  display: none !important;
+}
