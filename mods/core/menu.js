@@ -180,13 +180,13 @@ window['__start'] = async () => {
   }
   createTag(
     'enabled',
-    (state) => [(search_query.enabled = state), search()],
-    'var(--theme_local--bg_green)'
+    (state) => [(search_query.enabled = state), search()]
+    // 'var(--theme_local--bg_green)'
   );
   createTag(
     'disabled',
-    (state) => [(search_query.disabled = state), search()],
-    'var(--theme_local--bg_red)'
+    (state) => [(search_query.disabled = state), search()]
+    // 'var(--theme_local--bg_red)'
   );
   for (let tag of search_query.tags)
     createTag(`#${tag}`, (state) => [

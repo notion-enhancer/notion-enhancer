@@ -62,3 +62,16 @@
 .notion-collection_view_page-block [role='button'] {
   border-width: 0 !important;
 }
+
+/* patch inconsistent padding behaviour in preview */
+.notion-peek-renderer .notion-page-content [style*='max-width: 943px;'] {
+  max-width: none !important;
+}
+.notion-peek-renderer .notion-page-view-discussion > div {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+.notion-peek-renderer .notion-scroller.vertical > div:nth-child(2) > div {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}

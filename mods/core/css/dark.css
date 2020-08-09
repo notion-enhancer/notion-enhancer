@@ -30,6 +30,22 @@
 .notion-dark-theme
   .notion-peek-renderer
   .notion-scroller.vertical
+  > div:nth-child(1)
+  > div,
+.notion-dark-theme
+  .notion-peek-renderer
+  .notion-scroller.vertical
+  > div:nth-child(2),
+.notion-dark-theme .notion-peek-renderer .notion-page-view-discussion,
+.notion-dark-theme .notion-peek-renderer .notion-page-content {
+  padding-left: var(--theme_dark--preview-padding) !important;
+  padding-right: var(--theme_dark--preview-padding) !important;
+  width: 100%;
+}
+
+.notion-dark-theme
+  .notion-peek-renderer
+  .notion-scroller.vertical
   [style*='position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 20vh;'],
 .notion-dark-theme
   .notion-peek-renderer
