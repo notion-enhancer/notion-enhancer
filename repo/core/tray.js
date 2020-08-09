@@ -160,6 +160,12 @@ module.exports = (store, __exports) => {
         accelerator: 'CommandOrControl+Shift+N',
       },
       {
+        type: 'normal',
+        label: 'Toggle Visibility',
+        accelerator: store().hotkey,
+        click: toggleWindows,
+      },
+      {
         type: 'separator',
       },
       {
@@ -182,12 +188,13 @@ module.exports = (store, __exports) => {
       windows.forEach((win) => [win.isFocused() && win.blur(), win.hide()]);
       if (is_mac) electron.app.hide();
     }
-
-    tray.on('click', () => {
+    function toggleWindows() {
       const windows = electron.BrowserWindow.getAllWindows();
       if (windows.some((win) => win.isVisible())) hideWindows();
       else showWindows();
-    });
+    }
+
+    tray.on('click', toggleWindows);
     electron.globalShortcut.register(store().hotkey, () => {
       const windows = electron.BrowserWindow.getAllWindows();
       if (windows.some((win) => win.isFocused() && win.isVisible()))

@@ -220,7 +220,7 @@ s {
   margin-right: 0.5em;
 }
 #search #tags > .selected {
-  background: var(--tag_colour, var(--theme_local--primary_click));
+  background: var(--tag_colour, var(--theme_local--primary_hover));
 }
 
 /* module meta */

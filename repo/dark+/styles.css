@@ -46,9 +46,9 @@
   --theme_dark--todo_ticked: currentColor;
   --theme_dark--todo_ticked-fill: white;
   --theme_dark--todo_ticked-background: var(--theme_dark--primary);
-  --theme_dark--todo_hover-background: rgb(71, 76, 80);
+  --theme_dark--todo_hover-background: rgb(71, 76, 80); */
 
-  --theme_dark--danger_text: rgb(235, 87, 87);
+  /* --theme_dark--danger_text: rgb(235, 87, 87);
   --theme_dark--danger_border: rgba(235, 87, 87, 0.5); */
 
   --theme_dark--text: rgb(228, 228, 228);
@@ -84,7 +84,7 @@
   --theme_dark--line_red: rgba(122, 20, 20, 0.623);
 
   --theme_dark--code_inline-text: #7dc582;
-  --theme_dark--code_inline-background: rgb(8, 8, 8)
+  --theme_dark--code_inline-background: rgb(8, 8, 8);
   --theme_dark--code_text: var(--theme_dark--text);
   --theme_dark--code-background: rgb(8, 8, 8);
   --theme_dark--code_function: #c7e1ff;
