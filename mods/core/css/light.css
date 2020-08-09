@@ -1,10 +1,10 @@
 /*
  * notion-enhancer
- * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (c) 2020 TarasokUA
  * (c) 2020 Arecsu
  * (c) 2020 u/zenith_illinois
- * (https://dragonwocky.me/) under the MIT license
+ * under the MIT license
  */
 
 /** general ui **/
@@ -61,20 +61,6 @@
   [style^='position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 30vh;']
   img {
   height: var(--theme_light--page_banner-height) !important;
-}
-
-.notion-light-theme,
-.notion-light-theme [style*='Segoe UI'] {
-  font-family: var(--theme_light--font_sans) !important;
-}
-.notion-light-theme [style*='Georgia'] {
-  font-family: var(--theme_light--font_serif) !important;
-}
-.notion-light-theme [style*='iawriter-mono'] {
-  font-family: var(--theme_light--font_mono) !important;
-}
-.notion-light-theme [style*='SFMono-Regular'] {
-  font-family: var(--theme_light--font_code) !important;
 }
 
 /* prevent block hover options overlaying topbar */
@@ -135,7 +121,7 @@
   background: var(--theme_light--button) !important;
 }
 
-/** colours **/
+/** ui colours **/
 
 .notion-light-theme ::selection,
 .notion-light-theme
@@ -195,6 +181,48 @@
   border: 1px solid var(--theme_light--danger_border) !important;
 }
 
+/* fonts */
+
+.notion-light-theme,
+.notion-light-theme [style*='Segoe UI'] {
+  font-family: var(--theme_light--font_sans) !important;
+}
+.notion-light-theme [style*='Georgia'] {
+  font-family: var(--theme_light--font_serif) !important;
+}
+.notion-light-theme [style*='iawriter-mono'] {
+  font-family: var(--theme_light--font_mono) !important;
+}
+.notion-light-theme [style*='SFMono-Regular'] {
+  font-family: var(--theme_light--font_code) !important;
+}
+
+.notion-light-theme
+  .notion-frame
+  .notion-scroller.vertical.horizontal
+  .notion-page-content,
+.notion-light-theme
+  .notion-frame
+  .notion-scroller.vertical.horizontal
+  [style*='font-size: 14px'] {
+  font-size: var(--theme_light--font-body_size) !important;
+}
+.notion-light-theme
+  .notion-frame
+  .notion-page-block
+  div[placeholder='Untitled'] {
+  font-size: var(--theme_light--font-title_size) !important;
+}
+.notion-light-theme [placeholder='Heading 1'] {
+  font-size: var(--theme_light--font-heading1_size) !important;
+}
+.notion-light-theme [placeholder='Heading 2'] {
+  font-size: var(--theme_light--font-heading2_size) !important;
+}
+.notion-light-theme [placeholder='Heading 3'] {
+  font-size: var(--theme_light--font-heading3_size) !important;
+}
+
 .notion-light-theme,
 .notion-light-theme .notion-page-content [style*='color: inherit;'],
 .notion-light-theme .notion-frame .notion-page-block,
@@ -214,6 +242,8 @@
 .notion-light-theme [style*='fill: rgba(55, 53, 47, 0.8)'] {
   fill: var(--theme_light--text) !important;
 }
+
+/* content colours */
 
 .notion-light-theme [style*='color:rgb(155,154,151)'] {
   color: var(--theme_light--text_gray) !important;
@@ -318,6 +348,9 @@
 }
 .notion-light-theme .notion-code-block > div {
   color: var(--theme_light--code_text) !important;
+}
+.notion-light-theme .notion-code-block [placeholder=' '] {
+  font-size: var(--theme_light--font-code_size) !important;
 }
 .notion-light-theme .notion-code-block .token.function {
   color: var(--theme_light--code_function) !important;

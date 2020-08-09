@@ -1,7 +1,7 @@
 /*
- * notion-enhancer
- * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
- * (https://dragonwocky.me/) under the MIT license
+ * dark+
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * under the MIT license
  */
 
 :root {
@@ -50,6 +50,11 @@
 
   /* --theme_dark--danger_text: rgb(235, 87, 87);
   --theme_dark--danger_border: rgba(235, 87, 87, 0.5); */
+
+  /* --theme_dark--font-title_size: 40px;
+  --theme_dark--font-heading1_size: 30px;
+  --theme_dark--font-heading2_size: 24px;
+  --theme_dark--font-heading3_size: 20px; */
 
   --theme_dark--text: rgb(228, 228, 228);
   --theme_dark--text_ui: rgba(211, 211, 211, 0.637);
