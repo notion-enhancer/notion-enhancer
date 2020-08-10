@@ -9,8 +9,7 @@
 const fs = require('fs-extra'),
   path = require('path'),
   { readdirIterator } = require('readdir-enhanced'),
-  { promisify } = require('util'),
-  { exec } = require('child_process'),
+  { extractAll } = require('asar'),
   helpers = require('./helpers.js'),
   { version } = require('../package.json');
 
@@ -57,13 +56,8 @@ module.exports = async function ({ overwrite_version } = {}) {
         });
     }
     console.info(' ...unpacking app.asar');
-    const asar_app = path.resolve(`${__notion}/app.asar`),
-      asar_exec = path.resolve(`${__dirname}/../node_modules/asar/bin/asar.js`);
-    await promisify(exec)(
-      `"${asar_exec}" extract "${asar_app}" "${path.resolve(
-        `${__notion}/app`
-      )}"`
-    );
+    const asar_app = path.resolve(`${__notion}/app.asar`);
+    extractAll(asar_app, `${path.resolve(`${__notion}/app`)}`);
     fs.move(asar_app, path.resolve(`${__notion}/app.asar.bak`));
 
     // patching launch script target of custom wrappers

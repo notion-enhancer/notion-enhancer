@@ -22,7 +22,7 @@ const cli = require('cac')(),
 cli.option('-y, --yes', ': skip prompts (may overwrite data)');
 
 cli
-  .command('apply', ': add enhancements to the notion app')
+  .command('apply', ': add the enhancer to the notion app')
   .action(async (options) => {
     console.info('=== NOTION ENHANCEMENT LOG ===');
     await require('./pkg/apply.js')();
