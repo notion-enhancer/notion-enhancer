@@ -45,7 +45,7 @@ const is_wsl =
 
 // transform a wsl filepath to its relative windows filepath if necessary.
 function realpath(hack_path) {
-  if (!is_wsl) return hack_path;
+  if (!is_wsl) return hack_path.replace(/\\/g, '/');
   hack_path = fs.realpathSync(hack_path);
   if (hack_path.startsWith('/mnt/')) {
     hack_path = `${hack_path[5].toUpperCase()}:${hack_path.slice(6)}`;
