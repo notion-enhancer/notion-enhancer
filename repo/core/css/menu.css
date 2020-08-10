@@ -212,6 +212,7 @@ s {
   padding: 0.2em 0.5em;
   margin-top: 0.5em;
   background: var(--theme_local--card);
+  color: var(--theme_local--overlay);
   border-radius: 2px;
   transition: background 200ms;
   user-select: none;
