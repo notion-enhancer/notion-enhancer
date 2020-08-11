@@ -33,6 +33,7 @@
   --theme_dark--font-heading1_size: 30px;
   --theme_dark--font-heading2_size: 24px;
   --theme_dark--font-heading3_size: 20px;
+  --theme_dark--font-label_size: 14px;
   --theme_dark--font-body_size: 16px;
   --theme_dark--font-code_size: 12.75px;
 
@@ -139,6 +140,7 @@
   --theme_light--font-heading1_size: 30px;
   --theme_light--font-heading2_size: 24px;
   --theme_light--font-heading3_size: 20px;
+  --theme_light--font-label_size: 14px;
   --theme_light--font-body_size: 16px;
   --theme_light--font-code_size: 12.75px;
 
