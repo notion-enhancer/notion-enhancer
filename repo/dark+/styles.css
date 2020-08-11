@@ -8,8 +8,9 @@
   --theme_dark--main: rgb(5, 5, 5);
   --theme_dark--sidebar: rgb(1, 1, 1);
   /* --theme_dark--overlay: rgba(15, 15, 15, 0.6); */
-  --theme_dark--dragarea: #030303;
+  --theme_dark--dragarea: #000;
   /* --theme_dark--preview-width: 977px;
+  --theme_dark--preview-padding: 8em;
   --theme_dark--preview_banner-height: 20vh;
   --theme_dark--page_banner-height: 30vh; */
 
@@ -23,9 +24,25 @@
   --theme_dark--font_code: SFMono-Regular, Consolas, 'Liberation Mono', Menlo,
     Courier, monospace; */
 
+  /* --theme_dark--font_title-size: 40px;
+  --theme_dark--font_heading1-size: 30px;
+  --theme_dark--font_heading2-size: 24px;
+  --theme_dark--font_heading3-size: 20px;
+  --theme_dark--font_label-size: 14px;
+  --theme_dark--font_body-size: 16px;
+  --theme_dark--font_code-size: 12.75px; */
+
   --theme_dark--scrollbar: #232425;
   --theme_dark--scrollbar-border: transparent;
   --theme_dark--scrollbar_hover: #373838;
+
+  --theme_dark--card: #1717175e;
+  --theme_dark--gallery: rgba(26, 26, 26, 0.3);
+  --theme_dark--table-border: rgba(46, 46, 46, 0.7);
+  --theme_dark--interactive_hover: #020202;
+  /* --theme_dark--interactive_hover-border: transparent;
+  --theme_dark--button_close: #e81123;
+  --theme_dark--button_close-fill: white; */
 
   --theme_dark--selected: rgba(241, 91, 91, 0.2);
   --theme_dark--primary: rgb(177, 24, 24);
@@ -33,28 +50,20 @@
   --theme_dark--primary_click: rgb(219, 41, 41);
   --theme_dark--primary_indicator: rgb(202, 26, 26);
 
-  --theme_dark--card: rgb(4, 4, 4);
-  --theme_dark--card-border: rgba(10, 10, 10, 0.7);
-  --theme_dark--table-border: rgba(255, 255, 255, 0.1);
-  --theme_dark--interactive_hover: rgb(32, 32, 32);
-  --theme_dark--button-border: rgba(78, 78, 78, 0.7);
-  /* --theme_dark--button_close: #e81123;
-  --theme_dark--button_close-fill: white; */
-
   /* --theme_dark--option-color: white;
   --theme_dark--option-background: transparent;
   --theme_dark--option_active-color: white;
   --theme_dark--option_active-background: var(--theme_dark--primary);
-  --theme_dark--option_hover-color: white;
-  --theme_dark--option_hover-background: rgb(71, 76, 80); */
+  --theme_dark--option_hover-color: white; */
+  --theme_dark--option_hover-background: rgb(32, 32, 32);
 
   /* --theme_dark--danger_text: rgb(235, 87, 87);
   --theme_dark--danger_border: rgba(235, 87, 87, 0.5); */
 
-  /* --theme_dark--font-title_size: 40px;
-  --theme_dark--font-heading1_size: 30px;
-  --theme_dark--font-heading2_size: 24px;
-  --theme_dark--font-heading3_size: 20px; */
+  /* --theme_dark--font_title-size: 40px;
+  --theme_dark--font_heading1-size: 30px;
+  --theme_dark--font_heading2-size: 24px;
+  --theme_dark--font_heading3-size: 20px; */
 
   --theme_dark--text: rgb(228, 228, 228);
   --theme_dark--text_ui: rgba(211, 211, 211, 0.637);
@@ -90,7 +99,7 @@
 
   --theme_dark--code_inline-text: #7dc582;
   --theme_dark--code_inline-background: rgb(8, 8, 8);
-  --theme_dark--code_text: var(--theme_dark--text);
+  /* --theme_dark--code_text: var(--theme_dark--text); */
   --theme_dark--code-background: rgb(8, 8, 8);
   --theme_dark--code_function: #c7e1ff;
   --theme_dark--code_keyword: #c397d8;

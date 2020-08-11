@@ -29,22 +29,21 @@
   --theme_dark--font_code: SFMono-Regular, Consolas, 'Liberation Mono', Menlo,
     Courier, monospace;
 
-  --theme_dark--font-title_size: 40px;
-  --theme_dark--font-heading1_size: 30px;
-  --theme_dark--font-heading2_size: 24px;
-  --theme_dark--font-heading3_size: 20px;
-  --theme_dark--font-label_size: 14px;
-  --theme_dark--font-body_size: 16px;
-  --theme_dark--font-code_size: 12.75px;
+  --theme_dark--font_title-size: 40px;
+  --theme_dark--font_heading1-size: 30px;
+  --theme_dark--font_heading2-size: 24px;
+  --theme_dark--font_heading3-size: 20px;
+  --theme_dark--font_label-size: 14px;
+  --theme_dark--font_body-size: 16px;
+  --theme_dark--font_code-size: 12.75px;
+  --theme_dark--font_sidebar-size: 14px;
 
   --theme_dark--scrollbar: #505457;
   --theme_dark--scrollbar-border: transparent;
   --theme_dark--scrollbar_hover: #696d6f;
 
   --theme_dark--card: rgb(63, 68, 71);
-  --theme_dark--card-border: none;
   --theme_dark--gallery: rgba(255, 255, 255, 0.05);
-  --theme_dark--gallery_hover: transparent;
   --theme_dark--table-border: rgba(255, 255, 255, 0.1);
   --theme_dark--interactive_hover: rgb(71, 76, 80);
   --theme_dark--interactive_hover-border: transparent;
@@ -139,22 +138,21 @@
   --theme_light--font_code: SFMono-Regular, Consolas, 'Liberation Mono', Menlo,
     Courier, monospace;
 
-  --theme_light--font-title_size: 40px;
-  --theme_light--font-heading1_size: 30px;
-  --theme_light--font-heading2_size: 24px;
-  --theme_light--font-heading3_size: 20px;
-  --theme_light--font-label_size: 14px;
-  --theme_light--font-body_size: 16px;
-  --theme_light--font-code_size: 12.75px;
+  --theme_light--font_title-size: 40px;
+  --theme_light--font_heading1-size: 30px;
+  --theme_light--font_heading2-size: 24px;
+  --theme_light--font_heading3-size: 20px;
+  --theme_light--font_label-size: 14px;
+  --theme_light--font_body-size: 16px;
+  --theme_light--font_code-size: 12.75px;
+  --theme_light--font_sidebar-size: 14px;
 
   --theme_light--scrollbar: #d9d8d6;
   --theme_light--scrollbar-border: #cacac8;
   --theme_light--scrollbar_hover: #cacac8;
 
   --theme_light--card: rgb(247, 246, 243);
-  --theme_light--card-border: none;
   --theme_light--gallery: rgba(55, 53, 47, 0.024);
-  --theme_light--gallery_hover: transparent;
   --theme_light--table-border: rgba(55, 53, 47, 0.16);
   --theme_light--interactive_hover: rgba(55, 53, 47, 0.08);
   --theme_light--interactive_hover-border: transparent;
