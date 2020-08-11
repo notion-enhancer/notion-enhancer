@@ -8,7 +8,7 @@
 
 'use strict';
 
-const cli = require('cac')(),
+const cli = require('cac')('notion-enhancer'),
   { EnhancerError } = require('./pkg/helpers.js');
 
 // === title ===

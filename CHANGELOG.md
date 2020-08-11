@@ -9,15 +9,21 @@ complete rewrite with node.js.
 
 - new: simpler cli installation system (inc. commands: `apply`, `remove`, and `check`).
 - new: mod loading system (easier to create new mods, adds to notion rather than overwriting).
+- new: mod configuration menu.
+- improved: more theming variable coverage - inc. light theme and sizing/spacing.
 - bugfix: non-reproducable errors with python.
 - bugfix: better launcher patching on linux.
+- bugfix: fix frameless window issue introduced by notion desktop 2.0.9.
+- extension: "custom inserts" = link files for small client-side tweaks..
+- extension: "bracketed links" = render links surrounded with \[\[brackets]] instead of underlined.
+- extension: "focus mode" = hide the titlebar/menubar when the sidebar is closed (will be shown on hover).
+- theme: "neutral" = smoother colours and fonts, designed to be more pleasing to the eye.
+- theme: "dark+" = a vivid-colour near-black theme.
 
 //todo
 
-- improved: greater choice of emoji sets.
-- improved: better colour coverage for theming variables.
-- new: menu for configuring mods.
-- new: syncing dark/light theme with the system.
+- extension: "emojiset" = pick from a variety of emoji styles to use.
+- extension: "night light" = sync dark/light theme with the system.
 
 ### v0.7.0 (2020-07-09)
 

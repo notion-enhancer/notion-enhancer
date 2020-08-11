@@ -2,7 +2,6 @@
  * notion-enhancer
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (c) 2020 TarasokUA
- * (c) 2020 Arecsu
  * under the MIT license
  */
 
@@ -45,20 +44,4 @@
     grid-column: 9 / span end;
     justify-content: flex-end;
   }
-}
-
-/* hide topbar when sidebar is hidden */
-.notion-sidebar-container[style*='width: 0px;'] + .notion-frame {
-  height: calc(
-    100% - (var(--configured-dragarea_height, 10px) + 45px)
-  ) !important;
-}
-.notion-sidebar-container[style*='width: 0px;'] + .notion-frame .notion-topbar {
-  opacity: 0 !important;
-  transition: opacity 200ms ease-in-out !important;
-}
-.notion-sidebar-container[style*='width: 0px;']
-  + .notion-frame
-  .notion-topbar:hover {
-  opacity: 1 !important;
 }

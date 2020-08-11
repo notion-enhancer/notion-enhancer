@@ -98,7 +98,7 @@ function getNotion() {
         fs.pathExistsSync(path.resolve(`${folder}/app`)))
     )
   ) {
-    const asar_bak = path.resolve(`${__notion}/app.asar.bak`);
+    const asar_bak = path.resolve(`${folder}/app.asar.bak`);
     if (fs.pathExistsSync(asar_bak)) {
       fs.moveSync(asar_bak, app_asar);
     } else

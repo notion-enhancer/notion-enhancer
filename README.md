@@ -13,7 +13,7 @@ want to contribute? check the the [contribution guidelines](CONTRIBUTING.md).
 ## installation
 
 1. install node.js: [windows/macOS](https://nodejs.org/en/download/), [linux/WSL](https://github.com/mklement0/n-install).
-   if on windows, the next steps will need to be done in the newly installed "node.js command prompt".
+   a computer restart may be required here.
 2. install notion-enhancer globally via yarn or npm:
    `npm i -g notion-enhancer` or `yarn global add notion-enhancer`
 3. ensure no notion processes are running (you may want to check the task manager to make sure),
