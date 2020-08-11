@@ -29,8 +29,10 @@
   --theme_local--card: var(--theme_dark--card);
   --theme_local--card-border: var(--theme_dark--card-border);
   --theme_local--table-border: var(--theme_dark--table-border);
-  --theme_local--button_hover: var(--theme_dark--button_hover);
-  --theme_local--button_hover-border: var(--theme_dark--button_hover-border);
+  --theme_local--interactive_hover: var(--theme_dark--interactive_hover);
+  --theme_local--interactive_hover-border: var(
+    --theme_dark--interactive_hover-border
+  );
   --theme_local--button_close: var(--theme_dark--button_close);
   --theme_local--button_close-fill: var(--theme_dark--button_close-fill);
 
@@ -40,14 +42,14 @@
   --theme_local--primary_click: var(--theme_dark--primary_click);
   --theme_local--primary_indicator: var(--theme_dark--primary_indicator);
 
-  --theme_local--todo_empty-border: var(--theme_dark--todo_empty-border);
-  --theme_local--todo_ticked: var(--theme_dark--todo_ticked);
-  --theme_local--todo_ticked-fill: var(--theme_dark--todo_ticked-fill);
-  --theme_local--todo_ticked-background: var(
-    --theme_dark--todo_ticked-background
+  --theme_local--option_empty-border: var(--theme_dark--option_empty-border);
+  --theme_local--option_active: var(--theme_dark--option_active);
+  --theme_local--option_active-color: var(--theme_dark--option_active-color);
+  --theme_local--option_active-background: var(
+    --theme_dark--option_active-background
   );
-  --theme_local--todo_hover-background: var(
-    --theme_dark--todo_hover-background
+  --theme_local--option_hover-background: var(
+    --theme_dark--option_hover-background
   );
 
   --theme_local--danger_text: var(--theme_dark--danger_text);
@@ -128,8 +130,10 @@
   --theme_local--card: var(--theme_light--card);
   --theme_local--card-border: var(--theme_light--card-border);
   --theme_local--table-border: var(--theme_light--table-border);
-  --theme_local--button_hover: var(--theme_light--button_hover);
-  --theme_local--button_hover-border: var(--theme_light--button_hover-border);
+  --theme_local--interactive_hover: var(--theme_light--interactive_hover);
+  --theme_local--interactive_hover-border: var(
+    --theme_light--interactive_hover-border
+  );
   --theme_local--button_close: var(--theme_light--button_close);
   --theme_local--button_close-fill: var(--theme_light--button_close-fill);
 
@@ -139,14 +143,14 @@
   --theme_local--primary_click: var(--theme_light--primary_click);
   --theme_local--primary_indicator: var(--theme_light--primary_indicator);
 
-  --theme_local--todo_empty-border: var(--theme_light--todo_empty-border);
-  --theme_local--todo_ticked: var(--theme_light--todo_ticked);
-  --theme_local--todo_ticked-fill: var(--theme_light--todo_ticked-fill);
-  --theme_local--todo_ticked-background: var(
-    --theme_light--todo_ticked-background
+  --theme_local--option_empty-border: var(--theme_light--option_empty-border);
+  --theme_local--option_active: var(--theme_light--option_active);
+  --theme_local--option_active-color: var(--theme_light--option_active-color);
+  --theme_local--option_active-background: var(
+    --theme_light--option_active-background
   );
-  --theme_local--todo_hover-background: var(
-    --theme_light--todo_hover-background
+  --theme_local--option_hover-background: var(
+    --theme_light--option_hover-background
   );
 
   --theme_local--danger_text: var(--theme_light--danger_text);

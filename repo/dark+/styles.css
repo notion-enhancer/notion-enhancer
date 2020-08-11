@@ -36,17 +36,17 @@
   --theme_dark--card: rgb(4, 4, 4);
   --theme_dark--card-border: rgba(10, 10, 10, 0.7);
   --theme_dark--table-border: rgba(255, 255, 255, 0.1);
-  --theme_dark--button: rgb(15, 15, 15);
-  --theme_dark--button_hover: rgb(32, 32, 32);
+  --theme_dark--interactive_hover: rgb(32, 32, 32);
   --theme_dark--button-border: rgba(78, 78, 78, 0.7);
   /* --theme_dark--button_close: #e81123;
   --theme_dark--button_close-fill: white; */
 
-  /* --theme_dark--todo_empty-border: currentColor;
-  --theme_dark--todo_ticked: currentColor;
-  --theme_dark--todo_ticked-fill: white;
-  --theme_dark--todo_ticked-background: var(--theme_dark--primary);
-  --theme_dark--todo_hover-background: rgb(71, 76, 80); */
+  /* --theme_dark--option-color: white;
+  --theme_dark--option-background: transparent;
+  --theme_dark--option_active-color: white;
+  --theme_dark--option_active-background: var(--theme_dark--primary);
+  --theme_dark--option_hover-color: white;
+  --theme_dark--option_hover-background: rgb(71, 76, 80); */
 
   /* --theme_dark--danger_text: rgb(235, 87, 87);
   --theme_dark--danger_border: rgba(235, 87, 87, 0.5); */

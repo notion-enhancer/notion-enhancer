@@ -161,14 +161,14 @@ window['__start'] = async () => {
   }
   document.querySelector('#search > input').addEventListener('input', search);
 
-  function createTag(tagname, onclick, colour) {
+  function createTag(tagname, onclick, color) {
     if (!tagname)
       throw Error('<notion-enhancer> @ createTag: no tagname specified');
     if (!onclick)
       throw Error('<notion-enhancer> @ createTag: no action specified');
     const el = createElement(
       `<span class="selected" ${
-        colour ? `style="--tag_colour: ${colour}" ` : ''
+        color ? `style="--tag_color: ${color}" ` : ''
       }tabindex="0">${tagname}</span>`
     );
     document.querySelector('#tags').append(el);
