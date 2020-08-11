@@ -16,7 +16,7 @@ complete rewrite with node.js.
 - bugfix: fix frameless window issue introduced by notion desktop 2.0.9.
 - extension: "custom inserts" = link files for small client-side tweaks..
 - extension: "bracketed links" = render links surrounded with \[\[brackets]] instead of underlined.
-- extension: "focus mode" = hide the titlebar/menubar when the sidebar is closed (will be shown on hover).
+- extension: "focus mode" = hide the titlebar/menubar if the sidebar is closed (will be shown on hover).
 - theme: "neutral" = smoother colours and fonts, designed to be more pleasing to the eye.
 - theme: "dark+" = a vivid-colour near-black theme.
 

@@ -22,8 +22,8 @@
   word-break: break-word;
   text-decoration: none;
   text-size-adjust: 100%;
-  font-family: var(--theme_local--font_sans);
-  outline-color: var(--theme_local--card-border);
+  font-family: var(--theme--font_sans);
+  outline-color: var(--theme--table-border);
 }
 html,
 body {
@@ -32,8 +32,8 @@ body {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background: var(--theme_local--main);
-  color: var(--theme_local--text);
+  background: var(--theme--main);
+  color: var(--theme--text);
 }
 
 body:not([style]) > * {
@@ -67,13 +67,13 @@ main section {
 code {
   border-radius: 0.1em;
   padding: 0.2em 0.4em;
-  font: 0.85em var(--theme_local--font_code);
-  /* color: var(--theme_local--code_inline-text); */
-  background: var(--theme_local--code_inline-background);
+  font: 0.85em var(--theme--font_code);
+  /* color: var(--theme--code_inline-text); */
+  background: var(--theme--code_inline-background);
 }
 
 button {
-  color: var(--theme_local--text);
+  color: var(--theme--text);
 }
 
 u {
@@ -107,7 +107,7 @@ s {
   margin-left: auto;
 }
 #menu-titlebar {
-  background: var(--theme_local--dragarea);
+  background: var(--theme--dragarea);
 }
 
 /* alerts */
@@ -115,7 +115,7 @@ s {
 #alerts [role='alert'] {
   display: flex;
   padding: 0.75em;
-  /* border: 1px solid var(--theme_local--text_ui_info); */
+  /* border: 1px solid var(--theme--text_ui_info); */
 }
 #alerts [role='alert']::before {
   content: '!';
@@ -124,30 +124,30 @@ s {
   font-weight: bold;
   font-size: 1.2em;
   padding-right: 0.5rem;
-  color: var(--theme_local--text_ui_info);
+  color: var(--theme--text_ui_info);
 }
 #alerts [role='alert'] p {
   font-size: 1rem;
   margin: auto 0;
   padding-left: 0.5em;
-  color: var(--theme_local--text_ui);
+  color: var(--theme--text_ui);
 }
 
 #alerts .error {
-  background: var(--theme_local--bg_red);
+  background: var(--theme--bg_red);
 }
 #alerts .warning {
-  background: var(--theme_local--bg_yellow);
+  background: var(--theme--bg_yellow);
 }
 #alerts .info {
-  background: var(--theme_local--bg_blue);
+  background: var(--theme--bg_blue);
 }
 
 #alerts .success::before {
   content: '✓';
 }
 #alerts .success {
-  background: var(--theme_local--bg_green);
+  background: var(--theme--bg_green);
 }
 
 /* search */
@@ -165,26 +165,26 @@ s {
   left: 1em;
 }
 #search > svg path {
-  fill: var(--theme_local--text_ui_info);
+  fill: var(--theme--text_ui_info);
 }
 #search > input {
   width: 100%;
   padding: 1em 1.4em 1em 2.8em;
   font: 1em var(--font);
-  background: var(--theme_local--card);
-  border: 1px solid var(--theme_local--table-border);
-  color: var(--theme_local--text);
+  background: var(--theme--card);
+  border: 1px solid var(--theme--table-border);
+  color: var(--theme--text);
   border-radius: 2px;
 }
 #search > input::placeholder {
   font-weight: bold;
-  color: var(--theme_local--text_ui_info);
+  color: var(--theme--text_ui_info);
 }
 #search > input:focus {
-  box-shadow: var(--theme_local--table-border) 0.04em 0.04em,
-    var(--theme_local--table-border) -0.04em -0.04em,
-    var(--theme_local--table-border) -0.04em 0.04em,
-    var(--theme_local--table-border) 0.04em -0.04em;
+  box-shadow: var(--theme--table-border) 0.04em 0.04em,
+    var(--theme--table-border) -0.04em -0.04em,
+    var(--theme--table-border) -0.04em 0.04em,
+    var(--theme--table-border) 0.04em -0.04em;
   outline: none;
 }
 
@@ -194,8 +194,8 @@ s {
   font-size: 0.8em;
   padding: 0.2em 0.5em;
   margin-top: 0.5em;
-  background: var(--theme_local--option-background);
-  color: var(--theme_local--option-color);
+  background: var(--theme--option-background);
+  color: var(--theme--option-color);
   border-radius: 2px;
   transition: color 200ms, background 200ms;
   user-select: none;
@@ -204,25 +204,25 @@ s {
   margin-right: 0.5em;
 }
 #search #tags > span:hover {
-  background: var(--theme_local--option_hover-background);
-  color: var(--theme_local--option_hover-color);
+  background: var(--theme--option_hover-background);
+  color: var(--theme--option_hover-color);
 }
 #search #tags > .selected {
-  background: var(--tag_color, var(--theme_local--option_active-background));
-  color: var(--theme_local--option_active-color);
+  background: var(--tag_color, var(--theme--option_active-background));
+  color: var(--theme--option_active-color);
 }
 
 /* module meta */
 
 #modules section {
-  background: var(--theme_local--sidebar);
-  border: 1px solid var(--theme_local--table-border);
+  background: var(--theme--sidebar);
+  border: 1px solid var(--theme--table-border);
 }
 #modules section > div {
   padding: 0.75em;
 }
 .notion-light-theme #modules section {
-  background: var(--theme_local--main);
+  background: var(--theme--main);
 }
 
 #modules section h3,
@@ -234,15 +234,15 @@ s {
 /* #modules section .meta .toggle input + label .switch::before {
   background: linear-gradient(
     90deg,
-    var(--theme_local--text_green),
-    var(--theme_local--bg_green)
+    var(--theme--text_green),
+    var(--theme--bg_green)
   );
 }
 #modules section .meta .toggle input + label .switch {
   background: linear-gradient(
     90deg,
-    var(--theme_local--text_red),
-    var(--theme_local--bg_red)
+    var(--theme--text_red),
+    var(--theme--bg_red)
   );
 } */
 
@@ -256,7 +256,7 @@ s {
 }
 #modules section .desc blockquote {
   margin: 0.3em 0;
-  border-left: 0.3em solid var(--theme_local--table-border);
+  border-left: 0.3em solid var(--theme--table-border);
   padding-left: 0.7em;
 }
 
@@ -291,7 +291,7 @@ s {
 #modules section .tags,
 #modules section .version {
   font-size: 0.85em;
-  color: var(--theme_local--text_ui);
+  color: var(--theme--text_ui);
 }
 
 /* module options */
@@ -300,15 +300,15 @@ s {
   display: none;
 }
 #modules section .options {
-  border-top: 1px solid var(--theme_local--table-border);
-  background: var(--theme_local--card);
+  border-top: 1px solid var(--theme--table-border);
+  background: var(--theme--card);
 }
 #modules section .options p {
   font-size: 0.9em;
 }
 #modules section .options p:not(:last-child) {
   padding-bottom: 0.5em;
-  border-bottom: 0.5px solid var(--theme_local--table-border);
+  border-bottom: 0.5px solid var(--theme--table-border);
   margin-bottom: 0.5em;
 }
 
@@ -327,15 +327,15 @@ s {
   font-size: 0.9rem;
   padding: 0.4rem 0.2rem;
   border: none;
-  color: var(--theme_local--text);
-  background: var(--theme_local--main);
+  color: var(--theme--text);
+  background: var(--theme--main);
 }
 .select select:focus,
 .input input[type='text']:focus,
 .input input[type='number']:focus,
 .file input[type='file']:focus + label .choose,
 .file input[type='file'] + label .choose:hover {
-  outline: var(--theme_local--table-border) solid 2px;
+  outline: var(--theme--table-border) solid 2px;
 }
 .file input[type='file'],
 .toggle input[type='checkbox'] {
@@ -365,7 +365,7 @@ s {
   right: 0;
   width: 1em;
   height: 0.1em;
-  border: 0.35em solid var(--theme_local--card);
+  border: 0.35em solid var(--theme--card);
   background: currentColor;
 }
 .file input[type='file'] + label .choose {
@@ -391,7 +391,7 @@ s {
   float: right;
   height: 0.65em;
   width: 2em;
-  background: var(--theme_local--main);
+  background: var(--theme--main);
   border-radius: 5px;
   transition: background 300ms;
 }
@@ -405,8 +405,8 @@ s {
   border-radius: inherit;
   background: linear-gradient(
     90deg,
-    var(--theme_local--primary),
-    var(--theme_local--primary_click)
+    var(--theme--primary),
+    var(--theme--primary_click)
   );
   opacity: var(--menu--toggle_opacity, 0);
   transition: opacity 300ms;
@@ -419,15 +419,15 @@ s {
   border-radius: 50%;
   transform: translateX(var(--menu--toggle_offset, 0));
   transition: transform 350ms, box-shadow 350ms;
-  background: var(--theme_local--option_active-color);
-  box-shadow: 2px 1px 4px var(--theme_local--table-border);
+  background: var(--theme--option_active-color);
+  box-shadow: 2px 1px 4px var(--theme--table-border);
 }
 .toggle input[type='checkbox']:checked:focus + label .switch {
   background: none !important;
 }
 .toggle input[type='checkbox']:focus + label .switch::before,
 .toggle input[type='checkbox']:focus + label .switch .dot {
-  border: 1px solid var(--theme_local--card-border);
+  border: 1px solid var(--theme--table-border);
 }
 .toggle input[type='checkbox']:checked + label {
   --menu--toggle_offset: 1em;
