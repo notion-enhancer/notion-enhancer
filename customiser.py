@@ -140,6 +140,9 @@ try:
             if '{ frame: false, show: false' not in content:
                 content = content.replace(
                     '{ show: false', '{ frame: false, show: false')
+                if 'frame: false,' not in content:
+                    content =re.sub(re.compile(r'\{(\s+)\.\.\.rect,(\s+)show: false,'), '{...rect, frame: false,show: false,', content)
+                    
             print(
                 f' ...adding "open hidden" capabilities to {os.path.join(filepath, "app", "main", "createWindow.js")}')
             content = re.sub('\\s*\\/\\* === INJECTION START === \\*\\/.*?\\/\\* === INJECTION END === \\*\\/\\s*',
