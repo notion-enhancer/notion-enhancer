@@ -198,12 +198,14 @@
 .notion-dark-theme
   .notion-frame
   .notion-scroller.vertical.horizontal
-  .notion-page-content,
+  .notion-page-content {
+  font-size: var(--theme_dark--font-body_size) !important;
+}
 .notion-dark-theme
   .notion-frame
   .notion-scroller.vertical.horizontal
   [style*='font-size: 14px'] {
-  font-size: var(--theme_dark--font-body_size) !important;
+  font-size: var(--theme_dark--font-label_size) !important;
 }
 .notion-dark-theme
   .notion-frame
