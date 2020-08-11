@@ -75,6 +75,18 @@
 .notion-dark-theme .notion-frame [style*='background: rgb(63, 68, 71)'] {
   border: 0.5px solid var(--theme_dark--card-border);
 }
+.notion-dark-theme
+  .notion-page-content
+  .notion-page-block.notion-collection-item
+  [style*='background: rgba(255, 255, 255, 0.05)'] {
+  background: var(--theme_dark--gallery) !important;
+}
+.notion-dark-theme
+  .notion-page-content
+  .notion-page-block.notion-collection-item:hover
+  [style*='background: rgba(255, 255, 255, 0.05)'] {
+  background: var(--theme_dark--gallery_hover) !important;
+}
 
 .notion-dark-theme [style*='box-shadow: rgb(47, 52, 55) -3px 0px 0px'] {
   box-shadow: var(--theme_dark--main) -3px 0px 0px !important;
@@ -117,8 +129,8 @@
 .notion-dark-theme [style*='background: rgb(71, 76, 80)'],
 .notion-dark-theme [style*='background: rgb(80, 85, 88)'],
 .notion-dark-theme [style*='background: rgb(98, 102, 104)'] {
-  background: var(--theme_dark--button_hover) !important;
-  box-shadow: 0 0 0 0.5px var(--theme_dark--button_hover-border);
+  background: var(--theme_dark--interactive_hover) !important;
+  box-shadow: 0 0 0 0.5px var(--theme_dark--interactive_hover-border);
 }
 
 /** ui colours **/
@@ -157,20 +169,25 @@
 .notion-dark-theme [style*='background: rgb(235, 87, 87)'] {
   background: var(--theme_dark--primary_indicator) !important;
 }
-
+.notion-dark-theme .notion-to_do-block .checkboxSquare {
+  background: var(--theme_dark--option-background) !important;
+}
 .notion-dark-theme .notion-to_do-block .checkboxSquare path {
-  fill: var(--theme_dark--todo_empty-border) !important;
+  fill: var(--theme_dark--option-color) !important;
+}
+.notion-dark-theme .notion-to_do-block:hover .checkboxSquare,
+.notion-dark-theme .notion-to_do-block:hover .check {
+  background: var(--theme_dark--option_hover-background) !important;
+}
+.notion-dark-theme .notion-to_do-block:hover .checkboxSquare path,
+.notion-dark-theme .notion-to_do-block:hover .check polygon {
+  fill: var(--theme_dark--option_hover-color) !important;
+}
+.notion-dark-theme .notion-to_do-block .check {
+  background: var(--theme_dark--option_active-background) !important;
 }
 .notion-dark-theme .notion-to_do-block .check polygon {
-  fill: var(--theme_dark--todo_ticked-fill) !important;
-}
-.notion-dark-theme
-  .notion-to_do-block
-  [style*='background: rgb(46, 170, 220)'] {
-  background: var(--theme_dark--todo_ticked-background) !important;
-}
-.notion-dark-theme .notion-to_do-block [style*='background: rgb(71, 76, 80)'] {
-  background: var(--theme_dark--todo_hover-background) !important;
+  fill: var(--theme_dark--option_active-color) !important;
 }
 
 .notion-dark-theme
@@ -343,7 +360,7 @@
   background: var(--theme_dark--code_inline-background) !important;
 }
 
-.notion-dark-theme .notion-code-block {
+.notion-dark-theme .notion-page-content .notion-code-block {
   background: var(--theme_dark--code-background) !important;
 }
 .notion-dark-theme .notion-code-block > div {

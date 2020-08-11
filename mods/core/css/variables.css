@@ -43,9 +43,11 @@
 
   --theme_dark--card: rgb(63, 68, 71);
   --theme_dark--card-border: none;
+  --theme_dark--gallery: rgba(255, 255, 255, 0.05);
+  --theme_dark--gallery_hover: transparent;
   --theme_dark--table-border: rgba(255, 255, 255, 0.1);
-  --theme_dark--button_hover: rgb(71, 76, 80);
-  --theme_dark--button_hover-border: transparent;
+  --theme_dark--interactive_hover: rgb(71, 76, 80);
+  --theme_dark--interactive_hover-border: transparent;
   --theme_dark--button_close: #e81123;
   --theme_dark--button_close-fill: white;
 
@@ -55,11 +57,12 @@
   --theme_dark--primary_click: rgb(0, 141, 190);
   --theme_dark--primary_indicator: rgb(235, 87, 87);
 
-  --theme_dark--todo_empty-border: currentColor;
-  --theme_dark--todo_ticked: currentColor;
-  --theme_dark--todo_ticked-fill: white;
-  --theme_dark--todo_ticked-background: var(--theme_dark--primary);
-  --theme_dark--todo_hover-background: rgb(71, 76, 80);
+  --theme_dark--option-color: white;
+  --theme_dark--option-background: transparent;
+  --theme_dark--option_active-color: white;
+  --theme_dark--option_active-background: var(--theme_dark--primary);
+  --theme_dark--option_hover-color: white;
+  --theme_dark--option_hover-background: rgb(71, 76, 80);
 
   --theme_dark--danger_text: rgb(235, 87, 87);
   --theme_dark--danger_border: rgba(235, 87, 87, 0.5);
@@ -150,9 +153,11 @@
 
   --theme_light--card: rgb(247, 246, 243);
   --theme_light--card-border: none;
+  --theme_light--gallery: rgba(55, 53, 47, 0.024);
+  --theme_light--gallery_hover: transparent;
   --theme_light--table-border: rgba(55, 53, 47, 0.16);
-  --theme_light--button_hover: rgba(55, 53, 47, 0.08);
-  --theme_light--button_hover-border: transparent;
+  --theme_light--interactive_hover: rgba(55, 53, 47, 0.08);
+  --theme_light--interactive_hover-border: transparent;
   --theme_light--button_close: #e81123;
   --theme_light--button_close-fill: white;
 
@@ -162,11 +167,12 @@
   --theme_light--primary_click: rgb(0, 141, 190);
   --theme_light--primary_indicator: rgb(235, 87, 87);
 
-  --theme_light--todo_empty-border: currentColor;
-  --theme_light--todo_ticked: currentColor;
-  --theme_light--todo_ticked-fill: white;
-  --theme_light--todo_ticked-background: var(--theme_light--primary);
-  --theme_light--todo_hover-background: rgba(55, 53, 47, 0.08);
+  --theme_light--option-color: black;
+  --theme_light--option-background: transparent;
+  --theme_light--option_hover-color: black;
+  --theme_light--option_hover-background: rgba(55, 53, 47, 0.08);
+  --theme_light--option_active-color: white;
+  --theme_light--option_active-background: var(--theme_light--primary);
 
   --theme_light--danger_text: rgb(235, 87, 87);
   --theme_light--danger_border: rgba(235, 87, 87, 0.5);

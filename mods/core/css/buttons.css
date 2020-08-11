@@ -34,8 +34,8 @@
 }
 
 .notion-dark-theme .window-button:hover {
-  background: var(--theme_dark--button_hover);
-  box-shadow: 0 0 0 0.5px var(--theme_dark--button_hover-border);
+  background: var(--theme_dark--interactive_hover);
+  box-shadow: 0 0 0 0.5px var(--theme_dark--interactive_hover-border);
 }
 .notion-dark-theme .window-button#btn-close:hover {
   background: var(--theme_dark--button_close);
@@ -51,6 +51,6 @@
   stroke: var(--theme_light--button_close-fill);
 }
 .notion-light-theme .window-button:hover {
-  background: var(--theme_light--button_hover);
-  box-shadow: 0 0 0 0.5px var(--theme_light--button_hover-border);
+  background: var(--theme_light--interactive_hover);
+  box-shadow: 0 0 0 0.5px var(--theme_light--interactive_hover-border);
 }
