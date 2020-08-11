@@ -1,6 +1,7 @@
 /*
  * neutral
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2020 Arecsu
  * under the MIT license
  */
 
