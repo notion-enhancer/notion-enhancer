@@ -130,6 +130,37 @@ window['__start'] = async () => {
     ).append();
   }
 
+  // further-configuration popup
+  const $popup = document.querySelector('#popup');
+  document.addEventListener('keyup', (event) => {
+    if (
+      $popup.classList.contains('visible') &&
+      [13, 27].includes(event.keyCode)
+    )
+      $popup.classList.remove('visible');
+  });
+  let colorpicker_target = null;
+  const $colorpicker = colorjoe
+    .rgb('colorpicker')
+    .on('change', function (color) {
+      if (!colorpicker_target) return;
+      colorpicker_target.elem.style.setProperty(
+        '--configured--color-value',
+        color.css()
+      );
+      store(colorpicker_target.id)[colorpicker_target.key] = color.css();
+    })
+    .update();
+
+  document
+    .querySelector('#colorpicker')
+    .appendChild(createElement('<button class="close-modal"></button>'));
+  document.querySelectorAll('#popup .close-modal').forEach((el) =>
+    el.addEventListener('click', (event) => {
+      $popup.classList.remove('visible');
+    })
+  );
+
   // search
   const search_query = {
     enabled: true,
@@ -244,6 +275,94 @@ window['__start'] = async () => {
     modified_notice.append();
   }
 
+  const file_icon = await fs.readFile(
+    path.resolve(`${__dirname}/icons/file.svg`)
+  );
+  function createOption(opt, id) {
+    let $opt;
+    switch (opt.type) {
+      case 'toggle':
+        $opt = `
+          <input type="checkbox" id="${opt.type}_${id}--${opt.key}"
+          ${store(id, { [opt.key]: opt.value })[opt.key] ? 'checked' : ''}/>
+          <label for="${opt.type}_${id}--${opt.key}">
+            <span class="name">${opt.label}</span>
+            <span class="switch"><span class="dot"></span></span>
+          </label>
+        `;
+        break;
+      case 'select':
+        $opt = `
+          <label for="${opt.type}_${id}--${opt.key}">${opt.label}</label>
+          <select id="${opt.type}_${id}--${opt.key}">
+            ${opt.value
+              .map((val) => `<option value="${val}">${val}</option>`)
+              .join('')}
+          </select>
+        `;
+        break;
+      case 'input':
+        $opt = `
+          <label for="${opt.type}_${id}--${opt.key}">${opt.label}</label>
+          <input type="${typeof value === 'number' ? 'number' : 'text'}" id="${
+          opt.type
+        }_${id}--${opt.key}">
+        `;
+        break;
+      case 'color':
+        $opt = `
+          <label for="${opt.type}_${id}--${opt.key}">${opt.label}</label>
+          <input type="button" id="${opt.type}_${id}--${opt.key}">
+        `;
+        break;
+      case 'file':
+        $opt = `
+          <input type="file" id="${opt.type}_${id}--${opt.key}"
+          ${
+            opt.extensions
+              ? ` accept="${opt.extensions
+                  .map((ext) => (ext.startsWith('.') ? ext : `.${ext}`))
+                  .join(',')}"`
+              : ''
+          }>
+          <label for="${opt.type}_${id}--${opt.key}">
+            <span class="label">
+              <span class="name">${opt.label}</span>
+              <button class="clear"></button>
+            </span>
+            <span class="choose">
+              ${file_icon}
+              <span class="path">${
+                store(id)[opt.key]
+                  ? store(id)[opt.key].split(path.sep).reverse()[0]
+                  : 'choose a file...'
+              }</span>
+            </span>
+          </label>
+        `;
+    }
+    $opt = createElement(`<p class="${opt.type}">${$opt}</p>`);
+    if (opt.type === 'color') {
+      $opt
+        .querySelector(`#${opt.type}_${id}--${opt.key}`)
+        .style.setProperty(
+          '--configured--color-value',
+          store(id, { [opt.key]: opt.value })[opt.key]
+        );
+    } else if (opt.type === 'file') {
+      $opt.querySelector('.clear').addEventListener('click', (event) => {
+        store(id)[opt.key] = '';
+        $opt.querySelector('.path').innerText = 'choose a file...';
+      });
+    } else {
+      $opt.querySelector(`#${opt.type}_${id}--${opt.key}`).value = store(id, {
+        [opt.key]: opt.type === 'select' ? opt.value[0] : opt.value,
+      })[opt.key];
+    }
+
+    return $opt;
+  }
+
   const $modules = document.querySelector('#modules');
   for (let mod of modules.loaded.sort((a, b) =>
     a.tags.includes('core') ||
@@ -302,114 +421,40 @@ window['__start'] = async () => {
       });
 
     const $options = mod.elem.querySelector('.options');
-    let file_icon;
     if ($options)
       for (const opt of mod.options) {
-        let $opt;
-        switch (opt.type) {
-          case 'toggle':
-            $opt = createElement(`
-              <p class="toggle">
-                <input type="checkbox" id="toggle_${mod.id}--${opt.key}"
-                ${
-                  store(mod.id, { [opt.key]: opt.value })[opt.key]
-                    ? 'checked'
-                    : ''
-                } />
-                <label for="toggle_${mod.id}--${opt.key}">
-                  <span class="name">${opt.label}</span>
-                  <span class="switch"><span class="dot"></span></span>
-                </label>
-              </p>
-            `);
-            break;
-          case 'select':
-            $opt = createElement(`
-              <p class="select">
-                <label for="select_${mod.id}--${opt.key}">${opt.label}</label>
-                <select id="select_${mod.id}--${opt.key}">
-                  ${opt.value
-                    .map((val) => `<option value="${val}">${val}</option>`)
-                    .join('')}
-                </select>
-              </p>
-            `);
-            break;
-          case 'input':
-            $opt = createElement(`
-              <p class="input">
-                <label for="input_${mod.id}--${opt.key}">${opt.label}</label>
-                <input type="${
-                  typeof opt.value === 'number' ? 'number' : 'text'
-                }" id="input_${mod.id}--${opt.key}">
-              </p>
-            `);
-            break;
-          case 'file':
-            if (!file_icon)
-              file_icon = await fs.readFile(
-                path.resolve(`${__dirname}/icons/file.svg`)
-              );
-            $opt = createElement(`
-              <p class="file">
-              <input type="file" id="file_${mod.id}--${opt.key}"
-              ${
-                opt.extensions
-                  ? ` accept="${opt.extensions
-                      .map((ext) => (ext.startsWith('.') ? ext : `.${ext}`))
-                      .join(',')}"`
-                  : ''
-              }>
-                <label for="file_${mod.id}--${opt.key}">
-                  <span class="label">
-                    <span class="name">${opt.label}</span>
-                    <button class="clear"></button>
-                  </span>
-                  <span class="choose">
-                    ${file_icon}
-                    <span class="path">${
-                      store(mod.id)[opt.key]
-                        ? store(mod.id)[opt.key].split(path.sep).reverse()[0]
-                        : 'choose a file...'
-                    }</span>
-                  </span>
-                </label>
-              </p>
-            `);
-            $opt.querySelector('.clear').addEventListener('click', (event) => {
-              store(mod.id)[opt.key] = '';
-              $opt.querySelector('.path').innerText = store(mod.id)[opt.key]
-                ? store(mod.id)[opt.key].split(path.sep).reverse()[0]
-                : 'choose a file...';
-            });
-            break;
-        }
-
-        if (opt.type !== 'file') {
-          $opt.querySelector(
-            `#${opt.type}_${mod.id}--${opt.key}`
-          ).value = store(mod.id, {
-            [opt.key]: opt.type === 'select' ? opt.value[0] : opt.value,
-          })[opt.key];
-        }
-        $opt
-          .querySelector(`#${opt.type}_${mod.id}--${opt.key}`)
-          .addEventListener('change', (event) => {
-            if (opt.type === 'toggle') {
-              store(mod.id)[opt.key] = event.target.checked;
-            } else if (opt.type === 'file') {
-              if (event.target.files.length)
-                store(mod.id)[opt.key] = event.target.files[0].path;
-              $opt.querySelector('.path').innerText = store(mod.id)[opt.key]
-                ? store(mod.id)[opt.key].split(path.sep).reverse()[0]
-                : 'choose a file...';
-            } else
-              store(mod.id)[opt.key] =
-                typeof opt.value === 'number'
-                  ? Number(event.target.value)
-                  : event.target.value;
-            modified();
+        const $opt = createOption(opt, mod.id);
+        if (opt.type === 'color') {
+          const $preview = $opt.querySelector('input');
+          $opt.addEventListener('click', (event) => {
+            colorpicker_target = {
+              id: mod.id,
+              key: opt.key,
+              elem: $preview,
+            };
+            $colorpicker.set(store(mod.id)[opt.key]);
+            $popup.classList.add('visible');
           });
+        } else {
+          $opt
+            .querySelector(`#${opt.type}_${mod.id}--${opt.key}`)
+            .addEventListener('change', (event) => {
+              if (opt.type === 'toggle') {
+                store(mod.id)[opt.key] = event.target.checked;
+              } else if (opt.type === 'file') {
+                if (event.target.files.length)
+                  store(mod.id)[opt.key] = event.target.files[0].path;
+                $opt.querySelector('.path').innerText = store(mod.id)[opt.key]
+                  ? store(mod.id)[opt.key].split(path.sep).reverse()[0]
+                  : 'choose a file...';
+              } else
+                store(mod.id)[opt.key] =
+                  typeof opt.value === 'number'
+                    ? Number(event.target.value)
+                    : event.target.value;
+              modified();
+            });
+        }
         $options.appendChild($opt);
       }
     $modules.append(mod.elem);

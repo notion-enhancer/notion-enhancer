@@ -130,7 +130,7 @@ function getEnhancements() {
         !mod.author ||
         (mod.options &&
           !mod.options.every((opt) =>
-            ['toggle', 'select', 'input', 'file'].includes(opt.type)
+            ['toggle', 'select', 'input', 'file', 'color'].includes(opt.type)
           ))
       )
         throw Error;

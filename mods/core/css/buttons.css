@@ -33,24 +33,13 @@
   stroke: currentColor;
 }
 
-.notion-dark-theme .window-button:hover {
-  background: var(--theme_dark--interactive_hover);
-  box-shadow: 0 0 0 0.5px var(--theme_dark--interactive_hover-border);
+.window-button:hover {
+  background: var(--theme--interactive_hover);
+  box-shadow: 0 0 0 0.5px var(--theme--interactive_hover-border);
 }
-.notion-dark-theme .window-button#btn-close:hover {
-  background: var(--theme_dark--button_close);
+.window-button#btn-close:hover {
+  background: var(--theme--button_close);
 }
-.notion-dark-theme .window-button#btn-close:hover svg line {
-  stroke: var(--theme_dark--button_close-fill);
-}
-
-.notion-light-theme .window-button#btn-close:hover {
-  background: var(--theme_light--button_close);
-}
-.notion-light-theme .window-button#btn-close:hover svg line {
-  stroke: var(--theme_light--button_close-fill);
-}
-.notion-light-theme .window-button:hover {
-  background: var(--theme_light--interactive_hover);
-  box-shadow: 0 0 0 0.5px var(--theme_light--interactive_hover-border);
+.window-button#btn-close:hover svg line {
+  stroke: var(--theme--button_close-fill);
 }

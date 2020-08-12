@@ -17,6 +17,15 @@
   }
 }
 
+@keyframes fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 * {
   box-sizing: border-box;
   word-break: break-word;
@@ -315,6 +324,7 @@ s {
 .toggle *,
 .input *,
 .select *,
+.color *,
 .file * {
   cursor: pointer;
 }
@@ -432,4 +442,134 @@ s {
 .toggle input[type='checkbox']:checked + label {
   --menu--toggle_offset: 1em;
   --menu--toggle_opacity: 1;
+}
+
+.color {
+  display: flex;
+}
+.color label {
+  flex-basis: 70%;
+}
+.color input[type='button'] {
+  flex-basis: 30%;
+  box-shadow: 2px 1px 4px var(--theme--table-border);
+  border: 1px solid var(--theme--option_active-color);
+  border-radius: 3px;
+  background: var(--configured--color-value);
+  margin: 0;
+}
+.color input[type='button']:focus {
+  box-shadow: 3px 2px 5px var(--theme--table-border);
+}
+
+/* further-configuration popup */
+
+#popup,
+#popup-overlay {
+  position: absolute;
+  top: 0;
+  height: 100vh;
+  width: 100vw;
+}
+#popup {
+  display: none;
+}
+#popup.visible {
+  display: flex;
+  animation: fade 200ms ease;
+}
+#popup-overlay {
+  background: var(--theme--overlay);
+}
+
+.colorPicker {
+  margin: auto;
+  position: relative;
+  border: 1px solid var(--theme--table-border);
+  background: var(--theme--card);
+}
+
+.colorPicker .twod {
+  border-radius: 4px;
+}
+.colorPicker .twod .bg {
+  border-radius: 2px;
+}
+.colorPicker .oned,
+.colorPicker .oned .bg {
+  margin-left: 0;
+  height: 212.5px;
+}
+.colorPicker .oned .bg {
+  border-radius: 4px;
+  border: 1px solid var(--theme--table-border);
+}
+.colorPicker > button {
+  display: block;
+  position: absolute;
+  bottom: 8px;
+  right: 8px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  width: 21px;
+  height: 20px;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.2s;
+}
+.colorPicker > button::after {
+  content: '×';
+  font-size: 1.5em;
+  position: relative;
+  bottom: 5px;
+}
+.colorPicker > button:hover {
+  background: var(--theme--interactive_hover);
+  border-radius: 4px;
+  box-shadow: 0 0 0 0.5px var(--theme--interactive_hover-border);
+}
+.colorPicker > button:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px var(--theme--table-border);
+}
+.colorPicker .twod .pointer .shape.shape1 {
+  width: 11px;
+  height: 11px;
+}
+.colorPicker .twod .pointer .shape.shape2 {
+  width: 9px;
+  height: 9px;
+}
+.colorPicker .oned .pointer .shape {
+  height: 6.5px;
+  margin-left: 0;
+  border: 2px solid #fff;
+  box-shadow: 0 0 0 1px #000;
+}
+.shape {
+  cursor: pointer;
+}
+
+@media (max-width: 300px) {
+  .colorPicker .twod,
+  .colorPicker .twod .bg {
+    width: 200px;
+    height: 200px;
+  }
+  .colorPicker .oned,
+  .colorPicker .oned .bg {
+    height: 172.5px;
+  }
+}
+@media (max-width: 250px) {
+  .colorPicker .twod,
+  .colorPicker .twod .bg {
+    width: 150px;
+    height: 150px;
+  }
+  .colorPicker .oned,
+  .colorPicker .oned .bg {
+    height: 132.5px;
+  }
 }

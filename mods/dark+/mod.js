@@ -13,4 +13,40 @@ module.exports = {
   desc: 'a vivid-colour near-black theme.',
   version: '0.1.0',
   author: 'dragonwocky',
+  options: [
+    {
+      key: 'primary',
+      label: 'primary colour',
+      type: 'color',
+      value: 'rgb(177, 24, 24)',
+    },
+  ],
+  hacks: {
+    'renderer/preload.js'(store, __exports) {
+      const color = require('./one-color.js')(store().primary);
+      document.addEventListener('readystatechange', (event) => {
+        if (document.readyState !== 'complete') return false;
+        document.documentElement.style.setProperty(
+          '--theme_dark--selected',
+          color.lightness(0.35).alpha(0.2).cssa()
+        );
+        document.documentElement.style.setProperty(
+          '--theme_dark--primary',
+          color.hex()
+        );
+        document.documentElement.style.setProperty(
+          '--theme_dark--primary_hover',
+          color.lightness(0.5).hex()
+        );
+        document.documentElement.style.setProperty(
+          '--theme_dark--primary_click',
+          color.lightness(0.6).hex()
+        );
+        document.documentElement.style.setProperty(
+          '--theme_dark--primary_indicator',
+          color.lightness(0.4).hex()
+        );
+      });
+    },
+  },
 };

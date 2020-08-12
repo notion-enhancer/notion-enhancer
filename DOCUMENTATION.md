@@ -74,12 +74,13 @@ module.exports = {
 | extensions | **optional:** allowed file extensions (only use with a file option), e.g. `['js', 'ts']` | _array\<string\>_ |
 | value      | **optional:** default or possible value/s for option                                     | see below         |
 
-| type   | value             |
-| ------ | ----------------- |
-| toggle | _boolean_         |
-| select | _array\<string\>_ |
-| input  | _string_          |
-| file   | none              |
+| type   | value                |
+| ------ | -------------------- |
+| toggle | _boolean_            |
+| select | _array\<string\>_    |
+| input  | _string_ or _number_ |
+| color  | _string_             |
+| file   | none                 |
 
 > the file option stores only a filepath, not the file itself.
 

@@ -4,8 +4,9 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>notion-enhancer menu</title>
+    <script src="./colorjoe/min.js"></script>
+    <link rel="stylesheet" href="./colorjoe/picker.css" />
     <link rel="stylesheet" href="./css/menu.css" />
-    <script src="https://unpkg.com/snarkdown@1.0.2/dist/snarkdown.umd.js"></script>
   </head>
   <body>
     <header id="menu-titlebar"></header>
@@ -22,6 +23,10 @@
       </div>
       <div id="modules"></div>
     </main>
+    <section id="popup">
+      <div id="popup-overlay" class="close-modal"></div>
+      <div id="colorpicker"></div>
+    </section>
     <script>
       window['__start']();
     </script>

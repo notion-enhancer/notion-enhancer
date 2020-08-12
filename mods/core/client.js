@@ -53,7 +53,7 @@ module.exports = (store, __exports) => {
       dragarea.className = 'window-dragarea';
       document.querySelector('.notion-topbar').prepend(dragarea);
       document.documentElement.style.setProperty(
-        '--configured-dragarea_height',
+        '--configured--dragarea_height',
         `${store().dragarea_height + 2}px`
       );
     }

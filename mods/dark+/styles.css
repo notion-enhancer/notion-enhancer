@@ -32,23 +32,17 @@
   --theme_dark--font_body-size: 16px;
   --theme_dark--font_code-size: 12.75px; */
 
-  --theme_dark--scrollbar: #232425;
+  --theme_dark--scrollbar: #23242599;
   --theme_dark--scrollbar-border: transparent;
-  --theme_dark--scrollbar_hover: #373838;
+  --theme_dark--scrollbar_hover: #37383899;
 
-  --theme_dark--card: #1717175e;
+  --theme_dark--card: #101010;
   --theme_dark--gallery: rgba(26, 26, 26, 0.3);
   --theme_dark--table-border: rgba(46, 46, 46, 0.7);
   --theme_dark--interactive_hover: #020202;
   /* --theme_dark--interactive_hover-border: transparent;
   --theme_dark--button_close: #e81123;
   --theme_dark--button_close-fill: white; */
-
-  --theme_dark--selected: rgba(241, 91, 91, 0.2);
-  --theme_dark--primary: rgb(177, 24, 24);
-  --theme_dark--primary_hover: rgb(202, 26, 26);
-  --theme_dark--primary_click: rgb(219, 41, 41);
-  --theme_dark--primary_indicator: rgb(202, 26, 26);
 
   /* --theme_dark--option-color: white;
   --theme_dark--option-background: transparent;
