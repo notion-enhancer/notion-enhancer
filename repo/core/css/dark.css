@@ -109,6 +109,9 @@
 .notion-dark-theme [style*='color: rgb(46, 170, 220)'] {
   color: var(--theme_dark--primary) !important;
 }
+.notion-dark-theme [style*='fill: rgb(46, 170, 220)'] {
+  fill: var(--theme_dark--primary) !important;
+}
 .notion-dark-theme [style*='background: rgb(46, 170, 220)'],
 .notion-dark-theme [style*='background-color: rgb(46, 170, 220)'] {
   background: var(--theme_dark--primary) !important;
