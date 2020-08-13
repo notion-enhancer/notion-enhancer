@@ -110,6 +110,9 @@
 .notion-light-theme [style*='color: rgb(46, 170, 220)'] {
   color: var(--theme_light--primary) !important;
 }
+.notion-light-theme [style*='fill: rgb(46, 170, 220)'] {
+  fill: var(--theme_light--primary) !important;
+}
 .notion-light-theme [style*='background: rgb(46, 170, 220)'],
 .notion-light-theme [style*='background-color: rgb(46, 170, 220)'] {
   background: var(--theme_light--primary) !important;
