@@ -17,13 +17,18 @@ complete rewrite with node.js.
 - extension: "custom inserts" = link files for small client-side tweaks..
 - extension: "bracketed links" = render links surrounded with \[\[brackets]] instead of underlined.
 - extension: "focus mode" = hide the titlebar/menubar if the sidebar is closed (will be shown on hover).
-- theme: "neutral" = smoother colours and fonts, designed to be more pleasing to the eye.
 - theme: "dark+" = a vivid-colour near-black theme.
+- theme: "neutral" = smoother colours and fonts, designed to be more pleasing to the eye.
+- theme: "gameish" = a purple, "gamer-styled" theme with a blocky-font.
+- theme: "pastel dark" = a true dark theme with a hint of pastel.
+- extension: "emojiset" = pick from a variety of emoji styles to use.
 
 //todo
 
-- extension: "emojiset" = pick from a variety of emoji styles to use.
 - extension: "night light" = sync dark/light theme with the system.
+- extension: "right-to-left" = enables auto rtl/ltr text direction detection.
+- extension: "weekly view" = view 7-day calendars.
+- extension: "property layout" = auto-collapse page properties that usually push down page content.
 
 ### v0.7.0 (2020-07-09)
 
