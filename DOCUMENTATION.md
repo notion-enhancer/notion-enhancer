@@ -40,7 +40,11 @@ module.exports = {
   tags?: Array<String> of categories,
   desc: String of markdown,
   version: String of semver,
-  author: String of github_username,
+  author: String of github_username OR {
+    name: String of author_name,
+    link: String of url,
+    avatar: String of image_source,
+  },
   options?: Array<{
     key: String,
     label: String,
@@ -53,16 +57,29 @@ module.exports = {
 };
 ```
 
-| key     | value                                                                                           | type              |
-| ------- | ----------------------------------------------------------------------------------------------- | ----------------- |
-| id      | **required:** uuidv4                                                                            | _string_          |
-| name    | **required:** short name (e.g. 'frameless window')                                              | _string_          |
-| tags    | **required:** categories/type (e.g. 'extension', 'theme', 'light', 'dark')                      | _array\<string\>_ |
-| desc    | **optional:** 1-3 sentence description of what the module is/does, with basic markdown support. | _string_          |
-| version | **required:** semver (e.g. '0.3.7')                                                             | _string_          |
-| author  | **required:** github username                                                                   | _string_          |
-| options | **optional:** see below: options made available in the enhancer menu (accessible from the tray) | _array\<object\>_ |
-| hacks   | **optional:** see below: code inserted at various points                                        | _object_          |
+| key     | value                                                                                           | type                   |
+| ------- | ----------------------------------------------------------------------------------------------- | ---------------------- |
+| id      | **required:** uuidv4                                                                            | _string_               |
+| name    | **required:** short name (e.g. `'ocean theme'`)                                                 | _string_               |
+| tags    | **required:** categories/type (e.g. `'extension'`, `'theme'`, `'light'`, `'dark'`)              | _array\<string\>_      |
+| desc    | **optional:** 1-3 sentence description of what the module is/does, with basic markdown support. | _string_               |
+| version | **required:** semver (e.g. `'0.3.7'`)                                                           | _string_               |
+| author  | **required:** see below: original extension creator                                             | _string_ or \<object\> |
+| options | **optional:** see below: options made available in the enhancer menu (accessible from the tray) | _array\<object\>_      |
+| hacks   | **optional:** see below: code inserted at various points                                        | _object_               |
+
+#### author
+
+by default this is assumed to be a github username: just pass it as a string and
+the link/avatar will be automatically found.
+
+if you'd rather customise this, pass this object:
+
+| key    | value                                      | type     |
+| ------ | ------------------------------------------ | -------- |
+| name   | **required:** author's (your?) name        | _string_ |
+| link   | **required:** link to the author's profile | _string_ |
+| avatar | **required:** url for the author's avatar  | _string_ |
 
 #### options
 

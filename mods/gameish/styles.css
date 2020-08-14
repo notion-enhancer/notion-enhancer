@@ -1,7 +1,7 @@
 /*
  * gameish
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
- * (c) 2020 alizarin
+ * (c) 2020 u/LVL100ShrekCultist
  * under the MIT license
  */
 
@@ -78,7 +78,9 @@
   --theme_dark--text_purple: #d43cc7;
   /* --theme_dark--text_pink: rgb(226, 85, 161); */
   --theme_dark--text_red: #d93939;
-  /* --theme_dark--bg_gray: rgba(151, 154, 155, 0.5);
+
+  /* --theme_dark--bg_text: var(--theme_dark--text);
+  --theme_dark--bg_gray: rgba(151, 154, 155, 0.5);
   --theme_dark--bg_brown: rgba(147, 114, 100, 0.5);
   --theme_dark--bg_orange: rgba(255, 163, 68, 0.5);
   --theme_dark--bg_yellow: rgba(255, 220, 73, 0.5);
@@ -87,7 +89,9 @@
   --theme_dark--bg_purple: rgba(154, 109, 215, 0.5);
   --theme_dark--bg_pink: rgba(226, 85, 161, 0.5); */
   --theme_dark--bg_red: rgba(216, 57, 46, 0.5);
-  /* --theme_dark--line_gray: rgb(69, 75, 78); */
+
+  /* --theme_dark--line_text: var(--theme_dark--text);
+  --theme_dark--line_gray: rgb(69, 75, 78); */
   --theme_dark--line_brown: rgb(78, 57, 48);
   --theme_dark--line_orange: rgb(136, 80, 48);
   --theme_dark--line_yellow: #fbe2287c;

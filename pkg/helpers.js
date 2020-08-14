@@ -134,6 +134,7 @@ function getEnhancements() {
           ))
       )
         throw Error;
+      modules.IDs.push(mod.id);
       modules.loaded.push({
         ...mod,
         dir,

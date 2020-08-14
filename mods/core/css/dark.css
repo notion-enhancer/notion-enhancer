@@ -170,6 +170,7 @@
 .notion-dark-theme [style*='background: rgba(151, 154, 155, 0.5)'],
 .notion-dark-theme [style*='background:rgb(69,75,78)'] {
   background: var(--theme_dark--bg_gray) !important;
+  color: var(--theme_dark--bg_text) !important;
 }
 .notion-dark-theme [style*='background: rgb(69, 75, 78)'] {
   background: var(--theme_dark--line_gray) !important;
@@ -180,6 +181,7 @@
 .notion-dark-theme [style*='background: rgba(147, 114, 100, 0.5)'],
 .notion-dark-theme [style*='background:rgb(67,64,64)'] {
   background: var(--theme_dark--bg_brown) !important;
+  color: var(--theme_dark--bg_text) !important;
 }
 .notion-dark-theme [style*='background: rgb(67, 64, 64)'] {
   background: var(--theme_dark--line_brown) !important;
@@ -190,6 +192,7 @@
 .notion-dark-theme [style*='background: rgba(255, 163, 68, 0.5)'],
 .notion-dark-theme [style*='background:rgb(89,74,58)'] {
   background: var(--theme_dark--bg_orange) !important;
+  color: var(--theme_dark--bg_text) !important;
 }
 .notion-dark-theme [style*='background: rgb(89, 74, 58)'] {
   background: var(--theme_dark--line_orange) !important;
@@ -200,6 +203,7 @@
 .notion-dark-theme [style*='background: rgba(255, 220, 73, 0.5)'],
 .notion-dark-theme [style*='background:rgb(89,86,59)'] {
   background: var(--theme_dark--bg_yellow) !important;
+  color: var(--theme_dark--bg_text) !important;
 }
 .notion-dark-theme [style*='background: rgb(89, 86, 59)'] {
   background: var(--theme_dark--line_yellow) !important;
@@ -210,6 +214,7 @@
 .notion-dark-theme [style*='background: rgba(77, 171, 154, 0.5)'],
 .notion-dark-theme [style*='background:rgb(53,76,75)'] {
   background: var(--theme_dark--bg_green) !important;
+  color: var(--theme_dark--bg_text) !important;
 }
 .notion-dark-theme [style*='background: rgb(53, 76, 75)'] {
   background: var(--theme_dark--line_green) !important;
@@ -220,6 +225,7 @@
 .notion-dark-theme [style*='background: rgba(82, 156, 202, 0.5)'],
 .notion-dark-theme [style*='background:rgb(54,73,84)'] {
   background: var(--theme_dark--bg_blue) !important;
+  color: var(--theme_dark--bg_text) !important;
 }
 .notion-dark-theme [style*='background: rgb(54, 73, 84)'] {
   background: var(--theme_dark--line_blue) !important;
@@ -230,6 +236,7 @@
 .notion-dark-theme [style*='background: rgba(154, 109, 215, 0.5)'],
 .notion-dark-theme [style*='background:rgb(68,63,87)'] {
   background: var(--theme_dark--bg_purple) !important;
+  color: var(--theme_dark--bg_text) !important;
 }
 .notion-dark-theme [style*='background: rgb(68, 63, 87)'] {
   background: var(--theme_dark--line_purple) !important;
@@ -240,6 +247,7 @@
 .notion-dark-theme [style*='background: rgba(226, 85, 161, 0.5)'],
 .notion-dark-theme [style*='background:rgb(83,59,76)'] {
   background: var(--theme_dark--bg_pink) !important;
+  color: var(--theme_dark--bg_text) !important;
 }
 .notion-dark-theme [style*='background: rgb(83, 59, 76)'] {
   background: var(--theme_dark--line_pink) !important;
@@ -250,9 +258,40 @@
 .notion-dark-theme [style*='background: rgba(255, 115, 105, 0.5);'],
 .notion-dark-theme [style*='background:rgb(89,65,65)'] {
   background: var(--theme_dark--bg_red) !important;
+  color: var(--theme_dark--bg_text) !important;
 }
 .notion-dark-theme [style*='background: rgb(89, 65, 65)'] {
   background: var(--theme_dark--line_red) !important;
+}
+
+.notion-dark-theme
+  [style*='background: rgb(69, 75, 78)']
+  [style*='color: rgba(255, 255, 255, 0.9)'],
+.notion-dark-theme
+  [style*='background: rgb(67, 64, 64)']
+  [style*='color: rgba(255, 255, 255, 0.9)'],
+.notion-dark-theme
+  [style*='background: rgb(89, 74, 58)']
+  [style*='color: rgba(255, 255, 255, 0.9)'],
+.notion-dark-theme
+  [style*='background: rgb(89, 86, 59)']
+  [style*='color: rgba(255, 255, 255, 0.9)'],
+.notion-dark-theme
+  [style*='background: rgb(53, 76, 75)']
+  [style*='color: rgba(255, 255, 255, 0.9)'],
+.notion-dark-theme
+  [style*='background: rgb(54, 73, 84)']
+  [style*='color: rgba(255, 255, 255, 0.9)'],
+.notion-dark-theme
+  [style*='background: rgb(68, 63, 87)']
+  [style*='color: rgba(255, 255, 255, 0.9)'],
+.notion-dark-theme
+  [style*='background: rgb(83, 59, 76)']
+  [style*='color: rgba(255, 255, 255, 0.9)'],
+.notion-dark-theme
+  [style*='background: rgb(89, 65, 65)']
+  [style*='color: rgba(255, 255, 255, 0.9)'] {
+  color: var(--theme_dark--line_text) !important;
 }
 
 /* code */

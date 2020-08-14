@@ -12,6 +12,6 @@ module.exports = {
   tags: ['theme', 'dark'],
   name: 'neutral',
   desc: 'smoother colours and fonts, designed to be more pleasing to the eye.',
-  version: '0.0.2',
+  version: '0.1.0',
   author: 'arecsu',
 };

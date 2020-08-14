@@ -373,7 +373,15 @@ window['__start'] = async () => {
       ? 1
       : a.name.localeCompare(b.name)
   )) {
-    const menuStore = store('mods', { [mod.id]: { enabled: false } });
+    const menuStore = store('mods', { [mod.id]: { enabled: false } }),
+      author =
+        typeof mod.author === 'object'
+          ? mod.author
+          : {
+              name: mod.author,
+              link: `https://github.com/${mod.author}`,
+              avatar: `https://github.com/${mod.author}.png`,
+            };
     mod.elem = createElement(`
       <section class="${
         mod.tags.includes('core') || menuStore[mod.id].enabled
@@ -397,11 +405,9 @@ window['__start'] = async () => {
             .join(' ')}</p>
           <div class="desc">${markdown(mod.desc)}</div>
           <p>
-            <a href="https://github.com/${mod.author}" class="author">
-              <img src="https://github.com/${
-                mod.author
-              }.png" onerror="this.src='./icons/user.png'">
-              ${mod.author}
+            <a href="${author.link}" class="author">
+              <img src="${author.avatar}" onerror="this.src='./icons/user.png'">
+              ${author.name}
             </a>
             <span class="version">v${mod.version}</span>
           </p>

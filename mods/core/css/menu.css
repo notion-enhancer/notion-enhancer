@@ -133,13 +133,13 @@ s {
   font-weight: bold;
   font-size: 1.2em;
   padding-right: 0.5rem;
-  color: var(--theme--text_ui_info);
+  color: var(--theme--bg_text);
 }
 #alerts [role='alert'] p {
   font-size: 1rem;
   margin: auto 0;
   padding-left: 0.5em;
-  color: var(--theme--text_ui);
+  color: var(--theme--bg_text);
 }
 
 #alerts .error {

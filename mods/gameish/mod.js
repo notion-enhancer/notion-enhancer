@@ -1,7 +1,7 @@
 /*
  * gameish
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
- * (c) 2020 alizarin
+ * (c) 2020 u/LVL100ShrekCultist
  * under the MIT license
  */
 
@@ -12,6 +12,11 @@ module.exports = {
   tags: ['theme', 'dark'],
   name: 'gameish',
   desc: 'a purple, "gamer-styled" theme with a blocky-font.',
-  version: '0.0.3',
-  author: 'alizarin',
+  version: '0.1.1',
+  author: {
+    name: 'LVL100ShrekCultist',
+    link: 'https://www.reddit.com/user/LVL100ShrekCultist/',
+    avatar:
+      'https://styles.redditmedia.com/t5_2js69j/styles/profileIcon_jvnzmo30fyq41.jpg',
+  },
 };

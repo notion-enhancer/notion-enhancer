@@ -66,6 +66,7 @@
   --theme--text_purple: var(--theme_dark--text_purple);
   --theme--text_pink: var(--theme_dark--text_pink);
   --theme--text_red: var(--theme_dark--text_red);
+  --theme--bg_text: var(--theme_dark--bg_text);
   --theme--bg_gray: var(--theme_dark--bg_gray);
   --theme--bg_brown: var(--theme_dark--bg_brown);
   --theme--bg_orange: var(--theme_dark--bg_orange);
@@ -75,6 +76,7 @@
   --theme--bg_purple: var(--theme_dark--bg_purple);
   --theme--bg_pink: var(--theme_dark--bg_pink);
   --theme--bg_red: var(--theme_dark--bg_red);
+  --theme--line_text: var(--theme_dark--line_text);
   --theme--line_gray: var(--theme_dark--line_gray);
   --theme--line_brown: var(--theme_dark--line_brown);
   --theme--line_orange: var(--theme_dark--line_orange);
@@ -164,6 +166,7 @@
   --theme--text_purple: var(--theme_light--text_purple);
   --theme--text_pink: var(--theme_light--text_pink);
   --theme--text_red: var(--theme_light--text_red);
+  --theme--bg_text: var(--theme_light--bg_text);
   --theme--bg_gray: var(--theme_light--bg_gray);
   --theme--bg_brown: var(--theme_light--bg_brown);
   --theme--bg_orange: var(--theme_light--bg_orange);
@@ -173,6 +176,7 @@
   --theme--bg_purple: var(--theme_light--bg_purple);
   --theme--bg_pink: var(--theme_light--bg_pink);
   --theme--bg_red: var(--theme_light--bg_red);
+  --theme--line_text: var(--theme_light--line_text);
   --theme--line_gray: var(--theme_light--line_gray);
   --theme--line_brown: var(--theme_light--line_brown);
   --theme--line_orange: var(--theme_light--line_orange);
