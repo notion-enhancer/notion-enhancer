@@ -72,6 +72,8 @@
   --theme_dark--text_purple: rgb(154, 109, 215);
   --theme_dark--text_pink: rgb(226, 85, 161);
   --theme_dark--text_red: rgb(218, 47, 35);
+
+  /* --theme_dark--bg_text: var(--theme_dark--text); */
   --theme_dark--bg_gray: rgba(126, 128, 129, 0.5);
   --theme_dark--bg_brown: #50331f;
   --theme_dark--bg_orange: rgba(255, 155, 0, 0.58);
@@ -81,6 +83,8 @@
   --theme_dark--bg_purple: rgba(91, 49, 148, 0.74);
   --theme_dark--bg_pink: rgba(243, 61, 159, 0.5);
   --theme_dark--bg_red: rgb(122, 20, 20);
+
+  /* --theme_dark--line_text: var(--theme_dark--text); */
   --theme_dark--line_gray: rgba(126, 128, 129, 0.301);
   --theme_dark--line_brown: #50331fad;
   --theme_dark--line_orange: rgba(255, 153, 0, 0.315);

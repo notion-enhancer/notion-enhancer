@@ -11,7 +11,7 @@ module.exports = {
   tags: ['extension'],
   name: 'custom inserts',
   desc: 'link files for small client-side tweaks.',
-  version: '0.0.2',
+  version: '0.1.1',
   author: 'dragonwocky',
   options: [
     {

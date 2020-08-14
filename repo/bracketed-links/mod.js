@@ -11,6 +11,6 @@ module.exports = {
   tags: ['extension'],
   name: 'bracketed links',
   desc: 'render links surrounded with [[brackets]] instead of __underlined__.',
-  version: '0.0.1',
+  version: '0.1.0',
   author: 'arecsu',
 };
