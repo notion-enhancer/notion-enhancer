@@ -373,7 +373,8 @@ window['__start'] = async () => {
       ? 1
       : a.name.localeCompare(b.name)
   )) {
-    const menuStore = store('mods', { [mod.id]: { enabled: false } }),
+    const enabled = store('mods', { [mod.id]: { enabled: false } })[mod.id]
+        .enabled,
       author =
         typeof mod.author === 'object'
           ? mod.author
@@ -384,9 +385,7 @@ window['__start'] = async () => {
             };
     mod.elem = createElement(`
       <section class="${
-        mod.tags.includes('core') || menuStore[mod.id].enabled
-          ? 'enabled'
-          : 'disabled'
+        mod.tags.includes('core') || enabled ? 'enabled' : 'disabled'
       }" id="${mod.id}">
         <div class="meta">
           <h3 ${
@@ -394,7 +393,7 @@ window['__start'] = async () => {
               ? `>${mod.name}`
               : `class="toggle">
             <input type="checkbox" id="enable_${mod.id}"
-            ${menuStore[mod.id].enabled ? 'checked' : ''} />
+            ${enabled ? 'checked' : ''} />
             <label for="enable_${mod.id}">
               <span class="name">${mod.name}</span>
               <span class="switch"><span class="dot"></span></span>
@@ -420,8 +419,13 @@ window['__start'] = async () => {
     const $enable = mod.elem.querySelector(`#enable_${mod.id}`);
     if ($enable)
       $enable.addEventListener('click', (event) => {
-        menuStore[mod.id].enabled = $enable.checked;
-        mod.elem.className = menuStore[mod.id].enabled ? 'enabled' : 'disabled';
+        store('mods', { [mod.id]: { enabled: false } })[mod.id].enabled =
+          $enable.checked;
+        mod.elem.className = store('mods', { [mod.id]: { enabled: false } })[
+          mod.id
+        ].enabled
+          ? 'enabled'
+          : 'disabled';
         search();
         modified();
       });
