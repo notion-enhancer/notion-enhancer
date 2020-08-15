@@ -41,6 +41,7 @@ module.exports = {
   hacks: {
     'renderer/preload.js'(store, __exports) {
       document.addEventListener('readystatechange', (event) => {
+        if (document.readyState !== 'complete') return false;
         const observer = new MutationObserver((list, observer) => {
           document
             .querySelectorAll(

@@ -25,10 +25,10 @@ complete rewrite with node.js.
 
 //todo
 
-- extension: "night light" = sync dark/light theme with the system.
-- extension: "right-to-left" = enables auto rtl/ltr text direction detection.
-- extension: "weekly view" = view 7-day calendars.
-- extension: "property layout" = auto-collapse page properties that usually push down page content.
+- extension: "night light" = sync dark/light theme with the system (overrides normal theme setting).
+- extension: "right-to-left" = enables auto rtl/ltr text direction detection. (ported from [github.com/obahareth/notion-rtl](https://github.com/obahareth/notion-rtl).)
+- extension: "weekly view" = view 7-day calendars. (ported from [github.com/adihd/notionweeklyview](https://github.com/adihd/notionweeklyview).)
+- extension: "property layout" = auto-collapse page properties that usually push down page content. (ported from [github.com/alexander-kazakov/notion-layout-extension](https://github.com/alexander-kazakov/notion-layout-extension).)
 
 ### v0.7.0 (2020-07-09)
 
