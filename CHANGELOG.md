@@ -22,11 +22,11 @@ complete rewrite with node.js.
 - theme: "gameish" = a purple, "gamer-styled" theme with a blocky-font.
 - theme: "pastel dark" = a true dark theme with a hint of pastel.
 - extension: "emojiset" = pick from a variety of emoji styles to use.
+- extension: "night shift" = sync dark/light theme with the system (overrides normal theme setting).
+- extension: "right-to-left" = enables auto rtl/ltr text direction detection. (ported from [github.com/obahareth/notion-rtl](https://github.com/obahareth/notion-rtl).)
 
 //todo
 
-- extension: "night light" = sync dark/light theme with the system (overrides normal theme setting).
-- extension: "right-to-left" = enables auto rtl/ltr text direction detection. (ported from [github.com/obahareth/notion-rtl](https://github.com/obahareth/notion-rtl).)
 - extension: "weekly view" = view 7-day calendars. (ported from [github.com/adihd/notionweeklyview](https://github.com/adihd/notionweeklyview).)
 - extension: "property layout" = auto-collapse page properties that usually push down page content. (ported from [github.com/alexander-kazakov/notion-layout-extension](https://github.com/alexander-kazakov/notion-layout-extension).)
 
