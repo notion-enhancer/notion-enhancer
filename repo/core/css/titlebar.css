@@ -5,7 +5,7 @@
  * under the MIT license
  */
 
-@import 'buttons.css';
+@import './buttons.css';
 
 .frameless .notion-topbar {
   height: calc(var(--configured--dragarea_height, 10px) + 45px) !important;

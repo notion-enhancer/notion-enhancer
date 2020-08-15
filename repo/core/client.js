@@ -75,29 +75,31 @@ module.exports = (store, __exports) => {
     let sidebar_width;
     function communicationLoop() {
       const getStyle = (prop) =>
-          getComputedStyle(document.body).getPropertyValue(prop),
+          getComputedStyle(
+            document.querySelector('.notion-app-inner')
+          ).getPropertyValue(prop),
         mode = JSON.parse(localStorage.theme).mode;
 
       // ctrl+f theming
       notionIpc.sendNotionToIndex('search:set-theme', {
         'mode': mode,
         'colors': {
-          'white': getStyle(`--theme_${mode}--todo_ticked-fill`),
-          'blue': getStyle(`--theme_${mode}--primary`),
+          'white': getStyle(`--theme--option_active-color`),
+          'blue': getStyle(`--theme--option_active-background`),
         },
         'borderRadius': 3,
-        'textColor': getStyle(`--theme_${mode}--text`),
-        'popoverBackgroundColor': getStyle(`--theme_${mode}--card`),
+        'textColor': getStyle(`--theme--text`),
+        'popoverBackgroundColor': getStyle(`--theme--card`),
         'popoverBoxShadow': `0 0 0 1px ${getStyle(
-          `--theme_${mode}--overlay`
-        )}, 0 3px 6px ${getStyle(`--theme_${mode}--overlay`)}`,
+          `--theme--overlay`
+        )}, 0 3px 6px ${getStyle(`--theme--overlay`)}`,
         'inputBoxShadow': `box-shadow: ${getStyle(
-          `--theme_${mode}--primary`
+          `--theme--primary`
         )} 0px 0px 0px 1px inset, ${getStyle(
-          `--theme_${mode}--primary_hover`
+          `--theme--primary_hover`
         )} 0px 0px 0px 2px !important`,
-        'inputBackgroundColor': getStyle(`--theme_${mode}--main`),
-        'dividerColor': getStyle(`--theme_${mode}--table-border`),
+        'inputBackgroundColor': getStyle(`--theme--main`),
+        'dividerColor': getStyle(`--theme--table-border`),
         'shadowOpacity': 0.2,
       });
 

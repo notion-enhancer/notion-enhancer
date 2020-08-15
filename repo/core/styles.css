@@ -4,7 +4,7 @@
  * under the MIT license
  */
 
-@import './css/variables.css';
+@import './css/localised.css';
 @import './css/dark.css';
 @import './css/light.css';
 @import './css/shared.css';

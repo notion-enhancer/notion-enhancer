@@ -6,7 +6,6 @@
 
 @import './buttons.css';
 @import './scrollbars.css';
-@import './localised.css';
 
 @keyframes spin {
   from {
