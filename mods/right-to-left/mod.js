@@ -18,22 +18,31 @@ module.exports = {
     'renderer/preload.js'(store, __exports) {
       document.addEventListener('readystatechange', (event) => {
         if (document.readyState !== 'complete') return false;
+        let queue = [];
         const observer = new MutationObserver((list, observer) => {
-          document
-            .querySelectorAll(
-              '.notion-page-content > div[data-block-id]:not([dir])'
-            )
-            .forEach((block) => block.setAttribute('dir', 'auto'));
-          document
-            .querySelectorAll("div[placeholder='List']")
-            .forEach((item) => {
-              item.style['text-align'] = 'start';
-            });
+          if (!queue.length) requestAnimationFrame(process);
+          queue.push(...list);
+          console.log(queue.length);
         });
         observer.observe(document, {
           childList: true,
           subtree: true,
+          characterData: true,
         });
+        function process() {
+          const cache = queue;
+          queue = [];
+          for (let { target } of cache) {
+            if (!target.innerText) return;
+            if (target.getAttribute('dir') !== 'auto')
+              target.setAttribute('dir', 'auto');
+            if (
+              getComputedStyle(target).getPropertyValue('text-align') !==
+              'start'
+            )
+              target.style.setProperty('text-align', 'start');
+          }
+        }
       });
     },
   },

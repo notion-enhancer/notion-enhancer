@@ -97,7 +97,6 @@
   max-width: var(--theme--preview-width) !important;
 }
 
-.notion-peek-renderer .notion-scroller.vertical > div:nth-child(1) > div,
 .notion-peek-renderer .notion-scroller.vertical > div:nth-child(2),
 .notion-peek-renderer .notion-page-view-discussion,
 .notion-peek-renderer .notion-page-content {

@@ -63,7 +63,7 @@ window['__start'] = async () => {
     return {
       el,
       resolve() {
-        el.outerHTML = '';
+        el.remove();
       },
       prepend() {
         document.querySelector('#alerts').prepend(el);
@@ -250,7 +250,7 @@ window['__start'] = async () => {
           // ![image_title](source)
           .replace(
             /([^\\])?\!\[([^\]]*[^\\\]]?)\]\(([^)]*[^\\)])\)/g,
-            `$1<img alt="$2" src="$3" onerror="this.outerHTML=''">`
+            `$1<img alt="$2" src="$3" onerror="this.remove()">`
           )
           // [link](destination)
           .replace(
