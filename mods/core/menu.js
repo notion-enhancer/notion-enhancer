@@ -18,7 +18,7 @@ window['__start'] = async () => {
   document.querySelector('#menu-titlebar').appendChild(buttons.element);
 
   document.defaultView.addEventListener('keyup', (event) => {
-    if (event.code === 'F5') window.reload();
+    if (event.code === 'F5') location.reload();
     if ((event.ctrlKey || event.metaKey) && event.key === 'e') browser.close();
     if (!(event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey) {
       if (

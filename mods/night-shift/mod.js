@@ -18,23 +18,26 @@ module.exports = {
     'renderer/preload.js'(store, __exports) {
       document.addEventListener('readystatechange', (event) => {
         if (document.readyState !== 'complete') return false;
-        const observer = new MutationObserver((list, observer) => {
-          const mode = window.matchMedia('(prefers-color-scheme: dark)')
-            .matches;
-          if (
-            document.querySelector(`.notion-${mode ? 'light' : 'dark'}-theme`)
-          )
-            document.querySelector(
-              '.notion-app-inner'
-            ).className = `notion-app-inner notion-${
-              mode ? 'dark' : 'light'
+        const attempt_interval = setInterval(enhance, 500);
+        function enhance() {
+          const notion_elem = document.querySelector('.notion-app-inner');
+          if (!notion_elem) return;
+          clearInterval(attempt_interval);
+          process([{ target: notion_elem }]);
+          const observer = new MutationObserver(process);
+          observer.observe(notion_elem, {
+            attributes: true,
+          });
+          function process(list, observer) {
+            const mode = `notion-app-inner notion-${
+              window.matchMedia('(prefers-color-scheme: dark)').matches
+                ? 'dark'
+                : 'light'
             }-theme`;
-        });
-        observer.observe(document, {
-          childList: true,
-          subtree: true,
-          attributes: true,
-        });
+            if (list[0].target.className !== mode)
+              list[0].target.className = mode;
+          }
+        }
       });
     },
   },

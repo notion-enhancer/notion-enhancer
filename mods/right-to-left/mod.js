@@ -20,20 +20,18 @@ module.exports = {
         if (document.readyState !== 'complete') return false;
         let queue = [];
         const observer = new MutationObserver((list, observer) => {
-          if (!queue.length) requestAnimationFrame(process);
+          if (!queue.length) requestAnimationFrame(() => process(list));
           queue.push(...list);
-          console.log(queue.length);
         });
         observer.observe(document, {
           childList: true,
           subtree: true,
           characterData: true,
         });
-        function process() {
-          const cache = queue;
+        function process(list) {
           queue = [];
-          for (let { target } of cache) {
-            if (!target.innerText) return;
+          for (let { target } of list) {
+            if (!target.innerText) continue;
             if (target.getAttribute('dir') !== 'auto')
               target.setAttribute('dir', 'auto');
             if (
