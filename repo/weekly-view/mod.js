@@ -18,45 +18,54 @@ module.exports = {
     'renderer/preload.js'(store, __exports) {
       document.addEventListener('readystatechange', (event) => {
         if (document.readyState !== 'complete') return false;
+        let queue = [];
         const observer = new MutationObserver((list, observer) => {
-          document
-            .querySelectorAll('.notion-collection-view-select > :nth-child(2)')
-            .forEach((collection_view) => {
-              if (collection_view.innerText === 'weekly') {
-                collection_view =
-                  collection_view.parentElement.parentElement.parentElement
-                    .parentElement.parentElement;
-                // collection_view.classList.add('weekly_view');
-                // document
-                //   .querySelectorAll('.adi_week_cal .notion-calendar-view-day')
-                //   .forEach((day) => {
-                //     if (day.style.background)
-                //       day.parentElement.parentElement.classList.add(
-                //         'this_week'
-                //       );
-                //   });
-                // var weeks = document.querySelectorAll('.this_week')[0].parentElement
-                //   .children;
-                // // delete al div that not contain a class of "this_week"
-                // while (weeks.length > 1) {
-                //   for (let index = 0; index < weeks.length; index++) {
-                //     // const element = array[index];
-                //     if (weeks[index].classList.contains('this_week')) {
-                //       console.log('yes');
-                //     } else {
-                //       // console.log(index);
-                //       weeks[index].remove();
-                //     }
-                //   }
-                // }
-              }
-            });
+          if (!queue.length) requestAnimationFrame(process);
+          queue.push(...list);
         });
         observer.observe(document, {
           childList: true,
           subtree: true,
-          attributes: true,
         });
+        function process() {
+          queue = [];
+
+          for (let elem of document.getElementsByClassName(
+            'notion-collection-view-select'
+          )) {
+            // console.log("this is working2");
+            if (elem.innerText === 'weekly') {
+              // console.log("this is working3");
+              var days_list = elem.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(
+                'notion-calendar-view-day'
+              );
+              for (let index = 0; index < days_list.length; index++) {
+                // const element = array[index];
+                if (days_list[index].style.background) {
+                  days_list[index].parentElement.parentElement.classList.add(
+                    'this_week'
+                  );
+                  // console.log("yay");
+                }
+              }
+              var weeks = document.getElementsByClassName('this_week')[0]
+                .parentElement.children;
+              // delete al div that not contain a class of "this_week"
+              while (weeks.length > 1) {
+                for (let index = 0; index < weeks.length; index++) {
+                  // const element = array[index];
+
+                  if (weeks[index].classList.contains('this_week')) {
+                    console.log('yes');
+                  } else {
+                    // console.log(index);
+                    weeks[index].remove();
+                  }
+                }
+              }
+            }
+          }
+        }
       });
     },
   },

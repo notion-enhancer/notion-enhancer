@@ -42,28 +42,40 @@ module.exports = {
     'renderer/preload.js'(store, __exports) {
       document.addEventListener('readystatechange', (event) => {
         if (document.readyState !== 'complete') return false;
+        let queue = [];
         const observer = new MutationObserver((list, observer) => {
-          document
-            .querySelectorAll(
-              '[src*="notion-emojis.s3-us-west-2.amazonaws.com"]:not(.notion-emoji)'
-            )
-            .forEach((el) => el.remove());
-          if (
-            (store().style === 'microsoft' && process.platform === 'win32') ||
-            (store().style === 'apple' && process.platform === 'darwin')
-          ) {
+          if (!queue.length) requestAnimationFrame(process);
+          queue.push(...list);
+        });
+        observer.observe(document, {
+          childList: true,
+          subtree: true,
+          characterData: true,
+        });
+        function process() {
+          queue = [];
+
+          // if (
+          //   (store().style === 'microsoft' && process.platform === 'win32') ||
+          //   (store().style === 'apple' && process.platform === 'darwin')
+          // ) {
+          //   document
+          //     .querySelectorAll('.notion-record-icon .notion-emoji')
+          //     .forEach((el) => {
+          //       el.outerHTML = `<span style="font-size: 0.9em; position: relative; bottom: 0.1em; right: 0.05em">
+          //         ${el.getAttribute('alt')}
+          //       </span>`;
+          //     });
+          //   document.querySelectorAll('.notion-emoji').forEach((el) => {
+          //     el.outerHTML = `<span>${el.getAttribute('alt')}</span>`;
+          //   });
+          // } -- attempt load improvement by using actual emojis instead of pictures
+          // ...breaks changing them again after
+
+          if (store().style !== 'twitter' || tweaked) {
             document
-              .querySelectorAll('.notion-record-icon .notion-emoji')
-              .forEach((el) => {
-                el.outerHTML = `<span style="font-size: 0.9em; position: relative; bottom: 0.1em; right: 0.05em">
-                  ${el.getAttribute('alt')}
-                </span>`;
-              });
-            document.querySelectorAll('.notion-emoji').forEach((el) => {
-              el.outerHTML = `<span>${el.getAttribute('alt')}</span>`;
-            });
-            tweaked = true;
-          } else if (store().style !== 'twitter' || tweaked) {
+              .querySelectorAll('[src*="notion-emojis.s3"]:not(.notion-emoji)')
+              .forEach((el) => el.remove());
             document.querySelectorAll('.notion-emoji').forEach((el) => {
               el.style.setProperty(
                 'background',
@@ -75,11 +87,7 @@ module.exports = {
             });
             tweaked = true;
           }
-        });
-        observer.observe(document, {
-          childList: true,
-          subtree: true,
-        });
+        }
       });
     },
   },
