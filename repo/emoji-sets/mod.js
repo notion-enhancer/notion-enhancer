@@ -47,7 +47,7 @@ module.exports = {
             .querySelectorAll(
               '[src*="notion-emojis.s3-us-west-2.amazonaws.com"]:not(.notion-emoji)'
             )
-            .forEach((el) => (el.outerHTML = ''));
+            .forEach((el) => el.remove());
           if (
             (store().style === 'microsoft' && process.platform === 'win32') ||
             (store().style === 'apple' && process.platform === 'darwin')
