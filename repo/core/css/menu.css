@@ -158,6 +158,11 @@ s {
   background: var(--theme--bg_green);
 }
 
+[data-relaunch] {
+  text-decoration: underline dotted;
+  cursor: pointer;
+}
+
 /* search */
 
 #search {

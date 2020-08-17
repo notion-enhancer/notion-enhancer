@@ -270,8 +270,14 @@ window['__start'] = async () => {
     if (modified_notice) return;
     modified_notice = createAlert(
       'info',
-      `changes may not fully apply until app restart.`
+      `changes may not fully apply until <span data-relaunch>app relaunch</span>.`
     );
+    modified_notice.el
+      .querySelector('[data-relaunch]')
+      .addEventListener('click', (event) => {
+        electron.remote.app.relaunch();
+        electron.remote.app.quit();
+      });
     modified_notice.append();
   }
 
