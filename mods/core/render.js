@@ -16,8 +16,6 @@ module.exports = (store, __exports) => {
       ),
       default_styles = dragarea.getAttribute('style');
 
-    // document.body.innerText = document.body.innerHTML;
-
     document
       .getElementById('notion')
       .addEventListener('ipc-message', (event) => {

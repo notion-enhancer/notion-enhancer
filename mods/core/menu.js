@@ -41,7 +41,8 @@ window['__start'] = async () => {
     }
   });
 
-  electron.ipcRenderer.on('enhancer:set-theme', (event, theme) => {
+  electron.ipcRenderer.send('enhancer:get-menu-theme');
+  electron.ipcRenderer.on('enhancer:set-menu-theme', (event, theme) => {
     document.body.className = `notion-${theme.mode}-theme`;
     for (const style of theme.rules)
       document.body.style.setProperty(style[0], style[1]);
