@@ -127,14 +127,17 @@ module.exports = (store, __exports) => {
     observer.observe(document.querySelector('.notion-sidebar'), {
       attributes: true,
     });
+    let sidebar_width;
     function setSidebarWidth(list, observer) {
       if (!store().frameless) return;
-      electron.ipcRenderer.sendToHost(
-        'enhancer:sidebar-width',
+      const new_sidebar_width =
         list[0].target.style.height === 'auto'
           ? '0px'
-          : list[0].target.style.width
-      );
+          : list[0].target.style.width;
+      if (new_sidebar_width !== sidebar_width) {
+        sidebar_width = new_sidebar_width;
+        electron.ipcRenderer.sendToHost('enhancer:sidebar-width');
+      }
     }
   }
 };
