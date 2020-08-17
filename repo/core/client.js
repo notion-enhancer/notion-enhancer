@@ -25,7 +25,11 @@ module.exports = (store, __exports) => {
 
   const attempt_interval = setInterval(enhance, 500);
   async function enhance() {
-    if (!document.querySelector('.notion-frame')) return;
+    if (
+      !document.querySelector('.notion-frame') ||
+      !document.querySelector('.notion-sidebar')
+    )
+      return;
     clearInterval(attempt_interval);
 
     // scrollbars
@@ -72,60 +76,65 @@ module.exports = (store, __exports) => {
       .querySelector('.notion-topbar-share-menu')
       .parentElement.classList.add('notion-topbar-actions');
 
-    let sidebar_width;
-    function communicationLoop() {
-      const getStyle = (prop) =>
-          getComputedStyle(
-            document.querySelector('.notion-app-inner')
-          ).getPropertyValue(prop),
-        mode = JSON.parse(localStorage.theme).mode;
+    const getStyle = (prop) =>
+      getComputedStyle(
+        document.querySelector('.notion-app-inner')
+      ).getPropertyValue(prop);
 
-      // ctrl+f theming
-      notionIpc.sendNotionToIndex('search:set-theme', {
-        'mode': mode,
-        'colors': {
-          'white': getStyle(`--theme--option_active-color`),
-          'blue': getStyle(`--theme--option_active-background`),
-        },
-        'borderRadius': 3,
-        'textColor': getStyle(`--theme--text`),
-        'popoverBackgroundColor': getStyle(`--theme--card`),
-        'popoverBoxShadow': `0 0 0 1px ${getStyle(
-          `--theme--overlay`
-        )}, 0 3px 6px ${getStyle(`--theme--overlay`)}`,
-        'inputBoxShadow': `box-shadow: ${getStyle(
-          `--theme--primary`
-        )} 0px 0px 0px 1px inset, ${getStyle(
-          `--theme--primary_hover`
-        )} 0px 0px 0px 2px !important`,
-        'inputBackgroundColor': getStyle(`--theme--main`),
-        'dividerColor': getStyle(`--theme--table-border`),
-        'shadowOpacity': 0.2,
-      });
+    // ctrl+f theming
+    document.defaultView.addEventListener('keydown', (event) => {
+      if (event.key === 'f' && (event.ctrlKey || event.metaKey)) {
+        notionIpc.sendNotionToIndex('search:set-theme', {
+          'mode': document.querySelector('.notion-dark-theme')
+            ? 'dark'
+            : 'light',
+          'colors': {
+            'white': getStyle(`--theme--option_active-color`),
+            'blue': getStyle(`--theme--option_active-background`),
+          },
+          'borderRadius': 3,
+          'textColor': getStyle(`--theme--text`),
+          'popoverBackgroundColor': getStyle(`--theme--card`),
+          'popoverBoxShadow': `0 0 0 1px ${getStyle(
+            `--theme--overlay`
+          )}, 0 3px 6px ${getStyle(`--theme--overlay`)}`,
+          'inputBoxShadow': `box-shadow: ${getStyle(
+            `--theme--primary`
+          )} 0px 0px 0px 1px inset, ${getStyle(
+            `--theme--primary_hover`
+          )} 0px 0px 0px 2px !important`,
+          'inputBackgroundColor': getStyle(`--theme--main`),
+          'dividerColor': getStyle(`--theme--table-border`),
+          'shadowOpacity': 0.2,
+        });
+      }
+    });
 
-      // enhancer menu
-      electron.ipcRenderer.send('enhancer:set-theme', {
-        mode,
+    // enhancer menu
+    function setMenuTheme() {
+      electron.ipcRenderer.send('enhancer:set-menu-theme', {
+        mode: document.querySelector('.notion-dark-theme') ? 'dark' : 'light',
         rules: require('./css/variables.json').map((rule) => [
           rule,
           getStyle(rule),
         ]),
       });
-
-      // draggable area resizing
-      const sidebar = document.querySelector('.notion-sidebar');
-      if (store().frameless && sidebar) {
-        let new_sidebar_width =
-          sidebar.style.height === 'auto' ? '0px' : sidebar.style.width;
-        if (sidebar_width !== new_sidebar_width) {
-          sidebar_width = new_sidebar_width;
-          electron.ipcRenderer.sendToHost(
-            'enhancer:sidebar-width',
-            sidebar_width
-          );
-        }
-      }
     }
-    setInterval(communicationLoop, 500);
+    setMenuTheme();
+    electron.ipcRenderer.on('enhancer:get-menu-theme', setMenuTheme);
+
+    const observer = new MutationObserver(setSidebarWidth);
+    observer.observe(document.querySelector('.notion-sidebar'), {
+      attributes: true,
+    });
+    function setSidebarWidth(list, observer) {
+      if (!store().frameless) return;
+      electron.ipcRenderer.sendToHost(
+        'enhancer:sidebar-width',
+        list[0].target.style.height === 'auto'
+          ? '0px'
+          : list[0].target.style.width
+      );
+    }
   }
 };
