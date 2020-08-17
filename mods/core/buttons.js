@@ -7,7 +7,8 @@
 'use strict';
 
 module.exports = (store) => {
-  const path = require('path'),
+  const electron = require('electron'),
+    path = require('path'),
     fs = require('fs-extra'),
     browser = require('electron').remote.getCurrentWindow(),
     is_mac = process.platform === 'darwin',
@@ -81,19 +82,19 @@ module.exports = (store) => {
       buttons.element.innerHTML += `<button class="window-button" id="btn-${btn}">${await buttons.icons[
         btn
       ]()}</button>`;
-      setTimeout(
-        () =>
-          (document.querySelector(`.window-button#btn-${btn}`).onclick =
-            buttons.actions[btn]),
-        10
-      );
+    }
+    for (let btn of buttons.insert) {
+      document.querySelector(`.window-button#btn-${btn}`).onclick =
+        buttons.actions[btn];
     }
     if (store().frameless && !is_mac) {
-      setInterval(async () => {
-        const icon = (await buttons.icons.maximize()).toString(),
-          el = buttons.element.querySelector('#btn-maximize');
-        if (el.innerHTML != icon) el.innerHTML = icon;
-      }, 100);
+      window.addEventListener('resize', (event) => {
+        Promise.resolve(buttons.icons.maximize()).then((icon) => {
+          icon = icon.toString();
+          const el = buttons.element.querySelector('#btn-maximize');
+          if (el.innerHTML != icon) el.innerHTML = icon;
+        });
+      });
     }
   })();
 
