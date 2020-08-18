@@ -84,6 +84,7 @@ module.exports = {
                 })`
               );
               el.style.setProperty('background-size', 'contain');
+              el.style.setProperty('opacity', '1');
             });
             tweaked = true;
           }

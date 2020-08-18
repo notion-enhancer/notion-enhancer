@@ -136,8 +136,12 @@ module.exports = (store, __exports) => {
           : list[0].target.style.width;
       if (new_sidebar_width !== sidebar_width) {
         sidebar_width = new_sidebar_width;
-        electron.ipcRenderer.sendToHost('enhancer:sidebar-width');
+        electron.ipcRenderer.sendToHost(
+          'enhancer:sidebar-width',
+          sidebar_width
+        );
       }
     }
+    setSidebarWidth([{ target: document.querySelector('.notion-sidebar') }]);
   }
 };
