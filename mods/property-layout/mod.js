@@ -18,66 +18,41 @@ module.exports = {
     'renderer/preload.js'(store, __exports) {
       document.addEventListener('readystatechange', (event) => {
         if (document.readyState !== 'complete') return false;
-
-        var isVisible = false;
-
-        function setPropertiesListVisibility(propertiesList, visible) {
-          if (visible) {
-            // Show properties list section
-            propertiesList.style.height = null;
-            propertiesList.style.display = null;
-            isVisible = true;
-          } else {
-            // Hide properties list section
-            propertiesList.style.height = 0;
-            propertiesList.style.display = 'none';
-            isVisible = false;
+        let queue = [];
+        const observer = new MutationObserver((list, observer) => {
+          if (!queue.length) requestAnimationFrame(() => process(queue));
+          queue.push(...list);
+        });
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true,
+        });
+        function process(list) {
+          queue = [];
+          let properties = document.querySelector(
+            '.notion-scroller.vertical > div:nth-child(2)[style="width: 100%; font-size: 14px;"]'
+          );
+          if (properties) {
+            if (!properties.classList.contains('propertylayout-enhanced')) {
+              properties.classList.add(
+                'propertylayout-enhanced',
+                'propertylayout-hidden'
+              );
+              const toggle = document.createElement('button');
+              toggle.classList.add('propertylayout-toggle');
+              toggle.innerText = '→ show properties';
+              toggle.addEventListener('click', (event) => {
+                properties.classList.toggle('propertylayout-hidden');
+                toggle.innerText = `→ ${
+                  properties.classList.contains('propertylayout-hidden')
+                    ? 'show'
+                    : 'hide'
+                } properties`;
+              });
+              properties.previousElementSibling.append(toggle);
+            }
           }
         }
-
-        // Called every time something new loads inside Notion window
-        // e.g. you navigate to a different Notion page
-        var onPageChange = function () {
-          console.log('Notion Layout Improver: Something changed');
-
-          // Find the block with properties list
-          var propertiesLists = document.querySelectorAll(
-            ".notion-scroller.vertical > div:nth-child(2)[style='width: 100%; font-size: 14px;']"
-          );
-
-          // For each found properties list
-          propertiesLists.forEach(function (propertiesList) {
-            console.log('Found properties list');
-
-            // Set up the toggle button
-            let toggleButton = document.createElement('button');
-            toggleButton.setAttribute('class', 'propertiesToggleBar');
-            toggleButton.innerHTML = '-';
-            toggleButton.onclick = function () {
-              setPropertiesListVisibility(propertiesList, !isVisible);
-            };
-
-            // If not already processed this properties list,
-            // add the toggle button and hide the list
-            if (!(propertiesList.id === 'already_processed')) {
-              console.log(
-                'Notion Layout Improver: Processing new properties list'
-              );
-              var parentBlockForButton =
-                propertiesList.parentElement.firstChild.firstChild;
-              parentBlockForButton.appendChild(toggleButton);
-              setPropertiesListVisibility(propertiesList, false);
-              propertiesList.id = 'already_processed';
-            }
-          });
-        };
-
-        // This calls onPageChange function each time Notion window changes
-        // e.g. you navigate to a new Notion page
-        const targetNode = document.body;
-        const config = { attributes: false, childList: true, subtree: true };
-        const observer = new MutationObserver(onPageChange);
-        observer.observe(targetNode, config);
       });
     },
   },

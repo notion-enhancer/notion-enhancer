@@ -1,0 +1,26 @@
+/*
+ * property layout
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2020 alexander-kazakov
+ * under the MIT license
+ */
+
+.propertylayout-hidden {
+  display: none;
+}
+
+.propertylayout-toggle {
+  width: calc(100% - (2 * var(--theme--preview-padding)));
+  text-align: left;
+  font-size: 0.85em;
+  margin-bottom: 1em;
+  padding: 0.25em;
+  background: transparent;
+  color: var(--theme--text_ui);
+  border: none;
+  border-radius: 2px;
+  transition: background 200ms;
+}
+.propertylayout-toggle:hover {
+  background: var(--theme--interactive_hover);
+}
