@@ -10,7 +10,7 @@
 }
 
 .propertylayout-toggle {
-  width: calc(100% - (2 * var(--theme--preview-padding)));
+  width: calc(100% - (2 * (96px + env(safe-area-inset-left))));
   text-align: left;
   font-size: 0.85em;
   margin-bottom: 1em;
@@ -20,6 +20,12 @@
   border: none;
   border-radius: 2px;
   transition: background 200ms;
+}
+[style*='width: 900px'] + .propertylayout-toggle {
+  width: calc(900px - (2 * (96px + env(safe-area-inset-left))));
+}
+.notion-peek-renderer .propertylayout-toggle {
+  width: calc(100% - (2 * var(--theme--preview-padding)));
 }
 .propertylayout-toggle:hover {
   background: var(--theme--interactive_hover);
