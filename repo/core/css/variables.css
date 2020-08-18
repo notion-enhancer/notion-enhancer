@@ -15,7 +15,7 @@
   --theme_dark--overlay: rgba(15, 15, 15, 0.6);
   --theme_dark--dragarea: #272d2f;
   --theme_dark--preview-width: 977px;
-  --theme_dark--preview-padding: 8em;
+  --theme_dark--preview-padding: 8rem;
   --theme_dark--preview_banner-height: 20vh;
   --theme_dark--page_banner-height: 30vh;
 
@@ -128,7 +128,7 @@
   --theme_light--overlay: rgba(15, 15, 15, 0.6);
   --theme_light--dragarea: rgba(55, 53, 47, 0.04);
   --theme_light--preview-width: 977px;
-  --theme_light--preview-padding: 8em;
+  --theme_light--preview-padding: 8rem;
   --theme_light--preview_banner-height: 20vh;
   --theme_light--page_banner-height: 30vh;
 

@@ -47,7 +47,7 @@ module.exports = {
           if (!queue.length) requestAnimationFrame(process);
           queue.push(...list);
         });
-        observer.observe(document, {
+        observer.observe(document.body, {
           childList: true,
           subtree: true,
           characterData: true,

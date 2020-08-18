@@ -20,10 +20,10 @@ module.exports = {
         if (document.readyState !== 'complete') return false;
         let queue = [];
         const observer = new MutationObserver((list, observer) => {
-          if (!queue.length) requestAnimationFrame(() => process(list));
+          if (!queue.length) requestAnimationFrame(() => process(queue));
           queue.push(...list);
         });
-        observer.observe(document, {
+        observer.observe(document.body, {
           childList: true,
           subtree: true,
           characterData: true,
