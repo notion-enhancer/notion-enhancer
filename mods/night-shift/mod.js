@@ -11,7 +11,7 @@ module.exports = {
   tags: ['extension', 'theme'],
   name: 'night shift',
   desc:
-    'sync dark/light theme with the system (overrides normal theme setting)',
+    'sync dark/light theme with the system (overrides normal theme setting).',
   version: '0.1.0',
   author: 'dragonwocky',
   hacks: {

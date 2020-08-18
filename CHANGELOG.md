@@ -24,10 +24,7 @@ complete rewrite with node.js.
 - extension: "emoji sets" = pick from a variety of emoji styles to use.
 - extension: "night shift" = sync dark/light theme with the system (overrides normal theme setting).
 - extension: "right-to-left" = enables auto rtl/ltr text direction detection. (ported from [github.com/obahareth/notion-rtl](https://github.com/obahareth/notion-rtl).)
-- extension: "weekly view" = calendar views named "weekly" will show only the 7 days of this week. (ported from [github.com/adihd/notionweeklyview](https://github.com/adihd/notionweeklyview).)
-
-//todo
-
+- extension: "weekly view" = calendar views named "weekly" will show only the 7 days of this week. (ported from [github.com/adihd/notionweeklyview](https://github.com/adihd/notionweeklyview).)]
 - extension: "property layout" = auto-collapse page properties that usually push down page content. (ported from [github.com/alexander-kazakov/notion-layout-extension](https://github.com/alexander-kazakov/notion-layout-extension).)
 
 ### v0.7.0 (2020-07-09)
