@@ -121,9 +121,10 @@
   --theme_dark--code_attr-value: hsl(350, 40%, 70%); */
 }
 
-.notion-scroller.vertical.horizontal
+.notion-dark-theme
+  .notion-scroller.vertical.horizontal
   .notion-table-view
   .notion-selectable.notion-collection_view-block
   > :first-child {
-  background: var(--theme_dark--card) !important;
+  background: var(--theme--card) !important;
 }

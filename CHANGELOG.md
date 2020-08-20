@@ -20,7 +20,7 @@ complete rewrite with node.js.
 - theme: "dark+" = a vivid-colour near-black theme.
 - theme: "neutral" = smoother colours and fonts, designed to be more pleasing to the eye.
 - theme: "gameish" = a purple, "gamer-styled" theme with a blocky-font.
-- theme: "pastel dark" = a true dark theme with a hint of pastel.
+- theme: "pastel dark" = a smooth-transition true dark theme with a hint of pastel.
 - extension: "emoji sets" = pick from a variety of emoji styles to use.
 - extension: "night shift" = sync dark/light theme with the system (overrides normal theme setting).
 - extension: "right-to-left" = enables auto rtl/ltr text direction detection. (ported from [github.com/obahareth/notion-rtl](https://github.com/obahareth/notion-rtl).)

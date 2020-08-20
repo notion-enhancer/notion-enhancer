@@ -17,13 +17,11 @@ following them shows respect to the developer/s spending their free time on it, 
 > enhancements are applied only locally -
 > features should be designed only to improve the user experience.
 
-**using a not-yet-supported operating system or notion installation?** ask for
-[platform support](https://github.com/dragonwocky/notion-enhancer/issues/new?labels=enhancement&template=platform-support.md).
+**know your way around notion/electron/js/css and have some code to contribute?** great! read below for guidelines
+on how to create a helpful pull request and what happens with your code afterwards. it's probably also helpful to
+join the [discord server](//coming-soon)
 
-> mobile clients cannot currently be modded.
-
-**know your way around notion/electron/js/css and have some code to contribute?** great! read below to for recommendations
-on how to create a helpful pull request and what happens with your code afterwards.
+**for information on how to actually create a theme or module with the notion-enhancer api, check the [docs](DOCUMENTATION.md).**
 
 ## testing
 
@@ -33,15 +31,13 @@ download:
 git clone https://github.com/dragonwocky/notion-enhancer
 cd notion-enhancer
 git checkout js
+npm link
 ```
-
-using npm? globally link via `npm link`.
-
-using yarn? globally link via `yarn && yarn link` (the output of `yarn global bin` must be in PATH).
 
 the downloaded folder is now directly linked to the `notion-enhancer` command.
 
-no written tests are included with the enhancer: i don't have the experience/skill with them yet to use them effectively.
+no written tests are included with the enhancer:
+i don't have the experience/skill with them yet to use them effectively.
 if you can add some for your code, though, go ahead!
 
 ## conventions
@@ -53,44 +49,50 @@ modules are either **extensions** or **themes**.
 each module is separately versioned, following the [semver](https://semver.org/) scheme.
 depending on the content and scale of a contribution, it may constitute an update on its own or may be merged into a larger update.
 
-to keep a consistent code but informative style it is preferred to name variables with
+to keep a consistent informative code style it is preferred to name variables with
 `snake_case`, functions/methods with `camelCase`, and classes with `PascalCase`.
-
-for information on how to create a theme or module, check the [docs](DOCUMENTATION.md).
+if a variable is a reference to a DOM element, it may be helpful to prefix it with a `$`.
 
 ## review
 
 active core devs will manually look through each pull request and communicate with contributors before merging to
-make sure it is a) safe, b) functional and c) bug-free.
+make sure it is:
 
-**a) safe:** system details (e.g. IP, clipboard) + notion user data are considered private unless directly shared by the user.
+**a) safe.** system details (e.g. IP, clipboard) + notion user data are considered private unless directly shared by the user.
 none of this should be accessed or transmitted to an external server.
 
-**b) functional:** is there a better way to do this? can extra dependencies be removed or replaced by newer web technologies?
+**b) functional.** is there a better way to do this? can extra dependencies be removed or replaced by newer web technologies?
 how can this be made as user-friendly as possible?
 
-**c) bug-free:** where possible, code should be tested on a variety of platforms in a variety of situations so it can be
+**c) bug-free.** where possible, code should be tested on a variety of platforms in a variety of situations so it can be
 confirmed that it won't break anything for the user and is robust enough to handle use by both
-power-users and non-tech-savvy users.
+power users and non-tech-savvy users.
 
 ## translating
 
-honestly, i'm not sure where to start with something like this.
+future versions of the enhancer will have multi-language support.
 
-if you want to translate parts of the enhancer and you know how to get the enhancer to use such translations, let me know!
+if you are willing to help with translation, let me know and i'll contact you when i'm ready.
 
 ## licensing
 
 this project is distributed under the [MIT](https://choosealicense.com/licenses/mit/) license.
 the project as a whole is copyrighted by core devs in the [LICENSE](LICENSE) file.
 
-when modifying a file, add your copyright to it in the format `(c) year name <email> (website)`
-(inserted into the comment at the top, just above the line that reads `under the MIT license`).
+when modifying a file, add your copyright to it in the format:
+
+```
+/*
+ * module or project name
+ * (c) year name <email> (website)
+ * under the MIT license
+ */
+```
 
 all code contributed to this repository remains attributed to the contributor,
 but full rights are granted for it to be used under the terms of the MIT license.
 on the occasion that the contributed code should be removed or overwritten,
-the copyright statement may be removed from the file.
+the contributor's copyright may be removed from the file.
 
 by opening a pull request in this repository, you agree to the above conditions.
 

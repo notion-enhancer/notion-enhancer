@@ -152,10 +152,6 @@
   [style*='box-shadow: rgb(46, 170, 220) 0px 0px 0px 2px inset'] {
   box-shadow: var(--theme--primary) 0px 0px 0px 2px inset !important;
 }
-.notion-body:not(.dark) .notion-focusable:focus-within {
-  box-shadow: var(--theme--primary) 0px 0px 0px 1px inset,
-    var(--theme--primary_hover) 0px 0px 0px 2px !important;
-}
 .notion-body:not(.dark) [style*='background: rgb(6, 156, 205)'] {
   background: var(--theme--primary_hover) !important;
 }

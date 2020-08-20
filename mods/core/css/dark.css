@@ -41,7 +41,8 @@
 
 /** databases **/
 
-.dark [style*='background: rgb(63, 68, 71)'] {
+.dark [style*='background: rgb(63, 68, 71)'],
+.dark [style*='background-color: rgb(64, 68, 71);'] {
   background: var(--theme--card) !important;
 }
 .dark
@@ -85,7 +86,10 @@
 .dark [style*='box-shadow: rgba(55, 53, 47, 0.09) 0px -1px 0px'] {
   box-shadow: var(--theme--table-border) 0px -1px 0px !important;
 }
-.dark [style*='border-left: 1px solid rgba(255, 255, 255,'] {
+.dark [style*='border-left: 1px solid rgba(255, 255, 255,'],
+.dark
+  .notion-block-permission-settings-public-access
+  [role='button'][style*='border-left: none'] {
   border-left: 1px solid var(--theme--table-border) !important;
 }
 .dark [style*='box-shadow: rgba(255, 255, 255, 0.14) 0px 1px 0px inset'] {
@@ -133,10 +137,6 @@
 }
 .dark [style*='box-shadow: rgb(46, 170, 220) 0px 0px 0px 2px inset'] {
   box-shadow: var(--theme--primary) 0px 0px 0px 2px inset !important;
-}
-.dark .notion-focusable:focus-within {
-  box-shadow: var(--theme--primary) 0px 0px 0px 1px inset,
-    var(--theme--primary_hover) 0px 0px 0px 2px !important;
 }
 .dark [style*='background: rgb(6, 156, 205)'] {
   background: var(--theme--primary_hover) !important;
