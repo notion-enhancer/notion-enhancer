@@ -143,20 +143,24 @@
 } */
 
 /* increase page width */
-.notion-frame .notion-scroller [style*='width: 900px;'] {
+.notion-dark-theme .notion-frame .notion-scroller [style*='width: 900px;'] {
   width: 1000px !important;
 }
 
 /* add space at the bottom of the main frame when sidebar is hidden
  * -- matches space at top for titlebar */
-.notion-frame {
+.notion-dark-theme .notion-frame {
   transition: height 300ms ease 0s;
 }
-.notion-sidebar-container[style*='width: 0px;'] + .notion-frame {
+.notion-dark-theme
+  .notion-sidebar-container[style*='width: 0px;']
+  + .notion-frame {
   height: calc(100vh - 40px) !important;
 }
 
 /* hide sidebar "new page" button */
-.notion-sidebar > [style*='flex: 0 0 auto; margin-top: auto;'] {
+.notion-dark-theme
+  .notion-sidebar
+  > [style*='flex: 0 0 auto; margin-top: auto;'] {
   display: none !important;
 }

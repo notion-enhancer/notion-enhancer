@@ -11,7 +11,7 @@ module.exports = {
   id: '033bff54-50ba-4cec-bdc0-b2ca7e307085',
   tags: ['theme', 'dark'],
   name: 'pastel dark',
-  desc: 'a true dark theme with a hint of pastel.',
+  desc: 'a smooth-transition true dark theme with a hint of pastel.',
   version: '0.1.0',
   author: {
     name: 'zenith_illinois',

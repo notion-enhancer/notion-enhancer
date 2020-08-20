@@ -9,7 +9,13 @@
 
 @import './localised.css';
 
-/* colour help button - one of the few specific classes it does give us */
+/* inputs */
+.notion-focusable:focus-within {
+  /* var(--theme--primary) 0px 0px 0px 1px inset, */
+  box-shadow: var(--theme--primary_hover) 0px 0px 0px 2px !important;
+}
+
+/* colour help button - one of the few specific classes notion does give us */
 .notion-help-button {
   background: var(--theme--interactive_hover) !important;
   box-shadow: 0 0 0 0.5px var(--theme--interactive_hover-border) !important;
