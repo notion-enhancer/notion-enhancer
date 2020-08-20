@@ -1,5 +1,8 @@
 # notion-enhancer
 
+ended up here? this is a work-in-progress version of the enhancer, not ready for public use.
+if you're interested in using the project, switch back to the [master branch](https://github.com/dragonwocky/notion-enhancer).
+
 notion.so is a pretty awesome tool already, but there's always room for improvements.
 it might just be a preference, it might be something crucial to your setup,
 it might be something users have been asking for for a long time,
@@ -11,6 +14,8 @@ this package is a mod-loader for the desktop app, with custom colour theming and
 want to contribute? check out the [contribution guidelines](CONTRIBUTING.md) and the [documentation](DOCUMENTATION.md).
 
 ## installation
+
+**coming from v0.7.0? things are a bit different - have a read of [the update guide](UPDATING.md).**
 
 1. install node.js: [windows/macOS](https://nodejs.org/en/download/), [linux/WSL](https://github.com/mklement0/n-install).
    _a computer restart may be required here._
@@ -66,7 +71,7 @@ team to take to heart for future improvements."
 
 ## features
 
-once applied, modules can be configured via the graphical (filterable and searchable) menu, which can be opened from
+once applied, modules can be configured via the graphical menu, which is opened from
 the tray/menubar icon or with `CMD/CTRL+E`.
 
 currently all modules come pre-installed for technical reasons, security assurance, and ease-of-use.

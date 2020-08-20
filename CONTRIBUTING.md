@@ -19,7 +19,7 @@ following them shows respect to the developer/s spending their free time on it, 
 
 **know your way around notion/electron/js/css and have some code to contribute?** great! read below for guidelines
 on how to create a helpful pull request and what happens with your code afterwards. it's probably also helpful to
-join the [discord server](//coming-soon)
+join the [discord server](//coming-soon).
 
 **for information on how to actually create a theme or module with the notion-enhancer api, check the [docs](DOCUMENTATION.md).**
 
