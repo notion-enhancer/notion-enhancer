@@ -31,6 +31,10 @@ when you first load the enhancer, there's no single file you can edit to see ins
 instead, the "custom inserts" module is used: you can use it to pick any javascript or css file anywhere
 on your computer and include it every time you load up notion.
 
+to make your own css file, make sure that your file manager has "show file extensions" ticked, then
+create a text document and make sure the name ends in `.css` (e.g. `notion-tweaks.css`). or, just use
+the old `user.css` from before the update.
+
 most of the same css snippets will work, but some (e.g. preview page width) have been moved to the new variable
 system, plus new ones have been found. it's a good idea to check what you have against the [tweaks](TWEAKS.md)
 page and the [css theming documentation](DOCUMENTATION.md#theming).
