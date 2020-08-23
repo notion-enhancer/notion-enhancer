@@ -3,6 +3,12 @@
 if something is ~~crossed out~~, then it is no longer a feature included by default,
 but can still easily be enabled by following instructions in the [docs](README.md).
 
+### potential future features (not confirmed)`
+
+- groupy-like tabbing
+- [improved responsiveness](https://chrome.google.com/webstore/detail/notion%20%20-responsiveness-f/leadcilhbmibbkgbnjgmmnfgnnhmeddk)
+- [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
+
 ### v0.8.0 (wip)
 
 complete rewrite with node.js.
