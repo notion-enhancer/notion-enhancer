@@ -1,32 +1,37 @@
 # documentation
 
-for support, join the [discord server](//coming-soon).
+the enhancer is essentially a modloader for notion. this document contains the specifications of
+how those modules can be made and what they should contain.
+
+this file assumes basic working knowledge of modern javascript and css. since these are the languages
+executable within the notion app, these are the languages enhancements must be written in.
 
 want to contribute? check the [contribution guidelines](CONTRIBUTING.md).
 
-## module creation
+for support, join the [discord server](//coming-soon).
 
-_to understand best how notion's app works, check out [the electron docs](https://www.electronjs.org/docs/)_
-_and explore the contents of your local extracted `app.asar`._
+## creating a mod
+
+_to understand best how notion's app works, check out [the electron docs](https://www.electronjs.org/docs/),_
+_explore the contents of your local extracted `app.asar`, and navigate the html structure with the devtools web inspector._
 
 _look through [the existing modules](https://github.com/dragonwocky/notion-enhancer/tree/js/mods/)_
-_for examples of implementing the stuff described below._
+_for examples of the stuff described below in action._
 
-_testing modules requires running a dev version of the enhancer_
-_(again, see the [contribution guidelines](CONTRIBUTING.md)). a better system is in the works._
+_at the moment, for ease of development and use (and security assurance), there's no way for users_
+_to install their own modules. this means that testing modules requires_
+_[running a dev build of the enhancer](DOCUMENTATION.md#testing). a better system is in the works._
 
-each directory in the `mods` folder is considered a module, with the entry points `mod.js` and `styles.css`.
+_once your mod is working, open a pull request to add it to the enhancer!_
 
-| file         | description                                                                                          |
-| ------------ | ---------------------------------------------------------------------------------------------------- |
-| `mod.js`     | **required:** describes the module and contains functional javascript                                |
-| `styles.css` | **optional:** css file automatically inserted into each app window via the `enhancement://` protocol |
+each directory in the `mods` folder is considered a module, with the file entry points `mod.js` and `styles.css`.
 
-> a module that with the primary function of being a hack should be categorised as an extension,
-> while a module that with the primary function of adding styles should be categorised as a theme
-> in the `mod.js` `type` setting.
+| file         | description                                                           |
+| ------------ | --------------------------------------------------------------------- |
+| `mod.js`     | **required:** describes the module and contains functional javascript |
+| `styles.css` | **optional:** a css file automatically inserted into each app window  |
 
-### mod.js
+## mod.js
 
 ```js
 // not valid js!
@@ -47,17 +52,20 @@ module.exports = {
     key: String,
     label: String,
     type: String in ['toggle', 'select', 'input', 'file'],
-    value: Boolean or Array<String> or String or null
+    value: Boolean or Array<String> or String or Number or null
   }>,
   hacks?: {
-    [k: 'insert-point' (e.g. 'main/createWindow.js')]: function (store) {}
+    [k: 'insert-point' (e.g. 'main/createWindow.js')]: function (
+      store, // used for configuration and persisting of data (explanation below).
+      __exports // module.exports of the target file. if you don't understand that, don't use it.
+    ) {}
   }
 };
 ```
 
 | key     | value                                                                                           | type                   |
 | ------- | ----------------------------------------------------------------------------------------------- | ---------------------- |
-| id      | **required:** uuidv4                                                                            | _string_               |
+| id      | **required:** uuidv4 - generate a new one [here](https://www.uuidgenerator.net)                 | _string_               |
 | name    | **required:** short name (e.g. `'ocean theme'`)                                                 | _string_               |
 | tags    | **required:** categories/type (e.g. `'extension'`, `'theme'`, `'light'`, `'dark'`)              | _array\<string\>_      |
 | desc    | **optional:** 1-3 sentence description of what the module is/does, with basic markdown support. | _string_               |
@@ -65,6 +73,9 @@ module.exports = {
 | author  | **required:** see below: original extension creator                                             | _string_ or \<object\> |
 | options | **optional:** see below: options made available in the enhancer menu (accessible from the tray) | _array\<object\>_      |
 | hacks   | **optional:** see below: code inserted at various points                                        | _object_               |
+
+> a module that with the primary function of being a hack should be tagged as an extension,
+> while a module that has the primary function of adding styles should be tagged as a theme.
 
 #### author
 
@@ -99,14 +110,15 @@ if you'd rather customise this, pass this object:
 
 > the file option stores only a filepath, not the file itself.
 
-#### hacks
+## hacks
 
 each "hack" is a function taking 2 arguments.
 
-1. the **`store`** argument, which allows access to the module
-   settings/options defined in `mod.js` (those set in the menu, or used internally by the module).
-   each module store is automatically saved to + loaded from `~/.notion-enhancer/id.json`.
-   it can be initialised/accessed with `store({ defaults })`, then used as if it were a normal object.
+1. the **`store`** argument, which allows access to the module settings/options defined in `mod.js`
+   (those set in the menu, or used internally by the module). each module store is automatically saved to +
+   loaded from `~/.notion-enhancer/id.json`.
+   it should always be called as `store({ defaults })` (not stored in a variable),
+   but otherwise treated as a normal object to access and set things.
 2. the **`__exports`** argument, which is the `module.exports` of the file being modded.
    this can be used to call or replace functions from notion.
 
@@ -137,17 +149,45 @@ module.exports.hacks = {
 };
 ```
 
-#### the `enhancement://` protocol
+### the `enhancement://` protocol
 
-any files within the `mods` folder can be used via the `enhancement://` protocol.
+any files within the `mods` folder can be loaded with the `enhancement://` protocol.
 
-for example, accessing an image file within the frameless mod: `<img src="enhancement://frameless/minimise.svg">`.
+for example, inserting an image from the core mod: `<img src="enhancement://core/image.png">`.
 
 ## styles.css
 
-styles can be used for custom element insertions, generally hiding/re-spacing elements,
-and particularly: colour theming.
-
 the enhancer has been designed with theming in mind, so as much of notion's colours
-and typography as possible (both for the light and dark themes) have been mapped out
-using css variables - check these out in the `mods/core/theme.css` and `mods/dark+/styles.css` files.
+and typography as possible and some basic spacing (both for the light and dark themes) have been mapped out
+using css variables.
+
+this set of variables is 100% mandatory to use if you wish to use or change anything they handle
+(particularly colours). this is necessary to keep all themes consistently working
+(e.g. styling the menu and responding properly to light/dark theme changes),
+and it makes theming a lot easier - notion's html structure needs some complex selectors to properly modify it,
+and it means theme authors don't have to worry separately updating their theme every time something changes.
+
+the full/up-to-date list of variables and their default values can be found in the
+[`variables.css` file](mods/core/css/variables.css). each variable is named something along the lines of
+`--theme_mode--target_name-property`. still not sure what a variable does? try changing it and seeing what happens.
+
+these are all made possible by the core module. if you believe this set of variables is buggy or lacking in any way,
+consider opening a pull request to fix those issues - please do not try and reinvent the wheel unnecessarily.
+
+### using variables
+
+variables should be used without specifying which mode they are relevant to. for example:
+
+```css
+:root {
+  --theme_dark--main: rgb(5, 5, 5);
+}
+
+.demo-element {
+  background: var(--theme--main);
+}
+```
+
+this to simplify styling and make it possible for things like the "night shift" module to work,
+by leaving the choice of light/dark theme up to the user and then directing the right values to
+the relevant variables.

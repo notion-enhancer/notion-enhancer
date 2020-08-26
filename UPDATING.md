@@ -37,7 +37,7 @@ the old `user.css` from before the update.
 
 most of the same css snippets will work, but some (e.g. preview page width) have been moved to the new variable
 system, plus new ones have been found. it's a good idea to check what you have against the [tweaks](TWEAKS.md)
-page and the [css theming documentation](DOCUMENTATION.md#theming).
+page and the [css theming documentation](DOCUMENTATION.md#variable-theming).
 
 ## configuration
 

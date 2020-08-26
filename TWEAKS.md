@@ -2,7 +2,7 @@
 
 the enhancer comes with some built-in colour themes and layout improvements,
 but to get even more control over how the app looks you can use the "custom inserts" module
-to iject your own javascript or css into it.
+to inject your own javascript or css into it.
 
 to make your own css file, make sure that your file manager has "show file extensions" ticked, then
 create a text document and make sure the name ends in `.css` (e.g. `notion-tweaks.css`),
@@ -21,7 +21,7 @@ or [try a free short course like the one on codecademy](https://www.codecademy.c
 
 **the following tweaks were previously on this page and have since been moved to the**
 **more stable and theme-compatible css variable system described in the**
-**[developer documentation](DOCUMENTATION.md#theming):**
+**[developer documentation](DOCUMENTATION.md#variable-theming):**
 
 - colour theming
 - custom fonts and font sizes
