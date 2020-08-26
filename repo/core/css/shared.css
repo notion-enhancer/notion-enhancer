@@ -140,7 +140,6 @@
 }
 
 /* fonts */
-.notion-app-inner,
 [style*='Segoe UI'] {
   font-family: var(--theme--font_sans) !important;
 }
