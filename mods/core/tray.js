@@ -114,6 +114,25 @@ module.exports = (store, __exports) => {
     const contextMenu = electron.Menu.buildFromTemplate([
       {
         type: 'normal',
+        label: 'GitHub',
+        click: () => {
+          electron.shell.openExternal(
+            'https://github.com/dragonwocky/notion-enhancer/blob/master/DOCUMENTATION.md'
+          );
+        },
+      },
+      {
+        type: 'normal',
+        label: 'Discord',
+        click: () => {
+          electron.shell.openExternal('https://discord.gg/sFWPXtA');
+        },
+      },
+      {
+        type: 'separator',
+      },
+      {
+        type: 'normal',
         label: 'Bug Report',
         click: () => {
           electron.shell.openExternal(
@@ -132,15 +151,6 @@ module.exports = (store, __exports) => {
       },
       {
         type: 'separator',
-      },
-      {
-        type: 'normal',
-        label: 'Docs',
-        click: () => {
-          electron.shell.openExternal(
-            'https://github.com/dragonwocky/notion-enhancer/tree/js'
-          );
-        },
       },
       {
         type: 'normal',

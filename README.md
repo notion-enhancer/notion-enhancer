@@ -13,6 +13,8 @@ this package is a mod-loader for the desktop app, with custom colour theming and
 
 want to contribute? check out the [contribution guidelines](CONTRIBUTING.md) and the [documentation](DOCUMENTATION.md).
 
+for support, join the [discord server](https://discord.gg/sFWPXtA).
+
 ## installation
 
 **coming from <= v0.7.0? things are a bit different - have a read of [the update guide](UPDATING.md)**
@@ -74,6 +76,8 @@ team to take to heart for future improvements."
 
 once applied, modules can be configured via the graphical menu, which is opened from
 the tray/menubar icon or with `CMD/CTRL+E`.
+
+![](https://user-images.githubusercontent.com/16874139/91446210-84ee6b00-e8ba-11ea-9f40-187a150e4a82.png)
 
 currently all modules come pre-installed for technical reasons, security assurance, and ease-of-use.
 these include:
