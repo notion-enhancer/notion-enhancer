@@ -1,15 +1,12 @@
 # changelog
 
-if something is ~~crossed out~~, then it is no longer a feature included by default,
-but can still easily be enabled by following instructions in the [docs](README.md).
-
-### potential future features (not confirmed)
+**potential future features (not confirmed)**
 
 - [groupy-like tabbing](https://www.npmjs.com/package/electron-tabs)
 - [improved responsiveness](https://chrome.google.com/webstore/detail/notion%20%20-responsiveness-f/leadcilhbmibbkgbnjgmmnfgnnhmeddk)
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 
-### v0.8.0 (wip)
+### v0.8.0 (2020-08-27)
 
 complete rewrite with node.js.
 
@@ -33,6 +30,8 @@ complete rewrite with node.js.
 - extension: "weekly view" = calendar views named "weekly" will show only the 7 days of this week. (ported from [github.com/adihd/notionweeklyview](https://github.com/adihd/notionweeklyview).)]
 - extension: "property layout" = auto-collapse page properties that usually push down page content. (ported from [github.com/alexander-kazakov/notion-layout-extension](https://github.com/alexander-kazakov/notion-layout-extension).)
 
+> 📥 `npm i -g notion-enhancer@0.8.0`
+
 ### v0.7.0 (2020-07-09)
 
 - new: tray option to use system default emojis (instead of twitter's emojiset).
@@ -46,6 +45,8 @@ complete rewrite with node.js.
 - bugfix: tray now operates as expected on linux.
 - bugfix: odd mix of `\\` and `/` being used for windows filepaths.
 - bugfix: app no longer crashes when sidebar is toggled.
+
+> 📥 [notion-enhancer.v0.7.0.zip](https://github.com/dragonwocky/notion-enhancer/archive/v0.7.0.zip)
 
 ### v0.6.0 (2020-06-30)
 
@@ -73,7 +74,10 @@ complete rewrite with node.js.
 
 > 📥 [notion-enhancer.v0.5.0.zip](https://github.com/dragonwocky/notion-enhancer/archive/v0.5.0.zip)
 
-_(forked by [@dragonwocky](https://github.com/dragonwocky).)_
+**development here taken over by [@dragonwocky](https://github.com/dragonwocky).**
+
+**the ~~crossed out~~ features below are no longer features included by default,**
+**but can still easily be added as [custom tweaks](TWEAKS.md).**
 
 ### v0.4.1 (2020-02-13)
 

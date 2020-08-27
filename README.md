@@ -1,4 +1,4 @@
-# notion-enhancer
+# <img src="./mods/core/icons/mac+linux.png" height="20px"></img> notion-enhancer
 
 ended up here? this is a work-in-progress version of the enhancer, not ready for public use.
 if you're interested in using the project, switch back to the [master branch](https://github.com/dragonwocky/notion-enhancer).
@@ -15,7 +15,8 @@ want to contribute? check out the [contribution guidelines](CONTRIBUTING.md) and
 
 ## installation
 
-**coming from v0.7.0? things are a bit different - have a read of [the update guide](UPDATING.md).**
+**coming from <= v0.7.0? things are a bit different - have a read of [the update guide](UPDATING.md)**
+**before following these instructions.**
 
 1. install node.js: [windows/macOS](https://nodejs.org/en/download/), [linux/WSL](https://github.com/mklement0/n-install).
    _a computer restart may be required here._

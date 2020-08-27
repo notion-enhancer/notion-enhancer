@@ -8,7 +8,7 @@ executable within the notion app, these are the languages enhancements must be w
 
 want to contribute? check the [contribution guidelines](CONTRIBUTING.md).
 
-for support, join the [discord server](//coming-soon).
+for support, join the [discord server](https://discord.gg/sFWPXtA).
 
 ## creating a mod
 

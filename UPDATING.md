@@ -47,3 +47,9 @@ page and the [css theming documentation](DOCUMENTATION.md#variable-theming).
 
 these options and more have been moved to the graphical menu, which can be opened from the
 tray or with `CMD/CTRL+E` (while the notion app is focused).
+
+## installing
+
+just follow the normal [installation steps](README.md#installation) (starting from step 2, you should
+already have node.js installed). don't worry about running `cleaner.py`, the new version will detect and overwrite
+the old for you.
