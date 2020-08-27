@@ -30,27 +30,33 @@ module.exports = {
         function process(list) {
           queue = [];
           let properties = document.querySelector(
-            '.notion-scroller.vertical > div:nth-child(2)[style="width: 100%; font-size: 14px;"]'
+            '.notion-scroller.vertical > div > div:nth-child(2) [style="width: 100%; font-size: 14px;"]'
           );
-          if (properties) {
-            if (!properties.classList.contains('propertylayout-enhanced')) {
-              properties.classList.add(
-                'propertylayout-enhanced',
+          if (
+            properties &&
+            !properties.classList.contains('propertylayout-enhanced')
+          ) {
+            properties.classList.add(
+              'propertylayout-enhanced',
+              'propertylayout-hidden'
+            );
+            const toggle = document.createElement('button');
+            toggle.classList.add('propertylayout-toggle');
+            toggle.setAttribute('data-action', 'show');
+            toggle.innerText = '→ show properties';
+            toggle.addEventListener('click', (event) => {
+              properties.classList.toggle('propertylayout-hidden');
+              const action = properties.classList.contains(
                 'propertylayout-hidden'
-              );
-              const toggle = document.createElement('button');
-              toggle.classList.add('propertylayout-toggle');
-              toggle.innerText = '→ show properties';
-              toggle.addEventListener('click', (event) => {
-                properties.classList.toggle('propertylayout-hidden');
-                toggle.innerText = `→ ${
-                  properties.classList.contains('propertylayout-hidden')
-                    ? 'show'
-                    : 'hide'
-                } properties`;
-              });
+              )
+                ? 'show'
+                : 'hide';
+              toggle.innerText = `→ ${action} properties`;
+              toggle.setAttribute('data-action', action);
+            });
+            if (properties.previousElementSibling) {
               properties.previousElementSibling.append(toggle);
-            }
+            } else properties.parentElement.prepend(toggle);
           }
         }
       });

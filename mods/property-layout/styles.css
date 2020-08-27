@@ -13,7 +13,6 @@
   width: calc(100% - (2 * (96px + env(safe-area-inset-left))));
   text-align: left;
   font-size: 0.85em;
-  margin-bottom: 1em;
   padding: 0.25em;
   background: transparent;
   color: var(--theme--text_ui);
@@ -21,11 +20,14 @@
   border-radius: 2px;
   transition: background 200ms;
 }
+.propertylayout-toggle[data-action='show'] {
+  margin-bottom: 1em;
+}
 [style*='width: 900px'] + .propertylayout-toggle {
   width: calc(900px - (2 * (96px + env(safe-area-inset-left))));
 }
 .notion-peek-renderer .propertylayout-toggle {
-  width: calc(100% - (2 * var(--theme--preview-padding)));
+  width: 100%;
 }
 .propertylayout-toggle:hover {
   background: var(--theme--interactive_hover);

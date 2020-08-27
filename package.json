@@ -7,7 +7,8 @@
     "notion-enhancer": "bin.js"
   },
   "scripts": {
-    "test": "echo \"no test specified\""
+    "test": "echo \"no test specified\"",
+    "preuninstall": "notion-enhancer remove -y"
   },
   "repository": {
     "type": "git",
