@@ -101,7 +101,7 @@ module.exports = async function ({ overwrite_asar, delete_data } = {}) {
       );
       for (let bin_path of [
         `/usr/bin/${__notion.split('/')[2]}`,
-        `${__notion}${__notion.split('/')[2]}`,
+        `${__notion}/${__notion.split('/')[2]}`,
       ]) {
         const bin_script = await fs.readFile(bin_path, 'utf8');
         if (!bin_script.includes('app.asar')) {
