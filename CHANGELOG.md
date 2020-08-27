@@ -1,12 +1,41 @@
 # changelog
 
-if something is ~~crossed out~~, then it is no longer a feature included by default,
-but can still easily be enabled by following instructions in the [docs](README.md).
+**potential future features (not confirmed)**
+
+- [groupy-like tabbing](https://www.npmjs.com/package/electron-tabs)
+- [improved responsiveness](https://chrome.google.com/webstore/detail/notion%20%20-responsiveness-f/leadcilhbmibbkgbnjgmmnfgnnhmeddk)
+- [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
+
+### v0.8.0 (2020-08-27)
+
+complete rewrite with node.js.
+
+- new: simpler cli installation system (inc. commands: `apply`, `remove`, and `check`).
+- new: mod loading system (easier to create new mods, adds to notion rather than overwriting).
+- new: mod configuration menu.
+- improved: more theming variable coverage - inc. light theme and sizing/spacing.
+- bugfix: non-reproducable errors with python.
+- bugfix: better launcher patching on linux.
+- bugfix: fix frameless window issue introduced by notion desktop 2.0.9.
+- extension: "custom inserts" = link files for small client-side tweaks..
+- extension: "bracketed links" = render links surrounded with \[\[brackets]] instead of underlined.
+- extension: "focus mode" = hide the titlebar/menubar if the sidebar is closed (will be shown on hover).
+- theme: "dark+" = a vivid-colour near-black theme.
+- theme: "neutral" = smoother colours and fonts, designed to be more pleasing to the eye.
+- theme: "gameish" = a purple, "gamer-styled" theme with a blocky-font.
+- theme: "pastel dark" = a smooth-transition true dark theme with a hint of pastel.
+- extension: "emoji sets" = pick from a variety of emoji styles to use.
+- extension: "night shift" = sync dark/light theme with the system (overrides normal theme setting).
+- extension: "right-to-left" = enables auto rtl/ltr text direction detection. (ported from [github.com/obahareth/notion-rtl](https://github.com/obahareth/notion-rtl).)
+- extension: "weekly view" = calendar views named "weekly" will show only the 7 days of this week. (ported from [github.com/adihd/notionweeklyview](https://github.com/adihd/notionweeklyview).)]
+- extension: "property layout" = auto-collapse page properties that usually push down page content. (ported from [github.com/alexander-kazakov/notion-layout-extension](https://github.com/alexander-kazakov/notion-layout-extension).)
+
+> 📥 `npm i -g notion-enhancer@0.8.0`
 
 ### v0.7.0 (2020-07-09)
 
 - new: tray option to use system default emojis (instead of twitter's emojiset).
-- new: mac support (identical functionality to others platforms with the
+- new: mac support (identical functionality to other platforms with the
   exception of the native minimise/maximise/close buttons being kept, as they integrate
   better with the OS while not being out-of-place in notion).
 - new: notion-deb-builder support for linux.
@@ -17,6 +46,8 @@ but can still easily be enabled by following instructions in the [docs](README.m
 - bugfix: tray now operates as expected on linux.
 - bugfix: odd mix of `\\` and `/` being used for windows filepaths.
 - bugfix: app no longer crashes when sidebar is toggled.
+
+> 📥 [notion-enhancer.v0.7.0.zip](https://github.com/dragonwocky/notion-enhancer/archive/v0.7.0.zip)
 
 ### v0.6.0 (2020-06-30)
 
@@ -44,7 +75,10 @@ but can still easily be enabled by following instructions in the [docs](README.m
 
 > 📥 [notion-enhancer.v0.5.0.zip](https://github.com/dragonwocky/notion-enhancer/archive/v0.5.0.zip)
 
-_(forked by [@dragonwocky](https://github.com/dragonwocky).)_
+**development here taken over by [@dragonwocky](https://github.com/dragonwocky).**
+
+**the ~~crossed out~~ features below are no longer features included by default,**
+**but can still easily be added as [custom tweaks](TWEAKS.md).**
 
 ### v0.4.1 (2020-02-13)
 

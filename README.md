@@ -1,140 +1,258 @@
-# notion enhancer
+# <img src="./mods/core/icons/mac+linux.png" height="20px"></img> notion-enhancer
 
-an enhancer/customiser for the all-in-one productivity workspace [notion.so](https://www.notion.so/)
+ended up here? this is a work-in-progress version of the enhancer, not ready for public use.
+if you're interested in using the project, switch back to the [master branch](https://github.com/dragonwocky/notion-enhancer).
 
-## supported clients
+notion.so is a pretty awesome tool already, but there's always room for improvements.
+it might just be a preference, it might be something crucial to your setup,
+it might be something users have been asking for for a long time,
+or it might even be something you haven't realised you need yet
+\- there's something that would make your user experience a lot better.
 
-there are a lot of ways to use notion. some official clients, many not.
+this package is a mod-loader for the desktop app, with custom colour theming and extra feature enhancements.
 
-the enhancer supports:
-
-- the [official windows/mac releases](https://notion.so/desktop).
-- the arch linux AUR [notion-app](https://aur.archlinux.org/packages/notion-app/) package
-- the linux [notion-app](https://github.com/jaredallard/notion-app) installer
-- the debian [notion-deb-builder](https://github.com/davidbailey00/notion-deb-builder/tree/229f2868e117e81858618783b83babd00c595000).
-
-there are others, yes. the enhancer does not support them. you should not expect them to work.
-if for some reason you need to use one of them instead of the above listed ones, open a
-[platform support](https://github.com/dragonwocky/notion-enhancer/issues/new?assignees=&labels=enhancement&template=platform-support.md&title=) request.
-
-please do not modify the enhancer code specifically to work for your installation.
-if you have the know-how to do so, instead open a pull request with your changes
-so that proper support can be added for all users of that client.
-
-mobile clients are not supported and due to system limitations/restrictions cannot be.
-
-(the [styles](#styling) should also work for the web version.
-these can be installed via an extension like [stylus](https://chrome.google.com/webstore/detail/stylus/clngdbkpkpeebahjckkjfobafhncgmne?hl=en)
-or a built-in feature like [userChrome.css](https://www.userchrome.org/).)
-
-if the script is run from the WSL, it will enhance the windows version of the app.
+want to contribute? check out the [contribution guidelines](CONTRIBUTING.md) and the [documentation](DOCUMENTATION.md).
 
 ## installation
 
+**coming from <= v0.7.0? things are a bit different - have a read of [the update guide](UPDATING.md)**
+**before following these instructions.**
+
 1. install node.js: [windows/macOS](https://nodejs.org/en/download/), [linux/WSL](https://github.com/mklement0/n-install).
-2. install python: [windows/macOS](https://www.python.org/downloads/), [linux/WSL](https://docs.python-guide.org/starting/install3/linux/).
-3. reboot.
-4. in the appropriate terminal/command line, run `npm install -g asar` (check installation by running `asar`).
-5. [download this enhancer](https://github.com/dragonwocky/notion-enhancer/archive/master.zip) & extract
-   to a location it can safely remain (if running the script from the WSL, make sure this is from a location within the windows filesystem).
-6. ensure no notion processes are running - you may want to check the task manager to make sure.
-7. optional: to remove previous applications of the notion enhancer, run `cleaner.py`.
-8. optional: modify the `resources/user.css` file to your liking (see [styling](#styling)).
-9. run `customiser.py` to build changes. (for linux run with sudo)
+   _a computer restart may be required here._
+2. install the enhancer globally: run `npm i -g notion-enhancer` in the terminal/command prompt.
+3. make sure no notion processes are running (check the task manager!), and apply the hack:
+   run `notion-enhancer apply` in the terminal/command prompt.
 
-done: run notion and enjoy.
+### command-line interface
 
-## faq
+```
+Usage:
+  $ notion-enhancer <command> [options]
 
-**now the notion app won't open :(**
+Commands:
+  apply   : add enhancements to the notion app
+  remove  : return notion to its pre-enhanced/pre-modded state
+  check   : check the current state of the notion app
 
-1. kill any notion tasks in the task manager (`ctrl+shift+esc`).
-2. run `cleaner.py`.
-3. reboot.
-4. follow instructions above (ensuring notion _isn't_ running! again, check task manager).
+For more info, run any command with the `--help` flag:
+  $ notion-enhancer apply --help
+  $ notion-enhancer remove --help
+  $ notion-enhancer check --help
 
-**i tried opening the python file but it just closed instantly and nothing happened?**
+Options:
+  -y, --yes      : skip prompts (may overwrite data)
+  -h, --help     : display usage information
+  -v, --version  : display version number
+```
 
-python scripts must be run from the terminal or command prompt via e.g. `python customiser.py`.
+### supported clients
 
-**now that I've run the script, can I delete the enhancer folder?**
+- the [official windows/mac releases](https://notion.so/desktop).
+- the arch linux AUR [notion-app](https://aur.archlinux.org/packages/notion-app/) package.
+- the linux [notion-app](https://github.com/jaredallard/notion-app) installer.
+- the debian [notion-deb-builder](https://github.com/davidbailey00/notion-deb-builder/).
 
-no! user style files `resources/user.css` and `resources/theme.css` are fetched from here each time you open notion.
-additionally, if you ever need to change or reset your notion build, the `customiser.py` and `cleaner.py` files will be useful.
+(it can also be run from the wsl to apply enhancements to the windows app.)
 
-unless you're sure you know what you're doing (if you have to ask, you probably don't) then do not delete anything.
+**using a not-yet-supported operating system or notion installation?** ask for
+[platform support](https://github.com/dragonwocky/notion-enhancer/issues/new?labels=enhancement&template=platform-support.md).
 
-**something isn't working, and the suggestions here haven't fixed it...**
+mobile clients are not supported and due to system limitations/restrictions cannot be.
 
-this is probably a bug. please submit a
-[bug report](https://github.com/dragonwocky/notion-enhancer/issues/new?assignees=&labels=bug&template=bug-report.md&title=).
+a chrome extension may be coming soon for web client support.
 
-**can the enhancer do \_\_\_?**
+**is this against notion's terms of service? can i get in trouble for using it?**
 
-experienced problems with the notion app, or just want to add something a bit more to it? please submit a
-[feature request](https://github.com/dragonwocky/notion-enhancer/issues/new?assignees=&labels=enhancement&template=feature-request.md&title=).
+definitely not! i contacted their support team to check, and the response was awesome:
+
+"Thanks for taking the time to share this with us. Userscripts and userstyles are definitely
+cool ideas and would be helpful for many users! ... I'll also share this with the rest of the
+team to take to heart for future improvements."
 
 ## features
 
-### titlebar
+once applied, modules can be configured via the graphical menu, which is opened from
+the tray/menubar icon or with `CMD/CTRL+E`.
 
-default windows titlebar/frame has been replaced by one more fitting to the theme of the app.
+currently all modules come pre-installed for technical reasons, security assurance, and ease-of-use.
+these include:
 
-this includes the addition of an extra button, "always on top"
-symbolised with an arrow. when toggled to point up,
-notion will remain the top visible window even if not focused.
+### notion-enhancer core
 
-### nicer scrollbars
+**tags:** #core
 
-i mean, yeah. get rid of those ugly default scrollbars and use nice inconspicuous
-ones that actually look as if they're part of notion.
+**description:** the cli, modloader, menu, & tray.
 
-to add these to the web version, copy lines 74 - 105 from `user.css` into your css customiser.
+**author**: [dragonwocky](https://github.com/dragonwocky/)
 
-![](screenshots/app-unenhanced.jpg)
-_image: before enhancement_
+**version**: v0.8.0
 
-![](screenshots/app-enhanced.jpg)
-_image: after default enhancement_
+| option                       | type                                                                                          | default                    |
+| ---------------------------- | --------------------------------------------------------------------------------------------- | -------------------------- |
+| hide app on open             | toggle                                                                                        | no                         |
+| auto-maximise windows        | toggle                                                                                        | no                         |
+| close window to the tray     | toggle                                                                                        | yes                        |
+| integrated titlebar          | toggle                                                                                        | yes                        |
+| height of frameless dragarea | number input                                                                                  | `15`                       |
+| integrated scrollbars        | toggle                                                                                        | yes                        |
+| window display hotkey        | [accelerator](https://github.com/electron/electron/blob/master/docs/api/accelerator.md) input | `CommandOrControl+Shift+A` |
 
-### hotkeys
+![](https://user-images.githubusercontent.com/16874139/90519171-094e3900-e1ab-11ea-8c5d-529ca15c6d95.png)
 
-- **reload window**: in addition to the built-in `CmdOrCtrl+R` reload,
-  you can now reload a window with `F5`.
-- **toggle all notion windows to/from the tray**: `CmdOrCtrl+Shift+A` by default.
+### custom inserts
 
-to set your own toggle hotkey, open `customiser.py` and change line 19 (`hotkey = 'CmdOrCtrl+Shift+A'`)
-to your preference. you will need to run or re-run `customiser.py` afterwards.
+**tags:** #extension
 
-### tray
+**description:** link files for small client-side tweaks.
 
-single-click to toggle app visibility. right click to open menu.
+**author**: [dragonwocky](https://github.com/dragonwocky/)
 
-- **run on startup**: run notion on boot/startup. (default: true)
-- **hide on open**: hide the launch of notion to the tray. (default: false)
-- **open maximised**: maximize the app on open. (default: false)
-- **close to tray**: close window to tray rather than closing outright
-  on click of `⨉`. does not apply if multiple notion windows are open. (default: false)
-- **load theme.css**: loads the custom colour theme file.
-  see [colour theming](STYLING.md#colour-theming) for more information. (default: false)
-- **use system emoji**: reverts notion to using normal emojis, rather than the twitter emojiset. (default: false)
+**version**: v0.1.1
 
-![](screenshots/app-tray.jpg)
+| option                | type | default |
+| --------------------- | ---- | ------- |
+| css insert            | file | none    |
+| client-side js insert | file | none    |
 
-_image: open application tray_
+### bracketed links
 
-## styling
+**tags:** #extension
 
-custom appearances can be applied to the app via the `resources/user.css` and `resources/theme.css` files. for more information,
-and a list of various optional styling changes, see [the page on styling](STYLING.md).
+**description:** render links surrounded with \[\[brackets]] instead of underlined.
 
-## other details
+**author**: [arecsu](https://github.com/arecsu/)
 
-credit where credit is due, this was originally made by Uzver (github: [@TarasokUA](https://github.com/TarasokUA),
-telegram: [UserFromUkraine](https://t.me/UserFromUkraine), discord: Uzver#8760).
-he has approved my go-ahead with this fork, as he himself no longer wishes to continue development on the project.
+**version**: v0.1.0
 
-the notion logo belongs entirely to the notion team, and was sourced from their
-[media kit](https://www.notion.so/Media-Kit-205535b1d9c4440497a3d7a2ac096286).
+### dark+
 
-if you have any questions, check [my website](https://dragonwocky.me/) for contact details.
+**tags:** #theme #dark
+
+**description:** a vivid-colour near-black theme.
+
+**author:** [dragonwocky](https://github.com/dragonwocky/)
+
+**version:** v0.1.3
+
+| option         | type  | default            |
+| -------------- | ----- | ------------------ |
+| primary colour | color | `rgb(177, 24, 24)` |
+
+![](https://user-images.githubusercontent.com/16874139/90520312-85954c00-e1ac-11ea-8c45-3894c13b9b71.png)
+
+### emoji sets
+
+**tags:** #extension
+
+**description:** pick from a variety of emoji styles to use.
+
+**author:** [dragonwocky](https://github.com/dragonwocky/)
+
+**version:** v0.1.3
+
+![](https://user-images.githubusercontent.com/16874139/90520622-f0df1e00-e1ac-11ea-8791-12922a037234.png)
+
+### focus mode
+
+**tags:** #extension
+
+**description:** hide the titlebar/menubar if the sidebar is closed (will be shown on hover).
+
+**author:** [arecsu](https://github.com/arecsu/)
+
+**version:** v0.1.0
+
+![](https://user-images.githubusercontent.com/16874139/90521792-49fb8180-e1ae-11ea-8764-cb4309cec464.png)
+
+### gameish
+
+**tags:** #theme #dark
+
+**description:** a purple, "gamer-styled" theme with a blocky-font.
+
+**author:** [LVL100ShrekCultist](https://reddit.com/user/LVL100ShrekCultist/)
+
+**version:** v0.1.1
+
+![](https://user-images.githubusercontent.com/16874139/90522144-b6768080-e1ae-11ea-8150-527c1f70f0e7.png)
+
+### neutral
+
+**tags:** #theme #dark
+
+**description:** smoother colours and fonts, designed to be more pleasing to the eye.
+
+**author:** [arecsu](https://github.com/arecsu/)
+
+**version:** v0.1.0
+
+![](https://user-images.githubusercontent.com/16874139/90522373-f9d0ef00-e1ae-11ea-9dba-b29431609210.png)
+
+### night shift
+
+**tags:** #extension #theme
+
+**description:** sync dark/light theme with the system (overrides normal theme setting).
+
+**author:** [dragonwocky](https://github.com/dragonwocky/)
+
+**version:** v0.1.0
+
+### pastel dark
+
+**tags:** #theme #dark
+
+**description:** a true dark theme with a hint of pastel.
+
+**author:** [zenith_illinois](https://reddit.com/user/zenith_illinois/)
+
+**version:** v0.1.0
+
+![](https://user-images.githubusercontent.com/16874139/90522660-5502e180-e1af-11ea-8885-073ad20d65b3.png)
+
+### property layout
+
+**tags:** #extension
+
+**description:** auto-collapse page properties that usually push down page content.
+
+**author:** [alexander-kazakov](https://github.com/alexander-kazakov/)
+
+**version:** v0.2.1
+
+### right-to-left
+
+**tags:** #extension
+
+**description:** enables auto rtl/ltr text direction detection.
+
+**author:** [obahareth](https://github.com/obahareth/)
+
+**version:** v1.3.0
+
+![](https://user-images.githubusercontent.com/16874139/90522872-95faf600-e1af-11ea-807c-11ac1591217e.png)
+
+### weekly view
+
+**tags:** #extension
+
+**description:** calendar views named "weekly" will show only the 7 days of this week.
+
+**author:** [adihd](https://github.com/adihd/)
+
+**version:** v0.5.0
+
+![](https://user-images.githubusercontent.com/16874139/90523679-86c87800-e1b0-11ea-8cc0-25f6825c6d49.png)
+
+## contributors
+
+[@TarasokUA](https://github.com/TarasokUA/) wrote the first versions of this in python, in early 2020.
+a couple months after I ([@dragonwocky](https://github.com/dragonwocky/)) picked the project up, at first extending
+upon the original base and later moving to the javascript module system.
+
+since then, various community members have helped out heaps - some listed as
+[contributors](https://github.com/dragonwocky/notion-enhancer/graphs/contributors) here on github,
+but many helping with code, feedback and testing on discord and in emails.
+
+individual modules have their original authors attributed.
