@@ -1,8 +1,5 @@
 # <img src="./mods/core/icons/mac+linux.png" height="20px"></img> notion-enhancer
 
-ended up here? this is a work-in-progress version of the enhancer, not ready for public use.
-if you're interested in using the project, switch back to the [master branch](https://github.com/dragonwocky/notion-enhancer).
-
 notion.so is a pretty awesome tool already, but there's always room for improvements.
 it might just be a preference, it might be something crucial to your setup,
 it might be something users have been asking for for a long time,
