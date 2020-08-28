@@ -12,7 +12,7 @@ module.exports = {
   tags: ['extension'],
   name: 'property layout',
   desc: 'auto-collapse page properties that usually push down page content.',
-  version: '0.2.1',
+  version: '0.2.2',
   author: 'alexander-kazakov',
   hacks: {
     'renderer/preload.js'(store, __exports) {

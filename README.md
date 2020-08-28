@@ -34,7 +34,10 @@ otherwise:
 
 the enhancements should be automatically applied on installation
 and automatically removed on uninstallation.
-if you want to do things yourself, though, you can.
+
+on some platforms this may throw errors if done without
+elevated/admin permissions, though, so if it hasn't automatically
+installed you will still need to use these commands.
 
 ```
 Usage:
@@ -52,6 +55,7 @@ For more info, run any command with the `--help` flag:
 
 Options:
   -y, --yes      : skip prompts (may overwrite data)
+  -d, --dev      : show detailed error messages (not recommended)
   -h, --help     : display usage information
   -v, --version  : display version number
 ```
@@ -231,7 +235,7 @@ these include:
 
 **author:** [alexander-kazakov](https://github.com/alexander-kazakov/)
 
-**version:** v0.2.1
+**version:** v0.2.2
 
 ### right-to-left
 

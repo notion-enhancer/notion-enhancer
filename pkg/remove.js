@@ -19,7 +19,11 @@ const fs = require('fs-extra'),
 // ### error ###
 
 let __notion = helpers.getNotion();
-module.exports = async function ({ overwrite_asar, delete_data } = {}) {
+module.exports = async function ({
+  overwrite_asar,
+  delete_data,
+  friendly_errors,
+} = {}) {
   try {
     const file_operations = [];
 
@@ -27,7 +31,7 @@ module.exports = async function ({ overwrite_asar, delete_data } = {}) {
     const app_folder = path.resolve(`${__notion}/app`);
     if (await fs.pathExists(app_folder)) {
       console.info(` ...removing folder ${app_folder}`);
-      file_operations.push(fs.remove(app_folder));
+      await fs.remove(app_folder);
     } else console.warn(` * ${app_folder} not found: step skipped.`);
 
     // restoring original asar
@@ -55,13 +59,11 @@ module.exports = async function ({ overwrite_asar, delete_data } = {}) {
         );
       }
 
-      file_operations.push(
-        overwrite_asar || overwrite_asar === undefined
-          ? fs.move(asar_bak, path.resolve(`${__notion}/app.asar`), {
-              overwrite: true,
-            })
-          : fs.remove(asar_bak)
-      );
+      await (overwrite_asar || overwrite_asar === undefined
+        ? fs.move(asar_bak, path.resolve(`${__notion}/app.asar`), {
+            overwrite: true,
+          })
+        : fs.remove(asar_bak));
     } else console.warn(` * ${asar_bak} not found: step skipped.`);
 
     // cleaning data folder: ~/.notion-enhancer
@@ -83,11 +85,9 @@ module.exports = async function ({ overwrite_asar, delete_data } = {}) {
           : ` -- keeping ${helpers.data_folder}`
       );
       if (delete_data) {
-        file_operations.push(fs.remove(helpers.data_folder));
+        await fs.remove(helpers.data_folder);
       } else fs.remove(path.resolve(`${helpers.data_folder}/version.txt`));
     } else console.warn(` * ${helpers.data_folder} not found: step skipped.`);
-
-    await Promise.all(file_operations);
 
     // patching launch script target of custom wrappers
     if (
@@ -119,7 +119,13 @@ module.exports = async function ({ overwrite_asar, delete_data } = {}) {
     return true;
   } catch (err) {
     console.error('### ERROR ###');
-    console.error(err);
+    if (err.toString().includes('EACCESS') && friendly_errors) {
+      console.error(
+        'file access forbidden: try again with sudo or in an elevated/admin prompt.'
+      );
+    } else if (err.toString().includes('EIO') && friendly_errors) {
+      console.error('file access failed: is notion running?');
+    } else console.error(err);
     return false;
   }
 };

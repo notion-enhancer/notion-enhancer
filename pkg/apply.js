@@ -22,7 +22,7 @@ const fs = require('fs-extra'),
 // ### error ###
 
 let __notion = helpers.getNotion();
-module.exports = async function ({ overwrite_version } = {}) {
+module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
   try {
     await fs.ensureDir(helpers.data_folder);
 
@@ -114,7 +114,13 @@ module.exports = async function ({ overwrite_version } = {}) {
     return true;
   } catch (err) {
     console.error('### ERROR ###');
-    console.error(err);
+    if (err.toString().includes('EACCESS') && friendly_errors) {
+      console.error(
+        'file access forbidden: try again with sudo or in an elevated/admin prompt.'
+      );
+    } else if (err.toString().includes('EIO') && friendly_errors) {
+      console.error('file access failed: is notion running?');
+    } else console.error(err);
     return false;
   }
 };
