@@ -6,6 +6,19 @@
 - [improved responsiveness](https://chrome.google.com/webstore/detail/notion%20%20-responsiveness-f/leadcilhbmibbkgbnjgmmnfgnnhmeddk)
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 
+### v0.8.1 (2020-08-28)
+
+a clarity and stability update.
+
+- improved: more informative error messages.
+- bugfix: gallery variable didn't apply on fullpage.
+- bugfix: date picker hid current date number.
+- bugfix: small-text pages should now work as expected.
+- bugfix: padding issues in page previews.
+- bugfix: property-layout extension had been broken by internal notion changes.
+- bugfix: linux installer path typo.
+- bugfix: caret-color was being mistaken for color and block-level text colouring was broken.
+
 ### v0.8.0 (2020-08-27)
 
 complete rewrite with node.js.
