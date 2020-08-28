@@ -107,9 +107,7 @@ window['__start'] = async () => {
         'warning',
         version.sorted[0] == version.local
           ? `update <b>v${version.repo}</b> available!<br>
-             run <code>npm i -g notion-enhancer</code><br>
-             (or <code>yarn global add notion-enhancer</code>),<br>
-             <u>and</u> <code>notion-enhancer apply</code>.`
+             run <code>npm i -g notion-enhancer</code>`
           : `local build <b>v${raw_v}</b> is unstable.`
       ).prepend();
     });

@@ -158,6 +158,11 @@ s {
   background: var(--theme--bg_green);
 }
 
+#alerts code {
+  background: transparent;
+  text-decoration: underline;
+}
+
 [data-relaunch] {
   text-decoration: underline dotted;
   cursor: pointer;

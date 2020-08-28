@@ -56,7 +56,6 @@
   background: var(--theme--card) !important;
 }
 .notion-body:not(.dark)
-  .notion-page-content
   .notion-page-block.notion-collection-item
   [style*='background: rgba(55, 53, 47, 0.024)'] {
   background: var(--theme--gallery) !important;
