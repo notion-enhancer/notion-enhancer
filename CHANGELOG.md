@@ -6,6 +6,10 @@
 - [improved responsiveness](https://chrome.google.com/webstore/detail/notion%20%20-responsiveness-f/leadcilhbmibbkgbnjgmmnfgnnhmeddk)
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 
+### v0.8.4 (2020-08-29)
+
+- bugfix: property-layout now works consistently with or without a banner.
+
 ### v0.8.3 (2020-08-29)
 
 previous release was a mistake: it did as intended on linux, but broke windows.
@@ -28,6 +32,7 @@ a clarity and stability update.
 - bugfix: property-layout extension had been broken by internal notion changes.
 - bugfix: linux installer path typo.
 - bugfix: caret-color was being mistaken for color and block-level text colouring was broken.
+- improved: auto-application on install.
 
 ### v0.8.0 (2020-08-27)
 
