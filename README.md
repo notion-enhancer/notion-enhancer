@@ -12,23 +12,52 @@ want to contribute? check out the [contribution guidelines](CONTRIBUTING.md) and
 
 for support, join the [discord server](https://discord.gg/sFWPXtA).
 
+### supported desktop clients
+
+- the [official windows/mac releases](https://notion.so/desktop).
+- the arch linux AUR [notion-app](https://aur.archlinux.org/packages/notion-app/) package.
+- the linux [notion-app](https://github.com/jaredallard/notion-app) installer.
+- the debian [notion-deb-builder](https://github.com/davidbailey00/notion-deb-builder/).
+
+(it can also be run from the wsl to apply enhancements to the windows app.)
+
+**using a not-yet-supported operating system or notion installation?** ask for
+[platform support](https://github.com/dragonwocky/notion-enhancer/issues/new?labels=enhancement&template=platform-support.md).
+
+mobile clients are not supported and due to system limitations/restrictions cannot be.
+
+a chrome extension may be coming soon for web client support.
+
 ## installation
 
 **coming from <= v0.7.0? things are a bit different - have a read of [the update guide](UPDATING.md)**
 **before following these instructions.**
 
-on arch linux? use the aur package:
-[https://aur.archlinux.org/packages/notion-enhancer](https://aur.archlinux.org/packages/notion-enhancer)
+<details>
+  <summary>**Windows, macOS**</summary>
 
-otherwise:
+1. [install node.js](https://nodejs.org/en/download/) (_a computer restart may be required here._)
+2. make sure no notion processes are running
+3. execute `npm i -g notion-enhancer` in the terminal/command prompt. Make sure you have root/admin rights.
+</details>
 
-1. install node.js: [windows/macOS](https://nodejs.org/en/download/), linux/WSL:
-   ```bash
-   curl -sL https://deb.nodesource.com/setup_current.x | sudo -E bash -
-   sudo apt-get install -y nodejs
-   ```
-   _a computer restart may be required here._
-2. make sure no notion processes are running (check the task manager!), and install the enhancer globally: run `npm i -g notion-enhancer` in the terminal/command prompt.
+<details>
+  <summary>**Ubuntu-based distros, WSL, ChromeOS**</summary>
+
+Execute the following commands:
+```
+bash curl -sL https://deb.nodesource.com setup_current.x | sudo -E bash -
+sudo apt-get install -y nodejs
+sudo npm i -g notion-enhancer
+```
+</details>
+
+<details>
+  <summary>**Arch Linux, Manjaro:**</summary>
+
+Use the [AUR package]( https://aur.archlinux.org/packages/notion-enhancer ).
+install with `yay -S notion-enhancer`   (use your AUR helper instead of yay)
+</details>
 
 ### command-line interface
 
@@ -59,22 +88,6 @@ Options:
   -h, --help     : display usage information
   -v, --version  : display version number
 ```
-
-### supported clients
-
-- the [official windows/mac releases](https://notion.so/desktop).
-- the arch linux AUR [notion-app](https://aur.archlinux.org/packages/notion-app/) package.
-- the linux [notion-app](https://github.com/jaredallard/notion-app) installer.
-- the debian [notion-deb-builder](https://github.com/davidbailey00/notion-deb-builder/).
-
-(it can also be run from the wsl to apply enhancements to the windows app.)
-
-**using a not-yet-supported operating system or notion installation?** ask for
-[platform support](https://github.com/dragonwocky/notion-enhancer/issues/new?labels=enhancement&template=platform-support.md).
-
-mobile clients are not supported and due to system limitations/restrictions cannot be.
-
-a chrome extension may be coming soon for web client support.
 
 **is this against notion's terms of service? can i get in trouble for using it?**
 
