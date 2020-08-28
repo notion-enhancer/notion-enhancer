@@ -182,7 +182,7 @@
 .notion-body:not(.dark),
 .notion-body:not(.dark) .notion-page-content [style*='color: inherit;'],
 .notion-body:not(.dark) .notion-frame .notion-page-block,
-.notion-body:not(.dark) [style*='color: rgb(55, 53, 47);'] {
+.notion-body:not(.dark) [style*=' color: rgb(55, 53, 47);'] {
   color: var(--theme--text) !important;
 }
 .notion-body:not(.dark) [style*='color: rgba(55, 53, 47, 0.6)'],
@@ -197,6 +197,9 @@
 }
 .notion-body:not(.dark) [style*='fill: rgba(55, 53, 47, 0.8)'] {
   fill: var(--theme--text) !important;
+}
+.notion-body:not(.dark) [style*='caret-color: rgb(55, 53, 47)'] {
+  caret-color: var(--theme--text) !important;
 }
 
 .notion-body:not(.dark) [style*='color:rgb(155,154,151)'] {
@@ -301,31 +304,31 @@
 
 .notion-body:not(.dark)
   [style*='background: rgb(235, 236, 237)']
-  [style*='color: rgb(55, 53, 47);'],
+  [style*=' color: rgb(55, 53, 47);'],
 .notion-body:not(.dark)
   [style*='background: rgb(233, 229, 227)']
-  [style*='color: rgb(55, 53, 47);'],
+  [style*=' color: rgb(55, 53, 47);'],
 .notion-body:not(.dark)
   [style*='background: rgb(250, 235, 221)']
-  [style*='color: rgb(55, 53, 47);'],
+  [style*=' color: rgb(55, 53, 47);'],
 .notion-body:not(.dark)
   [style*='background: rgb(251, 243, 219)']
-  [style*='color: rgb(55, 53, 47);'],
+  [style*=' color: rgb(55, 53, 47);'],
 .notion-body:not(.dark)
   [style*='background: rgb(221, 237, 234)']
-  [style*='color: rgb(55, 53, 47);'],
+  [style*=' color: rgb(55, 53, 47);'],
 .notion-body:not(.dark)
   [style*='background: rgb(221, 235, 241)']
-  [style*='color: rgb(55, 53, 47);'],
+  [style*=' color: rgb(55, 53, 47);'],
 .notion-body:not(.dark)
   [style*='background: rgb(234, 228, 242)']
-  [style*='color: rgb(55, 53, 47);'],
+  [style*=' color: rgb(55, 53, 47);'],
 .notion-body:not(.dark)
   [style*='background: rgb(244, 223, 235)']
-  [style*='color: rgb(55, 53, 47);'],
+  [style*=' color: rgb(55, 53, 47);'],
 .notion-body:not(.dark)
   [style*='background: rgb(251, 228, 228)']
-  [style*='color: rgb(55, 53, 47);'] {
+  [style*=' color: rgb(55, 53, 47);'] {
   color: var(--theme--line_text) !important;
 }
 
