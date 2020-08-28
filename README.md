@@ -34,7 +34,7 @@ a chrome extension may be coming soon for web client support.
 **before following these instructions.**
 
 <details>
-  <summary>**Windows, macOS**</summary>
+  <summary>Windows, macOS</summary>
 
 1. [install node.js](https://nodejs.org/en/download/) (_a computer restart may be required here._)
 2. make sure no notion processes are running
@@ -42,7 +42,7 @@ a chrome extension may be coming soon for web client support.
 </details>
 
 <details>
-  <summary>**Ubuntu-based distros, WSL, ChromeOS**</summary>
+  <summary>Ubuntu-based distros, WSL, ChromeOS</summary>
 
 Execute the following commands:
 ```
@@ -53,7 +53,7 @@ sudo npm i -g notion-enhancer
 </details>
 
 <details>
-  <summary>**Arch Linux, Manjaro:**</summary>
+  <summary>Arch Linux, Manjaro:</summary>
 
 Use the [AUR package]( https://aur.archlinux.org/packages/notion-enhancer ).
 install with `yay -S notion-enhancer`   (use your AUR helper instead of yay)
