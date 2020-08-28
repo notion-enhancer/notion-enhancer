@@ -138,7 +138,7 @@
   background: var(--theme--selected) !important;
 }
 
-.notion-body:not(.dark) [style*='color: rgb(46, 170, 220)'] {
+.notion-body:not(.dark) [style*=' color: rgb(46, 170, 220)'] {
   color: var(--theme--primary) !important;
 }
 .notion-body:not(.dark) [style*='fill: rgb(46, 170, 220)'] {

@@ -125,7 +125,7 @@
   background: var(--theme--selected) !important;
 }
 
-.dark [style*='color: rgb(46, 170, 220)'] {
+.dark [style*=' color: rgb(46, 170, 220)'] {
   color: var(--theme--primary) !important;
 }
 .dark [style*='fill: rgb(46, 170, 220)'] {
