@@ -6,6 +6,11 @@
 - [improved responsiveness](https://chrome.google.com/webstore/detail/notion%20%20-responsiveness-f/leadcilhbmibbkgbnjgmmnfgnnhmeddk)
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 
+### v0.8.3 (2020-08-29)
+
+previous release was a mistake: it did as intended on linux, but broke windows.
+this should achieve the same thing in a more compatible way.
+
 ### v0.8.2 (2020-08-28)
 
 some things you just can't test until production... fixed the auto-installer

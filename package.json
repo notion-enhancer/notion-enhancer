@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "echo \"no test specified\"",
-    "postinstall": "./bin.js apply -y",
-    "preuninstall": "./bin.js remove -y"
+    "postinstall": "node bin.js apply -y",
+    "preuninstall": "node bin.js remove -y"
   },
   "repository": {
     "type": "git",
