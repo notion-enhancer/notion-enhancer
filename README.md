@@ -17,13 +17,24 @@ for support, join the [discord server](https://discord.gg/sFWPXtA).
 **coming from <= v0.7.0? things are a bit different - have a read of [the update guide](UPDATING.md)**
 **before following these instructions.**
 
-1. install node.js: [windows/macOS](https://nodejs.org/en/download/), [linux/WSL](https://github.com/mklement0/n-install).
+on arch linux? use the aur package:
+[https://aur.archlinux.org/packages/notion-enhancer](https://aur.archlinux.org/packages/notion-enhancer)
+
+otherwise:
+
+1. install node.js: [windows/macOS](https://nodejs.org/en/download/), linux/WSL:
+   ```bash
+   curl -sL https://deb.nodesource.com/setup_current.x | sudo -E bash -
+   sudo apt-get install -y nodejs
+   ```
    _a computer restart may be required here._
-2. install the enhancer globally: run `npm i -g notion-enhancer` in the terminal/command prompt.
-3. make sure no notion processes are running (check the task manager!), and apply the hack:
-   run `notion-enhancer apply` in the terminal/command prompt.
+2. make sure no notion processes are running (check the task manager!), and install the enhancer globally: run `npm i -g notion-enhancer` in the terminal/command prompt.
 
 ### command-line interface
+
+the enhancements should be automatically applied on installation
+and automatically removed on uninstallation.
+if you want to do things yourself, though, you can.
 
 ```
 Usage:

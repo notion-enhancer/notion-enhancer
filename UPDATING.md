@@ -9,7 +9,7 @@ rewrite and overhaul: now this is a program that makes use of a number of module
 
 ## installation dependencies
 
-previously, python and the node.js `asar` package were both required.
+previously, python and the node.js `asar` package both had to be manually installed.
 node.js is the only current requirement of the enhancer.
 
 - python is no longer a dependency: keep it, get rid of it - up to you.

@@ -12,41 +12,19 @@
   --theme_dark--sidebar: #0f0f0f;
   --theme_dark--overlay: rgba(15, 15, 15, 0.6);
   --theme_dark--dragarea: #0d0d0d;
-  /* --theme_dark--preview-width: 977px;
-  --theme_dark--preview-padding: 8rem;
-  --theme_dark--preview_banner-height: 20vh;
-  --theme_dark--page_banner-height: 30vh; */
 
   --theme_dark--font_sans: 'Inter', -apple-system, BlinkMacSystemFont,
     'Segoe UI', Helvetica, 'Apple Color Emoji', Arial, sans-serif,
     'Segoe UI Emoji', 'Segoe UI Symbol';
-  /* --theme_dark--font_serif: Lyon-Text, Georgia, YuMincho, 'Yu Mincho',
-    'Hiragino Mincho ProN', 'Hiragino Mincho Pro', 'Songti TC', 'Songti SC',
-    SimSun, 'Nanum Myeongjo', NanumMyeongjo, Batang, serif;
-  --theme_dark--font_mono: iawriter-mono, Nitti, Menlo, Courier, monospace;
-  --theme_dark--font_code: SFMono-Regular, Consolas, 'Liberation Mono', Menlo,
-    Courier, monospace; */
-
-  /* --theme_dark--font_title-size: 40px;
-  --theme_dark--font_heading1-size: 30px;
-  --theme_dark--font_heading2-size: 24px;
-  --theme_dark--font_heading3-size: 20px;
-  --theme_dark--font_label-size: 14px;
-  --theme_dark--font_body-size: 16px;
-  --theme_dark--font_code-size: 12.75px;
-  --theme_dark--font_sidebar-size: 14px; */
 
   --theme_dark--scrollbar: #141414;
-  /* --theme_dark--scrollbar-border: transparent; */
   --theme_dark--scrollbar_hover: #1b1b1b;
 
   --theme_dark--card: #0f0f0f;
   --theme_dark--gallery: rgba(8, 8, 8, 0.05);
   --theme_dark--table-border: rgba(255, 255, 255, 0.1);
   --theme_dark--interactive_hover: #1e1e1e5c;
-  /* --theme_dark--interactive_hover-border: transparent; */
   --theme_dark--button_close: #eb5757;
-  /* --theme_dark--button_close-fill: white; */
 
   --theme_dark--selected: rgba(184, 135, 247, 0.3);
   --theme_dark--primary: #b887f7;
@@ -54,11 +32,7 @@
   --theme_dark--primary_click: #b887f7;
   --theme_dark--primary_indicator: #08d7c2;
 
-  /* --theme_dark--option-color: white;
-  --theme_dark--option-background: transparent;
-  --theme_dark--option_active-color: white; */
   --theme_dark--option_active-background: var(--theme_dark--primary);
-  /* --theme_dark--option_hover-color: white; */
   --theme_dark--option_hover-background: var(--theme_dark--primary_hover);
 
   --theme_dark--danger_text: #eb5757;

@@ -15,7 +15,7 @@ for support, join the [discord server](https://discord.gg/sFWPXtA).
 _to understand best how notion's app works, check out [the electron docs](https://www.electronjs.org/docs/),_
 _explore the contents of your local extracted `app.asar`, and navigate the html structure with the devtools web inspector._
 
-_look through [the existing modules](https://github.com/dragonwocky/notion-enhancer/tree/js/mods/)_
+_look through [the existing modules](https://github.com/dragonwocky/notion-enhancer/tree/HEAD/mods/)_
 _for examples of the stuff described below in action._
 
 _at the moment, for ease of development and use (and security assurance), there's no way for users_

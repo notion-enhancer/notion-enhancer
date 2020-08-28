@@ -17,6 +17,7 @@
   "--theme--font_heading3-size",
   "--theme--font_label-size",
   "--theme--font_body-size",
+  "--theme--font__small",
   "--theme--font_code-size",
   "--theme--font_sidebar-size",
   "--theme--scrollbar",

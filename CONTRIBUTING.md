@@ -30,7 +30,6 @@ download:
 ```sh
 git clone https://github.com/dragonwocky/notion-enhancer
 cd notion-enhancer
-git checkout js
 npm link
 ```
 

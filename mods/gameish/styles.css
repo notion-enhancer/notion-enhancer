@@ -10,44 +10,22 @@
 :root {
   --theme_dark--main: #1e1c26;
   --theme_dark--sidebar: #24222c;
-  /* --theme_dark--overlay: rgba(15, 15, 15, 0.6); */
   --theme_dark--dragarea: #19181f;
-  /* --theme_dark--preview-width: 977px;
-  --theme_dark--preview-padding: 8rem;
-  --theme_dark--preview_banner-height: 20vh;
-  --theme_dark--page_banner-height: 30vh; */
 
   --theme_dark--font_sans: 'Offside', -apple-system, BlinkMacSystemFont,
     'Segoe UI', Helvetica, 'Apple Color Emoji', Arial, sans-serif,
     'Segoe UI Emoji', 'Segoe UI Symbol';
-  /* --theme_dark--font_serif: Lyon-Text, Georgia, YuMincho, 'Yu Mincho',
-    'Hiragino Mincho ProN', 'Hiragino Mincho Pro', 'Songti TC', 'Songti SC',
-    SimSun, 'Nanum Myeongjo', NanumMyeongjo, Batang, serif; */
   --theme_dark--font_mono: 'DM Mono', iawriter-mono, Nitti, Menlo, Courier,
     monospace;
   --theme_dark--font_code: 'DM Mono', SFMono-Regular, Consolas,
     'Liberation Mono', Menlo, Courier, monospace;
 
-  /* --theme_dark--font_title-size: 40px;
-  --theme_dark--font_heading1-size: 30px;
-  --theme_dark--font_heading2-size: 24px;
-  --theme_dark--font_heading3-size: 20px;
-  --theme_dark--font_label-size: 14px;
-  --theme_dark--font_body-size: 16px;
-  --theme_dark--font_code-size: 12.75px;
-  --theme_dark--font_sidebar-size: 14px; */
-
   --theme_dark--scrollbar: #221f29;
-  /* --theme_dark--scrollbar-border: transparent; */
   --theme_dark--scrollbar_hover: #312d3c;
 
-  /* --theme_dark--card: rgb(53, 51, 58); */
   --theme_dark--gallery: rgba(162, 162, 162, 0.01);
   --theme_dark--table-border: rgba(148, 148, 184, 0.5);
   --theme_dark--interactive_hover: #282632;
-  /* --theme_dark--interactive_hover-border: transparent;
-  --theme_dark--button_close: #e81123;
-  --theme_dark--button_close-fill: white; */
 
   --theme_dark--selected: rgba(85, 68, 156, 0.3);
   --theme_dark--primary: rgb(106, 47, 200);
@@ -55,11 +33,6 @@
   --theme_dark--primary_click: rgb(117, 65, 200);
   --theme_dark--primary_indicator: rgb(150, 84, 226);
 
-  /* --theme_dark--option-color: white;
-  --theme_dark--option-background: transparent;
-  --theme_dark--option_active-color: white;
-  --theme_dark--option_active-background: var(--theme_dark--primary);
-  --theme_dark--option_hover-color: white; */
   --theme_dark--option_hover-background: rgb(20, 0, 51);
 
   --theme_dark--danger_text: rgb(235, 87, 87);
@@ -71,54 +44,20 @@
 
   --theme_dark--text_gray: rgba(151, 154, 155, 0.95);
   --theme_dark--text_brown: rgb(112, 87, 77);
-  /* --theme_dark--text_orange: rgb(255, 163, 68); */
   --theme_dark--text_yellow: #ffe529;
   --theme_dark--text_green: #64d97b;
-  /* --theme_dark--text_blue: rgb(82, 156, 202); */
   --theme_dark--text_purple: #d43cc7;
-  /* --theme_dark--text_pink: rgb(226, 85, 161); */
   --theme_dark--text_red: #d93939;
 
-  /* --theme_dark--bg_text: var(--theme_dark--text);
-  --theme_dark--bg_gray: rgba(151, 154, 155, 0.5);
-  --theme_dark--bg_brown: rgba(147, 114, 100, 0.5);
-  --theme_dark--bg_orange: rgba(255, 163, 68, 0.5);
-  --theme_dark--bg_yellow: rgba(255, 220, 73, 0.5);
-  --theme_dark--bg_green: rgba(77, 171, 154, 0.5);
-  --theme_dark--bg_blue: rgba(82, 156, 202, 0.5);
-  --theme_dark--bg_purple: rgba(154, 109, 215, 0.5);
-  --theme_dark--bg_pink: rgba(226, 85, 161, 0.5); */
   --theme_dark--bg_red: rgba(216, 57, 46, 0.5);
 
-  /* --theme_dark--line_text: var(--theme_dark--text);
-  --theme_dark--line_gray: rgb(69, 75, 78); */
   --theme_dark--line_brown: rgb(78, 57, 48);
   --theme_dark--line_orange: rgb(136, 80, 48);
   --theme_dark--line_yellow: #fbe2287c;
-  /* --theme_dark--line_green: rgb(53, 76, 75);
-  --theme_dark--line_blue: rgb(54, 73, 84);
-  --theme_dark--line_purple: rgb(68, 63, 87);
-  --theme_dark--line_pink: rgb(83, 59, 76); */
   --theme_dark--line_red: rgb(151, 62, 62);
 
   --theme_dark--code_inline-text: #d9cbec;
   --theme_dark--code_inline-background: #24222c;
-  /* --theme_dark--code_text: var(--theme_dark--text); */
-  --theme_dark--code-background: #24222c;
-  /* --theme_dark--code_function: rgba(255, 255, 255, 0.9);
-  --theme_dark--code_keyword: hsl(350, 40%, 70%);
-  --theme_dark--code_tag: hsl(350, 40%, 70%);
-  --theme_dark--code_operator: hsl(40, 90%, 60%);
-  --theme_dark--code_important: #e90;
-  --theme_dark--code_property: hsl(350, 40%, 70%);
-  --theme_dark--code_builtin: hsl(75, 70%, 60%);
-  --theme_dark--code_attr-name: hsl(75, 70%, 60%);
-  --theme_dark--code_comment: hsl(30, 20%, 50%);
-  --theme_dark--code_punctuation: rgba(255, 255, 255, 0.9);
-  --theme_dark--code_doctype: hsl(30, 20%, 50%);
-  --theme_dark--code_number: hsl(350, 40%, 70%);
-  --theme_dark--code_string: hsl(75, 70%, 60%);
-  --theme_dark--code_attr-value: hsl(350, 40%, 70%); */
 }
 
 .notion-dark-theme
