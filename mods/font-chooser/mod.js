@@ -10,7 +10,7 @@ module.exports = {
 	id: 'e0d8d148-45e7-4d79-8313-e7b2ad8abe16',
 	tags: ['extension'],
 	name: 'font chooser',
-	desc: 'customize your fonts. leave blank to not change anything.',
+	desc: 'customize fonts. for each option, type in the name of the font you would like to use, or leave it blank to not change anything.',
 	version: '0.1.0',
 	author: 'torchatlas',
 	options: [
