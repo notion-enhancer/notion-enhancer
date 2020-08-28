@@ -25,6 +25,7 @@
   --theme--font_heading3-size: var(--theme_dark--font_heading3-size);
   --theme--font_label-size: var(--theme_dark--font_label-size);
   --theme--font_body-size: var(--theme_dark--font_body-size);
+  --theme--font_body-size_small: var(--theme_dark--font_body-size_small);
   --theme--font_code-size: var(--theme_dark--font_code-size);
   --theme--font_sidebar-size: var(--theme_dark--font_sidebar-size);
   --theme--scrollbar: var(--theme_dark--scrollbar);
@@ -125,6 +126,7 @@
   --theme--font_heading3-size: var(--theme_light--font_heading3-size);
   --theme--font_label-size: var(--theme_light--font_label-size);
   --theme--font_body-size: var(--theme_light--font_body-size);
+  --theme--font_body-size_small: var(--theme_light--font_body-size_small);
   --theme--font_code-size: var(--theme_light--font_code-size);
   --theme--font_sidebar-size: var(--theme_light--font_sidebar-size);
   --theme--scrollbar: var(--theme_light--scrollbar);

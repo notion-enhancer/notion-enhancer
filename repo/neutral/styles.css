@@ -15,17 +15,10 @@
   --theme_dark--sidebar: #171717;
   --theme_dark--overlay: rgba(15, 15, 15, 0.6);
   --theme_dark--dragarea: #111111;
-  /* --theme_dark--preview-width: 977px;
-  --theme_dark--preview-padding: 8rem;
-  --theme_dark--preview_banner-height: 20vh;
-  --theme_dark--page_banner-height: 30vh; */
 
   --theme_dark--font_sans: 'Inter', -apple-system, BlinkMacSystemFont,
     'Segoe UI', Helvetica, 'Apple Color Emoji', Arial, sans-serif,
     'Segoe UI Emoji', 'Segoe UI Symbol';
-  /* --theme_dark--font_serif: Lyon-Text, Georgia, YuMincho, 'Yu Mincho',
-    'Hiragino Mincho ProN', 'Hiragino Mincho Pro', 'Songti TC', 'Songti SC',
-    SimSun, 'Nanum Myeongjo', NanumMyeongjo, Batang, serif; */
   --theme_dark--font_mono: 'Roboto Mono', iawriter-mono, Nitti, Menlo, Courier,
     monospace;
   --theme_dark--font_code: 'Roboto Mono', SFMono-Regular, Consolas,
@@ -33,12 +26,13 @@
 
   /* 1.3 supreme ratio. https://www.modularscale.com/ */
   --theme_dark--font_title-size: 33px;
-  --theme_dark--font_heading1-size: 33px;
-  --theme_dark--font_heading2-size: 25.3px;
-  --theme_dark--font_heading3-size: 19.5px;
-  --theme_dark--font_label-size: 13px;
+  --theme_dark--font_heading1-size: 2.2em;
+  --theme_dark--font_heading2-size: 1.687em;
+  --theme_dark--font_heading3-size: 1.3em;
+  --theme_dark--font_label-size: 14px;
   --theme_dark--font_body-size: 15px;
-  --theme_dark--font_code-size: 13.5px;
+  --theme_dark--font_body-size_small: 13.5px;
+  --theme_dark--font_code-size: 0.9em;
   --theme_dark--font_sidebar-size: 14px;
 
   --theme_dark--scrollbar: #232425;
@@ -49,9 +43,6 @@
   --theme_dark--gallery: rgba(105, 105, 105, 0.05);
   --theme_dark--table-border: rgba(78, 78, 78, 0.7);
   --theme_dark--interactive_hover: rgb(29, 29, 29);
-  /* --theme_dark--interactive_hover-border: transparent;
-  --theme_dark--button_close: #e81123;
-  --theme_dark--button_close-fill: white; */
 
   --theme_dark--selected: #52525244;
   --theme_dark--primary: #404040;
@@ -59,11 +50,6 @@
   --theme_dark--primary_click: #cacaca;
   --theme_dark--primary_indicator: #6d6d6d;
 
-  /* --theme_dark--option-color: white;
-  --theme_dark--option-background: transparent;
-  --theme_dark--option_active-color: white;
-  --theme_dark--option_active-background: var(--theme_dark--primary);
-  --theme_dark--option_hover-color: white; */
   --theme_dark--option_hover-background: #484848;
 
   --theme_dark--danger_text: #ce535f;
@@ -83,7 +69,6 @@
   --theme_dark--text_pink: #d285aa;
   --theme_dark--text_red: #ce535f;
 
-  /* --theme_dark--bg_text: var(--theme_dark--text); */
   --theme_dark--bg_gray: #585858;
   --theme_dark--bg_brown: #333333;
   --theme_dark--bg_orange: #9a5a3f;
@@ -94,7 +79,6 @@
   --theme_dark--bg_pink: #8e4b63;
   --theme_dark--bg_red: #8c3d3d;
 
-  /* --theme_dark--line_text: var(--theme_dark--text); */
   --theme_dark--line_gray: #585858;
   --theme_dark--line_brown: #333333;
   --theme_dark--line_orange: #9a5a3f;
