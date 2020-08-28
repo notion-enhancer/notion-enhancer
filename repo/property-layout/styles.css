@@ -20,6 +20,9 @@
   border-radius: 2px;
   transition: background 200ms;
 }
+.notion-scroller.vertical > div > :first-child .propertylayout-toggle {
+  margin-top: 1em;
+}
 .propertylayout-toggle[data-action='show'] {
   margin-bottom: 1em;
 }

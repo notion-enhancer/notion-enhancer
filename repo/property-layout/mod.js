@@ -12,7 +12,7 @@ module.exports = {
   tags: ['extension'],
   name: 'property layout',
   desc: 'auto-collapse page properties that usually push down page content.',
-  version: '0.2.2',
+  version: '0.2.3',
   author: 'alexander-kazakov',
   hacks: {
     'renderer/preload.js'(store, __exports) {
@@ -30,7 +30,7 @@ module.exports = {
         function process(list) {
           queue = [];
           let properties = document.querySelector(
-            '.notion-scroller.vertical > div > div:nth-child(2) [style="width: 100%; font-size: 14px;"]'
+            '.notion-scroller.vertical > :first-child [style="width: 100%; font-size: 14px;"]'
           );
           if (
             properties &&
