@@ -161,7 +161,7 @@
 .dark,
 .dark .notion-page-content [style*='color: inherit;'],
 .dark .notion-frame .notion-page-block,
-.dark [style*='color: rgba(255, 255, 255, 0.9)'],
+.dark [style*=' color: rgba(255, 255, 255, 0.9)'],
 .dark [style*='color: rgba(255, 255, 255, 0.7)'] {
   color: var(--theme--text) !important;
 }
@@ -176,6 +176,9 @@
 }
 .dark [style*='fill: rgba(202, 204, 206,'] {
   fill: var(--theme--text_ui) !important;
+}
+.dark [style*='caret-color: rgba(255, 255, 255, 0.9)'] {
+  caret-color: var(--theme--text) !important;
 }
 
 .dark [style*='color:rgba(151,154,155,0.95)'] {
@@ -280,31 +283,31 @@
 
 .dark
   [style*='background: rgb(69, 75, 78)']
-  [style*='color: rgba(255, 255, 255, 0.9)'],
+  [style*=' color: rgba(255, 255, 255, 0.9)'],
 .dark
   [style*='background: rgb(67, 64, 64)']
-  [style*='color: rgba(255, 255, 255, 0.9)'],
+  [style*=' color: rgba(255, 255, 255, 0.9)'],
 .dark
   [style*='background: rgb(89, 74, 58)']
-  [style*='color: rgba(255, 255, 255, 0.9)'],
+  [style*=' color: rgba(255, 255, 255, 0.9)'],
 .dark
   [style*='background: rgb(89, 86, 59)']
-  [style*='color: rgba(255, 255, 255, 0.9)'],
+  [style*=' color: rgba(255, 255, 255, 0.9)'],
 .dark
   [style*='background: rgb(53, 76, 75)']
-  [style*='color: rgba(255, 255, 255, 0.9)'],
+  [style*=' color: rgba(255, 255, 255, 0.9)'],
 .dark
   [style*='background: rgb(54, 73, 84)']
-  [style*='color: rgba(255, 255, 255, 0.9)'],
+  [style*=' color: rgba(255, 255, 255, 0.9)'],
 .dark
   [style*='background: rgb(68, 63, 87)']
-  [style*='color: rgba(255, 255, 255, 0.9)'],
+  [style*=' color: rgba(255, 255, 255, 0.9)'],
 .dark
   [style*='background: rgb(83, 59, 76)']
-  [style*='color: rgba(255, 255, 255, 0.9)'],
+  [style*=' color: rgba(255, 255, 255, 0.9)'],
 .dark
   [style*='background: rgb(89, 65, 65)']
-  [style*='color: rgba(255, 255, 255, 0.9)'] {
+  [style*=' color: rgba(255, 255, 255, 0.9)'] {
   color: var(--theme--line_text) !important;
 }
 
