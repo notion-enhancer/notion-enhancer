@@ -8,8 +8,8 @@
   },
   "scripts": {
     "test": "echo \"no test specified\"",
-    "postinstall": "notion-enhancer apply -y",
-    "preuninstall": "notion-enhancer remove -y"
+    "postinstall": "./bin.js apply -y",
+    "preuninstall": "./bin.js remove -y"
   },
   "repository": {
     "type": "git",

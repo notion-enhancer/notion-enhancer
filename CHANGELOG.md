@@ -6,6 +6,11 @@
 - [improved responsiveness](https://chrome.google.com/webstore/detail/notion%20%20-responsiveness-f/leadcilhbmibbkgbnjgmmnfgnnhmeddk)
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 
+### v0.8.2 (2020-08-28)
+
+some things you just can't test until production... fixed the auto-installer
+to use `./bin.js` instead of `notion-enhancer`
+
 ### v0.8.1 (2020-08-28)
 
 a clarity and stability update.
