@@ -183,7 +183,10 @@
 .dark [style*='color:rgba(151,154,155,0.95)'] {
   color: var(--theme--text_gray) !important;
 }
-.dark [style*='background: rgba(151, 154, 155, 0.5)'],
+.dark [style*='background: rgba(151, 154, 155, 0.5)'] {
+  background: var(--theme--select_gray) !important;
+  color: var(--theme--select_text) !important;
+}
 .dark [style*='background:rgb(69,75,78)'] {
   background: var(--theme--bg_gray) !important;
   color: var(--theme--bg_text) !important;
@@ -194,7 +197,10 @@
 .dark [style*='color:rgb(147,114,100)'] {
   color: var(--theme--text_brown) !important;
 }
-.dark [style*='background: rgba(147, 114, 100, 0.5)'],
+.dark [style*='background: rgba(147, 114, 100, 0.5)'] {
+  background: var(--theme--select_brown) !important;
+  color: var(--theme--select_text) !important;
+}
 .dark [style*='background:rgb(67,64,64)'] {
   background: var(--theme--bg_brown) !important;
   color: var(--theme--bg_text) !important;
@@ -205,7 +211,10 @@
 .dark [style*='color:rgb(255,163,68)'] {
   color: var(--theme--text_orange) !important;
 }
-.dark [style*='background: rgba(255, 163, 68, 0.5)'],
+.dark [style*='background: rgba(255, 163, 68, 0.5)'] {
+  background: var(--theme--select_orange) !important;
+  color: var(--theme--select_text) !important;
+}
 .dark [style*='background:rgb(89,74,58)'] {
   background: var(--theme--bg_orange) !important;
   color: var(--theme--bg_text) !important;
@@ -216,7 +225,10 @@
 .dark [style*='color:rgb(255,220,73)'] {
   color: var(--theme--text_yellow) !important;
 }
-.dark [style*='background: rgba(255, 220, 73, 0.5)'],
+.dark [style*='background: rgba(255, 220, 73, 0.5)'] {
+  background: var(--theme--select_yellow) !important;
+  color: var(--theme--select_text) !important;
+}
 .dark [style*='background:rgb(89,86,59)'] {
   background: var(--theme--bg_yellow) !important;
   color: var(--theme--bg_text) !important;
@@ -227,7 +239,10 @@
 .dark [style*='color:rgb(77,171,154)'] {
   color: var(--theme--text_green) !important;
 }
-.dark [style*='background: rgba(77, 171, 154, 0.5)'],
+.dark [style*='background: rgba(77, 171, 154, 0.5)'] {
+  background: var(--theme--select_green) !important;
+  color: var(--theme--select_text) !important;
+}
 .dark [style*='background:rgb(53,76,75)'] {
   background: var(--theme--bg_green) !important;
   color: var(--theme--bg_text) !important;
@@ -238,7 +253,10 @@
 .dark [style*='color:rgb(82,156,202)'] {
   color: var(--theme--text_blue) !important;
 }
-.dark [style*='background: rgba(82, 156, 202, 0.5)'],
+.dark [style*='background: rgba(82, 156, 202, 0.5)'] {
+  background: var(--theme--select_purple) !important;
+  color: var(--theme--select_text) !important;
+}
 .dark [style*='background:rgb(54,73,84)'] {
   background: var(--theme--bg_blue) !important;
   color: var(--theme--bg_text) !important;
@@ -249,7 +267,10 @@
 .dark [style*='color:rgb(154,109,215)'] {
   color: var(--theme--text_purple) !important;
 }
-.dark [style*='background: rgba(154, 109, 215, 0.5)'],
+.dark [style*='background: rgba(154, 109, 215, 0.5)'] {
+  background: var(--theme--select_purple) !important;
+  color: var(--theme--select_text) !important;
+}
 .dark [style*='background:rgb(68,63,87)'] {
   background: var(--theme--bg_purple) !important;
   color: var(--theme--bg_text) !important;
@@ -260,7 +281,10 @@
 .dark [style*='color:rgb(226,85,161)'] {
   color: var(--theme--text_pink) !important;
 }
-.dark [style*='background: rgba(226, 85, 161, 0.5)'],
+.dark [style*='background: rgba(226, 85, 161, 0.5)'] {
+  background: var(--theme--select_pink) !important;
+  color: var(--theme--select_text) !important;
+}
 .dark [style*='background:rgb(83,59,76)'] {
   background: var(--theme--bg_pink) !important;
   color: var(--theme--bg_text) !important;
@@ -271,7 +295,10 @@
 .dark [style*='color:rgb(255,115,105)'] {
   color: var(--theme--text_red) !important;
 }
-.dark [style*='background: rgba(255, 115, 105, 0.5);'],
+.dark [style*='background: rgba(255, 115, 105, 0.5);'] {
+  background: var(--theme--select_red) !important;
+  color: var(--theme--select_text) !important;
+}
 .dark [style*='background:rgb(89,65,65)'] {
   background: var(--theme--bg_red) !important;
   color: var(--theme--bg_text) !important;

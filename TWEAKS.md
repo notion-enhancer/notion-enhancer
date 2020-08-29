@@ -1,12 +1,11 @@
 # tweaks
 
 the enhancer comes with some built-in colour themes and layout improvements,
-but to get even more control over how the app looks you can use the "custom inserts" module
-to inject your own javascript or css into it.
+but to get even more control over how the app looks you can use the file picker in the
+"custom inserts" module to inject your own javascript or css into it.
 
-to make your own css file, make sure that your file manager has "show file extensions" ticked, then
-create a text document and make sure the name ends in `.css` (e.g. `notion-tweaks.css`),
-then use the file picker in the enhancer menu to select it.
+to make your own css file to add, make sure that your file manager has "show file extensions" ticked, then
+create a text document and make sure the name ends in `.css` (e.g. `notion-tweaks.css`).
 
 this page is a collection of tested visual tweaks users often ask about.
 they should all also work in notion's web client, if copied into a customiser

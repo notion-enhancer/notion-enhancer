@@ -102,8 +102,6 @@ these include:
 
 **author**: [dragonwocky](https://github.com/dragonwocky/)
 
-**version**: v0.8.0
-
 | option                       | type                                                                                          | default                    |
 | ---------------------------- | --------------------------------------------------------------------------------------------- | -------------------------- |
 | hide app on open             | toggle                                                                                        | no                         |
@@ -124,8 +122,6 @@ these include:
 
 **author**: [dragonwocky](https://github.com/dragonwocky/)
 
-**version**: v0.1.1
-
 | option                | type | default |
 | --------------------- | ---- | ------- |
 | css insert            | file | none    |
@@ -139,8 +135,6 @@ these include:
 
 **author**: [arecsu](https://github.com/arecsu/)
 
-**version**: v0.1.0
-
 ### dark+
 
 **tags:** #theme #dark
@@ -148,8 +142,6 @@ these include:
 **description:** a vivid-colour near-black theme.
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
-
-**version:** v0.1.3
 
 | option         | type  | default            |
 | -------------- | ----- | ------------------ |
@@ -165,8 +157,6 @@ these include:
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
 
-**version:** v0.1.3
-
 ![](https://user-images.githubusercontent.com/16874139/90520622-f0df1e00-e1ac-11ea-8791-12922a037234.png)
 
 ### focus mode
@@ -176,8 +166,6 @@ these include:
 **description:** hide the titlebar/menubar if the sidebar is closed (will be shown on hover).
 
 **author:** [arecsu](https://github.com/arecsu/)
-
-**version:** v0.1.0
 
 ![](https://user-images.githubusercontent.com/16874139/90521792-49fb8180-e1ae-11ea-8764-cb4309cec464.png)
 
@@ -189,8 +177,6 @@ these include:
 
 **author:** [LVL100ShrekCultist](https://reddit.com/user/LVL100ShrekCultist/)
 
-**version:** v0.1.1
-
 ![](https://user-images.githubusercontent.com/16874139/90522144-b6768080-e1ae-11ea-8150-527c1f70f0e7.png)
 
 ### neutral
@@ -200,8 +186,6 @@ these include:
 **description:** smoother colours and fonts, designed to be more pleasing to the eye.
 
 **author:** [arecsu](https://github.com/arecsu/)
-
-**version:** v0.1.0
 
 ![](https://user-images.githubusercontent.com/16874139/90522373-f9d0ef00-e1ae-11ea-9dba-b29431609210.png)
 
@@ -213,8 +197,6 @@ these include:
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
 
-**version:** v0.1.0
-
 ### pastel dark
 
 **tags:** #theme #dark
@@ -222,8 +204,6 @@ these include:
 **description:** a true dark theme with a hint of pastel.
 
 **author:** [zenith_illinois](https://reddit.com/user/zenith_illinois/)
-
-**version:** v0.1.0
 
 ![](https://user-images.githubusercontent.com/16874139/90522660-5502e180-e1af-11ea-8885-073ad20d65b3.png)
 
@@ -235,8 +215,6 @@ these include:
 
 **author:** [alexander-kazakov](https://github.com/alexander-kazakov/)
 
-**version:** v0.2.2
-
 ### right-to-left
 
 **tags:** #extension
@@ -244,8 +222,6 @@ these include:
 **description:** enables auto rtl/ltr text direction detection.
 
 **author:** [obahareth](https://github.com/obahareth/)
-
-**version:** v1.3.0
 
 ![](https://user-images.githubusercontent.com/16874139/90522872-95faf600-e1af-11ea-807c-11ac1591217e.png)
 
@@ -256,8 +232,6 @@ these include:
 **description:** calendar views named "weekly" will show only the 7 days of this week.
 
 **author:** [adihd](https://github.com/adihd/)
-
-**version:** v0.5.0
 
 ![](https://user-images.githubusercontent.com/16874139/90523679-86c87800-e1b0-11ea-8cc0-25f6825c6d49.png)
 

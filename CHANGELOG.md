@@ -6,19 +6,29 @@
 - [improved responsiveness](https://chrome.google.com/webstore/detail/notion%20%20-responsiveness-f/leadcilhbmibbkgbnjgmmnfgnnhmeddk)
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 
+### v0.8.5 (wip)
+
+- bugfix: separate text highlight and select tag variables.
+
 ### v0.8.4 (2020-08-29)
 
 - bugfix: property-layout now works consistently with or without a banner.
+
+> 📥 `npm i -g notion-enhancer@0.8.4`
 
 ### v0.8.3 (2020-08-29)
 
 previous release was a mistake: it did as intended on linux, but broke windows.
 this should achieve the same thing in a more compatible way.
 
+> 📥 `npm i -g notion-enhancer@0.8.3`
+
 ### v0.8.2 (2020-08-28)
 
 some things you just can't test until production... fixed the auto-installer
 to use `./bin.js` instead of `notion-enhancer`
+
+> 📥 `npm i -g notion-enhancer@0.8.2`
 
 ### v0.8.1 (2020-08-28)
 
@@ -33,6 +43,8 @@ a clarity and stability update.
 - bugfix: linux installer path typo.
 - bugfix: caret-color was being mistaken for color and block-level text colouring was broken.
 - improved: auto-application on install.
+
+> 📥 `npm i -g notion-enhancer@0.8.1`
 
 ### v0.8.0 (2020-08-27)
 

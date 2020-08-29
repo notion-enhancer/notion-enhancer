@@ -49,12 +49,17 @@
   --theme_dark--text_purple: #d43cc7;
   --theme_dark--text_red: #d93939;
 
-  --theme_dark--bg_red: rgba(216, 57, 46, 0.5);
+  --theme_dark--select_red: rgba(216, 57, 46, 0.5);
 
-  --theme_dark--line_brown: rgb(78, 57, 48);
-  --theme_dark--line_orange: rgb(136, 80, 48);
-  --theme_dark--line_yellow: #fbe2287c;
-  --theme_dark--line_red: rgb(151, 62, 62);
+  --theme_dark--bg_brown: rgb(78, 57, 48);
+  --theme_dark--bg_orange: rgb(136, 80, 48);
+  --theme_dark--bg_yellow: #fbe2287c;
+  --theme_dark--bg_red: rgb(151, 62, 62);
+
+  --theme_dark--line_brown: var(--theme_dark--bg_brown);
+  --theme_dark--line_orange: var(--theme_dark--bg_orange);
+  --theme_dark--line_yellow: var(--theme_dark--bg_yellow);
+  --theme_dark--line_red: var(--theme_dark--bg_red);
 
   --theme_dark--code_inline-text: #d9cbec;
   --theme_dark--code_inline-background: #24222c;
