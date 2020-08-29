@@ -17,7 +17,7 @@ module.exports = function (__file, __exports) {
     .slice(path.resolve(`${__notion}/app`).length + 1)
     .replace(/\\/g, '/');
 
-  if (__file === 'main/main.js') {
+  if (__file === 'main/security.js') {
     const electron = require('electron');
     electron.app.whenReady().then(() => {
       electron.session
@@ -30,6 +30,29 @@ module.exports = function (__file, __exports) {
           });
         });
     });
+    electron.protocol.registerSchemesAsPrivileged([
+      {
+        scheme: 'notion',
+        privileges: {
+          standard: true,
+          secure: true,
+          allowServiceWorkers: true,
+          supportFetchAPI: true,
+          corsEnabled: true,
+        },
+      },
+      {
+        scheme: 'enhancement',
+        privileges: {
+          standard: true,
+          secure: true,
+          allowServiceWorkers: true,
+          supportFetchAPI: true,
+          corsEnabled: true,
+          bypassCSP: true,
+        },
+      },
+    ]);
   }
 
   const modules = helpers.getEnhancements();

@@ -9,6 +9,7 @@
 ### v0.8.5 (wip)
 
 - bugfix: separate text highlight and select tag variables.
+- bugfix: bypass CSP for the `enhancement://` protocol - was failing on some platforms?
 
 ### v0.8.4 (2020-08-29)
 

@@ -30,34 +30,30 @@ a chrome extension may be coming soon for web client support.
 
 ## installation
 
-**coming from <= v0.7.0? things are a bit different - have a read of [the update guide](UPDATING.md)**
-**before following these instructions.**
+> coming from <= v0.7.0? things are a bit different - have a read of [the update guide](UPDATING.md)\*\*
+> before following these instructions.
 
-<details>
-  <summary>Windows, macOS</summary>
+during installation/removal, make sure no notion processes are running! (check your task manager.)
+
+**win10, macOS**
 
 1. [install node.js](https://nodejs.org/en/download/) (_a computer restart may be required here._)
-2. make sure no notion processes are running
-3. execute `npm i -g notion-enhancer` in the terminal/command prompt. Make sure you have root/admin rights.
-</details>
+2. execute `npm i -g notion-enhancer` in the terminal/command prompt as a root/admin user.
 
-<details>
-  <summary>Ubuntu-based distros, WSL, ChromeOS</summary>
+**debian/ubuntu, chromeOS, WSL (to modify the win10 app)**
 
-Execute the following commands:
+execute the following lines in the terminal:
+
 ```
 bash curl -sL https://deb.nodesource.com setup_current.x | sudo -E bash -
 sudo apt-get install -y nodejs
 sudo npm i -g notion-enhancer
 ```
-</details>
 
-<details>
-  <summary>Arch Linux, Manjaro:</summary>
+**arch linux, manjaro**
 
-Use the [AUR package]( https://aur.archlinux.org/packages/notion-enhancer ).
-install with `yay -S notion-enhancer`   (use your AUR helper instead of yay)
-</details>
+install the [aur package](https://aur.archlinux.org/packages/notion-enhancer)
+with your aur helper (e.g. `yay -S notion-enhancer`).
 
 ### command-line interface
 
