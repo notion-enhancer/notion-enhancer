@@ -1,6 +1,6 @@
 {
   "name": "notion-enhancer",
-  "version": "0.8.5",
+  "version": "0.9.0-wip",
   "description": "an enhancer/customiser for the all-in-one productivity workspace notion.so",
   "main": "index.js",
   "bin": {
@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"no test specified\"",
     "postinstall": "node bin.js apply -y",
-    "preuninstall": "node bin.js remove -y"
+    "preuninstall": "node bin.js remove"
   },
   "repository": {
     "type": "git",

@@ -33,21 +33,8 @@ module.exports = (store, __exports) => {
     clearInterval(attempt_interval);
 
     // scrollbars
-    if (store().smooth_scrollbars) {
+    if (store().smooth_scrollbars)
       document.body.classList.add('smooth-scrollbars');
-      // interval_attempts.patchScrollbars = setInterval(patchScrollbars, 100);
-      // function patchScrollbars() {
-      //   const sidebar = document.querySelector(
-      //     '.notion-scroller.vertical[style*="overflow: hidden auto;"]'
-      //   );
-      //   if (!sidebar) return;
-      //   clearInterval(interval_attempts.patchScrollbars);
-      //   sidebar.style.overflow = '';
-      //   setTimeout(() => {
-      //     sidebar.style.overflow = 'hidden auto';
-      //   }, 10);
-      // }
-    }
 
     // frameless
     if (store().frameless) {
@@ -83,7 +70,7 @@ module.exports = (store, __exports) => {
 
     // ctrl+f theming
     document.defaultView.addEventListener('keydown', (event) => {
-      if (event.key === 'f' && (event.ctrlKey || event.metaKey)) {
+      if ((event.ctrlKey || event.metaKey) && event.key === 'f') {
         notionIpc.sendNotionToIndex('search:set-theme', {
           'mode': document.querySelector('.notion-dark-theme')
             ? 'dark'
@@ -111,24 +98,63 @@ module.exports = (store, __exports) => {
     });
 
     // enhancer menu
-    function setMenuTheme() {
-      electron.ipcRenderer.send('enhancer:set-menu-theme', {
-        mode: document.querySelector('.notion-dark-theme') ? 'dark' : 'light',
-        rules: require('./css/variables.json').map((rule) => [
-          rule,
-          getStyle(rule),
-        ]),
-      });
+    function setThemeVars() {
+      electron.ipcRenderer.send(
+        'enhancer:set-theme-vars',
+        [
+          '--theme--main',
+          '--theme--sidebar',
+          '--theme--overlay',
+          '--theme--dragarea',
+          '--theme--font_sans',
+          '--theme--font_code',
+          '--theme--scrollbar',
+          '--theme--scrollbar-border',
+          '--theme--scrollbar_hover',
+          '--theme--card',
+          '--theme--table-border',
+          '--theme--interactive_hover',
+          '--theme--interactive_hover-border',
+          '--theme--button_close',
+          '--theme--button_close-fill',
+          '--theme--primary',
+          '--theme--primary_click',
+          '--theme--option-color',
+          '--theme--option-background',
+          '--theme--option_active-background',
+          '--theme--option_active-color',
+          '--theme--option_hover-color',
+          '--theme--option_hover-background',
+          '--theme--text',
+          '--theme--text_ui',
+          '--theme--text_ui_info',
+          '--theme--select_yellow',
+          '--theme--select_green',
+          '--theme--select_blue',
+          '--theme--select_red',
+          '--theme--line_text',
+          '--theme--line_yellow',
+          '--theme--line_green',
+          '--theme--line_blue',
+          '--theme--line_red',
+          '--theme--code_inline-text',
+          '--theme--code_inline-background',
+        ].map((rule) => [rule, getStyle(rule)])
+      );
     }
-    setMenuTheme();
-    electron.ipcRenderer.on('enhancer:get-menu-theme', setMenuTheme);
+    setThemeVars();
+    const theme_observer = new MutationObserver(setThemeVars);
+    theme_observer.observe(document.querySelector('.notion-app-inner'), {
+      attributes: true,
+    });
+    electron.ipcRenderer.on('enhancer:get-theme-vars', setThemeVars);
 
-    const observer = new MutationObserver(setSidebarWidth);
-    observer.observe(document.querySelector('.notion-sidebar'), {
+    const sidebar_observer = new MutationObserver(setSidebarWidth);
+    sidebar_observer.observe(document.querySelector('.notion-sidebar'), {
       attributes: true,
     });
     let sidebar_width;
-    function setSidebarWidth(list, observer) {
+    function setSidebarWidth(list) {
       if (!store().frameless) return;
       const new_sidebar_width =
         list[0].target.style.height === 'auto'

@@ -6,7 +6,36 @@
 - [improved responsiveness](https://chrome.google.com/webstore/detail/notion%20%20-responsiveness-f/leadcilhbmibbkgbnjgmmnfgnnhmeddk)
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 
-### v0.8.5 (wip)
+### v0.9.0 (wip)
+
+a feature and cleanup update.
+
+- improved: halved the number of css rules used -> much better performance.
+- bugfix: enhancer settings should no longer reset on update (though this will not have
+  effect until the release after this one).
+  bugfix: blue select tags are no longer purple.
+- themes: "littlepig" (light + dark) = monospaced themes using emojis and colourful text.
+- extension: "font chooser" = customize fonts. for each option, type in the name of the font you would like to use,
+  or leave it blank to not change anything.
+
+// todo
+
+<!-- - improved: extension menu will now receive style rules from extensions (prev. only got css vars) = necessary for
+  custom fonts. javascript is still not executable in the menu. (e.g. the "font chooser" will work, but only
+  because all it thing it does is change variables - if it were to try dynamically adding new font import rules
+  things things would break). -->
+
+- improved: added individual text-colour rules for different background colours.
+- improved: added variables for callout backgrounds.
+- bugfix: made the open enhancements menu hotkey configurable and changed the default to `option/alt + e`
+  to remove conflict with the inline code highlight shortcut.
+- bugfix: block-level text colours are now changed properly.
+- bugfix: page titles now respond to small-text mode.
+- bugfix: update property-layout to match notion changes again.
+
+notion-deb-builder has been discovered to not generate an app.asar and so is no longer supported.
+
+### v0.8.5 (2020-08-29)
 
 - bugfix: separate text highlight and select tag variables.
 - bugfix: bypass CSP for the `enhancement://` protocol - was failing on some platforms?
@@ -35,7 +64,7 @@ to use `./bin.js` instead of `notion-enhancer`
 
 a clarity and stability update.
 
-- improved: more informative error messages.
+- improved: more informative cli error messages (original ones can be accessed with the `-d/--dev` flag).
 - bugfix: gallery variable didn't apply on fullpage.
 - bugfix: date picker hid current date number.
 - bugfix: small-text pages should now work as expected.

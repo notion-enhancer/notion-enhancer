@@ -41,10 +41,9 @@ window['__start'] = async () => {
     }
   });
 
-  electron.ipcRenderer.send('enhancer:get-menu-theme');
-  electron.ipcRenderer.on('enhancer:set-menu-theme', (event, theme) => {
-    document.body.className = `notion-${theme.mode}-theme`;
-    for (const style of theme.rules)
+  electron.ipcRenderer.send('enhancer:get-theme-vars');
+  electron.ipcRenderer.on('enhancer:set-theme-vars', (event, theme) => {
+    for (const style of theme)
       document.body.style.setProperty(style[0], style[1]);
   });
 
@@ -378,6 +377,19 @@ window['__start'] = async () => {
       ? 1
       : a.name.localeCompare(b.name)
   )) {
+    // mod styling - necessary for fonts
+    // if (
+    //   fs.pathExistsSync(path.resolve(`${__dirname}/../${mod.dir}/styles.css`))
+    // ) {
+    //   document
+    //     .querySelector('head')
+    //     .appendChild(
+    //       createElement(
+    //         `<link rel="stylesheet" href="enhancement://${mod.dir}/styles.css">`
+    //       )
+    //     );
+    // }
+
     const enabled = store('mods', { [mod.id]: { enabled: false } })[mod.id]
         .enabled,
       author =
