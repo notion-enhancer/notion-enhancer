@@ -1,0 +1,607 @@
+/*
+ * littlepig
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
+ * (c) 2020 Lizishan
+ * under the MIT license
+ */
+
+@import url('https://dev-cats.github.io/code-snippets/JetBrainsMono.css');
+
+:root {
+  --theme_light--font_sans: 'JetBrains Mono';
+  --theme_light--font_mono: 'JetBrains Mono';
+  --theme_light--font_code: 'JetBrains Mono';
+
+  --theme_light--main: white;
+  --theme_light--sidebar: rgb(247, 246, 243);
+  --theme_light--overlay: rgba(15, 15, 15, 0.6);
+  --theme_light--dragarea: rgba(55, 53, 47, 0.04);
+  --theme_light--preview-width: 977px;
+  --theme_light--preview-padding: 8rem;
+  --theme_light--preview_banner-height: 20vh;
+  --theme_light--page_banner-height: 30vh;
+
+  --theme_light--font_title-size: 40px;
+  --theme_light--font_heading1-size: 30px;
+  --theme_light--font_heading2-size: 24px;
+  --theme_light--font_heading3-size: 20px;
+  --theme_light--font_label-size: 14px;
+  --theme_light--font_body-size: 17px;
+  --theme_light--font_code-size: 16px;
+  --theme_light--font_sidebar-size: 14px;
+
+  --theme_light--scrollbar: #d9d8d6;
+  --theme_light--scrollbar-border: #cacac8;
+  --theme_light--scrollbar_hover: #cacac8;
+
+  --theme_light--card: rgb(247, 247, 247);
+  --theme_light--gallery: rgba(55, 53, 47, 0.024);
+  --theme_light--table-border: rgba(55, 53, 47, 0.16);
+  --theme_light--interactive_hover: rgba(55, 53, 47, 0.08);
+  --theme_light--interactive_hover-border: transparent;
+  --theme_light--button_close: #e81123;
+  --theme_light--button_close-fill: white;
+
+  --theme_light--selected: rgba(177, 24, 24, 0.22);
+  --theme_light--primary: rgb(177, 24, 24);
+  --theme_light--primary_hover: rgb(202, 26, 26);
+  --theme_light--primary_click: rgb(219, 41, 41);
+  --theme_light--primary_indicator: rgb(202, 26, 26);
+
+  --theme_light--option-color: black;
+  --theme_light--option-background: transparent;
+  --theme_light--option_hover-color: black;
+  --theme_light--option_hover-background: rgba(55, 53, 47, 0.08);
+
+  --theme_light--danger_text: rgb(235, 87, 87);
+  --theme_light--danger_border: rgba(235, 87, 87, 0.5);
+
+  --theme_light--text: rgb(55, 53, 47);
+  --theme_light--text_ui: rgba(55, 53, 47, 0.6);
+  --theme_light--text_ui_info: rgba(55, 53, 47, 0.4);
+
+  /* 文本颜色 */
+  --theme_light--text_gray: rgba(151, 154, 155, 0.95);
+  --theme_light--text_brown: rgb(167, 126, 100);
+  --theme_light--text_orange: rgb(255, 134, 0);
+  --theme_light--text_yellow: rgb(255, 195, 0);
+  --theme_light--text_green: rgb(0, 171, 0);
+  --theme_light--text_blue: rgb(0, 121, 255);
+  --theme_light--text_purple: rgb(126, 0, 255);
+  --theme_light--text_pink: rgb(255, 0, 208);
+  --theme_light--text_red: rgb(255, 0, 0);
+
+  /* 文本背景色 */
+  --theme_light--bg_gray: rgb(234, 234, 234);
+  --theme_light--bg_gray_text: rgb(17, 17, 17);
+
+  --theme_light--bg_brown: rgb(206, 206, 206);
+  --theme_light--bg_brown_text: rgb(85, 35, 1);
+
+  --theme_light--bg_orange: rgb(254, 214, 155);
+  --theme_light--bg_orange_text: rgb(199, 110, 0);
+
+  --theme_light--bg_yellow: #fcffd8;
+  --theme_light--bg_yellow_text: #ff8c22;
+
+  --theme_light--bg_green: #d5fded;
+  --theme_light--bg_green_text: #006a00;
+
+  --theme_light--bg_blue: #e2f5ff;
+  --theme_light--bg_blue_text: #00b2ff;
+
+  --theme_light--bg_purple: #efe6ff;
+  --theme_light--bg_purple_text: #8334ff;
+
+  --theme_light--bg_pink: #ffe9f1;
+  --theme_light--bg_pink_text: rgb(255, 0, 127);
+
+  --theme_light--bg_red: rgb(248, 215, 218);
+  --theme_light--bg_red_text: rgb(138, 0, 10);
+
+  --theme_light--select_gray: var(--theme_light--bg_gray);
+  --theme_light--select_brown: var(--theme_light--bg_brown);
+  --theme_light--select_orange: var(--theme_light--bg_orange);
+  --theme_light--select_yellow: var(--theme_light--bg_yellow);
+  --theme_light--select_green: var(--theme_light--bg_green);
+  --theme_light--select_blue: var(--theme_light--bg_blue);
+  --theme_light--select_purple: var(--theme_light--bg_purple);
+  --theme_light--select_pink: var(--theme_light--bg_pink);
+  --theme_light--select_red: var(--theme_light--bg_red);
+
+  /* inline code */
+  --theme_light--code_inline-text: #ffffff;
+  --theme_light--code_inline-background: rgb(179, 39, 39);
+
+  --theme_light--code_text: var(--theme_light--text);
+  --theme_light--code-background: rgb(247, 246, 243);
+  --theme_light--code_function: #dd4a68;
+  --theme_light--code_keyword: #07a;
+  --theme_light--code_tag: #905;
+  --theme_light--code_operator: #9a6e3a;
+  --theme_light--code_important: #e90;
+  --theme_light--code_property: #905;
+  --theme_light--code_builtin: #690;
+  --theme_light--code_attr-name: #690;
+  --theme_light--code_comment: slategray;
+  --theme_light--code_punctuation: #999;
+  --theme_light--code_doctype: slategray;
+  --theme_light--code_number: #905;
+  --theme_light--code_string: #690;
+  --theme_light--code_attr-value: #07a;
+
+  /* 标题色 */
+  --theme_light--h1_text: #008800;
+  --theme_light--h2_text: #006a00;
+  --theme_light--h3_text: #003e00;
+
+  /* todo */
+  --theme_light--option_active-color: #008800;
+  --theme_light--option_active-background: #ffffff;
+
+  /* inline code */
+  --theme_light--code_inline-text: #e0dfe2;
+  --theme_light--code_inline-background: rgb(179, 39, 39);
+
+  /* callout 颜色 */
+  --theme_light--callout_bg_gray: #e2e3e5;
+  --theme_light--callout_text_gray: #383d41;
+
+  --theme_light--callout_bg_brown: rgb(130, 118, 111);
+  --theme_light--callout_text_brown: rgb(85, 35, 1);
+
+  --theme_light--callout_bg_orange: rgb(254, 214, 155);
+  --theme_light--callout_text_orange: rgb(255, 140, 0);
+
+  --theme_light--callout_bg_yellow: #fcffd8;
+  --theme_light--callout_text_yellow: #c76e00;
+
+  --theme_light--callout_bg_green: #d4edda;
+  --theme_light--callout_text_green: #155724;
+
+  --theme_light--callout_bg_blue: #cce5ff;
+  --theme_light--callout_text_blue: #004085;
+
+  --theme_light--callout_bg_purple: rgb(199, 178, 230);
+  --theme_light--callout_text_purple: rgb(90, 49, 148);
+
+  --theme_light--callout_bg_pink: rgb(255, 206, 228);
+  --theme_light--callout_text_pink: rgb(255, 0, 127);
+
+  --theme_light--callout_bg_red: #f8d7da;
+  --theme_light--callout_text_red: #721c24;
+}
+
+/* todo 颜色 */
+.notion-body:not(.dark) [style*='background: rgb(46, 170, 220)'] {
+  background: var(--theme_light--option_active-background) !important;
+}
+.notion-body:not(.dark)
+  [style*='background: rgb(46, 170, 220)'][role='button'] {
+  background: var(--theme_light--primary) !important;
+}
+
+.notion-body:not(.dark)
+  [style*='background: rgb(46, 170, 220);'][style*='width: 26px'] {
+  background: var(--theme_light--primary) !important;
+}
+
+.notion-body:not(.dark)
+  .notion-to_do-block
+  > div
+  [role='button']:not(:hover)
+  .check {
+  background: var(--theme_light--option_active-background) !important;
+}
+
+.notion-body:not(.dark)
+  .notion-to_do-block
+  > div
+  [role='button']:not(:hover)
+  .check
+  polygon {
+  fill: var(--theme_light--option_active-color) !important;
+}
+
+/*================================= 标签颜色 + 文本背景色 ===============================**/
+
+/* 灰色 */
+.notion-body:not(.dark) [style*='background: rgba(155, 154, 151, 0.4)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 10px 0.4em !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_gray) !important;
+  color: var(--theme_light--bg_gray_text) !important;
+}
+.notion-body:not(.dark) [style*='background:rgb(235,236,237)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 0 0.4em !important;
+  margin: 2px 0 !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_gray) !important;
+  color: var(--theme_light--bg_gray_text) !important;
+}
+
+/* 棕色 */
+.notion-body:not(.dark) [style*='background: rgba(140, 46, 0, 0.2)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 10px 0.4em !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_brown) !important;
+  color: var(--theme_light--bg_brown_text) !important;
+}
+.notion-body:not(.dark) [style*='background:rgb(233,229,227)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 0 0.4em !important;
+  margin: 2px 0 !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_brown) !important;
+  color: var(--theme_light--bg_brown_text) !important;
+}
+
+/* 橘黄色 */
+.notion-body:not(.dark) [style*='background: rgba(245, 93, 0, 0.2)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 10px 0.4em !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_orange) !important;
+  color: var(--theme_light--bg_orange_text) !important;
+}
+
+.notion-body:not(.dark) [style*='background:rgb(250,235,221)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 0 0.4em !important;
+  margin: 2px 0 !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_orange) !important;
+  color: var(--theme_light--bg_orange_text) !important;
+}
+
+/* 黄色 */
+.notion-body:not(.dark) [style*='background: rgba(233, 168, 0, 0.2)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 10px 0.4em !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_yellow) !important;
+  color: var(--theme_light--bg_yellow_text) !important;
+}
+.notion-body:not(.dark) [style*='background:rgb(251,243,219)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 0 0.4em !important;
+  margin: 2px 0 !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_yellow) !important;
+  color: var(--theme_light--bg_yellow_text) !important;
+}
+
+/* 绿色 */
+.notion-body:not(.dark) [style*='background: rgba(0, 135, 107, 0.2)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 10px 0.4em !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_green) !important;
+  color: var(--theme_light--bg_green_text) !important;
+}
+.notion-body:not(.dark) [style*='background:rgb(221,237,234)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 0 0.4em !important;
+  margin: 2px 0 !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_green) !important;
+  color: var(--theme_light--bg_green_text) !important;
+}
+
+/*  蓝色 */
+.notion-body:not(.dark) [style*='background: rgba(0, 120, 223, 0.2)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 10px 0.4em !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_blue) !important;
+  color: var(--theme_light--bg_blue_text) !important;
+}
+.notion-body:not(.dark) [style*='background:rgb(221,235,241)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 0 0.4em !important;
+  margin: 2px 0 !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_blue) !important;
+  color: var(--theme_light--bg_blue_text) !important;
+}
+
+/*  紫色 */
+.notion-body:not(.dark) [style*='background: rgba(103, 36, 222, 0.2)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 10px 0.4em !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_purple) !important;
+  color: var(--theme_light--bg_purple_text) !important;
+}
+.notion-body:not(.dark) [style*='background:rgb(234,228,242)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 0 0.4em !important;
+  margin: 2px 0 !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_purple) !important;
+  color: var(--theme_light--bg_purple_text) !important;
+}
+
+/*  粉红色 */
+.notion-body:not(.dark) [style*='background: rgba(221, 0, 129, 0.2)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 10px 0.4em !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_pink) !important;
+  color: var(--theme_light--bg_pink_text) !important;
+}
+.notion-body:not(.dark) [style*='background:rgb(244,223,235)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 0 0.4em !important;
+  margin: 2px 0 !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_pink) !important;
+  color: var(--theme_light--bg_pink_text) !important;
+}
+
+/* 红色 */
+.notion-body:not(.dark) [style*='background: rgba(255, 0, 26, 0.2)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 10px 0.4em !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_red) !important;
+  color: var(--theme_light--bg_red_text) !important;
+}
+.notion-body:not(.dark) [style*='background:rgb(251,228,228)'] {
+  display: inline-block;
+  border-radius: 4px !important;
+  padding: 0 0.4em !important;
+  margin: 2px 0 !important;
+  font-weight: 500 !important;
+  background: var(--theme_light--bg_red) !important;
+  color: var(--theme_light--bg_red_text) !important;
+}
+
+/* -----------------------------callout 样式 start------------------------ */
+
+/* notion-callout-block gray */
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(235, 236, 237, 0.3);'] {
+  /* color: var(--theme_light--callout_text_gray) !important; */
+  background: var(--theme_light--callout_bg_gray) !important;
+  border-radius: 3px !important;
+}
+
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(235, 236, 237, 0.3);']
+  [style*='color: rgb(55, 53, 47);'] {
+  color: var(--theme_light--callout_text_gray) !important;
+}
+
+/* notion-callout-block brown */
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(233, 229, 227, 0.3);'] {
+  /* color: var(--theme_light--callout_text_brown) !important; */
+  background: var(--theme_light--callout_bg_brown) !important;
+  border-radius: 3px !important;
+}
+
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(233, 229, 227, 0.3);']
+  [style*='color: rgb(55, 53, 47);'] {
+  color: var(--theme_light--callout_text_brown) !important;
+}
+
+/* notion-callout-block orange */
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(250, 235, 221, 0.3);'] {
+  /* color: var(--theme_light--callout_text_orange) !important; */
+  background: var(--theme_light--callout_bg_orange) !important;
+  border-radius: 3px !important;
+}
+
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(250, 235, 221, 0.3);']
+  [style*='color: rgb(55, 53, 47);'] {
+  color: var(--theme_light--callout_text_orange) !important;
+}
+
+/* notion-callout-block yellow */
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(251, 243, 219, 0.3);'] {
+  /* color: var(--theme_light--callout_text_yellow) !important; */
+  background: var(--theme_light--callout_bg_yellow) !important;
+  border-radius: 3px !important;
+}
+
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(251, 243, 219, 0.3);']
+  [style*='color: rgb(55, 53, 47);'] {
+  color: var(--theme_light--callout_text_yellow) !important;
+}
+
+/* notion-callout-block green */
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(221, 237, 234, 0.3);'] {
+  /* color: var(--theme_light--callout_text_green) !important; */
+  background: var(--theme_light--callout_bg_green) !important;
+  border-radius: 3px !important;
+}
+
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(221, 237, 234, 0.3);']
+  [style*='color: rgb(55, 53, 47);'] {
+  color: var(--theme_light--callout_text_green) !important;
+}
+
+/* notion-callout-block blue */
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(221, 235, 241, 0.3);'] {
+  /* color: var(--theme_light--callout_text_blue) !important; */
+  background: var(--theme_light--callout_bg_blue) !important;
+  border-radius: 3px !important;
+}
+
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(221, 235, 241, 0.3);']
+  [style*='color: rgb(55, 53, 47);'] {
+  color: var(--theme_light--callout_text_blue) !important;
+}
+
+/* notion-callout-block purple */
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(234, 228, 242, 0.3);'] {
+  /* color: var(--theme_light--callout_text_purple) !important; */
+  background: var(--theme_light--callout_bg_purple) !important;
+  border-radius: 3px !important;
+}
+
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(234, 228, 242, 0.3);']
+  [style*='color: rgb(55, 53, 47);'] {
+  color: var(--theme_light--callout_text_purple) !important;
+}
+
+/* notion-callout-block pink */
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(244, 223, 235, 0.3);'] {
+  /* color: var(--theme_light--callout_text_pink) !important; */
+  background: var(--theme_light--callout_bg_pink) !important;
+  border-radius: 3px !important;
+}
+
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(244, 223, 235, 0.3);'][style*='color: rgb(55, 53, 47);'] {
+  color: var(--theme_light--callout_text_pink) !important;
+}
+
+/* notion-callout-block red */
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(251, 228, 228, 0.3);'] {
+  /* color: var(--theme_light--callout_text_red) !important; */
+  background: var(--theme_light--callout_bg_red) !important;
+  border-radius: 3px !important;
+}
+
+.notion-body:not(.dark)
+  .notion-callout-block
+  [style*='background: rgba(251, 228, 228, 0.3);']
+  [style*='color: rgb(55, 53, 47);'] {
+  color: var(--theme_light--callout_text_red) !important;
+}
+
+/* -----------------------------callout 样式 end---------------------------- */
+
+/* ===================== header =========================== */
+.notion-body:not(.dark) [placeholder*='Heading 1'] {
+  color: var(--theme_light--h1_text) !important;
+}
+
+.notion-body:not(.dark) [placeholder*='Heading 2'] {
+  margin-bottom: 16px;
+  border-bottom: 4px solid var(--theme_light--h2_text);
+  display: inline-block;
+  color: var(--theme_light--h2_text) !important;
+  width: auto !important;
+  padding: 6px 12px 6px 0 !important;
+  position: relative;
+}
+
+.notion-body:not(.dark) [placeholder*='Heading 2']::before {
+  content: '🔥 ';
+}
+
+.notion-body:not(.dark) [placeholder*='Heading 3'] {
+  width: fit-content !important;
+  padding: 4px 10px !important;
+  border-radius: 10px;
+  border: 2px solid #42b983;
+  color: var(--theme_light--h3_text) !important;
+  background-color: #fbf8e7;
+  display: inline-block;
+  margin-bottom: 14px;
+}
+
+.notion-body:not(.dark) [placeholder*='Heading 3']::before {
+  content: '📌 ';
+}
+
+/* list 样式 */
+.notion-body:not(.dark)
+  [style*='font-size: 1.5em; line-height: 1; margin-bottom: 0.1em;'] {
+  color: #41b983 !important;
+}
+
+/* quoteblock 样式 */
+.notion-body:not(.dark) .notion-quote-block [style*='rgb(55, 53, 47);'] {
+  font-size: 0.85em !important;
+  border-left: none !important;
+  padding: 0.5em 0.5em 0.5em 1.9em !important;
+  position: relative;
+  margin: 10px 0;
+  background: #9494942e;
+  border-radius: 3px;
+}
+
+.notion-body:not(.dark)
+  .notion-quote-block
+  [style*='caret-color: rgb(55, 53, 47);']::before {
+  content: '\201C';
+  font-family: Georgia, serif;
+  font-size: 44px;
+  font-weight: bold;
+  color: #42b983;
+  position: absolute;
+  left: 0px;
+  top: -24px;
+}
+
+/* link style */
+.notion-body:not(.dark) .notion-link-token span {
+  border-bottom: 0.05em solid;
+  border-color: rgb(233, 51, 38) !important;
+  border-width: 3px !important;
+  opacity: 1 !important;
+}
+
+.notion-body:not(.dark) .notion-link-token span:hover {
+  color: rgb(233, 51, 38) !important;
+}
+
+/* code */
+.dark [style*='color:#EB5757'] {
+  color: var(--theme_light--code_inline-text) !important;
+  background: var(--theme_light--code_inline-background) !important;
+}

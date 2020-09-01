@@ -123,7 +123,8 @@ s {
 #alerts [role='alert'] {
   display: flex;
   padding: 0.75em;
-  /* border: 1px solid var(--theme--text_ui_info); */
+  background: var(--theme--interactive_hover);
+  border: 1px solid var(--theme--interactive_hover-border);
 }
 #alerts [role='alert']::before {
   content: '!';
@@ -132,30 +133,43 @@ s {
   font-weight: bold;
   font-size: 1.2em;
   padding-right: 0.5rem;
-  color: var(--theme--bg_text);
+  color: var(--theme--interactive_hover-border);
 }
 #alerts [role='alert'] p {
   font-size: 1rem;
   margin: auto 0;
   padding-left: 0.5em;
-  color: var(--theme--bg_text);
+  color: var(--theme--line_text);
 }
 
+#alerts .error::before {
+  color: var(--theme--select_red);
+}
 #alerts .error {
-  background: var(--theme--bg_red);
+  background: var(--theme--line_red);
+  border-color: var(--theme--select_red);
+}
+#alerts .warning::before {
+  color: var(--theme--select_yellow);
 }
 #alerts .warning {
-  background: var(--theme--bg_yellow);
+  background: var(--theme--line_yellow);
+  border-color: var(--theme--select_yellow);
+}
+#alerts .info::before {
+  color: var(--theme--select_blue);
 }
 #alerts .info {
-  background: var(--theme--bg_blue);
+  background: var(--theme--line_blue);
+  border-color: var(--theme--select_blue);
 }
-
 #alerts .success::before {
   content: '✓';
+  color: var(--theme--select_green);
 }
 #alerts .success {
-  background: var(--theme--bg_green);
+  background: var(--theme--line_green);
+  border-color: var(--theme--select_green);
 }
 
 #alerts code {
@@ -188,7 +202,7 @@ s {
 #search > input {
   width: 100%;
   padding: 1em 1.4em 1em 2.8em;
-  font: 1em var(--font);
+  font: 1em var(--theme--font_sans);
   background: var(--theme--card);
   border: 1px solid var(--theme--table-border);
   color: var(--theme--text);
@@ -248,21 +262,6 @@ s {
   margin: 0;
   font-size: 1rem;
 }
-
-/* #modules section .meta .toggle input + label .switch::before {
-  background: linear-gradient(
-    90deg,
-    var(--theme--text_green),
-    var(--theme--bg_green)
-  );
-}
-#modules section .meta .toggle input + label .switch {
-  background: linear-gradient(
-    90deg,
-    var(--theme--text_red),
-    var(--theme--bg_red)
-  );
-} */
 
 #modules section .desc {
   margin: 0.3em 0 0.4em 0;
@@ -439,7 +438,7 @@ s {
   transform: translateX(var(--menu--toggle_offset, 0));
   transition: transform 350ms, box-shadow 350ms;
   background: var(--theme--option_active-color);
-  box-shadow: 2px 1px 4px var(--theme--table-border);
+  /* box-shadow: 2px 1px 4px var(--theme--table-border); */
 }
 .toggle input[type='checkbox']:checked:focus + label .switch {
   background: none !important;
