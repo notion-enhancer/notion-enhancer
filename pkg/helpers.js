@@ -9,8 +9,7 @@
 const os = require('os'),
   path = require('path'),
   fs = require('fs-extra'),
-  { exec, execSync } = require('child_process'),
-  { promisify } = require('util');
+  { execSync } = require('child_process');
 
 // used to differentiate between "enhancer failed" and "code broken" errors.
 class EnhancerError extends Error {
@@ -128,6 +127,7 @@ function getEnhancements() {
         !mod.name ||
         !mod.version ||
         !mod.author ||
+        (mod.fonts && !mod.fonts.every((font) => typeof font === 'string')) ||
         (mod.options &&
           !mod.options.every((opt) =>
             ['toggle', 'select', 'input', 'file', 'color'].includes(opt.type)
@@ -169,6 +169,13 @@ function readline() {
   });
 }
 
+// construct a HTMLElement from a string
+function createElement(html) {
+  const template = document.createElement('template');
+  template.innerHTML = html.trim();
+  return template.content.firstElementChild;
+}
+
 module.exports = {
   EnhancerError,
   is_wsl,
@@ -178,4 +185,5 @@ module.exports = {
   getEnhancements,
   getJSON,
   readline,
+  createElement,
 };

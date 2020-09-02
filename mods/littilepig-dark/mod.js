@@ -12,11 +12,12 @@ module.exports = {
   tags: ['theme', 'dark'],
   name: 'littlepig dark',
   desc: 'a purple monospaced theme using emojis and colourful text.',
-  version: '0.1.0',
+  version: '0.1.1',
   author: {
     name: 'Lizishan',
     link: 'https://www.reddit.com/user/Lizishan/',
     avatar:
       'https://styles.redditmedia.com/t5_110nz4/styles/profileIcon_h1m3b16exoi51.jpg',
   },
+  fonts: ['https://dev-cats.github.io/code-snippets/JetBrainsMono.css'],
 };

@@ -54,6 +54,7 @@ module.exports = {
     type: String in ['toggle', 'select', 'input', 'file'],
     value: Boolean or Array<String> or String or Number or null
   }>,
+  fonts: Array<String> of font_urls,
   hacks?: {
     [k: 'insert-point' (e.g. 'main/createWindow.js')]: function (
       store, // used for configuration and persisting of data (explanation below).
@@ -63,16 +64,17 @@ module.exports = {
 };
 ```
 
-| key     | value                                                                                           | type                   |
-| ------- | ----------------------------------------------------------------------------------------------- | ---------------------- |
-| id      | **required:** uuidv4 - generate a new one [here](https://www.uuidgenerator.net)                 | _string_               |
-| name    | **required:** short name (e.g. `'ocean theme'`)                                                 | _string_               |
-| tags    | **required:** categories/type (e.g. `'extension'`, `'theme'`, `'light'`, `'dark'`)              | _array\<string\>_      |
-| desc    | **optional:** 1-3 sentence description of what the module is/does, with basic markdown support. | _string_               |
-| version | **required:** semver (e.g. `'0.3.7'`)                                                           | _string_               |
-| author  | **required:** see below: original extension creator                                             | _string_ or \<object\> |
-| options | **optional:** see below: options made available in the enhancer menu (accessible from the tray) | _array\<object\>_      |
-| hacks   | **optional:** see below: code inserted at various points                                        | _object_               |
+| key     | value                                                                                                                 | type                   |
+| ------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------- |
+| id      | **required:** uuidv4 - generate a new one [here](https://www.uuidgenerator.net)                                       | _string_               |
+| name    | **required:** short name (e.g. `'ocean theme'`)                                                                       | _string_               |
+| tags    | **required:** categories/type (e.g. `'extension'`, `'theme'`, `'light'`, `'dark'`)                                    | _array\<string\>_      |
+| desc    | **optional:** 1-3 sentence description of what the module is/does, with basic markdown support.                       | _string_               |
+| version | **required:** semver (e.g. `'0.3.7'`)                                                                                 | _string_               |
+| author  | **required:** see below: original extension creator                                                                   | _string_ or \<object\> |
+| options | **optional:** see below: options made available in the enhancer menu (accessible from the tray)                       | _array\<object\>_      |
+| fonts   | **optional:** a list of any font imports - should be `https://` or [`enhancement://`](#the-enhancement-protocol) urls | _array\<string\>_      |
+| hacks   | **optional:** see below: code inserted at various points                                                              | _object_               |
 
 > a module that with the primary function of being a hack should be tagged as an extension,
 > while a module that has the primary function of adding styles should be tagged as a theme.
@@ -173,6 +175,9 @@ the full/up-to-date list of variables and their default values can be found in t
 
 these are all made possible by the core module. if you believe this set of variables is buggy or lacking in any way,
 consider opening a pull request to fix those issues - please do not try and reinvent the wheel unnecessarily.
+
+**want to import an external font or import an included font file? do that in the `mod.js` file, otherwise it**
+**won't be used for the enhancements menu.**
 
 ### using variables
 

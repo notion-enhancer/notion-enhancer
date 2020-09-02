@@ -69,10 +69,16 @@ module.exports = function (__file, __exports) {
       ) {
         document.addEventListener('readystatechange', (event) => {
           if (document.readyState !== 'complete') return false;
-          const style = document.createElement('link');
-          style.rel = 'stylesheet';
-          style.href = `enhancement://${mod.dir}/styles.css`;
-          document.querySelector('head').appendChild(style);
+          for (let rules of [
+            `enhancement://${mod.dir}/styles.css`,
+            ...(mod.fonts || []),
+          ]) {
+            document
+              .querySelector('head')
+              .appendChild(
+                helpers.createElement(`<link rel="stylesheet" href="${rules}">`)
+              );
+          }
         });
       }
       if (mod.hacks && mod.hacks[__file]) {

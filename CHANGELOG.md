@@ -11,27 +11,26 @@
 a feature and cleanup update.
 
 - improved: halved the number of css rules used -> much better performance.
+- improved: font imports must be define in the `mod.js` so that they can also be used in
+  the enhancements menu.
 - bugfix: enhancer settings should no longer reset on update (though this will not have
   effect until the release after this one).
-  bugfix: blue select tags are no longer purple.
+- bugfix: blue select tags are no longer purple.
 - themes: "littlepig" (light + dark) = monospaced themes using emojis and colourful text.
 - extension: "font chooser" = customize fonts. for each option, type in the name of the font you would like to use,
   or leave it blank to not change anything.
 
 // todo
 
-<!-- - improved: extension menu will now receive style rules from extensions (prev. only got css vars) = necessary for
-  custom fonts. javascript is still not executable in the menu. (e.g. the "font chooser" will work, but only
-  because all it thing it does is change variables - if it were to try dynamically adding new font import rules
-  things things would break). -->
-
 - improved: added individual text-colour rules for different background colours.
 - improved: added variables for callout backgrounds.
+- improved: tiling window-manager support (can hide titlebars entirely without dragarea/buttons).
 - bugfix: made the open enhancements menu hotkey configurable and changed the default to `option/alt + e`
   to remove conflict with the inline code highlight shortcut.
 - bugfix: block-level text colours are now changed properly.
 - bugfix: page titles now respond to small-text mode.
 - bugfix: update property-layout to match notion changes again.
+- extension: "calendar scroll" = a button to scroll down to the current week for you.
 
 notion-deb-builder has been discovered to not generate an app.asar and so is no longer supported.
 
@@ -39,6 +38,8 @@ notion-deb-builder has been discovered to not generate an app.asar and so is no 
 
 - bugfix: separate text highlight and select tag variables.
 - bugfix: bypass CSP for the `enhancement://` protocol - was failing on some platforms?
+
+> 📥 `npm i -g notion-enhancer@0.8.5`
 
 ### v0.8.4 (2020-08-29)
 

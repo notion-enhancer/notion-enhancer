@@ -12,11 +12,14 @@ module.exports = {
   tags: ['theme', 'dark'],
   name: 'gameish',
   desc: 'a purple, "gamer-styled" theme with a blocky-font.',
-  version: '0.1.2',
+  version: '0.1.3',
   author: {
     name: 'LVL100ShrekCultist',
     link: 'https://www.reddit.com/user/LVL100ShrekCultist/',
     avatar:
       'https://styles.redditmedia.com/t5_2js69j/styles/profileIcon_jvnzmo30fyq41.jpg',
   },
+  fonts: [
+    'https://fonts.googleapis.com/css2?family=Baumans&family=Comfortaa&family=DM+Mono&family=Gruppo&family=Nova+Mono&family=Offside&family=Press+Start+2P&family=Righteous&display=swap',
+  ],
 };
