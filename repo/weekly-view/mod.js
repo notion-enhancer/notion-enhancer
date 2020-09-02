@@ -46,7 +46,7 @@ module.exports = {
                 : 0;
             for (let day of days)
               day.parentElement.parentElement.style.height = 0;
-            today.parentElement.parentElement.style.height = height;
+            if (today) today.parentElement.parentElement.style.height = height;
           }
         }
       });

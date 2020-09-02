@@ -19,7 +19,6 @@ window['__start'] = async () => {
 
   document.defaultView.addEventListener('keyup', (event) => {
     if (event.code === 'F5') location.reload();
-    if ((event.ctrlKey || event.metaKey) && event.key === 'e') browser.close();
     if (!(event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey) {
       if (
         document.activeElement.parentElement.id === 'tags' &&
@@ -458,6 +457,7 @@ window['__start'] = async () => {
           $opt
             .querySelector(`#${opt.type}_${mod.id}--${opt.key}`)
             .addEventListener('change', (event) => {
+              modified();
               if (opt.type === 'toggle') {
                 store(mod.id)[opt.key] = event.target.checked;
               } else if (opt.type === 'file') {
@@ -469,9 +469,8 @@ window['__start'] = async () => {
               } else
                 store(mod.id)[opt.key] =
                   typeof opt.value === 'number'
-                    ? Number(event.target.value)
+                    ? +event.target.value
                     : event.target.value;
-              modified();
             });
         }
         $options.appendChild($opt);

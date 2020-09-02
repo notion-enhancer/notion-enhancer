@@ -56,6 +56,12 @@ module.exports = {
       type: 'input',
       value: 'CommandOrControl+Shift+A',
     },
+    {
+      key: 'menu_toggle',
+      label: 'open enhancements menu hotkey:',
+      type: 'input',
+      value: 'Alt+E',
+    },
   ],
   hacks: {
     'main/main.js': require('./tray.js'),

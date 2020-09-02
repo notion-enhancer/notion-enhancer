@@ -19,8 +19,6 @@ module.exports = (store, __exports) => {
   // additional hotkeys
   document.defaultView.addEventListener('keyup', (event) => {
     if (event.code === 'F5') location.reload();
-    if (event.key === 'e' && (event.ctrlKey || event.metaKey))
-      electron.ipcRenderer.send('enhancer:open-extension-menu');
   });
 
   const attempt_interval = setInterval(enhance, 500);
