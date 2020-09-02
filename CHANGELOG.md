@@ -16,6 +16,7 @@ a feature and cleanup update.
 - bugfix: enhancer settings should no longer reset on update (though this will not have
   effect until the release after this one).
 - bugfix: blue select tags are no longer purple.
+- bugfix: page titles now respond to small-text mode.
 - themes: "littlepig" (light + dark) = monospaced themes using emojis and colourful text.
 - extension: "font chooser" = customize fonts. for each option, type in the name of the font you would like to use,
   or leave it blank to not change anything.
@@ -23,12 +24,11 @@ a feature and cleanup update.
 // todo
 
 - improved: added individual text-colour rules for different background colours.
-- improved: added variables for callout backgrounds.
+- improved: added variables for callout colouring.
 - improved: tiling window-manager support (can hide titlebars entirely without dragarea/buttons).
 - bugfix: made the open enhancements menu hotkey configurable and changed the default to `option/alt + e`
   to remove conflict with the inline code highlight shortcut.
 - bugfix: block-level text colours are now changed properly.
-- bugfix: page titles now respond to small-text mode.
 - bugfix: update property-layout to match notion changes again.
 - extension: "calendar scroll" = a button to scroll down to the current week for you.
 
