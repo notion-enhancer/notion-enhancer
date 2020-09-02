@@ -5,6 +5,7 @@
 - [groupy-like tabbing](https://www.npmjs.com/package/electron-tabs)
 - [improved responsiveness](https://chrome.google.com/webstore/detail/notion%20%20-responsiveness-f/leadcilhbmibbkgbnjgmmnfgnnhmeddk)
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
+- [advanced math editor](https://github.com/Manueloccorso/NotionMathEditor_BrowserExtension)
 
 ### v0.9.0 (wip)
 
@@ -21,14 +22,14 @@ a feature and cleanup update.
 - themes: "littlepig" (light + dark) = monospaced themes using emojis and colourful text.
 - extension: "font chooser" = customize fonts. for each option, type in the name of the font you would like to use,
   or leave it blank to not change anything.
+- bugfix: made the open enhancements menu hotkey configurable and changed the default to `alt + e`
+  to remove conflict with the inline code highlight shortcut.
 
 // todo
 
 - improved: added individual text-colour rules for different background colours.
 - improved: added variables for callout colouring.
 - improved: tiling window-manager support (can hide titlebars entirely without dragarea/buttons).
-- bugfix: made the open enhancements menu hotkey configurable and changed the default to `option/alt + e`
-  to remove conflict with the inline code highlight shortcut.
 - bugfix: block-level text colours are now changed properly.
 - bugfix: update property-layout to match notion changes again.
 - extension: "calendar scroll" = a button to scroll down to the current week for you.
