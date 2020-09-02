@@ -12,7 +12,7 @@ module.exports = {
   tags: ['extension'],
   name: 'weekly view',
   desc: 'calendar views named "weekly" will show only the 7 days of this week.',
-  version: '0.5.0',
+  version: '0.5.1',
   author: 'adihd',
   hacks: {
     'renderer/preload.js'(store, __exports) {
@@ -36,15 +36,17 @@ module.exports = {
             if (!collection_view || collection_view.innerText != 'weekly')
               return;
             const days = collection_view.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(
-              'notion-calendar-view-day'
-            );
+                'notion-calendar-view-day'
+              ),
+              today = [...days].find((day) => day.style.background),
+              height = today
+                ? getComputedStyle(
+                    today.parentElement.parentElement
+                  ).getPropertyValue('height')
+                : 0;
             for (let day of days)
               day.parentElement.parentElement.style.height = 0;
-            if (days.length) {
-              const today = [...days].find((day) => day.style.background);
-              if (today)
-                today.parentElement.parentElement.style.height = '124px';
-            }
+            today.parentElement.parentElement.style.height = height;
           }
         }
       });

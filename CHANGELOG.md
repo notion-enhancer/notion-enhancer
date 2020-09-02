@@ -17,6 +17,7 @@ a feature and cleanup update.
   effect until the release after this one).
 - bugfix: blue select tags are no longer purple.
 - bugfix: page titles now respond to small-text mode.
+- bugfix: weekly calendar view height is now sized correctly according to its contents.
 - themes: "littlepig" (light + dark) = monospaced themes using emojis and colourful text.
 - extension: "font chooser" = customize fonts. for each option, type in the name of the font you would like to use,
   or leave it blank to not change anything.
