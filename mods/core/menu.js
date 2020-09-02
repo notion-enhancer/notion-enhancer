@@ -15,32 +15,44 @@ const store = require('../../pkg/store.js'),
   browser = electron.remote.getCurrentWindow();
 
 window['__start'] = async () => {
-  if (!store(id).tiling_mode) {
-    const buttons = require('./buttons.js')(() => ({ frameless: true }));
-    document.querySelector('#menu-titlebar').appendChild(buttons.element);
-  }
+  const buttons = require('./buttons.js')(() => ({
+    '72886371-dada-49a7-9afc-9f275ecf29d3': {
+      enabled: (store('mods')['72886371-dada-49a7-9afc-9f275ecf29d3'] || {})
+        .enabled,
+    },
+    tiling_mode: store('0f0bf8b6-eae6-4273-b307-8fc43f2ee082').tiling_mode,
+    frameless: true,
+  }));
+  document.querySelector('#menu-titlebar').appendChild(buttons.element);
 
   document.defaultView.addEventListener('keyup', (event) => {
     if (event.code === 'F5') location.reload();
-    if (!(event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey) {
+    const meta =
+      !(event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey;
+    if (
+      meta &&
+      document.activeElement.parentElement.id === 'tags' &&
+      event.key === 'Enter'
+    )
+      document.activeElement.click();
+    if (document.activeElement.tagName.toLowerCase() === 'input') {
+      if (document.activeElement.type === 'checkbox' && event.key === 'Enter')
+        document.activeElement.checked = !document.activeElement.checked;
       if (
-        document.activeElement.parentElement.id === 'tags' &&
-        event.key === 'Enter'
+        ['Escape', 'Enter'].includes(event.key) &&
+        document.activeElement.type !== 'checkbox' &&
+        (document.activeElement.parentElement.id !== 'search' ||
+          event.key === 'Escape')
       )
-        document.activeElement.click();
-      if (document.activeElement.tagName.toLowerCase() === 'input') {
-        if (document.activeElement.type === 'checkbox' && event.key === 'Enter')
-          document.activeElement.checked = !document.activeElement.checked;
-        if (
-          ['Escape', 'Enter'].includes(event.key) &&
-          document.activeElement.type !== 'checkbox' &&
-          (document.activeElement.parentElement.id !== 'search' ||
-            event.key === 'Escape')
-        )
-          document.activeElement.blur();
-      } else if (event.key === '/')
-        document.querySelector('#search > input').focus();
-    }
+        document.activeElement.blur();
+    } else if (
+      (meta && event.key === '/') ||
+      ((event.ctrlKey || event.metaKey) &&
+        event.key === 'f' &&
+        !event.altKey &&
+        !event.shiftKey)
+    )
+      document.querySelector('#search > input').focus();
   });
 
   electron.ipcRenderer.send('enhancer:get-theme-vars');
