@@ -5,8 +5,6 @@
  * under the MIT license
  */
 
-@import url('https://fonts.googleapis.com/css2?family=Baumans&family=Comfortaa&family=DM+Mono&family=Gruppo&family=Nova+Mono&family=Offside&family=Press+Start+2P&family=Righteous&display=swap');
-
 :root {
   --theme_dark--main: #1e1c26;
   --theme_dark--sidebar: #24222c;

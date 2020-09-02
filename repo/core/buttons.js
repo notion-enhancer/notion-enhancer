@@ -7,13 +7,13 @@
 'use strict';
 
 module.exports = (store) => {
-  const electron = require('electron'),
+  const helpers = require('../../pkg/helpers.js'),
     path = require('path'),
     fs = require('fs-extra'),
     browser = require('electron').remote.getCurrentWindow(),
     is_mac = process.platform === 'darwin',
     buttons = {
-      element: document.createElement('div'),
+      element: helpers.createElement('<div class="window-buttons-area"></div>'),
       insert: [
         'alwaysontop',
         ...(store().frameless && !is_mac
@@ -77,7 +77,6 @@ module.exports = (store) => {
     };
 
   (async () => {
-    buttons.element.className = 'window-buttons-area';
     for (let btn of buttons.insert) {
       buttons.element.innerHTML += `<button class="window-button" id="btn-${btn}">${await buttons.icons[
         btn

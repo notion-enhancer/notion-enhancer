@@ -40,8 +40,9 @@ module.exports = (store, __exports) => {
     if (store().frameless) {
       document.body.classList.add('frameless');
       // draggable area
-      const dragarea = document.createElement('div');
-      dragarea.className = 'window-dragarea';
+      const dragarea = helpers.createElement(
+        '<div class="window-dragarea"></div>'
+      );
       document.querySelector('.notion-topbar').prepend(dragarea);
       document.documentElement.style.setProperty(
         '--configured--dragarea_height',

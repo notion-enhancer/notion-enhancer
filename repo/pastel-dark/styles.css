@@ -5,8 +5,6 @@
  * under the MIT license
  */
 
-@import url('https://rsms.me/inter/inter.css');
-
 :root {
   --theme_dark--main: #0b0b0b;
   --theme_dark--sidebar: #0f0f0f;

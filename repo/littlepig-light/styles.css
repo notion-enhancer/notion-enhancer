@@ -5,8 +5,6 @@
  * under the MIT license
  */
 
-@import url('https://dev-cats.github.io/code-snippets/JetBrainsMono.css');
-
 :root {
   --theme_light--font_sans: 'JetBrains Mono';
   --theme_light--font_mono: 'JetBrains Mono';

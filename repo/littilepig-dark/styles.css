@@ -5,8 +5,6 @@
  * under the MIT license
  */
 
-@import url('https://dev-cats.github.io/code-snippets/JetBrainsMono.css');
-
 :root {
   --theme_dark--main: #1e1c26;
   --theme_dark--sidebar: #24222c;

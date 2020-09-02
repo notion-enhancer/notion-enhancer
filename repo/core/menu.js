@@ -47,15 +47,10 @@ window['__start'] = async () => {
       document.body.style.setProperty(style[0], style[1]);
   });
 
-  function createElement(html) {
-    const template = document.createElement('template');
-    template.innerHTML = html.trim();
-    return template.content.firstElementChild;
-  }
   function createAlert(type, message) {
     if (!type)
       throw Error('<notion-enhancer> @ createAlert: no alert type specified');
-    const el = createElement(`
+    const el = helpers.createElement(`
       <section class="${type}" role="alert">
         <p>${message}</p>
       </section>
@@ -152,7 +147,9 @@ window['__start'] = async () => {
 
   document
     .querySelector('#colorpicker')
-    .appendChild(createElement('<button class="close-modal"></button>'));
+    .appendChild(
+      helpers.createElement('<button class="close-modal"></button>')
+    );
   document.querySelectorAll('#popup .close-modal').forEach((el) =>
     el.addEventListener('click', (event) => {
       $popup.classList.remove('visible');
@@ -195,7 +192,7 @@ window['__start'] = async () => {
       throw Error('<notion-enhancer> @ createTag: no tagname specified');
     if (!onclick)
       throw Error('<notion-enhancer> @ createTag: no action specified');
-    const el = createElement(
+    const el = helpers.createElement(
       `<span class="selected" ${
         color ? `style="--tag_color: ${color}" ` : ''
       }tabindex="0">${tagname}</span>`
@@ -345,7 +342,7 @@ window['__start'] = async () => {
           </label>
         `;
     }
-    $opt = createElement(`<p class="${opt.type}">${$opt}</p>`);
+    $opt = helpers.createElement(`<p class="${opt.type}">${$opt}</p>`);
     if (opt.type === 'color') {
       $opt
         .querySelector(`#${opt.type}_${id}--${opt.key}`)
@@ -377,18 +374,13 @@ window['__start'] = async () => {
       ? 1
       : a.name.localeCompare(b.name)
   )) {
-    // mod styling - necessary for fonts
-    // if (
-    //   fs.pathExistsSync(path.resolve(`${__dirname}/../${mod.dir}/styles.css`))
-    // ) {
-    //   document
-    //     .querySelector('head')
-    //     .appendChild(
-    //       createElement(
-    //         `<link rel="stylesheet" href="enhancement://${mod.dir}/styles.css">`
-    //       )
-    //     );
-    // }
+    for (let fonts of mod.fonts || []) {
+      document
+        .querySelector('head')
+        .appendChild(
+          helpers.createElement(`<link rel="stylesheet" href="${fonts}">`)
+        );
+    }
 
     const enabled = store('mods', { [mod.id]: { enabled: false } })[mod.id]
         .enabled,
@@ -400,7 +392,7 @@ window['__start'] = async () => {
               link: `https://github.com/${mod.author}`,
               avatar: `https://github.com/${mod.author}.png`,
             };
-    mod.elem = createElement(`
+    mod.elem = helpers.createElement(`
       <section class="${
         mod.tags.includes('core') || enabled ? 'enabled' : 'disabled'
       }" id="${mod.id}">

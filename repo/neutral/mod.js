@@ -12,6 +12,10 @@ module.exports = {
   tags: ['theme', 'dark'],
   name: 'neutral',
   desc: 'smoother colours and fonts, designed to be more pleasing to the eye.',
-  version: '0.1.1',
+  version: '0.1.2',
   author: 'arecsu',
+  fonts: [
+    'https://rsms.me/inter/inter.css',
+    'https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&display=swap',
+  ],
 };
