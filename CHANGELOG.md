@@ -15,12 +15,14 @@ a feature and cleanup update.
 - improved: font imports must be define in the `mod.js` so that they can also be used in
   the enhancements menu.
 - improved: tiling window-manager support (can hide titlebars entirely without dragarea/buttons).
+- improved: extensions menu search is now case insensitive and includes options, inputs and versions.
+  the search box can also for focused with `CMD/CTRL+F`.
 - bugfix: enhancer settings should no longer reset on update (though this will not have
   effect until the release after this one).
 - bugfix: blue select tags are no longer purple.
 - bugfix: page titles now respond to small-text mode.
 - bugfix: weekly calendar view height is now sized correctly according to its contents.
-- bugfix: made the open enhancements menu hotkey configurable and changed the default to `alt + e`
+- bugfix: made the open enhancements menu hotkey configurable and changed the default to `ALT+E`
   to remove conflict with the inline code highlight shortcut.
 - themes: "littlepig" (light + dark) = monospaced themes using emojis and colourful text.
 - extension: "font chooser" = customize fonts. for each option, type in the name of the font you would like to use,
@@ -30,7 +32,6 @@ a feature and cleanup update.
 
 // todo
 
-- improved: extensions menu search now includes options.
 - improved: added individual text-colour rules for different background colours.
 - improved: added variables for callout colouring.
 - bugfix: block-level text colours are now changed properly.

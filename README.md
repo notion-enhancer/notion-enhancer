@@ -95,7 +95,7 @@ team to take to heart for future improvements."
 ## features
 
 once applied, modules can be configured via the graphical menu, which is opened from
-the tray/menubar icon or with `CMD/CTRL+E`.
+the tray/menubar icon or with `ALT+E`.
 
 ![](https://user-images.githubusercontent.com/16874139/91446210-84ee6b00-e8ba-11ea-9f40-187a150e4a82.png)
 
