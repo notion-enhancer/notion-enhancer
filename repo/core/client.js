@@ -35,7 +35,7 @@ module.exports = (store, __exports) => {
       document.body.classList.add('smooth-scrollbars');
 
     // frameless
-    if (store().frameless) {
+    if (store().frameless && !store().tiling_mode) {
       document.body.classList.add('frameless');
       // draggable area
       const dragarea = helpers.createElement(
@@ -154,7 +154,7 @@ module.exports = (store, __exports) => {
     });
     let sidebar_width;
     function setSidebarWidth(list) {
-      if (!store().frameless) return;
+      if (!store().frameless && store().tiling_mode) return;
       const new_sidebar_width =
         list[0].target.style.height === 'auto'
           ? '0px'

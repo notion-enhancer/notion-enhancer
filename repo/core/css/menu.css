@@ -117,6 +117,9 @@ s {
 #menu-titlebar {
   background: var(--theme--dragarea);
 }
+#menu-titlebar:empty {
+  display: none;
+}
 
 /* alerts */
 

@@ -16,7 +16,7 @@ module.exports = (store) => {
       element: helpers.createElement('<div class="window-buttons-area"></div>'),
       insert: [
         'alwaysontop',
-        ...(store().frameless && !is_mac
+        ...(store().frameless && !store().tiling_mode && !is_mac
           ? ['minimize', 'maximize', 'close']
           : []),
       ],
@@ -86,7 +86,7 @@ module.exports = (store) => {
       document.querySelector(`.window-button#btn-${btn}`).onclick =
         buttons.actions[btn];
     }
-    if (store().frameless && !is_mac) {
+    if (store().frameless && !store().tiling_mode && !is_mac) {
       window.addEventListener('resize', (event) => {
         Promise.resolve(buttons.icons.maximize()).then((icon) => {
           icon = icon.toString();
