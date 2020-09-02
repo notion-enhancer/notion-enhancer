@@ -1,0 +1,20 @@
+/*
+ * calendar scroll
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * under the MIT license
+ */
+
+#calendar-scroll-to-week {
+  background: var(--theme--interactive_hover);
+  border: 1px solid transparent;
+  font-size: var(--theme--font_label-size);
+  color: var(--theme--text);
+  height: 24px;
+  border-radius: 3px;
+  line-height: 1.2;
+  padding: 0 0.5em;
+}
+#calendar-scroll-to-week:hover {
+  background: transparent;
+  border: 1px solid var(--theme--interactive_hover);
+}

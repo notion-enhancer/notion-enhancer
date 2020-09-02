@@ -22,7 +22,7 @@ a feature and cleanup update.
 - bugfix: blue select tags are no longer purple.
 - bugfix: page titles now respond to small-text mode.
 - bugfix: weekly calendar view height is now sized correctly according to its contents.
-- bugfix: made the open enhancements menu hotkey configurable and changed the default to `ALT+E`
+- bugfix: made the open enhancements menu hotkey configurable and changed the default to `ALT+E`.
   to remove conflict with the inline code highlight shortcut.
 - bugfix: update property-layout to match notion changes again.
 - themes: "littlepig" (light + dark) = monospaced themes using emojis and colourful text.
@@ -30,13 +30,13 @@ a feature and cleanup update.
   or leave it blank to not change anything.
 - extension: "always on top" = add an arrow/button to show the notion window on top of other windows
   even if it's not focused.
+- extension: "calendar scroll" = add a button to scroll down to the current week for you.
 
 // todo
 
 - improved: added individual text-colour rules for different background colours.
 - improved: added variables for callout colouring.
 - bugfix: block-level text colours are now changed properly.
-- extension: "calendar scroll" = a button to scroll down to the current week for you.
 
 notion-deb-builder has been discovered to not generate an app.asar and so is no longer supported.
 
