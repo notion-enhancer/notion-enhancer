@@ -45,12 +45,13 @@ window['__start'] = async () => {
           event.key === 'Escape')
       )
         document.activeElement.blur();
-    } else if (
-      (meta && event.key === '/') ||
-      ((event.ctrlKey || event.metaKey) &&
-        event.key === 'f' &&
-        !event.altKey &&
-        !event.shiftKey)
+    } else if (meta && event.key === '/')
+      document.querySelector('#search > input').focus();
+    if (
+      (event.ctrlKey || event.metaKey) &&
+      event.key === 'f' &&
+      !event.altKey &&
+      !event.shiftKey
     )
       document.querySelector('#search > input').focus();
   });
@@ -171,7 +172,7 @@ window['__start'] = async () => {
   );
 
   // search
-  const search_query = {
+  const search_filters = {
     enabled: true,
     disabled: true,
     tags: new Set(
@@ -181,19 +182,28 @@ window['__start'] = async () => {
         .sort()
     ),
   };
+  function innerText(elem) {
+    let text = '';
+    for (let node of elem.childNodes) {
+      if (node.nodeType === 3) text += node.textContent;
+      if (node.nodeType === 1)
+        text += ['text', 'number'].includes(node.type)
+          ? node.value
+          : innerText(node);
+    }
+    return text;
+  }
   function search() {
     modules.loaded.forEach((mod) => {
       const $search_input = document.querySelector('#search > input');
       if (
-        (mod.elem.classList.contains('enabled') && !search_query.enabled) ||
-        (mod.elem.classList.contains('disabled') && !search_query.disabled) ||
-        !mod.tags.some((tag) => search_query.tags.has(tag)) ||
+        (mod.elem.classList.contains('enabled') && !search_filters.enabled) ||
+        (mod.elem.classList.contains('disabled') && !search_filters.disabled) ||
+        !mod.tags.some((tag) => search_filters.tags.has(tag)) ||
         ($search_input.value &&
-          !(
-            mod.name +
-            mod.tags.map((tag) => `#${tag}`).join(' ') +
-            mod.desc
-          ).includes($search_input.value))
+          !innerText(mod.elem)
+            .toLowerCase()
+            .includes($search_input.value.toLowerCase()))
       )
         return (mod.elem.style.display = 'none');
       mod.elem.style.display = 'block';
@@ -220,17 +230,17 @@ window['__start'] = async () => {
   }
   createTag(
     'enabled',
-    (state) => [(search_query.enabled = state), search()]
+    (state) => [(search_filters.enabled = state), search()]
     // 'var(--theme--bg_green)'
   );
   createTag(
     'disabled',
-    (state) => [(search_query.disabled = state), search()]
+    (state) => [(search_filters.disabled = state), search()]
     // 'var(--theme--bg_red)'
   );
-  for (let tag of search_query.tags)
+  for (let tag of search_filters.tags)
     createTag(`#${tag}`, (state) => [
-      state ? search_query.tags.add(tag) : search_query.tags.delete(tag),
+      state ? search_filters.tags.add(tag) : search_filters.tags.delete(tag),
       search(),
     ]);
 
