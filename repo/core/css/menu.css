@@ -105,19 +105,18 @@ s {
 
 #menu-titlebar {
   display: flex;
-  padding: 0.4em;
   -webkit-app-region: drag;
 }
 #menu-titlebar button {
   -webkit-app-region: no-drag;
 }
-#menu-titlebar :first-child {
-  margin-left: auto;
-}
 #menu-titlebar {
   background: var(--theme--dragarea);
 }
-#menu-titlebar:empty {
+#menu-titlebar > .window-buttons-area {
+  margin: 0.4em 0.4em 0.4em auto;
+}
+#menu-titlebar > .window-buttons-area:empty {
   display: none;
 }
 
