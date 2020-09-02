@@ -7,6 +7,7 @@
 'use strict';
 
 const store = require('../../pkg/store.js'),
+  { id } = require('./mod.js'),
   helpers = require('../../pkg/helpers.js'),
   fs = require('fs-extra'),
   path = require('path'),
@@ -14,8 +15,10 @@ const store = require('../../pkg/store.js'),
   browser = electron.remote.getCurrentWindow();
 
 window['__start'] = async () => {
-  const buttons = require('./buttons.js')(() => ({ frameless: true }));
-  document.querySelector('#menu-titlebar').appendChild(buttons.element);
+  if (!store(id).tiling_mode) {
+    const buttons = require('./buttons.js')(() => ({ frameless: true }));
+    document.querySelector('#menu-titlebar').appendChild(buttons.element);
+  }
 
   document.defaultView.addEventListener('keyup', (event) => {
     if (event.code === 'F5') location.reload();

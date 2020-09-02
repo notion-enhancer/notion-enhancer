@@ -45,6 +45,12 @@ module.exports = {
       value: 15,
     },
     {
+      key: 'tiling_mode',
+      label: 'tiling window manager mode',
+      type: 'toggle',
+      value: false,
+    },
+    {
       key: 'smooth_scrollbars',
       label: 'integrated scrollbars',
       type: 'toggle',

@@ -14,6 +14,7 @@ a feature and cleanup update.
 - improved: halved the number of css rules used -> much better performance.
 - improved: font imports must be define in the `mod.js` so that they can also be used in
   the enhancements menu.
+- improved: tiling window-manager support (can hide titlebars entirely without dragarea/buttons).
 - bugfix: enhancer settings should no longer reset on update (though this will not have
   effect until the release after this one).
 - bugfix: blue select tags are no longer purple.
@@ -29,9 +30,10 @@ a feature and cleanup update.
 
 - improved: added individual text-colour rules for different background colours.
 - improved: added variables for callout colouring.
-- improved: tiling window-manager support (can hide titlebars entirely without dragarea/buttons).
 - bugfix: block-level text colours are now changed properly.
 - bugfix: update property-layout to match notion changes again.
+- extension: "always on top" = add an arrow/button to show the notion window on top of other windows
+  even if it's not focused.
 - extension: "calendar scroll" = a button to scroll down to the current week for you.
 
 notion-deb-builder has been discovered to not generate an app.asar and so is no longer supported.
