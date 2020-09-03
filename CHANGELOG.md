@@ -17,6 +17,7 @@ a feature and cleanup update.
 - improved: tiling window-manager support (can hide titlebars entirely without dragarea/buttons).
 - improved: extensions menu search is now case insensitive and includes options, inputs and versions.
   the search box can also for focused with `CMD/CTRL+F`.
+- improved: extensions menu filters shown either a ✓ or × to help understand the current state.
 - bugfix: enhancer settings should no longer reset on update (though this will not have
   effect until the release after this one).
 - bugfix: blue select tags are no longer purple.
@@ -25,6 +26,8 @@ a feature and cleanup update.
 - bugfix: made the open enhancements menu hotkey configurable and changed the default to `ALT+E`.
   to remove conflict with the inline code highlight shortcut.
 - bugfix: update property-layout to match notion changes again.
+- bugfix: updated some of the tweak styling to match notion changes.
+- bugfix: block-level text colours are now changed properly.
 - themes: "littlepig" (light + dark) = monospaced themes using emojis and colourful text.
 - extension: "font chooser" = customize fonts. for each option, type in the name of the font you would like to use,
   or leave it blank to not change anything.
@@ -36,7 +39,8 @@ a feature and cleanup update.
 
 - improved: added individual text-colour rules for different background colours.
 - improved: added variables for callout colouring.
-- bugfix: block-level text colours are now changed properly.
+- bugfix: switch to a different right-to-left extension because it wasn't working right
+  with bullet points and stuff.
 
 notion-deb-builder has been discovered to not generate an app.asar and so is no longer supported.
 

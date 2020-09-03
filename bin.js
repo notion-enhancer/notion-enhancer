@@ -67,4 +67,5 @@ cli.showVersionOnExit = true;
 
 cli.parse();
 
-if (!cli.matchedCommand && !helpCalled) cli.outputHelp();
+if (!cli.matchedCommand && !helpCalled && !cli.options.version)
+  cli.outputHelp();
