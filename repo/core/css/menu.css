@@ -241,9 +241,15 @@ s {
   background: var(--theme--option_hover-background);
   color: var(--theme--option_hover-color);
 }
+#search #tags > span::before {
+  content: '× ';
+}
 #search #tags > .selected {
   background: var(--tag_color, var(--theme--option_active-background));
   color: var(--theme--option_active-color);
+}
+#search #tags > .selected::before {
+  content: '✓ ';
 }
 
 /* module meta */
