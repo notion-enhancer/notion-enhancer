@@ -188,6 +188,14 @@ these include:
 
 ![](https://user-images.githubusercontent.com/16874139/90522144-b6768080-e1ae-11ea-8150-527c1f70f0e7.png)
 
+### hide help button
+
+**tags:** #extension
+
+**description:** hide the help button if you don't need it
+
+**author**: [coryzibell](https://github.com/coryzibell/)
+
 ### neutral
 
 **tags:** #theme #dark
