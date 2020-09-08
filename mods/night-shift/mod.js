@@ -29,13 +29,11 @@ module.exports = {
             attributes: true,
           });
           function process(list, observer) {
-            const mode = `notion-app-inner notion-${
-              window.matchMedia('(prefers-color-scheme: dark)').matches
-                ? 'dark'
-                : 'light'
-            }-theme`;
-            if (list[0].target.className !== mode)
-              list[0].target.className = mode;
+            const mode = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+            if (!window.localStorage.getItem('theme').includes(mode)) {
+              window.localStorage.setItem('theme', `{"mode":"${mode}"}`)
+              location.reload()
+            }
           }
         }
       });
