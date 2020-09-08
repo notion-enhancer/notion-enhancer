@@ -37,6 +37,7 @@ a feature and cleanup update.
   even if it's not focused.
 - extension: "calendar scroll" = add a button to scroll down to the current week for you.
 - extension: "hide help button" = hide the help button if you don't need it.
+- extension: "bypass preview" = go straight to the normal full view when opening a page.
 
 // todo
 
