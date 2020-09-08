@@ -50,7 +50,7 @@
   --theme_dark--text_pink: #f7b8dc;
   --theme_dark--text_red: #f8acb4;
 
-  --theme_dark--select_text: rgb(55, 53, 47);
+  --theme_dark--select-text: rgb(55, 53, 47);
   --theme_dark--select_gray: #b1aeab;
   --theme_dark--select_brown: #d8b6a6;
   --theme_dark--select_orange: #fde3c0;
@@ -61,7 +61,7 @@
   --theme_dark--select_pink: #f7b8dc;
   --theme_dark--select_red: #f8acb4;
 
-  --theme_dark--bg_text: var(--theme_darl--select_text);
+  --theme_dark--bg-text: var(--theme_dark--select-text);
   --theme_dark--bg_gray: var(--theme_dark--select_gray);
   --theme_dark--bg_brown: var(--theme_dark--select_brown);
   --theme_dark--bg_orange: var(--theme_dark--select_orange);
@@ -72,7 +72,7 @@
   --theme_dark--bg_pink: var(--theme_dark--select_pink);
   --theme_dark--bg_red: var(--theme_dark--select_red);
 
-  --theme_dark--line_text: rgb(55, 53, 47);
+  --theme_dark--line-text: rgb(34, 34, 34);
   --theme_dark--line_gray: #c2c1c089;
   --theme_dark--line_brown: #dacec992;
   --theme_dark--line_orange: #fff0dc9f;
@@ -83,9 +83,20 @@
   --theme_dark--line_pink: #fdcce8b1;
   --theme_dark--line_red: #ffc8ce9e;
 
+  --theme_dark--callout-text: var(--theme_dark--line-text);
+  --theme_dark--callout_gray: var(--theme_dark--line_gray);
+  --theme_dark--callout_brown: var(--theme_dark--line_brown);
+  --theme_dark--callout_orange: var(--theme_dark--line_orange);
+  --theme_dark--callout_yellow: var(--theme_dark--line_yellow);
+  --theme_dark--callout_green: var(--theme_dark--line_green);
+  --theme_dark--callout_blue: var(--theme_dark--line_blue);
+  --theme_dark--callout_purple: var(--theme_dark--line_purple);
+  --theme_dark--callout_pink: var(--theme_dark--line_pink);
+  --theme_dark--callout_red: var(--theme_dark--line_red);
+
   --theme_dark--code_inline-text: #b3f5c8;
   --theme_dark--code_inline-background: rgb(8, 8, 8);
-  --theme_dark--code_text: var(--theme_dark--text);
+  --theme_dark--code-text: var(--theme_dark--text);
   --theme_dark--code-background: #0f0f0f;
   --theme_dark--code_function: var(--theme_dark--text_blue);
   --theme_dark--code_keyword: var(--theme_dark--text_pink);

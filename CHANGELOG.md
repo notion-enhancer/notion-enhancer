@@ -18,6 +18,8 @@ a feature and cleanup update.
 - improved: extensions menu search is now case insensitive and includes options, inputs and versions.
   the search box can also for focused with `CMD/CTRL+F`.
 - improved: extensions menu filters shown either a ✓ or × to help understand the current state.
+- improved: added individual text-colour rules for different background colours.
+- improved: added variables for callout colouring.
 - bugfix: enhancer settings should no longer reset on update (though this will not have
   effect until the release after this one).
 - bugfix: blue select tags are no longer purple.
@@ -34,11 +36,10 @@ a feature and cleanup update.
 - extension: "always on top" = add an arrow/button to show the notion window on top of other windows
   even if it's not focused.
 - extension: "calendar scroll" = add a button to scroll down to the current week for you.
+- extension: "hide help button" = hide the help button if you don't need it.
 
 // todo
 
-- improved: added individual text-colour rules for different background colours.
-- improved: added variables for callout colouring.
 - bugfix: switch to a different right-to-left extension because it wasn't working right
   with bullet points and stuff.
 

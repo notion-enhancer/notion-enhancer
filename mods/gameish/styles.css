@@ -59,6 +59,11 @@
   --theme_dark--line_yellow: var(--theme_dark--bg_yellow);
   --theme_dark--line_red: var(--theme_dark--bg_red);
 
+  --theme_dark--callout_brown: var(--theme_dark--bg_brown);
+  --theme_dark--callout_orange: var(--theme_dark--bg_orange);
+  --theme_dark--callout_yellow: var(--theme_dark--bg_yellow);
+  --theme_dark--callout_red: var(--theme_dark--bg_red);
+
   --theme_dark--code_inline-text: #d9cbec;
   --theme_dark--code_inline-background: #24222c;
 }

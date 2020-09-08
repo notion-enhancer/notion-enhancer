@@ -1,3 +1,9 @@
+/*
+ * hide help button
+ * (c) 2020 coryzibell
+ * under the MIT license
+ */
+
 .notion-help-button {
-    display: none !important;
+  display: none !important;
 }

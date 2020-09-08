@@ -12,7 +12,7 @@ module.exports = {
   tags: ['theme', 'dark'],
   name: 'gameish',
   desc: 'a purple, "gamer-styled" theme with a blocky-font.',
-  version: '0.1.3',
+  version: '0.1.4',
   author: {
     name: 'LVL100ShrekCultist',
     link: 'https://www.reddit.com/user/LVL100ShrekCultist/',
