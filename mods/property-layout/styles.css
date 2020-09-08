@@ -26,6 +26,9 @@
 .propertylayout-toggle[data-action='show'] {
   margin-bottom: 1em;
 }
+.propertylayout-toggle::before {
+  content: '→ ' attr(data-action) ' ';
+}
 .propertylayout-toggle:hover {
   background: var(--theme--interactive_hover);
 }

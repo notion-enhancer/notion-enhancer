@@ -16,16 +16,20 @@ module.exports = (store, __exports) => {
       ),
       default_styles = dragarea.getAttribute('style');
 
-    document
-      .getElementById('notion')
-      .addEventListener('ipc-message', (event) => {
-        if (event.channel !== 'enhancer:sidebar-width') return;
-        dragarea.setAttribute(
-          'style',
-          `${default_styles} top: 2px; height: ${
-            store().dragarea_height
-          }px; left: ${event.args[0]};`
-        );
-      });
+    if (store().tiling_mode) {
+      dragarea.style.display = 'none';
+    } else {
+      document
+        .getElementById('notion')
+        .addEventListener('ipc-message', (event) => {
+          if (event.channel !== 'enhancer:sidebar-width') return;
+          dragarea.setAttribute(
+            'style',
+            `${default_styles} top: 2px; height: ${
+              store().dragarea_height
+            }px; left: ${event.args[0]};`
+          );
+        });
+    }
   };
 };

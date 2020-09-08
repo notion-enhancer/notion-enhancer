@@ -7,6 +7,7 @@
 'use strict';
 
 const store = require('../../pkg/store.js'),
+  { id } = require('./mod.js'),
   helpers = require('../../pkg/helpers.js'),
   fs = require('fs-extra'),
   path = require('path'),
@@ -14,49 +15,57 @@ const store = require('../../pkg/store.js'),
   browser = electron.remote.getCurrentWindow();
 
 window['__start'] = async () => {
-  const buttons = require('./buttons.js')(() => ({ frameless: true }));
+  const buttons = require('./buttons.js')(() => ({
+    '72886371-dada-49a7-9afc-9f275ecf29d3': {
+      enabled: (store('mods')['72886371-dada-49a7-9afc-9f275ecf29d3'] || {})
+        .enabled,
+    },
+    tiling_mode: store('0f0bf8b6-eae6-4273-b307-8fc43f2ee082').tiling_mode,
+    frameless: true,
+  }));
   document.querySelector('#menu-titlebar').appendChild(buttons.element);
 
   document.defaultView.addEventListener('keyup', (event) => {
     if (event.code === 'F5') location.reload();
-    if ((event.ctrlKey || event.metaKey) && event.key === 'e') browser.close();
-    if (!(event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey) {
+    const meta =
+      !(event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey;
+    if (
+      meta &&
+      document.activeElement.parentElement.id === 'tags' &&
+      event.key === 'Enter'
+    )
+      document.activeElement.click();
+    if (document.activeElement.tagName.toLowerCase() === 'input') {
+      if (document.activeElement.type === 'checkbox' && event.key === 'Enter')
+        document.activeElement.checked = !document.activeElement.checked;
       if (
-        document.activeElement.parentElement.id === 'tags' &&
-        event.key === 'Enter'
+        ['Escape', 'Enter'].includes(event.key) &&
+        document.activeElement.type !== 'checkbox' &&
+        (document.activeElement.parentElement.id !== 'search' ||
+          event.key === 'Escape')
       )
-        document.activeElement.click();
-      if (document.activeElement.tagName.toLowerCase() === 'input') {
-        if (document.activeElement.type === 'checkbox' && event.key === 'Enter')
-          document.activeElement.checked = !document.activeElement.checked;
-        if (
-          ['Escape', 'Enter'].includes(event.key) &&
-          document.activeElement.type !== 'checkbox' &&
-          (document.activeElement.parentElement.id !== 'search' ||
-            event.key === 'Escape')
-        )
-          document.activeElement.blur();
-      } else if (event.key === '/')
-        document.querySelector('#search > input').focus();
-    }
+        document.activeElement.blur();
+    } else if (meta && event.key === '/')
+      document.querySelector('#search > input').focus();
+    if (
+      (event.ctrlKey || event.metaKey) &&
+      event.key === 'f' &&
+      !event.altKey &&
+      !event.shiftKey
+    )
+      document.querySelector('#search > input').focus();
   });
 
-  electron.ipcRenderer.send('enhancer:get-menu-theme');
-  electron.ipcRenderer.on('enhancer:set-menu-theme', (event, theme) => {
-    document.body.className = `notion-${theme.mode}-theme`;
-    for (const style of theme.rules)
+  electron.ipcRenderer.send('enhancer:get-theme-vars');
+  electron.ipcRenderer.on('enhancer:set-theme-vars', (event, theme) => {
+    for (const style of theme)
       document.body.style.setProperty(style[0], style[1]);
   });
 
-  function createElement(html) {
-    const template = document.createElement('template');
-    template.innerHTML = html.trim();
-    return template.content.firstElementChild;
-  }
   function createAlert(type, message) {
     if (!type)
       throw Error('<notion-enhancer> @ createAlert: no alert type specified');
-    const el = createElement(`
+    const el = helpers.createElement(`
       <section class="${type}" role="alert">
         <p>${message}</p>
       </section>
@@ -153,7 +162,9 @@ window['__start'] = async () => {
 
   document
     .querySelector('#colorpicker')
-    .appendChild(createElement('<button class="close-modal"></button>'));
+    .appendChild(
+      helpers.createElement('<button class="close-modal"></button>')
+    );
   document.querySelectorAll('#popup .close-modal').forEach((el) =>
     el.addEventListener('click', (event) => {
       $popup.classList.remove('visible');
@@ -161,7 +172,7 @@ window['__start'] = async () => {
   );
 
   // search
-  const search_query = {
+  const search_filters = {
     enabled: true,
     disabled: true,
     tags: new Set(
@@ -171,19 +182,28 @@ window['__start'] = async () => {
         .sort()
     ),
   };
+  function innerText(elem) {
+    let text = '';
+    for (let node of elem.childNodes) {
+      if (node.nodeType === 3) text += node.textContent;
+      if (node.nodeType === 1)
+        text += ['text', 'number'].includes(node.type)
+          ? node.value
+          : innerText(node);
+    }
+    return text;
+  }
   function search() {
     modules.loaded.forEach((mod) => {
       const $search_input = document.querySelector('#search > input');
       if (
-        (mod.elem.classList.contains('enabled') && !search_query.enabled) ||
-        (mod.elem.classList.contains('disabled') && !search_query.disabled) ||
-        !mod.tags.some((tag) => search_query.tags.has(tag)) ||
+        (mod.elem.classList.contains('enabled') && !search_filters.enabled) ||
+        (mod.elem.classList.contains('disabled') && !search_filters.disabled) ||
+        !mod.tags.some((tag) => search_filters.tags.has(tag)) ||
         ($search_input.value &&
-          !(
-            mod.name +
-            mod.tags.map((tag) => `#${tag}`).join(' ') +
-            mod.desc
-          ).includes($search_input.value))
+          !innerText(mod.elem)
+            .toLowerCase()
+            .includes($search_input.value.toLowerCase()))
       )
         return (mod.elem.style.display = 'none');
       mod.elem.style.display = 'block';
@@ -196,7 +216,7 @@ window['__start'] = async () => {
       throw Error('<notion-enhancer> @ createTag: no tagname specified');
     if (!onclick)
       throw Error('<notion-enhancer> @ createTag: no action specified');
-    const el = createElement(
+    const el = helpers.createElement(
       `<span class="selected" ${
         color ? `style="--tag_color: ${color}" ` : ''
       }tabindex="0">${tagname}</span>`
@@ -210,17 +230,17 @@ window['__start'] = async () => {
   }
   createTag(
     'enabled',
-    (state) => [(search_query.enabled = state), search()]
+    (state) => [(search_filters.enabled = state), search()]
     // 'var(--theme--bg_green)'
   );
   createTag(
     'disabled',
-    (state) => [(search_query.disabled = state), search()]
+    (state) => [(search_filters.disabled = state), search()]
     // 'var(--theme--bg_red)'
   );
-  for (let tag of search_query.tags)
+  for (let tag of search_filters.tags)
     createTag(`#${tag}`, (state) => [
-      state ? search_query.tags.add(tag) : search_query.tags.delete(tag),
+      state ? search_filters.tags.add(tag) : search_filters.tags.delete(tag),
       search(),
     ]);
 
@@ -346,7 +366,7 @@ window['__start'] = async () => {
           </label>
         `;
     }
-    $opt = createElement(`<p class="${opt.type}">${$opt}</p>`);
+    $opt = helpers.createElement(`<p class="${opt.type}">${$opt}</p>`);
     if (opt.type === 'color') {
       $opt
         .querySelector(`#${opt.type}_${id}--${opt.key}`)
@@ -378,6 +398,14 @@ window['__start'] = async () => {
       ? 1
       : a.name.localeCompare(b.name)
   )) {
+    for (let fonts of mod.fonts || []) {
+      document
+        .querySelector('head')
+        .appendChild(
+          helpers.createElement(`<link rel="stylesheet" href="${fonts}">`)
+        );
+    }
+
     const enabled = store('mods', { [mod.id]: { enabled: false } })[mod.id]
         .enabled,
       author =
@@ -388,7 +416,7 @@ window['__start'] = async () => {
               link: `https://github.com/${mod.author}`,
               avatar: `https://github.com/${mod.author}.png`,
             };
-    mod.elem = createElement(`
+    mod.elem = helpers.createElement(`
       <section class="${
         mod.tags.includes('core') || enabled ? 'enabled' : 'disabled'
       }" id="${mod.id}">
@@ -454,6 +482,7 @@ window['__start'] = async () => {
           $opt
             .querySelector(`#${opt.type}_${mod.id}--${opt.key}`)
             .addEventListener('change', (event) => {
+              modified();
               if (opt.type === 'toggle') {
                 store(mod.id)[opt.key] = event.target.checked;
               } else if (opt.type === 'file') {
@@ -465,9 +494,8 @@ window['__start'] = async () => {
               } else
                 store(mod.id)[opt.key] =
                   typeof opt.value === 'number'
-                    ? Number(event.target.value)
+                    ? +event.target.value
                     : event.target.value;
-              modified();
             });
         }
         $options.appendChild($opt);

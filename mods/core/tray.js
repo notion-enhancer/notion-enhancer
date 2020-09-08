@@ -29,16 +29,17 @@ module.exports = (store, __exports) => {
           })
     );
 
-    electron.ipcMain.on('enhancer:set-menu-theme', (event, arg) => {
+    electron.ipcMain.on('enhancer:set-theme-vars', (event, arg) => {
       if (!enhancer_menu) return;
-      enhancer_menu.webContents.send('enhancer:set-menu-theme', arg);
+      enhancer_menu.webContents.send('enhancer:set-theme-vars', arg);
     });
-    electron.ipcMain.on('enhancer:get-menu-theme', (event, arg) => {
+    electron.ipcMain.on('enhancer:get-theme-vars', (event, arg) => {
       electron.webContents
         .getAllWebContents()
-        .forEach((webContents) => webContents.send('enhancer:get-menu-theme'));
+        .forEach((webContents) =>
+          webContents.send('enhancer:get-theme-vars', arg)
+        );
     });
-    electron.ipcMain.on('enhancer:open-extension-menu', openExtensionMenu);
 
     function calculateWindowPos(width, height) {
       const screen = electron.screen.getDisplayNearestPoint({
@@ -155,7 +156,7 @@ module.exports = (store, __exports) => {
       {
         type: 'normal',
         label: 'Enhancements',
-        accelerator: 'CommandOrControl+E',
+        accelerator: store().menu_toggle,
         click: openExtensionMenu,
       },
       {
@@ -190,6 +191,17 @@ module.exports = (store, __exports) => {
     ]);
     tray.setContextMenu(contextMenu);
     tray.setToolTip('Notion');
+
+    electron.globalShortcut.register(store().menu_toggle, () => {
+      if (
+        electron.BrowserWindow.getAllWindows()
+          .filter((win) => win.getTitle() !== 'notion-enhancer menu')
+          .some((win) => win.isFocused())
+      ) {
+        openExtensionMenu();
+      } else if (enhancer_menu && enhancer_menu.isFocused())
+        enhancer_menu.close();
+    });
 
     function showWindows() {
       const windows = electron.BrowserWindow.getAllWindows();

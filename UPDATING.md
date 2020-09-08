@@ -46,7 +46,7 @@ page and the [css theming documentation](DOCUMENTATION.md#variable-theming).
 "how can I set a custom window visibility toggle hotkey?"
 
 these options and more have been moved to the graphical menu, which can be opened from the
-tray or with `CMD/CTRL+E` (while the notion app is focused).
+tray or with `ALT+E` (while the notion app is focused).
 
 ## installing
 

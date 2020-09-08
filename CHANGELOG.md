@@ -5,11 +5,51 @@
 - [groupy-like tabbing](https://www.npmjs.com/package/electron-tabs)
 - [improved responsiveness](https://chrome.google.com/webstore/detail/notion%20%20-responsiveness-f/leadcilhbmibbkgbnjgmmnfgnnhmeddk)
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
+- [advanced math editor](https://github.com/Manueloccorso/NotionMathEditor_BrowserExtension)
 
-### v0.8.5 (wip)
+### v0.9.0 (wip)
+
+a feature and cleanup update.
+
+- improved: halved the number of css rules used -> much better performance.
+- improved: font imports must be define in the `mod.js` so that they can also be used in
+  the enhancements menu.
+- improved: tiling window-manager support (can hide titlebars entirely without dragarea/buttons).
+- improved: extensions menu search is now case insensitive and includes options, inputs and versions.
+  the search box can also for focused with `CMD/CTRL+F`.
+- improved: extensions menu filters shown either a ✓ or × to help understand the current state.
+- bugfix: enhancer settings should no longer reset on update (though this will not have
+  effect until the release after this one).
+- bugfix: blue select tags are no longer purple.
+- bugfix: page titles now respond to small-text mode.
+- bugfix: weekly calendar view height is now sized correctly according to its contents.
+- bugfix: made the open enhancements menu hotkey configurable and changed the default to `ALT+E`.
+  to remove conflict with the inline code highlight shortcut.
+- bugfix: update property-layout to match notion changes again.
+- bugfix: updated some of the tweak styling to match notion changes.
+- bugfix: block-level text colours are now changed properly.
+- themes: "littlepig" (light + dark) = monospaced themes using emojis and colourful text.
+- extension: "font chooser" = customize fonts. for each option, type in the name of the font you would like to use,
+  or leave it blank to not change anything.
+- extension: "always on top" = add an arrow/button to show the notion window on top of other windows
+  even if it's not focused.
+- extension: "calendar scroll" = add a button to scroll down to the current week for you.
+
+// todo
+
+- improved: added individual text-colour rules for different background colours.
+- improved: added variables for callout colouring.
+- bugfix: switch to a different right-to-left extension because it wasn't working right
+  with bullet points and stuff.
+
+notion-deb-builder has been discovered to not generate an app.asar and so is no longer supported.
+
+### v0.8.5 (2020-08-29)
 
 - bugfix: separate text highlight and select tag variables.
 - bugfix: bypass CSP for the `enhancement://` protocol - was failing on some platforms?
+
+> 📥 `npm i -g notion-enhancer@0.8.5`
 
 ### v0.8.4 (2020-08-29)
 
@@ -35,7 +75,7 @@ to use `./bin.js` instead of `notion-enhancer`
 
 a clarity and stability update.
 
-- improved: more informative error messages.
+- improved: more informative cli error messages (original ones can be accessed with the `-d/--dev` flag).
 - bugfix: gallery variable didn't apply on fullpage.
 - bugfix: date picker hid current date number.
 - bugfix: small-text pages should now work as expected.

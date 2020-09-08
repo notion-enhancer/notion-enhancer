@@ -17,7 +17,6 @@ for support, join the [discord server](https://discord.gg/sFWPXtA).
 - the [official windows/mac releases](https://notion.so/desktop).
 - the arch linux AUR [notion-app](https://aur.archlinux.org/packages/notion-app/) package.
 - the linux [notion-app](https://github.com/jaredallard/notion-app) installer.
-- the debian [notion-deb-builder](https://github.com/davidbailey00/notion-deb-builder/).
 
 (it can also be run from the wsl to apply enhancements to the windows app.)
 
@@ -30,7 +29,7 @@ a chrome extension may be coming soon for web client support.
 
 ## installation
 
-> coming from <= v0.7.0? things are a bit different - have a read of [the update guide](UPDATING.md)\*\*
+> coming from <= v0.7.0? things are a bit different - have a read of [the update guide](UPDATING.md)
 > before following these instructions.
 
 during installation/removal, make sure no notion processes are running! (check your task manager.)
@@ -96,7 +95,7 @@ team to take to heart for future improvements."
 ## features
 
 once applied, modules can be configured via the graphical menu, which is opened from
-the tray/menubar icon or with `CMD/CTRL+E`.
+the tray/menubar icon or with `ALT+E`.
 
 ![](https://user-images.githubusercontent.com/16874139/91446210-84ee6b00-e8ba-11ea-9f40-187a150e4a82.png)
 

@@ -7,16 +7,19 @@
 'use strict';
 
 module.exports = (store) => {
-  const electron = require('electron'),
+  const helpers = require('../../pkg/helpers.js'),
     path = require('path'),
     fs = require('fs-extra'),
     browser = require('electron').remote.getCurrentWindow(),
     is_mac = process.platform === 'darwin',
     buttons = {
-      element: document.createElement('div'),
+      element: helpers.createElement('<div class="window-buttons-area"></div>'),
       insert: [
-        'alwaysontop',
-        ...(store().frameless && !is_mac
+        ...((store('mods')['72886371-dada-49a7-9afc-9f275ecf29d3'] || {})
+          .enabled
+          ? ['alwaysontop']
+          : []),
+        ...(store().frameless && !store().tiling_mode && !is_mac
           ? ['minimize', 'maximize', 'close']
           : []),
       ],
@@ -77,7 +80,6 @@ module.exports = (store) => {
     };
 
   (async () => {
-    buttons.element.className = 'window-buttons-area';
     for (let btn of buttons.insert) {
       buttons.element.innerHTML += `<button class="window-button" id="btn-${btn}">${await buttons.icons[
         btn
@@ -87,7 +89,7 @@ module.exports = (store) => {
       document.querySelector(`.window-button#btn-${btn}`).onclick =
         buttons.actions[btn];
     }
-    if (store().frameless && !is_mac) {
+    if (store().frameless && !store().tiling_mode && !is_mac) {
       window.addEventListener('resize', (event) => {
         Promise.resolve(buttons.icons.maximize()).then((icon) => {
           icon = icon.toString();

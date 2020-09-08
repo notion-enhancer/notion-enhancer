@@ -45,6 +45,12 @@ module.exports = {
       value: 15,
     },
     {
+      key: 'tiling_mode',
+      label: 'tiling window manager mode',
+      type: 'toggle',
+      value: false,
+    },
+    {
       key: 'smooth_scrollbars',
       label: 'integrated scrollbars',
       type: 'toggle',
@@ -55,6 +61,12 @@ module.exports = {
       label: 'window display hotkey:',
       type: 'input',
       value: 'CommandOrControl+Shift+A',
+    },
+    {
+      key: 'menu_toggle',
+      label: 'open enhancements menu hotkey:',
+      type: 'input',
+      value: 'Alt+E',
     },
   ],
   hacks: {

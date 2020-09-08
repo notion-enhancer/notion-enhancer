@@ -33,6 +33,7 @@ if you are attempting to customise the web client, the css previously used for t
 ### hide discussions (the comment threads at the top of each page)
 
 ```css
+[style*='env(safe-area-inset-left)'] [style*='width: 100%; height: 1px;'],
 .notion-page-view-discussion {
   display: none !important;
 }
@@ -40,11 +41,27 @@ if you are attempting to customise the web client, the css previously used for t
 
 <img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/discussion-default.jpg?raw=true" width="45%"></img> <img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/discussion-hidden.jpg?raw=true" width="45%"></img>
 
+### hide backlinks
+
+note: this only hides the trigger. if you've already got backlinks shown,
+then use the 3 dots up in the top-right corner to remove them.
+
+```css
+.notion-page-details-controls {
+  display: none !important;
+}
+```
+
+<img src="https://user-images.githubusercontent.com/16874139/92044159-f3eb2880-edc0-11ea-9cc9-7adcec540905.png" width="45%"> <img src="https://user-images.githubusercontent.com/16874139/92044290-42002c00-edc1-11ea-96fa-147d84eb0555.png" width="45%">
+
 ### hide the '+ new' gallery button
 
 ```css
 .notion-gallery-view
   .notion-selectable.notion-collection_view-block
+  > [role='button'],
+.notion-gallery-view
+  .notion-selectable.notion-collection_view_page-block
   > [role='button'] {
   display: none !important;
 }

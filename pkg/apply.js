@@ -30,10 +30,10 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
     const check_app = await require('./check.js')();
     switch (check_app.code) {
       case 1:
-        console.log(`~~ notion-enhancer v${version} already applied.`);
+        console.info(`~~ notion-enhancer v${version} already applied.`);
         return true;
       case 2:
-        console.log(` * ${check_app.msg}`);
+        console.warn(` * ${check_app.msg}`);
         do {
           process.stdout.write(' > overwrite? [Y/n]: ');
           overwrite_version = await helpers.readline();

@@ -120,3 +120,15 @@ if (overwrite) {
   // do stuff
 } else console.info(' -- keeping file: skipping step.');
 ```
+
+---
+
+```js
+function createElement(html) {
+  const template = document.createElement('template');
+  template.innerHTML = html.trim();
+  return template.content.firstElementChild;
+}
+```
+
+use `helpers.createElement(html)` to turn a html-valid string into an element to add to the page.

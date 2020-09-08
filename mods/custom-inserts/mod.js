@@ -6,12 +6,14 @@
 
 'use strict';
 
+const helpers = require('../../pkg/helpers.js');
+
 module.exports = {
   id: 'b4b0aced-2059-43bf-8d1d-ccd757ee5ebb',
   tags: ['extension'],
   name: 'custom inserts',
   desc: 'link files for small client-side tweaks.',
-  version: '0.1.1',
+  version: '0.1.2',
   author: 'dragonwocky',
   options: [
     {
@@ -34,10 +36,15 @@ module.exports = {
         if (document.readyState !== 'complete') return false;
         if (store().css) {
           try {
-            const style = document.createElement('style');
-            style.type = 'text/css';
-            style.innerHTML = fs.readFileSync(store().css);
-            document.querySelector('head').appendChild(style);
+            document
+              .querySelector('head')
+              .appendChild(
+                helpers.createElement(
+                  `<style type="text/css">${fs.readFileSync(
+                    store().css
+                  )}</style>`
+                )
+              );
           } catch (err) {
             console.warn('<custom-inserts> invalid css file... unsetting.');
             store().css = '';

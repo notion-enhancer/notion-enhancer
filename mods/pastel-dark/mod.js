@@ -12,11 +12,12 @@ module.exports = {
   tags: ['theme', 'dark'],
   name: 'pastel dark',
   desc: 'a smooth-transition true dark theme with a hint of pastel.',
-  version: '0.1.1',
+  version: '0.1.2',
   author: {
     name: 'zenith_illinois',
     link: 'https://www.reddit.com/user/zenith_illinois/',
     avatar:
       'https://cdn.discordapp.com/avatars/565182533940150283/54f36546ab586298a5df5c238cbaaa4b.png?size=128',
   },
+  fonts: ['https://rsms.me/inter/inter.css'],
 };

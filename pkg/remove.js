@@ -68,7 +68,7 @@ module.exports = async function ({
 
     // cleaning data folder: ~/.notion-enhancer
     if (await fs.pathExists(helpers.data_folder)) {
-      console.log(` ...data folder ${helpers.data_folder} found.`);
+      console.info(` ...data folder ${helpers.data_folder} found.`);
       if (delete_data === undefined) {
         do {
           process.stdout.write(' > delete? [Y/n]: ');
