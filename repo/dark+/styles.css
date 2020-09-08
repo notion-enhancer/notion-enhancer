@@ -64,6 +64,16 @@
   --theme_dark--line_pink: rgba(243, 61, 158, 0.301);
   --theme_dark--line_red: rgba(122, 20, 20, 0.623);
 
+  --theme_dark--callout_gray: rgba(126, 128, 129, 0.089);
+  --theme_dark--callout_brown: #50331f59;
+  --theme_dark--callout_orange: rgba(255, 153, 0, 0.164);
+  --theme_dark--callout_yellow: rgba(183, 156, 0, 0.274);
+  --theme_dark--callout_green: rgba(50, 129, 47, 0.191);
+  --theme_dark--callout_blue: rgba(0, 90, 146, 0.294);
+  --theme_dark--callout_purple: rgba(90, 49, 148, 0.219);
+  --theme_dark--callout_pink: rgba(243, 61, 158, 0.191);
+  --theme_dark--callout_red: rgba(122, 20, 20, 0.376);
+
   --theme_dark--code_inline-text: #7dc582;
   --theme_dark--code_inline-background: rgb(8, 8, 8);
   --theme_dark--code-background: rgb(8, 8, 8);
