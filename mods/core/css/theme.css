@@ -27,6 +27,25 @@
   background: var(--theme--overlay) !important;
 }
 
+.notion-frame
+  .notion-scroller
+  [style*='env(safe-area-inset-'][style*=' width: 900px'],
+.notion-frame
+  .notion-scroller
+  [style*='height: 30vh']
+  [style*='pointer-events:'][style*='max-width: 100%; width: 900px'] {
+  width: var(--theme--page_normal-width) !important;
+}
+.notion-frame
+  .notion-scroller
+  [style*='env(safe-area-inset-'][style*=' width: 100%'],
+.notion-frame
+  .notion-scroller
+  [style*='height: 30vh']
+  [style*='pointer-events:'][style*='max-width: 100%; width: 100%'] {
+  width: var(--theme--page_full-width) !important;
+}
+
 .notion-peek-renderer
   .notion-scroller.vertical
   [style*='position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 20vh;'],

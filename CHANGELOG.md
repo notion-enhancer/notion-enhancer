@@ -22,6 +22,7 @@ a feature and cleanup update.
 - improved: added variables for callout colouring.
 - improved: replaced with `helpers.getNotion()` with the constant `helpers.__notion` to reduce
   repeated function calls.
+- improved: added variables for page width.
 - bugfix: enhancer settings should no longer reset on update (though this will not have
   effect until the release after this one).
 - bugfix: blue select tags are no longer purple.
