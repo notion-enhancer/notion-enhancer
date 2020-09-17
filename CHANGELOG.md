@@ -35,6 +35,7 @@ a feature and cleanup update.
 - bugfix: block-level text colours are now changed properly.
 - bugfix: do not require data folder during installation, to prevent `sudo` attempting to
   create it in `/var/root/`.
+- bugfix: bullet points/checkboxes will now align properly in the right-to-left extension.
 - themes: "littlepig" (light + dark) = monospaced themes using emojis and colourful text.
 - extension: "font chooser" = customize fonts. for each option, type in the name of the font you would like to use,
   or leave it blank to not change anything.
@@ -43,11 +44,6 @@ a feature and cleanup update.
 - extension: "calendar scroll" = add a button to scroll down to the current week in fullpage/infinite-scroll calendars.
 - extension: "hide help button" = hide the help button if you don't need it.
 - extension: "bypass preview" = go straight to the normal full view when opening a page.
-
-// todo
-
-- bugfix: switch to a different right-to-left extension because it wasn't working right
-  with bullet points and stuff.
 
 notion-deb-builder has been discovered to not generate an app.asar and so is no longer supported.
 
