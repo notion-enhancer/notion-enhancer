@@ -14,6 +14,8 @@
   --theme_dark--sidebar: rgb(55, 60, 63);
   --theme_dark--overlay: rgba(15, 15, 15, 0.6);
   --theme_dark--dragarea: #272d2f;
+  --theme_dark--page_normal-width: 900px;
+  --theme_dark--page_full-width: 100%;
   --theme_dark--preview-width: 977px;
   --theme_dark--preview-padding: 8rem;
   --theme_dark--preview_banner-height: 20vh;
@@ -186,6 +188,8 @@
   --theme_light--sidebar: rgb(247, 246, 243);
   --theme_light--overlay: rgba(15, 15, 15, 0.6);
   --theme_light--dragarea: rgba(55, 53, 47, 0.04);
+  --theme_light--page_normal-width: 900px;
+  --theme_light--page_full-width: 100%;
   --theme_light--preview-width: 977px;
   --theme_light--preview-padding: 8rem;
   --theme_light--preview_banner-height: 20vh;
@@ -358,6 +362,8 @@
   --theme--sidebar: var(--theme_dark--sidebar);
   --theme--overlay: var(--theme_dark--overlay);
   --theme--dragarea: var(--theme_dark--dragarea);
+  --theme--page_normal-width: var(--theme_dark--page_normal-width);
+  --theme--page_full-width: var(--theme_dark--page_full-width);
   --theme--preview-width: var(--theme_dark--preview-width);
   --theme--preview-padding: var(--theme_dark--preview-padding);
   --theme--preview_banner-height: var(--theme_dark--preview_banner-height);
@@ -515,6 +521,8 @@
   --theme--sidebar: var(--theme_light--sidebar);
   --theme--overlay: var(--theme_light--overlay);
   --theme--dragarea: var(--theme_light--dragarea);
+  --theme--page_normal-width: var(--theme_dark--page_normal-width);
+  --theme--page_full-width: var(--theme_dark--page_full-width);
   --theme--preview-width: var(--theme_light--preview-width);
   --theme--preview-padding: var(--theme_light--preview-padding);
   --theme--preview_banner-height: var(--theme_light--preview_banner-height);
