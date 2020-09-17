@@ -10,8 +10,7 @@
 module.exports = (store, __exports) => {
   const electron = require('electron'),
     helpers = require('../../pkg/helpers.js'),
-    __notion = helpers.getNotion(),
-    notionIpc = require(`${__notion.replace(
+    notionIpc = require(`${helpers.__notion.replace(
       /\\/g,
       '/'
     )}/app/helpers/notionIpc.js`);

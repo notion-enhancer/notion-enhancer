@@ -14,8 +14,7 @@ module.exports = (store, __exports) => {
     path = require('path'),
     is_mac = process.platform === 'darwin',
     is_win = process.platform === 'win32',
-    helpers = require('../../pkg/helpers.js'),
-    __notion = helpers.getNotion();
+    helpers = require('../../pkg/helpers.js');
 
   electron.app.on('ready', () => {
     tray = new electron.Tray(
@@ -77,12 +76,12 @@ module.exports = (store, __exports) => {
 
     function openExtensionMenu() {
       if (enhancer_menu) return enhancer_menu.show();
-      const window_state = require(`${__notion.replace(
+      const window_state = require(`${helpers.__notion.replace(
         /\\/g,
         '/'
       )}/app/node_modules/electron-window-state/index.js`)({
         file: 'menu-windowstate.json',
-        path: helpers.data_folder,
+        path: helpers.__data,
         defaultWidth: 275,
         defaultHeight: 600,
       });
@@ -165,7 +164,9 @@ module.exports = (store, __exports) => {
         click: () => {
           require('./create.js')(
             store,
-            require(path.resolve(`${__notion}/app/main/createWindow.js`))
+            require(path.resolve(
+              `${helpers.__notion}/app/main/createWindow.js`
+            ))
           )(
             '',
             electron.BrowserWindow.getAllWindows().find(

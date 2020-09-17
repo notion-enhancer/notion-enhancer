@@ -16,8 +16,7 @@ module.exports = {
   author: {
     name: 'zenith_illinois',
     link: 'https://www.reddit.com/user/zenith_illinois/',
-    avatar:
-      'https://cdn.discordapp.com/avatars/565182533940150283/54f36546ab586298a5df5c238cbaaa4b.png?size=128',
+    avatar: 'https://www.redditstatic.com/avatars/avatar_default_18_46A508.png',
   },
   fonts: ['https://rsms.me/inter/inter.css'],
 };

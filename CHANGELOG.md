@@ -20,6 +20,8 @@ a feature and cleanup update.
 - improved: extensions menu filters shown either a ✓ or × to help understand the current state.
 - improved: added individual text-colour rules for different background colours.
 - improved: added variables for callout colouring.
+- improved: replaced with `helpers.getNotion()` with the constant `helpers.__notion` to reduce
+  repeated function calls.
 - bugfix: enhancer settings should no longer reset on update (though this will not have
   effect until the release after this one).
 - bugfix: blue select tags are no longer purple.
@@ -30,12 +32,14 @@ a feature and cleanup update.
 - bugfix: update property-layout to match notion changes again.
 - bugfix: updated some of the tweak styling to match notion changes.
 - bugfix: block-level text colours are now changed properly.
+- bugfix: do not require data folder during installation, to prevent `sudo` attempting to
+  create it in `/var/root/`.
 - themes: "littlepig" (light + dark) = monospaced themes using emojis and colourful text.
 - extension: "font chooser" = customize fonts. for each option, type in the name of the font you would like to use,
   or leave it blank to not change anything.
 - extension: "always on top" = add an arrow/button to show the notion window on top of other windows
   even if it's not focused.
-- extension: "calendar scroll" = add a button to scroll down to the current week for you.
+- extension: "calendar scroll" = add a button to scroll down to the current week in fullpage/infinite-scroll calendars.
 - extension: "hide help button" = hide the help button if you don't need it.
 - extension: "bypass preview" = go straight to the normal full view when opening a page.
 
@@ -100,7 +104,7 @@ complete rewrite with node.js.
 - bugfix: non-reproducable errors with python.
 - bugfix: better launcher patching on linux.
 - bugfix: fix frameless window issue introduced by notion desktop 2.0.9.
-- extension: "custom inserts" = link files for small client-side tweaks..
+- extension: "custom inserts" = link files for small client-side tweaks.
 - extension: "bracketed links" = render links surrounded with \[\[brackets]] instead of underlined.
 - extension: "focus mode" = hide the titlebar/menubar if the sidebar is closed (will be shown on hover).
 - theme: "dark+" = a vivid-colour near-black theme.

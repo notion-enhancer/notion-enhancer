@@ -20,9 +20,6 @@ for support, join the [discord server](https://discord.gg/sFWPXtA).
 
 (it can also be run from the wsl to apply enhancements to the windows app.)
 
-**using a not-yet-supported operating system or notion installation?** ask for
-[platform support](https://github.com/dragonwocky/notion-enhancer/issues/new?labels=enhancement&template=platform-support.md).
-
 mobile clients are not supported and due to system limitations/restrictions cannot be.
 
 a chrome extension may be coming soon for web client support.

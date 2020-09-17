@@ -12,14 +12,14 @@ const fs = require('fs-extra'),
   { version } = require('../package.json');
 
 // handle pre-existing installations: app.asar modded? with which enhancer version?
-
-let __notion = helpers.getNotion();
 module.exports = async function () {
-  const version_path = path.resolve(`${__notion}/app/ENHANCER_VERSION.txt`),
+  const version_path = path.resolve(
+      `${helpers.__notion}/app/ENHANCER_VERSION.txt`
+    ),
     installed_version = (await fs.pathExists(version_path))
       ? await fs.readFile(version_path, 'utf8')
       : '?.?.?';
-  if (await fs.pathExists(path.resolve(`${__notion}/app.asar`))) {
+  if (await fs.pathExists(path.resolve(`${helpers.__notion}/app.asar`))) {
     return {
       msg: `notion-enhancer has not been applied.`,
       code: 0,

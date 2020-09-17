@@ -8,12 +8,12 @@
 
 const path = require('path'),
   fs = require('fs-extra'),
-  { getJSON, data_folder } = require('./helpers.js');
+  { getJSON, __data } = require('./helpers.js');
 
 // a wrapper for accessing data stored in a JSON file.
 module.exports = (namespace, defaults = {}) => {
-  namespace = path.resolve(`${data_folder}/${namespace}.json`);
-  fs.ensureDirSync(data_folder);
+  namespace = path.resolve(`${__data}/${namespace}.json`);
+  fs.ensureDirSync(__data);
 
   let data;
   const saveData = () => fs.writeJsonSync(namespace, data),

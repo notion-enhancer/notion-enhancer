@@ -18,28 +18,25 @@ const fs = require('fs-extra'),
 //  ~~ exit
 // ### error ###
 
-let __notion = helpers.getNotion();
 module.exports = async function ({
   overwrite_asar,
   delete_data,
   friendly_errors,
 } = {}) {
   try {
-    const file_operations = [];
-
     // extracted asar: modded
-    const app_folder = path.resolve(`${__notion}/app`);
+    const app_folder = path.resolve(`${helpers.__notion}/app`);
     if (await fs.pathExists(app_folder)) {
       console.info(` ...removing folder ${app_folder}`);
       await fs.remove(app_folder);
     } else console.warn(` * ${app_folder} not found: step skipped.`);
 
     // restoring original asar
-    const asar_bak = path.resolve(`${__notion}/app.asar.bak`);
+    const asar_bak = path.resolve(`${helpers.__notion}/app.asar.bak`);
     if (await fs.pathExists(asar_bak)) {
       console.info(' ...moving asar.app.bak to app.asar');
 
-      if (await fs.pathExists(path.resolve(`${__notion}/app.asar`))) {
+      if (await fs.pathExists(path.resolve(`${helpers.__notion}/app.asar`))) {
         console.warn(' * app.asar already exists!');
         if (overwrite_asar === undefined) {
           do {
@@ -60,15 +57,15 @@ module.exports = async function ({
       }
 
       await (overwrite_asar || overwrite_asar === undefined
-        ? fs.move(asar_bak, path.resolve(`${__notion}/app.asar`), {
+        ? fs.move(asar_bak, path.resolve(`${helpers.__notion}/app.asar`), {
             overwrite: true,
           })
         : fs.remove(asar_bak));
     } else console.warn(` * ${asar_bak} not found: step skipped.`);
 
     // cleaning data folder: ~/.notion-enhancer
-    if (await fs.pathExists(helpers.data_folder)) {
-      console.info(` ...data folder ${helpers.data_folder} found.`);
+    if (await fs.pathExists(helpers.__data)) {
+      console.info(` ...data folder ${helpers.__data} found.`);
       if (delete_data === undefined) {
         do {
           process.stdout.write(' > delete? [Y/n]: ');
@@ -81,27 +78,25 @@ module.exports = async function ({
       }
       console.info(
         delete_data
-          ? ` -- deleting ${helpers.data_folder}`
-          : ` -- keeping ${helpers.data_folder}`
+          ? ` -- deleting ${helpers.__data}`
+          : ` -- keeping ${helpers.__data}`
       );
-      if (delete_data) {
-        await fs.remove(helpers.data_folder);
-      } else fs.remove(path.resolve(`${helpers.data_folder}/version.txt`));
-    } else console.warn(` * ${helpers.data_folder} not found: step skipped.`);
+      if (delete_data) await fs.remove(helpers.__data);
+    } else console.warn(` * ${helpers.__data} not found: step skipped.`);
 
     // patching launch script target of custom wrappers
     if (
       [
         '/opt/notion-app', // https://aur.archlinux.org/packages/notion-app/
         '/opt/notion', // https://github.com/jaredallard/notion-app
-      ].includes(__notion)
+      ].includes(helpers.__notion)
     ) {
       console.info(
         ' ...patching app launcher (notion-app linux wrappers only).'
       );
       for (let bin_path of [
-        `/usr/bin/${__notion.split('/')[2]}`,
-        `${__notion}/${__notion.split('/')[2]}`,
+        `/usr/bin/${helpers.__notion.split('/')[2]}`,
+        `${helpers.__notion}/${helpers.__notion.split('/')[2]}`,
       ]) {
         const bin_script = await fs.readFile(bin_path, 'utf8');
         if (!bin_script.includes('app.asar')) {

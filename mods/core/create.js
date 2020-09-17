@@ -15,12 +15,11 @@ module.exports = (store, __exports) => {
       ),
     // createWindow = __exports.createWindow,
     path = require('path'),
-    helpers = require('../../pkg/helpers.js'),
-    __notion = helpers.getNotion();
+    helpers = require('../../pkg/helpers.js');
 
   __exports.createWindow = function (relativeUrl, focused_window) {
     if (!relativeUrl) relativeUrl = '';
-    const window_state = require(`${__notion.replace(
+    const window_state = require(`${helpers.__notion.replace(
         /\\/g,
         '/'
       )}/app/node_modules/electron-window-state/index.js`)({
@@ -47,7 +46,7 @@ module.exports = (store, __exports) => {
       titleBarStyle: 'hiddenInset',
       frame: !store().frameless,
       webPreferences: {
-        preload: path.resolve(`${__notion}/app/renderer/index.js`),
+        preload: path.resolve(`${helpers.__notion}/app/renderer/index.js`),
         webviewTag: true,
         session: electron.session.fromPartition('persist:notion'),
       },

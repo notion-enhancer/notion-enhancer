@@ -33,7 +33,8 @@ if you are attempting to customise the web client, the css previously used for t
 ### hide discussions (the comment threads at the top of each page)
 
 ```css
-[style*='env(safe-area-inset-left)'] [style*='width: 100%; height: 1px;'],
+[style*='env(safe-area-inset-left)']:not(.notion-page-content)
+  [style*='width: 100%; height: 1px;'],
 .notion-page-view-discussion {
   display: none !important;
 }

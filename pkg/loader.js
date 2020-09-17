@@ -11,10 +11,9 @@ const fs = require('fs-extra'),
   helpers = require('./helpers.js'),
   store = require('./store.js');
 
-let __notion = helpers.getNotion();
 module.exports = function (__file, __exports) {
   __file = __file
-    .slice(path.resolve(`${__notion}/app`).length + 1)
+    .slice(path.resolve(`${helpers.__notion}/app`).length + 1)
     .replace(/\\/g, '/');
 
   if (__file === 'main/security.js') {
