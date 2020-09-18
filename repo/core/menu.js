@@ -203,7 +203,7 @@ window['__start'] = async () => {
         ($search_input.value &&
           !innerText(mod.elem)
             .toLowerCase()
-            .includes($search_input.value.toLowerCase()))
+            .includes($search_input.value.toLowerCase().trim()))
       )
         return (mod.elem.style.display = 'none');
       mod.elem.style.display = 'block';
