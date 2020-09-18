@@ -16,19 +16,6 @@ module.exports = {
   author: 'obahareth',
   hacks: {
     'renderer/preload.js'(store, __exports) {
-      function alignPageContentToRight() {
-        document
-          .querySelectorAll(
-            '.notion-page-content > div[data-block-id]:not([dir])'
-          )
-          .forEach((block) => block.setAttribute('dir', 'auto'));
-        document
-          .querySelectorAll("div[placeholder='List'], div[placeholder='To-do']")
-          .forEach((item) => {
-            item.style['text-align'] = '-webkit-auto';
-          });
-      }
-
       document.addEventListener('readystatechange', (event) => {
         if (document.readyState !== 'complete') return false;
         let queue = [];
@@ -36,7 +23,7 @@ module.exports = {
             if (!queue.length) requestIdleCallback(() => process(queue));
             queue.push(...list);
           }),
-          PAGE_OBSERVER = new MutationObserver(alignPageContentToRight);
+          PAGE_OBSERVER = new MutationObserver(autoAlignPageContent);
         DOCUMENT_OBSERVER.observe(document.body, {
           childList: true,
           subtree: true,
@@ -48,20 +35,29 @@ module.exports = {
               addedNodes[0] &&
               addedNodes[0].className === 'notion-page-content'
             ) {
-              alignPageContentToRight();
+              autoAlignPageContent();
 
-              const $page = document.getElementsByClassName(
-                'notion-page-content'
-              )[0];
-              if ($page) {
-                PAGE_OBSERVER.disconnect();
-                PAGE_OBSERVER.observe($page, {
-                  childList: true,
-                  subtree: false,
-                });
-              }
+              PAGE_OBSERVER.disconnect();
+              PAGE_OBSERVER.observe(addedNodes[0], {
+                childList: true,
+                subtree: false,
+              });
             }
           }
+        }
+        function autoAlignPageContent() {
+          document
+            .querySelectorAll(
+              '.notion-page-content > div[data-block-id]:not([dir])'
+            )
+            .forEach((block) => block.setAttribute('dir', 'auto'));
+          document
+            .querySelectorAll(
+              "div[placeholder='List'], div[placeholder='To-do']"
+            )
+            .forEach((item) => {
+              item.style['text-align'] = '-webkit-auto';
+            });
         }
       });
     },

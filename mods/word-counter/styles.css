@@ -1,0 +1,59 @@
+/*
+ * word counter
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * under the MIT license
+ */
+
+#word-counter-details {
+  width: 100%;
+  margin-bottom: 2em;
+}
+#word-counter-details > div {
+  display: flex;
+  flex-wrap: wrap;
+  margin: -0.5em;
+}
+#word-counter-details > div > p {
+  margin: 0.5em;
+  font-size: var(--theme--font_label-size);
+  color: var(--theme--text);
+  border-radius: 3px;
+  padding: 0.25rem 0.5rem;
+  background: var(--theme--interactive_hover);
+  border: 1px solid transparent;
+}
+#word-counter-details > div > p:hover {
+  background: transparent;
+  border: 1px solid var(--theme--interactive_hover);
+}
+
+#word-counter-details > div > span {
+  max-width: 10em;
+  padding: 0.4rem 0.5rem 0.25rem 0.5rem;
+  font-size: calc(var(--theme--font_label-size) * 0.8);
+  color: var(--theme--text_ui_info);
+}
+
+#word-counter-details > div > p > svg {
+  height: 1em;
+  width: 1em;
+  margin: 0 0 -2px 0.3em;
+  color: var(--theme--text_ui_info);
+}
+
+#word-counter-details-tooltip {
+  pointer-events: none;
+  position: absolute;
+  padding: 0.25em 0.5em;
+  border-radius: 3px;
+  box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px,
+    rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
+  border-right-width: 1px;
+  font-size: calc(var(--theme--font_label-size) * 0.8);
+  background: var(--theme--interactive_hover);
+  opacity: 0;
+  transition: opacity 120ms ease-in;
+}
+#word-counter-details-tooltip.active {
+  opacity: 1;
+}

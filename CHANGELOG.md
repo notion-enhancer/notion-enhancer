@@ -44,6 +44,7 @@ a feature and cleanup update.
 - extension: "calendar scroll" = add a button to scroll down to the current week in fullpage/infinite-scroll calendars.
 - extension: "hide help button" = hide the help button if you don't need it.
 - extension: "bypass preview" = go straight to the normal full view when opening a page.
+- extension: "word counter" = add page details: word/character/sentence/block count & speaking/reading times.
 
 notion-deb-builder has been discovered to not generate an app.asar and so is no longer supported.
 

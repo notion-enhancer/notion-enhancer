@@ -32,9 +32,15 @@
   [style*='env(safe-area-inset-'][style*=' width: 900px'],
 .notion-frame
   .notion-scroller
+  [style*='env(safe-area-inset-'][style*=';width: 900px'],
+.notion-frame
+  .notion-scroller
   [style*='height: 30vh']
   [style*='pointer-events:'][style*='max-width: 100%; width: 900px'] {
   width: var(--theme--page_normal-width) !important;
+}
+.notion-page-content [style*='max-width: 696px'] {
+  max-width: 100% !important;
 }
 .notion-frame
   .notion-scroller
