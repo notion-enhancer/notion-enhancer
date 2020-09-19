@@ -48,7 +48,7 @@ module.exports = {
         function autoAlignPageContent() {
           document
             .querySelectorAll(
-              '.notion-page-content > div[data-block-id]:not([dir])'
+              '.notion-page-content > div[data-block-id]:not([dir]), [placeholder="Untitled"]:not([dir])'
             )
             .forEach((block) => block.setAttribute('dir', 'auto'));
           document

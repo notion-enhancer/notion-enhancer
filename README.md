@@ -34,7 +34,7 @@ during installation/removal, make sure no notion processes are running! (check y
 **win10, macOS**
 
 1. [install node.js](https://nodejs.org/en/download/) (_a computer restart may be required here._)
-2. execute `npm i -g notion-enhancer` in the terminal/command prompt as a root/admin user.
+2. execute `npm i -g notion-enhancer` in the terminal/command prompt.
 
 **debian/ubuntu, chromeOS, WSL (to modify the win10 app)**
 
@@ -107,17 +107,52 @@ these include:
 
 **author**: [dragonwocky](https://github.com/dragonwocky/)
 
-| option                       | type                                                                                          | default                    |
-| ---------------------------- | --------------------------------------------------------------------------------------------- | -------------------------- |
-| hide app on open             | toggle                                                                                        | no                         |
-| auto-maximise windows        | toggle                                                                                        | no                         |
-| close window to the tray     | toggle                                                                                        | yes                        |
-| integrated titlebar          | toggle                                                                                        | yes                        |
-| height of frameless dragarea | number input                                                                                  | `15`                       |
-| integrated scrollbars        | toggle                                                                                        | yes                        |
-| window display hotkey        | [accelerator](https://github.com/electron/electron/blob/master/docs/api/accelerator.md) input | `CommandOrControl+Shift+A` |
+| option                        | type                                                                                          | default                    |
+| ----------------------------- | --------------------------------------------------------------------------------------------- | -------------------------- |
+| hide app on open              | toggle                                                                                        | no                         |
+| auto-maximise windows         | toggle                                                                                        | no                         |
+| close window to the tray      | toggle                                                                                        | yes                        |
+| integrated titlebar           | toggle                                                                                        | yes                        |
+| height of frameless dragarea  | number input                                                                                  | `15`                       |
+| tiling window manager mode    | toggle                                                                                        | no                         |
+| integrated scrollbars         | toggle                                                                                        | yes                        |
+| window display hotkey         | [accelerator](https://github.com/electron/electron/blob/master/docs/api/accelerator.md) input | `CommandOrControl+Shift+A` |
+| open enhancements menu hotkey | [accelerator](https://github.com/electron/electron/blob/master/docs/api/accelerator.md) input | `Alt+E`                    |
 
-![](https://user-images.githubusercontent.com/16874139/90519171-094e3900-e1ab-11ea-8c5d-529ca15c6d95.png)
+![](https://user-images.githubusercontent.com/16874139/93667628-c98cb100-faca-11ea-85e2-5fdca2a93a36.png)
+
+### always on top
+
+**tags:** #extension
+
+**description:** add an arrow/button to show the notion window
+on top of other windows even if it's not focused.
+
+**author**: [dragonwocky](https://github.com/dragonwocky/)
+
+### bracketed links
+
+**tags:** #extension
+
+**description:** render links surrounded with \[\[brackets]] instead of underlined.
+
+**author**: [arecsu](https://github.com/arecsu/)
+
+### bypass preview
+
+**tags:** #extension
+
+**description:** go straight to the normal full view when opening a page.
+
+**author:** [dragonwocky](https://github.com/dragonwocky/)
+
+### calendar scroll
+
+**tags:** #extension
+
+**description:** add a button to scroll down to the current week in fullpage/infinite-scroll calendars.
+
+**author:** [dragonwocky](https://github.com/dragonwocky/)
 
 ### custom inserts
 
@@ -127,18 +162,10 @@ these include:
 
 **author**: [dragonwocky](https://github.com/dragonwocky/)
 
-| option                | type | default |
-| --------------------- | ---- | ------- |
-| css insert            | file | none    |
-| client-side js insert | file | none    |
-
-### bracketed links
-
-**tags:** #extension
-
-**description:** render links surrounded with \[\[brackets]] instead of underlined.
-
-**author**: [arecsu](https://github.com/arecsu/)
+| option                | type |
+| --------------------- | ---- |
+| css insert            | file |
+| client-side js insert | file |
 
 ### dark+
 
@@ -152,7 +179,7 @@ these include:
 | -------------- | ----- | ------------------ |
 | primary colour | color | `rgb(177, 24, 24)` |
 
-![](https://user-images.githubusercontent.com/16874139/90520312-85954c00-e1ac-11ea-8c45-3894c13b9b71.png)
+![](https://user-images.githubusercontent.com/16874139/93667588-84687f00-faca-11ea-86c9-7d05325a22a1.png)
 
 ### emoji sets
 
@@ -161,6 +188,10 @@ these include:
 **description:** pick from a variety of emoji styles to use.
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
+
+| option | type   | values                                                                                                                     |
+| ------ | ------ | -------------------------------------------------------------------------------------------------------------------------- |
+| style  | select | twitter, apple, google, microsoft, samsung, whatsapp, facebook, joypixels, openmoji, emojidex, messenger, lg, htc, mozilla |
 
 ![](https://user-images.githubusercontent.com/16874139/90520622-f0df1e00-e1ac-11ea-8791-12922a037234.png)
 
@@ -174,6 +205,22 @@ these include:
 
 ![](https://user-images.githubusercontent.com/16874139/90521792-49fb8180-e1ae-11ea-8764-cb4309cec464.png)
 
+### font chooser
+
+**tags:** #extension
+
+**description:** customize fonts. for each option, type in the name of
+the font you would like to use, or leave it blank to not change anything.
+
+**author:** [torchatlas](https://github.com/torchatlas)
+
+| option               | type       |
+| -------------------- | ---------- |
+| sans-serif (inc. ui) | text input |
+| serif                | text input |
+| monospace            | text input |
+| code                 | text input |
+
 ### gameish
 
 **tags:** #theme #dark
@@ -182,7 +229,7 @@ these include:
 
 **author:** [LVL100ShrekCultist](https://reddit.com/user/LVL100ShrekCultist/)
 
-![](https://user-images.githubusercontent.com/16874139/90522144-b6768080-e1ae-11ea-8150-527c1f70f0e7.png)
+![](https://user-images.githubusercontent.com/16874139/93667677-1bcdd200-facb-11ea-89a2-f2a674d70d6c.png)
 
 ### hide help
 
@@ -192,6 +239,26 @@ these include:
 
 **author**: [coryzibell](https://github.com/coryzibell/)
 
+### littlepig dark
+
+**tags:** #theme #dark
+
+**description:** a purple monospaced theme using emojis and colourful text.
+
+**author:** [Lizishan](https://www.reddit.com/user/Lizishan/)
+
+![](https://user-images.githubusercontent.com/16874139/93667715-55064200-facb-11ea-949e-3f7494dfa498.png)
+
+### littlepig light
+
+**tags:** #theme #light
+
+**description:** a bright monospaced theme using emojis and colourful text.
+
+**author:** [Lizishan](https://www.reddit.com/user/Lizishan/)
+
+![](https://user-images.githubusercontent.com/16874139/93667767-af9f9e00-facb-11ea-9e5d-3c437f5c3026.png)
+
 ### neutral
 
 **tags:** #theme #dark
@@ -200,7 +267,7 @@ these include:
 
 **author:** [arecsu](https://github.com/arecsu/)
 
-![](https://user-images.githubusercontent.com/16874139/90522373-f9d0ef00-e1ae-11ea-9dba-b29431609210.png)
+![](https://user-images.githubusercontent.com/16874139/93667840-394f6b80-facc-11ea-8966-4ab3ecf38803.png)
 
 ### night shift
 
@@ -218,7 +285,7 @@ these include:
 
 **author:** [zenith_illinois](https://reddit.com/user/zenith_illinois/)
 
-![](https://user-images.githubusercontent.com/16874139/90522660-5502e180-e1af-11ea-8885-073ad20d65b3.png)
+![](https://user-images.githubusercontent.com/16874139/93667825-05744600-facc-11ea-9394-6f3807b5e28e.png)
 
 ### property layout
 
@@ -236,7 +303,7 @@ these include:
 
 **author:** [obahareth](https://github.com/obahareth/)
 
-![](https://user-images.githubusercontent.com/16874139/90522872-95faf600-e1af-11ea-807c-11ac1591217e.png)
+![](https://user-images.githubusercontent.com/16874139/93655955-1ab88880-fa6a-11ea-832f-7125ff0887da.png)
 
 ### weekly view
 
@@ -247,6 +314,14 @@ these include:
 **author:** [adihd](https://github.com/adihd/)
 
 ![](https://user-images.githubusercontent.com/16874139/90523679-86c87800-e1b0-11ea-8cc0-25f6825c6d49.png)
+
+### word counter
+
+**tags:** #extension
+
+**description:** add page details: word/character/sentence/block count & speaking/reading times.
+
+**author:** [dragonwocky](https://github.com/dragonwocky/)
 
 ## contributors
 

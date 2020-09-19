@@ -13,7 +13,7 @@ module.exports = {
   tags: ['extension'],
   name: 'calendar scroll',
   desc:
-    'add a button to scroll down to the current week in fullpage/infinite-scroll calendars',
+    'add a button to scroll down to the current week in fullpage/infinite-scroll calendars.',
   version: '0.1.0',
   author: 'dragonwocky',
   hacks: {
