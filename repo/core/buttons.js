@@ -15,7 +15,7 @@ module.exports = (store) => {
     buttons = {
       element: helpers.createElement('<div class="window-buttons-area"></div>'),
       insert: [
-        ...((store('mods')['72886371-dada-49a7-9afc-9f275ecf29d3'] || {})
+        ...((store('mods', {})['72886371-dada-49a7-9afc-9f275ecf29d3'] || {})
           .enabled
           ? ['alwaysontop']
           : []),

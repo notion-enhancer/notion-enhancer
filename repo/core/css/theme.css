@@ -39,7 +39,8 @@
   [style*='pointer-events:'][style*='max-width: 100%; width: 900px'] {
   width: var(--theme--page_normal-width) !important;
 }
-.notion-page-content [style*='max-width: 696px'] {
+
+.notion-page-content [data-block-id][style*='max-width'] {
   max-width: 100% !important;
 }
 .notion-frame
@@ -51,10 +52,16 @@
   [style*='pointer-events:'][style*='max-width: 100%; width: 100%'] {
   width: var(--theme--page_full-width) !important;
 }
+.notion-text-block [style*='padding-left: 1.5em'],
 .notion-frame .notion-scroller [style*='padding-left: 136.5px;'] {
   padding-left: 0 !important;
 }
 .notion-frame .notion-scroller [style*='padding-right: 136.5px;'] {
+  padding-right: 0 !important;
+}
+.notion-collection_view-block > :first-child,
+.notion-collection_view-block .notion-scroller > :first-child {
+  padding-left: 0 !important;
   padding-right: 0 !important;
 }
 

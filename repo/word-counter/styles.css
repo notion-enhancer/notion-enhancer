@@ -15,6 +15,7 @@
 }
 #word-counter-details > div > p {
   margin: 0.5em;
+  cursor: pointer;
   font-size: var(--theme--font_label-size);
   color: var(--theme--text);
   border-radius: 3px;
