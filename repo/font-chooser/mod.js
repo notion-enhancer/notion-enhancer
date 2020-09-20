@@ -48,7 +48,7 @@ module.exports = {
         if (!document.querySelector('.notion-app-inner')) return;
         clearInterval(attempt_interval);
         for (let style of ['sans', 'serif', 'mono', 'code']) {
-          if (!store()[style]) return;
+          if (!store()[style]) continue;
           document
             .querySelector('.notion-app-inner')
             .style.setProperty(`--theme--font_${style}`, store()[style]);
