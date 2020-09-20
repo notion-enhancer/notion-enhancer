@@ -94,7 +94,7 @@ team to take to heart for future improvements."
 once applied, modules can be configured via the graphical menu, which is opened from
 the tray/menubar icon or with `ALT+E`.
 
-![](https://user-images.githubusercontent.com/16874139/91446210-84ee6b00-e8ba-11ea-9f40-187a150e4a82.png)
+![](https://user-images.githubusercontent.com/16874139/93692603-954fd980-fb38-11ea-9d52-82ac53449d33.png)
 
 currently all modules come pre-installed for technical reasons, security assurance, and ease-of-use.
 these include:
@@ -130,6 +130,8 @@ on top of other windows even if it's not focused.
 
 **author**: [dragonwocky](https://github.com/dragonwocky/)
 
+![](https://user-images.githubusercontent.com/16874139/93692700-ad742880-fb39-11ea-9650-57a61e15a37e.png)
+
 ### bracketed links
 
 **tags:** #extension
@@ -137,6 +139,8 @@ on top of other windows even if it's not focused.
 **description:** render links surrounded with \[\[brackets]] instead of underlined.
 
 **author**: [arecsu](https://github.com/arecsu/)
+
+![](https://user-images.githubusercontent.com/16874139/93692762-5458c480-fb3a-11ea-94e4-b7cbfab24274.png)
 
 ### bypass preview
 
@@ -153,6 +157,8 @@ on top of other windows even if it's not focused.
 **description:** add a button to scroll down to the current week in fullpage/infinite-scroll calendars.
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
+
+![](https://user-images.githubusercontent.com/16874139/93692788-ce894900-fb3a-11ea-8b65-8fc6c955fe6d.png)
 
 ### custom inserts
 
@@ -193,7 +199,7 @@ on top of other windows even if it's not focused.
 | ------ | ------ | -------------------------------------------------------------------------------------------------------------------------- |
 | style  | select | twitter, apple, google, microsoft, samsung, whatsapp, facebook, joypixels, openmoji, emojidex, messenger, lg, htc, mozilla |
 
-![](https://user-images.githubusercontent.com/16874139/90520622-f0df1e00-e1ac-11ea-8791-12922a037234.png)
+![](https://user-images.githubusercontent.com/16874139/93692858-95050d80-fb3b-11ea-99cb-307447fbb8e7.png)
 
 ### focus mode
 
@@ -203,7 +209,7 @@ on top of other windows even if it's not focused.
 
 **author:** [arecsu](https://github.com/arecsu/)
 
-![](https://user-images.githubusercontent.com/16874139/90521792-49fb8180-e1ae-11ea-8764-cb4309cec464.png)
+![](https://user-images.githubusercontent.com/16874139/93692900-296f7000-fb3c-11ea-9188-91f0e975bc09.png)
 
 ### font chooser
 
@@ -220,6 +226,8 @@ the font you would like to use, or leave it blank to not change anything.
 | serif                | text input |
 | monospace            | text input |
 | code                 | text input |
+
+![](https://user-images.githubusercontent.com/16874139/93692940-c29e8680-fb3c-11ea-9701-ad1844832a66.png)
 
 ### gameish
 
@@ -239,6 +247,8 @@ the font you would like to use, or leave it blank to not change anything.
 
 **author**: [coryzibell](https://github.com/coryzibell/)
 
+![](https://user-images.githubusercontent.com/16874139/93692964-01ccd780-fb3d-11ea-9c58-893d37c4a53b.png)
+
 ### littlepig dark
 
 **tags:** #theme #dark
@@ -257,7 +267,7 @@ the font you would like to use, or leave it blank to not change anything.
 
 **author:** [Lizishan](https://www.reddit.com/user/Lizishan/)
 
-![](https://user-images.githubusercontent.com/16874139/93667767-af9f9e00-facb-11ea-9e5d-3c437f5c3026.png)
+![](https://user-images.githubusercontent.com/16874139/93667978-f5109b00-facc-11ea-8fe2-fd57d99a031d.png)
 
 ### neutral
 
@@ -295,6 +305,8 @@ the font you would like to use, or leave it blank to not change anything.
 
 **author:** [alexander-kazakov](https://github.com/alexander-kazakov/)
 
+![](https://user-images.githubusercontent.com/16874139/93692992-49ebfa00-fb3d-11ea-99fa-c0cd7dc3bc13.png)
+
 ### right-to-left
 
 **tags:** #extension
@@ -303,7 +315,7 @@ the font you would like to use, or leave it blank to not change anything.
 
 **author:** [obahareth](https://github.com/obahareth/)
 
-![](https://user-images.githubusercontent.com/16874139/93655955-1ab88880-fa6a-11ea-832f-7125ff0887da.png)
+![](https://user-images.githubusercontent.com/16874139/93693026-bd8e0700-fb3d-11ea-9808-c259ef075d53.png)
 
 ### weekly view
 
@@ -313,7 +325,7 @@ the font you would like to use, or leave it blank to not change anything.
 
 **author:** [adihd](https://github.com/adihd/)
 
-![](https://user-images.githubusercontent.com/16874139/90523679-86c87800-e1b0-11ea-8cc0-25f6825c6d49.png)
+![](https://user-images.githubusercontent.com/16874139/93693076-5e7cc200-fb3e-11ea-85d5-f0de766c5980.png)
 
 ### word counter
 
@@ -322,6 +334,8 @@ the font you would like to use, or leave it blank to not change anything.
 **description:** add page details: word/character/sentence/block count & speaking/reading times.
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
+
+![](https://user-images.githubusercontent.com/16874139/93693109-b3b8d380-fb3e-11ea-963c-7ddaa7046f6c.png)
 
 ## contributors
 
