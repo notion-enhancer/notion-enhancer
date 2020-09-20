@@ -1,6 +1,6 @@
 {
   "name": "notion-enhancer",
-  "version": "0.9.0-wip",
+  "version": "0.9.0",
   "description": "an enhancer/customiser for the all-in-one productivity workspace notion.so",
   "main": "index.js",
   "bin": {
