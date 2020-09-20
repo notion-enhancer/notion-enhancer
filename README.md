@@ -199,7 +199,7 @@ on top of other windows even if it's not focused.
 | ------ | ------ | -------------------------------------------------------------------------------------------------------------------------- |
 | style  | select | twitter, apple, google, microsoft, samsung, whatsapp, facebook, joypixels, openmoji, emojidex, messenger, lg, htc, mozilla |
 
-![](https://user-images.githubusercontent.com/16874139/93692858-95050d80-fb3b-11ea-99cb-307447fbb8e7.png)
+![](https://user-images.githubusercontent.com/16874139/93693543-8111d980-fb44-11ea-8491-d2780d66deb5.png)
 
 ### focus mode
 
@@ -209,7 +209,7 @@ on top of other windows even if it's not focused.
 
 **author:** [arecsu](https://github.com/arecsu/)
 
-![](https://user-images.githubusercontent.com/16874139/93692900-296f7000-fb3c-11ea-9188-91f0e975bc09.png)
+![](https://user-images.githubusercontent.com/16874139/93694447-2336bf00-fb4f-11ea-82f3-84c14e000602.png)
 
 ### font chooser
 
