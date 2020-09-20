@@ -79,6 +79,8 @@ module.exports = (store) => {
       },
     };
 
+  if (!buttons.insert.includes('alwaysontop')) browser.setAlwaysOnTop(false);
+
   (async () => {
     for (let btn of buttons.insert) {
       buttons.element.innerHTML += `<button class="window-button" id="btn-${btn}">${await buttons.icons[
