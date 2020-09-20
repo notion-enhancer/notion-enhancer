@@ -1,4 +1,4 @@
-# <img src="./mods/core/icons/mac+linux.png" height="20px"></img> notion-enhancer
+# <img src="./mods/core/icons/mac+linux.png" height="20px"> notion-enhancer
 
 notion.so is a pretty awesome tool already, but there's always room for improvements.
 it might just be a preference, it might be something crucial to your setup,

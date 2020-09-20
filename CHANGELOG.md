@@ -7,7 +7,7 @@
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 - [advanced math editor](https://github.com/Manueloccorso/NotionMathEditor_BrowserExtension)
 
-### v0.9.0 (wip)
+### v0.9.0 (2020-09-20)
 
 a feature and cleanup update.
 
@@ -49,6 +49,8 @@ a feature and cleanup update.
 - extension: "word counter" = add page details: word/character/sentence/block count & speaking/reading times.
 
 notion-deb-builder has been discovered to not generate an app.asar and so is no longer supported.
+
+> 📥 `npm i -g notion-enhancer@0.9.0`
 
 ### v0.8.5 (2020-08-29)
 
