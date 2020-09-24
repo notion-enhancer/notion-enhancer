@@ -1,0 +1,114 @@
+/* Copyright © Blacksuan19 @ 2020 */
+/* part of Material Ocean Color Scheme */
+
+:root {
+  --theme_dark--main: #0f111a;
+  --theme_dark--sidebar: #00010a;
+  --theme_dark--overlay: rgba(15, 15, 15, 0.6);
+  --theme_dark--dragarea: #0d0d0d;
+
+  --theme_dark--scrollbar: #00010a;
+  --theme_dark--scrollbar_hover: #ff4151;
+
+  --theme_dark--card: #00010a;
+  --theme_dark--gallery: #00010a;
+  --theme_dark--interactive_hover: #0f111a77;
+  --theme_dark--button_close: #ff4151;
+
+  --theme_dark--selected: rgba(255, 65, 81, 0.2);
+  --theme_dark--primary: #ff4151;
+  --theme_dark--primary_click: #00010a;
+}
+/* Scrollbar size */
+::-webkit-scrollbar {
+  width: 8px; /* for vertical */
+  height: 8px; /* for horizontal */
+}
+/* scrollbar: pointer */
+.notion-scroller {
+  cursor: auto;
+}
+/* Element where vertical and horizontal scrollbars converge */
+::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+/* Changing the width of horizontal scroller, because of wider table */
+[style^="flex-shrink: 0; flex-grow: 1; width: 100%; max-width: 100%; display: flex; align-items: center; flex-direction: column; font-size: 16px; color: rgba(255, 255, 255, 0.9); padding: 0px 96px 30vh;"]
+  .notion-selectable
+  .notion-scroller.horizontal::-webkit-scrollbar-track {
+  margin-left: 10px;
+  margin-right: 10px;
+}
+
+/* Hide "+" button when you hover on table row, because of it's useless for me, and this buttons takes like 15px from the left side of table */
+[style^="flex-shrink: 0; flex-grow: 1; width: 100%; max-width: 100%; display: flex; align-items: center; flex-direction: column; font-size: 16px; color: rgba(255, 255, 255, 0.9); padding: 0px 96px 30vh;"]
+  .notion-table-view
+  [style^="opacity:"]
+  > [role="button"],
+[class="notion-scroller"]
+  > .notion-table-view
+  [style^="opacity:"]
+  > [role="button"] {
+  display: none !important;
+}
+
+.notion-table-view
+  > [data-block-id="e92bc452-807e-4be0-80d5-c60c2d82656f"]
+  > div:nth-child(4) {
+  display: none !important;
+}
+
+/* Same as with table. Makes board view more wider */
+.notion-board-view {
+  padding-left: 10px !important;
+  padding-right: 10px !important;
+}
+
+/* Changing content block position, less height - higher content block */
+[style^="position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 30vh;"] {
+  height: 12vh !important;
+}
+/* Changing cover image height to match higher content block */
+[style^="position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 30vh;"]
+  img {
+  height: 20vh !important;
+}
+
+/* Hiding selection, because of changing columns width bugs selection inside table */
+[data-block-id^="bf10a506-e70d-4531-b4d5-ec4c2c99e883"]
+  [style^="position: absolute; top: 0px; left: 0px; pointer-events: none;"]:not(.notion-presence-container) {
+  display: none;
+}
+
+/* Changing table header icons to make it smaller */
+[style^="display: flex; position: absolute; background: rgb(47, 52, 55); z-index: 82; height: 33px; color: rgba(255, 255, 255, 0.6);"]
+  div:nth-child(1)
+  svg {
+  height: 15px !important;
+  width: 15px !important;
+  margin-right: -4px;
+}
+
+/*center justify column headers. And not these only
+ * apply as far as the letters, so you can't change
+ * the whole column color.*/
+.notion-table-view-header-cell > div > div {
+  margin: 0px auto;
+  color: #ffffff !important; /*color of column header text*/
+}
+
+/*Increases spacing between "header" and entries*/
+.notion-board-group [style="height: 4px;"] {
+  height: 20px !important;
+}
+
+/*hide discussions on each page */
+.notion-page-view-discussion {
+  display: none !important;
+}
+
+/* wider page previews */
+.notion-peek-renderer > div:nth-child(2) {
+  max-width: 85vw !important;
+}
