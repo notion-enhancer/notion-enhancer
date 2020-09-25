@@ -11,6 +11,8 @@
 
 - bugfix: font chooser will continue iterating through fonts after encountering a blank option.
 - bugfix: block indents are no longer overriden.
+- bugfix: neutral does not force full width pages.
+- bugfix: bypass preview extension works with the back/forward arrows.
 
 ### v0.9.0 (2020-09-20)
 
