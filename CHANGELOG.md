@@ -7,6 +7,11 @@
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 - [advanced math editor](https://github.com/Manueloccorso/NotionMathEditor_BrowserExtension)
 
+### v0.9.1 (wip)
+
+- bugfix: font chooser will continue iterating through fonts after encountering a blank option.
+- bugfix: block indents are no longer overriden.
+
 ### v0.9.0 (2020-09-20)
 
 a feature and cleanup update.

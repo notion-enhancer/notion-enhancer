@@ -52,7 +52,6 @@
   [style*='pointer-events:'][style*='max-width: 100%; width: 100%'] {
   width: var(--theme--page_full-width) !important;
 }
-.notion-text-block [style*='padding-left: 1.5em'],
 .notion-frame .notion-scroller [style*='padding-left: 136.5px;'] {
   padding-left: 0 !important;
 }
