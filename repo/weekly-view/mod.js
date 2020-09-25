@@ -30,23 +30,24 @@ module.exports = {
             subtree: true,
           });
           function process(list, observer) {
-            const collection_view = document.querySelector(
-              '.notion-collection-view-select'
-            );
-            if (!collection_view || collection_view.innerText != 'weekly')
-              return;
-            const days = collection_view.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(
-                'notion-calendar-view-day'
-              ),
-              today = [...days].find((day) => day.style.background),
-              height = today
-                ? getComputedStyle(
-                    today.parentElement.parentElement
-                  ).getPropertyValue('height')
-                : 0;
-            for (let day of days)
-              day.parentElement.parentElement.style.height = 0;
-            if (today) today.parentElement.parentElement.style.height = height;
+            document
+              .querySelectorAll('.notion-collection-view-select')
+              .forEach((collection_view) => {
+                if (collection_view.innerText != 'weekly') return;
+                const days = collection_view.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(
+                    'notion-calendar-view-day'
+                  ),
+                  today = [...days].find((day) => day.style.background),
+                  height = today
+                    ? getComputedStyle(
+                        today.parentElement.parentElement
+                      ).getPropertyValue('height')
+                    : 0;
+                for (let day of days)
+                  day.parentElement.parentElement.style.height = 0;
+                if (today)
+                  today.parentElement.parentElement.style.height = height;
+              });
           }
         }
       });
