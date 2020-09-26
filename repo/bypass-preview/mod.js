@@ -22,15 +22,15 @@ module.exports = {
           const notion_elem = document.querySelector('.notion-app-inner');
           if (!notion_elem) return;
           clearInterval(attempt_interval);
-          const observer = new MutationObserver(process);
+          const observer = new MutationObserver(handle);
           observer.observe(notion_elem, {
             childList: true,
             subtree: true,
           });
 
           let pageHistory = [];
-          process();
-          function process(list, observer) {
+          handle();
+          function handle(list, observer) {
             const pageID = (location.search
                 .slice(1)
                 .split('&')

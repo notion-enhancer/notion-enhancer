@@ -11,7 +11,7 @@ module.exports = {
   tags: ['extension'],
   name: 'emoji sets',
   desc: 'pick from a variety of emoji styles to use.',
-  version: '0.2.0',
+  version: '0.3.0',
   author: 'dragonwocky',
   options: [
     {
@@ -38,58 +38,109 @@ module.exports = {
   ],
   hacks: {
     'renderer/preload.js'(store, __exports) {
-      const useNative =
-        (store().style === 'microsoft' && process.platform === 'win32') ||
-        (store().style === 'apple' && process.platform === 'darwin');
+      let tweaked = false;
 
-      Object.defineProperty(navigator, 'userAgent', {
-        get: function () {
-          // macOS useragent uses system emojis instead of images
-          // = no need to download
-          return useNative
-            ? 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_6) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/13.0.3 Safari/605.1.15 Notion/2.0.9 Electron/6.1.5'
-            : 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Notion/2.0.9 Chrome/76.0.3809.146 Electron/6.1.5 Safari/537.36';
-        },
-      });
-
-      if (!useNative) {
-        let tweaked = false;
-
-        document.addEventListener('readystatechange', (event) => {
-          if (document.readyState !== 'complete') return false;
-          let queue = [];
-          const observer = new MutationObserver((list, observer) => {
-            if (!queue.length) requestAnimationFrame(process);
-            queue.push(...list);
-          });
-          observer.observe(document.body, {
-            childList: true,
-            subtree: true,
-            characterData: true,
-          });
-          function process() {
-            queue = [];
-            if (store().style !== 'twitter' || tweaked) {
+      document.addEventListener('readystatechange', (event) => {
+        if (document.readyState !== 'complete') return false;
+        let queue = [];
+        const observer = new MutationObserver((list, observer) => {
+          if (!queue.length) requestAnimationFrame(handle);
+          queue.push(...list);
+        });
+        observer.observe(document.body, {
+          childList: true,
+          subtree: true,
+          characterData: true,
+        });
+        function handle() {
+          queue = [];
+          const isMac = process.platform === 'darwin',
+            native =
+              (store().style === 'microsoft' && process.platform === 'win32') ||
+              (store().style === 'apple' && isMac);
+          if (store().style !== (isMac ? 'apple' : 'twitter') || tweaked) {
+            if (isMac) {
+              if (native) {
+                document
+                  .querySelectorAll('span[role="image"][aria-label]')
+                  .forEach((el) => {
+                    el.style.background = '';
+                    el.style.color = 'currentColor';
+                  });
+              } else {
+                document
+                  .querySelectorAll('span[role="image"][aria-label]')
+                  .forEach((el) => {
+                    if (!el.style.background.includes(store().style)) {
+                      el.style.background = `url(https://emojicdn.elk.sh/${el.getAttribute(
+                        'aria-label'
+                      )}?style=${store().style})`;
+                      el.style.width = el.parentElement.style.fontSize;
+                      el.style.backgroundSize = 'contain';
+                      el.style.backgroundRepeat = 'no-repeat';
+                      el.style.color = 'transparent';
+                    }
+                  });
+              }
+            } else {
               document
                 .querySelectorAll(
                   '[src*="notion-emojis.s3"]:not(.notion-emoji)'
                 )
                 .forEach((el) => el.remove());
-              document.querySelectorAll('.notion-emoji').forEach((el) => {
-                el.style.setProperty(
-                  'background',
-                  `url(https://emojicdn.elk.sh/${el.getAttribute(
-                    'alt'
-                  )}?style=${store().style})`
-                );
-                el.style.setProperty('background-size', 'contain');
-                el.style.setProperty('opacity', '1');
-              });
-              tweaked = true;
+              if (native) {
+                document.querySelectorAll('.notion-emoji').forEach((el) => {
+                  if (
+                    el.parentElement.querySelectorAll(
+                      'span[role="image"][aria-label]'
+                    ).length !==
+                    el.parentElement.querySelectorAll('.notion-emoji').length
+                  ) {
+                    el.insertAdjacentHTML(
+                      'beforebegin',
+                      `<span
+                        role="image"
+                        aria-label="${el.getAttribute('alt')}"
+                        style='font-family: "Apple Color Emoji", "Segoe UI Emoji",
+                        NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol",
+                        "Android Emoji", EmojiSymbols; line-height: 1em;'
+                      >${el.getAttribute('alt')}</span>`
+                    );
+                    el.style.display = 'none';
+                    if (el.parentElement.getAttribute('contenteditable'))
+                      el.remove();
+                  }
+                });
+              } else {
+                document.querySelectorAll('.notion-emoji').forEach((el) => {
+                  el.parentElement
+                    .querySelectorAll('span[role="image"][aria-label]')
+                    .forEach((text) => text.remove());
+                  if (!el.style.background.includes(store().style)) {
+                    el.style.background = `url(https://emojicdn.elk.sh/${el.getAttribute(
+                      'aria-label'
+                    )}?style=${store().style})`;
+                    el.style.display = 'inline-block';
+                    el.style.backgroundSize = 'contain';
+                    el.style.backgroundRepeat = 'no-repeat';
+                    el.style.opacity = 1;
+                  }
+                });
+              }
             }
+            tweaked = true;
           }
-        });
-      }
+        }
+      });
     },
   },
 };
+// span[role="image"][aria-label]
+/*  */
+
+// <div style="position: relative; width: 36px; height: 36px;">
+//   <img class="notion-emoji" alt="😀" aria-label="😀" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" style="width: 36px; height: 36px; background: url(&quot;/images/twitter-emoji-spritesheet-64.png&quot;) 53.5714% 62.5% / 5700% 5700%; opacity: 1; transition: opacity 100ms ease-out 0s;">
+//   <img alt="😀" aria-label="😀" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f600.svg" style="position: absolute; top: 0px; left: 0px; opacity: 0; width: 36px; height: 36px;">
+// </div>
+
+//   <img class="notion-emoji" alt="✝" aria-label="✝" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" style="width: 100%; height: 100%; background: url(&quot;/images/twitter-emoji-spritesheet-64.png&quot;) 98.2143% 25% / 5700% 5700%;">

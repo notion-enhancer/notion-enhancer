@@ -1,0 +1,5 @@
+.notion-emoji::after {
+  content: attr(aria-label, '');
+  width: 1em;
+  height: 1em;
+}
