@@ -13,5 +13,4 @@ module.exports = {
   desc: "a Material theme with oceanic colors",
   version: "0.1",
   author: "blacksuan19",
-  fonts: ["https://rsms.me/inter/inter.css"],
 };
