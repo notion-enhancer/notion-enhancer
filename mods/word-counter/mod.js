@@ -119,6 +119,7 @@ module.exports = {
               ''
             )}`;
           $page.previousElementSibling.children[0].appendChild($container);
+          if (!$container.offsetParent) return;
           $container.offsetParent.appendChild($tooltip);
           $container
             .querySelectorAll('p')
@@ -130,7 +131,6 @@ module.exports = {
           $container.querySelectorAll('[data-tooltip]').forEach((el) => {
             el.addEventListener('mouseenter', (e) => {
               $tooltip.innerText = el.getAttribute('data-tooltip');
-              console.log(e.target);
               $tooltip.style.top = el.parentElement.offsetTop + 2.5 + 'px';
               $tooltip.style.left =
                 el.parentElement.offsetLeft +

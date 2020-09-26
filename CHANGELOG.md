@@ -6,6 +6,18 @@
 - [improved responsiveness](https://chrome.google.com/webstore/detail/notion%20%20-responsiveness-f/leadcilhbmibbkgbnjgmmnfgnnhmeddk)
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 - [advanced math editor](https://github.com/Manueloccorso/NotionMathEditor_BrowserExtension)
+- re-orderable extensions
+
+### v0.9.1 (2020-09-26)
+
+- bugfix: font chooser will continue iterating through fonts after encountering a blank option.
+- bugfix: block indents are no longer overriden.
+- bugfix: neutral does not force full width pages.
+- bugfix: bypass preview extension works with the back/forward arrows.
+- bugfix: check all views on a page for a weekly calendar.
+- bugfix: emoji sets no longer modifies the user agent = doesn't break hotkeys.
+
+> 📥 `npm i -g notion-enhancer@0.9.1`
 
 ### v0.9.0 (2020-09-20)
 

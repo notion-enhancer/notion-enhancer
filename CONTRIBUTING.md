@@ -30,6 +30,7 @@ download:
 ```sh
 git clone https://github.com/dragonwocky/notion-enhancer
 cd notion-enhancer
+git checkout dev
 npm link
 ```
 
@@ -51,6 +52,12 @@ depending on the content and scale of a contribution, it may constitute an updat
 to keep a consistent informative code style it is preferred to name variables with
 `snake_case`, functions/methods with `camelCase`, and classes with `PascalCase`.
 if a variable is a reference to a DOM element, it may be helpful to prefix it with a `$`.
+
+some variables beginning with a double underscore are `__folder` paths and `ALL_CAPS` variables
+are constant. this is not required, but these styles should not be used for any other purpose.
+
+the master branch is kept consistent with the current release,
+so all changes should be made to the dev branch.
 
 ## review
 

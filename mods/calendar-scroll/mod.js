@@ -55,13 +55,13 @@ module.exports = {
             );
           });
 
-          process();
-          const observer = new MutationObserver(process);
+          handle();
+          const observer = new MutationObserver(handle);
           observer.observe(notion_elem, {
             childList: true,
             subtree: true,
           });
-          function process(list, observer) {
+          function handle(list, observer) {
             if (document.querySelector('#calendar-scroll-to-week')) return;
             const arrow = document.querySelector(
               '.notion-selectable.notion-collection_view_page-block .chevronLeft'
