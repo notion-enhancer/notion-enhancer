@@ -12,103 +12,96 @@
 
   --theme_dark--card: #00010a;
   --theme_dark--gallery: #00010a;
+  --theme_dark--table-border: rgba(255, 255, 255, 0.1);
   --theme_dark--interactive_hover: #0f111a77;
   --theme_dark--button_close: #ff4151;
 
   --theme_dark--selected: rgba(255, 65, 81, 0.2);
   --theme_dark--primary: #ff4151;
+  --theme_dark--primary_hover: #ff4151;
   --theme_dark--primary_click: #00010a;
-}
-/* Scrollbar size */
-::-webkit-scrollbar {
-  width: 8px; /* for vertical */
-  height: 8px; /* for horizontal */
-}
-/* scrollbar: pointer */
-.notion-scroller {
-  cursor: auto;
-}
-/* Element where vertical and horizontal scrollbars converge */
-::-webkit-scrollbar-corner {
-  background-color: transparent;
-}
+  --theme_dark--primary_indicator: #ff4151;
 
-/* Changing the width of horizontal scroller, because of wider table */
-[style^="flex-shrink: 0; flex-grow: 1; width: 100%; max-width: 100%; display: flex; align-items: center; flex-direction: column; font-size: 16px; color: rgba(255, 255, 255, 0.9); padding: 0px 96px 30vh;"]
-  .notion-selectable
-  .notion-scroller.horizontal::-webkit-scrollbar-track {
-  margin-left: 10px;
-  margin-right: 10px;
-}
+  --theme_dark--option_active-background: var(--theme_dark--primary);
+  --theme_dark--option_hover-background: var(--theme_dark--primary_hover);
 
-/* Hide "+" button when you hover on table row, because of it's useless for me, and this buttons takes like 15px from the left side of table */
-[style^="flex-shrink: 0; flex-grow: 1; width: 100%; max-width: 100%; display: flex; align-items: center; flex-direction: column; font-size: 16px; color: rgba(255, 255, 255, 0.9); padding: 0px 96px 30vh;"]
-  .notion-table-view
-  [style^="opacity:"]
-  > [role="button"],
-[class="notion-scroller"]
-  > .notion-table-view
-  [style^="opacity:"]
-  > [role="button"] {
-  display: none !important;
-}
+  --theme_dark--danger_text: #eb5757;
+  --theme_dark--danger_border: rgba(235, 87, 87, 0.5);
 
-.notion-table-view
-  > [data-block-id="e92bc452-807e-4be0-80d5-c60c2d82656f"]
-  > div:nth-child(4) {
-  display: none !important;
-}
+  --theme_dark--text: #ffffff;
+  --theme_dark--text_ui: #e0e0e0;
+  --theme_dark--text_ui_info: #e0e0e0;
 
-/* Same as with table. Makes board view more wider */
-.notion-board-view {
-  padding-left: 10px !important;
-  padding-right: 10px !important;
-}
+  --theme_dark--text_gray: #e0e0e0;
+  --theme_dark--text_brown: #d8b6a6;
+  --theme_dark--text_orange: #fde3c0;
+  --theme_dark--text_yellow: #ebcb8b;
+  --theme_dark--text_green: #a3be8c;
+  --theme_dark--text_blue: #81a1c1;
+  --theme_dark--text_purple: #b48ead;
+  --theme_dark--text_pink: #ffc0cb;
+  --theme_dark--text_red: #bf616a;
 
-/* Changing content block position, less height - higher content block */
-[style^="position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 30vh;"] {
-  height: 12vh !important;
-}
-/* Changing cover image height to match higher content block */
-[style^="position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 30vh;"]
-  img {
-  height: 20vh !important;
-}
+  --theme_dark--select-text: #0f111a;
+  --theme_dark--select_gray: #e0e0e0;
+  --theme_dark--select_brown: #d8b6a6;
+  --theme_dark--select_orange: #fde3c0;
+  --theme_dark--select_yellow: #ebcb8b;
+  --theme_dark--select_green: #a3be8c;
+  --theme_dark--select_blue: #81a1c1;
+  --theme_dark--select_purple: #b48ead;
+  --theme_dark--select_pink: #ffc0cb;
+  --theme_dark--select_red: #bf616a;
 
-/* Hiding selection, because of changing columns width bugs selection inside table */
-[data-block-id^="bf10a506-e70d-4531-b4d5-ec4c2c99e883"]
-  [style^="position: absolute; top: 0px; left: 0px; pointer-events: none;"]:not(.notion-presence-container) {
-  display: none;
-}
+  --theme_dark--bg-text: var(--theme_dark--select-text);
+  --theme_dark--bg_gray: var(--theme_dark--select_gray);
+  --theme_dark--bg_brown: var(--theme_dark--select_brown);
+  --theme_dark--bg_orange: var(--theme_dark--select_orange);
+  --theme_dark--bg_yellow: var(--theme_dark--select_yellow);
+  --theme_dark--bg_green: var(--theme_dark--select_green);
+  --theme_dark--bg_blue: var(--theme_dark--select_blue);
+  --theme_dark--bg_purple: var(--theme_dark--select_purple);
+  --theme_dark--bg_pink: var(--theme_dark--select_pink);
+  --theme_dark--bg_red: var(--theme_dark--select_red);
 
-/* Changing table header icons to make it smaller */
-[style^="display: flex; position: absolute; background: rgb(47, 52, 55); z-index: 82; height: 33px; color: rgba(255, 255, 255, 0.6);"]
-  div:nth-child(1)
-  svg {
-  height: 15px !important;
-  width: 15px !important;
-  margin-right: -4px;
-}
+  --theme_dark--line-text: #0f111a;
+  --theme_dark--line_gray: #e0e0e089;
+  --theme_dark--line_brown: #d8b6a692;
+  --theme_dark--line_orange: #fde3c09f;
+  --theme_dark--line_yellow: #ffe6a6ad;
+  --theme_dark--line_green: #a3be8ca3;
+  --theme_dark--line_blue: #81a1c1a3;
+  --theme_dark--line_purple: #b48eada8;
+  --theme_dark--line_pink: #ffc0cbb1;
+  --theme_dark--line_red: #bf616a9e;
 
-/*center justify column headers. And not these only
- * apply as far as the letters, so you can't change
- * the whole column color.*/
-.notion-table-view-header-cell > div > div {
-  margin: 0px auto;
-  color: #ffffff !important; /*color of column header text*/
-}
+  --theme_dark--callout-text: var(--theme_dark--line-text);
+  --theme_dark--callout_gray: var(--theme_dark--line_gray);
+  --theme_dark--callout_brown: var(--theme_dark--line_brown);
+  --theme_dark--callout_orange: var(--theme_dark--line_orange);
+  --theme_dark--callout_yellow: var(--theme_dark--line_yellow);
+  --theme_dark--callout_green: var(--theme_dark--line_green);
+  --theme_dark--callout_blue: var(--theme_dark--line_blue);
+  --theme_dark--callout_purple: var(--theme_dark--line_purple);
+  --theme_dark--callout_pink: var(--theme_dark--line_pink);
+  --theme_dark--callout_red: var(--theme_dark--line_red);
 
-/*Increases spacing between "header" and entries*/
-.notion-board-group [style="height: 4px;"] {
-  height: 20px !important;
-}
-
-/*hide discussions on each page */
-.notion-page-view-discussion {
-  display: none !important;
-}
-
-/* wider page previews */
-.notion-peek-renderer > div:nth-child(2) {
-  max-width: 85vw !important;
+  --theme_dark--code_inline-text: #b3f5c8;
+  --theme_dark--code_inline-background: #00010a;
+  --theme_dark--code-text: var(--theme_dark--text);
+  --theme_dark--code-background: #00010a;
+  --theme_dark--code_function: var(--theme_dark--text_blue);
+  --theme_dark--code_keyword: var(--theme_dark--text_pink);
+  --theme_dark--code_tag: var(--theme_dark--text_pink);
+  --theme_dark--code_operator: var(--theme_dark--text_yellow);
+  --theme_dark--code_important: var(--theme_dark--text_yellow);
+  --theme_dark--code_property: var(--theme_dark--text_pink);
+  --theme_dark--code_builtin: var(--theme_dark--text_yellow);
+  --theme_dark--code_attr-name: var(--theme_dark--text_yellow);
+  --theme_dark--code_comment: var(--theme_dark--text_gray);
+  --theme_dark--code_punctuation: var(--theme_dark--text_gray);
+  --theme_dark--code_doctype: var(--theme_dark--text_gray);
+  --theme_dark--code_number: var(--theme_dark--text_purple);
+  --theme_dark--code_string: var(--theme_dark--text_orange);
+  --theme_dark--code_attr-value: var(--theme_dark--text_orange);
 }
