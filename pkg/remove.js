@@ -114,11 +114,15 @@ module.exports = async function ({
     return true;
   } catch (err) {
     console.error('### ERROR ###');
-    if (err.toString().includes('EACCESS') && friendly_errors) {
+    if (err.code === 'EACCES' && friendly_errors) {
       console.error(
-        'file access forbidden: try again with sudo or in an elevated/admin prompt.'
+        `file access forbidden - ${
+          process.platform === 'win32'
+            ? 'make sure your user has elevated permissions.'
+            : `try running "chown -R ${err.path}"`
+        }`
       );
-    } else if (err.toString().includes('EIO') && friendly_errors) {
+    } else if (err.code === 'EIO' && friendly_errors) {
       console.error('file access failed: is notion running?');
     } else console.error(err);
     return false;

@@ -203,7 +203,9 @@
 
 .notion-body.dark
   [style*='box-shadow: rgba(15, 15, 15, 0.2) 0px 0px 0px 1px, rgba(15, 15, 15, 0.2) 0px 2px 4px'],
-.notion-body:not(.dark) [style*='box-shadow: white -3px 0px 0px'] {
+.notion-body:not(.dark)
+  .notion-dark-theme
+  [style*='box-shadow: white -3px 0px 0px'] {
   box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px,
     rgba(15, 15, 15, 0.1) 0px 2px 4px !important;
 }
@@ -425,8 +427,11 @@
 .notion-page-content [style*='color: inherit;'],
 .notion-frame .notion-page-block,
 .notion-body.dark [style*=' color: rgba(255, 255, 255, 0.9)'],
-.notion-body.dark [style*='color: rgba(255, 255, 255, 0.7)'],
-.notion-body:not(.dark) [style*=' color: rgb(55, 53, 47);'] {
+.notion-body.dark [style^='color: rgba(255, 255, 255, 0.9)'],
+.notion-body.dark [style*=' color: rgba(255, 255, 255, 0.7)'],
+.notion-body.dark [style^='color: rgba(255, 255, 255, 0.7)'],
+.notion-body:not(.dark) [style*=' color: rgb(55, 53, 47);'],
+.notion-body:not(.dark) [style^='color: rgb(55, 53, 47);'] {
   color: var(--theme--text) !important;
 }
 .notion-body.dark [style*='color: rgba(255, 255, 255, 0.6)'],
