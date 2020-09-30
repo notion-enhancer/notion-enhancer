@@ -27,6 +27,7 @@ module.exports = {
           const observer = new MutationObserver(process);
           observer.observe(notion_elem, {
             attributes: true,
+            subtree: true,
           });
           function process(list, observer) {
             const mode = `notion-app-inner notion-${
@@ -34,8 +35,7 @@ module.exports = {
                 ? 'dark'
                 : 'light'
             }-theme`;
-            if (list[0].target.className !== mode)
-              list[0].target.className = mode;
+            if (notion_elem.className !== mode) notion_elem.className = mode;
           }
         }
       });
