@@ -14,6 +14,8 @@
 - bugfix: remove shadow around light mode board headers
   \+ minor text colour fixes for night shift theming.
 - bugfix: properly detect/respond to `EACCES` errors.
+- bugfix: night shift checks every interaction,
+  will respond to system changes without any manual changes.
 
 ### v0.9.1 (2020-09-26)
 

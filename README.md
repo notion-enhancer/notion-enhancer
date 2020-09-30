@@ -43,7 +43,7 @@ execute the following lines in the terminal:
 ```
 bash curl -sL https://deb.nodesource.com setup_current.x | sudo -E bash -
 sudo apt-get install -y nodejs
-sudo npm i -g notion-enhancer
+npm i -g notion-enhancer
 ```
 
 **arch linux, manjaro**
