@@ -29,7 +29,6 @@ module.exports = {
         'joypixels',
         'openmoji',
         'emojidex',
-        'messenger',
         'lg',
         'htc',
         'mozilla',
@@ -109,6 +108,15 @@ module.exports = {
                     el.style.display = 'none';
                     if (el.parentElement.getAttribute('contenteditable'))
                       el.remove();
+                  } else if (
+                    el.previousElementSibling.matches(
+                      'span[role="image"][aria-label]'
+                    )
+                  ) {
+                    el.previousElementSibling.innerText = el.getAttribute(
+                      'alt'
+                    );
+                    el.setAttribute('aria-label', el.getAttribute('alt'));
                   }
                 });
               } else {
@@ -116,11 +124,11 @@ module.exports = {
                   el.parentElement
                     .querySelectorAll('span[role="image"][aria-label]')
                     .forEach((text) => text.remove());
+                  el.style.display = 'inline-block';
                   if (!el.style.background.includes(store().style)) {
                     el.style.background = `url(https://emojicdn.elk.sh/${el.getAttribute(
                       'aria-label'
                     )}?style=${store().style})`;
-                    el.style.display = 'inline-block';
                     el.style.backgroundSize = 'contain';
                     el.style.backgroundRepeat = 'no-repeat';
                     el.style.opacity = 1;
@@ -135,12 +143,3 @@ module.exports = {
     },
   },
 };
-// span[role="image"][aria-label]
-/*  */
-
-// <div style="position: relative; width: 36px; height: 36px;">
-//   <img class="notion-emoji" alt="😀" aria-label="😀" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" style="width: 36px; height: 36px; background: url(&quot;/images/twitter-emoji-spritesheet-64.png&quot;) 53.5714% 62.5% / 5700% 5700%; opacity: 1; transition: opacity 100ms ease-out 0s;">
-//   <img alt="😀" aria-label="😀" src="https://notion-emojis.s3-us-west-2.amazonaws.com/v0/svg-twitter/1f600.svg" style="position: absolute; top: 0px; left: 0px; opacity: 0; width: 36px; height: 36px;">
-// </div>
-
-//   <img class="notion-emoji" alt="✝" aria-label="✝" src="data:image/gif;base64,R0lGODlhAQABAIAAAP///wAAACH5BAEAAAAALAAAAAABAAEAAAICRAEAOw==" style="width: 100%; height: 100%; background: url(&quot;/images/twitter-emoji-spritesheet-64.png&quot;) 98.2143% 25% / 5700% 5700%;">
