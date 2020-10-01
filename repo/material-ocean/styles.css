@@ -1,0 +1,121 @@
+/* Copyright © Blacksuan19 @ 2020 */
+/* part of Material Ocean Color Scheme */
+
+:root {
+  /* material ocean colors */
+  --ocean-main: #0f111a;
+  --ocean-sec: #00010a;
+  --ocean-accent: #ff4151;
+  --ocean-gray: #e0e0e0;
+  --ocean-brown: #d8b6a6;
+  --ocean-orange: #fde3c0;
+  --ocean-yellow: #ebcb8b;
+  --ocean-green: #a3be8c;
+  --ocean-blue: #81a1c1;
+  --ocean-purple: #b48ead;
+  --ocean-pink: #ffc0cb;
+  --ocean-red: #bf616a;
+
+  --theme_dark--main: var(--ocean-main);
+  --theme_dark--sidebar: var(--ocean-sec);
+  --theme_dark--overlay: var(--ocean-sec);
+  --theme_dark--dragarea: var(--ocean-sec);
+
+  --theme_dark--scrollbar: var(--ocean-sec);
+  --theme_dark--scrollbar_hover: var(--ocean-accent);
+
+  --theme_dark--card: var(--ocean-sec);
+  --theme_dark--gallery: var(--ocean-sec);
+  --theme_dark--table-border: rgba(255, 255, 255, 0.1);
+  --theme_dark--interactive_hover: var(--ocean-main);
+  --theme_dark--button_close: var(--ocean-accent);
+
+  --theme_dark--selected: rgba(255, 65, 81, 0.2);
+  --theme_dark--primary: var(--ocean-accent);
+  --theme_dark--primary_hover: var(--ocean-accent);
+  --theme_dark--primary_click: var(--ocean-sec);
+  --theme_dark--primary_indicator: var(--ocean-accent);
+
+  --theme_dark--option_active-background: var(--theme_dark--primary);
+  --theme_dark--option_hover-background: var(--theme_dark--primary_hover);
+
+  --theme_dark--danger_text: #eb5757;
+  --theme_dark--danger_border: rgba(235, 87, 87, 0.5);
+
+  --theme_dark--text: #ffffff;
+  --theme_dark--text_ui: var(--ocean-gray);
+  --theme_dark--text_ui_info: var(--ocean-gray);
+
+  --theme_dark--text_gray: var(--ocean-gray);
+  --theme_dark--text_brown: var(--ocean-brown);
+  --theme_dark--text_orange: var(--ocean-orange);
+  --theme_dark--text_yellow: var(--ocean-yellow);
+  --theme_dark--text_green: var(--ocean-green);
+  --theme_dark--text_blue: var(--ocean-blue);
+  --theme_dark--text_purple: var(--ocean-purple);
+  --theme_dark--text_pink: var(--ocean-pink);
+  --theme_dark--text_red: var(--ocean-red);
+
+  --theme_dark--select-text: var(--ocean-main);
+  --theme_dark--select_gray: var(--ocean-gray);
+  --theme_dark--select_brown: var(--ocean-brown);
+  --theme_dark--select_orange: var(--ocean-orange);
+  --theme_dark--select_yellow: var(--ocean-yellow);
+  --theme_dark--select_green: var(--ocean-green);
+  --theme_dark--select_blue: var(--ocean-blue);
+  --theme_dark--select_purple: var(--ocean-purple);
+  --theme_dark--select_pink: var(--ocean-pink);
+  --theme_dark--select_red: var(--ocean-red);
+
+  --theme_dark--line-text: var(--ocean-main);
+  --theme_dark--line_gray: #e0e0e089;
+  --theme_dark--line_brown: #d8b6a692;
+  --theme_dark--line_orange: #fde3c09f;
+  --theme_dark--line_yellow: #ffe6a6ad;
+  --theme_dark--line_green: #a3be8ca3;
+  --theme_dark--line_blue: #81a1c1a3;
+  --theme_dark--line_purple: #b48eada8;
+  --theme_dark--line_pink: #ffc0cbb1;
+  --theme_dark--line_red: #bf616a9e;
+
+  --theme_dark--bg-text: var(--theme_dark--select-text);
+  --theme_dark--bg_gray: var(--theme_dark--select_gray);
+  --theme_dark--bg_brown: var(--theme_dark--select_brown);
+  --theme_dark--bg_orange: var(--theme_dark--select_orange);
+  --theme_dark--bg_yellow: var(--theme_dark--select_yellow);
+  --theme_dark--bg_green: var(--theme_dark--select_green);
+  --theme_dark--bg_blue: var(--theme_dark--select_blue);
+  --theme_dark--bg_purple: var(--theme_dark--select_purple);
+  --theme_dark--bg_pink: var(--theme_dark--select_pink);
+  --theme_dark--bg_red: var(--theme_dark--select_red);
+
+  --theme_dark--callout-text: var(--theme_dark--line-text);
+  --theme_dark--callout_gray: var(--theme_dark--line_gray);
+  --theme_dark--callout_brown: var(--theme_dark--line_brown);
+  --theme_dark--callout_orange: var(--theme_dark--line_orange);
+  --theme_dark--callout_yellow: var(--theme_dark--line_yellow);
+  --theme_dark--callout_green: var(--theme_dark--line_green);
+  --theme_dark--callout_blue: var(--theme_dark--line_blue);
+  --theme_dark--callout_purple: var(--theme_dark--line_purple);
+  --theme_dark--callout_pink: var(--theme_dark--line_pink);
+  --theme_dark--callout_red: var(--theme_dark--line_red);
+
+  --theme_dark--code_inline-text: #b3f5c8;
+  --theme_dark--code_inline-background: var(--ocean-sec);
+  --theme_dark--code-text: var(--theme_dark--text);
+  --theme_dark--code-background: var(--ocean-sec);
+  --theme_dark--code_function: var(--theme_dark--text_blue);
+  --theme_dark--code_keyword: var(--theme_dark--text_pink);
+  --theme_dark--code_tag: var(--theme_dark--text_pink);
+  --theme_dark--code_operator: var(--theme_dark--text_yellow);
+  --theme_dark--code_important: var(--theme_dark--text_yellow);
+  --theme_dark--code_property: var(--theme_dark--text_pink);
+  --theme_dark--code_builtin: var(--theme_dark--text_yellow);
+  --theme_dark--code_attr-name: var(--theme_dark--text_yellow);
+  --theme_dark--code_comment: var(--theme_dark--text_gray);
+  --theme_dark--code_punctuation: var(--theme_dark--text_gray);
+  --theme_dark--code_doctype: var(--theme_dark--text_gray);
+  --theme_dark--code_number: var(--theme_dark--text_purple);
+  --theme_dark--code_string: var(--theme_dark--text_orange);
+  --theme_dark--code_attr-value: var(--theme_dark--text_orange);
+}
