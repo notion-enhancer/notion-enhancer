@@ -140,13 +140,17 @@ function getEnhancements() {
       modules.invalid.push(dir);
     }
   }
-  modules.loaded = modules.loaded.sort((a, b) =>
-    a.tags.includes('core')
-      ? -1
-      : b.tags.includes('core')
-      ? 1
-      : a.name.localeCompare(b.name)
-  );
+  modules.loaded = modules.loaded.sort((a, b) => a.name.localeCompare(b.name));
+  const priority = require('./store.js')('mods', { priority: [] }).priority;
+  modules.loaded = [
+    ...modules.loaded.filter((m) => m.tags.includes('core')),
+    ...modules.loaded.filter(
+      (m) => !m.tags.includes('core') && !priority.includes(m.id)
+    ),
+    ...priority
+      .map((id) => modules.loaded.find((m) => m.id === id))
+      .filter((m) => m),
+  ];
   return modules;
 }
 

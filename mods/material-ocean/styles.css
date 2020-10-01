@@ -1,8 +1,10 @@
-/* Copyright © Blacksuan19 @ 2020 */
-/* part of Material Ocean Color Scheme */
+/*
+ * material ocean
+ * (c) 2020 Abubakar Yagoub <i@blacksuan19.me> (https://blacksuan19.tk)
+ * under the MIT license
+ */
 
 :root {
-  /* material ocean colors */
   --ocean-main: #0f111a;
   --ocean-sec: #00010a;
   --ocean-accent: #ff4151;

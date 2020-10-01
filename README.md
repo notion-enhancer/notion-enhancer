@@ -164,7 +164,8 @@ on top of other windows even if it's not focused.
 
 **tags:** #extension
 
-**description:** link files for small client-side tweaks.
+**description:** link files for small client-side tweaks. (not sure how to do something? check out the
+[tweaks](https://github.com/dragonwocky/notion-enhancer/blob/master/TWEAKS.md) collection.)
 
 **author**: [dragonwocky](https://github.com/dragonwocky/)
 

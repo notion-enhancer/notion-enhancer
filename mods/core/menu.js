@@ -7,12 +7,10 @@
 'use strict';
 
 const store = require('../../pkg/store.js'),
-  { id } = require('./mod.js'),
   helpers = require('../../pkg/helpers.js'),
   fs = require('fs-extra'),
   path = require('path'),
-  electron = require('electron'),
-  browser = electron.remote.getCurrentWindow();
+  electron = require('electron');
 
 window['__start'] = async () => {
   const buttons = require('./buttons.js')(() => ({
@@ -197,13 +195,15 @@ window['__start'] = async () => {
     modules.loaded.forEach((mod) => {
       const $search_input = document.querySelector('#search > input');
       if (
-        (mod.elem.classList.contains('enabled') && !search_filters.enabled) ||
-        (mod.elem.classList.contains('disabled') && !search_filters.disabled) ||
-        !mod.tags.some((tag) => search_filters.tags.has(tag)) ||
-        ($search_input.value &&
-          !innerText(mod.elem)
-            .toLowerCase()
-            .includes($search_input.value.toLowerCase().trim()))
+        !document.body.classList.contains('reorder') &&
+        ((mod.elem.classList.contains('enabled') && !search_filters.enabled) ||
+          (mod.elem.classList.contains('disabled') &&
+            !search_filters.disabled) ||
+          !mod.tags.some((tag) => search_filters.tags.has(tag)) ||
+          ($search_input.value &&
+            !innerText(mod.elem)
+              .toLowerCase()
+              .includes($search_input.value.toLowerCase().trim())))
       )
         return (mod.elem.style.display = 'none');
       mod.elem.style.display = 'block';
@@ -223,21 +223,20 @@ window['__start'] = async () => {
     );
     document.querySelector('#tags').append(el);
     el.addEventListener('click', (event) => {
-      el.className = el.className === 'selected' ? '' : 'selected';
-      onclick(el.className === 'selected');
+      if (!document.body.classList.contains('reorder')) {
+        el.className = el.className === 'selected' ? '' : 'selected';
+        onclick(el.className === 'selected');
+      }
     });
     return el;
   }
-  createTag(
-    'enabled',
-    (state) => [(search_filters.enabled = state), search()]
-    // 'var(--theme--bg_green)'
-  );
-  createTag(
-    'disabled',
-    (state) => [(search_filters.disabled = state), search()]
-    // 'var(--theme--bg_red)'
-  );
+  createTag('enabled', (state) => [
+    ((search_filters.enabled = state), search()),
+  ]);
+  createTag('disabled', (state) => [
+    (search_filters.disabled = state),
+    search(),
+  ]);
   for (let tag of search_filters.tags)
     createTag(`#${tag}`, (state) => [
       state ? search_filters.tags.add(tag) : search_filters.tags.delete(tag),
@@ -541,9 +540,10 @@ window['__start'] = async () => {
     document
       .querySelectorAll('.dragged-over')
       .forEach((el) => el.classList.remove('dragged-over'));
-    const $node = draggable.list.find(
-      (node) => node.innerText === event.target.innerText
-    );
+    const $node = [
+      draggable.list[0].previousElementSibling,
+      ...draggable.list,
+    ].find((node) => node.innerText === event.target.innerText);
     if ($node) $node.classList.add('dragged-over');
   });
   document.addEventListener('drop', (event) => {
@@ -558,18 +558,21 @@ window['__start'] = async () => {
       const from = draggable.list.findIndex(
           (node) => node.innerText === draggable.target.innerText
         ),
-        to = draggable.list.findIndex(
-          (node) => node.innerText === event.target.innerText
+        to =
+          event.target.innerText ===
+          draggable.list[0].previousElementSibling.innerText
+            ? 0
+            : draggable.list.findIndex(
+                (node) => node.innerText === event.target.innerText
+              ) + 1;
+      if (to >= 0) {
+        draggable.list.splice(
+          to > from ? to - 1 : to,
+          0,
+          draggable.list.splice(from, 1)[0]
         );
-      // [draggable.list[from], draggable.list[to]] = [
-      //   draggable.list[to],
-      //   draggable.list[from],
-      // ]; -- swap
-      if (to >= draggable.list.length) {
-        let k = to - draggable.list.length;
-        while (k--) draggable.list.push(undefined);
+        store('mods').priority = draggable.list.map((m) => m.id);
       }
-      draggable.list.splice(to, 0, draggable.list.splice(from, 1)[0]);
     }
     draggable.render();
   });
@@ -582,9 +585,10 @@ window['__start'] = async () => {
       <${draggable.tags[0]} data-bolded="configure">configure</${draggable.tags[0]}> |
       <${draggable.tags[1]} data-bolded="reorder">reorder</${draggable.tags[1]}>
       `;
-    $modules.classList[draggable.state ? 'add' : 'remove']('reorder');
+    document.body.classList[draggable.state ? 'add' : 'remove']('reorder');
     $modules
       .querySelectorAll('input')
       .forEach((input) => (input.disabled = draggable.state));
+    search();
   });
 };

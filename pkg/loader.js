@@ -55,7 +55,10 @@ module.exports = function (__file, __exports) {
   }
 
   const modules = helpers.getEnhancements();
-  for (let mod of modules.loaded) {
+  for (let mod of [
+    ...modules.loaded.filter((m) => m.tags.includes('core')),
+    ...modules.loaded.filter((m) => !m.tags.includes('core')).reverse(),
+  ]) {
     if (
       (mod.tags || []).includes('core') ||
       store('mods', { [mod.id]: { enabled: false } })[mod.id].enabled

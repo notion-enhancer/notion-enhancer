@@ -231,7 +231,7 @@ s {
   background: var(--theme--option-background);
   color: var(--theme--option-color);
   border-radius: 2px;
-  transition: color 200ms, background 200ms;
+  transition: color 200ms, background 200ms, opacity 200ms;
   user-select: none;
 }
 #search #tags > span:not(:last-child) {
@@ -618,37 +618,38 @@ s {
   font-weight: bold;
 }
 
-#modules.reorder section {
-  margin-bottom: 0.4em;
+.reorder #search #tags > span,
+.reorder #search #tags > span:hover {
+  opacity: 0.7;
+  background: var(--theme--option-background);
 }
-#modules.reorder [draggable] {
-  margin-bottom: 1.15em;
+.reorder #search #tags > .selected,
+.reorder #search #tags > .selected:hover {
+  background: var(--tag_color, var(--theme--option_active-background));
 }
-#modules.reorder [draggable]::after {
+
+.reorder #modules .dragged-over::after {
   content: '';
-  height: 0.3em;
+  height: 0.25em;
   width: 99%;
   position: absolute;
-  margin: 0.5em 0;
+  margin: 0.3em 0;
   opacity: 0.7;
-  background: var(--theme--table-border);
-}
-#modules.reorder [draggable].dragged-over::after {
   background: var(--theme--selected);
 }
 
-#modules.reorder .switch,
-#modules.reorder .tags,
-#modules.reorder .desc,
-#modules.reorder .options,
-#modules.reorder .author,
-#modules.reorder .version {
+.reorder #modules .switch,
+.reorder #modules .tags,
+.reorder #modules .desc,
+.reorder #modules .options,
+.reorder #modules .author,
+.reorder #modules .version {
   display: none;
 }
-#modules.reorder label {
+.reorder #modules label {
   cursor: pointer;
 }
-#modules.reorder label::before {
+.reorder #modules label::before {
   content: '::';
   margin-right: 0.4em;
   color: var(--theme--text_ui);

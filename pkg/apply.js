@@ -117,7 +117,7 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
         `file access forbidden - ${
           process.platform === 'win32'
             ? 'make sure your user has elevated permissions.'
-            : `try running "chown -R ${err.path}"`
+            : `try running "chown -R $USER ${err.path}"`
         }`
       );
     } else if (err.code === 'EIO' && friendly_errors) {

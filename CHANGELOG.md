@@ -6,16 +6,20 @@
 - [improved responsiveness](https://chrome.google.com/webstore/detail/notion%20%20-responsiveness-f/leadcilhbmibbkgbnjgmmnfgnnhmeddk)
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 - [advanced math editor](https://github.com/Manueloccorso/NotionMathEditor_BrowserExtension)
-- re-orderable extensions
 
 ### v0.?.? (wip)
 
+- new: mods can be reordered in the menu to control what order styling/scripts are added/executed in.
+  higher up on the list = higher priority of application = loaded last in order to override others.
+  (excluding core, which though pinned to the top of the list is always loaded first so theming
+  variables can be modified.)
 - bugfix: removed messenger emoji set as the provider no longer supports it.
 - bugfix: remove shadow around light mode board headers
   \+ minor text colour fixes for night shift theming.
 - bugfix: properly detect/respond to `EACCES` errors.
 - bugfix: night shift checks every interaction,
   will respond to system changes without any manual changes.
+- extension: "material ocean" = an oceanic colour palette.
 
 ### v0.9.1 (2020-09-26)
 
