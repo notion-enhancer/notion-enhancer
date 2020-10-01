@@ -140,6 +140,13 @@ function getEnhancements() {
       modules.invalid.push(dir);
     }
   }
+  modules.loaded = modules.loaded.sort((a, b) =>
+    a.tags.includes('core')
+      ? -1
+      : b.tags.includes('core')
+      ? 1
+      : a.name.localeCompare(b.name)
+  );
   return modules;
 }
 

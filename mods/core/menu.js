@@ -184,12 +184,12 @@ window['__start'] = async () => {
   };
   function innerText(elem) {
     let text = '';
-    for (let node of elem.childNodes) {
-      if (node.nodeType === 3) text += node.textContent;
-      if (node.nodeType === 1)
-        text += ['text', 'number'].includes(node.type)
-          ? node.value
-          : innerText(node);
+    for (let $node of elem.childNodes) {
+      if ($node.nodeType === 3) text += $node.textContent;
+      if ($node.nodeType === 1)
+        text += ['text', 'number'].includes($node.type)
+          ? $node.value
+          : innerText($node);
     }
     return text;
   }
@@ -284,20 +284,20 @@ window['__start'] = async () => {
     return parsed;
   }
 
-  let modified_notice;
+  let $modified_notice;
   function modified() {
-    if (modified_notice) return;
-    modified_notice = createAlert(
+    if ($modified_notice) return;
+    $modified_notice = createAlert(
       'info',
       `changes may not fully apply until <span data-relaunch>app relaunch</span>.`
     );
-    modified_notice.el
+    $modified_notice.el
       .querySelector('[data-relaunch]')
       .addEventListener('click', (event) => {
         electron.remote.app.relaunch();
         electron.remote.app.quit();
       });
-    modified_notice.append();
+    $modified_notice.append();
   }
 
   const file_icon = await fs.readFile(
@@ -389,15 +389,8 @@ window['__start'] = async () => {
   }
 
   const $modules = document.querySelector('#modules');
-  for (let mod of modules.loaded.sort((a, b) =>
-    a.tags.includes('core') ||
-    store('mods', { [a.id]: { pinned: false } }).pinned
-      ? -1
-      : b.tags.includes('core') ||
-        store('mods', { [b.id]: { pinned: false } }).pinned
-      ? 1
-      : a.name.localeCompare(b.name)
-  )) {
+
+  for (let mod of modules.loaded) {
     for (let fonts of mod.fonts || []) {
       document
         .querySelector('head')
@@ -417,37 +410,39 @@ window['__start'] = async () => {
               avatar: `https://github.com/${mod.author}.png`,
             };
     mod.elem = helpers.createElement(`
-      <section class="${
-        mod.tags.includes('core') || enabled ? 'enabled' : 'disabled'
-      }" id="${mod.id}">
+    <section class="${
+      mod.tags.includes('core') || enabled ? 'enabled' : 'disabled'
+    }" id="${mod.id}">
         <div class="meta">
-          <h3 ${
-            mod.tags.includes('core')
-              ? `>${mod.name}`
-              : `class="toggle">
-            <input type="checkbox" id="enable_${mod.id}"
+        <h3 ${
+          mod.tags.includes('core')
+            ? `>${mod.name}`
+            : `class="toggle">
+              <input type="checkbox" id="enable_${mod.id}"
             ${enabled ? 'checked' : ''} />
             <label for="enable_${mod.id}">
-              <span class="name">${mod.name}</span>
+            <span class="name">${mod.name}</span>
               <span class="switch"><span class="dot"></span></span>
-            </label>`
-          }</h3>
-          <p class="tags">${mod.tags
-            .map((tag) => (tag.startsWith('#') ? tag : `#${tag}`))
-            .join(' ')}</p>
-          <div class="desc">${markdown(mod.desc)}</div>
-          <p>
-            <a href="${author.link}" class="author">
+              </label>`
+        }</h3>
+            <p class="tags">${mod.tags
+              .map((tag) => (tag.startsWith('#') ? tag : `#${tag}`))
+              .join(' ')}</p>
+              <div class="desc">${markdown(mod.desc)}</div>
+              <p>
+              <a href="${author.link}" class="author">
               <img src="${author.avatar}" onerror="this.src='./icons/user.png'">
               ${author.name}
-            </a>
+              </a>
             <span class="version">v${mod.version}</span>
-          </p>
-        </div>
-        ${
-          mod.options && mod.options.length ? '<div class="options"></div>' : ''
-        }
-      </section>
+            </p>
+            </div>
+            ${
+              mod.options && mod.options.length
+                ? '<div class="options"></div>'
+                : ''
+            }
+        </section>
     `);
     const $enable = mod.elem.querySelector(`#enable_${mod.id}`);
     if ($enable)
@@ -500,12 +495,96 @@ window['__start'] = async () => {
         }
         $options.appendChild($opt);
       }
-    $modules.append(mod.elem);
+    if (mod.tags.includes('core')) $modules.append(mod.elem);
   }
-
   document
     .querySelectorAll('input[type="checkbox"]')
     .forEach((checkbox) =>
       checkbox.addEventListener('click', (event) => event.target.blur())
     );
+
+  // draggable re-ordering
+  const draggable = {
+    state: 0,
+    tags: ['b', 'span'],
+    $toggle: document.querySelector('#draggable-toggle'),
+    list: modules.loaded
+      .filter((m) => !m.tags.includes('core'))
+      .map((m) => m.elem),
+    target: null,
+    render() {
+      draggable.target = null;
+      for (let $node of draggable.list) {
+        $node.draggable = false;
+        $modules.append($node);
+      }
+    },
+    mouseover(event) {
+      if (!draggable.target && event.target.innerText) {
+        for (let $node of draggable.list) $node.draggable = false;
+        const $node = draggable.list.find(
+          (node) => node.innerText === event.target.innerText
+        );
+        if ($node) $node.draggable = draggable.state;
+      }
+    },
+  };
+  document.addEventListener('dragstart', (event) => {
+    draggable.target = event.target;
+    event.target.style.opacity = 0.5;
+  });
+  document.addEventListener('dragend', (event) => {
+    event.target.style.opacity = '';
+  });
+  document.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    document
+      .querySelectorAll('.dragged-over')
+      .forEach((el) => el.classList.remove('dragged-over'));
+    const $node = draggable.list.find(
+      (node) => node.innerText === event.target.innerText
+    );
+    if ($node) $node.classList.add('dragged-over');
+  });
+  document.addEventListener('drop', (event) => {
+    event.preventDefault();
+    document
+      .querySelectorAll('.dragged-over')
+      .forEach((el) => el.classList.remove('dragged-over'));
+    if (
+      draggable.target &&
+      draggable.target.innerText !== event.target.innerText
+    ) {
+      const from = draggable.list.findIndex(
+          (node) => node.innerText === draggable.target.innerText
+        ),
+        to = draggable.list.findIndex(
+          (node) => node.innerText === event.target.innerText
+        );
+      // [draggable.list[from], draggable.list[to]] = [
+      //   draggable.list[to],
+      //   draggable.list[from],
+      // ]; -- swap
+      if (to >= draggable.list.length) {
+        let k = to - draggable.list.length;
+        while (k--) draggable.list.push(undefined);
+      }
+      draggable.list.splice(to, 0, draggable.list.splice(from, 1)[0]);
+    }
+    draggable.render();
+  });
+  document.addEventListener('mouseover', draggable.mouseover);
+  draggable.render();
+  draggable.$toggle.addEventListener('click', (event) => {
+    draggable.state = !draggable.state;
+    draggable.tags = draggable.tags.reverse();
+    draggable.$toggle.innerHTML = `
+      <${draggable.tags[0]} data-bolded="configure">configure</${draggable.tags[0]}> |
+      <${draggable.tags[1]} data-bolded="reorder">reorder</${draggable.tags[1]}>
+      `;
+    $modules.classList[draggable.state ? 'add' : 'remove']('reorder');
+    $modules
+      .querySelectorAll('input')
+      .forEach((input) => (input.disabled = draggable.state));
+  });
 };

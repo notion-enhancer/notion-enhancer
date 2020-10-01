@@ -254,6 +254,9 @@ s {
 
 /* module meta */
 
+#modules {
+  position: relative;
+}
 #modules section {
   background: var(--theme--sidebar);
   border: 1px solid var(--theme--table-border);
@@ -588,4 +591,65 @@ s {
   .colorPicker .oned .bg {
     height: 132.5px;
   }
+}
+
+/* draggable re-ordering of mods */
+
+#draggable-toggle {
+  background: none;
+  border: none;
+  margin-top: 0.8em;
+  padding-left: 0;
+  cursor: pointer;
+  color: var(--theme--text_ui);
+}
+
+[data-bolded] {
+  display: inline-flex;
+  flex-direction: column;
+}
+[data-bolded]::after {
+  content: attr(data-bolded);
+  height: 0;
+  visibility: hidden;
+  overflow: hidden;
+  user-select: none;
+  pointer-events: none;
+  font-weight: bold;
+}
+
+#modules.reorder section {
+  margin-bottom: 0.4em;
+}
+#modules.reorder [draggable] {
+  margin-bottom: 1.15em;
+}
+#modules.reorder [draggable]::after {
+  content: '';
+  height: 0.3em;
+  width: 99%;
+  position: absolute;
+  margin: 0.5em 0;
+  opacity: 0.7;
+  background: var(--theme--table-border);
+}
+#modules.reorder [draggable].dragged-over::after {
+  background: var(--theme--selected);
+}
+
+#modules.reorder .switch,
+#modules.reorder .tags,
+#modules.reorder .desc,
+#modules.reorder .options,
+#modules.reorder .author,
+#modules.reorder .version {
+  display: none;
+}
+#modules.reorder label {
+  cursor: pointer;
+}
+#modules.reorder label::before {
+  content: '::';
+  margin-right: 0.4em;
+  color: var(--theme--text_ui);
 }

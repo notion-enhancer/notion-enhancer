@@ -115,6 +115,7 @@ module.exports = (store, __exports) => {
           '--theme--interactive_hover-border',
           '--theme--button_close',
           '--theme--button_close-fill',
+          '--theme--selected',
           '--theme--primary',
           '--theme--primary_click',
           '--theme--option-color',
