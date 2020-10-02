@@ -8,19 +8,23 @@
 @import './buttons.css';
 
 .frameless .notion-topbar {
-  height: calc(var(--configured--dragarea_height, 10px) + 45px) !important;
+  height: calc(var(--configured--dragarea_height, 15px) + 45px) !important;
 }
 .frameless .window-dragarea {
-  height: var(--configured--dragarea_height, 10px);
+  height: var(--configured--dragarea_height, 15px);
   width: 100%;
 }
 .frameless .window-dragarea {
   background: var(--theme--dragarea);
 }
 
+.frameless [style*='top: 10.4972px'] {
+  top: calc(10.4972px + var(--configured--dragarea_height, 15px)) !important;
+}
+
 @media (max-width: 760px) {
   .frameless .notion-topbar {
-    height: calc(var(--configured--dragarea_height, 10px) + 80px) !important;
+    height: calc(var(--configured--dragarea_height, 15px) + 80px) !important;
   }
   .frameless .notion-topbar > :nth-child(2) {
     height: 80px !important;
