@@ -3,7 +3,6 @@
 **potential future features (not confirmed)**
 
 - [groupy-like tabbing](https://www.npmjs.com/package/electron-tabs)
-- [improved responsiveness](https://chrome.google.com/webstore/detail/notion%20%20-responsiveness-f/leadcilhbmibbkgbnjgmmnfgnnhmeddk)
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 - [advanced math editor](https://github.com/Manueloccorso/NotionMathEditor_BrowserExtension)
 
@@ -15,6 +14,9 @@ a flexibility update.
   higher up on the list = higher priority of application = loaded last in order to override others.
   (excluding core, which though pinned to the top of the list is always loaded first so theming
   variables can be modified.)
+- new: in-page columns disabled/wrapped and wider pages when the window is narrower than 600px
+  for improved responsiveness.
+- improved: a core mod option to make transitions snappy/0s.
 - bugfix: removed messenger emoji set as the provider no longer supports it.
 - bugfix: remove shadow around light mode board headers
   \+ minor text colour fixes for night shift theming.

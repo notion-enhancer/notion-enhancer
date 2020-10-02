@@ -16,10 +16,11 @@
   --theme_dark--dragarea: #272d2f;
   --theme_dark--page_normal-width: 900px;
   --theme_dark--page_full-width: 100%;
+  --theme_dark--page-padding: calc(96px + env(safe-area-inset-left));
+  --theme_dark--page_banner-height: 30vh;
   --theme_dark--preview-width: 977px;
   --theme_dark--preview-padding: 8rem;
   --theme_dark--preview_banner-height: 20vh;
-  --theme_dark--page_banner-height: 30vh;
 
   --theme_dark--font_sans: -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Helvetica, 'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji',
@@ -190,10 +191,11 @@
   --theme_light--dragarea: rgba(55, 53, 47, 0.04);
   --theme_light--page_normal-width: 900px;
   --theme_light--page_full-width: 100%;
+  --theme_light--page-padding: calc(96px + env(safe-area-inset-left));
+  --theme_light--page_banner-height: 30vh;
   --theme_light--preview-width: 977px;
   --theme_light--preview-padding: 8rem;
   --theme_light--preview_banner-height: 20vh;
-  --theme_light--page_banner-height: 30vh;
 
   --theme_light--font_sans: -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Helvetica, 'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji',
@@ -364,10 +366,11 @@
   --theme--dragarea: var(--theme_dark--dragarea);
   --theme--page_normal-width: var(--theme_dark--page_normal-width);
   --theme--page_full-width: var(--theme_dark--page_full-width);
+  --theme--page-padding: var(--theme_dark--page-padding);
+  --theme--page_banner-height: var(--theme_dark--page_banner-height);
   --theme--preview-width: var(--theme_dark--preview-width);
   --theme--preview-padding: var(--theme_dark--preview-padding);
   --theme--preview_banner-height: var(--theme_dark--preview_banner-height);
-  --theme--page_banner-height: var(--theme_dark--page_banner-height);
   --theme--font_sans: var(--theme_dark--font_sans);
   --theme--font_serif: var(--theme_dark--font_serif);
   --theme--font_mono: var(--theme_dark--font_mono);
@@ -521,12 +524,13 @@
   --theme--sidebar: var(--theme_light--sidebar);
   --theme--overlay: var(--theme_light--overlay);
   --theme--dragarea: var(--theme_light--dragarea);
-  --theme--page_normal-width: var(--theme_dark--page_normal-width);
-  --theme--page_full-width: var(--theme_dark--page_full-width);
+  --theme--page_normal-width: var(--theme_light--page_normal-width);
+  --theme--page_full-width: var(--theme_light--page_full-width);
+  --theme--page-padding: var(--theme_light--page-padding);
+  --theme--page_banner-height: var(--theme_light--page_banner-height);
   --theme--preview-width: var(--theme_light--preview-width);
   --theme--preview-padding: var(--theme_light--preview-padding);
   --theme--preview_banner-height: var(--theme_light--preview_banner-height);
-  --theme--page_banner-height: var(--theme_light--page_banner-height);
   --theme--font_sans: var(--theme_light--font_sans);
   --theme--font_serif: var(--theme_light--font_serif);
   --theme--font_mono: var(--theme_light--font_mono);

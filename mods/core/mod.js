@@ -57,6 +57,12 @@ module.exports = {
       value: true,
     },
     {
+      key: 'snappy_transitions',
+      label: 'snappy transitions',
+      type: 'toggle',
+      value: false,
+    },
+    {
       key: 'hotkey',
       label: 'window display hotkey:',
       type: 'input',
