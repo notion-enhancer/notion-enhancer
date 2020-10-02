@@ -22,6 +22,7 @@ a flexibility update.
 - bugfix: night shift checks every interaction,
   will respond to system changes without any manual changes.
 - bugfix: toc blocks can have text colours.
+- tweak: sticky table/list rows.
 - extension: "material ocean" = an oceanic colour palette.
 
 ### v0.9.1 (2020-09-26)
