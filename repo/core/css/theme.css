@@ -40,6 +40,12 @@
   width: var(--theme--page_normal-width) !important;
 }
 
+.notion-frame
+  [style*='padding-left: calc(96px + env(safe-area-inset-left)); padding-right: calc(96px + env(safe-area-inset-right));'] {
+  padding-left: var(--theme--page-padding) !important;
+  padding-right: var(--theme--page-padding) !important;
+}
+
 .notion-page-content [data-block-id][style*='max-width'] {
   max-width: 100% !important;
 }

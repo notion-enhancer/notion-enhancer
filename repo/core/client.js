@@ -29,9 +29,11 @@ module.exports = (store, __exports) => {
       return;
     clearInterval(attempt_interval);
 
-    // scrollbars
+    // toggleable styles
     if (store().smooth_scrollbars)
       document.body.classList.add('smooth-scrollbars');
+    if (store().snappy_transitions)
+      document.body.classList.add('snappy-transitions');
 
     // frameless
     if (store().frameless && !store().tiling_mode) {
