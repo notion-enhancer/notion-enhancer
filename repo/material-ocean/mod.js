@@ -11,6 +11,6 @@ module.exports = {
   tags: ['theme', 'dark'],
   name: 'material ocean',
   desc: 'an oceanic colour palette.',
-  version: '0.1',
+  version: '0.1.0',
   author: 'blacksuan19',
 };

@@ -575,6 +575,7 @@ window['__start'] = async () => {
       }
     }
     draggable.render();
+    modified();
   });
   document.addEventListener('mouseover', draggable.mouseover);
   draggable.render();
