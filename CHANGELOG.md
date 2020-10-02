@@ -7,7 +7,9 @@
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 - [advanced math editor](https://github.com/Manueloccorso/NotionMathEditor_BrowserExtension)
 
-### v0.?.? (wip)
+### v0.10.0 (wip)
+
+a flexibility update.
 
 - new: mods can be reordered in the menu to control what order styling/scripts are added/executed in.
   higher up on the list = higher priority of application = loaded last in order to override others.
@@ -19,6 +21,7 @@
 - bugfix: properly detect/respond to `EACCES` errors.
 - bugfix: night shift checks every interaction,
   will respond to system changes without any manual changes.
+- bugfix: toc blocks can have text colours.
 - extension: "material ocean" = an oceanic colour palette.
 
 ### v0.9.1 (2020-09-26)

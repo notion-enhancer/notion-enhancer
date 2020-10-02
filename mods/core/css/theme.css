@@ -424,7 +424,6 @@
 /** content colours **/
 
 .notion-body,
-.notion-page-content [style*='color: inherit;'],
 .notion-frame .notion-page-block,
 .notion-body.dark [style*=' color: rgba(255, 255, 255, 0.9)'],
 .notion-body.dark [style^='color: rgba(255, 255, 255, 0.9)'],
