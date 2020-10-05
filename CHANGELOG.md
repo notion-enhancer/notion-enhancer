@@ -20,7 +20,7 @@ a flexibility update.
 - bugfix: removed messenger emoji set as the provider no longer supports it.
 - bugfix: remove shadow around light mode board headers
   \+ minor text colour fixes for night shift theming.
-- bugfix: properly detect/respond to `EACCES` errors.
+- bugfix: properly detect/respond to `EACCES`/`EBUSY` errors.
 - bugfix: night shift checks every interaction,
   will respond to system changes without any manual changes.
 - bugfix: toc blocks can have text colours.

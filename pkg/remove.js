@@ -122,7 +122,7 @@ module.exports = async function ({
             : `try running "chown -R $USER ${err.path}"`
         }`
       );
-    } else if (err.code === 'EIO' && friendly_errors) {
+    } else if (['EIO', 'EBUSY'].includes(err.code) && friendly_errors) {
       console.error('file access failed: is notion running?');
     } else console.error(err);
     return false;

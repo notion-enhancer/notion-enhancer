@@ -55,7 +55,7 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
     console.info(' ...unpacking app.asar.');
     const asar_app = path.resolve(`${helpers.__notion}/app.asar`);
     extractAll(asar_app, `${path.resolve(`${helpers.__notion}/app`)}`);
-    fs.move(asar_app, path.resolve(`${helpers.__notion}/app.asar.bak`));
+    await fs.move(asar_app, path.resolve(`${helpers.__notion}/app.asar.bak`));
 
     // patching launch script target of custom wrappers
     if (
@@ -120,7 +120,7 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
             : `try running "chown -R $USER ${err.path}"`
         }`
       );
-    } else if (err.code === 'EIO' && friendly_errors) {
+    } else if (['EIO', 'EBUSY'].includes(err.code) && friendly_errors) {
       console.error('file access failed: is notion running?');
     } else console.error(err);
     return false;
