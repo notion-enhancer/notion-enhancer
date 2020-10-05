@@ -21,6 +21,7 @@ const url = require('url'),
 
 module.exports = (store, __exports) => {
   if (store().tabs) {
+    let $currentTab;
     class Index extends React.PureComponent {
       constructor() {
         super(...arguments);
@@ -29,11 +30,11 @@ module.exports = (store, __exports) => {
           searching: false,
           searchingPeekView: false,
           zoomFactor: 1,
-          tabs: 2,
+          tabs: [],
         };
         this.notionElm = [];
         this.loadedElms = [];
-        this.reactTabs = [];
+        this.reactTabs = {};
         this.handleNotionRef = (notionElm) => {
           this.notionElm.push(notionElm);
         };
@@ -51,13 +52,26 @@ module.exports = (store, __exports) => {
             }
           }, 50);
         };
-        window['newtab'] = () => {
-          this.setState({ tabs: this.state.tabs + 1 });
-          setTimeout(() => this.addListeners(), 100);
+        window['tab'] = (id) => {
+          if (!id) return;
+          this.setState({ tabs: [...new Set([...this.state.tabs, id])] });
+          setTimeout(() => {
+            this.addListeners();
+            if (document.querySelector(`#tab-${id}`)) {
+              $currentTab = document.querySelector(`#tab-${id}`);
+              $currentTab.focus();
+            }
+          }, 100);
         };
       }
       componentDidMount() {
         this.addListeners();
+
+        try {
+          electron.remote.getCurrentWindow().on('focus', (e) => {
+            $notion.focus();
+          });
+        } catch {}
       }
       addListeners() {
         const searchElm = this.searchElm;
@@ -214,10 +228,8 @@ module.exports = (store, __exports) => {
               this.handleReload();
               return;
             }
-            electronWindow.on('focus', (e) => {
-              $notion.focus();
-            });
             $notion.addEventListener('dom-ready', function () {
+              if ($notion !== $currentTab) return;
               if (document.activeElement instanceof HTMLElement) {
                 document.activeElement.blur();
               }
@@ -286,25 +298,26 @@ module.exports = (store, __exports) => {
         );
       }
       renderNotionContainer() {
-        this.reactTabs = [
-          ...this.reactTabs,
-          ...new Array(this.state.tabs - this.reactTabs.length)
-            .fill(0)
-            .map((i) =>
-              React.createElement('webview', {
-                className: 'notion',
-                style: Index.notionWebviewStyle,
-                ref: this.handleNotionRef,
-                partition: constants.electronSessionPartition,
-                preload: path.resolve(`${__notion}/app/renderer/preload.js`),
-                src: this.props.notionUrl,
-              })
-            ),
-        ];
+        this.reactTabs = Object.fromEntries(
+          this.state.tabs.map((id) => {
+            return [
+              id,
+              this.reactTabs[id] ||
+                React.createElement('webview', {
+                  className: 'notion',
+                  style: Index.notionWebviewStyle,
+                  ref: this.handleNotionRef,
+                  partition: constants.electronSessionPartition,
+                  preload: path.resolve(`${__notion}/app/renderer/preload.js`),
+                  src: this.props.notionUrl,
+                }),
+            ];
+          })
+        );
         return React.createElement(
           'div',
           { style: this.getNotionContainerStyle() },
-          ...this.reactTabs
+          ...Object.values(this.reactTabs)
         );
       }
       renderErrorContainer() {
