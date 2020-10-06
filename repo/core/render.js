@@ -19,6 +19,13 @@ const url = require('url'),
   React = require(`${__notion}/app/node_modules/react/index.js`),
   ReactDOM = require(`${__notion}/app/node_modules/react-dom/index.js`);
 
+const insertCSP = `
+  const csp = document.createElement('meta');
+  csp.httpEquiv = 'Content-Security-Policy';
+  csp.content = "script-src 'self' 'unsafe-inline' 'unsafe-eval' enhancement: https://gist.github.com https://apis.google.com https://api.amplitude.com https://widget.intercom.io https://js.intercomcdn.com https://logs-01.loggly.com https://cdn.segment.com https://analytics.pgncs.notion.so https://checkout.stripe.com https://embed.typeform.com https://admin.typeform.com https://platform.twitter.com https://cdn.syndication.twimg.com; connect-src 'self' https://msgstore.www.notion.so wss://msgstore.www.notion.so https://notion-emojis.s3-us-west-2.amazonaws.com https://s3-us-west-2.amazonaws.com https://s3.us-west-2.amazonaws.com https://notion-production-snapshots-2.s3.us-west-2.amazonaws.com https: http: https://api.amplitude.com https://api.embed.ly https://js.intercomcdn.com https://api-iam.intercom.io wss://nexus-websocket-a.intercom.io https://logs-01.loggly.com https://api.segment.io https://api.pgncs.notion.so https://checkout.stripe.com https://cdn.contentful.com https://preview.contentful.com https://images.ctfassets.net https://api.unsplash.com https://boards-api.greenhouse.io; font-src 'self' data: https://cdnjs.cloudflare.com https://js.intercomcdn.com; img-src 'self' data: blob: https: https://platform.twitter.com https://syndication.twitter.com https://pbs.twimg.com https://ton.twimg.com; style-src 'self' 'unsafe-inline' enhancement: https://cdnjs.cloudflare.com https://github.githubassets.com https://platform.twitter.com https://ton.twimg.com; frame-src https: http:; media-src https: http:";
+  document.head.appendChild(csp);
+`;
+
 module.exports = (store, __exports) => {
   if (store().tabs) {
     let $currentTab;
@@ -53,7 +60,7 @@ module.exports = (store, __exports) => {
           }, 50);
         };
         window['tab'] = (id) => {
-          if (!id) return;
+          if (!id && id !== 0) return;
           this.setState({ tabs: [...new Set([...this.state.tabs, id])] });
           setTimeout(() => {
             this.addListeners();
@@ -175,6 +182,7 @@ module.exports = (store, __exports) => {
               }
             );
             $notion.addEventListener('dom-ready', () => {
+              $notion.executeJavaScript(insertCSP);
               $notion
                 .getWebContents()
                 .addListener('found-in-page', (event, result) => {
@@ -191,6 +199,12 @@ module.exports = (store, __exports) => {
                   );
                 });
               notionIpc.proxyAllMainToNotion($notion);
+              if ($notion !== $currentTab) return;
+              if (document.activeElement instanceof HTMLElement) {
+                document.activeElement.blur();
+              }
+              $notion.blur();
+              $notion.focus();
             });
             notionIpc.receiveIndexFromNotion.addListener(
               $notion,
@@ -228,14 +242,6 @@ module.exports = (store, __exports) => {
               this.handleReload();
               return;
             }
-            $notion.addEventListener('dom-ready', function () {
-              if ($notion !== $currentTab) return;
-              if (document.activeElement instanceof HTMLElement) {
-                document.activeElement.blur();
-              }
-              $notion.blur();
-              $notion.focus();
-            });
             electronWindow.addListener('app-command', (e, cmd) => {
               const webContents = $notion.getWebContents();
               if (cmd === 'browser-backward' && webContents.canGoBack()) {
@@ -524,6 +530,7 @@ module.exports = (store, __exports) => {
         React.createElement(Index, { notionUrl: notionUrl }),
         rootElm
       );
+      tab(0);
     };
   } else {
     const __start = window['__start'];
@@ -548,6 +555,10 @@ module.exports = (store, __exports) => {
               }px; left: ${event.args[0]};`
             );
           });
+
+        document.getElementById('notion').addEventListener('dom-ready', () => {
+          document.getElementById('notion').executeJavaScript(insertCSP);
+        });
       }
     };
   }
