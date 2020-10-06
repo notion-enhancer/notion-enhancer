@@ -27,8 +27,7 @@ const insertCSP = `
 `;
 
 module.exports = (store, __exports) => {
-  if (store().tabs) {
-    let $currentTab;
+  if (!store().tabs) {
     class Index extends React.PureComponent {
       constructor() {
         super(...arguments);
@@ -39,64 +38,186 @@ module.exports = (store, __exports) => {
           zoomFactor: 1,
           tabs: [],
         };
+        this.$currentTab;
+        this.tabCache = {
+          react: {},
+          active: [],
+          loading: [],
+        };
         this.notionElm = [];
         this.loadedElms = [];
         this.reactTabs = {};
-        this.handleNotionRef = (notionElm) => {
-          this.notionElm.push(notionElm);
+        this.handleNotionRef = ($notion) => {
+          this.tabCache.loading.push($notion);
         };
-        this.searchElm = null;
+        this.$search = null;
         this.handleSearchRef = (searchElm) => {
-          this.searchElm = searchElm;
+          this.$search = searchElm;
         };
         this.handleReload = () => {
           this.setState({ error: false });
           setTimeout(() => {
-            if (this.notionElm.length) {
-              this.notionElm.forEach(($notion) => {
-                if ($notion.isWaitingForResponse()) $notion.reload();
-              });
-            }
+            this.tabCache.loading.forEach(($notion) => {
+              if ($notion.isWaitingForResponse()) $notion.reload();
+            });
           }, 50);
         };
+        this.startSearch = this.startSearch.bind(this);
+        this.stopSearch = this.stopSearch.bind(this);
+        this.nextSearch = this.nextSearch.bind(this);
+        this.prevSearch = this.prevSearch.bind(this);
+        this.clearSearch = this.clearSearch.bind(this);
+        this.doneSearch = this.doneSearch.bind(this);
         window['tab'] = (id) => {
           if (!id && id !== 0) return;
           this.setState({ tabs: [...new Set([...this.state.tabs, id])] });
           setTimeout(() => {
-            this.addListeners();
+            this.loadListeners();
+            this.blurListeners();
             if (document.querySelector(`#tab-${id}`)) {
-              $currentTab = document.querySelector(`#tab-${id}`);
-              $currentTab.focus();
+              this.tabCache.active.forEach(($notion) => {
+                $notion.style.display = 'none';
+              });
+              this.$currentTab = document.querySelector(`#tab-${id}`);
+              this.$currentTab.style.display = 'flex';
+              this.focusListeners();
             }
-          }, 100);
+          }, 1000);
         };
       }
       componentDidMount() {
-        this.addListeners();
+        this.loadListeners();
 
         try {
           electron.remote.getCurrentWindow().on('focus', (e) => {
-            $notion.focus();
+            this.$currentTab.focus();
           });
         } catch {}
       }
-      addListeners() {
-        const searchElm = this.searchElm;
-        const notionElm = this.notionElm;
-        if (!searchElm || !notionElm.length) {
-          return;
+      startSearch(isPeekView) {
+        this.setState({
+          searching: true,
+          searchingPeekView: isPeekView,
+        });
+        if (document.activeElement instanceof HTMLElement)
+          document.activeElement.blur();
+        this.$search.focus();
+        notionIpc.sendIndexToSearch(this.$search, 'search:start');
+        notionIpc.sendIndexToNotion(this.$search, 'search:started');
+      }
+      stopSearch() {
+        notionIpc.sendIndexToSearch(this.$search, 'search:reset');
+        this.setState({
+          searching: false,
+        });
+        this.lastSearchQuery = undefined;
+        this.$currentTab.getWebContents().stopFindInPage('clearSelection');
+        notionIpc.sendIndexToNotion(this.$currentTab, 'search:stopped');
+      }
+      nextSearch(query) {
+        this.$currentTab.getWebContents().findInPage(query, {
+          forward: true,
+          findNext: query === this.lastSearchQuery,
+        });
+        this.lastSearchQuery = query;
+      }
+      prevSearch(query) {
+        this.$currentTab.getWebContents().findInPage(query, {
+          forward: false,
+          findNext: query === this.lastSearchQuery,
+        });
+        this.lastSearchQuery = query;
+      }
+      clearSearch() {
+        this.lastSearchQuery = undefined;
+        this.$currentTab.getWebContents().stopFindInPage('clearSelection');
+      }
+      doneSearch() {
+        this.lastSearchQuery = undefined;
+        this.$currentTab.getWebContents().stopFindInPage('clearSelection');
+        this.setState({ searching: false });
+        if (document.activeElement instanceof HTMLElement) {
+          document.activeElement.blur();
         }
-
-        notionElm
-          .filter(($notion) => !this.loadedElms.includes($notion))
+        this.$currentTab.focus();
+        notionIpc.sendIndexToNotion(this.$currentTab, 'search:stopped');
+      }
+      blurListeners() {
+        if (!this.$currentTab) return;
+        if (this.state.searching) this.stopSearch();
+        notionIpc.receiveIndexFromNotion.removeListener(
+          this.$currentTab,
+          'search:start',
+          this.startSearch
+        );
+        notionIpc.receiveIndexFromNotion.removeListener(
+          this.$currentTab,
+          'search:stop',
+          this.stopSearch
+        );
+        notionIpc.receiveIndexFromSearch.removeListener(
+          this.$search,
+          'search:next',
+          this.nextSearch
+        );
+        notionIpc.receiveIndexFromSearch.removeListener(
+          this.$search,
+          'search:prev',
+          this.prevSearch
+        );
+        notionIpc.receiveIndexFromSearch.removeListener(
+          this.$search,
+          'search:clear',
+          this.clearSearch
+        );
+        notionIpc.receiveIndexFromSearch.removeListener(
+          this.$search,
+          'search:stop',
+          this.doneSearch
+        );
+      }
+      focusListeners() {
+        notionIpc.receiveIndexFromNotion.addListener(
+          this.$currentTab,
+          'search:start',
+          this.startSearch
+        );
+        notionIpc.receiveIndexFromNotion.addListener(
+          this.$currentTab,
+          'search:stop',
+          this.stopSearch
+        );
+        notionIpc.receiveIndexFromSearch.addListener(
+          this.$search,
+          'search:next',
+          this.nextSearch
+        );
+        notionIpc.receiveIndexFromSearch.addListener(
+          this.$search,
+          'search:prev',
+          this.prevSearch
+        );
+        notionIpc.receiveIndexFromSearch.addListener(
+          this.$search,
+          'search:clear',
+          this.clearSearch
+        );
+        notionIpc.receiveIndexFromSearch.addListener(
+          this.$search,
+          'search:stop',
+          this.doneSearch
+        );
+      }
+      loadListeners() {
+        if (!this.$search) return;
+        this.tabCache.loading
+          .filter(($notion) => !this.tabCache.active.includes($notion))
           .forEach(($notion) => {
-            this.loadedElms.push($notion);
+            this.tabCache.active.push($notion);
             $notion.addEventListener('did-fail-load', (error) => {
               // logger.info('Failed to load:', error);
-              if (error.errorCode === -3) {
-                return;
-              }
               if (
+                error.errorCode === -3 ||
                 !error.validatedURL.startsWith(
                   schemeHelpers.getSchemeUrl({
                     httpUrl: config.default.baseURL,
@@ -108,81 +229,8 @@ module.exports = (store, __exports) => {
               }
               this.setState({ error: true });
             });
-            notionIpc.receiveIndexFromNotion.addListener(
-              $notion,
-              'search:start',
-              (isPeekView) => {
-                this.setState({
-                  searching: true,
-                  searchingPeekView: isPeekView,
-                });
-                if (document.activeElement instanceof HTMLElement) {
-                  document.activeElement.blur();
-                }
-                searchElm.focus();
-                notionIpc.sendIndexToSearch(searchElm, 'search:start');
-                notionIpc.sendIndexToNotion(searchElm, 'search:started');
-              }
-            );
-            notionIpc.receiveIndexFromNotion.addListener(
-              $notion,
-              'search:stop',
-              () => {
-                notionIpc.sendIndexToSearch(searchElm, 'search:reset');
-                this.setState({
-                  searching: false,
-                });
-                this.lastSearchQuery = undefined;
-                $notion.getWebContents().stopFindInPage('clearSelection');
-                notionIpc.sendIndexToNotion($notion, 'search:stopped');
-              }
-            );
-            notionIpc.receiveIndexFromSearch.addListener(
-              searchElm,
-              'search:next',
-              (query) => {
-                $notion.getWebContents().findInPage(query, {
-                  forward: true,
-                  findNext: query === this.lastSearchQuery,
-                });
-                this.lastSearchQuery = query;
-              }
-            );
-            notionIpc.receiveIndexFromSearch.addListener(
-              searchElm,
-              'search:prev',
-              (query) => {
-                $notion.getWebContents().findInPage(query, {
-                  forward: false,
-                  findNext: query === this.lastSearchQuery,
-                });
-                this.lastSearchQuery = query;
-              }
-            );
-            notionIpc.receiveIndexFromSearch.addListener(
-              searchElm,
-              'search:clear',
-              () => {
-                this.lastSearchQuery = undefined;
-                $notion.getWebContents().stopFindInPage('clearSelection');
-              }
-            );
-            notionIpc.receiveIndexFromSearch.addListener(
-              searchElm,
-              'search:stop',
-              () => {
-                this.lastSearchQuery = undefined;
-                $notion.getWebContents().stopFindInPage('clearSelection');
-                this.setState({ searching: false });
-                if (document.activeElement instanceof HTMLElement) {
-                  document.activeElement.blur();
-                }
-                $notion.focus();
-                notionIpc.sendIndexToNotion($notion, 'search:stopped');
-              }
-            );
             $notion.addEventListener('dom-ready', () => {
-              $notion.executeJavaScript(insertCSP);
+              $notion.getWebContents().executeJavaScript(insertCSP);
               $notion
                 .getWebContents()
                 .addListener('found-in-page', (event, result) => {
@@ -193,25 +241,19 @@ module.exports = (store, __exports) => {
                       }
                     : { count: 0, index: 0 };
                   notionIpc.sendIndexToSearch(
-                    searchElm,
+                    this.$search,
                     'search:result',
                     matches
                   );
                 });
               notionIpc.proxyAllMainToNotion($notion);
-              if ($notion !== $currentTab) return;
-              if (document.activeElement instanceof HTMLElement) {
-                document.activeElement.blur();
-              }
-              $notion.blur();
-              $notion.focus();
             });
             notionIpc.receiveIndexFromNotion.addListener(
               $notion,
               'search:set-theme',
               (theme) => {
                 notionIpc.sendIndexToSearch(
-                  searchElm,
+                  this.$search,
                   'search:set-theme',
                   theme
                 );
@@ -222,7 +264,7 @@ module.exports = (store, __exports) => {
               'zoom',
               (zoomFactor) => {
                 $notion.getWebContents().setZoomFactor(zoomFactor);
-                searchElm.getWebContents().setZoomFactor(zoomFactor);
+                this.$search.getWebContents().setZoomFactor(zoomFactor);
                 this.setState({ zoomFactor });
               }
             );
@@ -284,6 +326,7 @@ module.exports = (store, __exports) => {
               sendFullScreenChangeEvent
             );
           });
+        this.tabCache.loading = [];
       }
       renderSearchContainer() {
         return React.createElement(
@@ -311,6 +354,7 @@ module.exports = (store, __exports) => {
               this.reactTabs[id] ||
                 React.createElement('webview', {
                   className: 'notion',
+                  id: `tab-${id}`,
                   style: Index.notionWebviewStyle,
                   ref: this.handleNotionRef,
                   partition: constants.electronSessionPartition,
@@ -391,7 +435,7 @@ module.exports = (store, __exports) => {
             this.renderSearchContainer(),
             this.renderErrorContainer()
           );
-        this.addListeners();
+        this.loadListeners();
         return result;
       }
       getNotionContainerStyle() {
@@ -487,6 +531,7 @@ module.exports = (store, __exports) => {
     Index.notionWebviewStyle = {
       width: '100%',
       height: '100%',
+      display: 'none',
     };
     Index.dragRegionStyle = {
       position: 'absolute',
@@ -534,7 +579,6 @@ module.exports = (store, __exports) => {
     };
   } else {
     const __start = window['__start'];
-
     window['__start'] = () => {
       __start();
       const dragarea = document.querySelector(
@@ -557,7 +601,10 @@ module.exports = (store, __exports) => {
           });
 
         document.getElementById('notion').addEventListener('dom-ready', () => {
-          document.getElementById('notion').executeJavaScript(insertCSP);
+          document
+            .getElementById('notion')
+            .getWebContents()
+            .executeJavaScript(insertCSP);
         });
       }
     };

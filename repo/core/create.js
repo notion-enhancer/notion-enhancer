@@ -55,7 +55,6 @@ module.exports = (store, __exports) => {
     electron.session
       .fromPartition('persist:notion')
       .webRequest.onHeadersReceived((details, callback) => {
-        alert(1);
         callback({
           responseHeaders: {
             ...details.responseHeaders,
