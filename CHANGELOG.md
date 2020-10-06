@@ -25,6 +25,7 @@ a flexibility update.
   will respond to system changes without any manual changes.
 - bugfix: toc blocks can have text colours.
 - bugfix: bypass preview extension works with the back/forward keyboard shortcuts.
+- bugfix: (maybe) fix csp issues under proxy.
 - tweak: sticky table/list rows.
 - extension: "material ocean" = an oceanic colour palette.
 
