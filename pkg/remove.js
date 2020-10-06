@@ -119,7 +119,7 @@ module.exports = async function ({
         `file access forbidden - ${
           process.platform === 'win32'
             ? 'make sure your user has elevated permissions.'
-            : `try running "chown -R $USER ${err.path}"`
+            : `try running "sudo chmod a+wr -R ${err.path}"`
         }`
       );
     } else if (['EIO', 'EBUSY'].includes(err.code) && friendly_errors) {
