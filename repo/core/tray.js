@@ -28,15 +28,15 @@ module.exports = (store, __exports) => {
           })
     );
 
-    electron.ipcMain.on('enhancer:set-theme-vars', (event, arg) => {
+    electron.ipcMain.on('enhancer:set-menu-theme', (event, arg) => {
       if (!enhancer_menu) return;
-      enhancer_menu.webContents.send('enhancer:set-theme-vars', arg);
+      enhancer_menu.webContents.send('enhancer:set-menu-theme', arg);
     });
-    electron.ipcMain.on('enhancer:get-theme-vars', (event, arg) => {
+    electron.ipcMain.on('enhancer:get-menu-theme', (event, arg) => {
       electron.webContents
         .getAllWebContents()
         .forEach((webContents) =>
-          webContents.send('enhancer:get-theme-vars', arg)
+          webContents.send('enhancer:get-menu-theme', arg)
         );
     });
 
