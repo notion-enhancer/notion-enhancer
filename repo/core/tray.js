@@ -88,7 +88,7 @@ module.exports = (store, __exports) => {
       electron.shell.openExternal(JSON.stringify(window_state));
       enhancer_menu = new electron.BrowserWindow({
         show: true,
-        frame: false,
+        frame: !store().frameless,
         titleBarStyle: 'hiddenInset',
         x:
           window_state.x ||

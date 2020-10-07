@@ -19,7 +19,7 @@ window['__start'] = async () => {
         .enabled,
     },
     tiling_mode: store('0f0bf8b6-eae6-4273-b307-8fc43f2ee082').tiling_mode,
-    frameless: true,
+    frameless: store('0f0bf8b6-eae6-4273-b307-8fc43f2ee082').frameless,
   }));
   document.querySelector('#titlebar').appendChild(buttons.element);
 
