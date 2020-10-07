@@ -1,0 +1,80 @@
+/*
+ * notion-enhancer
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * under the MIT license
+ */
+
+@import './buttons.css';
+
+* {
+  box-sizing: border-box;
+  word-break: break-word;
+  text-decoration: none;
+  text-size-adjust: 100%;
+  font-family: var(--theme--font_sans);
+  outline-color: var(--theme--table-border);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+body:not([style*='--theme']) > * {
+  opacity: 0;
+}
+body:not([style*='--theme'])::after {
+  content: '';
+  position: absolute;
+  left: calc(50vw - 25px);
+  top: calc(50vh - 25px);
+  width: 50px;
+  height: 50px;
+  border: 4px solid rgb(34, 34, 34);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+}
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
+#titlebar::before {
+  content: '';
+  position: absolute;
+  width: 100%;
+  -webkit-app-region: no-drag;
+  top: 0;
+  left: 0;
+  height: 2px;
+}
+#titlebar {
+  display: flex;
+  flex-shrink: 1;
+  padding: 0.5em 0.15em;
+  user-select: none;
+  -webkit-app-region: drag;
+  background: var(--theme--dragarea);
+}
+#titlebar button {
+  color: var(--theme--text);
+  -webkit-app-region: no-drag;
+}
+#titlebar .window-buttons-area {
+  margin: auto 0.4em auto auto;
+}
+#titlebar .window-buttons-area:empty {
+  display: none;
+}

@@ -36,7 +36,7 @@ module.exports = (store, __exports) => {
       document.body.classList.add('snappy-transitions');
 
     // frameless
-    if (store().frameless && !store().tiling_mode) {
+    if (store().frameless && !store().tiling_mode && !store().tabs) {
       document.body.classList.add('frameless');
       // draggable area
       const dragarea = helpers.createElement(
@@ -50,10 +50,12 @@ module.exports = (store, __exports) => {
     }
 
     // window buttons
-    const buttons = require('./buttons.js')(store);
-    document
-      .querySelector('.notion-topbar > div[style*="display: flex"]')
-      .appendChild(buttons.element);
+    if (!store().tabs) {
+      const buttons = require('./buttons.js')(store);
+      document
+        .querySelector('.notion-topbar > div[style*="display: flex"]')
+        .appendChild(buttons.element);
+    }
     document
       .querySelector('.notion-history-back-button')
       .parentElement.nextElementSibling.classList.add(
@@ -100,7 +102,7 @@ module.exports = (store, __exports) => {
     // enhancer menu
     function setThemeVars() {
       electron.ipcRenderer.send(
-        'enhancer:set-theme-vars',
+        'enhancer:set-menu-theme',
         [
           '--theme--main',
           '--theme--sidebar',
@@ -142,31 +144,46 @@ module.exports = (store, __exports) => {
           '--theme--code_inline-background',
         ].map((rule) => [rule, getStyle(rule)])
       );
+      electron.ipcRenderer.sendToHost(
+        'enhancer:set-tab-theme',
+        [
+          '--theme--dragarea',
+          '--theme--font_sans',
+          '--theme--table-border',
+          '--theme--interactive_hover',
+          '--theme--interactive_hover-border',
+          '--theme--button_close',
+          '--theme--button_close-fill',
+          '--theme--text',
+        ].map((rule) => [rule, getStyle(rule)])
+      );
     }
     setThemeVars();
     const theme_observer = new MutationObserver(setThemeVars);
     theme_observer.observe(document.querySelector('.notion-app-inner'), {
       attributes: true,
     });
-    electron.ipcRenderer.on('enhancer:get-theme-vars', setThemeVars);
+    electron.ipcRenderer.on('enhancer:get-menu-theme', setThemeVars);
 
-    const sidebar_observer = new MutationObserver(setSidebarWidth);
-    sidebar_observer.observe(document.querySelector('.notion-sidebar'), {
-      attributes: true,
-    });
-    let sidebar_width;
-    function setSidebarWidth(list) {
-      if (!store().frameless && store().tiling_mode) return;
-      const new_sidebar_width =
-        list[0].target.style.height === 'auto'
-          ? '0px'
-          : list[0].target.style.width;
-      if (new_sidebar_width !== sidebar_width) {
-        sidebar_width = new_sidebar_width;
-        electron.ipcRenderer.sendToHost(
-          'enhancer:sidebar-width',
-          sidebar_width
-        );
+    if (!store().tabs) {
+      const sidebar_observer = new MutationObserver(setSidebarWidth);
+      sidebar_observer.observe(document.querySelector('.notion-sidebar'), {
+        attributes: true,
+      });
+      let sidebar_width;
+      function setSidebarWidth(list) {
+        if (!store().frameless && store().tiling_mode) return;
+        const new_sidebar_width =
+          list[0].target.style.height === 'auto'
+            ? '0px'
+            : list[0].target.style.width;
+        if (new_sidebar_width !== sidebar_width) {
+          sidebar_width = new_sidebar_width;
+          electron.ipcRenderer.sendToHost(
+            'enhancer:sidebar-width',
+            sidebar_width
+          );
+        }
       }
     }
     setSidebarWidth([{ target: document.querySelector('.notion-sidebar') }]);

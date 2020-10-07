@@ -50,10 +50,10 @@ body:not([style]) > * {
 body:not([style])::after {
   content: '';
   position: absolute;
-  left: 44vw;
-  top: calc(50% - 7.5vw);
-  width: 10vw;
-  height: 10vw;
+  left: calc(50vw - 15px);
+  top: calc(50vh - 15px);
+  width: 30px;
+  height: 30px;
   border: 4px solid rgb(34, 34, 34);
   border-top-color: transparent;
   border-radius: 50%;
@@ -93,7 +93,7 @@ s {
 
 /* titlebar */
 
-#menu-titlebar::before {
+#titlebar::before {
   content: '';
   position: absolute;
   width: 100%;
@@ -103,20 +103,18 @@ s {
   height: 2px;
 }
 
-#menu-titlebar {
+#titlebar {
   display: flex;
   -webkit-app-region: drag;
-}
-#menu-titlebar button {
-  -webkit-app-region: no-drag;
-}
-#menu-titlebar {
   background: var(--theme--dragarea);
 }
-#menu-titlebar > .window-buttons-area {
+#titlebar button {
+  -webkit-app-region: no-drag;
+}
+#titlebar .window-buttons-area {
   margin: 0.4em 0.4em 0.4em auto;
 }
-#menu-titlebar > .window-buttons-area:empty {
+#titlebar .window-buttons-area:empty {
   display: none;
 }
 

@@ -6,8 +6,11 @@
 
 'use strict';
 
+const { dirname } = require('path');
+
 const url = require('url'),
   path = require('path'),
+  electron = require('electron'),
   { __notion } = require('../../pkg/helpers.js'),
   config = require(`${__notion}/app/config.js`),
   constants = require(`${__notion}/app/shared/constants.js`),
@@ -27,7 +30,7 @@ const insertCSP = `
 `;
 
 module.exports = (store, __exports) => {
-  if (!store().tabs) {
+  if (store().tabs) {
     class Index extends React.PureComponent {
       constructor() {
         super(...arguments);
@@ -36,32 +39,23 @@ module.exports = (store, __exports) => {
           searching: false,
           searchingPeekView: false,
           zoomFactor: 1,
-          tabs: [],
+          tabIDs: [],
         };
-        this.$currentTab;
-        this.tabCache = {
+        this.$titlebar = null;
+        this.tabs = {
+          $current: null,
           react: {},
           active: [],
           loading: [],
         };
-        this.notionElm = [];
-        this.loadedElms = [];
-        this.reactTabs = {};
-        this.handleNotionRef = ($notion) => {
-          this.tabCache.loading.push($notion);
-        };
         this.$search = null;
-        this.handleSearchRef = (searchElm) => {
-          this.$search = searchElm;
-        };
         this.handleReload = () => {
           this.setState({ error: false });
-          setTimeout(() => {
-            this.tabCache.loading.forEach(($notion) => {
-              if ($notion.isWaitingForResponse()) $notion.reload();
-            });
-          }, 50);
+          this.tabs.loading.forEach(($notion) => {
+            if ($notion.isWaitingForResponse()) $notion.reload();
+          });
         };
+        this.setTheme = this.setTheme.bind(this);
         this.startSearch = this.startSearch.bind(this);
         this.stopSearch = this.stopSearch.bind(this);
         this.nextSearch = this.nextSearch.bind(this);
@@ -70,29 +64,40 @@ module.exports = (store, __exports) => {
         this.doneSearch = this.doneSearch.bind(this);
         window['tab'] = (id) => {
           if (!id && id !== 0) return;
-          this.setState({ tabs: [...new Set([...this.state.tabs, id])] });
+          this.setState({ tabIDs: [...new Set([...this.state.tabIDs, id])] });
           setTimeout(() => {
             this.loadListeners();
             this.blurListeners();
             if (document.querySelector(`#tab-${id}`)) {
-              this.tabCache.active.forEach(($notion) => {
+              this.tabs.active.forEach(($notion) => {
                 $notion.style.display = 'none';
               });
-              this.$currentTab = document.querySelector(`#tab-${id}`);
-              this.$currentTab.style.display = 'flex';
+              this.tabs.$current = document.querySelector(`#tab-${id}`);
+              this.tabs.$current.style.display = 'flex';
               this.focusListeners();
             }
           }, 1000);
         };
       }
       componentDidMount() {
+        const buttons = require('./buttons.js')(() => ({
+          '72886371-dada-49a7-9afc-9f275ecf29d3': {
+            enabled: (
+              store('mods')['72886371-dada-49a7-9afc-9f275ecf29d3'] || {}
+            ).enabled,
+          },
+          tiling_mode: store('0f0bf8b6-eae6-4273-b307-8fc43f2ee082')
+            .tiling_mode,
+          frameless: true,
+        }));
+        this.$titlebar.appendChild(buttons.element);
         this.loadListeners();
+      }
 
-        try {
-          electron.remote.getCurrentWindow().on('focus', (e) => {
-            this.$currentTab.focus();
-          });
-        } catch {}
+      setTheme(event) {
+        if (event.channel !== 'enhancer:set-tab-theme') return;
+        for (const style of event.args[0])
+          document.body.style.setProperty(style[0], style[1]);
       }
       startSearch(isPeekView) {
         this.setState({
@@ -111,18 +116,18 @@ module.exports = (store, __exports) => {
           searching: false,
         });
         this.lastSearchQuery = undefined;
-        this.$currentTab.getWebContents().stopFindInPage('clearSelection');
-        notionIpc.sendIndexToNotion(this.$currentTab, 'search:stopped');
+        this.tabs.$current.getWebContents().stopFindInPage('clearSelection');
+        notionIpc.sendIndexToNotion(this.tabs.$current, 'search:stopped');
       }
       nextSearch(query) {
-        this.$currentTab.getWebContents().findInPage(query, {
+        this.tabs.$current.getWebContents().findInPage(query, {
           forward: true,
           findNext: query === this.lastSearchQuery,
         });
         this.lastSearchQuery = query;
       }
       prevSearch(query) {
-        this.$currentTab.getWebContents().findInPage(query, {
+        this.tabs.$current.getWebContents().findInPage(query, {
           forward: false,
           findNext: query === this.lastSearchQuery,
         });
@@ -130,79 +135,81 @@ module.exports = (store, __exports) => {
       }
       clearSearch() {
         this.lastSearchQuery = undefined;
-        this.$currentTab.getWebContents().stopFindInPage('clearSelection');
+        this.tabs.$current.getWebContents().stopFindInPage('clearSelection');
       }
       doneSearch() {
         this.lastSearchQuery = undefined;
-        this.$currentTab.getWebContents().stopFindInPage('clearSelection');
+        this.tabs.$current.getWebContents().stopFindInPage('clearSelection');
         this.setState({ searching: false });
         if (document.activeElement instanceof HTMLElement) {
           document.activeElement.blur();
         }
-        this.$currentTab.focus();
-        notionIpc.sendIndexToNotion(this.$currentTab, 'search:stopped');
+        this.tabs.$current.focus();
+        notionIpc.sendIndexToNotion(this.tabs.$current, 'search:stopped');
       }
-      blurListeners() {
-        if (!this.$currentTab) return;
-        if (this.state.searching) this.stopSearch();
-        notionIpc.receiveIndexFromNotion.removeListener(
-          this.$currentTab,
+      focusListeners() {
+        this.tabs.$current.addEventListener('ipc-message', this.setTheme);
+        notionIpc.receiveIndexFromNotion.addListener(
+          this.tabs.$current,
           'search:start',
           this.startSearch
         );
-        notionIpc.receiveIndexFromNotion.removeListener(
-          this.$currentTab,
+        notionIpc.receiveIndexFromNotion.addListener(
+          this.tabs.$current,
           'search:stop',
           this.stopSearch
         );
-        notionIpc.receiveIndexFromSearch.removeListener(
+        notionIpc.receiveIndexFromSearch.addListener(
           this.$search,
           'search:next',
           this.nextSearch
         );
-        notionIpc.receiveIndexFromSearch.removeListener(
+        notionIpc.receiveIndexFromSearch.addListener(
           this.$search,
           'search:prev',
           this.prevSearch
         );
-        notionIpc.receiveIndexFromSearch.removeListener(
+        notionIpc.receiveIndexFromSearch.addListener(
           this.$search,
           'search:clear',
           this.clearSearch
         );
-        notionIpc.receiveIndexFromSearch.removeListener(
+        notionIpc.receiveIndexFromSearch.addListener(
           this.$search,
           'search:stop',
           this.doneSearch
         );
       }
-      focusListeners() {
-        notionIpc.receiveIndexFromNotion.addListener(
-          this.$currentTab,
+      blurListeners() {
+        if (!this.tabs.$current) return;
+        if (this.state.searching) this.stopSearch();
+        this.tabs.$current.removeEventListener('ipc-message', this.setTheme);
+        notionIpc.receiveIndexFromNotion.removeListener(
+          this.tabs.$current,
           'search:start',
           this.startSearch
         );
-        notionIpc.receiveIndexFromNotion.addListener(
-          this.$currentTab,
+        notionIpc.receiveIndexFromNotion.removeListener(
+          this.tabs.$current,
           'search:stop',
           this.stopSearch
         );
-        notionIpc.receiveIndexFromSearch.addListener(
+        notionIpc.receiveIndexFromSearch.removeListener(
           this.$search,
           'search:next',
           this.nextSearch
         );
-        notionIpc.receiveIndexFromSearch.addListener(
+        notionIpc.receiveIndexFromSearch.removeListener(
           this.$search,
           'search:prev',
           this.prevSearch
         );
-        notionIpc.receiveIndexFromSearch.addListener(
+        notionIpc.receiveIndexFromSearch.removeListener(
           this.$search,
           'search:clear',
           this.clearSearch
         );
-        notionIpc.receiveIndexFromSearch.addListener(
+        notionIpc.receiveIndexFromSearch.removeListener(
           this.$search,
           'search:stop',
           this.doneSearch
@@ -210,10 +217,10 @@ module.exports = (store, __exports) => {
       }
       loadListeners() {
         if (!this.$search) return;
-        this.tabCache.loading
-          .filter(($notion) => !this.tabCache.active.includes($notion))
+        this.tabs.loading
+          .filter(($notion) => !this.tabs.active.includes($notion))
           .forEach(($notion) => {
-            this.tabCache.active.push($notion);
+            this.tabs.active.push($notion);
             $notion.addEventListener('did-fail-load', (error) => {
               // logger.info('Failed to load:', error);
               if (
@@ -326,16 +333,90 @@ module.exports = (store, __exports) => {
               sendFullScreenChangeEvent
             );
           });
-        this.tabCache.loading = [];
+        this.tabs.loading = [];
+      }
+
+      renderTitlebar() {
+        return React.createElement(
+          'header',
+          {
+            id: 'titlebar',
+            ref: ($titlebar) => {
+              this.$titlebar = $titlebar;
+            },
+          },
+          React.createElement('div', { id: 'tabs' })
+        );
+      }
+      renderNotionContainer() {
+        this.tabs.react = Object.fromEntries(
+          this.state.tabIDs.map((id) => {
+            return [
+              id,
+              this.tabs.react[id] ||
+                React.createElement('webview', {
+                  className: 'notion',
+                  id: `tab-${id}`,
+                  style: {
+                    width: '100%',
+                    height: '100%',
+                    display: 'none',
+                  },
+                  ref: ($notion) => {
+                    this.tabs.loading.push($notion);
+                  },
+                  partition: constants.electronSessionPartition,
+                  preload: path.resolve(`${__notion}/app/renderer/preload.js`),
+                  src: this.props.notionUrl,
+                }),
+            ];
+          })
+        );
+        return React.createElement(
+          'div',
+          {
+            style: {
+              flexGrow: 1,
+              display: this.state.error ? 'none' : 'flex',
+            },
+          },
+          ...Object.values(this.tabs.react)
+        );
       }
       renderSearchContainer() {
         return React.createElement(
           'div',
-          { style: this.getSearchContainerStyle() },
+          {
+            style: {
+              position: 'fixed',
+              overflow: 'hidden',
+              pointerEvents: 'none',
+              padding: '0 20px',
+              top:
+                (this.state.searchingPeekView
+                  ? 0
+                  : process.platform === 'darwin'
+                  ? 37
+                  : 45) * this.state.zoomFactor,
+              right: (48 - 24) * this.state.zoomFactor,
+              width: 440 * this.state.zoomFactor,
+              height: 72 * this.state.zoomFactor,
+            },
+          },
           React.createElement('webview', {
             id: 'search',
-            style: this.getSearchWebviewStyle(),
-            ref: this.handleSearchRef,
+            style: {
+              width: '100%',
+              height: '100%',
+              transition: `transform 70ms ease-${
+                this.state.searching ? 'out' : 'in'
+              }`,
+              transform: `translateY(${this.state.searching ? '0' : '-100'}%)`,
+              pointerEvents: this.state.searching ? 'auto' : 'none',
+            },
+            ref: ($search) => {
+              this.$search = $search;
+            },
             partition: constants.electronSessionPartition,
             preload: `file://${path.resolve(
               `${__notion}/app/renderer/search.js`
@@ -346,41 +427,45 @@ module.exports = (store, __exports) => {
           })
         );
       }
-      renderNotionContainer() {
-        this.reactTabs = Object.fromEntries(
-          this.state.tabs.map((id) => {
-            return [
-              id,
-              this.reactTabs[id] ||
-                React.createElement('webview', {
-                  className: 'notion',
-                  id: `tab-${id}`,
-                  style: Index.notionWebviewStyle,
-                  ref: this.handleNotionRef,
-                  partition: constants.electronSessionPartition,
-                  preload: path.resolve(`${__notion}/app/renderer/preload.js`),
-                  src: this.props.notionUrl,
-                }),
-            ];
-          })
-        );
-        return React.createElement(
-          'div',
-          { style: this.getNotionContainerStyle() },
-          ...Object.values(this.reactTabs)
-        );
-      }
       renderErrorContainer() {
         return React.createElement(
           'div',
-          { style: this.getErrorContainerStyle() },
+          {
+            style: {
+              position: 'fixed',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              display: this.state.error ? 'flex' : 'none',
+              flexDirection: 'column',
+              alignItems: 'center',
+              justifyContent: 'center',
+              padding: 24,
+              paddingBottom: '8vh',
+            },
+          },
           React.createElement('img', {
-            style: Index.frontImageStyle,
+            style: {
+              width: 300,
+              maxWidth: '100%',
+            },
             src: './onboarding-offline.png',
           }),
           React.createElement(
             'div',
-            { style: Index.frontMessageStyle },
+            {
+              style: {
+                paddingTop: 16,
+                paddingBottom: 16,
+                textAlign: 'center',
+                lineHeight: 1.4,
+                fontSize: 17,
+                letterSpacing: '-0.01em',
+                color: '#424241',
+                fontWeight: 500,
+              },
+            },
             React.createElement(
               'div',
               null,
@@ -407,7 +492,24 @@ module.exports = (store, __exports) => {
             null,
             React.createElement(
               'button',
-              { style: Index.reloadButtonStyle, onClick: this.handleReload },
+              {
+                style: {
+                  background: '#fefaf8',
+                  border: '1px solid #f1cbca',
+                  boxSizing: 'border-box',
+                  boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
+                  borderRadius: 3,
+                  lineHeight: 'normal',
+                  fontSize: 14,
+                  fontWeight: 600,
+                  letterSpacing: '-0.03em',
+                  color: '#d8615c',
+                  paddingLeft: 12,
+                  paddingRight: 12,
+                  height: 36,
+                },
+                onClick: this.handleReload,
+              },
               React.createElement(notion_intl.FormattedMessage, {
                 id:
                   'desktopLogin.offline.retryConnectingToInternetButton.label',
@@ -416,9 +518,6 @@ module.exports = (store, __exports) => {
             )
           )
         );
-      }
-      renderDragRegion() {
-        return React.createElement('div', { style: Index.dragRegionStyle });
       }
       render() {
         const notionLocale = localizationHelper.getNotionLocaleFromElectronLocale(
@@ -430,7 +529,7 @@ module.exports = (store, __exports) => {
               locale: notionLocale,
               messages: notionLocale === 'ko-KR' ? koMessages : {},
             },
-            this.renderDragRegion(),
+            this.renderTitlebar(),
             this.renderNotionContainer(),
             this.renderSearchContainer(),
             this.renderErrorContainer()
@@ -438,113 +537,11 @@ module.exports = (store, __exports) => {
         this.loadListeners();
         return result;
       }
-      getNotionContainerStyle() {
-        const style = {
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          display: this.state.error ? 'none' : 'flex',
-        };
-        return style;
-      }
-      getErrorContainerStyle() {
-        const style = {
-          position: 'fixed',
-          top: 0,
-          left: 0,
-          right: 0,
-          bottom: 0,
-          display: this.state.error ? 'flex' : 'none',
-          flexDirection: 'column',
-          alignItems: 'center',
-          justifyContent: 'center',
-          padding: 24,
-          paddingBottom: '8vh',
-        };
-        return style;
-      }
-      getSearchWebviewStyle() {
-        const style = {
-          width: '100%',
-          height: '100%',
-          transition: 'transform 70ms ease-in',
-          transform: 'translateY(-100%)',
-          pointerEvents: 'none',
-        };
-        if (this.state.searching) {
-          style.transition = 'transform 70ms ease-out';
-          style.transform = 'translateY(0%)';
-          style.pointerEvents = 'auto';
-        }
-        return style;
-      }
-      getSearchContainerStyle() {
-        const style = {
-          position: 'fixed',
-          overflow: 'hidden',
-          pointerEvents: 'none',
-          padding: '0 20px',
-          top:
-            (this.state.searchingPeekView
-              ? 0
-              : process.platform === 'darwin'
-              ? 37
-              : 45) * this.state.zoomFactor,
-          right: (48 - 24) * this.state.zoomFactor,
-          width: 440 * this.state.zoomFactor,
-          height: 72 * this.state.zoomFactor,
-        };
-        return style;
-      }
     }
-    Index.frontMessageStyle = {
-      paddingTop: 16,
-      paddingBottom: 16,
-      textAlign: 'center',
-      lineHeight: 1.4,
-      fontSize: 17,
-      letterSpacing: '-0.01em',
-      color: '#424241',
-      fontWeight: 500,
-    };
-    Index.reloadButtonStyle = {
-      background: '#fefaf8',
-      border: '1px solid #f1cbca',
-      boxSizing: 'border-box',
-      boxShadow: '0px 1px 2px rgba(0, 0, 0, 0.1)',
-      borderRadius: 3,
-      lineHeight: 'normal',
-      fontSize: 14,
-      fontWeight: 600,
-      letterSpacing: '-0.03em',
-      color: '#d8615c',
-      paddingLeft: 12,
-      paddingRight: 12,
-      height: 36,
-    };
-    Index.frontImageStyle = {
-      width: 300,
-      maxWidth: '100%',
-    };
-    Index.notionWebviewStyle = {
-      width: '100%',
-      height: '100%',
-      display: 'none',
-    };
-    Index.dragRegionStyle = {
-      position: 'absolute',
-      zIndex: 9999,
-      top: 0,
-      left: 0,
-      right: 0,
-      height: 2,
-      pointerEvents: 'none',
-      WebkitAppRegion: 'drag',
-    };
 
     window['__start'] = () => {
+      document.head.innerHTML += `<link rel="stylesheet" href="${__dirname}/css/tabs.css" />`;
+
       const parsed = url.parse(window.location.href, true),
         notionUrl =
           parsed.query.path ||
@@ -556,6 +553,7 @@ module.exports = (store, __exports) => {
       delete parsed.query;
       const plainUrl = url.format(parsed);
       window.history.replaceState(undefined, undefined, plainUrl);
+
       document.title = localizationHelper
         .createIntlShape(
           localizationHelper.getNotionLocaleFromElectronLocale(
@@ -570,11 +568,12 @@ module.exports = (store, __exports) => {
             },
           }).documentTitle
         );
-      const rootElm = document.getElementById('root');
+      const $root = document.getElementById('root');
       ReactDOM.render(
         React.createElement(Index, { notionUrl: notionUrl }),
-        rootElm
+        $root
       );
+
       tab(0);
     };
   } else {

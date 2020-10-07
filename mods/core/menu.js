@@ -21,7 +21,7 @@ window['__start'] = async () => {
     tiling_mode: store('0f0bf8b6-eae6-4273-b307-8fc43f2ee082').tiling_mode,
     frameless: true,
   }));
-  document.querySelector('#menu-titlebar').appendChild(buttons.element);
+  document.querySelector('#titlebar').appendChild(buttons.element);
 
   document.defaultView.addEventListener('keyup', (event) => {
     if (event.code === 'F5') location.reload();
@@ -54,8 +54,8 @@ window['__start'] = async () => {
       document.querySelector('#search > input').focus();
   });
 
-  electron.ipcRenderer.send('enhancer:get-theme-vars');
-  electron.ipcRenderer.on('enhancer:set-theme-vars', (event, theme) => {
+  electron.ipcRenderer.send('enhancer:get-menu-theme');
+  electron.ipcRenderer.on('enhancer:set-menu-theme', (event, theme) => {
     for (const style of theme)
       document.body.style.setProperty(style[0], style[1]);
   });
