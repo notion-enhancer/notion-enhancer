@@ -6,8 +6,6 @@
 
 'use strict';
 
-const { dirname } = require('path');
-
 const url = require('url'),
   path = require('path'),
   electron = require('electron'),
@@ -80,16 +78,7 @@ module.exports = (store, __exports) => {
         };
       }
       componentDidMount() {
-        const buttons = require('./buttons.js')(() => ({
-          '72886371-dada-49a7-9afc-9f275ecf29d3': {
-            enabled: (
-              store('mods')['72886371-dada-49a7-9afc-9f275ecf29d3'] || {}
-            ).enabled,
-          },
-          tiling_mode: store('0f0bf8b6-eae6-4273-b307-8fc43f2ee082')
-            .tiling_mode,
-          frameless: true,
-        }));
+        const buttons = require('./buttons.js')(store);
         this.$titlebar.appendChild(buttons.element);
         this.loadListeners();
       }

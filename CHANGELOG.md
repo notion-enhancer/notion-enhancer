@@ -17,6 +17,7 @@ a flexibility update.
 - new: in-page columns disabled/wrapped and wider pages when the window is narrower than 600px
   for improved responsiveness.
 - improved: a core mod option to make transitions snappy/0s.
+- improved: menu will now respect integrated titlebar setting.
 - bugfix: removed messenger emoji set as the provider no longer supports it.
 - bugfix: remove shadow around light mode board headers
   \+ minor text colour fixes for night shift theming.
