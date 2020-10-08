@@ -23,18 +23,40 @@
     transform: rotate(360deg);
   }
 }
+@keyframes tabSlideIn {
+  from {
+    width: 0;
+  }
+  to {
+    width: 8.5em;
+  }
+}
 
-body:not([style*='--theme']) > * {
+body:not([style*='--theme']):not(.error) > * {
   opacity: 0;
 }
-body:not([style*='--theme'])::after {
+body:not([style*='--theme']):not(.error)::after {
   content: '';
   position: absolute;
-  left: calc(50vw - 25px);
-  top: calc(50vh - 25px);
-  width: 50px;
-  height: 50px;
-  border: 4px solid rgb(34, 34, 34);
+  left: calc(50% - 15px);
+  top: calc(50% + 10px);
+  width: 18px;
+  height: 18px;
+  border: 4px solid rgb(34, 34, 34, 0.5);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+body[style*='--theme']::after {
+  z-index: 1;
+  content: '';
+  position: absolute;
+  left: calc(50% - 15px);
+  top: calc(50% + 10px);
+  width: 18px;
+  height: 18px;
+  opacity: 0.5;
+  border: 4px solid var(--theme--text);
   border-top-color: transparent;
   border-radius: 50%;
   animation: spin 0.8s linear infinite;
@@ -43,6 +65,8 @@ body:not([style*='--theme'])::after {
 html,
 body,
 #root {
+  background: var(--theme--main);
+  position: relative;
   height: 100%;
   margin: 0;
 }
@@ -63,7 +87,6 @@ body,
 #titlebar {
   display: flex;
   flex-shrink: 1;
-  padding: 0.5em 0.15em;
   user-select: none;
   -webkit-app-region: drag;
   background: var(--theme--dragarea);
@@ -73,8 +96,61 @@ body,
   -webkit-app-region: no-drag;
 }
 #titlebar .window-buttons-area {
-  margin: auto 0.4em auto auto;
+  margin: 0.5em 0.55em 0.5em auto;
 }
 #titlebar .window-buttons-area:empty {
+  display: none;
+}
+
+#tabs {
+  margin-top: auto;
+}
+#tabs .tab {
+  display: inline-flex;
+  background: var(--theme--main);
+  border: none;
+  font-size: 1.15em;
+  padding: 0.2em 0.4em;
+  text-align: left;
+  border-bottom: 4px solid var(--theme--table-border);
+}
+#tabs .tab:first-child {
+  margin-top: 0.5em;
+}
+#tabs .tab:not(.new) span:not(.close) {
+  width: 8.5em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  animation: tabSlideIn 100ms ease-in-out;
+}
+#tabs .tab .close {
+  padding: 0 0.35em 0.1em 0.3em;
+  margin-left: auto;
+  font-weight: bold;
+}
+#tabs .tab.current {
+  background: var(--theme--selected);
+}
+#tabs .tab.new {
+  background: none;
+  border: none;
+  margin-left: -0.1em;
+}
+#tabs .tab.new span {
+  padding: 0 0.35em 0.1em 0.3em;
+  font-weight: bold;
+}
+#tabs .tab .close:hover,
+#tabs .tab.new span:hover {
+  background: var(--theme--option_hover-background);
+  color: var(--theme--option_hover-color);
+  border-radius: 5px;
+}
+
+.notion {
+  z-index: 2;
+  width: 100%;
+  height: 100%;
   display: none;
 }
