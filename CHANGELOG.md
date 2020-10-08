@@ -27,6 +27,7 @@ a flexibility update.
 - bugfix: toc blocks can have text colours.
 - bugfix: bypass preview extension works with the back/forward keyboard shortcuts.
 - bugfix: (maybe) fix csp issues under proxy.
+- bugfix: remove focus mode footer from neutral theme.
 - tweak: sticky table/list rows.
 - extension: "material ocean" = an oceanic colour palette.
 

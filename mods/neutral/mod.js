@@ -12,7 +12,7 @@ module.exports = {
   tags: ['theme', 'dark'],
   name: 'neutral',
   desc: 'smoother colours and fonts, designed to be more pleasing to the eye.',
-  version: '0.1.3',
+  version: '0.1.4',
   author: 'arecsu',
   fonts: [
     'https://rsms.me/inter/inter.css',
