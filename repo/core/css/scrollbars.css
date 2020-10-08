@@ -11,6 +11,7 @@
 .smooth-scrollbars ::-webkit-scrollbar {
   width: 8px; /* vertical */
   height: 8px; /* horizontal */
+  -webkit-app-region: no-drag;
 }
 .smooth-scrollbars ::-webkit-scrollbar-corner {
   background-color: transparent; /* overlap */
