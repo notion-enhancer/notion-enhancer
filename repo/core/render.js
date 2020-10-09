@@ -40,6 +40,7 @@ module.exports = (store, __exports) => {
           tabs: new Map([[0, true]]),
         };
         this.$titlebar = null;
+        this.$dragging = null;
         this.views = {
           current: {
             $el: () => this.views.html[this.views.current.id],
@@ -64,79 +65,56 @@ module.exports = (store, __exports) => {
         this.prevSearch = this.prevSearch.bind(this);
         this.clearSearch = this.clearSearch.bind(this);
         this.doneSearch = this.doneSearch.bind(this);
+
+        // draggable re-ordering
+        const getTab = ($el) => {
+          if ($el.innerText === '+')
+            return [null, document.querySelector('.tab.new')];
+          if ($el.innerText === '×') $el = $el.parentElement;
+          if (!$el.innerText.endsWith('×')) $el = $el.parentElement;
+          return (
+            Object.entries(this.views.tabs).find(
+              ([id, $node]) => $node === $el
+            ) || []
+          );
+        };
+        document.addEventListener('dragstart', (event) => {
+          if (!this.$titlebar) return;
+          this.$dragging = getTab(event.target)[0];
+          event.target.style.opacity = 0.5;
+        });
+        document.addEventListener('dragend', (event) => {
+          if (!this.$titlebar) return;
+          event.target.style.opacity = '';
+        });
+        document.addEventListener('dragover', (event) => {
+          if (!this.$titlebar) return;
+          event.preventDefault();
+          document
+            .querySelectorAll('.dragged-over')
+            .forEach((el) => el.classList.remove('dragged-over'));
+          const tab = getTab(event.target);
+          if (tab[1]) tab[1].classList.add('dragged-over');
+        });
+        document.addEventListener('drop', (event) => {
+          if (!this.$titlebar || this.$dragging === null) return;
+          event.preventDefault();
+          document
+            .querySelectorAll('.dragged-over')
+            .forEach((el) => el.classList.remove('dragged-over'));
+          const from = getTab(this.views.tabs[+this.$dragging]),
+            to = getTab(event.target);
+          if (!from[1].classList.contains('new') && from[0] !== to[0])
+            to[1].parentElement.insertBefore(from[1], to[1]);
+          from[1].classList.remove('slideIn');
+          this.$dragging = null;
+        });
       }
+
       componentDidMount() {
         const buttons = require('./buttons.js')(store);
         this.$titlebar.appendChild(buttons.element);
         this.loadListeners();
-      }
-
-      newTab() {
-        let id = 0,
-          state = new Map(this.state.tabs);
-        while (this.state.tabs.get(id)) id++;
-        state.delete(id);
-        if (this.views.html[id]) {
-          this.views.html[id].style.opacity = '0';
-          let unhide;
-          unhide = () => {
-            this.views.html[id].style.opacity = '';
-            this.views.html[id].removeEventListener('did-stop-loading', unhide);
-          };
-          this.views.html[id].addEventListener('did-stop-loading', unhide);
-          this.views.html[id].loadURL(this.views.current.$el().src);
-        }
-        this.openTab(id, state);
-      }
-      openTab(id, state = new Map(this.state.tabs)) {
-        if (!id && id !== 0) return;
-        this.views.current.id = id;
-        this.setState({ tabs: state.set(id, true) }, this.focusTab.bind(this));
-      }
-      closeTab(id) {
-        if ((!id && id !== 0) || !this.state.tabs.get(id)) return;
-        if ([...this.state.tabs].filter(([id, open]) => open).length === 1)
-          return electron.remote.getCurrentWindow().close();
-        while (
-          !this.state.tabs.get(this.views.current.id) ||
-          this.views.current.id === id
-        ) {
-          this.views.current.id = this.views.current.id - 1;
-          if (this.views.current.id < 0)
-            this.views.current.id = this.state.tabs.size - 1;
-        }
-        this.setState(
-          { tabs: new Map(this.state.tabs).set(id, false) },
-          this.focusTab.bind(this)
-        );
-      }
-      focusTab() {
-        this.loadListeners();
-        this.blurListeners();
-        this.focusListeners();
-        for (const id in this.views.loaded) {
-          if (this.views.loaded.hasOwnProperty(id) && this.views.loaded[id]) {
-            this.views.loaded[id].style.display =
-              id == this.views.current.id && this.state.tabs.get(+id)
-                ? 'flex'
-                : 'none';
-          }
-        }
-      }
-
-      communicateWithView(event) {
-        if (event.channel === 'enhancer:set-tab-theme') {
-          for (const style of event.args[0])
-            document.body.style.setProperty(style[0], style[1]);
-        }
-
-        if (
-          event.channel === 'enhancer:set-tab-title' &&
-          this.views.tabs[event.target.id]
-        ) {
-          this.views.tabs[event.target.id].children[0].innerText =
-            event.args[0];
-        }
 
         let electronWindow;
         try {
@@ -170,6 +148,72 @@ module.exports = (store, __exports) => {
             webContents.goForward();
           }
         });
+      }
+
+      newTab() {
+        let id = 0;
+        const list = new Map(this.state.tabs);
+        while (this.state.tabs.get(id)) id++;
+        list.delete(id);
+        if (this.views.html[id]) {
+          this.views.html[id].style.opacity = '0';
+          let unhide;
+          unhide = () => {
+            this.views.html[id].style.opacity = '';
+            this.views.html[id].removeEventListener('did-stop-loading', unhide);
+          };
+          this.views.html[id].addEventListener('did-stop-loading', unhide);
+          this.views.html[id].loadURL(this.views.current.$el().src);
+        }
+        this.openTab(id, list);
+      }
+      openTab(id, state = new Map(this.state.tabs)) {
+        if (!id && id !== 0) return;
+        this.views.current.id = id;
+        this.setState({ tabs: state.set(id, true) }, this.focusTab.bind(this));
+      }
+      closeTab(id) {
+        if ((!id && id !== 0) || !this.state.tabs.get(id)) return;
+        const list = new Map(this.state.tabs);
+        list.delete(id);
+        list.set(id, false);
+        if (![...list].filter(([id, open]) => open).length)
+          return electron.remote.getCurrentWindow().close();
+        while (
+          !list.get(this.views.current.id) ||
+          this.views.current.id === id
+        ) {
+          this.views.current.id = this.views.current.id - 1;
+          if (this.views.current.id < 0) this.views.current.id = list.size - 1;
+        }
+        this.setState({ tabs: list }, this.focusTab.bind(this));
+      }
+      focusTab() {
+        this.loadListeners();
+        this.blurListeners();
+        this.focusListeners();
+        for (const id in this.views.loaded) {
+          if (this.views.loaded.hasOwnProperty(id) && this.views.loaded[id]) {
+            this.views.loaded[id].style.display =
+              id == this.views.current.id && this.state.tabs.get(+id)
+                ? 'flex'
+                : 'none';
+          }
+        }
+      }
+
+      communicateWithView(event) {
+        if (event.channel === 'enhancer:set-tab-theme') {
+          for (const style of event.args[0])
+            document.body.style.setProperty(style[0], style[1]);
+        }
+        if (
+          event.channel === 'enhancer:set-tab-title' &&
+          this.views.tabs[event.target.id]
+        ) {
+          this.views.tabs[event.target.id].children[0].innerText =
+            event.args[0];
+        }
       }
       startSearch(isPeekView) {
         this.setState({
@@ -426,8 +470,10 @@ module.exports = (store, __exports) => {
                 React.createElement(
                   'button',
                   {
+                    draggable: true,
                     className:
-                      'tab' + (id === this.views.current.id ? ' current' : ''),
+                      'tab slideIn' +
+                      (id === this.views.current.id ? ' current' : ''),
                     onClick: (e) => {
                       if (!e.target.classList.contains('close'))
                         this.openTab(id);

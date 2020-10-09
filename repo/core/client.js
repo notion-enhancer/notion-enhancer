@@ -154,9 +154,8 @@ module.exports = (store, __exports) => {
             '--theme--interactive_hover-border',
             '--theme--button_close',
             '--theme--button_close-fill',
+            '--theme--option_active-background',
             '--theme--selected',
-            '--theme--option_hover-color',
-            '--theme--option_hover-background',
             '--theme--text',
           ].map((rule) => [rule, getStyle(rule)])
         );
