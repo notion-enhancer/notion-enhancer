@@ -135,9 +135,13 @@ module.exports = (store, __exports) => {
           '--theme--select_red',
           '--theme--line_text',
           '--theme--line_yellow',
+          '--theme--line_yellow-text',
           '--theme--line_green',
+          '--theme--line_green-text',
           '--theme--line_blue',
+          '--theme--line_blue-text',
           '--theme--line_red',
+          '--theme--line_red-text',
           '--theme--code_inline-text',
           '--theme--code_inline-background',
         ].map((rule) => [rule, getStyle(rule)])

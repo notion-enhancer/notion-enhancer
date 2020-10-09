@@ -146,6 +146,7 @@ s {
   color: var(--theme--select_red);
 }
 #alerts .error {
+  color: var(--theme--line_red-text);
   background: var(--theme--line_red);
   border-color: var(--theme--select_red);
 }
@@ -153,6 +154,7 @@ s {
   color: var(--theme--select_yellow);
 }
 #alerts .warning {
+  color: var(--theme--line_yellow-text);
   background: var(--theme--line_yellow);
   border-color: var(--theme--select_yellow);
 }
@@ -160,6 +162,7 @@ s {
   color: var(--theme--select_blue);
 }
 #alerts .info {
+  color: var(--theme--line_blue-text);
   background: var(--theme--line_blue);
   border-color: var(--theme--select_blue);
 }
@@ -168,6 +171,7 @@ s {
   color: var(--theme--select_green);
 }
 #alerts .success {
+  color: var(--theme--line_green-text);
   background: var(--theme--line_green);
   border-color: var(--theme--select_green);
 }
