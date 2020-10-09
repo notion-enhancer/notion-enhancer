@@ -11,7 +11,7 @@
   word-break: break-word;
   text-decoration: none;
   text-size-adjust: 100%;
-  font-family: var(--theme--font_sans);
+  font-family: var(--theme--font_sans) !important;
   outline-color: var(--theme--table-border);
 }
 
@@ -65,7 +65,7 @@ body[style*='--theme']::after {
 html,
 body,
 #root {
-  background: var(--theme--main);
+  background: var(--theme--main) !important;
   position: relative;
   height: 100%;
   margin: 0;
@@ -105,6 +105,16 @@ body,
 #tabs {
   margin-top: auto;
 }
+#tabs::before {
+  content: '';
+  height: 1.25em;
+  width: 1.25em;
+  display: inline-block;
+  margin: auto 1em -0.25em 1em;
+  background-size: contain;
+  background-image: url('enhancement://core/icons/mac+linux.png');
+  background-repeat: no-repeat;
+}
 #tabs .tab {
   display: inline-flex;
   background: var(--theme--main);
@@ -113,6 +123,7 @@ body,
   padding: 0.2em 0.4em;
   text-align: left;
   border-bottom: 4px solid var(--theme--table-border);
+  opacity: 0.8;
 }
 #tabs .tab:first-child {
   margin-top: 0.5em;
@@ -122,6 +133,8 @@ body,
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+#tabs .tab.slideIn span:not(.close) {
   animation: tabSlideIn 100ms ease-in-out;
 }
 #tabs .tab .close {
@@ -130,7 +143,9 @@ body,
   font-weight: bold;
 }
 #tabs .tab.current {
+  opacity: 1;
   background: var(--theme--selected);
+  border-bottom: 4px solid var(--theme--option_active-background);
 }
 #tabs .tab.new {
   background: none;
@@ -141,11 +156,16 @@ body,
   padding: 0 0.35em 0.1em 0.3em;
   font-weight: bold;
 }
+#tabs .tab:hover {
+  opacity: 1;
+}
 #tabs .tab .close:hover,
 #tabs .tab.new span:hover {
-  background: var(--theme--option_hover-background);
-  color: var(--theme--option_hover-color);
+  background: var(--theme--table-border);
   border-radius: 5px;
+}
+#tabs .tab.dragged-over {
+  box-shadow: inset 4px 0 0 0 var(--theme--selected);
 }
 
 .notion {
