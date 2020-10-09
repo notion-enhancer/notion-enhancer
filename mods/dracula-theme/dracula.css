@@ -1,0 +1,188 @@
+/*
+ * Dracula Theme Palette
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2020 u/mimi-shahzad
+ * (c) 2020 Dracula Theme
+ * under the MIT license
+ */
+
+:root {
+  --theme_dark--main: #282a36;
+  --theme_dark--sidebar: #282a36;
+  --theme_dark--overlay: #282a36;
+  --theme_dark--dragarea: #282a36;
+
+  --theme_dark--font_sans: -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Helvetica, 'Apple Color Emoji', Arial, sans-serif,
+    'Segoe UI Emoji', 'Segoe UI Symbol';
+
+  --theme_dark--scrollbar: #282a36;
+  --theme_dark--scrollbar_hover: #6272a4;
+
+  --theme_dark--card: #6272a4;
+  --theme_dark--gallery: #282a36;
+  --theme_dark--table-border: #6272a4;
+  --theme_dark--interactive_hover: #282a36;
+  --theme_dark--button_close: #ff5555;
+
+  --theme_dark--selected: #454158;
+  --theme_dark--primary: #bd93f9;
+  --theme_dark--primary_hover: #8be9fd;
+  --theme_dark--primary_click: #bd93f9;
+  --theme_dark--primary_indicator: #8be9fd;
+
+  --theme_dark--option_active-background: var(--theme_dark--primary);
+  --theme_dark--option_hover-background: var(--theme_dark--primary_hover);
+
+  --theme_dark--danger_text: #ff5555;
+  --theme_dark--danger_border: #ffb86c;
+
+  --theme_dark--text: #f8f8f2;
+  --theme_dark--text_ui: #f8f8f2;
+  --theme_dark--text_ui_info: #f8f8f2;
+
+  --theme_dark--text_gray: #454158;
+  --theme_dark--text_brown: #6272a4;
+  --theme_dark--text_orange: #ffb86c;
+  --theme_dark--text_yellow: #f1fa8c;
+  --theme_dark--text_green: #50fa7b;
+  --theme_dark--text_blue: #8be9fd;
+  --theme_dark--text_purple: #bd93f9;
+  --theme_dark--text_pink: #ff79c6;
+  --theme_dark--text_red: #ff5555;
+
+  --theme_dark--select-text: #000000;
+  --theme_dark--select_gray: #454158;
+  --theme_dark--select_brown: #6272a4;
+  --theme_dark--select_orange: #ffb86c;
+  --theme_dark--select_yellow: #f1fa8c;
+  --theme_dark--select_green: #50fa7b;
+  --theme_dark--select_blue: #8be9fd;
+  --theme_dark--select_purple: #bd93f9;
+  --theme_dark--select_pink: #ff79c6;
+  --theme_dark--select_red: #ff5555;
+
+  --theme_dark--bg-text: var(--theme_dark--select-text);
+  --theme_dark--bg_gray: var(--theme_dark--select_gray);
+  --theme_dark--bg_brown: var(--theme_dark--select_brown);
+  --theme_dark--bg_orange: var(--theme_dark--select_orange);
+  --theme_dark--bg_yellow: var(--theme_dark--select_yellow);
+  --theme_dark--bg_green: var(--theme_dark--select_green);
+  --theme_dark--bg_blue: var(--theme_dark--select_blue);
+  --theme_dark--bg_purple: var(--theme_dark--select_purple);
+  --theme_dark--bg_pink: var(--theme_dark--select_pink);
+  --theme_dark--bg_red: var(--theme_dark--select_red);
+
+  --theme_dark--line-text: #000000;
+  --theme_dark--line_gray: #454158;
+  --theme_dark--line_brown: #6272a4;
+  --theme_dark--line_orange: #ffb86c;
+  --theme_dark--line_yellow: #f1fa8c;
+  --theme_dark--line_green: #50fa7b;
+  --theme_dark--line_blue: #8be9fd;
+  --theme_dark--line_purple: #bd93f9;
+  --theme_dark--line_pink: #ff79c6;
+  --theme_dark--line_red: #ff5555;
+
+  --theme_dark--callout-text: var(--theme_dark--line-text);
+  --theme_dark--callout_gray: var(--theme_dark--line_gray);
+  --theme_dark--callout_brown: var(--theme_dark--line_brown);
+  --theme_dark--callout_orange: var(--theme_dark--line_orange);
+  --theme_dark--callout_yellow: var(--theme_dark--line_yellow);
+  --theme_dark--callout_green: var(--theme_dark--line_green);
+  --theme_dark--callout_blue: var(--theme_dark--line_blue);
+  --theme_dark--callout_purple: var(--theme_dark--line_purple);
+  --theme_dark--callout_pink: var(--theme_dark--line_pink);
+  --theme_dark--callout_red: var(--theme_dark--line_red);
+
+  --theme_dark--code_inline-text: #50fa7b;
+  --theme_dark--code_inline-background:#44475a;
+  --theme_dark--code-text: var(--theme_dark--text);
+  --theme_dark--code-background: #44475a;
+  --theme_dark--code_function: var(--theme_dark--text_blue);
+  --theme_dark--code_keyword: var(--theme_dark--text_pink);
+  --theme_dark--code_tag: var(--theme_dark--text_pink);
+  --theme_dark--code_operator: var(--theme_dark--text_yellow);
+  --theme_dark--code_important: var(--theme_dark--text_yellow);
+  --theme_dark--code_property: var(--theme_dark--text_pink);
+  --theme_dark--code_builtin: var(--theme_dark--text_yellow);
+  --theme_dark--code_attr-name: var(--theme_dark--text_yellow);
+  --theme_dark--code_comment: var(--theme_dark--text_ui);
+  --theme_dark--code_punctuation: var(--theme_dark--text_gray);
+  --theme_dark--code_doctype: var(--theme_dark--text_gray);
+  --theme_dark--code_number: var(--theme_dark--text_purple);
+  --theme_dark--code_string: var(--theme_dark--text_orange);
+  --theme_dark--code_attr-value: var(--theme_dark--text_orange);
+}
+
+.notion-dark-theme img[src*='/images/onboarding/use-case-note.png'],
+.notion-dark-theme
+  img[src*='/images/onboarding/team-features-illustration.png'] {
+  filter: invert(1) !important;
+}
+.notion-dark-theme img[src*='/images/onboarding/checked.svg'] {
+  filter: hue-rotate(45deg) !important;
+}
+.notion-dark-theme
+  img[style*='display: block; object-fit: cover; border-radius: 100%; width: 90px; height: 90px;'],
+.notion-dark-theme
+  img[style*='display: block; object-fit: cover; border-radius: 3px; width: 56.832px; height: 56.832px; transition: opacity 100ms ease-out 0s;'] {
+  transition: filter 0.4s ease !important;
+}
+.notion-dark-theme
+  img[style*='display: block; object-fit: cover; border-radius: 100%; width: 90px; height: 90px;']:hover,
+.notion-dark-theme
+  img[style*='display: block; object-fit: cover; border-radius: 3px; width: 56.832px; height: 56.832px; transition: opacity 100ms ease-out 0s;']:hover {
+  filter: brightness(1.2);
+}
+
+.notion-dark-theme
+  [style*='font-family: Fira Code, Menlo, Courier, monospace;'] {
+  filter: hue-rotate(170deg) !important;
+}
+
+.notion-dark-theme
+  .notion-token-remove-button[role*='button'][tabindex*='0']:hover,
+.notion-dark-theme .notion-record-icon {
+  background: transparent !important;
+}
+
+.notion-dark-theme .notion-focusable:focus-within,
+.notion-dark-theme .notion-to_do-block > div > div > div[style*='background:'],
+.notion-dark-theme div[role='button'],
+[style*='height: 4px;']
+  > .notion-selectable.notion-collection_view_page-block
+  > *,
+.notion-dark-theme
+  .notion-calendar-view-day[style*='background: #282a36;'],
+.DayPicker-Day--today,
+.notion-dark-theme
+  .DayPicker:not(.DayPicker--interactionDisabled)
+  .DayPicker-Day--outside:hover,
+.notion-dark-theme
+  .DayPicker:not(.DayPicker--interactionDisabled)
+  .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--value)
+  .DayPicker-Day.DayPicker-Day--start.DayPicker-Day--selected,
+.notion-dark-theme .DayPicker-Day.DayPicker-Day--range.DayPicker-Day--start,
+.notion-dark-theme .DayPicker-Day.DayPicker-Day--range.DayPicker-Day--end {
+  transition: color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease !important;
+}
+
+.notion-dark-theme [style*='background: #282a36;'],
+.notion-dark-theme
+  [style*='background: rgb(80, 85, 88);'][style*='color: rgba(255, 255, 255, 0.7)'],
+.notion-dark-theme
+  [style*='background: rgb(80, 85, 88);'][style*='width: 18px;'][style*='height: 18px;'],
+.notion-dark-theme
+  [style*='box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.2) 0px 5px 10px, rgba(15, 15, 15, 0.4) 0px 15px 40px;'],
+.notion-dark-theme [style*='background: rgba(151, 154, 155, 0.5);'],
+.notion-dark-theme [style*='background: rgba(147, 114, 100, 0.5)'],
+.notion-dark-theme [style*='background: rgba(255, 163, 68, 0.5)'],
+.notion-dark-theme [style*='background: rgba(255, 220, 73, 0.5)'],
+.notion-dark-theme [style*='background: rgba(77, 171, 154, 0.5)'],
+.notion-dark-theme [style*='background: rgba(82, 156, 202, 0.5)'],
+.notion-dark-theme [style*='background: rgba(154, 109, 215, 0.5)'],
+.notion-dark-theme [style*='background: rgba(226, 85, 161, 0.5)'],
+.notion-dark-theme [style*='background: rgba(255, 115, 105, 0.5)'] {
+  box-shadow: 0 2px 4px rgb(0 0 0 / 66%) !important;
+}
