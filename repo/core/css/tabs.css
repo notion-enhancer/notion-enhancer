@@ -94,6 +94,8 @@ body,
 #titlebar button {
   color: var(--theme--text);
   -webkit-app-region: no-drag;
+  border: none;
+  background-color: transparent;
 }
 #titlebar .window-buttons-area {
   margin: 0.5em 0.55em 0.5em auto;
@@ -102,10 +104,7 @@ body,
   display: none;
 }
 
-#tabs {
-  margin-top: auto;
-}
-#tabs::before {
+#open-enhancer-menu::before {
   content: '';
   height: 1.25em;
   width: 1.25em;
@@ -114,6 +113,9 @@ body,
   background-size: contain;
   background-image: url('enhancement://core/icons/mac+linux.png');
   background-repeat: no-repeat;
+}
+#tabs {
+  margin-top: auto;
 }
 #tabs .tab {
   display: inline-flex;

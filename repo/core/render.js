@@ -42,6 +42,7 @@ module.exports = (store, __exports) => {
         this.$titlebar = null;
         this.$dragging = null;
         this.views = {
+          active: null,
           current: {
             $el: () => this.views.html[this.views.current.id],
             id: 0,
@@ -189,15 +190,19 @@ module.exports = (store, __exports) => {
         this.setState({ tabs: list }, this.focusTab.bind(this));
       }
       focusTab() {
+        if (this.views.active === this.views.current.id) return;
         this.loadListeners();
         this.blurListeners();
         this.focusListeners();
         for (const id in this.views.loaded) {
           if (this.views.loaded.hasOwnProperty(id) && this.views.loaded[id]) {
-            this.views.loaded[id].style.display =
-              id == this.views.current.id && this.state.tabs.get(+id)
-                ? 'flex'
-                : 'none';
+            const selected =
+              id == this.views.current.id && this.state.tabs.get(+id);
+            this.views.loaded[id].style.display = selected ? 'flex' : 'none';
+            if (selected) {
+              this.views.active = this.views.current.id;
+              this.views.loaded[id].focus();
+            }
           }
         }
       }
@@ -216,15 +221,19 @@ module.exports = (store, __exports) => {
         }
       }
       startSearch(isPeekView) {
-        this.setState({
-          searching: true,
-          searchingPeekView: isPeekView,
-        });
-        if (document.activeElement instanceof HTMLElement)
-          document.activeElement.blur();
-        this.$search.focus();
-        notionIpc.sendIndexToSearch(this.$search, 'search:start');
-        notionIpc.sendIndexToNotion(this.$search, 'search:started');
+        this.setState(
+          {
+            searching: true,
+            searchingPeekView: isPeekView,
+          },
+          () => {
+            if (document.activeElement instanceof HTMLElement)
+              document.activeElement.blur();
+            this.$search.focus();
+            notionIpc.sendIndexToSearch(this.$search, 'search:start');
+            notionIpc.sendIndexToNotion(this.$search, 'search:started');
+          }
+        );
       }
       stopSearch() {
         notionIpc.sendIndexToSearch(this.$search, 'search:reset');
@@ -461,6 +470,12 @@ module.exports = (store, __exports) => {
               this.$titlebar = $titlebar;
             },
           },
+          React.createElement('button', {
+            id: 'open-enhancer-menu',
+            onClick: (e) => {
+              electron.ipcRenderer.send('enhancer:open-menu');
+            },
+          }),
           React.createElement(
             'div',
             { id: 'tabs' },
@@ -556,8 +571,9 @@ module.exports = (store, __exports) => {
                   ? 37
                   : 45) * this.state.zoomFactor,
               right: (48 - 24) * this.state.zoomFactor,
-              width: 440 * this.state.zoomFactor,
+              width: 460 * this.state.zoomFactor,
               height: 72 * this.state.zoomFactor,
+              zIndex: 99,
             },
           },
           React.createElement('webview', {
