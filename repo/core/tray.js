@@ -17,6 +17,8 @@ module.exports = (store, __exports) => {
     helpers = require('../../pkg/helpers.js');
 
   electron.app.on('ready', () => {
+    // tray
+
     tray = new electron.Tray(
       is_win
         ? path.resolve(`${__dirname}/icons/windows.ico`)
@@ -27,6 +29,8 @@ module.exports = (store, __exports) => {
             height: 16,
           })
     );
+
+    // menu
 
     electron.ipcMain.on('enhancer:set-menu-theme', (event, arg) => {
       if (!enhancer_menu) return;
@@ -111,6 +115,19 @@ module.exports = (store, __exports) => {
       });
     }
 
+    electron.globalShortcut.register(store().menu_toggle, () => {
+      if (
+        electron.BrowserWindow.getAllWindows()
+          .filter((win) => win.getTitle() !== 'notion-enhancer menu')
+          .some((win) => win.isFocused())
+      ) {
+        openExtensionMenu();
+      } else if (enhancer_menu && enhancer_menu.isFocused())
+        enhancer_menu.close();
+    });
+
+    // tray
+
     const contextMenu = electron.Menu.buildFromTemplate([
       {
         type: 'normal',
@@ -186,6 +203,13 @@ module.exports = (store, __exports) => {
         type: 'separator',
       },
       {
+        label: 'Relaunch',
+        click: () => {
+          electron.app.relaunch();
+          electron.app.quit();
+        },
+      },
+      {
         label: 'Quit',
         role: 'quit',
       },
@@ -193,16 +217,7 @@ module.exports = (store, __exports) => {
     tray.setContextMenu(contextMenu);
     tray.setToolTip('Notion');
 
-    electron.globalShortcut.register(store().menu_toggle, () => {
-      if (
-        electron.BrowserWindow.getAllWindows()
-          .filter((win) => win.getTitle() !== 'notion-enhancer menu')
-          .some((win) => win.isFocused())
-      ) {
-        openExtensionMenu();
-      } else if (enhancer_menu && enhancer_menu.isFocused())
-        enhancer_menu.close();
-    });
+    // hotkey
 
     function showWindows() {
       const windows = electron.BrowserWindow.getAllWindows();
