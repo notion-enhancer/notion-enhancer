@@ -16,6 +16,7 @@ a flexibility update.
   variables can be modified.)
 - new: in-page columns disabled/wrapped and wider pages when the window is narrower than 600px
   for improved responsiveness.
+- new: relaunch button in tray menu.
 - improved: a core mod option to make transitions snappy/0s.
 - improved: menu will now respect integrated titlebar setting.
 - bugfix: removed messenger emoji set as the provider no longer supports it.
@@ -28,8 +29,15 @@ a flexibility update.
 - bugfix: bypass preview extension works with the back/forward keyboard shortcuts.
 - bugfix: (maybe) fix csp issues under proxy.
 - bugfix: remove focus mode footer from neutral theme.
+- bugfix: improvements to the colour theming, particularly to make real- and fake-light/dark
+  modes (as applied by the night shift extension) look consistent.
 - tweak: sticky table/list rows.
-- extension: "material ocean" = an oceanic colour palette.
+- theme: "material ocean" = an oceanic colour palette.
+- theme: "dracula" = a theme based on the popular dracula color palette
+  originally by zeno rocha and friends.
+- extension: "tabs" = have multiple notion pages open in a single window.
+
+a fork of notion-deb-builder that does generate an app.asar has been created and is once again supported.
 
 ### v0.9.1 (2020-09-26)
 

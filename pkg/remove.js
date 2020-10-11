@@ -122,7 +122,14 @@ module.exports = async function ({
             : `try running "sudo chmod a+wr -R ${err.path.replace(
                 'Notion.app',
                 'Notion'
-              )}"`
+              )}" ${
+                err.dest
+                  ? `and "sudo chmod a+wr -R ${err.dest.replace(
+                      'Notion.app',
+                      'Notion'
+                    )}"`
+                  : ''
+              }`
         }`
       );
     } else if (['EIO', 'EBUSY'].includes(err.code) && friendly_errors) {

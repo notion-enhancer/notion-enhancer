@@ -36,6 +36,7 @@
     "asar": "^3.0.3",
     "cac": "^6.5.12",
     "fs-extra": "^9.0.1",
+    "keyboardevent-from-electron-accelerator": "^2.0.0",
     "readdir-enhanced": "^6.0.3"
   }
 }
