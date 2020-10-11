@@ -13,11 +13,18 @@ module.exports = (store, __exports) => {
     notionIpc = require(`${helpers.__notion.replace(
       /\\/g,
       '/'
-    )}/app/helpers/notionIpc.js`);
+    )}/app/helpers/notionIpc.js`),
+    { toKeyEvent } = require('keyboardevent-from-electron-accelerator');
 
   // additional hotkeys
   document.defaultView.addEventListener('keyup', (event) => {
     if (event.code === 'F5') location.reload();
+    // open menu on hotkey toggle
+    const hotkey = toKeyEvent(store().menu_toggle);
+    let triggered = true;
+    for (let prop in hotkey)
+      if (hotkey[prop] !== event[prop]) triggered = false;
+    if (triggered) electron.ipcRenderer.send('enhancer:open-menu');
   });
 
   const attempt_interval = setInterval(enhance, 500);

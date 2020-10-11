@@ -19,6 +19,7 @@ a flexibility update.
 - new: relaunch button in tray menu.
 - improved: a core mod option to make transitions snappy/0s.
 - improved: menu will now respect integrated titlebar setting.
+- improved: use keyup listeners instead of a globalShortcut for the enhancements menu toggle.
 - bugfix: removed messenger emoji set as the provider no longer supports it.
 - bugfix: remove shadow around light mode board headers
   \+ minor text colour fixes for night shift theming.

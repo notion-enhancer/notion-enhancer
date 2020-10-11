@@ -32,6 +32,9 @@ module.exports = (store, __exports) => {
 
     // menu
 
+    electron.ipcMain.on('enhancer:open-menu', (event, arg) => {
+      openExtensionMenu();
+    });
     electron.ipcMain.on('enhancer:set-menu-theme', (event, arg) => {
       if (!enhancer_menu) return;
       enhancer_menu.webContents.send('enhancer:set-menu-theme', arg);
@@ -114,17 +117,6 @@ module.exports = (store, __exports) => {
         enhancer_menu = null;
       });
     }
-
-    electron.globalShortcut.register(store().menu_toggle, () => {
-      if (
-        electron.BrowserWindow.getAllWindows()
-          .filter((win) => win.getTitle() !== 'notion-enhancer menu')
-          .some((win) => win.isFocused())
-      ) {
-        openExtensionMenu();
-      } else if (enhancer_menu && enhancer_menu.isFocused())
-        enhancer_menu.close();
-    });
 
     // tray
 

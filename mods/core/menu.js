@@ -10,7 +10,8 @@ const store = require('../../pkg/store.js'),
   helpers = require('../../pkg/helpers.js'),
   fs = require('fs-extra'),
   path = require('path'),
-  electron = require('electron');
+  electron = require('electron'),
+  { toKeyEvent } = require('keyboardevent-from-electron-accelerator');
 
 window['__start'] = async () => {
   const buttons = require('./buttons.js')(() => ({
@@ -141,9 +142,22 @@ window['__start'] = async () => {
   document.addEventListener('keyup', (event) => {
     if (
       $popup.classList.contains('visible') &&
-      [13, 27].includes(event.keyCode)
+      ['Enter', 'Escape'].includes(event.key)
     )
       $popup.classList.remove('visible');
+    // close window on hotkey toggle
+    console.log();
+    const hotkey = toKeyEvent(
+      store('0f0bf8b6-eae6-4273-b307-8fc43f2ee082', {
+        menu_toggle: modules.loaded
+          .find((m) => m.id === '0f0bf8b6-eae6-4273-b307-8fc43f2ee082')
+          .options.find((o) => o.key === 'menu_toggle').value,
+      }).menu_toggle
+    );
+    let triggered = true;
+    for (let prop in hotkey)
+      if (hotkey[prop] !== event[prop]) triggered = false;
+    if (triggered) electron.remote.getCurrentWindow().close();
   });
   let colorpicker_target = null;
   const $colorpicker = colorjoe

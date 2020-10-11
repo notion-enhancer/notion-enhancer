@@ -119,12 +119,12 @@ module.exports = async function ({
         `file access forbidden - ${
           process.platform === 'win32'
             ? 'make sure your user has elevated permissions.'
-            : `try running "sudo chmod a+wr -R ${err.path.replace(
+            : `try running "sudo chmod -R a+wr ${err.path.replace(
                 'Notion.app',
                 'Notion'
               )}" ${
                 err.dest
-                  ? `and "sudo chmod a+wr -R ${err.dest.replace(
+                  ? `and "sudo chmod -R a+wr ${err.dest.replace(
                       'Notion.app',
                       'Notion'
                     )}"`
