@@ -141,7 +141,8 @@
 [style*='SFMono-Regular'] {
   font-family: var(--theme--font_code) !important;
 }
-.notion-frame .notion-page-block div[placeholder='Untitled'] {
+.notion-frame .notion-page-block div[placeholder='Untitled'],
+.notion-overlay-container .notion-page-block div[placeholder='Untitled']{
   font-size: calc(
     var(--theme--font_body-size) * (var(--theme--font_heading1-size) / 1em)
   ) !important;
@@ -161,15 +162,16 @@
     var(--theme--font_body-size) * (var(--theme--font_heading3-size) / 1em)
   ) !important;
 }
-.notion-frame .notion-scroller.vertical.horizontal [style*='font-size: 14px'] {
+.notion-frame .notion-scroller.vertical.horizontal [style*='font-size: 14px'],
+.notion-overlay-container .notion-scroller.vertical [style*='font-size: 14px']{
   font-size: var(--theme--font_label-size) !important;
 }
-.notion-frame .notion-scroller.vertical.horizontal .notion-page-content {
+.notion-frame .notion-scroller.vertical.horizontal .notion-page-content,
+.notion-overlay-container .notion-scroller.vertical .notion-page-content {
   font-size: var(--theme--font_body-size) !important;
 }
-.notion-frame
-  .notion-scroller.vertical.horizontal
-  .notion-page-content[style*='font-size: 14px'] {
+.notion-frame .notion-scroller.vertical.horizontal .notion-page-content[style*='font-size: 14px'],
+.notion-overlay-container .notion-scroller.vertical .notion-page-content[style*='font-size: 14px'] {
   font-size: var(--theme--font_body-size_small) !important;
 }
 .notion-code-block [placeholder=' '] {
