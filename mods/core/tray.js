@@ -17,6 +17,8 @@ module.exports = (store, __exports) => {
     helpers = require('../../pkg/helpers.js');
 
   electron.app.on('ready', () => {
+    // tray
+
     tray = new electron.Tray(
       is_win
         ? path.resolve(`${__dirname}/icons/windows.ico`)
@@ -28,15 +30,20 @@ module.exports = (store, __exports) => {
           })
     );
 
-    electron.ipcMain.on('enhancer:set-theme-vars', (event, arg) => {
-      if (!enhancer_menu) return;
-      enhancer_menu.webContents.send('enhancer:set-theme-vars', arg);
+    // menu
+
+    electron.ipcMain.on('enhancer:open-menu', (event, arg) => {
+      openExtensionMenu();
     });
-    electron.ipcMain.on('enhancer:get-theme-vars', (event, arg) => {
+    electron.ipcMain.on('enhancer:set-menu-theme', (event, arg) => {
+      if (!enhancer_menu) return;
+      enhancer_menu.webContents.send('enhancer:set-menu-theme', arg);
+    });
+    electron.ipcMain.on('enhancer:get-menu-theme', (event, arg) => {
       electron.webContents
         .getAllWebContents()
         .forEach((webContents) =>
-          webContents.send('enhancer:get-theme-vars', arg)
+          webContents.send('enhancer:get-menu-theme', arg)
         );
     });
 
@@ -88,7 +95,7 @@ module.exports = (store, __exports) => {
       electron.shell.openExternal(JSON.stringify(window_state));
       enhancer_menu = new electron.BrowserWindow({
         show: true,
-        frame: false,
+        frame: !store().frameless,
         titleBarStyle: 'hiddenInset',
         x:
           window_state.x ||
@@ -110,6 +117,8 @@ module.exports = (store, __exports) => {
         enhancer_menu = null;
       });
     }
+
+    // tray
 
     const contextMenu = electron.Menu.buildFromTemplate([
       {
@@ -186,6 +195,13 @@ module.exports = (store, __exports) => {
         type: 'separator',
       },
       {
+        label: 'Relaunch',
+        click: () => {
+          electron.app.relaunch();
+          electron.app.quit();
+        },
+      },
+      {
         label: 'Quit',
         role: 'quit',
       },
@@ -193,16 +209,7 @@ module.exports = (store, __exports) => {
     tray.setContextMenu(contextMenu);
     tray.setToolTip('Notion');
 
-    electron.globalShortcut.register(store().menu_toggle, () => {
-      if (
-        electron.BrowserWindow.getAllWindows()
-          .filter((win) => win.getTitle() !== 'notion-enhancer menu')
-          .some((win) => win.isFocused())
-      ) {
-        openExtensionMenu();
-      } else if (enhancer_menu && enhancer_menu.isFocused())
-        enhancer_menu.close();
-    });
+    // hotkey
 
     function showWindows() {
       const windows = electron.BrowserWindow.getAllWindows();

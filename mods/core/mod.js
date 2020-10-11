@@ -15,6 +15,12 @@ module.exports = {
   author: 'dragonwocky',
   options: [
     {
+      key: 'tabs',
+      label: 'tabbable windows',
+      type: 'toggle',
+      value: false,
+    },
+    {
       key: 'openhidden',
       label: 'hide app on open',
       type: 'toggle',

@@ -93,7 +93,7 @@ module.exports = function (__file, __exports) {
           (...args) =>
             !args.length
               ? store(mod.id, mod.defaults)
-              : args.length === 1
+              : args.length === 1 && typeof args[0] === 'object'
               ? store(mod.id, { ...mod.defaults, ...args[0] })
               : store(args[0], { ...mod.defaults, ...args[1] }),
           __exports

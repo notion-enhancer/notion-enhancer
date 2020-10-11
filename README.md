@@ -17,6 +17,8 @@ for support, join the [discord server](https://discord.gg/sFWPXtA).
 - the [official windows/mac releases](https://notion.so/desktop).
 - the arch linux AUR [notion-app](https://aur.archlinux.org/packages/notion-app/) package.
 - the linux [notion-app](https://github.com/jaredallard/notion-app) installer.
+- [@haydn-jones](https://github.com/haydn-jones/)'s fork of the
+  linux [notion-deb-builder](https://github.com/haydn-jones/notion-deb-builder).
 
 (it can also be run from the wsl to apply enhancements to the windows app.)
 
@@ -31,10 +33,22 @@ a chrome extension may be coming soon for web client support.
 
 during installation/removal, make sure no notion processes are running! (check your task manager.)
 
-**win10, macOS**
+**win10**
 
-1. [install node.js](https://nodejs.org/en/download/) (_a computer restart may be required here._)
-2. execute `npm i -g notion-enhancer` in the terminal/command prompt.
+[install node.js](https://nodejs.org/en/download/) (_a computer restart may be required here_),
+then execute `npm i -g notion-enhancer` in the command prompt.
+
+**macOS**
+
+[install node.js](https://nodejs.org/en/download/) (_a computer restart may be required here_),
+then execute the following lines in the terminal:
+
+```
+sudo chmod -R a+wr /usr/local/lib/node_modules
+sudo chmod -R a+wr /usr/local/bin
+sudo chmod -R a+wr /Applications/Notion/Contents/Resources
+npm i -g notion-enhancer
+```
 
 **debian/ubuntu, chromeOS, WSL (to modify the win10 app)**
 
@@ -81,6 +95,14 @@ Options:
   -v, --version  : display version number
 ```
 
+### faq
+
+**the themes aren't working?**
+
+if you pick a dark theme it will only be applied if notion is in dark mode,
+and if you pick a light theme it will only work if notion is in light mode.
+do `CMD/CTRL+SHIFT+L` to toggle between them.
+
 **is this against notion's terms of service? can i get in trouble for using it?**
 
 definitely not! i contacted their support team to check, and the response was awesome:
@@ -92,7 +114,7 @@ team to take to heart for future improvements."
 ## features
 
 once applied, modules can be configured via the graphical menu, which is opened from
-the tray/menubar icon or with `ALT+E`.
+the tray/menubar icon or with `OPTION/ALT+E`.
 
 ![](https://user-images.githubusercontent.com/16874139/93692603-954fd980-fb38-11ea-9d52-82ac53449d33.png)
 

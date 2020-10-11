@@ -5,6 +5,11 @@
  * under the MIT license
  */
 
+/* add space at the bottom of the main frame when sidebar is hidden
+  * -- matches space at top for titlebar */
+.notion-dark-theme .notion-frame {
+  transition: height 100ms ease 0s;
+}
 .notion-sidebar-container[style*='width: 0px;'] + .notion-frame {
   height: calc(
     100% - (var(--configured--dragarea_height, 10px) + 45px)

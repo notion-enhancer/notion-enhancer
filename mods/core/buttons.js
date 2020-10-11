@@ -88,7 +88,7 @@ module.exports = (store) => {
       ]()}</button>`;
     }
     for (let btn of buttons.insert) {
-      document.querySelector(`.window-button#btn-${btn}`).onclick =
+      buttons.element.querySelector(`.window-button#btn-${btn}`).onclick =
         buttons.actions[btn];
     }
     if (store().frameless && !store().tiling_mode && !is_mac) {

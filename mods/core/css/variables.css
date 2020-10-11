@@ -14,6 +14,10 @@
   --theme_dark--sidebar: rgb(55, 60, 63);
   --theme_dark--overlay: rgba(15, 15, 15, 0.6);
   --theme_dark--dragarea: #272d2f;
+  --theme_dark--box-shadow: rgba(15, 15, 15, 0.2) 0px 0px 0px 1px,
+    rgba(15, 15, 15, 0.2) 0px 2px 4px;
+  --theme_dark--box-shadow_strong: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px,
+    rgba(15, 15, 15, 0.2) 0px 3px 6px, rgba(15, 15, 15, 0.4) 0px 9px 24px;
   --theme_dark--page_normal-width: 900px;
   --theme_dark--page_full-width: 100%;
   --theme_dark--page-padding: calc(96px + env(safe-area-inset-left));
@@ -48,7 +52,9 @@
 
   --theme_dark--card: rgb(63, 68, 71);
   --theme_dark--gallery: rgba(255, 255, 255, 0.05);
+  --theme_dark--select_input: rgb(55, 60, 63);
   --theme_dark--table-border: rgba(255, 255, 255, 0.1);
+  --theme_dark--ui-border: rgba(255, 255, 255, 0.07);
   --theme_dark--interactive_hover: rgb(71, 76, 80);
   --theme_dark--interactive_hover-border: transparent;
   --theme_dark--button_close: #e81123;
@@ -189,6 +195,10 @@
   --theme_light--sidebar: rgb(247, 246, 243);
   --theme_light--overlay: rgba(15, 15, 15, 0.6);
   --theme_light--dragarea: rgba(55, 53, 47, 0.04);
+  --theme_light--box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px,
+    rgba(15, 15, 15, 0.1) 0px 2px 4px;
+  --theme_light--box-shadow_strong: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px,
+    rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
   --theme_light--page_normal-width: 900px;
   --theme_light--page_full-width: 100%;
   --theme_light--page-padding: calc(96px + env(safe-area-inset-left));
@@ -223,7 +233,9 @@
 
   --theme_light--card: rgb(247, 247, 247);
   --theme_light--gallery: rgba(55, 53, 47, 0.024);
+  --theme_light--select_input: rgba(242, 241, 238, 0.6);
   --theme_light--table-border: rgba(55, 53, 47, 0.16);
+  --theme_light--ui-border: rgba(55, 53, 47, 0.09);
   --theme_light--interactive_hover: rgb(239, 239, 239);
   --theme_light--interactive_hover-border: transparent;
   --theme_light--button_close: #e81123;
@@ -246,6 +258,7 @@
   --theme_light--danger_border: rgba(235, 87, 87, 0.5);
 
   --theme_light--text: rgb(55, 53, 47);
+  --theme_light--text_ui: rgba(55, 53, 47, 0.6);
   --theme_light--text_ui: rgba(55, 53, 47, 0.6);
   --theme_light--text_ui_info: rgba(55, 53, 47, 0.4);
 
@@ -364,6 +377,8 @@
   --theme--sidebar: var(--theme_dark--sidebar);
   --theme--overlay: var(--theme_dark--overlay);
   --theme--dragarea: var(--theme_dark--dragarea);
+  --theme--box-shadow: var(--theme_dark--box-shadow);
+  --theme--box-shadow_strong: var(--theme_dark--box-shadow_strong);
   --theme--page_normal-width: var(--theme_dark--page_normal-width);
   --theme--page_full-width: var(--theme_dark--page_full-width);
   --theme--page-padding: var(--theme_dark--page-padding);
@@ -389,7 +404,9 @@
   --theme--scrollbar_hover: var(--theme_dark--scrollbar_hover);
   --theme--card: var(--theme_dark--card);
   --theme--gallery: var(--theme_dark--gallery);
+  --theme--select_input: var(--theme_dark--select_input);
   --theme--table-border: var(--theme_dark--table-border);
+  --theme--ui-border: var(--theme_dark--ui-border);
   --theme--interactive_hover: var(--theme_dark--interactive_hover);
   --theme--interactive_hover-border: var(
     --theme_dark--interactive_hover-border
@@ -524,6 +541,8 @@
   --theme--sidebar: var(--theme_light--sidebar);
   --theme--overlay: var(--theme_light--overlay);
   --theme--dragarea: var(--theme_light--dragarea);
+  --theme--box-shadow: var(--theme_light--box-shadow);
+  --theme--box-shadow_strong: var(--theme_light--box-shadow_strong);
   --theme--page_normal-width: var(--theme_light--page_normal-width);
   --theme--page_full-width: var(--theme_light--page_full-width);
   --theme--page-padding: var(--theme_light--page-padding);
@@ -549,7 +568,9 @@
   --theme--scrollbar_hover: var(--theme_light--scrollbar_hover);
   --theme--card: var(--theme_light--card);
   --theme--gallery: var(--theme_light--gallery);
+  --theme--select_input: var(--theme_light--select_input);
   --theme--table-border: var(--theme_light--table-border);
+  --theme--ui-border: var(--theme_light--ui-border);
   --theme--interactive_hover: var(--theme_light--interactive_hover);
   --theme--interactive_hover-border: var(
     --theme_light--interactive_hover-border
