@@ -124,7 +124,7 @@ module.exports = async function ({
                 'Notion'
               )}" ${
                 err.dest
-                  ? `and "sudo chmod -R a+wr ${err.dest.replace(
+                  ? `and/or "sudo chmod -R a+wr ${err.dest.replace(
                       'Notion.app',
                       'Notion'
                     )}"`
