@@ -9,7 +9,6 @@
 const url = require('url'),
   path = require('path'),
   electron = require('electron'),
-  browserWindow = electron.remote.getCurrentWindow(),
   { __notion } = require('../../pkg/helpers.js'),
   config = require(`${__notion}/app/config.js`),
   constants = require(`${__notion}/app/shared/constants.js`),
@@ -219,11 +218,12 @@ module.exports = (store, __exports) => {
         ) {
           this.views.tabs[event.target.id].children[0].innerText =
             event.args[0];
+          const electronWindow = electron.remote.getCurrentWindow();
           if (
             event.target.id == this.views.current.id &&
-            browserWindow.getTitle() !== event.args[0]
+            electronWindow.getTitle() !== event.args[0]
           )
-            browserWindow.setTitle(event.args[0]);
+            electronWindow.setTitle(event.args[0]);
         }
       }
       startSearch(isPeekView) {
@@ -426,25 +426,41 @@ module.exports = (store, __exports) => {
                 this.setState({ zoomFactor });
               }
             );
+            let electronWindow;
+            try {
+              electronWindow = electron.remote.getCurrentWindow();
+            } catch (error) {
+              notionIpc.sendToMain('notion:log-error', {
+                level: 'error',
+                from: 'index',
+                type: 'GetCurrentWindowError',
+                error: error.message,
+              });
+            }
+            if (!electronWindow) {
+              this.setState({ error: true });
+              this.handleReload();
+              return;
+            }
             const sendFullScreenChangeEvent = () => {
               notionIpc.sendIndexToNotion(
                 $notion,
                 'notion:full-screen-changed'
               );
             };
-            browserWindow.addListener(
+            electronWindow.addListener(
               'enter-full-screen',
               sendFullScreenChangeEvent
             );
-            browserWindow.addListener(
+            electronWindow.addListener(
               'leave-full-screen',
               sendFullScreenChangeEvent
             );
-            browserWindow.addListener(
+            electronWindow.addListener(
               'enter-html-full-screen',
               sendFullScreenChangeEvent
             );
-            browserWindow.addListener(
+            electronWindow.addListener(
               'leave-html-full-screen',
               sendFullScreenChangeEvent
             );

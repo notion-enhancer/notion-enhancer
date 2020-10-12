@@ -14,46 +14,42 @@ const store = require('../../pkg/store.js'),
   { toKeyEvent } = require('keyboardevent-from-electron-accelerator');
 
 window['__start'] = async () => {
+  // mod loader
+  const modules = helpers.getEnhancements();
+  if (modules.loaded.length)
+    console.info(
+      `<notion-enhancer> enhancements loaded: ${modules.loaded
+        .map((mod) => mod.name)
+        .join(', ')}.`
+    );
+  if (modules.invalid.length) {
+    createAlert(
+      'error',
+      `invalid mods found: ${modules.invalid
+        .map((mod) => `<b>${mod}</b>`)
+        .join(', ')}.`
+    ).append();
+  }
+  const coreStore = (...args) => {
+    const mod = modules.loaded.find(
+      (m) => m.id === '0f0bf8b6-eae6-4273-b307-8fc43f2ee082'
+    );
+    return !args.length
+      ? store(mod.id, mod.defaults)
+      : args.length === 1 && typeof args[0] === 'object'
+      ? store(mod.id, { ...mod.defaults, ...args[0] })
+      : store(args[0], { ...mod.defaults, ...args[1] });
+  };
+
   const buttons = require('./buttons.js')(() => ({
     '72886371-dada-49a7-9afc-9f275ecf29d3': {
       enabled: (store('mods')['72886371-dada-49a7-9afc-9f275ecf29d3'] || {})
         .enabled,
     },
-    tiling_mode: store('0f0bf8b6-eae6-4273-b307-8fc43f2ee082').tiling_mode,
-    frameless: store('0f0bf8b6-eae6-4273-b307-8fc43f2ee082').frameless,
+    tiling_mode: coreStore().tiling_mode,
+    frameless: coreStore().frameless,
   }));
   document.querySelector('#titlebar').appendChild(buttons.element);
-
-  document.defaultView.addEventListener('keyup', (event) => {
-    if (event.code === 'F5') location.reload();
-    const meta =
-      !(event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey;
-    if (
-      meta &&
-      document.activeElement.parentElement.id === 'tags' &&
-      event.key === 'Enter'
-    )
-      document.activeElement.click();
-    if (document.activeElement.tagName.toLowerCase() === 'input') {
-      if (document.activeElement.type === 'checkbox' && event.key === 'Enter')
-        document.activeElement.checked = !document.activeElement.checked;
-      if (
-        ['Escape', 'Enter'].includes(event.key) &&
-        document.activeElement.type !== 'checkbox' &&
-        (document.activeElement.parentElement.id !== 'search' ||
-          event.key === 'Escape')
-      )
-        document.activeElement.blur();
-    } else if (meta && event.key === '/')
-      document.querySelector('#search > input').focus();
-    if (
-      (event.ctrlKey || event.metaKey) &&
-      event.key === 'f' &&
-      !event.altKey &&
-      !event.shiftKey
-    )
-      document.querySelector('#search > input').focus();
-  });
 
   electron.ipcRenderer.send('enhancer:get-menu-theme');
   electron.ipcRenderer.on('enhancer:set-menu-theme', (event, theme) => {
@@ -120,26 +116,10 @@ window['__start'] = async () => {
       ).prepend();
     });
 
-  // mod loader
-  const modules = helpers.getEnhancements();
-  if (modules.loaded.length)
-    console.info(
-      `<notion-enhancer> enhancements loaded: ${modules.loaded
-        .map((mod) => mod.name)
-        .join(', ')}.`
-    );
-  if (modules.invalid.length) {
-    createAlert(
-      'error',
-      `invalid mods found: ${modules.invalid
-        .map((mod) => `<b>${mod}</b>`)
-        .join(', ')}.`
-    ).append();
-  }
-
-  // further-configuration popup
   const $popup = document.querySelector('#popup');
   document.addEventListener('keyup', (event) => {
+    if (event.code === 'F5') location.reload();
+    // further-configuration popup
     if (
       $popup.classList.contains('visible') &&
       ['Enter', 'Escape'].includes(event.key)
@@ -147,18 +127,41 @@ window['__start'] = async () => {
       $popup.classList.remove('visible');
     // close window on hotkey toggle
     console.log();
-    const hotkey = toKeyEvent(
-      store('0f0bf8b6-eae6-4273-b307-8fc43f2ee082', {
-        menu_toggle: modules.loaded
-          .find((m) => m.id === '0f0bf8b6-eae6-4273-b307-8fc43f2ee082')
-          .options.find((o) => o.key === 'menu_toggle').value,
-      }).menu_toggle
-    );
+    const hotkey = toKeyEvent(coreStore().menu_toggle);
     let triggered = true;
     for (let prop in hotkey)
       if (hotkey[prop] !== event[prop]) triggered = false;
     if (triggered) electron.remote.getCurrentWindow().close();
+    //  focus search
+    const meta =
+      !(event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey;
+    if (
+      meta &&
+      document.activeElement.parentElement.id === 'tags' &&
+      event.key === 'Enter'
+    )
+      document.activeElement.click();
+    if (document.activeElement.tagName.toLowerCase() === 'input') {
+      if (document.activeElement.type === 'checkbox' && event.key === 'Enter')
+        document.activeElement.checked = !document.activeElement.checked;
+      if (
+        ['Escape', 'Enter'].includes(event.key) &&
+        document.activeElement.type !== 'checkbox' &&
+        (document.activeElement.parentElement.id !== 'search' ||
+          event.key === 'Escape')
+      )
+        document.activeElement.blur();
+    } else if (meta && event.key === '/')
+      document.querySelector('#search > input').focus();
+    if (
+      (event.ctrlKey || event.metaKey) &&
+      event.key === 'f' &&
+      !event.altKey &&
+      !event.shiftKey
+    )
+      document.querySelector('#search > input').focus();
   });
+
   let colorpicker_target = null;
   const $colorpicker = colorjoe
     .rgb('colorpicker')
@@ -171,7 +174,6 @@ window['__start'] = async () => {
       store(colorpicker_target.id)[colorpicker_target.key] = color.css();
     })
     .update();
-
   document
     .querySelector('#colorpicker')
     .appendChild(
