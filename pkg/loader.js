@@ -84,11 +84,6 @@ module.exports = function (__file, __exports) {
         });
       }
       if (mod.hacks && mod.hacks[__file]) {
-        mod.defaults = {};
-        for (let opt of mod.options || [])
-          mod.defaults[opt.key] = Array.isArray(opt.value)
-            ? opt.value[0]
-            : opt.value;
         mod.hacks[__file](
           (...args) =>
             !args.length
