@@ -1,6 +1,5 @@
 /*
- * Dracula Theme Palette
- * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * dracula-theme
  * (c) 2020 u/mimi-shahzad
  * (c) 2020 Dracula Theme
  * under the MIT license
@@ -12,17 +11,17 @@
   --theme_dark--overlay: #282a36;
   --theme_dark--dragarea: #282a36;
 
-  --theme_dark--font_sans: -apple-system, BlinkMacSystemFont,
-    'Segoe UI', Helvetica, 'Apple Color Emoji', Arial, sans-serif,
-    'Segoe UI Emoji', 'Segoe UI Symbol';
+  --theme_dark--font_sans: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+    Helvetica, 'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji',
+    'Segoe UI Symbol';
 
-  --theme_dark--scrollbar: #f8f8f2;
+  --theme_dark--scrollbar: #282a36;
   --theme_dark--scrollbar_hover: #6272a4;
 
-  --theme_dark--card: #454158;
-  --theme_dark--gallery: #6272a4;
+  --theme_dark--card: #6272a4;
+  --theme_dark--gallery: #282a36;
   --theme_dark--table-border: #6272a4;
-  --theme_dark--interactive_hover: #bd93f9;
+  --theme_dark--interactive_hover: #282a36;
   --theme_dark--button_close: #ff5555;
 
   --theme_dark--selected: #454158;
@@ -38,7 +37,7 @@
   --theme_dark--danger_border: #ffb86c;
 
   --theme_dark--text: #f8f8f2;
-  --theme_dark--text_ui: #bd93f9;
+  --theme_dark--text_ui: #f8f8f2;
   --theme_dark--text_ui_info: #f8f8f2;
 
   --theme_dark--text_gray: #454158;
@@ -52,7 +51,7 @@
   --theme_dark--text_red: #ff5555;
 
   --theme_dark--select-text: #000000;
-  --theme_dark--select_gray: #f8f8f2;
+  --theme_dark--select_gray: #454158;
   --theme_dark--select_brown: #6272a4;
   --theme_dark--select_orange: #ffb86c;
   --theme_dark--select_yellow: #f1fa8c;
@@ -73,7 +72,7 @@
   --theme_dark--bg_pink: var(--theme_dark--select_pink);
   --theme_dark--bg_red: var(--theme_dark--select_red);
 
-  --theme_dark--line-text: #f8f8f2;
+  --theme_dark--line-text: #000000;
   --theme_dark--line_gray: #454158;
   --theme_dark--line_brown: #6272a4;
   --theme_dark--line_orange: #ffb86c;
@@ -84,7 +83,7 @@
   --theme_dark--line_pink: #ff79c6;
   --theme_dark--line_red: #ff5555;
 
-  --theme_dark--callout-text: var(--theme_dark--line-green);
+  --theme_dark--callout-text: var(--theme_dark--line-text);
   --theme_dark--callout_gray: var(--theme_dark--line_gray);
   --theme_dark--callout_brown: var(--theme_dark--line_brown);
   --theme_dark--callout_orange: var(--theme_dark--line_orange);
@@ -96,7 +95,7 @@
   --theme_dark--callout_red: var(--theme_dark--line_red);
 
   --theme_dark--code_inline-text: #50fa7b;
-  --theme_dark--code_inline-background:#44475a;
+  --theme_dark--code_inline-background: #44475a;
   --theme_dark--code-text: var(--theme_dark--text);
   --theme_dark--code-background: #44475a;
   --theme_dark--code_function: var(--theme_dark--text_blue);
@@ -153,8 +152,7 @@
 [style*='height: 4px;']
   > .notion-selectable.notion-collection_view_page-block
   > *,
-.notion-dark-theme
-  .notion-calendar-view-day[style*='background: #282a36;'],
+.notion-dark-theme .notion-calendar-view-day[style*='background: #282a36;'],
 .DayPicker-Day--today,
 .notion-dark-theme
   .DayPicker:not(.DayPicker--interactionDisabled)
