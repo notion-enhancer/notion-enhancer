@@ -426,11 +426,13 @@ window['__start'] = async () => {
             };
     mod.elem = helpers.createElement(`
     <section class="${
-      mod.tags.includes('core') || enabled ? 'enabled' : 'disabled'
+      mod.id === '0f0bf8b6-eae6-4273-b307-8fc43f2ee082' || enabled
+        ? 'enabled'
+        : 'disabled'
     }" id="${mod.id}">
         <div class="meta">
         <h3 ${
-          mod.tags.includes('core')
+          mod.id === '0f0bf8b6-eae6-4273-b307-8fc43f2ee082'
             ? `>${mod.name}`
             : `class="toggle">
               <input type="checkbox" id="enable_${mod.id}"

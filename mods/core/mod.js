@@ -15,12 +15,6 @@ module.exports = {
   author: 'dragonwocky',
   options: [
     {
-      key: 'tabs',
-      label: 'tabbable windows',
-      type: 'toggle',
-      value: false,
-    },
-    {
       key: 'openhidden',
       label: 'hide app on open',
       type: 'toggle',
@@ -79,6 +73,12 @@ module.exports = {
       label: 'open enhancements menu hotkey:',
       type: 'input',
       value: 'Alt+E',
+    },
+    {
+      key: 'default_page',
+      label: 'open to default page id:',
+      type: 'input',
+      value: '',
     },
   ],
   hacks: {
