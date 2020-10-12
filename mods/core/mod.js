@@ -76,7 +76,7 @@ module.exports = {
     },
     {
       key: 'default_page',
-      label: 'open to default page id:',
+      label: 'open to default page id/url:',
       type: 'input',
       value: '',
     },

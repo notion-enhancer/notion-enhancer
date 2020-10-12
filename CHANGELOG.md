@@ -17,7 +17,7 @@ a flexibility update.
 - new: in-page columns disabled/wrapped and wider pages when the window is narrower than 600px
   for improved responsiveness.
 - new: relaunch button in tray menu.
-- new: a core mod option for a default page id (all new windows will load it instead of the
+- new: a core mod option for a default page id/url (all new windows will load it instead of the
   normal "most recent" page).
 - improved: a core mod option to make transitions snappy/0s.
 - improved: menu will now respect integrated titlebar setting.

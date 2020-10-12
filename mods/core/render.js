@@ -26,7 +26,11 @@ const insertCSP = `
   csp.httpEquiv = 'Content-Security-Policy';
   csp.content = "script-src 'self' 'unsafe-inline' 'unsafe-eval' enhancement: https://gist.github.com https://apis.google.com https://api.amplitude.com https://widget.intercom.io https://js.intercomcdn.com https://logs-01.loggly.com https://cdn.segment.com https://analytics.pgncs.notion.so https://checkout.stripe.com https://embed.typeform.com https://admin.typeform.com https://platform.twitter.com https://cdn.syndication.twimg.com; connect-src 'self' https://msgstore.www.notion.so wss://msgstore.www.notion.so https://notion-emojis.s3-us-west-2.amazonaws.com https://s3-us-west-2.amazonaws.com https://s3.us-west-2.amazonaws.com https://notion-production-snapshots-2.s3.us-west-2.amazonaws.com https: http: https://api.amplitude.com https://api.embed.ly https://js.intercomcdn.com https://api-iam.intercom.io wss://nexus-websocket-a.intercom.io https://logs-01.loggly.com https://api.segment.io https://api.pgncs.notion.so https://checkout.stripe.com https://cdn.contentful.com https://preview.contentful.com https://images.ctfassets.net https://api.unsplash.com https://boards-api.greenhouse.io; font-src 'self' data: enhancement: https: http:; img-src 'self' data: blob: https: https://platform.twitter.com https://syndication.twitter.com https://pbs.twimg.com https://ton.twimg.com; style-src 'self' 'unsafe-inline' enhancement: https: http:; frame-src https: http:; media-src https: http:";
   document.head.appendChild(csp);
-`;
+`,
+  idToNotionURL = (id) =>
+    `notion://www.notion.so/${
+      url.parse(id).pathname.split('/').reverse()[0] || ''
+    }/${url.parse(id).search || ''}`;
 
 module.exports = (store, __exports) => {
   if ((store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {}).enabled) {
@@ -157,11 +161,6 @@ module.exports = (store, __exports) => {
         const list = new Map(this.state.tabs);
         while (this.state.tabs.get(id)) id++;
         list.delete(id);
-        console.log(
-          store().default_page
-            ? `notion://www.notion.so/${store().default_page}`
-            : this.views.current.$el().src
-        );
         this.openTab(id, list, true);
       }
       openTab(id, state = new Map(this.state.tabs), load) {
@@ -190,7 +189,7 @@ module.exports = (store, __exports) => {
             this.views.html[id].addEventListener('did-stop-loading', unhide);
             this.views.html[id].loadURL(
               store().default_page
-                ? `notion://www.notion.so/${store().default_page}`
+                ? idToNotionURL(store().default_page)
                 : this.views.current.$el().src
             );
           }
@@ -766,18 +765,17 @@ module.exports = (store, __exports) => {
       });
 
       const parsed = url.parse(window.location.href, true),
-        notionUrl = store().default_page
-          ? `notion://www.notion.so/${store().default_page}`
-          : parsed.query.path ||
-            schemeHelpers.getSchemeUrl({
-              httpUrl: config.default.baseURL,
-              protocol: config.default.protocol,
-            });
+        notionUrl =
+          parsed.query.path ||
+          (store().default_page
+            ? idToNotionURL(store().default_page)
+            : schemeHelpers.getSchemeUrl({
+                httpUrl: config.default.baseURL,
+                protocol: config.default.protocol,
+              }));
       delete parsed.search;
       delete parsed.query;
-      const plainUrl = store().default_page
-        ? `notion://www.notion.so/${store().default_page}`
-        : url.format(parsed);
+      const plainUrl = url.format(parsed);
       window.history.replaceState(undefined, undefined, plainUrl);
 
       document.title = localizationHelper
@@ -818,9 +816,14 @@ module.exports = (store, __exports) => {
             res();
           }, 50);
         }).then(() => {
-          document
-            .getElementById('notion')
-            .loadURL(`notion://www.notion.so/${store().default_page}`);
+          if (
+            document.getElementById('notion').getAttribute('src') ===
+            'notion://www.notion.so'
+          ) {
+            document
+              .getElementById('notion')
+              .loadURL(idToNotionURL(store().default_page));
+          }
         });
       }
 
