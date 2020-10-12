@@ -9,7 +9,6 @@
 const url = require('url'),
   path = require('path'),
   electron = require('electron'),
-  browserWindow = electron.remote.getCurrentWindow(),
   { __notion } = require('../../pkg/helpers.js'),
   config = require(`${__notion}/app/config.js`),
   constants = require(`${__notion}/app/shared/constants.js`),
@@ -19,17 +18,22 @@ const url = require('url'),
   koMessages = require(`${__notion}/app/i18n/ko_KR/messages.json`),
   schemeHelpers = require(`${__notion}/app/shared/schemeHelpers.js`),
   React = require(`${__notion}/app/node_modules/react/index.js`),
-  ReactDOM = require(`${__notion}/app/node_modules/react-dom/index.js`);
+  ReactDOM = require(`${__notion}/app/node_modules/react-dom/index.js`),
+  { toKeyEvent } = require('keyboardevent-from-electron-accelerator');
 
 const insertCSP = `
   const csp = document.createElement('meta');
   csp.httpEquiv = 'Content-Security-Policy';
   csp.content = "script-src 'self' 'unsafe-inline' 'unsafe-eval' enhancement: https://gist.github.com https://apis.google.com https://api.amplitude.com https://widget.intercom.io https://js.intercomcdn.com https://logs-01.loggly.com https://cdn.segment.com https://analytics.pgncs.notion.so https://checkout.stripe.com https://embed.typeform.com https://admin.typeform.com https://platform.twitter.com https://cdn.syndication.twimg.com; connect-src 'self' https://msgstore.www.notion.so wss://msgstore.www.notion.so https://notion-emojis.s3-us-west-2.amazonaws.com https://s3-us-west-2.amazonaws.com https://s3.us-west-2.amazonaws.com https://notion-production-snapshots-2.s3.us-west-2.amazonaws.com https: http: https://api.amplitude.com https://api.embed.ly https://js.intercomcdn.com https://api-iam.intercom.io wss://nexus-websocket-a.intercom.io https://logs-01.loggly.com https://api.segment.io https://api.pgncs.notion.so https://checkout.stripe.com https://cdn.contentful.com https://preview.contentful.com https://images.ctfassets.net https://api.unsplash.com https://boards-api.greenhouse.io; font-src 'self' data: enhancement: https: http:; img-src 'self' data: blob: https: https://platform.twitter.com https://syndication.twitter.com https://pbs.twimg.com https://ton.twimg.com; style-src 'self' 'unsafe-inline' enhancement: https: http:; frame-src https: http:; media-src https: http:";
   document.head.appendChild(csp);
-`;
+`,
+  idToNotionURL = (id) =>
+    `notion://www.notion.so/${
+      url.parse(id).pathname.split('/').reverse()[0] || ''
+    }/${url.parse(id).search || ''}`;
 
 module.exports = (store, __exports) => {
-  if (store().tabs) {
+  if ((store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {}).enabled) {
     class Index extends React.PureComponent {
       constructor() {
         super(...arguments);
@@ -157,22 +161,39 @@ module.exports = (store, __exports) => {
         const list = new Map(this.state.tabs);
         while (this.state.tabs.get(id)) id++;
         list.delete(id);
-        if (this.views.html[id]) {
-          this.views.html[id].style.opacity = '0';
-          let unhide;
-          unhide = () => {
-            this.views.html[id].style.opacity = '';
-            this.views.html[id].removeEventListener('did-stop-loading', unhide);
-          };
-          this.views.html[id].addEventListener('did-stop-loading', unhide);
-          this.views.html[id].loadURL(this.views.current.$el().src);
-        }
-        this.openTab(id, list);
+        this.openTab(id, list, true);
       }
-      openTab(id, state = new Map(this.state.tabs)) {
+      openTab(id, state = new Map(this.state.tabs), load) {
         if (!id && id !== 0) return;
         this.views.current.id = id;
-        this.setState({ tabs: state.set(id, true) }, this.focusTab.bind(this));
+        this.setState({ tabs: state.set(id, true) }, async () => {
+          this.focusTab();
+          if (load) {
+            await new Promise((res, rej) => {
+              let attempt;
+              attempt = setInterval(() => {
+                if (!document.body.contains(this.views.html[id])) return;
+                clearInterval(attempt);
+                res();
+              }, 50);
+            });
+            this.views.html[id].style.opacity = '0';
+            let unhide;
+            unhide = () => {
+              this.views.html[id].style.opacity = '';
+              this.views.html[id].removeEventListener(
+                'did-stop-loading',
+                unhide
+              );
+            };
+            this.views.html[id].addEventListener('did-stop-loading', unhide);
+            this.views.html[id].loadURL(
+              store().default_page
+                ? idToNotionURL(store().default_page)
+                : this.views.current.$el().src
+            );
+          }
+        });
       }
       closeTab(id) {
         if ((!id && id !== 0) || !this.state.tabs.get(id)) return;
@@ -219,11 +240,12 @@ module.exports = (store, __exports) => {
         ) {
           this.views.tabs[event.target.id].children[0].innerText =
             event.args[0];
+          const electronWindow = electron.remote.getCurrentWindow();
           if (
             event.target.id == this.views.current.id &&
-            browserWindow.getTitle() !== event.args[0]
+            electronWindow.getTitle() !== event.args[0]
           )
-            browserWindow.setTitle(event.args[0]);
+            electronWindow.setTitle(event.args[0]);
         }
       }
       startSearch(isPeekView) {
@@ -426,25 +448,41 @@ module.exports = (store, __exports) => {
                 this.setState({ zoomFactor });
               }
             );
+            let electronWindow;
+            try {
+              electronWindow = electron.remote.getCurrentWindow();
+            } catch (error) {
+              notionIpc.sendToMain('notion:log-error', {
+                level: 'error',
+                from: 'index',
+                type: 'GetCurrentWindowError',
+                error: error.message,
+              });
+            }
+            if (!electronWindow) {
+              this.setState({ error: true });
+              this.handleReload();
+              return;
+            }
             const sendFullScreenChangeEvent = () => {
               notionIpc.sendIndexToNotion(
                 $notion,
                 'notion:full-screen-changed'
               );
             };
-            browserWindow.addListener(
+            electronWindow.addListener(
               'enter-full-screen',
               sendFullScreenChangeEvent
             );
-            browserWindow.addListener(
+            electronWindow.addListener(
               'leave-full-screen',
               sendFullScreenChangeEvent
             );
-            browserWindow.addListener(
+            electronWindow.addListener(
               'enter-html-full-screen',
               sendFullScreenChangeEvent
             );
-            browserWindow.addListener(
+            electronWindow.addListener(
               'leave-html-full-screen',
               sendFullScreenChangeEvent
             );
@@ -717,13 +755,24 @@ module.exports = (store, __exports) => {
     window['__start'] = () => {
       document.head.innerHTML += `<link rel="stylesheet" href="${__dirname}/css/tabs.css" />`;
 
+      // open menu on hotkey toggle
+      document.addEventListener('keyup', (event) => {
+        const hotkey = toKeyEvent(store().menu_toggle);
+        let triggered = true;
+        for (let prop in hotkey)
+          if (hotkey[prop] !== event[prop]) triggered = false;
+        if (triggered) electron.ipcRenderer.send('enhancer:open-menu');
+      });
+
       const parsed = url.parse(window.location.href, true),
         notionUrl =
           parsed.query.path ||
-          schemeHelpers.getSchemeUrl({
-            httpUrl: config.default.baseURL,
-            protocol: config.default.protocol,
-          });
+          (store().default_page
+            ? idToNotionURL(store().default_page)
+            : schemeHelpers.getSchemeUrl({
+                httpUrl: config.default.baseURL,
+                protocol: config.default.protocol,
+              }));
       delete parsed.search;
       delete parsed.query;
       const plainUrl = url.format(parsed);
@@ -753,6 +802,31 @@ module.exports = (store, __exports) => {
     const __start = window['__start'];
     window['__start'] = () => {
       __start();
+
+      if (store().default_page) {
+        new Promise((res, rej) => {
+          let attempt;
+          attempt = setInterval(() => {
+            if (
+              !document.getElementById('notion') ||
+              !document.getElementById('notion').loadURL
+            )
+              return;
+            clearInterval(attempt);
+            res();
+          }, 50);
+        }).then(() => {
+          if (
+            document.getElementById('notion').getAttribute('src') ===
+            'notion://www.notion.so'
+          ) {
+            document
+              .getElementById('notion')
+              .loadURL(idToNotionURL(store().default_page));
+          }
+        });
+      }
+
       const dragarea = document.querySelector(
           '#root [style*="-webkit-app-region: drag"]'
         ),

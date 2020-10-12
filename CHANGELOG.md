@@ -17,6 +17,8 @@ a flexibility update.
 - new: in-page columns disabled/wrapped and wider pages when the window is narrower than 600px
   for improved responsiveness.
 - new: relaunch button in tray menu.
+- new: a core mod option for a default page id/url (all new windows will load it instead of the
+  normal "most recent" page).
 - improved: a core mod option to make transitions snappy/0s.
 - improved: menu will now respect integrated titlebar setting.
 - improved: use keyup listeners instead of a globalShortcut for the enhancements menu toggle.
@@ -32,6 +34,7 @@ a flexibility update.
 - bugfix: remove focus mode footer from neutral theme.
 - bugfix: improvements to the colour theming, particularly to make real- and fake-light/dark
   modes (as applied by the night shift extension) look consistent.
+- bugfix: font sizing applied to overlays/previews.
 - tweak: sticky table/list rows.
 - theme: "material ocean" = an oceanic colour palette.
 - theme: "dracula" = a theme based on the popular dracula color palette

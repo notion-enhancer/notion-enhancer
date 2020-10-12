@@ -130,6 +130,11 @@ function getEnhancements() {
           ))
       )
         throw Error;
+      mod.defaults = {};
+      for (let opt of mod.options || [])
+        mod.defaults[opt.key] = Array.isArray(opt.value)
+          ? opt.value[0]
+          : opt.value;
       modules.IDs.push(mod.id);
       modules.loaded.push({
         ...mod,
