@@ -19,12 +19,16 @@ module.exports = (store, __exports) => {
   // additional hotkeys
   document.defaultView.addEventListener('keyup', (event) => {
     if (event.code === 'F5') location.reload();
-    // open menu on hotkey toggle
-    const hotkey = toKeyEvent(store().menu_toggle);
-    let triggered = true;
-    for (let prop in hotkey)
-      if (hotkey[prop] !== event[prop]) triggered = false;
-    if (triggered) electron.ipcRenderer.send('enhancer:open-menu');
+    if (
+      !(store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {}).enabled
+    ) {
+      // open menu on hotkey toggle
+      const hotkey = toKeyEvent(store().menu_toggle);
+      let triggered = true;
+      for (let prop in hotkey)
+        if (hotkey[prop] !== event[prop]) triggered = false;
+      if (triggered) electron.ipcRenderer.send('enhancer:open-menu');
+    }
   });
 
   const attempt_interval = setInterval(enhance, 500);
@@ -43,7 +47,11 @@ module.exports = (store, __exports) => {
       document.body.classList.add('snappy-transitions');
 
     // frameless
-    if (store().frameless && !store().tiling_mode && !store().tabs) {
+    if (
+      store().frameless &&
+      !store().tiling_mode &&
+      !(store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {}).enabled
+    ) {
       document.body.classList.add('frameless');
       // draggable area
       document
@@ -56,7 +64,9 @@ module.exports = (store, __exports) => {
     }
 
     // window buttons
-    if (!store().tabs) {
+    if (
+      !(store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {}).enabled
+    ) {
       const buttons = require('./buttons.js')(store);
       document
         .querySelector('.notion-topbar > div[style*="display: flex"]')
@@ -153,7 +163,9 @@ module.exports = (store, __exports) => {
           '--theme--code_inline-background',
         ].map((rule) => [rule, getStyle(rule)])
       );
-      if (store().tabs) {
+      if (
+        (store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {}).enabled
+      ) {
         electron.ipcRenderer.sendToHost(
           'enhancer:set-tab-theme',
           [
@@ -179,7 +191,7 @@ module.exports = (store, __exports) => {
     );
     electron.ipcRenderer.on('enhancer:get-menu-theme', setThemeVars);
 
-    if (store().tabs) {
+    if ((store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {}).enabled) {
       let tab_title = '';
       __electronApi.setWindowTitle = (title) => {
         if (tab_title !== title) {

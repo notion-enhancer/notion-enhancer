@@ -18,7 +18,8 @@ const url = require('url'),
   koMessages = require(`${__notion}/app/i18n/ko_KR/messages.json`),
   schemeHelpers = require(`${__notion}/app/shared/schemeHelpers.js`),
   React = require(`${__notion}/app/node_modules/react/index.js`),
-  ReactDOM = require(`${__notion}/app/node_modules/react-dom/index.js`);
+  ReactDOM = require(`${__notion}/app/node_modules/react-dom/index.js`),
+  { toKeyEvent } = require('keyboardevent-from-electron-accelerator');
 
 const insertCSP = `
   const csp = document.createElement('meta');
@@ -28,7 +29,7 @@ const insertCSP = `
 `;
 
 module.exports = (store, __exports) => {
-  if (store().tabs) {
+  if ((store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {}).enabled) {
     class Index extends React.PureComponent {
       constructor() {
         super(...arguments);
@@ -156,22 +157,44 @@ module.exports = (store, __exports) => {
         const list = new Map(this.state.tabs);
         while (this.state.tabs.get(id)) id++;
         list.delete(id);
-        if (this.views.html[id]) {
-          this.views.html[id].style.opacity = '0';
-          let unhide;
-          unhide = () => {
-            this.views.html[id].style.opacity = '';
-            this.views.html[id].removeEventListener('did-stop-loading', unhide);
-          };
-          this.views.html[id].addEventListener('did-stop-loading', unhide);
-          this.views.html[id].loadURL(this.views.current.$el().src);
-        }
-        this.openTab(id, list);
+        console.log(
+          store().default_page
+            ? `notion://www.notion.so/${store().default_page}`
+            : this.views.current.$el().src
+        );
+        this.openTab(id, list, true);
       }
-      openTab(id, state = new Map(this.state.tabs)) {
+      openTab(id, state = new Map(this.state.tabs), load) {
         if (!id && id !== 0) return;
         this.views.current.id = id;
-        this.setState({ tabs: state.set(id, true) }, this.focusTab.bind(this));
+        this.setState({ tabs: state.set(id, true) }, async () => {
+          this.focusTab();
+          if (load) {
+            await new Promise((res, rej) => {
+              let attempt;
+              attempt = setInterval(() => {
+                if (!document.body.contains(this.views.html[id])) return;
+                clearInterval(attempt);
+                res();
+              }, 50);
+            });
+            this.views.html[id].style.opacity = '0';
+            let unhide;
+            unhide = () => {
+              this.views.html[id].style.opacity = '';
+              this.views.html[id].removeEventListener(
+                'did-stop-loading',
+                unhide
+              );
+            };
+            this.views.html[id].addEventListener('did-stop-loading', unhide);
+            this.views.html[id].loadURL(
+              store().default_page
+                ? `notion://www.notion.so/${store().default_page}`
+                : this.views.current.$el().src
+            );
+          }
+        });
       }
       closeTab(id) {
         if ((!id && id !== 0) || !this.state.tabs.get(id)) return;
@@ -733,16 +756,28 @@ module.exports = (store, __exports) => {
     window['__start'] = () => {
       document.head.innerHTML += `<link rel="stylesheet" href="${__dirname}/css/tabs.css" />`;
 
+      // open menu on hotkey toggle
+      document.addEventListener('keyup', (event) => {
+        const hotkey = toKeyEvent(store().menu_toggle);
+        let triggered = true;
+        for (let prop in hotkey)
+          if (hotkey[prop] !== event[prop]) triggered = false;
+        if (triggered) electron.ipcRenderer.send('enhancer:open-menu');
+      });
+
       const parsed = url.parse(window.location.href, true),
-        notionUrl =
-          parsed.query.path ||
-          schemeHelpers.getSchemeUrl({
-            httpUrl: config.default.baseURL,
-            protocol: config.default.protocol,
-          });
+        notionUrl = store().default_page
+          ? `notion://www.notion.so/${store().default_page}`
+          : parsed.query.path ||
+            schemeHelpers.getSchemeUrl({
+              httpUrl: config.default.baseURL,
+              protocol: config.default.protocol,
+            });
       delete parsed.search;
       delete parsed.query;
-      const plainUrl = url.format(parsed);
+      const plainUrl = store().default_page
+        ? `notion://www.notion.so/${store().default_page}`
+        : url.format(parsed);
       window.history.replaceState(undefined, undefined, plainUrl);
 
       document.title = localizationHelper
@@ -769,6 +804,26 @@ module.exports = (store, __exports) => {
     const __start = window['__start'];
     window['__start'] = () => {
       __start();
+
+      if (store().default_page) {
+        new Promise((res, rej) => {
+          let attempt;
+          attempt = setInterval(() => {
+            if (
+              !document.getElementById('notion') ||
+              !document.getElementById('notion').loadURL
+            )
+              return;
+            clearInterval(attempt);
+            res();
+          }, 50);
+        }).then(() => {
+          document
+            .getElementById('notion')
+            .loadURL(`notion://www.notion.so/${store().default_page}`);
+        });
+      }
+
       const dragarea = document.querySelector(
           '#root [style*="-webkit-app-region: drag"]'
         ),
