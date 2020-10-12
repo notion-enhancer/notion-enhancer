@@ -45,6 +45,9 @@
   --theme_dark--font_body-size_small: 14px;
   --theme_dark--font_code-size: 0.796875em;
   --theme_dark--font_sidebar-size: 14px;
+  
+  --theme_dark--text-block_line-height: 1.5;
+  --theme_dark--text-block_margin-top: 1px;
 
   --theme_dark--scrollbar: #505457;
   --theme_dark--scrollbar-border: transparent;
@@ -226,6 +229,9 @@
   --theme_light--font_body-size_small: 14px;
   --theme_light--font_code-size: 0.796875em;
   --theme_light--font_sidebar-size: 14px;
+  
+  --theme_light--text-block_line-height: 1.5;
+  --theme_light--text-block_margin-top: 1px;
 
   --theme_light--scrollbar: #d9d8d6;
   --theme_light--scrollbar-border: #cacac8;
