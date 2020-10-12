@@ -192,6 +192,13 @@
   font-size: var(--theme--font_sidebar-size) !important;
 }
 
+/** text-block readability **/
+
+.notion-selectable.notion-text-block {
+  line-height: var(--theme--text-block_line-height) !important;
+  margin-top: var(--theme--text-block_margin-top) !important;
+}
+
 /** databases **/
 
 .notion-body.dark [style*='background: rgb(63, 68, 71)'],
