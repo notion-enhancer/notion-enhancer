@@ -16,18 +16,41 @@ module.exports = (store, __exports) => {
     )}/app/helpers/notionIpc.js`),
     { toKeyEvent } = require('keyboardevent-from-electron-accelerator');
 
-  // additional hotkeys
   document.defaultView.addEventListener('keyup', (event) => {
+    // additional hotkeys
     if (event.code === 'F5') location.reload();
-    if (
-      !(store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {}).enabled
-    ) {
-      // open menu on hotkey toggle
-      const hotkey = toKeyEvent(store().menu_toggle);
+    // open menu on hotkey toggle
+    const hotkey = toKeyEvent(store().menu_toggle);
+    let triggered = true;
+    for (let prop in hotkey)
+      if (hotkey[prop] !== event[prop]) triggered = false;
+    if (triggered) electron.ipcRenderer.send('enhancer:open-menu');
+    if ((store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {}).enabled) {
+      // switch between tabs via key modifier
+      const select_tab_modifier = toKeyEvent(
+        store('e1692c29-475e-437b-b7ff-3eee872e1a42').select_modifier
+      );
       let triggered = true;
-      for (let prop in hotkey)
-        if (hotkey[prop] !== event[prop]) triggered = false;
-      if (triggered) electron.ipcRenderer.send('enhancer:open-menu');
+      for (let prop in select_tab_modifier)
+        if (select_tab_modifier[prop] !== event[prop]) triggered = false;
+      if (triggered && [1, 2, 3, 4, 5, 6, 7, 8, 9].includes(+event.key))
+        electron.ipcRenderer.sendToHost('enhancer:select-tab', event.key);
+      // create/close tab keybindings
+      const new_tab_keybinding = toKeyEvent(
+        store('e1692c29-475e-437b-b7ff-3eee872e1a42').new_tab
+      );
+      triggered = true;
+      for (let prop in new_tab_keybinding)
+        if (new_tab_keybinding[prop] !== event[prop]) triggered = false;
+      if (triggered) electron.ipcRenderer.sendToHost('enhancer:new-tab');
+      const close_tab_keybinding = toKeyEvent(
+        store('e1692c29-475e-437b-b7ff-3eee872e1a42').close_tab
+      );
+      triggered = true;
+      for (let prop in close_tab_keybinding)
+        if (close_tab_keybinding[prop] !== event[prop]) triggered = false;
+      console.log(triggered, event);
+      if (triggered) electron.ipcRenderer.sendToHost('enhancer:close-tab');
     }
   });
 

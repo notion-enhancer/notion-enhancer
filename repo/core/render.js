@@ -115,6 +115,33 @@ module.exports = (store, __exports) => {
           from[1].classList.remove('slideIn');
           this.$dragging = null;
         });
+        document.addEventListener('keyup', (event) => {
+          // switch between tabs via key modifier
+          const select_tab_modifier = toKeyEvent(
+            store('e1692c29-475e-437b-b7ff-3eee872e1a42').select_modifier
+          );
+          let triggered = true;
+          for (let prop in select_tab_modifier)
+            if (select_tab_modifier[prop] !== event[prop]) triggered = false;
+          if (triggered && [1, 2, 3, 4, 5, 6, 7, 8, 9].includes(+event.key))
+            this.selectTab(event.key);
+          // create/close tab keybindings
+          const new_tab_keybinding = toKeyEvent(
+            store('e1692c29-475e-437b-b7ff-3eee872e1a42').new_tab
+          );
+          triggered = true;
+          for (let prop in new_tab_keybinding)
+            if (new_tab_keybinding[prop] !== event[prop]) triggered = false;
+          if (triggered) this.newTab();
+          const close_tab_keybinding = toKeyEvent(
+            store('e1692c29-475e-437b-b7ff-3eee872e1a42').close_tab
+          );
+          triggered = true;
+          for (let prop in close_tab_keybinding)
+            if (close_tab_keybinding[prop] !== event[prop]) triggered = false;
+          console.log(triggered, event);
+          if (triggered) this.closeTab(this.views.current.id);
+        });
       }
 
       componentDidMount() {
@@ -192,6 +219,7 @@ module.exports = (store, __exports) => {
                 ? idToNotionURL(store().default_page)
                 : this.views.current.$el().src
             );
+            this.views.html[id].getWebContents().openDevTools();
           }
         });
       }
@@ -228,24 +256,50 @@ module.exports = (store, __exports) => {
           }
         }
       }
+      selectTab(num) {
+        num = +num;
+        if (num == 9) {
+          document
+            .querySelector('#tabs')
+            .children[
+              document.querySelector('#tabs').children.length - 2
+            ].click();
+        } else if (
+          document.querySelector('#tabs').children[num - 1] &&
+          document.querySelector('#tabs').children.length > num
+        ) {
+          document.querySelector('#tabs').children[num - 1].click();
+        }
+      }
 
       communicateWithView(event) {
-        if (event.channel === 'enhancer:set-tab-theme') {
-          for (const style of event.args[0])
-            document.body.style.setProperty(style[0], style[1]);
-        }
-        if (
-          event.channel === 'enhancer:set-tab-title' &&
-          this.views.tabs[event.target.id]
-        ) {
-          this.views.tabs[event.target.id].children[0].innerText =
-            event.args[0];
-          const electronWindow = electron.remote.getCurrentWindow();
-          if (
-            event.target.id == this.views.current.id &&
-            electronWindow.getTitle() !== event.args[0]
-          )
-            electronWindow.setTitle(event.args[0]);
+        switch (event.channel) {
+          case 'enhancer:set-tab-theme':
+            for (const style of event.args[0])
+              document.body.style.setProperty(style[0], style[1]);
+            break;
+          case 'enhancer:set-tab-title':
+            if (this.views.tabs[event.target.id]) {
+              this.views.tabs[event.target.id].children[0].innerText =
+                event.args[0];
+              const electronWindow = electron.remote.getCurrentWindow();
+              if (
+                event.target.id == this.views.current.id &&
+                electronWindow.getTitle() !== event.args[0]
+              )
+                electronWindow.setTitle(event.args[0]);
+            }
+            break;
+          case 'enhancer:select-tab':
+            this.selectTab(event.args[0]);
+            break;
+          case 'enhancer:new-tab':
+            this.newTab();
+            break;
+          case 'enhancer:close-tab':
+            if (event.target.id == this.views.current.id)
+              this.closeTab(+event.target.id);
+            break;
         }
       }
       startSearch(isPeekView) {

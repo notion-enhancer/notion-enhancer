@@ -16,4 +16,24 @@ module.exports = {
   desc: 'have multiple notion pages open in a single window.',
   version: '0.1.0',
   author: 'dragonwocky',
+  options: [
+    {
+      key: 'select_modifier',
+      label: 'tab select modifier (key+1, +2, +3, ... +9):',
+      type: 'select',
+      value: ['Alt', 'Command', 'Control', 'Shift', 'Super'],
+    },
+    {
+      key: 'new_tab',
+      label: 'new tab keybinding:',
+      type: 'input',
+      value: 'CommandOrControl+T',
+    },
+    {
+      key: 'close_tab',
+      label: 'close tab keybinding:',
+      type: 'input',
+      value: 'CommandOrControl+W',
+    },
+  ],
 };
