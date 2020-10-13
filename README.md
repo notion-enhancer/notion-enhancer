@@ -47,6 +47,7 @@ then execute the following lines in the terminal:
 sudo chmod -R a+wr /usr/local/lib/node_modules
 sudo chmod -R a+wr /usr/local/bin
 sudo chmod -R a+wr /Applications/Notion/Contents/Resources
+sudo chmod -R a+wr /Applications/Notion.app/Contents/Resources
 npm i -g notion-enhancer
 ```
 

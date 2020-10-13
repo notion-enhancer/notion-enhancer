@@ -2,7 +2,6 @@
 
 **potential future features (not confirmed)**
 
-- [groupy-like tabbing](https://www.npmjs.com/package/electron-tabs)
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 - [advanced math editor](https://github.com/Manueloccorso/NotionMathEditor_BrowserExtension)
 
@@ -12,14 +11,15 @@ a flexibility update.
 
 - new: mods can be reordered in the menu to control what order styling/scripts are added/executed in.
   higher up on the list = higher priority of application = loaded last in order to override others.
-  (excluding core, which though pinned to the top of the list is always loaded first so theming
+  (excluding the core, which though pinned to the top of the list is always loaded first so theming
   variables can be modified.)
 - new: in-page columns disabled/wrapped and wider pages when the window is narrower than 600px
   for improved responsiveness.
 - new: relaunch button in tray menu.
+- new: a core mod option to make transitions snappy/0s.
 - new: a core mod option for a default page id/url (all new windows will load it instead of the
   normal "most recent" page).
-- improved: a core mod option to make transitions snappy/0s.
+- new: css variables for increasing line spacing/paragraph margins.
 - improved: menu will now respect integrated titlebar setting.
 - improved: use keyup listeners instead of a globalShortcut for the enhancements menu toggle.
 - bugfix: removed messenger emoji set as the provider no longer supports it.
@@ -42,6 +42,14 @@ a flexibility update.
 - extension: "tabs" = have multiple notion pages open in a single window.
 
 a fork of notion-deb-builder that does generate an app.asar has been created and is once again supported.
+
+// todo
+
+- new: menu shows theme conflicts.
+- improved: default option for showing/hiding page properties.
+- bugfix: night shift working on macOS.
+- bugfix: windows are properly hidden/shown on macOS.
+- extension: "tweaks" = common layout changes.
 
 ### v0.9.1 (2020-09-26)
 
