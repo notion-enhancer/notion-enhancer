@@ -18,7 +18,7 @@ module.exports = (store, __exports) => {
 
   document.defaultView.addEventListener('keyup', (event) => {
     // additional hotkeys
-    if (event.code === 'F5') location.reload();
+    if (event.key === 'F5') location.reload();
     // open menu on hotkey toggle
     const hotkey = toKeyEvent(store().menu_toggle);
     let triggered = true;
@@ -49,7 +49,6 @@ module.exports = (store, __exports) => {
       triggered = true;
       for (let prop in close_tab_keybinding)
         if (close_tab_keybinding[prop] !== event[prop]) triggered = false;
-      console.log(triggered, event);
       if (triggered) electron.ipcRenderer.sendToHost('enhancer:close-tab');
     }
   });

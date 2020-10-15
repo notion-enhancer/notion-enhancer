@@ -33,7 +33,7 @@ module.exports = (store, __exports) => {
     // menu
 
     electron.ipcMain.on('enhancer:open-menu', (event, arg) => {
-      openExtensionMenu();
+      openEnhancerMenu();
     });
     electron.ipcMain.on('enhancer:set-menu-theme', (event, arg) => {
       if (!enhancer_menu) return;
@@ -81,13 +81,13 @@ module.exports = (store, __exports) => {
       };
     }
 
-    function openExtensionMenu() {
+    function openEnhancerMenu() {
       if (enhancer_menu) return enhancer_menu.show();
       const window_state = require(`${helpers.__notion.replace(
         /\\/g,
         '/'
       )}/app/node_modules/electron-window-state/index.js`)({
-        file: 'menu-windowstate.json',
+        file: 'enhancerMenu.windowState.json',
         path: helpers.__data,
         defaultWidth: 275,
         defaultHeight: 600,
@@ -106,7 +106,7 @@ module.exports = (store, __exports) => {
         width: window_state.width,
         height: window_state.height,
         webPreferences: {
-          preload: path.resolve(`${__dirname}/menu.js`),
+          preload: path.resolve(`${__dirname}/enhancerMenu.js`),
           nodeIntegration: true,
           session: electron.session.fromPartition('persist:notion'),
         },
@@ -116,6 +116,7 @@ module.exports = (store, __exports) => {
         window_state.saveState(enhancer_menu);
         enhancer_menu = null;
       });
+      // enhancer_menu.webContents.openDevTools();
     }
 
     // tray
@@ -165,7 +166,7 @@ module.exports = (store, __exports) => {
         type: 'normal',
         label: 'Enhancements',
         accelerator: store().menu_toggle,
-        click: openExtensionMenu,
+        click: openEnhancerMenu,
       },
       {
         type: 'normal',

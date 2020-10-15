@@ -13,13 +13,14 @@ a flexibility update.
   higher up on the list = higher priority of application = loaded last in order to override others.
   (excluding the core, which though pinned to the top of the list is always loaded first so theming
   variables can be modified.)
-- new: in-page columns disabled/wrapped and wider pages when the window is narrower than 600px
-  for improved responsiveness.
+- new: in-page columns are disabled/wrapped and pages are wider when
+  the window is narrower than 600px for improved responsiveness.
 - new: relaunch button in tray menu.
 - new: a core mod option to make transitions snappy/0s.
 - new: a core mod option for a default page id/url (all new windows will load it instead of the
   normal "most recent" page).
 - new: css variables for increasing line spacing/paragraph margins.
+- new: patch the notion:// url scheme/protocol to work on linux.
 - improved: menu will now respect integrated titlebar setting.
 - improved: use keyup listeners instead of a globalShortcut for the enhancements menu toggle.
 - bugfix: removed messenger emoji set as the provider no longer supports it.
