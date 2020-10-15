@@ -87,7 +87,7 @@ module.exports = (store, __exports) => {
         /\\/g,
         '/'
       )}/app/node_modules/electron-window-state/index.js`)({
-        file: 'enhancerMenu.windowState.json',
+        file: 'menu.windowstate.json',
         path: helpers.__data,
         defaultWidth: 275,
         defaultHeight: 600,
@@ -172,7 +172,7 @@ module.exports = (store, __exports) => {
         type: 'normal',
         label: 'New Window',
         click: () => {
-          require('./create.js')(
+          require('./createWindow.js')(
             store,
             require(path.resolve(
               `${helpers.__notion}/app/main/createWindow.js`

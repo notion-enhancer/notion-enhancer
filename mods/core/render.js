@@ -42,7 +42,7 @@ module.exports = (store, __exports) => {
           searching: false,
           searchingPeekView: false,
           zoomFactor: 1,
-          tabs: new Map([[0, true]]),
+          tabs: new Map([[0, ['notion.so', true]]]),
         };
         this.$titlebar = null;
         this.$dragging = null;
@@ -84,42 +84,42 @@ module.exports = (store, __exports) => {
             ) || []
           );
         };
-        document.addEventListener('dragstart', (event) => {
-          if (!this.$titlebar) return;
-          this.$dragging = getTab(event.target)[0];
-          event.target.style.opacity = 0.5;
-        });
-        document.addEventListener('dragend', (event) => {
-          if (!this.$titlebar) return;
-          event.target.style.opacity = '';
-        });
-        document.addEventListener('dragover', (event) => {
-          if (!this.$titlebar) return;
-          event.preventDefault();
-          document
-            .querySelectorAll('.dragged-over')
-            .forEach((el) => el.classList.remove('dragged-over'));
-          const tab = getTab(event.target);
-          if (tab[1]) tab[1].classList.add('dragged-over');
-        });
-        document.addEventListener('drop', (event) => {
-          if (!this.$titlebar || this.$dragging === null) return;
-          event.preventDefault();
-          document
-            .querySelectorAll('.dragged-over')
-            .forEach((el) => el.classList.remove('dragged-over'));
-          document
-            .querySelectorAll('.slideIn')
-            .forEach((el) => el.classList.remove('slideIn'));
-          const from = getTab(this.views.tabs[+this.$dragging]),
-            to = getTab(event.target);
-          if (!from[1].classList.contains('new') && from[0] !== to[0])
-            to[1].parentElement.insertBefore(from[1], to[1]);
-          this.$dragging = null;
-          document
-            .querySelector('#tabs')
-            .appendChild(document.querySelector('.tab.new'));
-        });
+        // document.addEventListener('dragstart', (event) => {
+        //   if (!this.$titlebar) return;
+        //   this.$dragging = getTab(event.target)[0];
+        //   event.target.style.opacity = 0.5;
+        // });
+        // document.addEventListener('dragend', (event) => {
+        //   if (!this.$titlebar) return;
+        //   event.target.style.opacity = '';
+        // });
+        // document.addEventListener('dragover', (event) => {
+        //   if (!this.$titlebar) return;
+        //   event.preventDefault();
+        //   document
+        //     .querySelectorAll('.dragged-over')
+        //     .forEach((el) => el.classList.remove('dragged-over'));
+        //   const tab = getTab(event.target);
+        //   if (tab[1]) tab[1].classList.add('dragged-over');
+        // });
+        // document.addEventListener('drop', (event) => {
+        //   if (!this.$titlebar || this.$dragging === null) return;
+        //   event.preventDefault();
+        //   document
+        //     .querySelectorAll('.dragged-over')
+        //     .forEach((el) => el.classList.remove('dragged-over'));
+        //   document
+        //     .querySelectorAll('.slideIn')
+        //     .forEach((el) => el.classList.remove('slideIn'));
+        //   const from = getTab(this.views.tabs[+this.$dragging]),
+        //     to = getTab(event.target);
+        //   if (!from[1].classList.contains('new') && from[0] !== to[0])
+        //     to[1].parentElement.insertBefore(from[1], to[1]);
+        //   this.$dragging = null;
+        //   document
+        //     .querySelector('#tabs')
+        //     .appendChild(document.querySelector('.tab.new'));
+        // });
         document.addEventListener('keyup', (event) => {
           if (!electron.remote.getCurrentWindow().isFocused()) return;
           // switch between tabs via key modifier
@@ -129,7 +129,22 @@ module.exports = (store, __exports) => {
           let triggered = true;
           for (let prop in select_tab_modifier)
             if (select_tab_modifier[prop] !== event[prop]) triggered = false;
-          if (triggered && [1, 2, 3, 4, 5, 6, 7, 8, 9].includes(+event.key))
+          if (
+            triggered &&
+            [
+              '1',
+              '2',
+              '3',
+              '4',
+              '5',
+              '6',
+              '7',
+              '8',
+              '9',
+              'ArrowRight',
+              'ArrowLeft',
+            ].includes(event.key)
+          )
             this.selectTab(event.key);
           // create/close tab keybindings
           const new_tab_keybinding = toKeyEvent(
@@ -192,58 +207,64 @@ module.exports = (store, __exports) => {
       newTab() {
         let id = 0;
         const list = new Map(this.state.tabs);
-        while (this.state.tabs.get(id)) id++;
+        while (this.state.tabs.get(id) && this.state.tabs.get(id)[1]) id++;
         list.delete(id);
         this.openTab(id, list, true);
       }
       openTab(id, state = new Map(this.state.tabs), load) {
-        if (!id && id !== 0) return;
+        if (!id && id !== 0) {
+          if (this.views.current.$el().style.display === 'flex') return;
+          id = [...state].find(([id, [title, open]]) => open)[0];
+        }
+        const current_src = this.views.current.$el().src;
         this.views.current.id = id;
-        this.setState({ tabs: state.set(id, true) }, async () => {
-          this.focusTab();
-          if (load) {
-            await new Promise((res, rej) => {
-              let attempt;
-              attempt = setInterval(() => {
-                if (!document.body.contains(this.views.html[id])) return;
-                clearInterval(attempt);
-                res();
-              }, 50);
-            });
-            this.views.html[id].style.opacity = '0';
-            let unhide;
-            unhide = () => {
-              this.views.html[id].style.opacity = '';
-              this.views.html[id].removeEventListener(
-                'did-stop-loading',
-                unhide
+        this.setState(
+          {
+            tabs: state.set(id, [
+              state.get(id) ? state.get(id)[0] : 'notion.so',
+              true,
+            ]),
+          },
+          async () => {
+            this.focusTab();
+            if (load) {
+              await new Promise((res, rej) => {
+                let attempt;
+                attempt = setInterval(() => {
+                  if (!document.body.contains(this.views.html[id])) return;
+                  clearInterval(attempt);
+                  res();
+                }, 50);
+              });
+              this.views.html[id].style.opacity = '0';
+              let unhide;
+              unhide = () => {
+                this.views.html[id].style.opacity = '';
+                this.views.html[id].removeEventListener(
+                  'did-stop-loading',
+                  unhide
+                );
+              };
+              this.views.html[id].addEventListener('did-stop-loading', unhide);
+              this.views.html[id].loadURL(
+                store().default_page
+                  ? idToNotionURL(store().default_page)
+                  : current_src
               );
-            };
-            this.views.html[id].addEventListener('did-stop-loading', unhide);
-            this.views.html[id].loadURL(
-              store().default_page
-                ? idToNotionURL(store().default_page)
-                : this.views.current.$el().src
-            );
-            // this.views.html[id].getWebContents().openDevTools();
+              // this.views.html[id].getWebContents().openDevTools();
+            }
           }
-        });
+        );
       }
       closeTab(id) {
         if ((!id && id !== 0) || !this.state.tabs.get(id)) return;
+        console.log(id);
         const list = new Map(this.state.tabs);
-        list.delete(id);
-        list.set(id, false);
-        if (![...list].filter(([id, open]) => open).length)
+        list.set(id, [list.get(id)[0], false]);
+        console.log(list);
+        if (![...list].filter(([id, [title, open]]) => open).length)
           return electron.remote.getCurrentWindow().close();
-        while (
-          !list.get(this.views.current.id) ||
-          this.views.current.id === id
-        ) {
-          this.views.current.id = this.views.current.id - 1;
-          if (this.views.current.id < 0) this.views.current.id = list.size - 1;
-        }
-        this.setState({ tabs: list }, this.focusTab.bind(this));
+        this.openTab(null, list);
       }
       focusTab() {
         if (this.views.active === this.views.current.id) return;
@@ -263,18 +284,28 @@ module.exports = (store, __exports) => {
         }
       }
       selectTab(num) {
-        num = +num;
-        if (num == 9) {
-          document
-            .querySelector('#tabs')
-            .children[
-              document.querySelector('#tabs').children.length - 2
-            ].click();
-        } else if (
-          document.querySelector('#tabs').children[num - 1] &&
-          document.querySelector('#tabs').children.length > num
-        ) {
-          document.querySelector('#tabs').children[num - 1].click();
+        if (num === 'ArrowLeft') {
+          const prev = document.querySelector('.tab.current')
+            .previousElementSibling;
+          if (prev) prev.click();
+        } else if (num === 'ArrowRight') {
+          const next = document.querySelector('.tab.current')
+            .nextElementSibling;
+          if (next && !next.classList.contains('new')) next.click();
+        } else {
+          num = +num;
+          if (num == 9) {
+            document
+              .querySelector('#tabs')
+              .children[
+                document.querySelector('#tabs').children.length - 2
+              ].click();
+          } else if (
+            document.querySelector('#tabs').children[num - 1] &&
+            document.querySelector('#tabs').children.length > num
+          ) {
+            document.querySelector('#tabs').children[num - 1].click();
+          }
         }
       }
 
@@ -285,9 +316,15 @@ module.exports = (store, __exports) => {
               document.body.style.setProperty(style[0], style[1]);
             break;
           case 'enhancer:set-tab-title':
-            if (this.views.tabs[event.target.id]) {
-              this.views.tabs[event.target.id].children[0].innerText =
-                event.args[0];
+            if (this.state.tabs.get(event.target.id)) {
+              const list = new Map(this.state.tabs);
+              list.set(event.target.id, [
+                event.args[0],
+                this.state.tabs.get(event.target.id)[1],
+              ]);
+              this.setState({
+                tabs: list,
+              });
               const electronWindow = electron.remote.getCurrentWindow();
               if (
                 event.target.id == this.views.current.id &&
@@ -550,6 +587,7 @@ module.exports = (store, __exports) => {
       }
 
       renderTitlebar() {
+        console.log('title');
         return React.createElement(
           'header',
           {
@@ -568,25 +606,24 @@ module.exports = (store, __exports) => {
             'div',
             { id: 'tabs' },
             ...[...this.state.tabs]
-              .filter(([id, open]) => open)
-              .map(([id, open]) =>
+              .filter(([id, [title, open]]) => open)
+              .map(([id, [title, open]]) =>
                 React.createElement(
                   'button',
                   {
-                    draggable: true,
                     className:
-                      'tab slideIn' +
-                      (id === this.views.current.id ? ' current' : ''),
+                      'tab' + (id === this.views.current.id ? ' current' : ''),
+                    draggable: true,
+                    'data-linked': id,
                     onClick: (e) => {
                       if (!e.target.classList.contains('close'))
                         this.openTab(id);
                     },
                     ref: ($tab) => {
                       this.views.tabs[id] = $tab;
-                      this.focusTab();
                     },
                   },
-                  React.createElement('span', {}, 'notion.so'),
+                  React.createElement('span', {}, title),
                   React.createElement(
                     'span',
                     {
@@ -614,7 +651,7 @@ module.exports = (store, __exports) => {
       }
       renderNotionContainer() {
         this.views.react = Object.fromEntries(
-          [...this.state.tabs].map(([id, open]) => {
+          [...this.state.tabs].map(([id, [title, open]]) => {
             return [
               id,
               this.views.react[id] ||

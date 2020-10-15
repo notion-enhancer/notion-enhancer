@@ -14,7 +14,9 @@ module.exports = (store, __exports) => {
       /\\/g,
       '/'
     )}/app/helpers/notionIpc.js`),
-    { toKeyEvent } = require('keyboardevent-from-electron-accelerator');
+    { toKeyEvent } = require('keyboardevent-from-electron-accelerator'),
+    tabsEnabled = (store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {})
+      .enabled;
 
   document.defaultView.addEventListener('keyup', (event) => {
     // additional hotkeys
@@ -25,7 +27,7 @@ module.exports = (store, __exports) => {
     for (let prop in hotkey)
       if (hotkey[prop] !== event[prop]) triggered = false;
     if (triggered) electron.ipcRenderer.send('enhancer:open-menu');
-    if ((store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {}).enabled) {
+    if (tabsEnabled) {
       // switch between tabs via key modifier
       const select_tab_modifier = toKeyEvent(
         store('e1692c29-475e-437b-b7ff-3eee872e1a42').select_modifier
@@ -33,7 +35,22 @@ module.exports = (store, __exports) => {
       let triggered = true;
       for (let prop in select_tab_modifier)
         if (select_tab_modifier[prop] !== event[prop]) triggered = false;
-      if (triggered && [1, 2, 3, 4, 5, 6, 7, 8, 9].includes(+event.key))
+      if (
+        triggered &&
+        [
+          '1',
+          '2',
+          '3',
+          '4',
+          '5',
+          '6',
+          '7',
+          '8',
+          '9',
+          'ArrowRight',
+          'ArrowLeft',
+        ].includes(event.key)
+      )
         electron.ipcRenderer.sendToHost('enhancer:select-tab', event.key);
       // create/close tab keybindings
       const new_tab_keybinding = toKeyEvent(
@@ -69,11 +86,7 @@ module.exports = (store, __exports) => {
       document.body.classList.add('snappy-transitions');
 
     // frameless
-    if (
-      store().frameless &&
-      !store().tiling_mode &&
-      !(store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {}).enabled
-    ) {
+    if (store().frameless && !store().tiling_mode && !tabsEnabled) {
       document.body.classList.add('frameless');
       // draggable area
       document
@@ -86,9 +99,7 @@ module.exports = (store, __exports) => {
     }
 
     // window buttons
-    if (
-      !(store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {}).enabled
-    ) {
+    if (!tabsEnabled) {
       const buttons = require('./buttons.js')(store);
       document
         .querySelector('.notion-topbar > div[style*="display: flex"]')
@@ -185,9 +196,7 @@ module.exports = (store, __exports) => {
           '--theme--code_inline-background',
         ].map((rule) => [rule, getStyle(rule)])
       );
-      if (
-        (store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {}).enabled
-      ) {
+      if (tabsEnabled) {
         electron.ipcRenderer.sendToHost(
           'enhancer:set-tab-theme',
           [
@@ -213,7 +222,7 @@ module.exports = (store, __exports) => {
     );
     electron.ipcRenderer.on('enhancer:get-menu-theme', setThemeVars);
 
-    if ((store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {}).enabled) {
+    if (tabsEnabled) {
       let tab_title = '';
       __electronApi.setWindowTitle = (title) => {
         if (tab_title !== title) {

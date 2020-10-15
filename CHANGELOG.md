@@ -35,6 +35,8 @@ a flexibility update.
 - bugfix: remove focus mode footer from neutral theme.
 - bugfix: improvements to the colour theming, particularly to make real- and fake-light/dark
   modes (as applied by the night shift extension) look consistent.
+  relevant variables (assuming all are prefixed by `--theme_[dark|light]--`):
+  `box-shadow`, `box-shadow_strong`, `select_input`, and `ui-border`
 - bugfix: font sizing applied to overlays/previews.
 - bugfix: removed typo in variable name for brown text.
 - tweak: sticky table/list rows.
@@ -52,6 +54,7 @@ a fork of notion-deb-builder that does generate an app.asar has been created and
 - bugfix: night shift working on macOS.
 - bugfix: windows are properly hidden/shown on macOS.
 - extension: "tweaks" = common layout changes.
+- update themes to new variables.
 
 ### v0.9.1 (2020-09-26)
 

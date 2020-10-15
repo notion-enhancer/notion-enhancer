@@ -123,7 +123,7 @@ but some basic improvements are built in by default:
 - a tray/menubar icon: links relevant to the enhancer + buttons to manage notion windows.
 
 once applied, modules can be configured via the graphical menu,
-which is opened from the tray/menubar ic,on or with `OPTION/ALT+E`.
+which is opened from the tray/menubar icon or with `OPTION/ALT+E`.
 
 ![](https://user-images.githubusercontent.com/16874139/93692603-954fd980-fb38-11ea-9d52-82ac53449d33.png)
 
