@@ -108,14 +108,20 @@ module.exports = (store, __exports) => {
           document
             .querySelectorAll('.dragged-over')
             .forEach((el) => el.classList.remove('dragged-over'));
+          document
+            .querySelectorAll('.slideIn')
+            .forEach((el) => el.classList.remove('slideIn'));
           const from = getTab(this.views.tabs[+this.$dragging]),
             to = getTab(event.target);
           if (!from[1].classList.contains('new') && from[0] !== to[0])
             to[1].parentElement.insertBefore(from[1], to[1]);
-          from[1].classList.remove('slideIn');
           this.$dragging = null;
+          document
+            .querySelector('#tabs')
+            .appendChild(document.querySelector('.tab.new'));
         });
         document.addEventListener('keyup', (event) => {
+          if (!electron.remote.getCurrentWindow().isFocused()) return;
           // switch between tabs via key modifier
           const select_tab_modifier = toKeyEvent(
             store('e1692c29-475e-437b-b7ff-3eee872e1a42').select_modifier
@@ -139,8 +145,8 @@ module.exports = (store, __exports) => {
           triggered = true;
           for (let prop in close_tab_keybinding)
             if (close_tab_keybinding[prop] !== event[prop]) triggered = false;
-          console.log(triggered, event);
-          if (triggered) this.closeTab(this.views.current.id);
+          if (triggered && document.querySelector('.tab.current .close'))
+            document.querySelector('.tab.current .close').click();
         });
       }
 
@@ -219,7 +225,7 @@ module.exports = (store, __exports) => {
                 ? idToNotionURL(store().default_page)
                 : this.views.current.$el().src
             );
-            this.views.html[id].getWebContents().openDevTools();
+            // this.views.html[id].getWebContents().openDevTools();
           }
         });
       }
@@ -297,8 +303,8 @@ module.exports = (store, __exports) => {
             this.newTab();
             break;
           case 'enhancer:close-tab':
-            if (event.target.id == this.views.current.id)
-              this.closeTab(+event.target.id);
+            if (document.querySelector('.tab.current .close'))
+              document.querySelector('.tab.current .close').click();
             break;
         }
       }
