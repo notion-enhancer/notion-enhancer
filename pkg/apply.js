@@ -78,6 +78,8 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
             bin_script
               .replace('electron app.asar\n', 'electron app\n')
               .replace('electron6 app.asar\n', 'electron6 app\n')
+              .replace('electron app.asar ', 'electron app ')
+              .replace('electron6 app.asar ', 'electron6 app ')
           );
         }
       }
