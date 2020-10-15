@@ -36,6 +36,7 @@ a flexibility update.
 - bugfix: improvements to the colour theming, particularly to make real- and fake-light/dark
   modes (as applied by the night shift extension) look consistent.
 - bugfix: font sizing applied to overlays/previews.
+- bugfix: removed typo in variable name for brown text.
 - tweak: sticky table/list rows.
 - theme: "material ocean" = an oceanic colour palette.
 - theme: "dracula" = a theme based on the popular dracula color palette

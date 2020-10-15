@@ -153,7 +153,7 @@
   font-family: var(--theme--font_code) !important;
 }
 .notion-frame .notion-page-block div[placeholder='Untitled'],
-.notion-overlay-container .notion-page-block div[placeholder='Untitled']{
+.notion-overlay-container .notion-page-block div[placeholder='Untitled'] {
   font-size: calc(
     var(--theme--font_body-size) * (var(--theme--font_heading1-size) / 1em)
   ) !important;
@@ -174,15 +174,19 @@
   ) !important;
 }
 .notion-frame .notion-scroller.vertical.horizontal [style*='font-size: 14px'],
-.notion-overlay-container .notion-scroller.vertical [style*='font-size: 14px']{
+.notion-overlay-container .notion-scroller.vertical [style*='font-size: 14px'] {
   font-size: var(--theme--font_label-size) !important;
 }
 .notion-frame .notion-scroller.vertical.horizontal .notion-page-content,
 .notion-overlay-container .notion-scroller.vertical .notion-page-content {
   font-size: var(--theme--font_body-size) !important;
 }
-.notion-frame .notion-scroller.vertical.horizontal .notion-page-content[style*='font-size: 14px'],
-.notion-overlay-container .notion-scroller.vertical .notion-page-content[style*='font-size: 14px'] {
+.notion-frame
+  .notion-scroller.vertical.horizontal
+  .notion-page-content[style*='font-size: 14px'],
+.notion-overlay-container
+  .notion-scroller.vertical
+  .notion-page-content[style*='font-size: 14px'] {
   font-size: var(--theme--font_body-size_small) !important;
 }
 .notion-code-block [placeholder=' '] {
@@ -557,7 +561,7 @@
 .notion-body:not(.dark)
   [style*='color: rgb(100, 71, 58); fill: rgb(100, 71, 58);'] {
   fill: var(--theme--text_brown) !important;
-  color: var(--theme--text_brown-text) !important;
+  color: var(--theme--text_brown) !important;
 }
 .notion-body.dark [style*='background: rgba(147, 114, 100, 0.5)'],
 .notion-body:not(.dark) [style*='background: rgba(140, 46, 0, 0.2)'] {
