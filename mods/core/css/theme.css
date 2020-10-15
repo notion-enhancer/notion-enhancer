@@ -335,7 +335,8 @@
 }
 
 /* normalise inline-table size */
-.notion-page-content .notion-collection_view-block {
+.notion-page-content .notion-collection_view-block[style*=' width'],
+.notion-page-content .notion-collection_view-block[style^='width'] {
   width: 100% !important;
 }
 .notion-page-content
