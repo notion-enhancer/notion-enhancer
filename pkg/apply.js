@@ -90,18 +90,40 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
         filter: (stats) => stats.isFile() && stats.path.endsWith('.js'),
       }
     )) {
-      insertion_target = path.resolve(
+      const insertion_file = path.resolve(
         `${helpers.__notion}/app/${insertion_target}`
       );
-      fs.appendFile(
-        insertion_target,
-        `\n\n//notion-enhancer\nrequire('${helpers.realpath(
-          __dirname
-        )}/loader.js')(__filename, exports);`
-      );
+      if (insertion_target === 'main/main.js') {
+        // https://github.com/dragonwocky/notion-enhancer/issues/160
+        // patch the notion:// url scheme/protocol to work on linux
+        fs.readFile(insertion_file, 'utf8', (err, data) => {
+          if (err) throw err;
+          fs.writeFile(
+            insertion_file,
+            `${data.replace(
+              /process.platform === "win32"/g,
+              'process.platform === "win32" || process.platform === "linux"'
+            )}\n\n//notion-enhancer\nrequire('${helpers.realpath(
+              __dirname
+            )}/loader.js')(__filename, exports);`,
+            'utf8',
+            (err) => {
+              if (err) throw err;
+            }
+          );
+        });
+      } else {
+        fs.appendFile(
+          insertion_file,
+          `\n\n//notion-enhancer\nrequire('${helpers.realpath(
+            __dirname
+          )}/loader.js')(__filename, exports);`
+        );
+      }
     }
 
-    // not resolved, nothing depends on it so it's just a "let it do its thing"
+    // not resolved, nothing else in application depends on it
+    // so it's just a "let it do its thing"
     console.info(' ...recording enhancement version.');
     fs.outputFile(
       path.resolve(`${helpers.__notion}/app/ENHANCER_VERSION.txt`),

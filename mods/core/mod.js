@@ -83,7 +83,8 @@ module.exports = {
   ],
   hacks: {
     'main/main.js': require('./tray.js'),
-    'main/createWindow.js': require('./create.js'),
+    'main/systemMenu.js': require('./systemMenu.js'),
+    'main/createWindow.js': require('./createWindow.js'),
     'renderer/index.js': require('./render.js'),
     'renderer/preload.js': require('./client.js'),
   },

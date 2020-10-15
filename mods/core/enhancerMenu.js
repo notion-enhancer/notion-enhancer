@@ -118,7 +118,7 @@ window['__start'] = async () => {
 
   const $popup = document.querySelector('#popup');
   document.addEventListener('keyup', (event) => {
-    if (event.code === 'F5') location.reload();
+    if (event.key === 'F5') location.reload();
     // further-configuration popup
     if (
       $popup.classList.contains('visible') &&
@@ -126,12 +126,13 @@ window['__start'] = async () => {
     )
       $popup.classList.remove('visible');
     // close window on hotkey toggle
-    console.log();
     const hotkey = toKeyEvent(coreStore().menu_toggle);
     let triggered = true;
     for (let prop in hotkey)
       if (hotkey[prop] !== event[prop]) triggered = false;
-    if (triggered) electron.remote.getCurrentWindow().close();
+    if (triggered || ((event.ctrlKey || event.metaKey) && event.key === 'w'))
+      electron.remote.getCurrentWindow().close();
+    console.log(event.ctrlKey, event.key);
     //  focus search
     const meta =
       !(event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey;

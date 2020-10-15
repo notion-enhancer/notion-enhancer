@@ -114,8 +114,16 @@ team to take to heart for future improvements."
 
 ## features
 
-once applied, modules can be configured via the graphical menu, which is opened from
-the tray/menubar icon or with `OPTION/ALT+E`.
+most of the enhancer's functionality is split into configurable enhancement modules,
+but some basic improvements are built in by default:
+
+- the notion:// url scheme/protocol is patched to work on linux.
+- in-page columns are disabled/wrapped and pages are wider when
+  the window is narrower than 600px for improved responsiveness.
+- a tray/menubar icon: links relevant to the enhancer + buttons to manage notion windows.
+
+once applied, modules can be configured via the graphical menu,
+which is opened from the tray/menubar icon or with `OPTION/ALT+E`.
 
 ![](https://user-images.githubusercontent.com/16874139/93692603-954fd980-fb38-11ea-9d52-82ac53449d33.png)
 
