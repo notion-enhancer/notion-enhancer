@@ -19,9 +19,19 @@ module.exports = {
   options: [
     {
       key: 'select_modifier',
-      label: 'tab select modifier (key+1, +2, +3, ... +9):',
+      label:
+        'tab select modifier (key+1, +2, +3, ... +9 and key+left/right arrows):',
       type: 'select',
-      value: ['Alt', 'Command', 'Control', 'Shift', 'Super'],
+      value: [
+        'Alt',
+        'Command',
+        'Control',
+        'Super',
+        'Alt+Shift',
+        'Command+Shift',
+        'Control+Shift',
+        'Super+Shift',
+      ],
     },
     {
       key: 'new_tab',
