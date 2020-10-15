@@ -225,7 +225,12 @@ module.exports = (store, __exports) => {
       openTab(id, state = new Map(this.state.tabs), load) {
         if (!id && id !== 0) {
           if (state.get(this.views.current.id)[1]) return;
-          id = [...state].find(([id, [title, open]]) => open)[0];
+          const currentIndex = [...state].findIndex(
+            ([id, [title, open]]) => id === this.views.current.id
+          );
+          id = ([...state].find(
+            ([id, [title, open]], tabIndex) => open && tabIndex > currentIndex
+          ) || [...state].find(([id, [title, open]]) => open))[0];
         }
         const current_src = this.views.current.$el().src;
         this.views.current.id = id;
@@ -280,9 +285,7 @@ module.exports = (store, __exports) => {
         if (![...list].filter(([id, [title, open]]) => open).length)
           return electron.remote.getCurrentWindow().close();
         this.openTab(
-          this.views.current.id === id
-            ? null
-            : [...list].find(([id, [title, open]]) => open)[0],
+          this.views.current.id === id ? null : this.views.current.id,
           list
         );
       }
