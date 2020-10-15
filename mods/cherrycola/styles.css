@@ -124,18 +124,6 @@
 
 }
 
-.notion-dark-theme [placeholder*='Heading 1']::before {
-  content: '——— ';
-}
-
-.notion-dark-theme [placeholder*='Heading 2']::before {
-  content: '——— ';
-}
-
-.notion-dark-theme [placeholder*='Heading 3']::before {
-  content: '——— ';
-}
-
 .notion-dark-theme
   .notion-quote-block{
   font-family: Georgia, 'Times New Roman', Times, serif;
