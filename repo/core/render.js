@@ -213,7 +213,7 @@ module.exports = (store, __exports) => {
       }
       openTab(id, state = new Map(this.state.tabs), load) {
         if (!id && id !== 0) {
-          if (this.views.current.$el().style.display === 'flex') return;
+          if (state.get(this.views.current.id)[1]) return;
           id = [...state].find(([id, [title, open]]) => open)[0];
         }
         const current_src = this.views.current.$el().src;
@@ -258,13 +258,16 @@ module.exports = (store, __exports) => {
       }
       closeTab(id) {
         if ((!id && id !== 0) || !this.state.tabs.get(id)) return;
-        console.log(id);
         const list = new Map(this.state.tabs);
         list.set(id, [list.get(id)[0], false]);
-        console.log(list);
         if (![...list].filter(([id, [title, open]]) => open).length)
           return electron.remote.getCurrentWindow().close();
-        this.openTab(null, list);
+        this.openTab(
+          this.views.current.id === id
+            ? null
+            : [...list].find(([id, [title, open]]) => open)[0],
+          list
+        );
       }
       focusTab() {
         if (this.views.active === this.views.current.id) return;
@@ -316,15 +319,16 @@ module.exports = (store, __exports) => {
               document.body.style.setProperty(style[0], style[1]);
             break;
           case 'enhancer:set-tab-title':
-            if (this.state.tabs.get(event.target.id)) {
-              const list = new Map(this.state.tabs);
-              list.set(event.target.id, [
-                event.args[0],
-                this.state.tabs.get(event.target.id)[1],
-              ]);
+            if (this.state.tabs.get(+event.target.id)) {
               this.setState({
-                tabs: list,
+                tabs: new Map(
+                  this.state.tabs.set(+event.target.id, [
+                    event.args[0],
+                    this.state.tabs.get(+event.target.id)[1],
+                  ])
+                ),
               });
+              // this.forceUpdate();
               const electronWindow = electron.remote.getCurrentWindow();
               if (
                 event.target.id == this.views.current.id &&
@@ -587,7 +591,6 @@ module.exports = (store, __exports) => {
       }
 
       renderTitlebar() {
-        console.log('title');
         return React.createElement(
           'header',
           {
