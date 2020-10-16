@@ -38,7 +38,7 @@
   --theme_dark--card: var(--cola-sec);
   --theme_dark--gallery: var(--cola-sec);
   --theme_dark--select_input: var(--cola-tet);
-  --theme_dark--table-border: var(--cola-sec);
+  --theme_dark--table-border: var(--cola-tet);
   --theme_dark--ui-border: rgba(73, 35, 65, 0.7);
   --theme_dark--interactive_hover: var(--cola-tet);
   --theme_dark--button_close: var(--cola-accent);
