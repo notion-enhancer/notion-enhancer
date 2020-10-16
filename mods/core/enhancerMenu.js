@@ -132,7 +132,6 @@ window['__start'] = async () => {
       if (hotkey[prop] !== event[prop]) triggered = false;
     if (triggered || ((event.ctrlKey || event.metaKey) && event.key === 'w'))
       electron.remote.getCurrentWindow().close();
-    console.log(event.ctrlKey, event.key);
     //  focus search
     const meta =
       !(event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey;

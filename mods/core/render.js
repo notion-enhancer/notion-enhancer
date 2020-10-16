@@ -42,8 +42,9 @@ module.exports = (store, __exports) => {
           searching: false,
           searchingPeekView: false,
           zoomFactor: 1,
-          tabs: new Map([[0, ['notion.so', true]]]),
+          tabs: new Map([[0, { title: 'notion.so', open: true }]]),
           slideIn: new Set(),
+          slideOut: new Set(),
         };
         this.$titlebar = null;
         this.$dragging = null;
@@ -118,9 +119,11 @@ module.exports = (store, __exports) => {
             } else {
               const list = [...this.state.tabs],
                 fromIndex = list.findIndex(
-                  ([id, [title, open]]) => id === from[0]
+                  ([id, { title, open }]) => id === from[0]
                 ),
-                toIndex = list.findIndex(([id, [title, open]]) => id === to[0]);
+                toIndex = list.findIndex(
+                  ([id, { title, open }]) => id === to[0]
+                );
               list.splice(
                 toIndex > fromIndex ? toIndex - 1 : toIndex,
                 0,
@@ -215,32 +218,47 @@ module.exports = (store, __exports) => {
         });
       }
 
-      newTab() {
+      newTab(url = '') {
         let id = 0;
         const list = new Map(this.state.tabs);
-        while (this.state.tabs.get(id) && this.state.tabs.get(id)[1]) id++;
+        while (this.state.tabs.get(id) && this.state.tabs.get(id).open) id++;
         list.delete(id);
-        this.openTab(id, list, true);
+        this.openTab(id, { state: list, load: url || true });
       }
-      openTab(id, state = new Map(this.state.tabs), load) {
+      openTab(
+        id,
+        {
+          state = new Map(this.state.tabs),
+          slideOut = new Set(this.state.slideOut),
+          load,
+        } = {
+          state: new Map(this.state.tabs),
+          slideOut: new Set(this.state.slideOut),
+          load: false,
+        }
+      ) {
         if (!id && id !== 0) {
-          if (state.get(this.views.current.id)[1]) return;
+          if (state.get(this.views.current.id).open) return;
           const currentIndex = [...state].findIndex(
-            ([id, [title, open]]) => id === this.views.current.id
+            ([id, { title, open }]) => id === this.views.current.id
           );
-          id = ([...state].find(
-            ([id, [title, open]], tabIndex) => open && tabIndex > currentIndex
-          ) || [...state].find(([id, [title, open]]) => open))[0];
+          id = (
+            [...state].find(
+              ([id, { title, open }], tabIndex) =>
+                open && tabIndex > currentIndex
+            ) || [...state].find(([id, { title, open }]) => open)
+          ).title;
         }
         const current_src = this.views.current.$el().src;
         this.views.current.id = id;
         this.setState(
           {
-            tabs: state.set(id, [
-              state.get(id) ? state.get(id)[0] : 'notion.so',
-              true,
-            ]),
+            tabs: state.set(id, {
+              title: state.get(id) ? state.get(id).title : 'notion.so',
+              open: true,
+            }),
             slideIn: load ? this.state.slideIn.add(id) : this.state.slideIn,
+            slideOut: slideOut,
           },
           async () => {
             this.focusTab();
@@ -264,29 +282,29 @@ module.exports = (store, __exports) => {
               };
               this.views.html[id].addEventListener('did-stop-loading', unhide);
               this.views.html[id].loadURL(
-                store().default_page
+                typeof load === 'string'
+                  ? load
+                  : store().default_page
                   ? idToNotionURL(store().default_page)
                   : current_src
               );
-              setTimeout(() => {
-                const slideIn = new Set(this.state.slideIn);
-                slideIn.delete(id);
-                this.setState({ slideIn });
-              }, 100);
               // this.views.html[id].getWebContents().openDevTools();
             }
+            setTimeout(() => {
+              this.setState({ slideIn: new Set(), slideOut: new Set() });
+            }, 150);
           }
         );
       }
       closeTab(id) {
         if ((!id && id !== 0) || !this.state.tabs.get(id)) return;
         const list = new Map(this.state.tabs);
-        list.set(id, [list.get(id)[0], false]);
-        if (![...list].filter(([id, [title, open]]) => open).length)
+        list.set(id, { ...list.get(id), open: false });
+        if (![...list].filter(([id, { title, open }]) => open).length)
           return electron.remote.getCurrentWindow().close();
         this.openTab(
           this.views.current.id === id ? null : this.views.current.id,
-          list
+          { state: list, slideOut: this.state.slideOut.add(id) }
         );
       }
       focusTab() {
@@ -297,11 +315,20 @@ module.exports = (store, __exports) => {
         for (const id in this.views.loaded) {
           if (this.views.loaded.hasOwnProperty(id) && this.views.loaded[id]) {
             const selected =
-              id == this.views.current.id && this.state.tabs.get(+id);
+              id == this.views.current.id &&
+              this.state.tabs.get(+id) &&
+              this.state.tabs.get(+id).open;
             this.views.loaded[id].style.display = selected ? 'flex' : 'none';
             if (selected) {
-              this.views.active = this.views.current.id;
+              this.views.active = +id;
               this.views.loaded[id].focus();
+              const electronWindow = electron.remote.getCurrentWindow();
+              if (
+                electronWindow &&
+                electronWindow.getTitle() !== this.state.tabs.get(+id).title
+              ) {
+                electronWindow.setTitle(this.state.tabs.get(+id).title);
+              }
             }
           }
         }
@@ -342,10 +369,10 @@ module.exports = (store, __exports) => {
             if (this.state.tabs.get(+event.target.id)) {
               this.setState({
                 tabs: new Map(
-                  this.state.tabs.set(+event.target.id, [
-                    event.args[0],
-                    this.state.tabs.get(+event.target.id)[1],
-                  ])
+                  this.state.tabs.set(+event.target.id, {
+                    ...this.state.tabs.get(+event.target.id),
+                    title: event.args[0],
+                  })
                 ),
               });
               const electronWindow = electron.remote.getCurrentWindow();
@@ -360,7 +387,7 @@ module.exports = (store, __exports) => {
             this.selectTab(event.args[0]);
             break;
           case 'enhancer:new-tab':
-            this.newTab();
+            this.newTab(event.args[0]);
             break;
           case 'enhancer:close-tab':
             if (document.querySelector('.tab.current .close'))
@@ -513,6 +540,7 @@ module.exports = (store, __exports) => {
         Object.entries(this.views.html)
           .filter(([id, $notion]) => !this.views.loaded[id] && $notion)
           .forEach(([id, $notion]) => {
+            if (!$notion) return;
             this.views.loaded[id] = $notion;
             $notion.addEventListener('did-fail-load', (error) => {
               // logger.info('Failed to load:', error);
@@ -628,19 +656,25 @@ module.exports = (store, __exports) => {
             'div',
             { id: 'tabs' },
             ...[...this.state.tabs]
-              .filter(([id, [title, open]]) => open)
-              .map(([id, [title, open]]) =>
+              .filter(
+                ([id, { title, open }]) => open || this.state.slideOut.has(id)
+              )
+              .map(([id, { title, open }]) =>
                 React.createElement(
                   'button',
                   {
                     className:
                       'tab' +
                       (id === this.views.current.id ? ' current' : '') +
-                      (this.state.slideIn.has(id) ? ' slideIn' : ''),
+                      (this.state.slideIn.has(id) ? ' slideIn' : '') +
+                      (this.state.slideOut.has(id) ? ' slideOut' : ''),
                     draggable: true,
                     onClick: (e) => {
                       if (!e.target.classList.contains('close'))
                         this.openTab(id);
+                    },
+                    onMouseUp: (e) => {
+                      if (window.event.which === 2) this.closeTab(id);
                     },
                     ref: ($tab) => {
                       this.views.tabs[id] = $tab;
@@ -674,7 +708,7 @@ module.exports = (store, __exports) => {
       }
       renderNotionContainer() {
         this.views.react = Object.fromEntries(
-          [...this.state.tabs].map(([id, [title, open]]) => {
+          [...this.state.tabs].map(([id, { title, open }]) => {
             return [
               id,
               this.views.react[id] ||
