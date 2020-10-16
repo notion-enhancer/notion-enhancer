@@ -230,6 +230,12 @@ module.exports = (store, __exports) => {
           electron.ipcRenderer.sendToHost('enhancer:set-tab-title', title);
         }
       };
+      __electronApi.openInNewWindow = (urlPath) => {
+        electron.ipcRenderer.sendToHost(
+          'enhancer:new-tab',
+          `notion://www.notion.so${urlPath}`
+        );
+      };
     } else if (store().frameless && !store().tiling_mode) {
       let sidebar_width;
       function setSidebarWidth(list) {

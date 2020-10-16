@@ -79,7 +79,6 @@ module.exports = (store, __exports) => {
     });
     electron.app.on('before-quit', () => (intended_quit = true));
     window.loadURL(__exports.getIndexUrl(relativeUrl));
-    window.webContents.openDevTools();
     return window;
   };
   return __exports.createWindow;
