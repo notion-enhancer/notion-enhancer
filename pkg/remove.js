@@ -105,6 +105,7 @@ module.exports = async function ({
             bin_script
               .replace('electron app', 'electron app.asar')
               .replace('electron6 app', 'electron6 app.asar')
+              .replace(/(.asar)+/g, '.asar')
           );
         }
       }
