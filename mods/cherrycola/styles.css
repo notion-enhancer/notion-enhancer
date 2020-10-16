@@ -8,8 +8,9 @@
 
   --cola-main: #180915;
   --cola-sec: #1d0919;
+  --cola-tet: #492341;
   --cola-accent: #bf799b;
-  --cola-gray: #696460;
+  --cola-gray: #8a8a8a;
   --cola-brown: #755241;
   --cola-orange: #e6846b;
   --cola-yellow: #d7b56e;
@@ -19,21 +20,31 @@
   --cola-pink: #d86f71;
   --cola-red: #a33232;
 
+  /* Main */
   --theme_dark--main: var(--cola-main);
   --theme_dark--sidebar: var(--cola-sec);
   --theme_dark--overlay: var(--cola-sec);
-  --theme_dark--dragarea: var(--cola-sec);
+  --theme_dark--dragarea: var(--cola-tet);
+  --theme_dark--box-shadow: rgba(20, 0, 16, 0.2) 0px 0px 0px 1px,
+  rgba(20, 0, 16, 0.2) 0px 2px 4px;
+  --theme_dark--box-shadow_strong: rgba(20, 0, 16, 0.1) 0px 0px 0px 1px,
+  rgba(20, 0, 16, 0.2) 0px 3px 6px, rgba(20, 0, 16, 0.4) 0px 9px 24px;
 
+  /* Scrollbar */
   --theme_dark--scrollbar: var(--cola-sec);
   --theme_dark--scrollbar_hover: var(--cola-accent);
 
+  /* Database */
   --theme_dark--card: var(--cola-sec);
   --theme_dark--gallery: var(--cola-sec);
-  --theme_dark--table-border: var(--cola-sec);
-  --theme_dark--interactive_hover: var(--cola-main);
+  --theme_dark--select_input: var(--cola-tet);
+  --theme_dark--table-border: var(--cola-tet);
+  --theme_dark--ui-border: rgba(73, 35, 65, 0.7);
+  --theme_dark--interactive_hover: var(--cola-tet);
   --theme_dark--button_close: var(--cola-accent);
 
-  --theme_dark--selected: var(--cola-sec);
+  /* Select/hover/click  */
+  --theme_dark--selected: rgba(78, 32, 69, 0.5);
   --theme_dark--primary: var(--cola-accent);
   --theme_dark--primary_hover: var(--cola-accent);
   --theme_dark--primary_click: var(--cola-sec);
@@ -42,13 +53,16 @@
   --theme_dark--option_active-background: var(--theme_dark--primary);
   --theme_dark--option_hover-background: var(--theme_dark--primary_hover);
 
+  /* Danger */
   --theme_dark--danger_text: #eb5757;
   --theme_dark--danger_border: rgba(235, 87, 87, 0.5);
 
+  /* Default text colors */
   --theme_dark--text: #ffffff;
   --theme_dark--text_ui: var(--cola-gray);
   --theme_dark--text_ui_info: var(--cola-gray);
 
+  /* Text color options */
   --theme_dark--text_gray: var(--cola-gray);
   --theme_dark--text_brown: var(--cola-brown);
   --theme_dark--text_orange: var(--cola-orange);
@@ -62,13 +76,16 @@
   --theme_dark--select-text: var(--cola-main);
   --theme_dark--select_gray: var(--cola-gray);
   --theme_dark--select_brown: var(--cola-brown);
+  --theme_dark--select_brown-text: #ffffff;
   --theme_dark--select_orange: var(--cola-orange);
   --theme_dark--select_yellow: var(--cola-yellow);
   --theme_dark--select_green: var(--cola-green);
   --theme_dark--select_blue: var(--cola-blue);
   --theme_dark--select_purple: var(--cola-purple);
+  --theme_dark--select_purple-text: #ffffff;
   --theme_dark--select_pink: var(--cola-pink);
   --theme_dark--select_red: var(--cola-red);
+  --theme_dark--select_red-text: #ffffff;
 
   --theme_dark--line-text: var(--cola-main);
   --theme_dark--line_gray: var(--cola-gray);
@@ -92,6 +109,7 @@
   --theme_dark--bg_pink: var(--theme_dark--select_pink);
   --theme_dark--bg_red: var(--theme_dark--select_red);
 
+  /* Callout blocks */
   --theme_dark--callout-text: var(--theme_dark--line-text);
   --theme_dark--callout_gray: var(--theme_dark--line_gray);
   --theme_dark--callout_brown: var(--theme_dark--line_brown);
@@ -103,6 +121,7 @@
   --theme_dark--callout_pink: var(--theme_dark--line_pink);
   --theme_dark--callout_red: var(--theme_dark--line_red);
 
+  /* Incline/code text */
   --theme_dark--code_inline-text: var(--cola-accent);
   --theme_dark--code_inline-background: var(--cola-main);
   --theme_dark--code-text: var(--theme_dark--text);
@@ -124,6 +143,7 @@
 
 }
 
+/* Quotations as serif */
 .notion-dark-theme
   .notion-quote-block{
   font-family: Georgia, 'Times New Roman', Times, serif;
