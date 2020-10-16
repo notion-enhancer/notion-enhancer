@@ -23,7 +23,7 @@
     transform: rotate(360deg);
   }
 }
-@keyframes tabSlideIn {
+@keyframes tabSlide {
   from {
     width: 0;
   }
@@ -137,7 +137,11 @@ body,
   text-overflow: ellipsis;
 }
 #tabs .tab.slideIn span:not(.close) {
-  animation: tabSlideIn 100ms ease-in-out;
+  animation: tabSlide 100ms ease-in-out;
+}
+#tabs .tab.slideOut {
+  width: 0;
+  animation: tabSlide 100ms ease-in-out reverse;
 }
 #tabs .tab .close {
   padding: 0 0.35em 0.1em 0.3em;
