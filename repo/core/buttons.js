@@ -83,19 +83,19 @@ module.exports = (store) => {
 
   (async () => {
     for (let btn of buttons.insert) {
-      buttons.element.innerHTML += `<button class="window-button" id="btn-${btn}">${await buttons.icons[
+      buttons.element.innerHTML += `<button class="window-button btn-${btn}">${await buttons.icons[
         btn
       ]()}</button>`;
     }
     for (let btn of buttons.insert) {
-      buttons.element.querySelector(`.window-button#btn-${btn}`).onclick =
+      buttons.element.querySelector(`.window-button.btn-${btn}`).onclick =
         buttons.actions[btn];
     }
     if (store().frameless && !store().tiling_mode && !is_mac) {
       window.addEventListener('resize', (event) => {
         Promise.resolve(buttons.icons.maximize()).then((icon) => {
           icon = icon.toString();
-          const el = buttons.element.querySelector('#btn-maximize');
+          const el = buttons.element.querySelector('.btn-maximize');
           if (el.innerHTML != icon) el.innerHTML = icon;
         });
       });

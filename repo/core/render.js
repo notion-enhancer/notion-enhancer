@@ -223,7 +223,7 @@ module.exports = (store, __exports) => {
         const list = new Map(this.state.tabs);
         while (this.state.tabs.get(id) && this.state.tabs.get(id).open) id++;
         list.delete(id);
-        this.openTab(id, { state: list, load: url || true });
+        return this.openTab(id, { state: list, load: url || true });
       }
       openTab(
         id,
@@ -237,64 +237,80 @@ module.exports = (store, __exports) => {
           load: false,
         }
       ) {
-        if (!id && id !== 0) {
-          if (state.get(this.views.current.id).open) return;
-          const currentIndex = [...state].findIndex(
-            ([id, { title, open }]) => id === this.views.current.id
-          );
-          id = (
-            [...state].find(
+        return new Promise((res, rej) => {
+          if (!id && id !== 0) {
+            if (state.get(this.views.current.id).open) return res(true);
+            const currentIndex = [...state].findIndex(
+              ([id, { title, open }]) => id === this.views.current.id
+            );
+            id = ([...state].find(
               ([id, { title, open }], tabIndex) =>
                 open && tabIndex > currentIndex
-            ) || [...state].find(([id, { title, open }]) => open)
-          ).title;
-        }
-        const current_src = this.views.current.$el().src;
-        this.views.current.id = id;
-        this.setState(
-          {
-            tabs: state.set(id, {
-              title: state.get(id) ? state.get(id).title : 'notion.so',
-              open: true,
-            }),
-            slideIn: load ? this.state.slideIn.add(id) : this.state.slideIn,
-            slideOut: slideOut,
-          },
-          async () => {
-            this.focusTab();
-            if (load) {
-              await new Promise((res, rej) => {
-                let attempt;
-                attempt = setInterval(() => {
-                  if (!document.body.contains(this.views.html[id])) return;
-                  clearInterval(attempt);
-                  res();
-                }, 50);
-              });
-              this.views.html[id].style.opacity = '0';
-              let unhide;
-              unhide = () => {
-                this.views.html[id].style.opacity = '';
-                this.views.html[id].removeEventListener(
-                  'did-stop-loading',
-                  unhide
-                );
-              };
-              this.views.html[id].addEventListener('did-stop-loading', unhide);
-              this.views.html[id].loadURL(
-                typeof load === 'string'
-                  ? load
-                  : store().default_page
-                  ? idToNotionURL(store().default_page)
-                  : current_src
-              );
-              // this.views.html[id].getWebContents().openDevTools();
-            }
-            setTimeout(() => {
-              this.setState({ slideIn: new Set(), slideOut: new Set() });
-            }, 150);
+            ) || [...state].find(([id, { title, open }]) => open))[0];
           }
-        );
+          const current_src = this.views.current.$el().src;
+          this.views.current.id = id;
+          this.setState(
+            {
+              tabs: state.set(id, {
+                title: state.get(id) ? state.get(id).title : 'notion.so',
+                open: true,
+              }),
+              slideIn: load ? this.state.slideIn.add(id) : this.state.slideIn,
+              slideOut: slideOut,
+            },
+            async () => {
+              this.focusTab();
+              new Promise((resolve, reject) => {
+                let attempt,
+                  clear = () => {
+                    clearInterval(attempt);
+                    return true;
+                  };
+                attempt = setInterval(() => {
+                  if (this.views.current.id !== id) return clear() && reject();
+                  if (document.body.contains(this.views.html[id]))
+                    return clear() && resolve();
+                }, 50);
+              })
+                .then(() => {
+                  if (load) {
+                    this.views.html[id].style.opacity = '0';
+                    let unhide;
+                    unhide = () => {
+                      this.views.html[id].style.opacity = '';
+                      this.views.html[id].removeEventListener(
+                        'did-stop-loading',
+                        unhide
+                      );
+                    };
+                    this.views.html[id].addEventListener(
+                      'did-stop-loading',
+                      unhide
+                    );
+                    this.views.html[id].loadURL(
+                      typeof load === 'string'
+                        ? load
+                        : store().default_page
+                        ? idToNotionURL(store().default_page)
+                        : current_src
+                    );
+                  }
+                })
+                .catch(() => {
+                  // nothing
+                })
+                .finally(() => {
+                  setTimeout(() => {
+                    this.setState(
+                      { slideIn: new Set(), slideOut: new Set() },
+                      () => res(true)
+                    );
+                  }, 150);
+                });
+            }
+          );
+        });
       }
       closeTab(id) {
         if ((!id && id !== 0) || !this.state.tabs.get(id)) return;
@@ -302,7 +318,7 @@ module.exports = (store, __exports) => {
         list.set(id, { ...list.get(id), open: false });
         if (![...list].filter(([id, { title, open }]) => open).length)
           return electron.remote.getCurrentWindow().close();
-        this.openTab(
+        return this.openTab(
           this.views.current.id === id ? null : this.views.current.id,
           { state: list, slideOut: this.state.slideOut.add(id) }
         );
