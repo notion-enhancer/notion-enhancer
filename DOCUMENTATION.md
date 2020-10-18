@@ -20,7 +20,7 @@ _for examples of the stuff described below in action._
 
 _at the moment, for ease of development and use (and security assurance), there's no way for users_
 _to install their own modules. this means that testing modules requires_
-_[running a dev build of the enhancer](DOCUMENTATION.md#testing). a better system is in the works._
+_[running a dev build of the enhancer](https://github.com/dragonwocky/notion-enhancer/blob/master/CONTRIBUTING.md#testing). a better system is in the works._
 
 _once your mod is working, open a pull request to add it to the enhancer!_
 
