@@ -95,7 +95,7 @@ body,
   color: var(--theme--text);
   -webkit-app-region: no-drag;
   border: none;
-  background-color: transparent;
+  background: transparent;
 }
 #titlebar .window-buttons-area {
   margin: 0.5em 0.55em 0.5em auto;
@@ -132,6 +132,7 @@ body,
 }
 #tabs .tab:not(.new) span:not(.close) {
   width: 8.5em;
+  margin-right: 4px;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -166,9 +167,15 @@ body,
   opacity: 1;
 }
 #tabs .tab .close:hover,
-#tabs .tab.new span:hover {
+#tabs .tab.new span:hover,
+#titlebar .window-button:hover {
+  border-radius: 4px;
   background: var(--theme--table-border);
-  border-radius: 5px;
+  box-shadow: 0 0 0 0.5px var(--theme--interactive_hover-border);
+}
+#titlebar .window-button.btn-close:hover {
+  background: var(--theme--button_close);
+  color: var(--theme--button_close-fill);
 }
 #tabs .tab.dragged-over {
   box-shadow: inset 4px 0 0 0 var(--theme--selected);

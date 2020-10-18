@@ -37,9 +37,7 @@
   background: var(--theme--interactive_hover);
   box-shadow: 0 0 0 0.5px var(--theme--interactive_hover-border);
 }
-.window-button#btn-close:hover {
+.window-button.btn-close:hover {
   background: var(--theme--button_close);
-}
-.window-button#btn-close:hover svg line {
-  stroke: var(--theme--button_close-fill);
+  color: var(--theme--button_close-fill);
 }

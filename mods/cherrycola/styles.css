@@ -1,14 +1,15 @@
 /*
  * cherry cola
  * (c) 2020 Alexa Baldon (https://github.com/runargs)
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * under the MIT license
  */
 
- :root {
-
+:root {
   --cola-main: #180915;
   --cola-sec: #1d0919;
   --cola-tet: #492341;
+  --cola-info: #9b6890;
   --cola-accent: #bf799b;
   --cola-gray: #8a8a8a;
   --cola-brown: #755241;
@@ -24,11 +25,11 @@
   --theme_dark--main: var(--cola-main);
   --theme_dark--sidebar: var(--cola-sec);
   --theme_dark--overlay: var(--cola-sec);
-  --theme_dark--dragarea: var(--cola-tet);
+  --theme_dark--dragarea: #210a1c;
   --theme_dark--box-shadow: rgba(20, 0, 16, 0.2) 0px 0px 0px 1px,
-  rgba(20, 0, 16, 0.2) 0px 2px 4px;
+    rgba(20, 0, 16, 0.2) 0px 2px 4px;
   --theme_dark--box-shadow_strong: rgba(20, 0, 16, 0.1) 0px 0px 0px 1px,
-  rgba(20, 0, 16, 0.2) 0px 3px 6px, rgba(20, 0, 16, 0.4) 0px 9px 24px;
+    rgba(20, 0, 16, 0.2) 0px 3px 6px, rgba(20, 0, 16, 0.4) 0px 9px 24px;
 
   /* Scrollbar */
   --theme_dark--scrollbar: var(--cola-sec);
@@ -59,8 +60,8 @@
 
   /* Default text colors */
   --theme_dark--text: #ffffff;
-  --theme_dark--text_ui: var(--cola-gray);
-  --theme_dark--text_ui_info: var(--cola-gray);
+  --theme_dark--text_ui: var(--cola-info);
+  --theme_dark--text_ui_info: var(--cola-info);
 
   /* Text color options */
   --theme_dark--text_gray: var(--cola-gray);
@@ -140,12 +141,10 @@
   --theme_dark--code_number: var(--theme_dark--text_purple);
   --theme_dark--code_string: var(--theme_dark--text_orange);
   --theme_dark--code_attr-value: var(--theme_dark--text_orange);
-
 }
 
 /* Quotations as serif */
-.notion-dark-theme
-  .notion-quote-block{
+.notion-dark-theme .notion-quote-block {
   font-family: Georgia, 'Times New Roman', Times, serif;
   background-color: var(--cola-sec);
 }
