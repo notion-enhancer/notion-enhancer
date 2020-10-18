@@ -87,11 +87,22 @@ module.exports = (store, __exports) => {
         document.addEventListener('dragstart', (event) => {
           if (!this.$titlebar) return;
           this.$dragging = getTab(event.target)[0];
+          event.dataTransfer.setData(
+            'text',
+            document.getElementById(getTab(event.target)[0]).src
+          );
           event.target.style.opacity = 0.5;
         });
         document.addEventListener('dragend', (event) => {
           if (!this.$titlebar) return;
           event.target.style.opacity = '';
+          document
+            .querySelectorAll('.dragged-over')
+            .forEach((el) => el.classList.remove('dragged-over'));
+          if (this.$dragging !== null) {
+            this.closeTab(this.$dragging);
+            this.$dragging = null;
+          }
         });
         document.addEventListener('dragover', (event) => {
           if (!this.$titlebar) return;
@@ -103,36 +114,40 @@ module.exports = (store, __exports) => {
           if (tab[1]) tab[1].classList.add('dragged-over');
         });
         document.addEventListener('drop', (event) => {
-          if (!this.$titlebar || this.$dragging === null) return;
           event.preventDefault();
-          document
-            .querySelectorAll('.dragged-over')
-            .forEach((el) => el.classList.remove('dragged-over'));
-          const from = getTab(this.views.tabs[+this.$dragging]),
-            to = getTab(event.target);
-          if (from[0] !== to[0]) {
-            if (to[1].classList.contains('new')) {
-              const list = new Map(this.state.tabs);
-              list.delete(from[0]);
-              list.set(from[0], this.state.tabs.get(from[0]));
-              this.setState({ tabs: list });
-            } else {
-              const list = [...this.state.tabs],
-                fromIndex = list.findIndex(
-                  ([id, { title, open }]) => id === from[0]
-                ),
-                toIndex = list.findIndex(
-                  ([id, { title, open }]) => id === to[0]
-                );
-              list.splice(
-                toIndex > fromIndex ? toIndex - 1 : toIndex,
-                0,
-                list.splice(fromIndex, 1)[0]
-              );
-              this.setState({ tabs: new Map(list) });
+          if (this.$dragging === null) {
+            console.log(event.dataTransfer.getData('text'));
+            if (event.dataTransfer.getData('text').startsWith('notion://'))
+              this.newTab(event.dataTransfer.getData('text'));
+          } else {
+            if (this.$titlebar) {
+              const from = getTab(this.views.tabs[+this.$dragging]),
+                to = getTab(event.target);
+              if (from[0] !== to[0]) {
+                if (to[1].classList.contains('new')) {
+                  const list = new Map(this.state.tabs);
+                  list.delete(from[0]);
+                  list.set(from[0], this.state.tabs.get(from[0]));
+                  this.setState({ tabs: list });
+                } else {
+                  const list = [...this.state.tabs],
+                    fromIndex = list.findIndex(
+                      ([id, { title, open }]) => id === from[0]
+                    ),
+                    toIndex = list.findIndex(
+                      ([id, { title, open }]) => id === to[0]
+                    );
+                  list.splice(
+                    toIndex > fromIndex ? toIndex - 1 : toIndex,
+                    0,
+                    list.splice(fromIndex, 1)[0]
+                  );
+                  this.setState({ tabs: new Map(list) });
+                }
+              }
             }
+            this.$dragging = null;
           }
-          this.$dragging = null;
         });
         document.addEventListener('keyup', (event) => {
           if (!electron.remote.getCurrentWindow().isFocused()) return;
