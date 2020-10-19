@@ -403,7 +403,8 @@
   background: var(--theme--selected) !important;
 }
 
-[style*=' color: rgb(46, 170, 220)'] {
+[style*=' color: rgb(46, 170, 220)'],
+[style^='color: rgb(46, 170, 220)'] {
   color: var(--theme--primary) !important;
 }
 [style*='fill: rgb(46, 170, 220)'] {

@@ -12,7 +12,7 @@ module.exports = {
   tags: ['extension'],
   name: 'right-to-left',
   desc: 'enables auto rtl/ltr text direction detection.',
-  version: '1.4.0',
+  version: '1.4.1',
   author: 'obahareth',
   hacks: {
     'renderer/preload.js'(store, __exports) {
@@ -48,7 +48,9 @@ module.exports = {
         function autoAlignPageContent() {
           document
             .querySelectorAll(
-              '.notion-page-content > div[data-block-id]:not([dir]), [placeholder="Untitled"]:not([dir])'
+              `.notion-page-content > div[data-block-id]:not([dir]):not(.notion-column_list-block),
+              [placeholder="Untitled"]:not([dir]),
+              .notion-column-block > div[data-block-id]:not([dir])`
             )
             .forEach((block) => block.setAttribute('dir', 'auto'));
           document
