@@ -46,6 +46,11 @@ module.exports = (store, __exports) => {
           webContents.send('enhancer:get-menu-theme', arg)
         );
     });
+    electron.ipcMain.on('enhancer:close-tab', (event, target, tab) => {
+      electron.webContents
+        .fromId(target)
+        .webContents.send('enhancer:close-tab', tab);
+    });
 
     function calculateWindowPos(width, height) {
       const screen = electron.screen.getDisplayNearestPoint({
