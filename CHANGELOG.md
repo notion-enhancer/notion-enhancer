@@ -41,6 +41,7 @@ a flexibility update.
 - bugfix: removed typo in variable name for brown text.
 - bugfix: primary-colour text (mainly in "add a \_" popups) is now properly themed.
 - bugfix: right-to-left extension applies to text in columns.
+- bugfix: block text colour applies to text with backgrounds.
 - tweak: sticky table/list rows.
 - theme: "material ocean" = an oceanic colour palette.
 - theme: "dracula" = a theme based on the popular dracula color palette
