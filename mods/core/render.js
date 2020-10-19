@@ -86,10 +86,16 @@ module.exports = (store, __exports) => {
         };
         document.addEventListener('dragstart', (event) => {
           if (!this.$titlebar) return;
-          this.$dragging = getTab(event.target)[0];
+          const tab = getTab(event.target);
+          this.$dragging = tab[0];
           event.dataTransfer.setData(
             'text',
-            document.getElementById(getTab(event.target)[0]).src
+            JSON.stringify({
+              target: electron.remote.getCurrentWindow().webContents.id,
+              tab: tab[0],
+              title: tab[1].children[0].innerText,
+              url: document.getElementById(getTab(event.target)[0]).src,
+            })
           );
           event.target.style.opacity = 0.5;
         });
@@ -99,10 +105,6 @@ module.exports = (store, __exports) => {
           document
             .querySelectorAll('.dragged-over')
             .forEach((el) => el.classList.remove('dragged-over'));
-          if (this.$dragging !== null) {
-            this.closeTab(this.$dragging);
-            this.$dragging = null;
-          }
         });
         document.addEventListener('dragover', (event) => {
           if (!this.$titlebar) return;
@@ -110,40 +112,50 @@ module.exports = (store, __exports) => {
           document
             .querySelectorAll('.dragged-over')
             .forEach((el) => el.classList.remove('dragged-over'));
-          const tab = getTab(event.target);
-          if (tab[1]) tab[1].classList.add('dragged-over');
+          const tab = getTab(event.target)[1];
+          if (tab) tab.classList.add('dragged-over');
         });
-        document.addEventListener('drop', (event) => {
+        document.addEventListener('drop', async (event) => {
           event.preventDefault();
-          if (this.$dragging === null) {
-            console.log(event.dataTransfer.getData('text'));
-            if (event.dataTransfer.getData('text').startsWith('notion://'))
-              this.newTab(event.dataTransfer.getData('text'));
-          } else {
-            if (this.$titlebar) {
-              const from = getTab(this.views.tabs[+this.$dragging]),
-                to = getTab(event.target);
-              if (from[0] !== to[0]) {
-                if (to[1].classList.contains('new')) {
-                  const list = new Map(this.state.tabs);
-                  list.delete(from[0]);
-                  list.set(from[0], this.state.tabs.get(from[0]));
-                  this.setState({ tabs: list });
-                } else {
-                  const list = [...this.state.tabs],
-                    fromIndex = list.findIndex(
-                      ([id, { title, open }]) => id === from[0]
-                    ),
-                    toIndex = list.findIndex(
-                      ([id, { title, open }]) => id === to[0]
-                    );
-                  list.splice(
-                    toIndex > fromIndex ? toIndex - 1 : toIndex,
-                    0,
-                    list.splice(fromIndex, 1)[0]
+          const eventData = JSON.parse(event.dataTransfer.getData('text'));
+          if (
+            eventData.target !==
+            electron.remote.getCurrentWindow().webContents.id
+          ) {
+            electron.ipcRenderer.send(
+              'enhancer:close-tab',
+              eventData.target,
+              eventData.tab
+            );
+            this.$dragging = await this.newTab(
+              eventData.url,
+              eventData.title,
+              false
+            );
+          }
+          if (this.$titlebar) {
+            const from = getTab(this.views.tabs[+this.$dragging]),
+              to = getTab(event.target);
+            if (from[0] !== to[0]) {
+              if (to[1].classList.contains('new')) {
+                const list = new Map(this.state.tabs);
+                list.delete(from[0]);
+                list.set(from[0], this.state.tabs.get(from[0]));
+                this.setState({ tabs: list });
+              } else {
+                const list = [...this.state.tabs],
+                  fromIndex = list.findIndex(
+                    ([id, { title, open }]) => id === from[0]
+                  ),
+                  toIndex = list.findIndex(
+                    ([id, { title, open }]) => id === to[0]
                   );
-                  this.setState({ tabs: new Map(list) });
-                }
+                list.splice(
+                  toIndex > fromIndex ? toIndex - 1 : toIndex,
+                  0,
+                  list.splice(fromIndex, 1)[0]
+                );
+                this.setState({ tabs: new Map(list) });
               }
             }
             this.$dragging = null;
@@ -192,6 +204,9 @@ module.exports = (store, __exports) => {
           if (triggered && document.querySelector('.tab.current .close'))
             document.querySelector('.tab.current .close').click();
         });
+        electron.ipcRenderer.on('enhancer:close-tab', (event, tab) => {
+          this.closeTab(tab);
+        });
       }
 
       componentDidMount() {
@@ -233,12 +248,17 @@ module.exports = (store, __exports) => {
         });
       }
 
-      newTab(url = '') {
+      newTab(url = '', title = 'notion.so', animate = true) {
         let id = 0;
         const list = new Map(this.state.tabs);
         while (this.state.tabs.get(id) && this.state.tabs.get(id).open) id++;
         list.delete(id);
-        return this.openTab(id, { state: list, load: url || true });
+        return this.openTab(id, {
+          state: list,
+          load: url || true,
+          title,
+          animate,
+        });
       }
       openTab(
         id,
@@ -246,15 +266,19 @@ module.exports = (store, __exports) => {
           state = new Map(this.state.tabs),
           slideOut = new Set(this.state.slideOut),
           load,
+          animate,
+          title = 'notion.so',
         } = {
           state: new Map(this.state.tabs),
           slideOut: new Set(this.state.slideOut),
           load: false,
+          title: 'notion.so',
+          animate: false,
         }
       ) {
         return new Promise((res, rej) => {
           if (!id && id !== 0) {
-            if (state.get(this.views.current.id).open) return res(true);
+            if (state.get(this.views.current.id).open) return res(id);
             const currentIndex = [...state].findIndex(
               ([id, { title, open }]) => id === this.views.current.id
             );
@@ -268,10 +292,12 @@ module.exports = (store, __exports) => {
           this.setState(
             {
               tabs: state.set(id, {
-                title: state.get(id) ? state.get(id).title : 'notion.so',
+                title: state.get(id) ? state.get(id).title : title,
                 open: true,
               }),
-              slideIn: load ? this.state.slideIn.add(id) : this.state.slideIn,
+              slideIn: animate
+                ? this.state.slideIn.add(id)
+                : this.state.slideIn,
               slideOut: slideOut,
             },
             async () => {
@@ -319,7 +345,7 @@ module.exports = (store, __exports) => {
                   setTimeout(() => {
                     this.setState(
                       { slideIn: new Set(), slideOut: new Set() },
-                      () => res(true)
+                      () => res(id)
                     );
                   }, 150);
                 });
@@ -421,8 +447,11 @@ module.exports = (store, __exports) => {
             this.newTab(event.args[0]);
             break;
           case 'enhancer:close-tab':
-            if (document.querySelector('.tab.current .close'))
-              document.querySelector('.tab.current .close').click();
+            this.closeTab(
+              event.args[0] || event.args[0] === 0
+                ? event.args[0]
+                : this.views.current.id
+            );
             break;
         }
       }
