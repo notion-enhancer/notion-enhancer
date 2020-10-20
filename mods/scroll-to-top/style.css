@@ -1,0 +1,29 @@
+.bottom-right-buttons {
+    position: absolute;
+    bottom: 33px;
+    right: 33px;
+    cursor: default;
+}
+
+.bottom-right-buttons > div {
+    margin-top: 8px;
+
+    user-select: none;
+    transition: opacity 700ms ease 0s, color 700ms ease 0s;
+    cursor: pointer;
+
+    position: static !important;
+
+    width: 36px;
+    height: 36px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 100%;
+    font-size: 20px;
+
+    background: var(--theme--interactive_hover) !important;
+    box-shadow: 0 0 0 0.5px var(--theme--interactive_hover-border) !important;
+}
