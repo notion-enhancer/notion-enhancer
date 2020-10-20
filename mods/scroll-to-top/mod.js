@@ -27,7 +27,13 @@ module.exports = {
             key: "top",
             label: "scroll down distance to show button",
             type: "input",
-            value: 100,
+            value: 80,
+        },
+        {
+            key: "percent",
+            label: "set distance as a percentage",
+            type: "toggle",
+            value: true,
         },
     ],
     hacks: {
@@ -78,13 +84,18 @@ module.exports = {
                                 addedNodes[0].className === 'notion-scroller'
                               )
                             ) {
-                                if (store().top> 0) {
+                                let top = store().top;
+                                if (top> 0) {
                                     scroll.classList.add('hidden');
-                                
+                                    
+                                    if (store().percent) {
+                                        top *= document.querySelector('.notion-page-content').offsetHeight / 100;
+                                    }
+
                                     document
                                         .querySelector('.notion-frame > .notion-scroller')
                                         .addEventListener('scroll', (event) => {
-                                            if (event.target.scrollTop < store().top)
+                                            if (event.target.scrollTop < top)
                                                 scroll.classList.add('hidden');
                                             else
                                                 scroll.classList.remove('hidden');
