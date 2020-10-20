@@ -45,18 +45,18 @@ module.exports = {
                     if (!document.querySelector(".notion-frame")) return;
                     clearInterval(attempt_interval);
                     
-                    const container = document.createElement('div');
-                    const help = document.querySelector('.notion-help-button');
-                    const scroll = createElement(
+                    const $container = document.createElement('div');
+                    const $help = document.querySelector('.notion-help-button');
+                    const $scroll = createElement(
                         '<div class="notion-scroll-button" role="button">&#129049;</div>' // 🠙;
                     )
                     
-                    container.className = "bottom-right-buttons";
-                    help.after(container);
-                    container.append(scroll);
-                    container.append(help);
+                    $container.className = "bottom-right-buttons";
+                    $help.after($container);
+                    $container.append($scroll);
+                    $container.append($help);
                     
-                    scroll.addEventListener('click', () => {
+                    $scroll.addEventListener('click', () => {
                         document
                         .querySelector('.notion-frame > .notion-scroller')
                         .scroll({
@@ -67,7 +67,7 @@ module.exports = {
                     })
 
                     let queue = [];
-                    let scroller = document.querySelector('.notion-frame > .notion-scroller');
+                    let $scroller = document.querySelector('.notion-frame > .notion-scroller');
 
                     const observer = new MutationObserver((list, observer) => {
                     if (!queue.length) requestAnimationFrame(() => process(queue));
@@ -81,11 +81,11 @@ module.exports = {
                     function process(list) {
                         queue = [];
 
-                        let top = scroller.topDistance = store().top || 0;
+                        let top = $scroller.top_distance = store().top || 0;
                         if (top > 0 && store().percent) {
-                            let contentHeight = Array.from(scroller.children)
+                            let content_height = Array.from($scroller.children)
                                 .reduce((h, c) => h + c.offsetHeight, 0);
-                            scroller.topDistance *= (contentHeight - scroller.offsetHeight) / 100;
+                            $scroller.top_distance *= (content_height - $scroller.offsetHeight) / 100;
                         }
 
                         for (let { addedNodes } of list) {
@@ -95,15 +95,15 @@ module.exports = {
                                 addedNodes[0].className === 'notion-scroller'
                               ) && (top > 0)
                             ) {
-                                scroll.classList.add('hidden');
+                                $scroll.classList.add('hidden');
 
-                                scroller = document.querySelector('.notion-frame > .notion-scroller');
+                                $scroller = document.querySelector('.notion-frame > .notion-scroller');
                                 
-                                scroller.addEventListener('scroll', (event) => {
-                                    if (!scroller.topDistance || Math.ceil(event.target.scrollTop) < scroller.topDistance)
-                                        scroll.classList.add('hidden');
+                                $scroller.addEventListener('scroll', (event) => {
+                                    if (!$scroller.top_distance || Math.ceil(event.target.scrollTop) < $scroller.top_distance)
+                                        $scroll.classList.add('hidden');
                                     else
-                                        scroll.classList.remove('hidden');
+                                        $scroll.classList.remove('hidden');
                                 });
                             }
                         }
