@@ -16,6 +16,14 @@ module.exports = {
     desc: "add a scroll to top button.",
     version: "1.0.0",
     author: "CloudHill",
+    options: [
+        {
+            key: "smooth",
+            label: "smooth scrolling",
+            type: "toggle",
+            value: true,
+        },
+    ],
     hacks: {
         "renderer/preload.js"(store, __exports) {
             document.addEventListener("readystatechange", (event) => {
@@ -39,7 +47,11 @@ module.exports = {
                     scroll.addEventListener('click', () => {
                         document
                         .querySelector('.notion-frame > .notion-scroller')
-                        .scrollTop = 0;
+                        .scroll({
+                            top: 0,
+                            left: 0,
+                            behavior: store().smooth ? 'smooth' : 'auto',
+                        });
                     })
                 }
             });
