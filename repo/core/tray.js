@@ -32,9 +32,7 @@ module.exports = (store, __exports) => {
 
     // menu
 
-    electron.ipcMain.on('enhancer:open-menu', (event, arg) => {
-      openEnhancerMenu();
-    });
+    electron.ipcMain.on('enhancer:open-menu', openEnhancerMenu);
     electron.ipcMain.on('enhancer:set-menu-theme', (event, arg) => {
       if (!enhancer_menu) return;
       enhancer_menu.webContents.send('enhancer:set-menu-theme', arg);

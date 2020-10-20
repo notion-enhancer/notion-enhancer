@@ -12,7 +12,7 @@ module.exports = {
   tags: ['theme', 'dark'],
   name: 'littlepig dark',
   desc: 'a purple monospaced theme using emojis and colourful text.',
-  version: '0.1.1',
+  version: '0.1.2',
   author: {
     name: 'Lizishan',
     link: 'https://www.reddit.com/user/Lizishan/',

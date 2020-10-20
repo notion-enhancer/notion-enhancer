@@ -10,10 +10,10 @@
   --theme_dark--sidebar: #24222c;
   --theme_dark--dragarea: #19181f;
 
-  --theme_light--font_sans: 'JetBrains Mono';
-  --theme_light--font_serif: 'JetBrains Mono';
-  --theme_light--font_mono: 'JetBrains Mono';
-  --theme_light--font_code: 'JetBrains Mono';
+  --theme_dark--font_sans: 'JetBrains Mono';
+  --theme_dark--font_serif: 'JetBrains Mono';
+  --theme_dark--font_mono: 'JetBrains Mono';
+  --theme_dark--font_code: 'JetBrains Mono';
 
   --theme_dark--scrollbar: #221f29;
   --theme_dark--scrollbar_hover: #312d3c;

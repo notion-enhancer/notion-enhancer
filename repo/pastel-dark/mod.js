@@ -12,7 +12,7 @@ module.exports = {
   tags: ['theme', 'dark'],
   name: 'pastel dark',
   desc: 'a smooth-transition true dark theme with a hint of pastel.',
-  version: '0.1.3',
+  version: '0.1.4',
   author: {
     name: 'zenith_illinois',
     link: 'https://www.reddit.com/user/zenith_illinois/',
