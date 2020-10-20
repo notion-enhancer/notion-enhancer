@@ -14,12 +14,17 @@
   --theme_dark--sidebar: rgb(55, 60, 63);
   --theme_dark--overlay: rgba(15, 15, 15, 0.6);
   --theme_dark--dragarea: #272d2f;
+  --theme_dark--box-shadow: rgba(15, 15, 15, 0.2) 0px 0px 0px 1px,
+    rgba(15, 15, 15, 0.2) 0px 2px 4px;
+  --theme_dark--box-shadow_strong: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px,
+    rgba(15, 15, 15, 0.2) 0px 3px 6px, rgba(15, 15, 15, 0.4) 0px 9px 24px;
   --theme_dark--page_normal-width: 900px;
   --theme_dark--page_full-width: 100%;
+  --theme_dark--page-padding: calc(96px + env(safe-area-inset-left));
+  --theme_dark--page_banner-height: 30vh;
   --theme_dark--preview-width: 977px;
   --theme_dark--preview-padding: 8rem;
   --theme_dark--preview_banner-height: 20vh;
-  --theme_dark--page_banner-height: 30vh;
 
   --theme_dark--font_sans: -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Helvetica, 'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji',
@@ -40,6 +45,9 @@
   --theme_dark--font_body-size_small: 14px;
   --theme_dark--font_code-size: 0.796875em;
   --theme_dark--font_sidebar-size: 14px;
+  
+  --theme_dark--text-block_line-height: 1.5;
+  --theme_dark--text-block_margin-top: 1px;
 
   --theme_dark--scrollbar: #505457;
   --theme_dark--scrollbar-border: transparent;
@@ -47,7 +55,9 @@
 
   --theme_dark--card: rgb(63, 68, 71);
   --theme_dark--gallery: rgba(255, 255, 255, 0.05);
+  --theme_dark--select_input: rgb(55, 60, 63);
   --theme_dark--table-border: rgba(255, 255, 255, 0.1);
+  --theme_dark--ui-border: rgba(255, 255, 255, 0.07);
   --theme_dark--interactive_hover: rgb(71, 76, 80);
   --theme_dark--interactive_hover-border: transparent;
   --theme_dark--button_close: #e81123;
@@ -188,12 +198,17 @@
   --theme_light--sidebar: rgb(247, 246, 243);
   --theme_light--overlay: rgba(15, 15, 15, 0.6);
   --theme_light--dragarea: rgba(55, 53, 47, 0.04);
+  --theme_light--box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px,
+    rgba(15, 15, 15, 0.1) 0px 2px 4px;
+  --theme_light--box-shadow_strong: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px,
+    rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
   --theme_light--page_normal-width: 900px;
   --theme_light--page_full-width: 100%;
+  --theme_light--page-padding: calc(96px + env(safe-area-inset-left));
+  --theme_light--page_banner-height: 30vh;
   --theme_light--preview-width: 977px;
   --theme_light--preview-padding: 8rem;
   --theme_light--preview_banner-height: 20vh;
-  --theme_light--page_banner-height: 30vh;
 
   --theme_light--font_sans: -apple-system, BlinkMacSystemFont, 'Segoe UI',
     Helvetica, 'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji',
@@ -214,6 +229,9 @@
   --theme_light--font_body-size_small: 14px;
   --theme_light--font_code-size: 0.796875em;
   --theme_light--font_sidebar-size: 14px;
+  
+  --theme_light--text-block_line-height: 1.5;
+  --theme_light--text-block_margin-top: 1px;
 
   --theme_light--scrollbar: #d9d8d6;
   --theme_light--scrollbar-border: #cacac8;
@@ -221,7 +239,9 @@
 
   --theme_light--card: rgb(247, 247, 247);
   --theme_light--gallery: rgba(55, 53, 47, 0.024);
+  --theme_light--select_input: rgba(242, 241, 238, 0.6);
   --theme_light--table-border: rgba(55, 53, 47, 0.16);
+  --theme_light--ui-border: rgba(55, 53, 47, 0.09);
   --theme_light--interactive_hover: rgb(239, 239, 239);
   --theme_light--interactive_hover-border: transparent;
   --theme_light--button_close: #e81123;
@@ -244,6 +264,7 @@
   --theme_light--danger_border: rgba(235, 87, 87, 0.5);
 
   --theme_light--text: rgb(55, 53, 47);
+  --theme_light--text_ui: rgba(55, 53, 47, 0.6);
   --theme_light--text_ui: rgba(55, 53, 47, 0.6);
   --theme_light--text_ui_info: rgba(55, 53, 47, 0.4);
 
@@ -362,12 +383,15 @@
   --theme--sidebar: var(--theme_dark--sidebar);
   --theme--overlay: var(--theme_dark--overlay);
   --theme--dragarea: var(--theme_dark--dragarea);
+  --theme--box-shadow: var(--theme_dark--box-shadow);
+  --theme--box-shadow_strong: var(--theme_dark--box-shadow_strong);
   --theme--page_normal-width: var(--theme_dark--page_normal-width);
   --theme--page_full-width: var(--theme_dark--page_full-width);
+  --theme--page-padding: var(--theme_dark--page-padding);
+  --theme--page_banner-height: var(--theme_dark--page_banner-height);
   --theme--preview-width: var(--theme_dark--preview-width);
   --theme--preview-padding: var(--theme_dark--preview-padding);
   --theme--preview_banner-height: var(--theme_dark--preview_banner-height);
-  --theme--page_banner-height: var(--theme_dark--page_banner-height);
   --theme--font_sans: var(--theme_dark--font_sans);
   --theme--font_serif: var(--theme_dark--font_serif);
   --theme--font_mono: var(--theme_dark--font_mono);
@@ -381,12 +405,16 @@
   --theme--font_body-size_small: var(--theme_dark--font_body-size_small);
   --theme--font_code-size: var(--theme_dark--font_code-size);
   --theme--font_sidebar-size: var(--theme_dark--font_sidebar-size);
+  --theme--text-block_line-height: var(--theme_dark--text-block_line-height);
+  --theme--text-block_margin-top: var(--theme_dark--text-block_margin-top);
   --theme--scrollbar: var(--theme_dark--scrollbar);
   --theme--scrollbar-border: var(--theme_dark--scrollbar-border);
   --theme--scrollbar_hover: var(--theme_dark--scrollbar_hover);
   --theme--card: var(--theme_dark--card);
   --theme--gallery: var(--theme_dark--gallery);
+  --theme--select_input: var(--theme_dark--select_input);
   --theme--table-border: var(--theme_dark--table-border);
+  --theme--ui-border: var(--theme_dark--ui-border);
   --theme--interactive_hover: var(--theme_dark--interactive_hover);
   --theme--interactive_hover-border: var(
     --theme_dark--interactive_hover-border
@@ -521,12 +549,15 @@
   --theme--sidebar: var(--theme_light--sidebar);
   --theme--overlay: var(--theme_light--overlay);
   --theme--dragarea: var(--theme_light--dragarea);
-  --theme--page_normal-width: var(--theme_dark--page_normal-width);
-  --theme--page_full-width: var(--theme_dark--page_full-width);
+  --theme--box-shadow: var(--theme_light--box-shadow);
+  --theme--box-shadow_strong: var(--theme_light--box-shadow_strong);
+  --theme--page_normal-width: var(--theme_light--page_normal-width);
+  --theme--page_full-width: var(--theme_light--page_full-width);
+  --theme--page-padding: var(--theme_light--page-padding);
+  --theme--page_banner-height: var(--theme_light--page_banner-height);
   --theme--preview-width: var(--theme_light--preview-width);
   --theme--preview-padding: var(--theme_light--preview-padding);
   --theme--preview_banner-height: var(--theme_light--preview_banner-height);
-  --theme--page_banner-height: var(--theme_light--page_banner-height);
   --theme--font_sans: var(--theme_light--font_sans);
   --theme--font_serif: var(--theme_light--font_serif);
   --theme--font_mono: var(--theme_light--font_mono);
@@ -540,12 +571,16 @@
   --theme--font_body-size_small: var(--theme_light--font_body-size_small);
   --theme--font_code-size: var(--theme_light--font_code-size);
   --theme--font_sidebar-size: var(--theme_light--font_sidebar-size);
+  --theme--text-block_line-height: var(--theme_light--text-block_line-height);
+  --theme--text-block_margin-top: var(--theme_light--text-block_margin-top);
   --theme--scrollbar: var(--theme_light--scrollbar);
   --theme--scrollbar-border: var(--theme_light--scrollbar-border);
   --theme--scrollbar_hover: var(--theme_light--scrollbar_hover);
   --theme--card: var(--theme_light--card);
   --theme--gallery: var(--theme_light--gallery);
+  --theme--select_input: var(--theme_light--select_input);
   --theme--table-border: var(--theme_light--table-border);
+  --theme--ui-border: var(--theme_light--ui-border);
   --theme--interactive_hover: var(--theme_light--interactive_hover);
   --theme--interactive_hover-border: var(
     --theme_light--interactive_hover-border

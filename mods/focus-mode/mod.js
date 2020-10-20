@@ -13,6 +13,6 @@ module.exports = {
   name: 'focus mode',
   desc:
     'hide the titlebar/menubar if the sidebar is closed (will be shown on hover).',
-  version: '0.1.0',
+  version: '0.1.1',
   author: 'arecsu',
 };

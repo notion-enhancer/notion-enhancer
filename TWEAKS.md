@@ -70,10 +70,34 @@ then use the 3 dots up in the top-right corner to remove them.
 
 <img src="https://user-images.githubusercontent.com/16874139/90969951-30f22800-e542-11ea-954c-e36873e19217.png" width="45%"></img> <img src="https://user-images.githubusercontent.com/16874139/90969962-55e69b00-e542-11ea-8ed3-287922805210.png" width="45%"></img>
 
+### sticky table/list row
+
+note: this will make the first row stick to the top of the screen when scrolling down.
+to stick a specific row replace `:nth-child(2)` with `[data-block-id="ROW_BLOCK_ID_HERE"]`.
+
+does not apply to inline databases.
+
+```css
+.notion-collection_view_page-block
+  .notion-page-block.notion-collection-item:nth-child(2) {
+  background: var(--theme--main);
+  z-index: 10;
+  position: sticky;
+  top: 0;
+}
+.notion-table-view
+  .notion-collection_view_page-block
+  .notion-page-block.notion-collection-item:nth-child(2) {
+  top: 32px;
+}
+```
+
+![image](https://user-images.githubusercontent.com/16874139/94878420-a1c12400-04a0-11eb-8e74-2f01e2e696cd.png)
+
 ### table columns below 100px
 
 **not recommended!** this may cause buggy viewing.
-as it is a per-table-column style, unlike all others here, it must be prepended with the block ID and repeated for each column.
+as it is a per-table-column style, unlike most others here, it must be prepended with the block ID and repeated for each column.
 
 to see how to do this, watch [this video](https://www.youtube.com/watch?v=6V7eqShm_4w).
 

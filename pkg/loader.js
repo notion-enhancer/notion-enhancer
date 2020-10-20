@@ -55,9 +55,12 @@ module.exports = function (__file, __exports) {
   }
 
   const modules = helpers.getEnhancements();
-  for (let mod of modules.loaded) {
+  for (let mod of [
+    ...modules.loaded.filter((m) => m.tags.includes('core')),
+    ...modules.loaded.filter((m) => !m.tags.includes('core')).reverse(),
+  ]) {
     if (
-      (mod.tags || []).includes('core') ||
+      mod.id === '0f0bf8b6-eae6-4273-b307-8fc43f2ee082' ||
       store('mods', { [mod.id]: { enabled: false } })[mod.id].enabled
     ) {
       if (
@@ -81,20 +84,16 @@ module.exports = function (__file, __exports) {
         });
       }
       if (mod.hacks && mod.hacks[__file]) {
-        mod.defaults = {};
-        for (let opt of mod.options || [])
-          mod.defaults[opt.key] = Array.isArray(opt.value)
-            ? opt.value[0]
-            : opt.value;
-        mod.hacks[__file](
-          (...args) =>
-            !args.length
-              ? store(mod.id, mod.defaults)
-              : args.length === 1
-              ? store(mod.id, { ...mod.defaults, ...args[0] })
-              : store(args[0], { ...mod.defaults, ...args[1] }),
-          __exports
-        );
+        mod.hacks[__file]((...args) => {
+          if (!args.length) return store(mod.id, mod.defaults);
+          if (args.length === 1 && typeof args[0] === 'object')
+            return store(mod.id, { ...mod.defaults, ...args[0] });
+          const other_mod = modules.loaded.find((m) => m.id === args[0]);
+          return store(args[0], {
+            ...(other_mod ? other_mod.defaults : {}),
+            ...args[1],
+          });
+        }, __exports);
       }
     }
   }

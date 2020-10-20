@@ -57,6 +57,12 @@ module.exports = {
       value: true,
     },
     {
+      key: 'snappy_transitions',
+      label: 'snappy transitions',
+      type: 'toggle',
+      value: false,
+    },
+    {
       key: 'hotkey',
       label: 'window display hotkey:',
       type: 'input',
@@ -68,10 +74,17 @@ module.exports = {
       type: 'input',
       value: 'Alt+E',
     },
+    {
+      key: 'default_page',
+      label: 'open to default page id/url:',
+      type: 'input',
+      value: '',
+    },
   ],
   hacks: {
     'main/main.js': require('./tray.js'),
-    'main/createWindow.js': require('./create.js'),
+    'main/systemMenu.js': require('./systemMenu.js'),
+    'main/createWindow.js': require('./createWindow.js'),
     'renderer/index.js': require('./render.js'),
     'renderer/preload.js': require('./client.js'),
   },

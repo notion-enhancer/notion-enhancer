@@ -2,11 +2,61 @@
 
 **potential future features (not confirmed)**
 
-- [groupy-like tabbing](https://www.npmjs.com/package/electron-tabs)
-- [improved responsiveness](https://chrome.google.com/webstore/detail/notion%20%20-responsiveness-f/leadcilhbmibbkgbnjgmmnfgnnhmeddk)
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 - [advanced math editor](https://github.com/Manueloccorso/NotionMathEditor_BrowserExtension)
-- re-orderable extensions
+
+### v0.10.0 (wip)
+
+a flexibility update.
+
+- new: mods can be reordered in the menu to control what order styling/scripts are added/executed in.
+  higher up on the list = higher priority of application = loaded last in order to override others.
+  (excluding the core, which though pinned to the top of the list is always loaded first so theming
+  variables can be modified.)
+- new: in-page columns are disabled/wrapped and pages are wider when
+  the window is narrower than 600px for improved responsiveness.
+- new: relaunch button in tray menu.
+- new: a core mod option to make transitions snappy/0s.
+- new: a core mod option for a default page id/url (all new windows will load it instead of the
+  normal "most recent" page).
+- new: css variables for increasing line spacing/paragraph margins.
+- new: patch the notion:// url scheme/protocol to work on linux.
+- improved: menu will now respect integrated titlebar setting.
+- improved: use keyup listeners instead of a globalShortcut for the enhancements menu toggle.
+- bugfix: removed messenger emoji set as the provider no longer supports it.
+- bugfix: remove shadow around light mode board headers
+  \+ minor text colour fixes for night shift theming.
+- bugfix: properly detect/respond to `EACCES`/`EBUSY` errors.
+- bugfix: night shift checks every interaction,
+  will respond to system changes without any manual changes.
+- bugfix: toc blocks can have text colours.
+- bugfix: bypass preview extension works with the back/forward keyboard shortcuts.
+- bugfix: (maybe) fix csp issues under proxy.
+- bugfix: remove focus mode footer from neutral theme.
+- bugfix: improvements to the colour theming, particularly to make real- and fake-light/dark
+  modes (as applied by the night shift extension) look consistent.
+  relevant variables (assuming all are prefixed by `--theme_[dark|light]--`):
+  `box-shadow`, `box-shadow_strong`, `select_input`, and `ui-border`
+- bugfix: font sizing applied to overlays/previews.
+- bugfix: removed typo in variable name for brown text.
+- bugfix: primary-colour text (mainly in "add a \_" popups) is now properly themed.
+- bugfix: right-to-left extension applies to text in columns.
+- tweak: sticky table/list rows.
+- theme: "material ocean" = an oceanic colour palette.
+- theme: "dracula" = a theme based on the popular dracula color palette
+  originally by zeno rocha and friends.
+- extension: "tabs" = have multiple notion pages open in a single window.
+
+a fork of notion-deb-builder that does generate an app.asar has been created and is once again supported.
+
+// todo
+
+- new: menu shows theme conflicts.
+- improved: default option for showing/hiding page properties.
+- bugfix: night shift working on macOS.
+- bugfix: windows are properly hidden/shown on macOS.
+- extension: "tweaks" = common layout changes.
+- update themes to new variables.
 
 ### v0.9.1 (2020-09-26)
 

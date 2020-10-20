@@ -54,7 +54,7 @@ module.exports = {
         let queue = [],
           $page = document.getElementsByClassName('notion-page-content')[0];
         const DOCUMENT_OBSERVER = new MutationObserver((list, observer) => {
-            if (!queue.length) requestIdleCallback(() => process(queue));
+            if (!queue.length) requestIdleCallback(() => handle(queue));
             queue.push(...list);
           }),
           PAGE_OBSERVER = new MutationObserver(showPageWordDetails);
@@ -62,7 +62,7 @@ module.exports = {
           childList: true,
           subtree: true,
         });
-        function process(list) {
+        function handle(list) {
           queue = [];
           for (let { addedNodes } of list) {
             if (

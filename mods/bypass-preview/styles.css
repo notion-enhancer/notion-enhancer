@@ -5,5 +5,5 @@
  */
 
 .notion-peek-renderer {
-  opacity: 0;
+  display: none;
 }

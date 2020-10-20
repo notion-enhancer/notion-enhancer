@@ -13,11 +13,61 @@ module.exports = (store, __exports) => {
     notionIpc = require(`${helpers.__notion.replace(
       /\\/g,
       '/'
-    )}/app/helpers/notionIpc.js`);
+    )}/app/helpers/notionIpc.js`),
+    { toKeyEvent } = require('keyboardevent-from-electron-accelerator'),
+    tabsEnabled = (store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {})
+      .enabled;
 
-  // additional hotkeys
   document.defaultView.addEventListener('keyup', (event) => {
-    if (event.code === 'F5') location.reload();
+    // additional hotkeys
+    if (event.key === 'F5') location.reload();
+    // open menu on hotkey toggle
+    const hotkey = toKeyEvent(store().menu_toggle);
+    let triggered = true;
+    for (let prop in hotkey)
+      if (hotkey[prop] !== event[prop]) triggered = false;
+    if (triggered) electron.ipcRenderer.send('enhancer:open-menu');
+    if (tabsEnabled) {
+      // switch between tabs via key modifier
+      const select_tab_modifier = toKeyEvent(
+        store('e1692c29-475e-437b-b7ff-3eee872e1a42').select_modifier
+      );
+      let triggered = true;
+      for (let prop in select_tab_modifier)
+        if (select_tab_modifier[prop] !== event[prop]) triggered = false;
+      if (
+        triggered &&
+        [
+          '1',
+          '2',
+          '3',
+          '4',
+          '5',
+          '6',
+          '7',
+          '8',
+          '9',
+          'ArrowRight',
+          'ArrowLeft',
+        ].includes(event.key)
+      )
+        electron.ipcRenderer.sendToHost('enhancer:select-tab', event.key);
+      // create/close tab keybindings
+      const new_tab_keybinding = toKeyEvent(
+        store('e1692c29-475e-437b-b7ff-3eee872e1a42').new_tab
+      );
+      triggered = true;
+      for (let prop in new_tab_keybinding)
+        if (new_tab_keybinding[prop] !== event[prop]) triggered = false;
+      if (triggered) electron.ipcRenderer.sendToHost('enhancer:new-tab');
+      const close_tab_keybinding = toKeyEvent(
+        store('e1692c29-475e-437b-b7ff-3eee872e1a42').close_tab
+      );
+      triggered = true;
+      for (let prop in close_tab_keybinding)
+        if (close_tab_keybinding[prop] !== event[prop]) triggered = false;
+      if (triggered) electron.ipcRenderer.sendToHost('enhancer:close-tab');
+    }
   });
 
   const attempt_interval = setInterval(enhance, 500);
@@ -29,18 +79,19 @@ module.exports = (store, __exports) => {
       return;
     clearInterval(attempt_interval);
 
-    // scrollbars
+    // toggleable styles
     if (store().smooth_scrollbars)
       document.body.classList.add('smooth-scrollbars');
+    if (store().snappy_transitions)
+      document.body.classList.add('snappy-transitions');
 
     // frameless
-    if (store().frameless && !store().tiling_mode) {
+    if (store().frameless && !store().tiling_mode && !tabsEnabled) {
       document.body.classList.add('frameless');
       // draggable area
-      const dragarea = helpers.createElement(
-        '<div class="window-dragarea"></div>'
-      );
-      document.querySelector('.notion-topbar').prepend(dragarea);
+      document
+        .querySelector('.notion-topbar')
+        .prepend(helpers.createElement('<div class="window-dragarea"></div>'));
       document.documentElement.style.setProperty(
         '--configured--dragarea_height',
         `${store().dragarea_height + 2}px`
@@ -48,10 +99,12 @@ module.exports = (store, __exports) => {
     }
 
     // window buttons
-    const buttons = require('./buttons.js')(store);
-    document
-      .querySelector('.notion-topbar > div[style*="display: flex"]')
-      .appendChild(buttons.element);
+    if (!tabsEnabled) {
+      const buttons = require('./buttons.js')(store);
+      document
+        .querySelector('.notion-topbar > div[style*="display: flex"]')
+        .appendChild(buttons.element);
+    }
     document
       .querySelector('.notion-history-back-button')
       .parentElement.nextElementSibling.classList.add(
@@ -66,7 +119,7 @@ module.exports = (store, __exports) => {
         document.querySelector('.notion-app-inner')
       ).getPropertyValue(prop);
 
-    // ctrl+f theming
+    // external theming
     document.defaultView.addEventListener('keydown', (event) => {
       if ((event.ctrlKey || event.metaKey) && event.key === 'f') {
         notionIpc.sendNotionToIndex('search:set-theme', {
@@ -95,10 +148,9 @@ module.exports = (store, __exports) => {
       }
     });
 
-    // enhancer menu
     function setThemeVars() {
       electron.ipcRenderer.send(
-        'enhancer:set-theme-vars',
+        'enhancer:set-menu-theme',
         [
           '--theme--main',
           '--theme--sidebar',
@@ -115,6 +167,7 @@ module.exports = (store, __exports) => {
           '--theme--interactive_hover-border',
           '--theme--button_close',
           '--theme--button_close-fill',
+          '--theme--selected',
           '--theme--primary',
           '--theme--primary_click',
           '--theme--option-color',
@@ -132,40 +185,77 @@ module.exports = (store, __exports) => {
           '--theme--select_red',
           '--theme--line_text',
           '--theme--line_yellow',
+          '--theme--line_yellow-text',
           '--theme--line_green',
+          '--theme--line_green-text',
           '--theme--line_blue',
+          '--theme--line_blue-text',
           '--theme--line_red',
+          '--theme--line_red-text',
           '--theme--code_inline-text',
           '--theme--code_inline-background',
         ].map((rule) => [rule, getStyle(rule)])
       );
-    }
-    setThemeVars();
-    const theme_observer = new MutationObserver(setThemeVars);
-    theme_observer.observe(document.querySelector('.notion-app-inner'), {
-      attributes: true,
-    });
-    electron.ipcRenderer.on('enhancer:get-theme-vars', setThemeVars);
-
-    const sidebar_observer = new MutationObserver(setSidebarWidth);
-    sidebar_observer.observe(document.querySelector('.notion-sidebar'), {
-      attributes: true,
-    });
-    let sidebar_width;
-    function setSidebarWidth(list) {
-      if (!store().frameless && store().tiling_mode) return;
-      const new_sidebar_width =
-        list[0].target.style.height === 'auto'
-          ? '0px'
-          : list[0].target.style.width;
-      if (new_sidebar_width !== sidebar_width) {
-        sidebar_width = new_sidebar_width;
+      if (tabsEnabled) {
         electron.ipcRenderer.sendToHost(
-          'enhancer:sidebar-width',
-          sidebar_width
+          'enhancer:set-tab-theme',
+          [
+            '--theme--main',
+            '--theme--dragarea',
+            '--theme--font_sans',
+            '--theme--table-border',
+            '--theme--interactive_hover',
+            '--theme--interactive_hover-border',
+            '--theme--button_close',
+            '--theme--button_close-fill',
+            '--theme--option_active-background',
+            '--theme--selected',
+            '--theme--text',
+          ].map((rule) => [rule, getStyle(rule)])
         );
       }
     }
-    setSidebarWidth([{ target: document.querySelector('.notion-sidebar') }]);
+    setThemeVars();
+    new MutationObserver(setThemeVars).observe(
+      document.querySelector('.notion-app-inner'),
+      { attributes: true }
+    );
+    electron.ipcRenderer.on('enhancer:get-menu-theme', setThemeVars);
+
+    if (tabsEnabled) {
+      let tab_title = '';
+      __electronApi.setWindowTitle = (title) => {
+        if (tab_title !== title) {
+          tab_title = title;
+          electron.ipcRenderer.sendToHost('enhancer:set-tab-title', title);
+        }
+      };
+      __electronApi.openInNewWindow = (urlPath) => {
+        electron.ipcRenderer.sendToHost(
+          'enhancer:new-tab',
+          `notion://www.notion.so${urlPath}`
+        );
+      };
+    } else if (store().frameless && !store().tiling_mode) {
+      let sidebar_width;
+      function setSidebarWidth(list) {
+        const new_sidebar_width =
+          list[0].target.style.height === 'auto'
+            ? '0px'
+            : list[0].target.style.width;
+        if (new_sidebar_width !== sidebar_width) {
+          sidebar_width = new_sidebar_width;
+          electron.ipcRenderer.sendToHost(
+            'enhancer:sidebar-width',
+            sidebar_width
+          );
+        }
+      }
+      new MutationObserver(setSidebarWidth).observe(
+        document.querySelector('.notion-sidebar'),
+        { attributes: true }
+      );
+      setSidebarWidth([{ target: document.querySelector('.notion-sidebar') }]);
+    }
   }
 };

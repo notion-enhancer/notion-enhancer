@@ -7,57 +7,52 @@
 'use strict';
 
 const store = require('../../pkg/store.js'),
-  { id } = require('./mod.js'),
   helpers = require('../../pkg/helpers.js'),
   fs = require('fs-extra'),
   path = require('path'),
   electron = require('electron'),
-  browser = electron.remote.getCurrentWindow();
+  { toKeyEvent } = require('keyboardevent-from-electron-accelerator');
 
 window['__start'] = async () => {
+  // mod loader
+  const modules = helpers.getEnhancements();
+  if (modules.loaded.length)
+    console.info(
+      `<notion-enhancer> enhancements loaded: ${modules.loaded
+        .map((mod) => mod.name)
+        .join(', ')}.`
+    );
+  if (modules.invalid.length) {
+    createAlert(
+      'error',
+      `invalid mods found: ${modules.invalid
+        .map((mod) => `<b>${mod}</b>`)
+        .join(', ')}.`
+    ).append();
+  }
+  const coreStore = (...args) => {
+    const mod = modules.loaded.find(
+      (m) => m.id === '0f0bf8b6-eae6-4273-b307-8fc43f2ee082'
+    );
+    return !args.length
+      ? store(mod.id, mod.defaults)
+      : args.length === 1 && typeof args[0] === 'object'
+      ? store(mod.id, { ...mod.defaults, ...args[0] })
+      : store(args[0], { ...mod.defaults, ...args[1] });
+  };
+
   const buttons = require('./buttons.js')(() => ({
     '72886371-dada-49a7-9afc-9f275ecf29d3': {
       enabled: (store('mods')['72886371-dada-49a7-9afc-9f275ecf29d3'] || {})
         .enabled,
     },
-    tiling_mode: store('0f0bf8b6-eae6-4273-b307-8fc43f2ee082').tiling_mode,
-    frameless: true,
+    tiling_mode: coreStore().tiling_mode,
+    frameless: coreStore().frameless,
   }));
-  document.querySelector('#menu-titlebar').appendChild(buttons.element);
+  document.querySelector('#titlebar').appendChild(buttons.element);
 
-  document.defaultView.addEventListener('keyup', (event) => {
-    if (event.code === 'F5') location.reload();
-    const meta =
-      !(event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey;
-    if (
-      meta &&
-      document.activeElement.parentElement.id === 'tags' &&
-      event.key === 'Enter'
-    )
-      document.activeElement.click();
-    if (document.activeElement.tagName.toLowerCase() === 'input') {
-      if (document.activeElement.type === 'checkbox' && event.key === 'Enter')
-        document.activeElement.checked = !document.activeElement.checked;
-      if (
-        ['Escape', 'Enter'].includes(event.key) &&
-        document.activeElement.type !== 'checkbox' &&
-        (document.activeElement.parentElement.id !== 'search' ||
-          event.key === 'Escape')
-      )
-        document.activeElement.blur();
-    } else if (meta && event.key === '/')
-      document.querySelector('#search > input').focus();
-    if (
-      (event.ctrlKey || event.metaKey) &&
-      event.key === 'f' &&
-      !event.altKey &&
-      !event.shiftKey
-    )
-      document.querySelector('#search > input').focus();
-  });
-
-  electron.ipcRenderer.send('enhancer:get-theme-vars');
-  electron.ipcRenderer.on('enhancer:set-theme-vars', (event, theme) => {
+  electron.ipcRenderer.send('enhancer:get-menu-theme');
+  electron.ipcRenderer.on('enhancer:set-menu-theme', (event, theme) => {
     for (const style of theme)
       document.body.style.setProperty(style[0], style[1]);
   });
@@ -121,32 +116,52 @@ window['__start'] = async () => {
       ).prepend();
     });
 
-  // mod loader
-  const modules = helpers.getEnhancements();
-  if (modules.loaded.length)
-    console.info(
-      `<notion-enhancer> enhancements loaded: ${modules.loaded
-        .map((mod) => mod.name)
-        .join(', ')}.`
-    );
-  if (modules.invalid.length) {
-    createAlert(
-      'error',
-      `invalid mods found: ${modules.invalid
-        .map((mod) => `<b>${mod}</b>`)
-        .join(', ')}.`
-    ).append();
-  }
-
-  // further-configuration popup
   const $popup = document.querySelector('#popup');
   document.addEventListener('keyup', (event) => {
+    if (event.key === 'F5') location.reload();
+    // further-configuration popup
     if (
       $popup.classList.contains('visible') &&
-      [13, 27].includes(event.keyCode)
+      ['Enter', 'Escape'].includes(event.key)
     )
       $popup.classList.remove('visible');
+    // close window on hotkey toggle
+    const hotkey = toKeyEvent(coreStore().menu_toggle);
+    let triggered = true;
+    for (let prop in hotkey)
+      if (hotkey[prop] !== event[prop]) triggered = false;
+    if (triggered || ((event.ctrlKey || event.metaKey) && event.key === 'w'))
+      electron.remote.getCurrentWindow().close();
+    //  focus search
+    const meta =
+      !(event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey;
+    if (
+      meta &&
+      document.activeElement.parentElement.id === 'tags' &&
+      event.key === 'Enter'
+    )
+      document.activeElement.click();
+    if (document.activeElement.tagName.toLowerCase() === 'input') {
+      if (document.activeElement.type === 'checkbox' && event.key === 'Enter')
+        document.activeElement.checked = !document.activeElement.checked;
+      if (
+        ['Escape', 'Enter'].includes(event.key) &&
+        document.activeElement.type !== 'checkbox' &&
+        (document.activeElement.parentElement.id !== 'search' ||
+          event.key === 'Escape')
+      )
+        document.activeElement.blur();
+    } else if (meta && event.key === '/')
+      document.querySelector('#search > input').focus();
+    if (
+      (event.ctrlKey || event.metaKey) &&
+      event.key === 'f' &&
+      !event.altKey &&
+      !event.shiftKey
+    )
+      document.querySelector('#search > input').focus();
   });
+
   let colorpicker_target = null;
   const $colorpicker = colorjoe
     .rgb('colorpicker')
@@ -159,7 +174,6 @@ window['__start'] = async () => {
       store(colorpicker_target.id)[colorpicker_target.key] = color.css();
     })
     .update();
-
   document
     .querySelector('#colorpicker')
     .appendChild(
@@ -184,12 +198,12 @@ window['__start'] = async () => {
   };
   function innerText(elem) {
     let text = '';
-    for (let node of elem.childNodes) {
-      if (node.nodeType === 3) text += node.textContent;
-      if (node.nodeType === 1)
-        text += ['text', 'number'].includes(node.type)
-          ? node.value
-          : innerText(node);
+    for (let $node of elem.childNodes) {
+      if ($node.nodeType === 3) text += $node.textContent;
+      if ($node.nodeType === 1)
+        text += ['text', 'number'].includes($node.type)
+          ? $node.value
+          : innerText($node);
     }
     return text;
   }
@@ -197,13 +211,15 @@ window['__start'] = async () => {
     modules.loaded.forEach((mod) => {
       const $search_input = document.querySelector('#search > input');
       if (
-        (mod.elem.classList.contains('enabled') && !search_filters.enabled) ||
-        (mod.elem.classList.contains('disabled') && !search_filters.disabled) ||
-        !mod.tags.some((tag) => search_filters.tags.has(tag)) ||
-        ($search_input.value &&
-          !innerText(mod.elem)
-            .toLowerCase()
-            .includes($search_input.value.toLowerCase().trim()))
+        !document.body.classList.contains('reorder') &&
+        ((mod.elem.classList.contains('enabled') && !search_filters.enabled) ||
+          (mod.elem.classList.contains('disabled') &&
+            !search_filters.disabled) ||
+          !mod.tags.some((tag) => search_filters.tags.has(tag)) ||
+          ($search_input.value &&
+            !innerText(mod.elem)
+              .toLowerCase()
+              .includes($search_input.value.toLowerCase().trim())))
       )
         return (mod.elem.style.display = 'none');
       mod.elem.style.display = 'block';
@@ -223,21 +239,20 @@ window['__start'] = async () => {
     );
     document.querySelector('#tags').append(el);
     el.addEventListener('click', (event) => {
-      el.className = el.className === 'selected' ? '' : 'selected';
-      onclick(el.className === 'selected');
+      if (!document.body.classList.contains('reorder')) {
+        el.className = el.className === 'selected' ? '' : 'selected';
+        onclick(el.className === 'selected');
+      }
     });
     return el;
   }
-  createTag(
-    'enabled',
-    (state) => [(search_filters.enabled = state), search()]
-    // 'var(--theme--bg_green)'
-  );
-  createTag(
-    'disabled',
-    (state) => [(search_filters.disabled = state), search()]
-    // 'var(--theme--bg_red)'
-  );
+  createTag('enabled', (state) => [
+    ((search_filters.enabled = state), search()),
+  ]);
+  createTag('disabled', (state) => [
+    (search_filters.disabled = state),
+    search(),
+  ]);
   for (let tag of search_filters.tags)
     createTag(`#${tag}`, (state) => [
       state ? search_filters.tags.add(tag) : search_filters.tags.delete(tag),
@@ -284,20 +299,20 @@ window['__start'] = async () => {
     return parsed;
   }
 
-  let modified_notice;
+  let $modified_notice;
   function modified() {
-    if (modified_notice) return;
-    modified_notice = createAlert(
+    if ($modified_notice) return;
+    $modified_notice = createAlert(
       'info',
       `changes may not fully apply until <span data-relaunch>app relaunch</span>.`
     );
-    modified_notice.el
+    $modified_notice.el
       .querySelector('[data-relaunch]')
       .addEventListener('click', (event) => {
         electron.remote.app.relaunch();
         electron.remote.app.quit();
       });
-    modified_notice.append();
+    $modified_notice.append();
   }
 
   const file_icon = await fs.readFile(
@@ -389,15 +404,8 @@ window['__start'] = async () => {
   }
 
   const $modules = document.querySelector('#modules');
-  for (let mod of modules.loaded.sort((a, b) =>
-    a.tags.includes('core') ||
-    store('mods', { [a.id]: { pinned: false } }).pinned
-      ? -1
-      : b.tags.includes('core') ||
-        store('mods', { [b.id]: { pinned: false } }).pinned
-      ? 1
-      : a.name.localeCompare(b.name)
-  )) {
+
+  for (let mod of modules.loaded) {
     for (let fonts of mod.fonts || []) {
       document
         .querySelector('head')
@@ -417,37 +425,41 @@ window['__start'] = async () => {
               avatar: `https://github.com/${mod.author}.png`,
             };
     mod.elem = helpers.createElement(`
-      <section class="${
-        mod.tags.includes('core') || enabled ? 'enabled' : 'disabled'
-      }" id="${mod.id}">
+    <section class="${
+      mod.id === '0f0bf8b6-eae6-4273-b307-8fc43f2ee082' || enabled
+        ? 'enabled'
+        : 'disabled'
+    }" id="${mod.id}">
         <div class="meta">
-          <h3 ${
-            mod.tags.includes('core')
-              ? `>${mod.name}`
-              : `class="toggle">
-            <input type="checkbox" id="enable_${mod.id}"
+        <h3 ${
+          mod.id === '0f0bf8b6-eae6-4273-b307-8fc43f2ee082'
+            ? `>${mod.name}`
+            : `class="toggle">
+              <input type="checkbox" id="enable_${mod.id}"
             ${enabled ? 'checked' : ''} />
             <label for="enable_${mod.id}">
-              <span class="name">${mod.name}</span>
+            <span class="name">${mod.name}</span>
               <span class="switch"><span class="dot"></span></span>
-            </label>`
-          }</h3>
-          <p class="tags">${mod.tags
-            .map((tag) => (tag.startsWith('#') ? tag : `#${tag}`))
-            .join(' ')}</p>
-          <div class="desc">${markdown(mod.desc)}</div>
-          <p>
-            <a href="${author.link}" class="author">
+              </label>`
+        }</h3>
+            <p class="tags">${mod.tags
+              .map((tag) => (tag.startsWith('#') ? tag : `#${tag}`))
+              .join(' ')}</p>
+              <div class="desc">${markdown(mod.desc)}</div>
+              <p>
+              <a href="${author.link}" class="author">
               <img src="${author.avatar}" onerror="this.src='./icons/user.png'">
               ${author.name}
-            </a>
+              </a>
             <span class="version">v${mod.version}</span>
-          </p>
-        </div>
-        ${
-          mod.options && mod.options.length ? '<div class="options"></div>' : ''
-        }
-      </section>
+            </p>
+            </div>
+            ${
+              mod.options && mod.options.length
+                ? '<div class="options"></div>'
+                : ''
+            }
+        </section>
     `);
     const $enable = mod.elem.querySelector(`#enable_${mod.id}`);
     if ($enable)
@@ -500,12 +512,102 @@ window['__start'] = async () => {
         }
         $options.appendChild($opt);
       }
-    $modules.append(mod.elem);
+    if (mod.tags.includes('core')) $modules.append(mod.elem);
   }
-
   document
     .querySelectorAll('input[type="checkbox"]')
     .forEach((checkbox) =>
       checkbox.addEventListener('click', (event) => event.target.blur())
     );
+
+  // draggable re-ordering
+  const draggable = {
+    state: 0,
+    tags: ['b', 'span'],
+    $toggle: document.querySelector('#draggable-toggle'),
+    list: modules.loaded
+      .filter((m) => !m.tags.includes('core'))
+      .map((m) => m.elem),
+    target: null,
+    render() {
+      draggable.target = null;
+      for (let $node of draggable.list) {
+        $node.draggable = false;
+        $modules.append($node);
+      }
+    },
+    mouseover(event) {
+      if (!draggable.target && event.target.innerText) {
+        for (let $node of draggable.list) $node.draggable = false;
+        const $node = draggable.list.find(
+          (node) => node.innerText === event.target.innerText
+        );
+        if ($node) $node.draggable = draggable.state;
+      }
+    },
+  };
+  document.addEventListener('dragstart', (event) => {
+    draggable.target = event.target;
+    event.target.style.opacity = 0.5;
+  });
+  document.addEventListener('dragend', (event) => {
+    event.target.style.opacity = '';
+  });
+  document.addEventListener('dragover', (event) => {
+    event.preventDefault();
+    document
+      .querySelectorAll('.dragged-over')
+      .forEach((el) => el.classList.remove('dragged-over'));
+    const $node = [
+      draggable.list[0].previousElementSibling,
+      ...draggable.list,
+    ].find((node) => node.innerText === event.target.innerText);
+    if ($node) $node.classList.add('dragged-over');
+  });
+  document.addEventListener('drop', (event) => {
+    event.preventDefault();
+    document
+      .querySelectorAll('.dragged-over')
+      .forEach((el) => el.classList.remove('dragged-over'));
+    if (
+      draggable.target &&
+      draggable.target.innerText !== event.target.innerText
+    ) {
+      const from = draggable.list.findIndex(
+          (node) => node.innerText === draggable.target.innerText
+        ),
+        to =
+          event.target.innerText ===
+          draggable.list[0].previousElementSibling.innerText
+            ? 0
+            : draggable.list.findIndex(
+                (node) => node.innerText === event.target.innerText
+              ) + 1;
+      if (to >= 0) {
+        draggable.list.splice(
+          to > from ? to - 1 : to,
+          0,
+          draggable.list.splice(from, 1)[0]
+        );
+        store('mods').priority = draggable.list.map((m) => m.id);
+      }
+    }
+    draggable.render();
+    modified();
+  });
+  document.addEventListener('mouseover', draggable.mouseover);
+  draggable.render();
+  draggable.$toggle.addEventListener('click', (event) => {
+    draggable.state = !draggable.state;
+    draggable.tags = draggable.tags.reverse();
+    draggable.$toggle.innerHTML = `
+      <${draggable.tags[0]} data-bolded="configure">configure</${draggable.tags[0]}> |
+      <${draggable.tags[1]} data-bolded="reorder">reorder</${draggable.tags[1]}>
+      `;
+    document.body.classList[draggable.state ? 'add' : 'remove']('reorder');
+    $modules
+      .querySelectorAll('input')
+      .forEach((input) => (input.disabled = draggable.state));
+    search();
+  });
 };

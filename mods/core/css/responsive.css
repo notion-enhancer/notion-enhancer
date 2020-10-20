@@ -1,0 +1,26 @@
+/*
+ * notion-enhancer
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * under the MIT license
+ */
+
+@media (max-width: 600px) {
+  .notion-column_list-block [style='display: flex;'] > div {
+    width: 100% !important;
+  }
+  .notion-column_list-block [style='display: flex;'] {
+    flex-direction: column !important;
+  }
+
+  .notion-app-inner {
+    --theme_dark--page_normal-width: 100%;
+    --theme_dark--page-padding: calc(48px + env(safe-area-inset-left));
+    --theme_light--page_normal-width: 100%;
+    --theme_light--page-padding: calc(48px + env(safe-area-inset-left));
+  }
+}
+
+.snappy-transitions * {
+  animation-duration: 0s !important;
+  transition-duration: 0s !important;
+}

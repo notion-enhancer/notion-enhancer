@@ -17,6 +17,8 @@ for support, join the [discord server](https://discord.gg/sFWPXtA).
 - the [official windows/mac releases](https://notion.so/desktop).
 - the arch linux AUR [notion-app](https://aur.archlinux.org/packages/notion-app/) package.
 - the linux [notion-app](https://github.com/jaredallard/notion-app) installer.
+- [@haydn-jones](https://github.com/haydn-jones/)'s fork of the
+  linux [notion-deb-builder](https://github.com/haydn-jones/notion-deb-builder).
 
 (it can also be run from the wsl to apply enhancements to the windows app.)
 
@@ -31,10 +33,23 @@ a chrome extension may be coming soon for web client support.
 
 during installation/removal, make sure no notion processes are running! (check your task manager.)
 
-**win10, macOS**
+**win10**
 
-1. [install node.js](https://nodejs.org/en/download/) (_a computer restart may be required here._)
-2. execute `npm i -g notion-enhancer` in the terminal/command prompt.
+[install node.js](https://nodejs.org/en/download/) (_a computer restart may be required here_),
+then execute `npm i -g notion-enhancer` in the command prompt.
+
+**macOS**
+
+[install node.js](https://nodejs.org/en/download/) (_a computer restart may be required here_),
+then execute the following lines in the terminal:
+
+```
+sudo chmod -R a+wr /usr/local/lib/node_modules
+sudo chmod -R a+wr /usr/local/bin
+sudo chmod -R a+wr /Applications/Notion/Contents/Resources
+sudo chmod -R a+wr /Applications/Notion.app/Contents/Resources
+npm i -g notion-enhancer
+```
 
 **debian/ubuntu, chromeOS, WSL (to modify the win10 app)**
 
@@ -43,7 +58,7 @@ execute the following lines in the terminal:
 ```
 bash curl -sL https://deb.nodesource.com setup_current.x | sudo -E bash -
 sudo apt-get install -y nodejs
-sudo npm i -g notion-enhancer
+npm i -g notion-enhancer
 ```
 
 **arch linux, manjaro**
@@ -81,6 +96,14 @@ Options:
   -v, --version  : display version number
 ```
 
+### faq
+
+**the themes aren't working?**
+
+if you pick a dark theme it will only be applied if notion is in dark mode,
+and if you pick a light theme it will only work if notion is in light mode.
+do `CMD/CTRL+SHIFT+L` to toggle between them.
+
 **is this against notion's terms of service? can i get in trouble for using it?**
 
 definitely not! i contacted their support team to check, and the response was awesome:
@@ -91,8 +114,16 @@ team to take to heart for future improvements."
 
 ## features
 
-once applied, modules can be configured via the graphical menu, which is opened from
-the tray/menubar icon or with `ALT+E`.
+most of the enhancer's functionality is split into configurable enhancement modules,
+but some basic improvements are built in by default:
+
+- the notion:// url scheme/protocol is patched to work on linux.
+- in-page columns are disabled/wrapped and pages are wider when
+  the window is narrower than 600px for improved responsiveness.
+- a tray/menubar icon: links relevant to the enhancer + buttons to manage notion windows.
+
+once applied, modules can be configured via the graphical menu,
+which is opened from the tray/menubar icon or with `OPTION/ALT+E`.
 
 ![](https://user-images.githubusercontent.com/16874139/93692603-954fd980-fb38-11ea-9d52-82ac53449d33.png)
 
@@ -164,7 +195,8 @@ on top of other windows even if it's not focused.
 
 **tags:** #extension
 
-**description:** link files for small client-side tweaks.
+**description:** link files for small client-side tweaks. (not sure how to do something? check out the
+[tweaks](https://github.com/dragonwocky/notion-enhancer/blob/master/TWEAKS.md) collection.)
 
 **author**: [dragonwocky](https://github.com/dragonwocky/)
 
@@ -343,8 +375,9 @@ the font you would like to use, or leave it blank to not change anything.
 a couple months after I ([@dragonwocky](https://github.com/dragonwocky/)) picked the project up, at first extending
 upon the original base and later moving to the javascript module system.
 
-since then, various community members have helped out heaps - some listed as
+the enhancer wouldn't be anything near to what it is now though without
+interested community members testing, coding and ideating features - some are listed as
 [contributors](https://github.com/dragonwocky/notion-enhancer/graphs/contributors) here on github,
-but many helping with code, feedback and testing on discord and in emails.
+but many more have been helping out on discord and in emails.
 
 individual modules have their original authors attributed.

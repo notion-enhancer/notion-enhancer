@@ -12,8 +12,9 @@ module.exports = {
   id: 'b4b0aced-2059-43bf-8d1d-ccd757ee5ebb',
   tags: ['extension'],
   name: 'custom inserts',
-  desc: 'link files for small client-side tweaks.',
-  version: '0.1.2',
+  desc: `link files for small client-side tweaks. (not sure how to do something? check out the
+      [tweaks](https://github.com/dragonwocky/notion-enhancer/blob/master/TWEAKS.md) collection.)`,
+  version: '0.1.3',
   author: 'dragonwocky',
   options: [
     {

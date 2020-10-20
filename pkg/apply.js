@@ -55,7 +55,7 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
     console.info(' ...unpacking app.asar.');
     const asar_app = path.resolve(`${helpers.__notion}/app.asar`);
     extractAll(asar_app, `${path.resolve(`${helpers.__notion}/app`)}`);
-    fs.move(asar_app, path.resolve(`${helpers.__notion}/app.asar.bak`));
+    await fs.move(asar_app, path.resolve(`${helpers.__notion}/app.asar.bak`));
 
     // patching launch script target of custom wrappers
     if (
@@ -76,8 +76,8 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
           await fs.outputFile(
             bin_path,
             bin_script
-              .replace('electron app.asar\n', 'electron app\n')
-              .replace('electron6 app.asar\n', 'electron6 app\n')
+              .replace('electron app.asar', 'electron app')
+              .replace('electron6 app.asar', 'electron6 app')
           );
         }
       }
@@ -90,18 +90,40 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
         filter: (stats) => stats.isFile() && stats.path.endsWith('.js'),
       }
     )) {
-      insertion_target = path.resolve(
+      const insertion_file = path.resolve(
         `${helpers.__notion}/app/${insertion_target}`
       );
-      fs.appendFile(
-        insertion_target,
-        `\n\n//notion-enhancer\nrequire('${helpers.realpath(
-          __dirname
-        )}/loader.js')(__filename, exports);`
-      );
+      if (insertion_target === 'main/main.js') {
+        // https://github.com/dragonwocky/notion-enhancer/issues/160
+        // patch the notion:// url scheme/protocol to work on linux
+        fs.readFile(insertion_file, 'utf8', (err, data) => {
+          if (err) throw err;
+          fs.writeFile(
+            insertion_file,
+            `${data.replace(
+              /process.platform === "win32"/g,
+              'process.platform === "win32" || process.platform === "linux"'
+            )}\n\n//notion-enhancer\nrequire('${helpers.realpath(
+              __dirname
+            )}/loader.js')(__filename, exports);`,
+            'utf8',
+            (err) => {
+              if (err) throw err;
+            }
+          );
+        });
+      } else {
+        fs.appendFile(
+          insertion_file,
+          `\n\n//notion-enhancer\nrequire('${helpers.realpath(
+            __dirname
+          )}/loader.js')(__filename, exports);`
+        );
+      }
     }
 
-    // not resolved, nothing depends on it so it's just a "let it do its thing"
+    // not resolved, nothing else in application depends on it
+    // so it's just a "let it do its thing"
     console.info(' ...recording enhancement version.');
     fs.outputFile(
       path.resolve(`${helpers.__notion}/app/ENHANCER_VERSION.txt`),
@@ -112,11 +134,25 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
     return true;
   } catch (err) {
     console.error('### ERROR ###');
-    if (err.toString().includes('EACCESS') && friendly_errors) {
+    if (err.code === 'EACCES' && friendly_errors) {
       console.error(
-        'file access forbidden: try again with sudo or in an elevated/admin prompt.'
+        `file access forbidden - ${
+          process.platform === 'win32'
+            ? 'make sure your user has elevated permissions.'
+            : `try running "sudo chmod -R a+wr ${err.path.replace(
+                'Notion.app',
+                'Notion'
+              )}" ${
+                err.dest
+                  ? `and/or "sudo chmod -R a+wr ${err.dest.replace(
+                      'Notion.app',
+                      'Notion'
+                    )}"`
+                  : ''
+              }`
+        }`
       );
-    } else if (err.toString().includes('EIO') && friendly_errors) {
+    } else if (['EIO', 'EBUSY'].includes(err.code) && friendly_errors) {
       console.error('file access failed: is notion running?');
     } else console.error(err);
     return false;

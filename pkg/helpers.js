@@ -130,6 +130,11 @@ function getEnhancements() {
           ))
       )
         throw Error;
+      mod.defaults = {};
+      for (let opt of mod.options || [])
+        mod.defaults[opt.key] = Array.isArray(opt.value)
+          ? opt.value[0]
+          : opt.value;
       modules.IDs.push(mod.id);
       modules.loaded.push({
         ...mod,
@@ -140,6 +145,17 @@ function getEnhancements() {
       modules.invalid.push(dir);
     }
   }
+  modules.loaded = modules.loaded.sort((a, b) => a.name.localeCompare(b.name));
+  const priority = require('./store.js')('mods', { priority: [] }).priority;
+  modules.loaded = [
+    ...modules.loaded.filter((m) => m.tags.includes('core')),
+    ...modules.loaded.filter(
+      (m) => !m.tags.includes('core') && !priority.includes(m.id)
+    ),
+    ...priority
+      .map((id) => modules.loaded.find((m) => m.id === id))
+      .filter((m) => m),
+  ];
   return modules;
 }
 
