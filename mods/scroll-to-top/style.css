@@ -3,13 +3,15 @@
     bottom: 33px;
     right: 33px;
     cursor: default;
+    pointer-events: none;
 }
 
 .bottom-right-buttons > div {
     margin-top: 8px;
+    pointer-events: auto;
 
     user-select: none;
-    transition: opacity 700ms ease 0s, color 700ms ease 0s;
+    transition: opacity 700ms ease 0s, color 700ms ease 0s, transform 700ms ease 0s;
     cursor: pointer;
 
     position: static !important;
@@ -24,6 +26,21 @@
     border-radius: 100%;
     font-size: 20px;
 
-    background: var(--theme--interactive_hover) !important;
-    box-shadow: 0 0 0 0.5px var(--theme--interactive_hover-border) !important;
+    background: var(--theme--interactive_hover);
+    box-shadow: 0 0 0 0.5px var(--theme--interactive_hover-border);
+}
+
+.notion-scroll-button {
+    display: flex !important;
+}
+
+.notion-scroll-button.hidden {
+    pointer-events: none;
+
+    visibility: hidden;
+    opacity: 0;
+    transform: translateY(10px);
+
+    transition-property: opacity, transform, visibility;
+    transition-delay: 0, 0, 700ms
 }
