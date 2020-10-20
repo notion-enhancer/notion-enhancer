@@ -56,6 +56,9 @@ module.exports = {
                     $container.append($scroll);
                     $container.append($help);
                     
+                    if (store().top > 0)
+                        $scroll.classList.add('hidden');
+
                     $scroll.addEventListener('click', () => {
                         document
                         .querySelector('.notion-frame > .notion-scroller')
