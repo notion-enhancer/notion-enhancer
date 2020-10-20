@@ -23,6 +23,12 @@ module.exports = {
             type: "toggle",
             value: true,
         },
+        {
+            key: "top",
+            label: "scroll down distance to show button",
+            type: "input",
+            value: 100,
+        },
     ],
     hacks: {
         "renderer/preload.js"(store, __exports) {
@@ -53,6 +59,40 @@ module.exports = {
                             behavior: store().smooth ? 'smooth' : 'auto',
                         });
                     })
+
+                    let queue = [];
+                    const observer = new MutationObserver((list, observer) => {
+                    if (!queue.length) requestAnimationFrame(() => process(queue));
+                        queue.push(...list);
+                    });
+                    observer.observe(document.body, {
+                        childList: true,
+                        subtree: true,
+                    });
+                    function process(list) {
+                        queue = [];
+                        for (let { addedNodes } of list) {
+                            if (
+                              addedNodes[0] && (
+                                addedNodes[0].className === 'notion-page-content' ||
+                                addedNodes[0].className === 'notion-scroller'
+                              )
+                            ) {
+                                if (store().top> 0) {
+                                    scroll.classList.add('hidden');
+                                
+                                    document
+                                        .querySelector('.notion-frame > .notion-scroller')
+                                        .addEventListener('scroll', (event) => {
+                                            if (event.target.scrollTop < store().top)
+                                                scroll.classList.add('hidden');
+                                            else
+                                                scroll.classList.remove('hidden');
+                                        })
+                                }
+                            }
+                        }
+                    }
                 }
             });
         }
