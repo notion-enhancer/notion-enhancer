@@ -67,6 +67,8 @@ module.exports = {
                     })
 
                     let queue = [];
+                    let scroller = document.querySelector('.notion-frame > .notion-scroller');
+
                     const observer = new MutationObserver((list, observer) => {
                     if (!queue.length) requestAnimationFrame(() => process(queue));
                         queue.push(...list);
@@ -77,6 +79,14 @@ module.exports = {
                     });
                     function process(list) {
                         queue = [];
+
+                        let top = scroller.topDistance = store().top;
+                        if (top > 0 && store().percent) {
+                            let pageContent = document.querySelector('.notion-page-content');
+                            if (pageContent)
+                                scroller.topDistance *= pageContent.offsetHeight / 100;
+                        }
+
                         for (let { addedNodes } of list) {
                             if (
                               addedNodes[0] && (
@@ -84,22 +94,16 @@ module.exports = {
                                 addedNodes[0].className === 'notion-scroller'
                               )
                             ) {
-                                let top = store().top;
                                 if (top> 0) {
                                     scroll.classList.add('hidden');
-                                    
-                                    if (store().percent) {
-                                        top *= document.querySelector('.notion-page-content').offsetHeight / 100;
-                                    }
 
-                                    document
-                                        .querySelector('.notion-frame > .notion-scroller')
-                                        .addEventListener('scroll', (event) => {
-                                            if (event.target.scrollTop < top)
-                                                scroll.classList.add('hidden');
-                                            else
-                                                scroll.classList.remove('hidden');
-                                        })
+                                    scroller = document.querySelector('.notion-frame > .notion-scroller');
+                                    scroller.addEventListener('scroll', (event) => {
+                                        if (event.target.scrollTop < scroller.topDistance)
+                                            scroll.classList.add('hidden');
+                                        else
+                                            scroll.classList.remove('hidden');
+                                    })
                                 }
                             }
                         }
