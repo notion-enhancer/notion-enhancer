@@ -39,6 +39,8 @@ a flexibility update.
   `box-shadow`, `box-shadow_strong`, `select_input`, and `ui-border`
 - bugfix: font sizing applied to overlays/previews.
 - bugfix: removed typo in variable name for brown text.
+- bugfix: primary-colour text (mainly in "add a \_" popups) is now properly themed.
+- bugfix: right-to-left extension applies to text in columns.
 - tweak: sticky table/list rows.
 - theme: "material ocean" = an oceanic colour palette.
 - theme: "dracula" = a theme based on the popular dracula color palette

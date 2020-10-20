@@ -375,8 +375,9 @@ the font you would like to use, or leave it blank to not change anything.
 a couple months after I ([@dragonwocky](https://github.com/dragonwocky/)) picked the project up, at first extending
 upon the original base and later moving to the javascript module system.
 
-since then, various community members have helped out heaps - some listed as
+the enhancer wouldn't be anything near to what it is now though without
+interested community members testing, coding and ideating features - some are listed as
 [contributors](https://github.com/dragonwocky/notion-enhancer/graphs/contributors) here on github,
-but many helping with code, feedback and testing on discord and in emails.
+but many more have been helping out on discord and in emails.
 
 individual modules have their original authors attributed.
