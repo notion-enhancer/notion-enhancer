@@ -20,7 +20,9 @@
 
   --theme_dark--card: #0f0f0f;
   --theme_dark--gallery: rgba(8, 8, 8, 0.05);
+  --theme_dark--select_input: #0d0d0d;
   --theme_dark--table-border: rgba(255, 255, 255, 0.1);
+  --theme_dark--ui-border: var(--theme_dark--table-border);
   --theme_dark--interactive_hover: #1e1e1e5c;
   --theme_dark--button_close: #eb5757;
 
@@ -50,27 +52,16 @@
   --theme_dark--text_pink: #f7b8dc;
   --theme_dark--text_red: #f8acb4;
 
-  --theme_dark--select-text: rgb(55, 53, 47);
-  --theme_dark--select_gray: #b1aeab;
-  --theme_dark--select_brown: #d8b6a6;
-  --theme_dark--select_orange: #fde3c0;
-  --theme_dark--select_yellow: #fcde93;
-  --theme_dark--select_green: #b3f5c8;
-  --theme_dark--select_blue: #bfe0fd;
-  --theme_dark--select_purple: #dac7fa;
-  --theme_dark--select_pink: #f7b8dc;
-  --theme_dark--select_red: #f8acb4;
-
-  --theme_dark--bg-text: var(--theme_dark--select-text);
-  --theme_dark--bg_gray: var(--theme_dark--select_gray);
-  --theme_dark--bg_brown: var(--theme_dark--select_brown);
-  --theme_dark--bg_orange: var(--theme_dark--select_orange);
-  --theme_dark--bg_yellow: var(--theme_dark--select_yellow);
-  --theme_dark--bg_green: var(--theme_dark--select_green);
-  --theme_dark--bg_blue: var(--theme_dark--select_blue);
-  --theme_dark--bg_purple: var(--theme_dark--select_purple);
-  --theme_dark--bg_pink: var(--theme_dark--select_pink);
-  --theme_dark--bg_red: var(--theme_dark--select_red);
+  --theme_dark--bg-text: rgb(55, 53, 47);
+  --theme_dark--bg_gray: #b1aeab;
+  --theme_dark--bg_brown: #d8b6a6;
+  --theme_dark--bg_orange: #fde3c0;
+  --theme_dark--bg_yellow: #fcde93;
+  --theme_dark--bg_green: #b3f5c8;
+  --theme_dark--bg_blue: #bfe0fd;
+  --theme_dark--bg_purple: #dac7fa;
+  --theme_dark--bg_pink: #f7b8dc;
+  --theme_dark--bg_red: #f8acb4;
 
   --theme_dark--line-text: rgb(34, 34, 34);
   --theme_dark--line_gray: #c2c1c089;
@@ -82,6 +73,17 @@
   --theme_dark--line_purple: #e3d3ffa8;
   --theme_dark--line_pink: #fdcce8b1;
   --theme_dark--line_red: #ffc8ce9e;
+
+  --theme_dark--select-text: var(--theme_dark--bg-text);
+  --theme_dark--select_gray: var(--theme_dark--bg_gray);
+  --theme_dark--select_brown: var(--theme_dark--bg_brown);
+  --theme_dark--select_orange: var(--theme_dark--bg_orange);
+  --theme_dark--select_yellow: var(--theme_dark--bg_yellow);
+  --theme_dark--select_green: var(--theme_dark--bg_green);
+  --theme_dark--select_blue: var(--theme_dark--bg_blue);
+  --theme_dark--select_purple: var(--theme_dark--bg_purple);
+  --theme_dark--select_pink: var(--theme_dark--bg_pink);
+  --theme_dark--select_red: var(--theme_dark--bg_red);
 
   --theme_dark--callout-text: var(--theme_dark--line-text);
   --theme_dark--callout_gray: var(--theme_dark--line_gray);

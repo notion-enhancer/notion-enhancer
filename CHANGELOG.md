@@ -42,6 +42,7 @@ a flexibility update.
 - bugfix: primary-colour text (mainly in "add a \_" popups) is now properly themed.
 - bugfix: right-to-left extension applies to text in columns.
 - bugfix: block text colour applies to text with backgrounds.
+- bugfix: font applied to wrong mode with littlepig dark.
 - tweak: sticky table/list rows.
 - theme: "material ocean" = an oceanic colour palette.
 - theme: "dracula" = a theme based on the popular dracula color palette
@@ -53,11 +54,9 @@ a fork of notion-deb-builder that does generate an app.asar has been created and
 // todo
 
 - new: menu shows theme conflicts.
-- improved: default option for showing/hiding page properties.
 - bugfix: night shift working on macOS.
 - bugfix: windows are properly hidden/shown on macOS.
 - extension: "tweaks" = common layout changes.
-- update themes to new variables.
 
 ### v0.9.1 (2020-09-26)
 
