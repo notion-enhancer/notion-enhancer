@@ -77,14 +77,15 @@ module.exports = {
                         childList: true,
                         subtree: true,
                     });
+                    
                     function process(list) {
                         queue = [];
 
-                        let top = scroller.topDistance = store().top;
+                        let top = scroller.topDistance = store().top || 0;
                         if (top > 0 && store().percent) {
-                            let pageContent = document.querySelector('.notion-page-content');
-                            if (pageContent)
-                                scroller.topDistance *= pageContent.offsetHeight / 100;
+                            let contentHeight = Array.from(scroller.children)
+                                .reduce((h, c) => h + c.offsetHeight, 0);
+                            scroller.topDistance *= (contentHeight - scroller.offsetHeight) / 100;
                         }
 
                         for (let { addedNodes } of list) {
@@ -92,19 +93,18 @@ module.exports = {
                               addedNodes[0] && (
                                 addedNodes[0].className === 'notion-page-content' ||
                                 addedNodes[0].className === 'notion-scroller'
-                              )
+                              ) && (top > 0)
                             ) {
-                                if (top> 0) {
-                                    scroll.classList.add('hidden');
+                                scroll.classList.add('hidden');
 
-                                    scroller = document.querySelector('.notion-frame > .notion-scroller');
-                                    scroller.addEventListener('scroll', (event) => {
-                                        if (event.target.scrollTop < scroller.topDistance)
-                                            scroll.classList.add('hidden');
-                                        else
-                                            scroll.classList.remove('hidden');
-                                    })
-                                }
+                                scroller = document.querySelector('.notion-frame > .notion-scroller');
+                                
+                                scroller.addEventListener('scroll', (event) => {
+                                    if (!scroller.topDistance || Math.ceil(event.target.scrollTop) < scroller.topDistance)
+                                        scroll.classList.add('hidden');
+                                    else
+                                        scroll.classList.remove('hidden');
+                                });
                             }
                         }
                     }
