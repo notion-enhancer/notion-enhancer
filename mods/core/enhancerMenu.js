@@ -185,7 +185,78 @@ window['__start'] = async () => {
     })
   );
 
-  // search
+  const conflicts = {
+    relaunch: null,
+    detected: () =>
+      store('mods', {
+        conflicts: { dark: false, light: false },
+      }).conflicts,
+    alerts: [],
+    check() {
+      document.body.classList.remove('conflict');
+      conflicts.alerts.forEach((alert) => alert.resolve());
+      conflicts.alerts = [];
+      const enabled = modules.loaded.filter(
+          (mod) =>
+            store('mods', { [mod.id]: { enabled: false } })[mod.id].enabled &&
+            mod.tags.includes('theme')
+        ),
+        dark = enabled.filter((mod) => mod.tags.includes('dark')),
+        light = enabled.filter((mod) => mod.tags.includes('light'));
+      for (let mode of [
+        [dark, 'dark'],
+        [light, 'light'],
+      ]) {
+        const conflictID = mode[0]
+          .map((mod) => mod.id)
+          .sort()
+          .join('||');
+        if (
+          conflicts.detected()[mode[1]] &&
+          conflicts.detected()[mode[1]][0] === conflictID &&
+          conflicts.detected()[mode[1]][1]
+        )
+          continue;
+        if (mode[0].length > 1) {
+          document.body.classList.add('conflict');
+          conflicts.detected()[mode[1]] = [conflictID, false];
+          const alert = createAlert(
+            'error',
+            `conflicting ${mode[1]} themes: ${mode[0]
+              .map((mod) => `<b>${mod.name}</b>`)
+              .join(
+                ', '
+              )}. <br> resolve or <span data-action="dismiss">dismiss</span> to continue.`
+          );
+          alert.el
+            .querySelector('[data-action="dismiss"]')
+            .addEventListener('click', (event) => {
+              conflicts.detected()[mode[1]] = [conflictID, true];
+              conflicts.check();
+            });
+          alert.append();
+          conflicts.alerts.push(alert);
+        } else conflicts.detected()[mode[1]] = false;
+      }
+      search();
+    },
+  };
+  function modified() {
+    conflicts.check();
+    if (conflicts.relaunch) return;
+    conflicts.relaunch = createAlert(
+      'info',
+      'changes may not fully apply until <span data-action="relaunch">app relaunch</span>.'
+    );
+    conflicts.relaunch.el
+      .querySelector('[data-action="relaunch"]')
+      .addEventListener('click', (event) => {
+        electron.remote.app.relaunch();
+        electron.remote.app.quit();
+      });
+    conflicts.relaunch.append();
+  }
+
   const search_filters = {
     enabled: true,
     disabled: true,
@@ -209,17 +280,30 @@ window['__start'] = async () => {
   }
   function search() {
     modules.loaded.forEach((mod) => {
-      const $search_input = document.querySelector('#search > input');
+      const $search_input = document.querySelector('#search > input'),
+        conflictingIDs = [conflicts.detected().dark, conflicts.detected().light]
+          .filter((conflict) => conflict && !conflict[1])
+          .map(([mods, dismissed]) => mods.split('||'))
+          .flat();
+      if (
+        conflictingIDs.length ||
+        document.body.classList.contains('reorder')
+      ) {
+        $search_input.disabled = true;
+      } else $search_input.disabled = false;
       if (
         !document.body.classList.contains('reorder') &&
-        ((mod.elem.classList.contains('enabled') && !search_filters.enabled) ||
-          (mod.elem.classList.contains('disabled') &&
-            !search_filters.disabled) ||
-          !mod.tags.some((tag) => search_filters.tags.has(tag)) ||
-          ($search_input.value &&
-            !innerText(mod.elem)
-              .toLowerCase()
-              .includes($search_input.value.toLowerCase().trim())))
+        (conflictingIDs.length
+          ? !conflictingIDs.some((id) => id.includes(mod.id))
+          : (mod.elem.classList.contains('enabled') &&
+              !search_filters.enabled) ||
+            (mod.elem.classList.contains('disabled') &&
+              !search_filters.disabled) ||
+            !mod.tags.some((tag) => search_filters.tags.has(tag)) ||
+            ($search_input.value &&
+              !innerText(mod.elem)
+                .toLowerCase()
+                .includes($search_input.value.toLowerCase().trim())))
       )
         return (mod.elem.style.display = 'none');
       mod.elem.style.display = 'block';
@@ -239,7 +323,10 @@ window['__start'] = async () => {
     );
     document.querySelector('#tags').append(el);
     el.addEventListener('click', (event) => {
-      if (!document.body.classList.contains('reorder')) {
+      if (
+        !document.body.classList.contains('reorder') &&
+        !document.body.classList.contains('conflict')
+      ) {
         el.className = el.className === 'selected' ? '' : 'selected';
         onclick(el.className === 'selected');
       }
@@ -297,22 +384,6 @@ window['__start'] = async () => {
       )
       .join('');
     return parsed;
-  }
-
-  let $modified_notice;
-  function modified() {
-    if ($modified_notice) return;
-    $modified_notice = createAlert(
-      'info',
-      `changes may not fully apply until <span data-relaunch>app relaunch</span>.`
-    );
-    $modified_notice.el
-      .querySelector('[data-relaunch]')
-      .addEventListener('click', (event) => {
-        electron.remote.app.relaunch();
-        electron.remote.app.quit();
-      });
-    $modified_notice.append();
   }
 
   const file_icon = await fs.readFile(
@@ -406,11 +477,11 @@ window['__start'] = async () => {
   const $modules = document.querySelector('#modules');
 
   for (let mod of modules.loaded) {
-    for (let fonts of mod.fonts || []) {
+    for (let font of mod.fonts || []) {
       document
         .querySelector('head')
         .appendChild(
-          helpers.createElement(`<link rel="stylesheet" href="${fonts}">`)
+          helpers.createElement(`<link rel="stylesheet" href="${font}">`)
         );
     }
 
@@ -519,6 +590,7 @@ window['__start'] = async () => {
     .forEach((checkbox) =>
       checkbox.addEventListener('click', (event) => event.target.blur())
     );
+  conflicts.check();
 
   // draggable re-ordering
   const draggable = {

@@ -21,6 +21,7 @@ a flexibility update.
   normal "most recent" page).
 - new: css variables for increasing line spacing/paragraph margins.
 - new: patch the notion:// url scheme/protocol to work on linux.
+- new: menu shows theme conflicts.
 - improved: menu will now respect integrated titlebar setting.
 - improved: use keyup listeners instead of a globalShortcut for the enhancements menu toggle.
 - bugfix: removed messenger emoji set as the provider no longer supports it.
@@ -53,10 +54,12 @@ a fork of notion-deb-builder that does generate an app.asar has been created and
 
 // todo
 
-- new: menu shows theme conflicts.
+- new: a core mod option to auto-resolve theme conflicts.
 - bugfix: night shift working on macOS.
 - bugfix: windows are properly hidden/shown on macOS.
 - extension: "tweaks" = common layout changes.
+- new: a `-n` cli option.
+- improved: overwrite `app.asar.bak` if already exists.
 
 ### v0.9.1 (2020-09-26)
 

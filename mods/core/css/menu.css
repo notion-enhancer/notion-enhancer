@@ -181,7 +181,7 @@ s {
   text-decoration: underline;
 }
 
-[data-relaunch] {
+[data-action] {
   text-decoration: underline dotted;
   cursor: pointer;
 }
@@ -621,12 +621,16 @@ s {
 }
 
 .reorder #search #tags > span,
-.reorder #search #tags > span:hover {
+.reorder #search #tags > span:hover,
+.conflict #search #tags > span,
+.conflict #search #tags > span:hover {
   opacity: 0.7;
   background: var(--theme--option-background);
 }
 .reorder #search #tags > .selected,
-.reorder #search #tags > .selected:hover {
+.reorder #search #tags > .selected:hover,
+.conflict #search #tags > .selected,
+.conflict #search #tags > .selected:hover {
   background: var(--tag_color, var(--theme--option_active-background));
 }
 
