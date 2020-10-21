@@ -71,6 +71,7 @@ module.exports = {
 
                     let queue = [];
                     let $scroller = document.querySelector('.notion-frame > .notion-scroller');
+                    let top = store().top || 0;
 
                     const observer = new MutationObserver((list, observer) => {
                     if (!queue.length) requestAnimationFrame(() => process(queue));
@@ -83,13 +84,7 @@ module.exports = {
                     
                     function process(list) {
                         queue = [];
-
-                        let top = $scroller.top_distance = store().top || 0;
-                        if (top > 0 && store().percent) {
-                            let content_height = Array.from($scroller.children)
-                                .reduce((h, c) => h + c.offsetHeight, 0);
-                            $scroller.top_distance *= (content_height - $scroller.offsetHeight) / 100;
-                        }
+                        setScrollDistance();
 
                         for (let { addedNodes } of list) {
                             if (
@@ -101,14 +96,24 @@ module.exports = {
                                 $scroll.classList.add('hidden');
 
                                 $scroller = document.querySelector('.notion-frame > .notion-scroller');
+                                setScrollDistance();
                                 
                                 $scroller.addEventListener('scroll', (event) => {
-                                    if (!$scroller.top_distance || Math.ceil(event.target.scrollTop) < $scroller.top_distance)
+                                    if (Math.ceil(event.target.scrollTop) < $scroller.top_distance)
                                         $scroll.classList.add('hidden');
                                     else
                                         $scroll.classList.remove('hidden');
                                 });
                             }
+                        }
+                    }
+
+                    function setScrollDistance() {
+                        $scroller.top_distance = top;
+                        if (top > 0 && store().percent) {
+                            let content_height = Array.from($scroller.children)
+                            .reduce((h, c) => h + c.offsetHeight, 0);
+                            $scroller.top_distance *= (content_height - $scroller.offsetHeight) / 100;
                         }
                     }
                 }
