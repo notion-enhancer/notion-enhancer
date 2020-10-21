@@ -49,6 +49,7 @@ a flexibility update.
 - theme: "dracula" = a theme based on the popular dracula color palette
   originally by zeno rocha and friends.
 - extension: "tabs" = have multiple notion pages open in a single window.
+- extension: "scroll to top" = add an arrow above the help button to scroll back to the top of a page.
 
 a fork of notion-deb-builder that does generate an app.asar has been created and is once again supported.
 
