@@ -15,6 +15,12 @@ module.exports = {
   author: 'dragonwocky',
   options: [
     {
+      key: 'autoresolve',
+      label: 'auto-resolve theme conflicts',
+      type: 'toggle',
+      value: false,
+    },
+    {
       key: 'openhidden',
       label: 'hide app on open',
       type: 'toggle',
