@@ -542,6 +542,27 @@ window['__start'] = async () => {
         ].enabled
           ? 'enabled'
           : 'disabled';
+        if (
+          $enable.checked &&
+          coreStore().autoresolve &&
+          mod.tags.includes('theme')
+        ) {
+          modules.loaded.forEach((other) => {
+            const $other_enable = other.elem.querySelector(
+              `#enable_${other.id}`
+            );
+            if (
+              other !== mod &&
+              $other_enable &&
+              $other_enable.checked &&
+              other.tags.includes('theme')
+            ) {
+              for (let mode of ['dark', 'light'])
+                if (other.tags.includes(mode) && mod.tags.includes(mode))
+                  $other_enable.click();
+            }
+          });
+        }
         search();
         modified();
       });
