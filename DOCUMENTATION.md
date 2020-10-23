@@ -51,6 +51,7 @@ module.exports = {
   options?: Array<{
     key: String,
     label: String,
+    description?: String,
     type: String in ['toggle', 'select', 'input', 'file'],
     value: Boolean or Array<String> or String or Number or null
   }>,
@@ -94,13 +95,14 @@ if you'd rather customise this, pass this object:
 
 #### options
 
-| key        | value                                                                                    | type              |
-| ---------- | ---------------------------------------------------------------------------------------- | ----------------- |
-| key        | **required:** key to save value to the mod `store`                                       | _string_          |
-| label      | **required:** short description/name of option to be shown in menu                       | _string_          |
-| type       | **required:** input type (see below)                                                     | _string_          |
-| extensions | **optional:** allowed file extensions (only use with a file option), e.g. `['js', 'ts']` | _array\<string\>_ |
-| value      | **optional:** default or possible value/s for option                                     | see below         |
+| key         | value                                                                                    | type              |
+| ----------- | ---------------------------------------------------------------------------------------- | ----------------- |
+| key         | **required:** key to save value to the mod `store`                                       | _string_          |
+| label       | **required:** short description/name of option to be shown in menu                       | _string_          |
+| description | **optional:** extended information to be shown on hover                                  | _string_          |
+| type        | **required:** input type (see below)                                                     | _string_          |
+| extensions  | **optional:** allowed file extensions (only use with a file option), e.g. `['js', 'ts']` | _array\<string\>_ |
+| value       | **optional:** default or possible value/s for option                                     | see below         |
 
 | type   | value                |
 | ------ | -------------------- |

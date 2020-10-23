@@ -46,7 +46,7 @@ module.exports = {
           return readable;
         },
         questionBubble = fs
-          .readFileSync(path.resolve(`${__dirname}/question.svg`))
+          .readFileSync(path.resolve(`${__dirname}/../core/icons/question.svg`))
           .toString();
 
       document.addEventListener('readystatechange', (event) => {

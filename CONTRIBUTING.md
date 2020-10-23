@@ -49,7 +49,7 @@ modules are either **extensions** or **themes**.
 each module is separately versioned, following the [semver](https://semver.org/) scheme.
 depending on the content and scale of a contribution, it may constitute an update on its own or may be merged into a larger update.
 
-to keep a consistent informative code style it is preferred to name variables with
+to keep a consistent & informative code style it is preferred to name variables with
 `snake_case`, functions/methods with `camelCase`, and classes with `PascalCase`.
 if a variable is a reference to a DOM element, it may be helpful to prefix it with a `$`.
 

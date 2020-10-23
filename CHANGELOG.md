@@ -26,6 +26,7 @@ a flexibility update.
 - improved: menu will now respect integrated titlebar setting.
 - improved: use keyup listeners instead of a globalShortcut for the enhancements menu toggle.
 - improved: overwrite `app.asar.bak` if already exists (e.g. for app updates).
+- improved: additional menu option descriptions on hover.
 - bugfix: removed messenger emoji set as the provider no longer supports it.
 - bugfix: remove shadow around light mode board headers
   \+ minor text colour fixes for night shift theming.
@@ -60,7 +61,6 @@ a fork of notion-deb-builder that does generate an app.asar has been created and
 - bugfix: night shift working on macOS.
 - bugfix: windows are properly hidden/shown on macOS.
 - extension: "tweaks" = common style/layout changes.
-- improved: additionally menu item descriptions on hover.
 
 ### v0.9.1 (2020-09-26)
 
