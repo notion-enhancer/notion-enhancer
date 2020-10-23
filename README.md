@@ -91,6 +91,7 @@ For more info, run any command with the `--help` flag:
 
 Options:
   -y, --yes      : skip prompts (may overwrite data)
+  -n, --no       : skip prompts (may cause failures)
   -d, --dev      : show detailed error messages (not recommended)
   -h, --help     : display usage information
   -v, --version  : display version number
