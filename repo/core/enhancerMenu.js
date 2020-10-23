@@ -271,10 +271,13 @@ window['__start'] = async () => {
     let text = '';
     for (let $node of elem.childNodes) {
       if ($node.nodeType === 3) text += $node.textContent;
-      if ($node.nodeType === 1)
+      if ($node.nodeType === 1) {
+        if ($node.getAttribute('data-tooltip'))
+          text += $node.getAttribute('data-tooltip');
         text += ['text', 'number'].includes($node.type)
           ? $node.value
           : innerText($node);
+      }
     }
     return text;
   }
@@ -387,24 +390,35 @@ window['__start'] = async () => {
   }
 
   const file_icon = await fs.readFile(
-    path.resolve(`${__dirname}/icons/file.svg`)
-  );
+      path.resolve(`${__dirname}/icons/file.svg`)
+    ),
+    question_icon = (
+      await fs.readFile(path.resolve(`${__dirname}/icons/question.svg`))
+    ).toString();
   function createOption(opt, id) {
     let $opt;
+    const description = opt.description
+      ? question_icon.replace(
+          '<svg',
+          `<svg data-tooltip="${opt.description.replace(/"/g, '&quot;')}"`
+        )
+      : '';
     switch (opt.type) {
       case 'toggle':
         $opt = `
           <input type="checkbox" id="${opt.type}_${id}--${opt.key}"
           ${store(id, { [opt.key]: opt.value })[opt.key] ? 'checked' : ''}/>
           <label for="${opt.type}_${id}--${opt.key}">
-            <span class="name">${opt.label}</span>
+            <span class="name">${opt.label}${description}</span>
             <span class="switch"><span class="dot"></span></span>
           </label>
         `;
         break;
       case 'select':
         $opt = `
-          <label for="${opt.type}_${id}--${opt.key}">${opt.label}</label>
+          <label for="${opt.type}_${id}--${opt.key}">${
+          opt.label
+        }${description}</label>
           <select id="${opt.type}_${id}--${opt.key}">
             ${opt.value
               .map((val) => `<option value="${val}">${val}</option>`)
@@ -414,7 +428,9 @@ window['__start'] = async () => {
         break;
       case 'input':
         $opt = `
-          <label for="${opt.type}_${id}--${opt.key}">${opt.label}</label>
+          <label for="${opt.type}_${id}--${opt.key}">${
+          opt.label
+        }${description}</label>
           <input type="${typeof value === 'number' ? 'number' : 'text'}" id="${
           opt.type
         }_${id}--${opt.key}">
@@ -422,7 +438,7 @@ window['__start'] = async () => {
         break;
       case 'color':
         $opt = `
-          <label for="${opt.type}_${id}--${opt.key}">${opt.label}</label>
+          <label for="${opt.type}_${id}--${opt.key}">${opt.label}${description}</label>
           <input type="button" id="${opt.type}_${id}--${opt.key}">
         `;
         break;
@@ -438,7 +454,7 @@ window['__start'] = async () => {
           }>
           <label for="${opt.type}_${id}--${opt.key}">
             <span class="label">
-              <span class="name">${opt.label}</span>
+              <span class="name">${opt.label}${description}</span>
               <button class="clear"></button>
             </span>
             <span class="choose">
@@ -611,6 +627,25 @@ window['__start'] = async () => {
     .forEach((checkbox) =>
       checkbox.addEventListener('click', (event) => event.target.blur())
     );
+  const $tooltip = document.querySelector('#tooltip');
+  document.querySelectorAll('[data-tooltip]').forEach((el) => {
+    el.addEventListener('mouseenter', (e) => {
+      $tooltip.innerText = el.getAttribute('data-tooltip');
+      $tooltip.classList.add('active');
+    });
+    el.addEventListener('mouseover', (e) => {
+      $tooltip.style.top = e.clientY - $tooltip.clientHeight + 'px';
+      $tooltip.style.left =
+        e.clientX < window.innerWidth / 2 ? e.clientX + 'px' : '';
+      $tooltip.style.right =
+        e.clientX > window.innerWidth / 2
+          ? window.innerWidth - e.clientX + 'px'
+          : '';
+    });
+    el.addEventListener('mouseleave', (e) =>
+      $tooltip.classList.remove('active')
+    );
+  });
   conflicts.check();
 
   // draggable re-ordering
