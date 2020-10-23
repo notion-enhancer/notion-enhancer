@@ -36,7 +36,7 @@ a flexibility update.
 - bugfix: toc blocks can have text colours.
 - bugfix: bypass preview extension works with the back/forward keyboard shortcuts.
 - bugfix: (maybe) fix csp issues under proxy.
-- bugfix: remove focus mode footer from neutral theme.
+- bugfix: remove focus mode footer from neutral theme + better contrast in calendar views.
 - bugfix: improvements to the colour theming, particularly to make real- and fake-light/dark
   modes (as applied by the night shift extension) look consistent.
   relevant variables (assuming all are prefixed by `--theme_[dark|light]--`):
