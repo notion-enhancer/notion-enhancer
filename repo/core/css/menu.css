@@ -438,6 +438,7 @@ svg[data-tooltip] {
 }
 .toggle input[type='checkbox'] + label .name {
   flex-basis: calc(100% - 2.25em);
+  margin-right: 0.75em;
 }
 .toggle input[type='checkbox'] + label .switch {
   position: relative;
