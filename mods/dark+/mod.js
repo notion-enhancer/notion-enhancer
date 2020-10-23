@@ -11,7 +11,7 @@ module.exports = {
   tags: ['theme', 'dark'],
   name: 'dark+',
   desc: 'a vivid-colour near-black theme.',
-  version: '0.1.5',
+  version: '0.1.6',
   author: 'dragonwocky',
   options: [
     {

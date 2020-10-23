@@ -9,7 +9,11 @@
 const url = require('url'),
   path = require('path'),
   electron = require('electron'),
-  { __notion } = require('../../pkg/helpers.js'),
+  {
+    __notion,
+    getEnhancements,
+    createElement,
+  } = require('../../pkg/helpers.js'),
   config = require(`${__notion}/app/config.js`),
   constants = require(`${__notion}/app/shared/constants.js`),
   notion_intl = require(`${__notion}/app/shared/notion-intl/index.js`),
@@ -968,6 +972,16 @@ module.exports = (store, __exports) => {
 
     window['__start'] = () => {
       document.head.innerHTML += `<link rel="stylesheet" href="${__dirname}/css/tabs.css" />`;
+      const modules = getEnhancements();
+      for (let mod of modules.loaded) {
+        for (let font of mod.fonts || []) {
+          document
+            .querySelector('head')
+            .appendChild(
+              createElement(`<link rel="stylesheet" href="${font}">`)
+            );
+        }
+      }
 
       // open menu on hotkey toggle
       document.addEventListener('keyup', (event) => {

@@ -21,6 +21,7 @@ a flexibility update.
   normal "most recent" page).
 - new: css variables for increasing line spacing/paragraph margins.
 - new: patch the notion:// url scheme/protocol to work on linux.
+- new: menu shows theme conflicts + a core mod option to auto-resolve theme conflicts.
 - improved: menu will now respect integrated titlebar setting.
 - improved: use keyup listeners instead of a globalShortcut for the enhancements menu toggle.
 - bugfix: removed messenger emoji set as the provider no longer supports it.
@@ -41,22 +42,25 @@ a flexibility update.
 - bugfix: removed typo in variable name for brown text.
 - bugfix: primary-colour text (mainly in "add a \_" popups) is now properly themed.
 - bugfix: right-to-left extension applies to text in columns.
+- bugfix: block text colour applies to text with backgrounds.
+- bugfix: font applied to wrong mode with littlepig dark.
 - tweak: sticky table/list rows.
 - theme: "material ocean" = an oceanic colour palette.
 - theme: "dracula" = a theme based on the popular dracula color palette
   originally by zeno rocha and friends.
 - extension: "tabs" = have multiple notion pages open in a single window.
+- extension: "scroll to top" = add an arrow above the help button to scroll back to the top of a page.
 
 a fork of notion-deb-builder that does generate an app.asar has been created and is once again supported.
 
 // todo
 
-- new: menu shows theme conflicts.
-- improved: default option for showing/hiding page properties.
 - bugfix: night shift working on macOS.
 - bugfix: windows are properly hidden/shown on macOS.
-- extension: "tweaks" = common layout changes.
-- update themes to new variables.
+- extension: "tweaks" = common style/layout changes.
+- new: a `-n` cli option.
+- improved: overwrite `app.asar.bak` if already exists.
+- improved: additionally menu item descriptions on hover.
 
 ### v0.9.1 (2020-09-26)
 

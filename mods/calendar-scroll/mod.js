@@ -14,7 +14,7 @@ module.exports = {
   name: 'calendar scroll',
   desc:
     'add a button to scroll down to the current week in fullpage/infinite-scroll calendars.',
-  version: '0.1.0',
+  version: '0.1.1',
   author: 'dragonwocky',
   hacks: {
     'renderer/preload.js'(store, __exports) {
