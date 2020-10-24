@@ -1,5 +1,5 @@
 /*
- * dracula-theme
+ * dracula
  * (c) 2020 u/mimi-shahzad
  * (c) 2020 Dracula Theme
  * under the MIT license

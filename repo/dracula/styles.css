@@ -1,6 +1,7 @@
 /*
- * dracula-theme
+ * dracula
  * (c) 2020 u/mimi-shahzad
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (c) 2020 Dracula Theme
  * under the MIT license
  */
@@ -8,7 +9,7 @@
 :root {
   --theme_dark--main: #282a36;
   --theme_dark--sidebar: #21232c;
-  --theme_dark--overlay: #282a36;
+  --theme_dark--overlay: rgba(13, 13, 14, 0.5);
   --theme_dark--dragarea: #20222b;
 
   --theme_dark--font_sans: -apple-system, BlinkMacSystemFont, 'Segoe UI',
