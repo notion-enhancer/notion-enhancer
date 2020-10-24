@@ -972,6 +972,8 @@ module.exports = (store, __exports) => {
 
     window['__start'] = () => {
       document.head.innerHTML += `<link rel="stylesheet" href="${__dirname}/css/tabs.css" />`;
+      document.body.setAttribute('data-platform', process.platform);
+
       const modules = getEnhancements();
       for (let mod of modules.loaded) {
         for (let font of mod.fonts || []) {

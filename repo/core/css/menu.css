@@ -117,6 +117,9 @@ s {
 #titlebar .window-buttons-area:empty {
   display: none;
 }
+[data-platform='darwin'] #titlebar {
+  height: 2.65em;
+}
 
 /* alerts */
 
