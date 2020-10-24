@@ -12,7 +12,7 @@ module.exports = {
   name: 'night shift',
   desc:
     'sync dark/light theme with the system (overrides normal theme setting).',
-  version: '0.1.1',
+  version: '0.1.2',
   author: 'dragonwocky',
   hacks: {
     'renderer/preload.js'(store, __exports) {
@@ -23,19 +23,22 @@ module.exports = {
           const notion_elem = document.querySelector('.notion-app-inner');
           if (!notion_elem) return;
           clearInterval(attempt_interval);
-          process([{ target: notion_elem }]);
-          const observer = new MutationObserver(process);
+          handle([{ target: notion_elem }]);
+          const observer = new MutationObserver(handle);
           observer.observe(notion_elem, {
             attributes: true,
             subtree: true,
           });
-          function process(list, observer) {
+          function handle(list, observer) {
             const mode = `notion-app-inner notion-${
               window.matchMedia('(prefers-color-scheme: dark)').matches
                 ? 'dark'
                 : 'light'
             }-theme`;
             if (notion_elem.className !== mode) notion_elem.className = mode;
+            window
+              .matchMedia('(prefers-color-scheme: dark)')
+              .addEventListener('change', handle);
           }
         }
       });

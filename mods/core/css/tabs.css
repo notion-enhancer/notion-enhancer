@@ -75,6 +75,9 @@ body,
   flex-direction: column;
 }
 
+[data-platform='darwin'] #titlebar {
+  padding-left: 4em;
+}
 #titlebar::before {
   content: '';
   position: absolute;

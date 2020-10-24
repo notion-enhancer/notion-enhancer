@@ -27,6 +27,7 @@ a flexibility update.
 - improved: use keyup listeners instead of a globalShortcut for the enhancements menu toggle.
 - improved: overwrite `app.asar.bak` if already exists (e.g. for app updates).
 - improved: additional menu option descriptions on hover.
+- improved: listen to prefers-color-scheme to better change theme in night shift.
 - bugfix: removed messenger emoji set as the provider no longer supports it.
 - bugfix: remove shadow around light mode board headers
   \+ minor text colour fixes for night shift theming.
@@ -47,6 +48,9 @@ a flexibility update.
 - bugfix: right-to-left extension applies to text in columns.
 - bugfix: block text colour applies to text with backgrounds.
 - bugfix: font applied to wrong mode with littlepig dark.
+- bugfix: keep "empty" top bar visible in the menu.
+- bugfix: set NSRequiresAquaSystemAppearance to false in /Applications/Notion.app/Contents/Info.plist
+  so system dark/light mode can be properly detected.
 - tweak: sticky table/list rows.
 - theme: "material ocean" = an oceanic colour palette.
 - theme: "dracula" = a theme based on the popular dracula color palette
@@ -61,6 +65,11 @@ a fork of notion-deb-builder that does generate an app.asar has been created and
 - bugfix: night shift working on macOS.
 - bugfix: windows are properly hidden/shown on macOS.
 - extension: "tweaks" = common style/layout changes.
+
+MACOS SPECIFIC FIXES
+
+- close to tray: perma-true
+- frameless mode: perma-false
 
 ### v0.9.1 (2020-09-26)
 

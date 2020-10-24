@@ -92,6 +92,18 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
       }
     }
 
+    // patching app properties so dark/light mode can be detected
+    if (
+      process.platform === 'darwin' &&
+      (await fs.pathExists(path.resolve(`${helpers.__notion}/../Info.plist`)))
+    ) {
+      fs.copy(
+        path.resolve(`${__dirname}/Info.plist`),
+        path.resolve(`${helpers.__notion}/../Info.plist`),
+        { overwrite: true }
+      );
+    }
+
     for await (let insertion_target of readdirIterator(
       path.resolve(`${helpers.__notion}/app`),
       {

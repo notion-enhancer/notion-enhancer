@@ -14,6 +14,8 @@ const store = require('../../pkg/store.js'),
   { toKeyEvent } = require('keyboardevent-from-electron-accelerator');
 
 window['__start'] = async () => {
+  document.body.setAttribute('data-platform', process.platform);
+
   // mod loader
   const modules = helpers.getEnhancements();
   if (modules.loaded.length)
