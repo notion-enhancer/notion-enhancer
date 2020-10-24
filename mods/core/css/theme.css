@@ -28,6 +28,7 @@
 .notion-body:not(.dark) [style*='background: rgb(223, 223, 222)'] {
   background: var(--theme--sidebar) !important;
 }
+.notion-peek-renderer,
 [style*='background: rgba(15, 15, 15, 0.6)'] {
   background: var(--theme--overlay) !important;
 }
