@@ -6,7 +6,7 @@
 
 'use strict';
 
-const helpers = require('../../pkg/helpers.js');
+const { createElement } = require('../../pkg/helpers.js');
 
 module.exports = {
   id: 'b4b0aced-2059-43bf-8d1d-ccd757ee5ebb',
@@ -40,7 +40,7 @@ module.exports = {
             document
               .querySelector('head')
               .appendChild(
-                helpers.createElement(
+                createElement(
                   `<style type="text/css">${fs.readFileSync(
                     store().css
                   )}</style>`

@@ -1,0 +1,38 @@
+/*
+ * tweaks
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * under the MIT license
+ */
+
+[data-tweaks*='[responsive_breakpoint]']
+  .notion-column_list-block
+  [style='display: flex;']
+  > div {
+  width: 100% !important;
+}
+[data-tweaks*='[responsive_breakpoint]']
+  .notion-column_list-block
+  [style='display: flex;'] {
+  flex-direction: column !important;
+}
+[data-tweaks*='[responsive_breakpoint]'] .notion-app-inner {
+  --theme_dark--page_normal-width: 100%;
+  --theme_dark--page-padding: calc(48px + env(safe-area-inset-left));
+  --theme_light--page_normal-width: 100%;
+  --theme_light--page-padding: calc(48px + env(safe-area-inset-left));
+}
+
+[data-tweaks*='[snappy_transitions]'] * {
+  animation-duration: 0s !important;
+  transition-duration: 0s !important;
+}
+
+[data-tweaks*='[hide_help]'] .notion-help-button {
+  display: none !important;
+}
+
+[data-tweaks*='[thicker_bold]']
+  .notion-page-content
+  span[style*='font-weight:600'] {
+  font-weight: 700 !important;
+}

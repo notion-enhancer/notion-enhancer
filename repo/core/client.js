@@ -79,12 +79,6 @@ module.exports = (store, __exports) => {
       return;
     clearInterval(attempt_interval);
 
-    // toggleable styles
-    if (store().smooth_scrollbars)
-      document.body.classList.add('smooth-scrollbars');
-    if (store().snappy_transitions)
-      document.body.classList.add('snappy-transitions');
-
     // frameless
     if (store().frameless && !store().tiling_mode && !tabsEnabled) {
       document.body.classList.add('frameless');
@@ -92,10 +86,6 @@ module.exports = (store, __exports) => {
       document
         .querySelector('.notion-topbar')
         .prepend(helpers.createElement('<div class="window-dragarea"></div>'));
-      document.documentElement.style.setProperty(
-        '--configured--dragarea_height',
-        `${store().dragarea_height + 2}px`
-      );
     }
 
     // window buttons

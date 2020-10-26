@@ -1071,7 +1071,7 @@ module.exports = (store, __exports) => {
             dragarea.setAttribute(
               'style',
               `${default_styles} top: 2px; height: ${
-                store().dragarea_height
+                store('cf8a7b27-5a4c-4d45-a4cb-1d2bbc9e9014').dragarea_height
               }px; left: ${event.args[0]};`
             );
           });
