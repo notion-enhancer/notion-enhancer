@@ -503,8 +503,11 @@ window['__start'] = async () => {
         );
     }
 
-    const enabled = store('mods', { [mod.id]: { enabled: false } })[mod.id]
-        .enabled,
+    const enabled =
+        mod.alwaysActive ||
+        store('mods', {
+          [mod.id]: { enabled: false },
+        })[mod.id].enabled,
       author =
         typeof mod.author === 'object'
           ? mod.author
@@ -514,14 +517,10 @@ window['__start'] = async () => {
               avatar: `https://github.com/${mod.author}.png`,
             };
     mod.elem = helpers.createElement(`
-    <section class="${
-      mod.id === '0f0bf8b6-eae6-4273-b307-8fc43f2ee082' || enabled
-        ? 'enabled'
-        : 'disabled'
-    }" id="${mod.id}">
+    <section class="${enabled ? 'enabled' : 'disabled'}" id="${mod.id}">
         <div class="meta">
         <h3 ${
-          mod.id === '0f0bf8b6-eae6-4273-b307-8fc43f2ee082'
+          mod.alwaysActive
             ? `>${mod.name}`
             : `class="toggle">
               <input type="checkbox" id="enable_${mod.id}"

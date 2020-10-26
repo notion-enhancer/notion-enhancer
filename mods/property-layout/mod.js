@@ -7,7 +7,7 @@
 
 'use strict';
 
-const helpers = require('../../pkg/helpers.js');
+const { createElement } = require('../../pkg/helpers.js');
 
 module.exports = {
   id: '4034a578-7dd3-4633-80c6-f47ac5b7b160',
@@ -42,7 +42,7 @@ module.exports = {
               'propertylayout-enhanced',
               'propertylayout-hidden'
             );
-            const toggle = helpers.createElement(
+            const toggle = createElement(
               '<button class="propertylayout-toggle" data-action="show">properties</button>'
             );
             toggle.addEventListener('click', (event) => {

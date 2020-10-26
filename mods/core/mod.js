@@ -8,6 +8,7 @@
 
 module.exports = {
   id: '0f0bf8b6-eae6-4273-b307-8fc43f2ee082',
+  alwaysActive: true,
   tags: ['core'],
   name: 'notion-enhancer core',
   desc: 'the cli, modloader, menu, & tray.',
@@ -54,30 +55,10 @@ module.exports = {
       value: true,
     },
     {
-      key: 'dragarea_height',
-      label: 'height of frameless dragarea:',
-      description: `the rectangle added at the top of a window in "integrated titlebar" mode,
-        used to drag/move the window.`,
-      type: 'input',
-      value: 15,
-    },
-    {
       key: 'tiling_mode',
       label: 'tiling window manager mode',
       description: `completely remove the close/minimise/maximise buttons -
         this is for a special type of window manager. if you don't understand it, don't use it.`,
-      type: 'toggle',
-      value: false,
-    },
-    {
-      key: 'smooth_scrollbars',
-      label: 'integrated scrollbars',
-      type: 'toggle',
-      value: true,
-    },
-    {
-      key: 'snappy_transitions',
-      label: 'snappy transitions',
       type: 'toggle',
       value: false,
     },

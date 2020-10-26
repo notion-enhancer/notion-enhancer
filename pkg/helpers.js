@@ -117,12 +117,14 @@ function getEnhancements() {
   for (let dir of modules.dirs) {
     try {
       const mod = require(`../mods/${dir}/mod.js`);
+      if (!mod.tags) mod.tags = [];
       if (
         !mod.id ||
         modules.IDs.includes(mod.id) ||
         !mod.name ||
         !mod.version ||
         !mod.author ||
+        !mod.tags.every((tag) => typeof tag === 'string') ||
         (mod.fonts && !mod.fonts.every((font) => typeof font === 'string')) ||
         (mod.options &&
           !mod.options.every((opt) =>
@@ -140,6 +142,7 @@ function getEnhancements() {
         ...mod,
         dir,
       });
+      if (!mod.tags.includes('core')) mod.alwaysActive = false;
     } catch (err) {
       // console.error(err);
       modules.invalid.push(dir);

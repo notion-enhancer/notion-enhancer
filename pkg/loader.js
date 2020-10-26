@@ -60,7 +60,7 @@ module.exports = function (__file, __exports) {
     ...modules.loaded.filter((m) => !m.tags.includes('core')).reverse(),
   ]) {
     if (
-      mod.id === '0f0bf8b6-eae6-4273-b307-8fc43f2ee082' ||
+      mod.alwaysActive ||
       store('mods', { [mod.id]: { enabled: false } })[mod.id].enabled
     ) {
       if (
@@ -91,7 +91,7 @@ module.exports = function (__file, __exports) {
           const other_mod = modules.loaded.find((m) => m.id === args[0]);
           return store(args[0], {
             ...(other_mod ? other_mod.defaults : {}),
-            ...args[1],
+            ...(args[1] || {}),
           });
         }, __exports);
       }
