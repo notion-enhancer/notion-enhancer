@@ -26,8 +26,7 @@ a flexibility update.
 - improved: additional menu option descriptions on hover.
 - improved: listen to prefers-color-scheme to better change theme in night shift.
 - bugfix: removed messenger emoji set as the provider no longer supports it.
-- bugfix: remove shadow around light mode board headers
-  \+ minor text colour fixes for night shift theming.
+- bugfix: remove shadow around light mode board headers.
 - bugfix: properly detect/respond to `EACCES`/`EBUSY` errors.
 - bugfix: night shift checks every interaction,
   will respond to system changes without any manual changes.
@@ -52,7 +51,8 @@ a flexibility update.
 - theme: "material ocean" = an oceanic colour palette.
 - theme: "dracula" = a theme based on the popular dracula color palette
   originally by zeno rocha and friends.
-- extension: "tabs" = have multiple notion pages open in a single window.
+- extension: "tabs" = have multiple notion pages open in a single window. tabs can be controlled
+  with keyboard shortcuts and dragged/reordered within/between windows.
 - extension: "scroll to top" = add an arrow above the help button to scroll back to the top of a page.
 - extension: "tweaks" = common style/layout changes. includes:
   - new: make transitions snappy/0s.

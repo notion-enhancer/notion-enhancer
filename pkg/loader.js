@@ -8,12 +8,12 @@
 
 const fs = require('fs-extra'),
   path = require('path'),
-  helpers = require('./helpers.js'),
+  { __notion, getEnhancements, createElement } = require('./helpers.js'),
   store = require('./store.js');
 
 module.exports = function (__file, __exports) {
   __file = __file
-    .slice(path.resolve(`${helpers.__notion}/app`).length + 1)
+    .slice(path.resolve(`${__notion}/app`).length + 1)
     .replace(/\\/g, '/');
 
   if (__file === 'main/security.js') {
@@ -54,47 +54,51 @@ module.exports = function (__file, __exports) {
     ]);
   }
 
-  const modules = helpers.getEnhancements();
-  for (let mod of [
+  let modules = getEnhancements();
+  modules = [
     ...modules.loaded.filter((m) => m.tags.includes('core')),
     ...modules.loaded.filter((m) => !m.tags.includes('core')).reverse(),
-  ]) {
-    if (
-      mod.alwaysActive ||
-      store('mods', { [mod.id]: { enabled: false } })[mod.id].enabled
-    ) {
-      if (
-        __file === 'renderer/preload.js' &&
-        fs.pathExistsSync(
-          path.resolve(`${__dirname}/../mods/${mod.dir}/styles.css`)
-        )
-      ) {
-        document.addEventListener('readystatechange', (event) => {
-          if (document.readyState !== 'complete') return false;
+  ];
+  if (__file === 'renderer/preload.js') {
+    document.addEventListener('readystatechange', (event) => {
+      if (document.readyState !== 'complete') return false;
+      for (let mod of modules) {
+        if (
+          (mod.alwaysActive ||
+            store('mods', { [mod.id]: { enabled: false } })[mod.id].enabled) &&
+          fs.pathExistsSync(
+            path.resolve(`${__dirname}/../mods/${mod.dir}/styles.css`)
+          )
+        ) {
           for (let rules of [
             `enhancement://${mod.dir}/styles.css`,
             ...(mod.fonts || []),
           ]) {
-            document
-              .querySelector('head')
-              .appendChild(
-                helpers.createElement(`<link rel="stylesheet" href="${rules}">`)
-              );
+            document.head.appendChild(
+              createElement(`<link rel="stylesheet" href="${rules}">`)
+            );
           }
+        }
+      }
+    });
+  }
+  for (let mod of modules) {
+    if (
+      (mod.alwaysActive ||
+        store('mods', { [mod.id]: { enabled: false } })[mod.id].enabled) &&
+      mod.hacks &&
+      mod.hacks[__file]
+    ) {
+      mod.hacks[__file]((...args) => {
+        if (!args.length) return store(mod.id, mod.defaults);
+        if (args.length === 1 && typeof args[0] === 'object')
+          return store(mod.id, { ...mod.defaults, ...args[0] });
+        const other_mod = modules.find((m) => m.id === args[0]);
+        return store(args[0], {
+          ...(other_mod ? other_mod.defaults : {}),
+          ...(args[1] || {}),
         });
-      }
-      if (mod.hacks && mod.hacks[__file]) {
-        mod.hacks[__file]((...args) => {
-          if (!args.length) return store(mod.id, mod.defaults);
-          if (args.length === 1 && typeof args[0] === 'object')
-            return store(mod.id, { ...mod.defaults, ...args[0] });
-          const other_mod = modules.loaded.find((m) => m.id === args[0]);
-          return store(args[0], {
-            ...(other_mod ? other_mod.defaults : {}),
-            ...(args[1] || {}),
-          });
-        }, __exports);
-      }
+      }, __exports);
     }
   }
 };
