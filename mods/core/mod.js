@@ -42,7 +42,7 @@ module.exports = {
     {
       key: 'close_to_tray',
       label: 'close window to the tray',
-      description: `pressing the × close button will hide the app instead of quitting it.
+      description: `pressing the × close button will hide the app instead of quitting it.\
         it can be re-shown by clicking the tray icon or using the hotkey.`,
       type: 'toggle',
       value: true,
@@ -80,9 +80,9 @@ module.exports = {
     {
       key: 'default_page',
       label: 'default page id/url:',
-      description: `every new tab/window that isn't opening a url via the notion://
-        protocol will load this page. to get a page link from within the app,
-        go to the triple-dot menu and click "copy link".
+      description: `every new tab/window that isn't opening a url via the notion://\
+        protocol will load this page. to get a page link from within the app,\
+        go to the triple-dot menu and click "copy link".\
         leave blank to just load the last page you opened.`,
       type: 'input',
       value: '',

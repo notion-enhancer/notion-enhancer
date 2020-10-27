@@ -59,6 +59,7 @@ a flexibility update.
   - new: in-page columns are disabled/wrapped and pages are wider when
     the window is narrower than 600px for improved responsiveness.
   - new: thicker bold text for better visibility.
+  - new: more readable line spacing.
   - moved: smooth scrollbars.
   - moved: change dragarea height.
   - moved: hide help.
@@ -66,8 +67,6 @@ a flexibility update.
 a fork of notion-deb-builder that does generate an app.asar has been created and is once again supported.
 
 // todo
-
-- new: more readable line spacing.
 
 MACOS SPECIFIC FIXES
 

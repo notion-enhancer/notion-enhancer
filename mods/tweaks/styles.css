@@ -36,3 +36,10 @@
   span[style*='font-weight:600'] {
   font-weight: 700 !important;
 }
+
+[data-tweaks*='[spaced_lines]'] {
+  --theme_dark--text-block_line-height: 1.65;
+  --theme_dark--text-block_margin-top: 0.75em;
+  --theme_light--text-block_line-height: 1.65;
+  --theme_light--text-block_margin-top: 0.75em;
+}
