@@ -18,7 +18,7 @@ module.exports = {
     {
       key: 'dragarea_height',
       label: 'height of frameless dragarea:',
-      description: `the rectangle added at the top of a window in "integrated titlebar" mode,
+      description: `the rectangle added at the top of a window in "integrated titlebar" mode,\
         used to drag/move the window.`,
       type: 'input',
       value: 15,
@@ -26,7 +26,7 @@ module.exports = {
     {
       key: 'responsive_breakpoint',
       label: 'width to wrap columns at:',
-      description: `the size in pixels below which in-page columns are resized to appear
+      description: `the size in pixels below which in-page columns are resized to appear\
         full width so content isn't squished.`,
       type: 'input',
       value: 600,
@@ -49,6 +49,12 @@ module.exports = {
       key: 'thicker_bold',
       label: 'thicker bold text',
       type: 'toggle',
+      value: true,
+    },
+    {
+      key: 'spaced_lines',
+      label: 'more readable line spacing',
+      type: 'toggle',
       value: false,
     },
     {
@@ -65,8 +71,9 @@ module.exports = {
         document.body.dataset.tweaks = [
           'smooth_scrollbars',
           'snappy_transitions',
-          'hide_help',
           'thicker_bold',
+          'spaced_lines',
+          'hide_help',
         ]
           .filter((tweak) => store()[tweak])
           .map((tweak) => `[${tweak}]`)

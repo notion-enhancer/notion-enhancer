@@ -139,7 +139,7 @@ window['__start'] = async () => {
       !(event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey;
     if (
       meta &&
-      document.activeElement.parentElement.id === 'tags' &&
+      document.activeElement.getAttribute('tabindex') === '0' &&
       event.key === 'Enter'
     )
       document.activeElement.click();
@@ -228,7 +228,7 @@ window['__start'] = async () => {
               .map((mod) => `<b>${mod.name}</b>`)
               .join(
                 ', '
-              )}. <br> resolve or <span data-action="dismiss">dismiss</span> to continue.`
+              )}. <br> resolve or <span data-action="dismiss" tabindex="0">dismiss</span> to continue.`
           );
           alert.el
             .querySelector('[data-action="dismiss"]')
@@ -248,7 +248,7 @@ window['__start'] = async () => {
     if (conflicts.relaunch) return;
     conflicts.relaunch = createAlert(
       'info',
-      'changes may not fully apply until <span data-action="relaunch">app relaunch</span>.'
+      'changes may not fully apply until <span data-action="relaunch" tabindex="0">app relaunch</span>.'
     );
     conflicts.relaunch.el
       .querySelector('[data-action="relaunch"]')
