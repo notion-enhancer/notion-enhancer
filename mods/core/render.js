@@ -744,7 +744,11 @@ module.exports = (store, __exports) => {
                       this.views.tabs[id] = $tab;
                     },
                   },
-                  React.createElement('span', {}, title),
+                  React.createElement('span', {
+                    dangerouslySetInnerHTML: {
+                      __html: title,
+                    },
+                  }),
                   React.createElement(
                     'span',
                     {
@@ -972,6 +976,8 @@ module.exports = (store, __exports) => {
 
     window['__start'] = () => {
       document.head.innerHTML += `<link rel="stylesheet" href="${__dirname}/css/tabs.css" />`;
+      document.body.setAttribute('data-platform', process.platform);
+
       const modules = getEnhancements();
       for (let mod of modules.loaded) {
         for (let font of mod.fonts || []) {
@@ -1069,7 +1075,7 @@ module.exports = (store, __exports) => {
             dragarea.setAttribute(
               'style',
               `${default_styles} top: 2px; height: ${
-                store().dragarea_height
+                store('cf8a7b27-5a4c-4d45-a4cb-1d2bbc9e9014').dragarea_height
               }px; left: ${event.args[0]};`
             );
           });

@@ -79,12 +79,6 @@ module.exports = (store, __exports) => {
       return;
     clearInterval(attempt_interval);
 
-    // toggleable styles
-    if (store().smooth_scrollbars)
-      document.body.classList.add('smooth-scrollbars');
-    if (store().snappy_transitions)
-      document.body.classList.add('snappy-transitions');
-
     // frameless
     if (store().frameless && !store().tiling_mode && !tabsEnabled) {
       document.body.classList.add('frameless');
@@ -92,10 +86,6 @@ module.exports = (store, __exports) => {
       document
         .querySelector('.notion-topbar')
         .prepend(helpers.createElement('<div class="window-dragarea"></div>'));
-      document.documentElement.style.setProperty(
-        '--configured--dragarea_height',
-        `${store().dragarea_height + 2}px`
-      );
     }
 
     // window buttons
@@ -156,8 +146,10 @@ module.exports = (store, __exports) => {
           '--theme--sidebar',
           '--theme--overlay',
           '--theme--dragarea',
+          '--theme--box-shadow_strong',
           '--theme--font_sans',
           '--theme--font_code',
+          '--theme--font_label-size',
           '--theme--scrollbar',
           '--theme--scrollbar-border',
           '--theme--scrollbar_hover',
@@ -224,7 +216,38 @@ module.exports = (store, __exports) => {
 
     if (tabsEnabled) {
       let tab_title = '';
+      const TITLE_OBSERVER = new MutationObserver(() =>
+        __electronApi.setWindowTitle('notion.so')
+      );
       __electronApi.setWindowTitle = (title) => {
+        const $container =
+            document.querySelector(
+              '.notion-peek-renderer [style="padding-left: calc(126px + env(safe-area-inset-left)); padding-right: calc(126px + env(safe-area-inset-right)); max-width: 100%; width: 100%;"]'
+            ) ||
+            document.querySelector(
+              '.notion-frame [style="padding-left: calc(96px + env(safe-area-inset-left)); padding-right: calc(96px + env(safe-area-inset-right)); max-width: 100%; margin-bottom: 8px; width: 100%;"]'
+            ) ||
+            document.querySelector('.notion-peak-renderer') ||
+            document.querySelector('.notion-frame'),
+          icon = $container.querySelector(
+            '.notion-record-icon [aria-label]:not([src^="data:"])'
+          ),
+          text = $container.querySelector('[placeholder="Untitled"]');
+        title =
+          (icon ? `<img src="${icon.getAttribute('src')}">` : '') +
+          (text
+            ? text.innerText
+            : [
+                setTimeout(() => __electronApi.setWindowTitle(title), 250),
+                title,
+              ][1]);
+        TITLE_OBSERVER.disconnect();
+        TITLE_OBSERVER.observe($container, {
+          childList: true,
+          subtree: true,
+          characterData: true,
+          attributes: true,
+        });
         if (tab_title !== title) {
           tab_title = title;
           electron.ipcRenderer.sendToHost('enhancer:set-tab-title', title);

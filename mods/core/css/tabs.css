@@ -75,6 +75,9 @@ body,
   flex-direction: column;
 }
 
+[data-platform='darwin'] #titlebar {
+  padding-left: 4em;
+}
 #titlebar::before {
   content: '';
   position: absolute;
@@ -126,6 +129,10 @@ body,
   text-align: left;
   border-bottom: 4px solid var(--theme--table-border);
   opacity: 0.8;
+}
+#tabs .tab img {
+  width: 1em;
+  margin: 0 0.5em -3px 0.1em;
 }
 #tabs .tab:first-child {
   margin-top: 0.5em;

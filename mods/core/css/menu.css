@@ -117,6 +117,9 @@ s {
 #titlebar .window-buttons-area:empty {
   display: none;
 }
+[data-platform='darwin'] #titlebar {
+  height: 2.65em;
+}
 
 /* alerts */
 
@@ -342,6 +345,29 @@ s {
   margin-bottom: 0.5em;
 }
 
+svg[data-tooltip] {
+  height: 1em;
+  width: 1em;
+  margin: 0 0 -2px 1px;
+  color: var(--theme--text_ui_info);
+}
+#tooltip {
+  pointer-events: none;
+  position: absolute;
+  padding: 0.25em 0.5em 0.5em 0.5em;
+  margin: 0 1em;
+  border-radius: 3px;
+  box-shadow: var(--theme--box-shadow_strong);
+  border-right-width: 1px;
+  font-size: calc(var(--theme--font_label-size) * 0.8);
+  background: var(--theme--interactive_hover);
+  opacity: 0;
+  transition: opacity 120ms ease-in;
+}
+#tooltip.active {
+  opacity: 1;
+}
+
 .toggle *,
 .input *,
 .select *,
@@ -415,6 +441,7 @@ s {
 }
 .toggle input[type='checkbox'] + label .name {
   flex-basis: calc(100% - 2.25em);
+  margin-right: 0.75em;
 }
 .toggle input[type='checkbox'] + label .switch {
   position: relative;

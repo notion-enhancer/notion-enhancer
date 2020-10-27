@@ -14,6 +14,8 @@ const store = require('../../pkg/store.js'),
   { toKeyEvent } = require('keyboardevent-from-electron-accelerator');
 
 window['__start'] = async () => {
+  document.body.setAttribute('data-platform', process.platform);
+
   // mod loader
   const modules = helpers.getEnhancements();
   if (modules.loaded.length)
@@ -137,7 +139,7 @@ window['__start'] = async () => {
       !(event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey;
     if (
       meta &&
-      document.activeElement.parentElement.id === 'tags' &&
+      document.activeElement.getAttribute('tabindex') === '0' &&
       event.key === 'Enter'
     )
       document.activeElement.click();
@@ -226,7 +228,7 @@ window['__start'] = async () => {
               .map((mod) => `<b>${mod.name}</b>`)
               .join(
                 ', '
-              )}. <br> resolve or <span data-action="dismiss">dismiss</span> to continue.`
+              )}. <br> resolve or <span data-action="dismiss" tabindex="0">dismiss</span> to continue.`
           );
           alert.el
             .querySelector('[data-action="dismiss"]')
@@ -246,7 +248,7 @@ window['__start'] = async () => {
     if (conflicts.relaunch) return;
     conflicts.relaunch = createAlert(
       'info',
-      'changes may not fully apply until <span data-action="relaunch">app relaunch</span>.'
+      'changes may not fully apply until <span data-action="relaunch" tabindex="0">app relaunch</span>.'
     );
     conflicts.relaunch.el
       .querySelector('[data-action="relaunch"]')
@@ -271,10 +273,13 @@ window['__start'] = async () => {
     let text = '';
     for (let $node of elem.childNodes) {
       if ($node.nodeType === 3) text += $node.textContent;
-      if ($node.nodeType === 1)
+      if ($node.nodeType === 1) {
+        if ($node.getAttribute('data-tooltip'))
+          text += $node.getAttribute('data-tooltip');
         text += ['text', 'number'].includes($node.type)
           ? $node.value
           : innerText($node);
+      }
     }
     return text;
   }
@@ -387,24 +392,35 @@ window['__start'] = async () => {
   }
 
   const file_icon = await fs.readFile(
-    path.resolve(`${__dirname}/icons/file.svg`)
-  );
+      path.resolve(`${__dirname}/icons/file.svg`)
+    ),
+    question_icon = (
+      await fs.readFile(path.resolve(`${__dirname}/icons/question.svg`))
+    ).toString();
   function createOption(opt, id) {
     let $opt;
+    const description = opt.description
+      ? question_icon.replace(
+          '<svg',
+          `<svg data-tooltip="${opt.description.replace(/"/g, '&quot;')}"`
+        )
+      : '';
     switch (opt.type) {
       case 'toggle':
         $opt = `
           <input type="checkbox" id="${opt.type}_${id}--${opt.key}"
           ${store(id, { [opt.key]: opt.value })[opt.key] ? 'checked' : ''}/>
           <label for="${opt.type}_${id}--${opt.key}">
-            <span class="name">${opt.label}</span>
+            <span class="name">${opt.label}${description}</span>
             <span class="switch"><span class="dot"></span></span>
           </label>
         `;
         break;
       case 'select':
         $opt = `
-          <label for="${opt.type}_${id}--${opt.key}">${opt.label}</label>
+          <label for="${opt.type}_${id}--${opt.key}">${
+          opt.label
+        }${description}</label>
           <select id="${opt.type}_${id}--${opt.key}">
             ${opt.value
               .map((val) => `<option value="${val}">${val}</option>`)
@@ -414,7 +430,9 @@ window['__start'] = async () => {
         break;
       case 'input':
         $opt = `
-          <label for="${opt.type}_${id}--${opt.key}">${opt.label}</label>
+          <label for="${opt.type}_${id}--${opt.key}">${
+          opt.label
+        }${description}</label>
           <input type="${typeof value === 'number' ? 'number' : 'text'}" id="${
           opt.type
         }_${id}--${opt.key}">
@@ -422,7 +440,7 @@ window['__start'] = async () => {
         break;
       case 'color':
         $opt = `
-          <label for="${opt.type}_${id}--${opt.key}">${opt.label}</label>
+          <label for="${opt.type}_${id}--${opt.key}">${opt.label}${description}</label>
           <input type="button" id="${opt.type}_${id}--${opt.key}">
         `;
         break;
@@ -438,7 +456,7 @@ window['__start'] = async () => {
           }>
           <label for="${opt.type}_${id}--${opt.key}">
             <span class="label">
-              <span class="name">${opt.label}</span>
+              <span class="name">${opt.label}${description}</span>
               <button class="clear"></button>
             </span>
             <span class="choose">
@@ -485,8 +503,11 @@ window['__start'] = async () => {
         );
     }
 
-    const enabled = store('mods', { [mod.id]: { enabled: false } })[mod.id]
-        .enabled,
+    const enabled =
+        mod.alwaysActive ||
+        store('mods', {
+          [mod.id]: { enabled: false },
+        })[mod.id].enabled,
       author =
         typeof mod.author === 'object'
           ? mod.author
@@ -496,14 +517,10 @@ window['__start'] = async () => {
               avatar: `https://github.com/${mod.author}.png`,
             };
     mod.elem = helpers.createElement(`
-    <section class="${
-      mod.id === '0f0bf8b6-eae6-4273-b307-8fc43f2ee082' || enabled
-        ? 'enabled'
-        : 'disabled'
-    }" id="${mod.id}">
+    <section class="${enabled ? 'enabled' : 'disabled'}" id="${mod.id}">
         <div class="meta">
         <h3 ${
-          mod.id === '0f0bf8b6-eae6-4273-b307-8fc43f2ee082'
+          mod.alwaysActive
             ? `>${mod.name}`
             : `class="toggle">
               <input type="checkbox" id="enable_${mod.id}"
@@ -611,6 +628,25 @@ window['__start'] = async () => {
     .forEach((checkbox) =>
       checkbox.addEventListener('click', (event) => event.target.blur())
     );
+  const $tooltip = document.querySelector('#tooltip');
+  document.querySelectorAll('[data-tooltip]').forEach((el) => {
+    el.addEventListener('mouseenter', (e) => {
+      $tooltip.innerText = el.getAttribute('data-tooltip');
+      $tooltip.classList.add('active');
+    });
+    el.addEventListener('mouseover', (e) => {
+      $tooltip.style.top = e.clientY - $tooltip.clientHeight + 'px';
+      $tooltip.style.left =
+        e.clientX < window.innerWidth / 2 ? e.clientX + 'px' : '';
+      $tooltip.style.right =
+        e.clientX > window.innerWidth / 2
+          ? window.innerWidth - e.clientX + 'px'
+          : '';
+    });
+    el.addEventListener('mouseleave', (e) =>
+      $tooltip.classList.remove('active')
+    );
+  });
   conflicts.check();
 
   // draggable re-ordering

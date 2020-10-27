@@ -21,7 +21,7 @@
 
   --theme_dark--main: var(--ocean-main);
   --theme_dark--sidebar: var(--ocean-sec);
-  --theme_dark--overlay: var(--ocean-sec);
+  --theme_dark--overlay: rgba(0, 1, 10, 0.5);
   --theme_dark--dragarea: var(--ocean-sec);
 
   --theme_dark--scrollbar: var(--ocean-sec);

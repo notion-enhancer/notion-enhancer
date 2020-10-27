@@ -20,6 +20,7 @@ const cli = require('cac')('notion-enhancer'),
 // ### error ###
 
 cli.option('-y, --yes', ': skip prompts (may overwrite data)');
+cli.option('-n, --no', ': skip prompts (may cause failures)');
 cli.option('-d, --dev', ': show detailed error messages');
 
 cli
@@ -27,7 +28,7 @@ cli
   .action(async (options) => {
     console.info('=== NOTION ENHANCEMENT LOG ===');
     await require('./pkg/apply.js')({
-      overwrite_version: options.yes,
+      overwrite_version: options.yes ? 'y' : options.no ? 'n' : undefined,
       friendly_errors: !options.dev,
     });
     console.info('=== END OF LOG ===');
@@ -37,8 +38,7 @@ cli
   .action(async (options) => {
     console.info('=== NOTION RESTORATION LOG ===');
     await require('./pkg/remove.js')({
-      overwrite_asar: options.yes,
-      delete_data: options.yes,
+      delete_data: options.yes ? 'y' : options.no ? 'n' : undefined,
       friendly_errors: !options.dev,
     });
     console.info('=== END OF LOG ===');

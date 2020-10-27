@@ -24,7 +24,7 @@
   /* Main */
   --theme_dark--main: var(--cola-main);
   --theme_dark--sidebar: var(--cola-sec);
-  --theme_dark--overlay: var(--cola-sec);
+  --theme_dark--overlay: rgba(29, 9, 25, 0.5);
   --theme_dark--dragarea: #210a1c;
   --theme_dark--box-shadow: rgba(20, 0, 16, 0.2) 0px 0px 0px 1px,
     rgba(20, 0, 16, 0.2) 0px 2px 4px;

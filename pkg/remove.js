@@ -18,11 +18,7 @@ const fs = require('fs-extra'),
 //  ~~ exit
 // ### error ###
 
-module.exports = async function ({
-  overwrite_asar,
-  delete_data,
-  friendly_errors,
-} = {}) {
+module.exports = async function ({ delete_data, friendly_errors } = {}) {
   try {
     // extracted asar: modded
     const app_folder = path.resolve(`${helpers.__notion}/app`);
@@ -38,50 +34,30 @@ module.exports = async function ({
 
       if (await fs.pathExists(path.resolve(`${helpers.__notion}/app.asar`))) {
         console.warn(' * app.asar already exists!');
-        if (overwrite_asar === undefined) {
-          do {
-            process.stdout.write(' > overwrite? [Y/n]: ');
-            overwrite_asar = await helpers.readline();
-          } while (
-            overwrite_asar &&
-            !['y', 'n'].includes(overwrite_asar.toLowerCase())
-          );
-          overwrite_asar =
-            !overwrite_asar || overwrite_asar.toLowerCase() === 'y';
-        }
-        console.info(
-          overwrite_asar
-            ? ' -- overwriting app.asar with app.asar.bak'
-            : ' -- removing app.asar.bak'
-        );
-      }
-
-      await (overwrite_asar || overwrite_asar === undefined
-        ? fs.move(asar_bak, path.resolve(`${helpers.__notion}/app.asar`), {
-            overwrite: true,
-          })
-        : fs.remove(asar_bak));
+        console.info(' -- removing app.asar.bak');
+        fs.remove(asar_bak);
+      } else
+        await fs.move(asar_bak, path.resolve(`${helpers.__notion}/app.asar`));
     } else console.warn(` * ${asar_bak} not found: step skipped.`);
 
     // cleaning data folder: ~/.notion-enhancer
     if (await fs.pathExists(helpers.__data)) {
       console.info(` ...data folder ${helpers.__data} found.`);
-      if (delete_data === undefined) {
-        do {
-          process.stdout.write(' > delete? [Y/n]: ');
-          delete_data = await helpers.readline();
-        } while (
-          delete_data &&
-          !['y', 'n'].includes(delete_data.toLowerCase())
-        );
-        delete_data = !delete_data || delete_data.toLowerCase() === 'y';
+      const valid = () =>
+        typeof delete_data === 'string' &&
+        ['y', 'n', ''].includes(delete_data.toLowerCase());
+      if (valid())
+        console.info(` > delete? [Y/n]: ${delete_data.toLowerCase()}`);
+      while (!valid()) {
+        process.stdout.write(' > delete? [Y/n]: ');
+        delete_data = await helpers.readline();
       }
       console.info(
-        delete_data
-          ? ` -- deleting ${helpers.__data}`
-          : ` -- keeping ${helpers.__data}`
+        delete_data.toLowerCase() === 'n'
+          ? ` -- keeping ${helpers.__data}`
+          : ` -- deleting ${helpers.__data}`
       );
-      if (delete_data) await fs.remove(helpers.__data);
+      if (delete_data.toLowerCase() !== 'n') await fs.remove(helpers.__data);
     } else console.warn(` * ${helpers.__data} not found: step skipped.`);
 
     // patching launch script target of custom wrappers

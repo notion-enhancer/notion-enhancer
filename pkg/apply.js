@@ -31,31 +31,40 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
         return true;
       case 2:
         console.warn(` * ${check_app.msg}`);
-        do {
+        const valid = () =>
+          typeof overwrite_version === 'string' &&
+          ['y', 'n', ''].includes(overwrite_version.toLowerCase());
+        if (valid()) {
+          console.info(
+            ` > overwrite? [Y/n]: ${overwrite_version.toLowerCase()}`
+          );
+        }
+        while (!valid()) {
           process.stdout.write(' > overwrite? [Y/n]: ');
           overwrite_version = await helpers.readline();
-        } while (
-          overwrite_version &&
-          !['y', 'n'].includes(overwrite_version.toLowerCase())
-        );
-        overwrite_version =
-          !overwrite_version || overwrite_version.toLowerCase() === 'y';
-        if (!overwrite_version) {
+        }
+        if (overwrite_version.toLowerCase() === 'n') {
           console.info(' ~~ keeping previous version: exiting.');
           return false;
         }
         console.info(
           ' -- removing previous enhancements before applying new version.'
         );
-        await require('./remove.js')({
-          overwrite_asar: true,
-          delete_data: false,
-        });
+        if (
+          !(await require('./remove.js')({
+            delete_data: 'n',
+            friendly_errors,
+          }))
+        ) {
+          return false;
+        }
     }
     console.info(' ...unpacking app.asar.');
-    const asar_app = path.resolve(`${helpers.__notion}/app.asar`);
+    const asar_app = path.resolve(`${helpers.__notion}/app.asar`),
+      asar_bak = path.resolve(`${helpers.__notion}/app.asar.bak`);
     extractAll(asar_app, `${path.resolve(`${helpers.__notion}/app`)}`);
-    await fs.move(asar_app, path.resolve(`${helpers.__notion}/app.asar.bak`));
+    if (await fs.pathExists(asar_bak)) fs.remove(asar_bak);
+    await fs.move(asar_app, asar_bak);
 
     // patching launch script target of custom wrappers
     if (
@@ -81,6 +90,18 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
           );
         }
       }
+    }
+
+    // patching app properties so dark/light mode can be detected
+    if (
+      process.platform === 'darwin' &&
+      (await fs.pathExists(path.resolve(`${helpers.__notion}/../Info.plist`)))
+    ) {
+      fs.copy(
+        path.resolve(`${__dirname}/Info.plist`),
+        path.resolve(`${helpers.__notion}/../Info.plist`),
+        { overwrite: true }
+      );
     }
 
     for await (let insertion_target of readdirIterator(

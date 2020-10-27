@@ -47,8 +47,7 @@
   position: absolute;
   padding: 0.25em 0.5em;
   border-radius: 3px;
-  box-shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px,
-    rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
+  box-shadow: var(--theme--box-shadow_strong);
   border-right-width: 1px;
   font-size: calc(var(--theme--font_label-size) * 0.8);
   background: var(--theme--interactive_hover);

@@ -16,41 +16,38 @@ module.exports = {
   author: 'adihd',
   hacks: {
     'renderer/preload.js'(store, __exports) {
-      document.addEventListener('readystatechange', (event) => {
-        if (document.readyState !== 'complete') return false;
-        const attempt_interval = setInterval(enhance, 500);
-        function enhance() {
-          const notion_elem = document.querySelector('.notion-frame');
-          if (!notion_elem) return;
-          clearInterval(attempt_interval);
-          process([{ target: notion_elem }]);
-          const observer = new MutationObserver(process);
-          observer.observe(notion_elem, {
-            childList: true,
-            subtree: true,
-          });
-          function process(list, observer) {
-            document
-              .querySelectorAll('.notion-collection-view-select')
-              .forEach((collection_view) => {
-                if (collection_view.innerText != 'weekly') return;
-                const days = collection_view.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(
-                    'notion-calendar-view-day'
-                  ),
-                  today = [...days].find((day) => day.style.background),
-                  height = today
-                    ? getComputedStyle(
-                        today.parentElement.parentElement
-                      ).getPropertyValue('height')
-                    : 0;
-                for (let day of days)
-                  day.parentElement.parentElement.style.height = 0;
-                if (today)
-                  today.parentElement.parentElement.style.height = height;
-              });
-          }
+      const attempt_interval = setInterval(enhance, 500);
+      function enhance() {
+        const notion_elem = document.querySelector('.notion-frame');
+        if (!notion_elem) return;
+        clearInterval(attempt_interval);
+        process([{ target: notion_elem }]);
+        const observer = new MutationObserver(process);
+        observer.observe(notion_elem, {
+          childList: true,
+          subtree: true,
+        });
+        function process(list, observer) {
+          document
+            .querySelectorAll('.notion-collection-view-select')
+            .forEach((collection_view) => {
+              if (collection_view.innerText != 'weekly') return;
+              const days = collection_view.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(
+                  'notion-calendar-view-day'
+                ),
+                today = [...days].find((day) => day.style.background),
+                height = today
+                  ? getComputedStyle(
+                      today.parentElement.parentElement
+                    ).getPropertyValue('height')
+                  : 0;
+              for (let day of days)
+                day.parentElement.parentElement.style.height = 0;
+              if (today)
+                today.parentElement.parentElement.style.height = height;
+            });
         }
-      });
+      }
     },
   },
 };

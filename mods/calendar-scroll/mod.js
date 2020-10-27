@@ -6,7 +6,7 @@
 
 'use strict';
 
-const helpers = require('../../pkg/helpers.js');
+const { createElement } = require('../../pkg/helpers.js');
 
 module.exports = {
   id: 'b1c7db33-dfee-489a-a76c-0dd66f7ed29a',
@@ -26,7 +26,7 @@ module.exports = {
           if (!notion_elem) return;
           clearInterval(attempt_interval);
 
-          const button = helpers.createElement(
+          const button = createElement(
             '<button id="calendar-scroll-to-week">Scroll</button>'
           );
           button.addEventListener('click', (event) => {

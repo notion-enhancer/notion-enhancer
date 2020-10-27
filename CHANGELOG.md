@@ -13,27 +13,27 @@ a flexibility update.
   higher up on the list = higher priority of application = loaded last in order to override others.
   (excluding the core, which though pinned to the top of the list is always loaded first so theming
   variables can be modified.)
-- new: in-page columns are disabled/wrapped and pages are wider when
-  the window is narrower than 600px for improved responsiveness.
 - new: relaunch button in tray menu.
-- new: a core mod option to make transitions snappy/0s.
 - new: a core mod option for a default page id/url (all new windows will load it instead of the
   normal "most recent" page).
 - new: css variables for increasing line spacing/paragraph margins.
 - new: patch the notion:// url scheme/protocol to work on linux.
 - new: menu shows theme conflicts + a core mod option to auto-resolve theme conflicts.
+- new: a `-n` cli option.
 - improved: menu will now respect integrated titlebar setting.
 - improved: use keyup listeners instead of a globalShortcut for the enhancements menu toggle.
+- improved: overwrite `app.asar.bak` if already exists (e.g. for app updates).
+- improved: additional menu option descriptions on hover.
+- improved: listen to prefers-color-scheme to better change theme in night shift.
 - bugfix: removed messenger emoji set as the provider no longer supports it.
-- bugfix: remove shadow around light mode board headers
-  \+ minor text colour fixes for night shift theming.
+- bugfix: remove shadow around light mode board headers.
 - bugfix: properly detect/respond to `EACCES`/`EBUSY` errors.
 - bugfix: night shift checks every interaction,
   will respond to system changes without any manual changes.
 - bugfix: toc blocks can have text colours.
 - bugfix: bypass preview extension works with the back/forward keyboard shortcuts.
 - bugfix: (maybe) fix csp issues under proxy.
-- bugfix: remove focus mode footer from neutral theme.
+- bugfix: remove focus mode footer from neutral theme + better contrast in calendar views.
 - bugfix: improvements to the colour theming, particularly to make real- and fake-light/dark
   modes (as applied by the night shift extension) look consistent.
   relevant variables (assuming all are prefixed by `--theme_[dark|light]--`):
@@ -44,23 +44,35 @@ a flexibility update.
 - bugfix: right-to-left extension applies to text in columns.
 - bugfix: block text colour applies to text with backgrounds.
 - bugfix: font applied to wrong mode with littlepig dark.
+- bugfix: keep "empty" top bar visible in the menu.
+- bugfix: set NSRequiresAquaSystemAppearance to false in /Applications/Notion.app/Contents/Info.plist
+  so system dark/light mode can be properly detected.
 - tweak: sticky table/list rows.
 - theme: "material ocean" = an oceanic colour palette.
 - theme: "dracula" = a theme based on the popular dracula color palette
   originally by zeno rocha and friends.
-- extension: "tabs" = have multiple notion pages open in a single window.
+- extension: "tabs" = have multiple notion pages open in a single window. tabs can be controlled
+  with keyboard shortcuts and dragged/reordered within/between windows.
 - extension: "scroll to top" = add an arrow above the help button to scroll back to the top of a page.
+- extension: "tweaks" = common style/layout changes. includes:
+  - new: make transitions snappy/0s.
+  - new: in-page columns are disabled/wrapped and pages are wider when
+    the window is narrower than 600px for improved responsiveness.
+  - new: thicker bold text for better visibility.
+  - new: more readable line spacing.
+  - moved: smooth scrollbars.
+  - moved: change dragarea height.
+  - moved: hide help.
 
 a fork of notion-deb-builder that does generate an app.asar has been created and is once again supported.
 
 // todo
 
-- bugfix: night shift working on macOS.
-- bugfix: windows are properly hidden/shown on macOS.
-- extension: "tweaks" = common style/layout changes.
-- new: a `-n` cli option.
-- improved: overwrite `app.asar.bak` if already exists.
-- improved: additionally menu item descriptions on hover.
+MACOS SPECIFIC FIXES
+
+- close to tray: perma-true
+- frameless mode: perma-false
+- open ext. menu hotkey not working?
 
 ### v0.9.1 (2020-09-26)
 

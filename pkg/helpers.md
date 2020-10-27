@@ -108,19 +108,23 @@ example usage:
 ```js
 console.warn(' * conflicting file found.');
 let overwrite;
-do {
+while (
+  typeof overwrite !== 'string' ||
+  !['y', 'n', ''].includes(overwrite.toLowerCase())
+) {
   // using stdout.write means that there is no newline
   // between prompt and input.
-  process.stdout.write(' > overwrite? [Y/n]: ');
-  overwrite = await helpers.readline();
+  process.stdout.write(' > delete? [Y/n]: ');
   // ask for a Y/n until a valid answer is received.
   // pressing enter without input is assumed to be a "yes".
-} while (overwrite && !['y', 'n'].includes(overwrite.toLowerCase()));
-overwrite = !overwrite || overwrite.toLowerCase() === 'y';
-if (overwrite) {
-  console.info(' -- overwriting file.');
+  overwrite = await helpers.readline();
+}
+if (overwrite.toLowerCase() === 'n') {
+  console.info(' -- keeping file: skipping step.');
+} else {
   // do stuff
-} else console.info(' -- keeping file: skipping step.');
+  console.info(' -- overwriting file.');
+}
 ```
 
 ---
