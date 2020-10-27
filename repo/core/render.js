@@ -744,7 +744,11 @@ module.exports = (store, __exports) => {
                       this.views.tabs[id] = $tab;
                     },
                   },
-                  React.createElement('span', {}, title),
+                  React.createElement('span', {
+                    dangerouslySetInnerHTML: {
+                      __html: title,
+                    },
+                  }),
                   React.createElement(
                     'span',
                     {
