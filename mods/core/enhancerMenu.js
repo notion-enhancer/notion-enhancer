@@ -587,6 +587,13 @@ window['__start'] = async () => {
     const $options = mod.elem.querySelector('.options');
     if ($options)
       for (const opt of mod.options) {
+        if (
+          Object.keys(opt.platformOverwrite || {}).some(
+            (platform) => process.platform === platform
+          )
+        ) {
+          continue;
+        }
         const $opt = createOption(opt, mod.id);
         if (opt.type === 'color') {
           const $preview = $opt.querySelector('input');

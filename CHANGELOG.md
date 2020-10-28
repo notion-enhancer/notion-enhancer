@@ -25,6 +25,7 @@ a flexibility update.
 - improved: overwrite `app.asar.bak` if already exists (e.g. for app updates).
 - improved: additional menu option descriptions on hover.
 - improved: listen to prefers-color-scheme to better change theme in night shift.
+- improved: platform-specific option overrides for features not required on macOS.
 - bugfix: removed messenger emoji set as the provider no longer supports it.
 - bugfix: remove shadow around light mode board headers.
 - bugfix: properly detect/respond to `EACCES`/`EBUSY` errors.

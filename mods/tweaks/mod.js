@@ -22,6 +22,9 @@ module.exports = {
         used to drag/move the window.`,
       type: 'input',
       value: 15,
+      platformOverwrite: {
+        darwin: 0,
+      },
     },
     {
       key: 'responsive_breakpoint',

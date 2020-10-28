@@ -133,10 +133,18 @@ function getEnhancements() {
       )
         throw Error;
       mod.defaults = {};
-      for (let opt of mod.options || [])
-        mod.defaults[opt.key] = Array.isArray(opt.value)
-          ? opt.value[0]
-          : opt.value;
+      for (let opt of mod.options || []) {
+        if (
+          Object.keys(opt.platformOverwrite || {}).some(
+            (platform) => process.platform === platform
+          )
+        ) {
+          mod.defaults[opt.key] = opt.platformOverwrite[process.platform];
+        } else
+          mod.defaults[opt.key] = Array.isArray(opt.value)
+            ? opt.value[0]
+            : opt.value;
+      }
       modules.IDs.push(mod.id);
       modules.loaded.push({
         ...mod,
