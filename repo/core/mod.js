@@ -46,6 +46,9 @@ module.exports = {
         it can be re-shown by clicking the tray icon or using the hotkey.`,
       type: 'toggle',
       value: true,
+      platformOverwrite: {
+        darwin: true,
+      },
     },
     {
       key: 'frameless',
@@ -53,6 +56,9 @@ module.exports = {
       description: `replace the native titlebar with buttons inset into the app.`,
       type: 'toggle',
       value: true,
+      platformOverwrite: {
+        darwin: false,
+      },
     },
     {
       key: 'tiling_mode',
