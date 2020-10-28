@@ -26,6 +26,7 @@ a flexibility update.
 - improved: additional menu option descriptions on hover.
 - improved: listen to prefers-color-scheme to better change theme in night shift.
 - improved: platform-specific option overrides for features not required on macOS.
+- improved: made extra padding at the bottom with the "focus mode" extension toggleable.
 - bugfix: removed messenger emoji set as the provider no longer supports it.
 - bugfix: remove shadow around light mode board headers.
 - bugfix: properly detect/respond to `EACCES`/`EBUSY` errors.
@@ -69,11 +70,7 @@ a fork of notion-deb-builder that does generate an app.asar has been created and
 
 // todo
 
-MACOS SPECIFIC FIXES
-
-- close to tray: perma-true
-- frameless mode: perma-false
-- open ext. menu hotkey not working?
+- open ext. menu hotkey not working on macOS?
 
 ### v0.9.1 (2020-09-26)
 
