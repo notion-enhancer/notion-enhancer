@@ -117,22 +117,20 @@ module.exports = (store, __exports) => {
             ? 'dark'
             : 'light',
           'colors': {
-            'white': getStyle(`--theme--option_active-color`),
-            'blue': getStyle(`--theme--option_active-background`),
+            'white': getStyle('--theme--option_active-color'),
+            'blue': getStyle('--theme--option_active-background'),
           },
           'borderRadius': 3,
-          'textColor': getStyle(`--theme--text`),
-          'popoverBackgroundColor': getStyle(`--theme--card`),
-          'popoverBoxShadow': `0 0 0 1px ${getStyle(
-            `--theme--overlay`
-          )}, 0 3px 6px ${getStyle(`--theme--overlay`)}`,
+          'textColor': getStyle('--theme--text'),
+          'popoverBackgroundColor': getStyle('--theme--card'),
+          'popoverBoxShadow': getStyle('--theme--box-shadow_strong'),
           'inputBoxShadow': `box-shadow: ${getStyle(
             `--theme--primary`
           )} 0px 0px 0px 1px inset, ${getStyle(
             `--theme--primary_hover`
           )} 0px 0px 0px 2px !important`,
-          'inputBackgroundColor': getStyle(`--theme--main`),
-          'dividerColor': getStyle(`--theme--table-border`),
+          'inputBackgroundColor': getStyle('--theme--main'),
+          'dividerColor': getStyle('--theme--table-border'),
           'shadowOpacity': 0.2,
         });
       }
