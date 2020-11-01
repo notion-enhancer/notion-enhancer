@@ -131,7 +131,10 @@ body,
   opacity: 0.8;
 }
 #tabs .tab img {
+  object-fit: cover;
+  height: 1em;
   width: 1em;
+  border-radius: 3px;
   margin: 0 0.5em -3px 0.1em;
 }
 #tabs .tab:first-child {

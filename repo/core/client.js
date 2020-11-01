@@ -217,7 +217,7 @@ module.exports = (store, __exports) => {
     electron.ipcRenderer.on('enhancer:get-menu-theme', setThemeVars);
 
     if (tabsEnabled) {
-      let tab_title = '';
+      let tab_title = { img: '', emoji: '', text: '' };
       if (process.platform === 'darwin')
         document
           .querySelector('.notion-sidebar [style*="37px"]:empty')
@@ -227,30 +227,27 @@ module.exports = (store, __exports) => {
       );
       __electronApi.setWindowTitle = (title) => {
         const $container =
-            document.querySelector(
-              '.notion-peek-renderer [style="padding-left: calc(126px + env(safe-area-inset-left)); padding-right: calc(126px + env(safe-area-inset-right)); max-width: 100%; width: 100%;"]'
-            ) ||
-            document.querySelector(
-              '.notion-frame [style="padding-left: calc(96px + env(safe-area-inset-left)); padding-right: calc(96px + env(safe-area-inset-right)); max-width: 100%; margin-bottom: 8px; width: 100%;"]'
-            ) ||
             document.querySelector('.notion-peak-renderer') ||
             document.querySelector('.notion-frame'),
           icon = $container.querySelector(
-            '.notion-record-icon [aria-label]:not([src^="data:"])'
+            '[style*="env(safe-area-inset-left)"] > .notion-record-icon img:not([src^="data:"])'
           ),
-          text = $container.querySelector('[placeholder="Untitled"]');
-        title =
-          (icon
-            ? icon.getAttribute('src')
-              ? `<img src="${icon.getAttribute('src')}">`
-              : `${icon.getAttribute('aria-label')} `
-            : '') +
-          (text
-            ? text.innerText || 'Untitled'
-            : [
-                setTimeout(() => __electronApi.setWindowTitle(title), 250),
-                title,
-              ][1]);
+          img =
+            icon && icon.getAttribute('src')
+              ? `<img src="${
+                  icon.getAttribute('src').startsWith('/')
+                    ? 'notion://www.notion.so'
+                    : ''
+                }${icon.getAttribute('src')}">`
+              : '',
+          emoji = icon ? icon.getAttribute('aria-label') : '';
+        let text = $container.querySelector('[placeholder="Untitled"]');
+        text = text
+          ? text.innerText || 'Untitled'
+          : [
+              setTimeout(() => __electronApi.setWindowTitle(title), 250),
+              title,
+            ][1];
         TITLE_OBSERVER.disconnect();
         TITLE_OBSERVER.observe($container, {
           childList: true,
@@ -258,9 +255,17 @@ module.exports = (store, __exports) => {
           characterData: true,
           attributes: true,
         });
-        if (tab_title !== title) {
-          tab_title = title;
-          electron.ipcRenderer.sendToHost('enhancer:set-tab-title', title);
+        if (
+          tab_title.img !== img ||
+          tab_title.emoji !== emoji ||
+          tab_title.text !== text
+        ) {
+          tab_title = {
+            img,
+            emoji,
+            text,
+          };
+          electron.ipcRenderer.sendToHost('enhancer:set-tab-title', tab_title);
         }
       };
       __electronApi.openInNewWindow = (urlPath) => {
