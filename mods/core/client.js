@@ -25,7 +25,11 @@ module.exports = (store, __exports) => {
     const hotkey = toKeyEvent(store().menu_toggle);
     let triggered = true;
     for (let prop in hotkey)
-      if (hotkey[prop] !== event[prop]) triggered = false;
+      if (
+        hotkey[prop] !== event[prop] &&
+        !(prop === 'key' && event[prop] === 'Dead')
+      )
+        triggered = false;
     if (triggered) electron.ipcRenderer.send('enhancer:open-menu');
     if (tabsEnabled) {
       // switch between tabs via key modifier
@@ -214,6 +218,10 @@ module.exports = (store, __exports) => {
 
     if (tabsEnabled) {
       let tab_title = '';
+      if (process.platform === 'darwin')
+        document
+          .querySelector('.notion-sidebar [style*="37px"]:empty')
+          .remove();
       const TITLE_OBSERVER = new MutationObserver(() =>
         __electronApi.setWindowTitle('notion.so')
       );
@@ -232,7 +240,11 @@ module.exports = (store, __exports) => {
           ),
           text = $container.querySelector('[placeholder="Untitled"]');
         title =
-          (icon ? `<img src="${icon.getAttribute('src')}">` : '') +
+          (icon
+            ? icon.getAttribute('src')
+              ? `<img src="${icon.getAttribute('src')}">`
+              : `${icon.getAttribute('aria-label')} `
+            : '') +
           (text
             ? text.innerText
             : [

@@ -69,10 +69,6 @@ a flexibility update.
 
 a fork of notion-deb-builder that does generate an app.asar has been created and is once again supported.
 
-// todo
-
-- open ext. menu hotkey not working on macOS?
-
 ### v0.9.1 (2020-09-26)
 
 - bugfix: font chooser will continue iterating through fonts after encountering a blank option.
