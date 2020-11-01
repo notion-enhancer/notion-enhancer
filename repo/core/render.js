@@ -994,7 +994,11 @@ module.exports = (store, __exports) => {
         const hotkey = toKeyEvent(store().menu_toggle);
         let triggered = true;
         for (let prop in hotkey)
-          if (hotkey[prop] !== event[prop]) triggered = false;
+          if (
+            hotkey[prop] !== event[prop] &&
+            !(prop === 'key' && event[prop] === 'Dead')
+          )
+            triggered = false;
         if (triggered) electron.ipcRenderer.send('enhancer:open-menu');
       });
 
