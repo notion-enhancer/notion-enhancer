@@ -31,7 +31,7 @@ module.exports = {
           document
             .querySelectorAll('.notion-collection-view-select')
             .forEach((collection_view) => {
-              if (collection_view.innerText != 'weekly') return;
+              if (collection_view.innerText.toLowerCase() !== 'weekly') return;
               const days = collection_view.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(
                   'notion-calendar-view-day'
                 ),
