@@ -50,6 +50,7 @@ a flexibility update.
 - bugfix: set NSRequiresAquaSystemAppearance to false in /Applications/Notion.app/Contents/Info.plist
   so system dark/light mode can be properly detected.
 - bugfix: make ctrl+f popover shadow less extreme.
+- bugfix: "weekly" calendar view name made case insensitive.
 - tweak: sticky table/list rows.
 - theme: "material ocean" = an oceanic colour palette.
 - theme: "dracula" = a theme based on the popular dracula color palette
