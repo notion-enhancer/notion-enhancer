@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"no test specified\"",
     "postinstall": "node bin.js apply -y",
-    "preuninstall": "node bin.js remove"
+    "preuninstall": "node bin.js remove -n"
   },
   "repository": {
     "type": "git",

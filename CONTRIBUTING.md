@@ -25,20 +25,24 @@ join the [discord server](https://discord.gg/sFWPXtA).
 
 ## testing
 
-download:
+first, remove any other installations of the enhancer: `npm remove -g notion-enhancer`
+
+to download and install the latest code, run:
 
 ```sh
 git clone https://github.com/dragonwocky/notion-enhancer
 cd notion-enhancer
 git checkout dev
 npm link
+notion-enhancer apply -y
 ```
 
-the downloaded folder is now directly linked to the `notion-enhancer` command.
+to remove the dev build, go into the downloaded folder and run:
 
-no written tests are included with the enhancer:
-i don't have the experience/skill with them yet to use them effectively.
-if you can add some for your code, though, go ahead!
+```sh
+notion-enhancer remove -n
+npm unlink
+```
 
 ## conventions
 

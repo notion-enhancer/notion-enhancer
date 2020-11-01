@@ -25,6 +25,8 @@ a flexibility update.
 - improved: overwrite `app.asar.bak` if already exists (e.g. for app updates).
 - improved: additional menu option descriptions on hover.
 - improved: listen to prefers-color-scheme to better change theme in night shift.
+- improved: platform-specific option overrides for features not required on macOS.
+- improved: made extra padding at the bottom with the "focus mode" extension toggleable.
 - bugfix: removed messenger emoji set as the provider no longer supports it.
 - bugfix: remove shadow around light mode board headers.
 - bugfix: properly detect/respond to `EACCES`/`EBUSY` errors.
@@ -47,6 +49,8 @@ a flexibility update.
 - bugfix: keep "empty" top bar visible in the menu.
 - bugfix: set NSRequiresAquaSystemAppearance to false in /Applications/Notion.app/Contents/Info.plist
   so system dark/light mode can be properly detected.
+- bugfix: make ctrl+f popover shadow less extreme.
+- bugfix: "weekly" calendar view name made case insensitive.
 - tweak: sticky table/list rows.
 - theme: "material ocean" = an oceanic colour palette.
 - theme: "dracula" = a theme based on the popular dracula color palette
@@ -65,14 +69,6 @@ a flexibility update.
   - moved: hide help.
 
 a fork of notion-deb-builder that does generate an app.asar has been created and is once again supported.
-
-// todo
-
-MACOS SPECIFIC FIXES
-
-- close to tray: perma-true
-- frameless mode: perma-false
-- open ext. menu hotkey not working?
 
 ### v0.9.1 (2020-09-26)
 

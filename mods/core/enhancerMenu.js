@@ -131,7 +131,11 @@ window['__start'] = async () => {
     const hotkey = toKeyEvent(coreStore().menu_toggle);
     let triggered = true;
     for (let prop in hotkey)
-      if (hotkey[prop] !== event[prop]) triggered = false;
+      if (
+        hotkey[prop] !== event[prop] &&
+        !(prop === 'key' && event[prop] === 'Dead')
+      )
+        triggered = false;
     if (triggered || ((event.ctrlKey || event.metaKey) && event.key === 'w'))
       electron.remote.getCurrentWindow().close();
     //  focus search
@@ -587,6 +591,13 @@ window['__start'] = async () => {
     const $options = mod.elem.querySelector('.options');
     if ($options)
       for (const opt of mod.options) {
+        if (
+          Object.keys(opt.platformOverwrite || {}).some(
+            (platform) => process.platform === platform
+          )
+        ) {
+          continue;
+        }
         const $opt = createOption(opt, mod.id);
         if (opt.type === 'color') {
           const $preview = $opt.querySelector('input');
