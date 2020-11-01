@@ -227,10 +227,16 @@ module.exports = (store, __exports) => {
       );
       __electronApi.setWindowTitle = (title) => {
         const $container =
+            document.querySelector(
+              '.notion-peek-renderer [style="padding-left: calc(126px + env(safe-area-inset-left)); padding-right: calc(126px + env(safe-area-inset-right)); max-width: 100%; width: 100%;"]'
+            ) ||
+            document.querySelector(
+              '.notion-frame [style="padding-left: calc(96px + env(safe-area-inset-left)); padding-right: calc(96px + env(safe-area-inset-right)); max-width: 100%; margin-bottom: 8px; width: 100%;"]'
+            ) ||
             document.querySelector('.notion-peak-renderer') ||
             document.querySelector('.notion-frame'),
           icon = $container.querySelector(
-            '[style*="env(safe-area-inset-left)"] > .notion-record-icon img:not([src^="data:"])'
+            '.notion-record-icon img:not([src^="data:"])'
           ),
           img =
             icon && icon.getAttribute('src')

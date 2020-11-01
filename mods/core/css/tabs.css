@@ -127,7 +127,7 @@ body,
   font-size: 1.15em;
   padding: 0.2em 0.4em;
   text-align: left;
-  border-bottom: 4px solid var(--theme--table-border);
+  border-bottom: 0.22em solid var(--theme--table-border);
   opacity: 0.8;
 }
 #tabs .tab img {
@@ -135,14 +135,14 @@ body,
   height: 1em;
   width: 1em;
   border-radius: 3px;
-  margin: 0 0.5em -3px 0.1em;
+  margin: 0 0.5em -0.16em 0.1em;
 }
 #tabs .tab:first-child {
   margin-top: 0.5em;
 }
 #tabs .tab:not(.new) span:not(.close) {
   width: 8.5em;
-  margin-right: 4px;
+  margin-right: 0.22em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -162,7 +162,7 @@ body,
 #tabs .tab.current {
   opacity: 1;
   background: var(--theme--selected);
-  border-bottom: 4px solid var(--theme--option_active-background);
+  border-bottom: 0.22em solid var(--theme--option_active-background);
 }
 #tabs .tab.new {
   background: none;
@@ -179,7 +179,7 @@ body,
 #tabs .tab .close:hover,
 #tabs .tab.new span:hover,
 #titlebar .window-button:hover {
-  border-radius: 4px;
+  border-radius: 0.22em;
   background: var(--theme--table-border);
   box-shadow: 0 0 0 0.5px var(--theme--interactive_hover-border);
 }
@@ -188,7 +188,7 @@ body,
   color: var(--theme--button_close-fill);
 }
 #tabs .tab.dragged-over {
-  box-shadow: inset 4px 0 0 0 var(--theme--selected);
+  box-shadow: inset 0.22em 0 0 0 var(--theme--selected);
 }
 
 .notion {

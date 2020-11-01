@@ -427,7 +427,6 @@ module.exports = (store, __exports) => {
               document.body.style.setProperty(style[0], style[1]);
             break;
           case 'enhancer:set-tab-title':
-            console.log(event.args[0]);
             if (this.state.tabs.get(+event.target.id)) {
               this.setState({
                 tabs: new Map(
