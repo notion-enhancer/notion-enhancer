@@ -51,6 +51,7 @@ a flexibility update.
   so system dark/light mode can be properly detected.
 - bugfix: make ctrl+f popover shadow less extreme.
 - bugfix: "weekly" calendar view name made case insensitive.
+- bugfix: re-show hidden windows when clicking on the dock.
 - tweak: sticky table/list rows.
 - theme: "material ocean" = an oceanic colour palette.
 - theme: "dracula" = a theme based on the popular dracula color palette

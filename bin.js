@@ -21,7 +21,7 @@ const cli = require('cac')('notion-enhancer'),
 
 cli.option('-y, --yes', ': skip prompts (may overwrite data)');
 cli.option('-n, --no', ': skip prompts (may cause failures)');
-cli.option('-d, --dev', ': show detailed error messages');
+cli.option('-d, --dev', ': show detailed error messages (for debug purposes)');
 
 cli
   .command('apply', ': add the enhancer to the notion app')

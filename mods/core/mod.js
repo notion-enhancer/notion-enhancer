@@ -18,7 +18,7 @@ module.exports = {
     {
       key: 'autoresolve',
       label: 'auto-resolve theme conflicts',
-      description:
+      desc:
         'when a theme is enabled any other themes of the same mode (light/dark) will be disabled.',
       type: 'toggle',
       value: false,
@@ -26,7 +26,7 @@ module.exports = {
     {
       key: 'openhidden',
       label: 'hide app on open',
-      description:
+      desc:
         'app can be made visible by clicking the tray icon or using the hotkey.',
       type: 'toggle',
       value: false,
@@ -34,7 +34,7 @@ module.exports = {
     {
       key: 'maximized',
       label: 'auto-maximise windows',
-      description:
+      desc:
         'whenever a window is un-hidden or is created it will be maximised.',
       type: 'toggle',
       value: false,
@@ -42,7 +42,7 @@ module.exports = {
     {
       key: 'close_to_tray',
       label: 'close window to the tray',
-      description: `pressing the × close button will hide the app instead of quitting it.\
+      desc: `pressing the × close button will hide the app instead of quitting it.\
         it can be re-shown by clicking the tray icon or using the hotkey.`,
       type: 'toggle',
       value: true,
@@ -53,7 +53,7 @@ module.exports = {
     {
       key: 'frameless',
       label: 'integrated titlebar',
-      description: `replace the native titlebar with buttons inset into the app.`,
+      desc: `replace the native titlebar with buttons inset into the app.`,
       type: 'toggle',
       value: true,
       platformOverwrite: {
@@ -63,7 +63,7 @@ module.exports = {
     {
       key: 'tiling_mode',
       label: 'tiling window manager mode',
-      description: `completely remove the close/minimise/maximise buttons -
+      desc: `completely remove the close/minimise/maximise buttons -
         this is for a special type of window manager. if you don't understand it, don't use it.`,
       type: 'toggle',
       value: false,
@@ -71,22 +71,21 @@ module.exports = {
     {
       key: 'hotkey',
       label: 'window display hotkey:',
-      description: 'used to toggle hiding/showing all app windows.',
+      desc: 'used to toggle hiding/showing all app windows.',
       type: 'input',
       value: 'CommandOrControl+Shift+A',
     },
     {
       key: 'menu_toggle',
       label: 'open enhancements menu hotkey:',
-      description:
-        'used to toggle opening/closing this menu while notion is focused.',
+      desc: 'used to toggle opening/closing this menu while notion is focused.',
       type: 'input',
       value: 'Alt+E',
     },
     {
       key: 'default_page',
       label: 'default page id/url:',
-      description: `every new tab/window that isn't opening a url via the notion://\
+      desc: `every new tab/window that isn't opening a url via the notion://\
         protocol will load this page. to get a page link from within the app,\
         go to the triple-dot menu and click "copy link".\
         leave blank to just load the last page you opened.`,

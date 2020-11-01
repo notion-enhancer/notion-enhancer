@@ -18,7 +18,7 @@ module.exports = {
     {
       key: 'dragarea_height',
       label: 'height of frameless dragarea:',
-      description: `the rectangle added at the top of a window in "integrated titlebar" mode,\
+      desc: `the rectangle added at the top of a window in "integrated titlebar" mode,\
         used to drag/move the window.`,
       type: 'input',
       value: 15,
@@ -29,7 +29,7 @@ module.exports = {
     {
       key: 'responsive_breakpoint',
       label: 'width to wrap columns at:',
-      description: `the size in pixels below which in-page columns are resized to appear\
+      desc: `the size in pixels below which in-page columns are resized to appear\
         full width so content isn't squished.`,
       type: 'input',
       value: 600,
@@ -37,7 +37,7 @@ module.exports = {
     {
       key: 'smooth_scrollbars',
       label: 'integrated scrollbars',
-      description:
+      desc:
         "use scrollbars that fit better into notion's ui instead of the default chrome ones.",
       type: 'toggle',
       value: true,

@@ -46,7 +46,6 @@ then execute the following lines in the terminal:
 ```
 sudo chmod -R a+wr /usr/local/lib/node_modules
 sudo chmod -R a+wr /usr/local/bin
-sudo chmod -R a+wr /Applications/Notion/Contents/Resources
 sudo chmod -R a+wr /Applications/Notion.app/Contents/Resources
 npm i -g notion-enhancer
 ```
@@ -92,35 +91,37 @@ For more info, run any command with the `--help` flag:
 Options:
   -y, --yes      : skip prompts (may overwrite data)
   -n, --no       : skip prompts (may cause failures)
-  -d, --dev      : show detailed error messages (not recommended)
+  -d, --dev      : show detailed error messages (for debug purposes)
   -h, --help     : display usage information
   -v, --version  : display version number
 ```
 
 ### faq
 
-**the themes aren't working?**
+**when will the update be out?**
+i code this in my free time, in-between my other commitments. there are no ETAs.
 
+**the themes aren't working?**
 if you pick a dark theme it will only be applied if notion is in dark mode,
 and if you pick a light theme it will only work if notion is in light mode.
 do `CMD/CTRL+SHIFT+L` to toggle between them.
 
 **is this against notion's terms of service? can i get in trouble for using it?**
-
 definitely not! i contacted their support team to check, and the response was awesome:
 
-"Thanks for taking the time to share this with us. Userscripts and userstyles are definitely
-cool ideas and would be helpful for many users! ... I'll also share this with the rest of the
-team to take to heart for future improvements."
+> "Thanks for taking the time to share this with us. Userscripts and userstyles are definitely
+> cool ideas and would be helpful for many users! ... I'll also share this with the rest of the
+> team to take to heart for future improvements."
+
+**how do i uninstall the enhancer?**
+run `npm remove -g notion-enhancer`.
 
 ## features
 
 most of the enhancer's functionality is split into configurable enhancement modules,
-but some basic improvements are built in by default:
+but some basic improvements necessary for things to work are built in by values:
 
 - the notion:// url scheme/protocol is patched to work on linux.
-- in-page columns are disabled/wrapped and pages are wider when
-  the window is narrower than 600px for improved responsiveness.
 - a tray/menubar icon: links relevant to the enhancer + buttons to manage notion windows.
 
 once applied, modules can be configured via the graphical menu,
@@ -137,21 +138,53 @@ these include:
 
 **description:** the cli, modloader, menu, & tray.
 
-**author**: [dragonwocky](https://github.com/dragonwocky/)
+**author:** [dragonwocky](https://github.com/dragonwocky/)
 
-| option                        | type                                                                                          | default                    |
-| ----------------------------- | --------------------------------------------------------------------------------------------- | -------------------------- |
-| hide app on open              | toggle                                                                                        | no                         |
-| auto-maximise windows         | toggle                                                                                        | no                         |
-| close window to the tray      | toggle                                                                                        | yes                        |
-| integrated titlebar           | toggle                                                                                        | yes                        |
-| height of frameless dragarea  | number input                                                                                  | `15`                       |
-| tiling window manager mode    | toggle                                                                                        | no                         |
-| integrated scrollbars         | toggle                                                                                        | yes                        |
-| window display hotkey         | [accelerator](https://github.com/electron/electron/blob/master/docs/api/accelerator.md) input | `CommandOrControl+Shift+A` |
-| open enhancements menu hotkey | [accelerator](https://github.com/electron/electron/blob/master/docs/api/accelerator.md) input | `Alt+E`                    |
+| option                        | extended description                                                                                                                                                                                                                      | type                                                                                          | values/defaults            | platform-specific details |
+| ----------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | -------------------------- | ------------------------- |
+| auto-resolve theme conflicts  | when a theme is enabled any other themes of the same mode (light/dark) will be disabled.                                                                                                                                                  | toggle                                                                                        | no                         |                           |
+| hide app on open              | app can be made visible by clicking the tray icon or using the hotkey.                                                                                                                                                                    | toggle                                                                                        | no                         |                           |
+| auto-maximise windows         | whenever a window is un-hidden or is created it will be maximised.                                                                                                                                                                        | toggle                                                                                        | no                         |                           |
+| close window to the tray      | pressing the × close button will hide the app instead of quitting it. it can be re-shown by clicking the tray icon or using the hotkey.                                                                                                   | toggle                                                                                        | yes                        |                           |
+| integrated titlebar           | replace the native titlebar with buttons inset into the app.                                                                                                                                                                              | toggle                                                                                        | yes                        | macOS: forced on          |
+| tiling window manager mode    | completely remove the close/minimise/maximise buttons - this is for a special type of window manager. if you don't understand it, don't use it.                                                                                           | toggle                                                                                        | no                         | macOS: forced off         |
+| window display hotkey         | used to toggle hiding/showing all app windows.                                                                                                                                                                                            | [accelerator](https://github.com/electron/electron/blob/master/docs/api/accelerator.md) input | `CommandOrControl+Shift+A` |                           |
+| open enhancements menu hotkey | used to toggle opening/closing this menu while notion is focused.                                                                                                                                                                         | [accelerator](https://github.com/electron/electron/blob/master/docs/api/accelerator.md) input | `Alt+E`                    |                           |
+| values/defaults page id/url   | every new tab/window that isn't opening a url via the notion:// protocol will load this page. to get a page link from within the app, go to the triple-dot menu and click "copy link". leave blank to just load the last page you opened. | text input                                                                                    | `Alt+E`                    |                           |
 
 ![](https://user-images.githubusercontent.com/16874139/93667628-c98cb100-faca-11ea-85e2-5fdca2a93a36.png)
+
+### tabs
+
+**tags:** #core #extension
+
+**description:** have multiple notion pages open in a single window.
+
+**author:** [dragonwocky](https://github.com/dragonwocky/)
+
+| option                                                                | type                                                                                          | values/defaults                                                                                    |
+| --------------------------------------------------------------------- | --------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| tab select modifier (key+1, +2, +3, ... +9 and key+left/right arrows) | select                                                                                        | `Alt`, `Command`, `Control`, `Super`, `Alt+Shift`, `Command+Shift`, `Control+Shift`, `Super+Shift` |
+| new tab keybinding                                                    | [accelerator](https://github.com/electron/electron/blob/master/docs/api/accelerator.md) input | `CommandOrControl+T`                                                                               |
+| close tab keybinding                                                  | [accelerator](https://github.com/electron/electron/blob/master/docs/api/accelerator.md) input | `CommandOrControl+W`                                                                               |
+
+### tweaks
+
+**tags:** #core #extension
+
+**description:** common style/layout changes.
+
+**author:** [dragonwocky](https://github.com/dragonwocky/)
+
+| option                       | extended description                                                                                       | type         | values/defaults | platform-specific details |
+| ---------------------------- | ---------------------------------------------------------------------------------------------------------- | ------------ | --------------- | ------------------------- |
+| height of frameless dragarea | the rectangle added at the top of a window in "integrated titlebar" mode, used to drag/move the window.    | number input | 15              | macOS: forced to 0        |
+| width to wrap columns at     | the size in pixels below which in-page columns are resized to appear full width so content isn't squished. | number input | 600             |                           |
+| integrated scrollbars        | use scrollbars that fit better into notion's ui instead of the default chrome ones.                        | toggle       | yes             |                           |
+| snappy transitions           |                                                                                                            | toggle       | no              |                           |
+| thicker bold text            |                                                                                                            | toggle       | yes             |                           |
+| more readable line spacing   |                                                                                                            | toggle       | no              |                           |
+| hide help button             |                                                                                                            | toggle       | no              |                           |
 
 ### always on top
 
@@ -160,7 +193,7 @@ these include:
 **description:** add an arrow/button to show the notion window
 on top of other windows even if it's not focused.
 
-**author**: [dragonwocky](https://github.com/dragonwocky/)
+**author:** [dragonwocky](https://github.com/dragonwocky/)
 
 ![](https://user-images.githubusercontent.com/16874139/93692700-ad742880-fb39-11ea-9650-57a61e15a37e.png)
 
@@ -170,7 +203,7 @@ on top of other windows even if it's not focused.
 
 **description:** render links surrounded with \[\[brackets]] instead of underlined.
 
-**author**: [arecsu](https://github.com/arecsu/)
+**author:** [arecsu](https://github.com/arecsu/)
 
 ![](https://user-images.githubusercontent.com/16874139/93692762-5458c480-fb3a-11ea-94e4-b7cbfab24274.png)
 
@@ -192,6 +225,14 @@ on top of other windows even if it's not focused.
 
 ![](https://user-images.githubusercontent.com/16874139/93692788-ce894900-fb3a-11ea-8b65-8fc6c955fe6d.png)
 
+### cherry cola
+
+**tags:** #theme #dark
+
+**description:** a delightfully plummy, cherry cola flavored theme.
+
+**author:** [runargs](https://github.com/runargs)
+
 ### custom inserts
 
 **tags:** #extension
@@ -199,7 +240,7 @@ on top of other windows even if it's not focused.
 **description:** link files for small client-side tweaks. (not sure how to do something? check out the
 [tweaks](https://github.com/dragonwocky/notion-enhancer/blob/master/TWEAKS.md) collection.)
 
-**author**: [dragonwocky](https://github.com/dragonwocky/)
+**author:** [dragonwocky](https://github.com/dragonwocky/)
 
 | option                | type |
 | --------------------- | ---- |
@@ -214,11 +255,19 @@ on top of other windows even if it's not focused.
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
 
-| option         | type  | default            |
+| option         | type  | values/defaults    |
 | -------------- | ----- | ------------------ |
 | primary colour | color | `rgb(177, 24, 24)` |
 
 ![](https://user-images.githubusercontent.com/16874139/93667588-84687f00-faca-11ea-86c9-7d05325a22a1.png)
+
+### dracula
+
+**tags:** #theme #dark
+
+**description:** a theme based on the popular dracula color palette originally by zeno rocha and friends.
+
+**author:** //todo
 
 ### emoji sets
 
@@ -228,7 +277,7 @@ on top of other windows even if it's not focused.
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
 
-| option | type   | values                                                                                                                     |
+| option | type   | values/defaults                                                                                                            |
 | ------ | ------ | -------------------------------------------------------------------------------------------------------------------------- |
 | style  | select | twitter, apple, google, microsoft, samsung, whatsapp, facebook, joypixels, openmoji, emojidex, messenger, lg, htc, mozilla |
 
@@ -241,6 +290,10 @@ on top of other windows even if it's not focused.
 **description:** hide the titlebar/menubar if the sidebar is closed (will be shown on hover).
 
 **author:** [arecsu](https://github.com/arecsu/)
+
+| option                            | extended description                                                                                                                                                        | type   | values/defaults |
+| --------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | --------------- |
+| add padding to bottom of the page | will only take effect when the sidebar is hidden. aims to make the canvas as symmetrical/consistent as possible: if there is empty space on 3 sides, the 4th should follow. | toggle | on              |
 
 ![](https://user-images.githubusercontent.com/16874139/93694447-2336bf00-fb4f-11ea-82f3-84c14e000602.png)
 
@@ -272,16 +325,6 @@ the font you would like to use, or leave it blank to not change anything.
 
 ![](https://user-images.githubusercontent.com/16874139/93667677-1bcdd200-facb-11ea-89a2-f2a674d70d6c.png)
 
-### hide help
-
-**tags:** #extension
-
-**description:** hide the help button if you don't need it.
-
-**author**: [coryzibell](https://github.com/coryzibell/)
-
-![](https://user-images.githubusercontent.com/16874139/93692964-01ccd780-fb3d-11ea-9c58-893d37c4a53b.png)
-
 ### littlepig dark
 
 **tags:** #theme #dark
@@ -291,6 +334,14 @@ the font you would like to use, or leave it blank to not change anything.
 **author:** [Lizishan](https://www.reddit.com/user/Lizishan/)
 
 ![](https://user-images.githubusercontent.com/16874139/93667715-55064200-facb-11ea-949e-3f7494dfa498.png)
+
+### material ocean
+
+**tags:** #theme #dark
+
+**description:** an oceanic colour palette.
+
+**author:** [blacksuan19](https://github.com/blacksuan19)
 
 ### littlepig light
 
@@ -349,6 +400,20 @@ the font you would like to use, or leave it blank to not change anything.
 **author:** [obahareth](https://github.com/obahareth/)
 
 ![](https://user-images.githubusercontent.com/16874139/93693026-bd8e0700-fb3d-11ea-9808-c259ef075d53.png)
+
+### scroll to top
+
+**tags:** #extension
+
+**description:** add an arrow above the help button to scroll back to the top of a page.
+
+**author:** [CloudHill](https://github.com/CloudHill/)
+
+| option                                  | type         | values/defaults |
+| --------------------------------------- | ------------ | --------------- |
+| smooth scrolling                        | toggle       | on              |
+| distance scrolled until button is shown | number input | 50              |
+| unit to measure distance with           | select       | percent, pixels |
 
 ### weekly view
 
