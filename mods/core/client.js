@@ -246,7 +246,7 @@ module.exports = (store, __exports) => {
               : `${icon.getAttribute('aria-label')} `
             : '') +
           (text
-            ? text.innerText
+            ? text.innerText || 'Untitled'
             : [
                 setTimeout(() => __electronApi.setWindowTitle(title), 250),
                 title,
