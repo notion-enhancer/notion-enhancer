@@ -121,10 +121,15 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
           if (err) throw err;
           fs.writeFile(
             insertion_file,
-            `${data.replace(
-              /process.platform === "win32"/g,
-              'process.platform === "win32" || process.platform === "linux"'
-            )}\n\n//notion-enhancer\nrequire('${helpers.realpath(
+            `${data
+              .replace(
+                /process.platform === "win32"/g,
+                'process.platform === "win32" || process.platform === "linux"'
+              )
+              .replace(
+                /else \{[\s\n]+const win = createWindow_1\.createWindow\(relativeUrl\);/g,
+                'else if (relativeUrl) { const win = createWindow_1.createWindow(relativeUrl);'
+              )}\n\n//notion-enhancer\nrequire('${helpers.realpath(
               __dirname
             )}/loader.js')(__filename, exports);`,
             'utf8',

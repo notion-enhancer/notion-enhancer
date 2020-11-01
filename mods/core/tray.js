@@ -7,8 +7,6 @@
 
 'use strict';
 
-const { start } = require('repl');
-
 let tray, enhancer_menu;
 
 module.exports = (store, __exports) => {
@@ -16,11 +14,25 @@ module.exports = (store, __exports) => {
     path = require('path'),
     is_mac = process.platform === 'darwin',
     is_win = process.platform === 'win32',
-    helpers = require('../../pkg/helpers.js');
+    helpers = require('../../pkg/helpers.js'),
+    getAllWindows = electron.BrowserWindow.getAllWindows;
+
+  function newWindow() {
+    require('./createWindow.js')(
+      store,
+      require(path.resolve(`${helpers.__notion}/app/main/createWindow.js`))
+    )(
+      '',
+      getAllWindows().find((win) => win !== enhancer_menu)
+    );
+  }
 
   electron.app.on('second-instance', (event, args, workingDirectory) => {
-    if (!store().openhidden) {
-      electron.BrowserWindow.getAllWindows().forEach((window) => {
+    const windows = getAllWindows();
+    if (windows.some((win) => win.isVisible())) {
+      newWindow();
+    } else {
+      windows.forEach((window) => {
         window.show();
         window.focus();
         if (store().maximized) window.maximize();
@@ -186,19 +198,7 @@ module.exports = (store, __exports) => {
       {
         type: 'normal',
         label: 'New Window',
-        click: () => {
-          require('./createWindow.js')(
-            store,
-            require(path.resolve(
-              `${helpers.__notion}/app/main/createWindow.js`
-            ))
-          )(
-            '',
-            electron.BrowserWindow.getAllWindows().find(
-              (win) => win !== enhancer_menu
-            )
-          );
-        },
+        click: newWindow(),
         accelerator: 'CommandOrControl+Shift+N',
       },
       {
@@ -238,13 +238,13 @@ module.exports = (store, __exports) => {
       if (is_mac) electron.app.hide();
     }
     function toggleWindows() {
-      const windows = electron.BrowserWindow.getAllWindows();
+      const windows = getAllWindows();
       if (windows.some((win) => win.isVisible())) hideWindows(windows);
       else showWindows(windows);
     }
     tray.on('click', toggleWindows);
     electron.globalShortcut.register(store().hotkey, () => {
-      const windows = electron.BrowserWindow.getAllWindows();
+      const windows = getAllWindows();
       if (windows.some((win) => win.isFocused() && win.isVisible()))
         hideWindows(windows);
       else showWindows(windows);
