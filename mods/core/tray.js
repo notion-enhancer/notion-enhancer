@@ -7,6 +7,8 @@
 
 'use strict';
 
+const { start } = require('repl');
+
 let tray, enhancer_menu;
 
 module.exports = (store, __exports) => {
@@ -16,7 +18,17 @@ module.exports = (store, __exports) => {
     is_win = process.platform === 'win32',
     helpers = require('../../pkg/helpers.js');
 
-  electron.app.on('ready', () => {
+  electron.app.on('second-instance', (event, args, workingDirectory) => {
+    if (!store().openhidden) {
+      electron.BrowserWindow.getAllWindows().forEach((window) => {
+        window.show();
+        window.focus();
+        if (store().maximized) window.maximize();
+      });
+    }
+  });
+
+  electron.app.once('ready', () => {
     // tray
 
     tray = new electron.Tray(
@@ -215,30 +227,27 @@ module.exports = (store, __exports) => {
 
     // hotkey
 
-    function showWindows() {
-      const windows = electron.BrowserWindow.getAllWindows();
+    function showWindows(windows) {
       if (is_mac) electron.app.show();
       if (store().maximized) windows.forEach((win) => [win.maximize()]);
       else windows.forEach((win) => win.show());
       electron.app.focus({ steal: true });
     }
-    function hideWindows() {
-      const windows = electron.BrowserWindow.getAllWindows();
+    function hideWindows(windows) {
       windows.forEach((win) => [win.isFocused() && win.blur(), win.hide()]);
       if (is_mac) electron.app.hide();
     }
     function toggleWindows() {
       const windows = electron.BrowserWindow.getAllWindows();
-      if (windows.some((win) => win.isVisible())) hideWindows();
-      else showWindows();
+      if (windows.some((win) => win.isVisible())) hideWindows(windows);
+      else showWindows(windows);
     }
-
     tray.on('click', toggleWindows);
     electron.globalShortcut.register(store().hotkey, () => {
       const windows = electron.BrowserWindow.getAllWindows();
       if (windows.some((win) => win.isFocused() && win.isVisible()))
-        hideWindows();
-      else showWindows();
+        hideWindows(windows);
+      else showWindows(windows);
     });
   });
 };
