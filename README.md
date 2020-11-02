@@ -39,12 +39,12 @@ a chrome extension may be coming soon for web client support.
 - open your computer's terminal, **not Node.js command prompt**
   - **windows 10:** search in your start menu (click windows key or icon in bottom left of screen) for *'cmd'* or *'command prompt'*
   - **mac:** search in spotlight (magnifying glass in top right of screen) for `*terminal*'
-- type and enter the following line(s) one at a time
+- type and enter the following line(s) based on your operating system, if there are multiple lines, make sure to enter them *one by one* 
   - **windows 10:**
     ```
     npm i -g notion-enhancer
     ```
-  - **mac:**
+  - **mac:** This may ask you to enter your password, instead of hiding your password with *** symbols, mac terminal hides it by making it invisible. Simply type your password and click enter.
     ```
     sudo chmod -R a+wr /usr/local/lib/node_modules
     sudo chmod -R a+wr /usr/local/bin
