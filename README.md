@@ -41,7 +41,8 @@ then execute `npm i -g notion-enhancer` in the command prompt.
 **macOS**
 
 [install node.js](https://nodejs.org/en/download/) (_a computer restart may be required here_),
-then execute the following lines in the terminal:
+then execute the following lines in the terminal. 
+Omit the first line if using [Node Version Manager](https://github.com/nvm-sh/nvm), as the `node_modules` directory will be located elsewhere and will likely already be owner-writable.
 
 ```
 sudo chmod -R a+wr /usr/local/lib/node_modules
