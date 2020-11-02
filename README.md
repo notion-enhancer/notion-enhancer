@@ -32,7 +32,7 @@ a chrome extension may be coming soon for web client support.
 > in this [update guide](UPDATING.md). please read that before following these instructions.
 
 - ensure that no notion windows/processes are running by ending all Notion processes in your task manager.
-  - `CMD + ALT + ESC` on mac and `CTRL + ALT + DEL` on windows/linux to open task manager
+  - `CMD + ALT + ESC` on mac and `CTRL + SHIFT + ESC` on windows/linux to open task manager
 - [install node.js](https://nodejs.org/en/download/)
   - you may need to restart your computer
   - notion-enhancer will use node.js, you do not need to interact with it aside from downloading to install notion-enhancer
