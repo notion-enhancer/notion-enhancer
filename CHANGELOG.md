@@ -5,6 +5,10 @@
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 - [advanced math editor](https://github.com/Manueloccorso/NotionMathEditor_BrowserExtension)
 
+### v0.10.1 (wip)
+
+- bugfix: disable fadein of selected block halo with snappy transitions.
+
 ### v0.10.0 (2020-11-02)
 
 a flexibility update.
