@@ -1,7 +1,7 @@
 /*
  * dracula
- * (c) 2020 u/mimi-shahzad
- * (c) 2020 Dracula Theme
+ * (c) 2020 @mimishahzad386#5651
+ * (c) 2020 dracula
  * under the MIT license
  */
 
@@ -14,5 +14,5 @@ module.exports = {
   desc:
     'a theme based on the popular dracula color palette originally by zeno rocha and friends. ',
   version: '0.1.0',
-  author: 'mimi-shahzad',
+  author: 'dracula',
 };
