@@ -26,6 +26,9 @@
   animation-duration: 0s !important;
   transition-duration: 0s !important;
 }
+[data-tweaks*='[snappy_transitions]'] .notion-selectable-halo {
+  opacity: 1 !important;
+}
 
 [data-tweaks*='[hide_help]'] .notion-help-button {
   display: none !important;
