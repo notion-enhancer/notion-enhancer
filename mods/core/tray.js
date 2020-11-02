@@ -14,9 +14,33 @@ module.exports = (store, __exports) => {
     path = require('path'),
     is_mac = process.platform === 'darwin',
     is_win = process.platform === 'win32',
-    helpers = require('../../pkg/helpers.js');
+    helpers = require('../../pkg/helpers.js'),
+    getAllWindows = electron.BrowserWindow.getAllWindows;
 
-  electron.app.on('ready', () => {
+  function newWindow() {
+    require('./createWindow.js')(
+      store,
+      require(path.resolve(`${helpers.__notion}/app/main/createWindow.js`))
+    )(
+      '',
+      getAllWindows().find((win) => win !== enhancer_menu)
+    );
+  }
+
+  electron.app.on('second-instance', (event, args, workingDirectory) => {
+    const windows = getAllWindows();
+    if (windows.some((win) => win.isVisible())) {
+      newWindow();
+    } else {
+      windows.forEach((window) => {
+        window.show();
+        window.focus();
+        if (store().maximized) window.maximize();
+      });
+    }
+  });
+
+  electron.app.once('ready', () => {
     // tray
 
     tray = new electron.Tray(
@@ -174,19 +198,7 @@ module.exports = (store, __exports) => {
       {
         type: 'normal',
         label: 'New Window',
-        click: () => {
-          require('./createWindow.js')(
-            store,
-            require(path.resolve(
-              `${helpers.__notion}/app/main/createWindow.js`
-            ))
-          )(
-            '',
-            electron.BrowserWindow.getAllWindows().find(
-              (win) => win !== enhancer_menu
-            )
-          );
-        },
+        click: newWindow(),
         accelerator: 'CommandOrControl+Shift+N',
       },
       {
@@ -215,30 +227,27 @@ module.exports = (store, __exports) => {
 
     // hotkey
 
-    function showWindows() {
-      const windows = electron.BrowserWindow.getAllWindows();
+    function showWindows(windows) {
       if (is_mac) electron.app.show();
       if (store().maximized) windows.forEach((win) => [win.maximize()]);
       else windows.forEach((win) => win.show());
       electron.app.focus({ steal: true });
     }
-    function hideWindows() {
-      const windows = electron.BrowserWindow.getAllWindows();
+    function hideWindows(windows) {
       windows.forEach((win) => [win.isFocused() && win.blur(), win.hide()]);
       if (is_mac) electron.app.hide();
     }
     function toggleWindows() {
-      const windows = electron.BrowserWindow.getAllWindows();
-      if (windows.some((win) => win.isVisible())) hideWindows();
-      else showWindows();
+      const windows = getAllWindows();
+      if (windows.some((win) => win.isVisible())) hideWindows(windows);
+      else showWindows(windows);
     }
-
     tray.on('click', toggleWindows);
     electron.globalShortcut.register(store().hotkey, () => {
-      const windows = electron.BrowserWindow.getAllWindows();
+      const windows = getAllWindows();
       if (windows.some((win) => win.isFocused() && win.isVisible()))
-        hideWindows();
-      else showWindows();
+        hideWindows(windows);
+      else showWindows(windows);
     });
   });
 };

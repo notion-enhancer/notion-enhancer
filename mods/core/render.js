@@ -383,13 +383,13 @@ module.exports = (store, __exports) => {
             if (selected) {
               this.views.active = +id;
               this.views.loaded[id].focus();
-              const electronWindow = electron.remote.getCurrentWindow();
-              if (
-                electronWindow &&
-                electronWindow.getTitle() !== this.state.tabs.get(+id).title
-              ) {
-                electronWindow.setTitle(this.state.tabs.get(+id).title);
-              }
+              const electronWindow = electron.remote.getCurrentWindow(),
+                title =
+                  (this.state.tabs.get(+id).emoji
+                    ? `${this.state.tabs.get(+id).emoji} `
+                    : '') + (this.state.tabs.get(+id).text || 'Notion Desktop');
+              if (electronWindow && electronWindow.getTitle() !== title)
+                electronWindow.setTitle(title);
             }
           }
         }
@@ -436,12 +436,15 @@ module.exports = (store, __exports) => {
                   })
                 ),
               });
-              const electronWindow = electron.remote.getCurrentWindow();
+              const electronWindow = electron.remote.getCurrentWindow(),
+                title =
+                  (event.args[0].emoji ? `${event.args[0].emoji} ` : '') +
+                  (event.args[0].text || 'Notion Desktop');
               if (
                 event.target.id == this.views.current.id &&
-                electronWindow.getTitle() !== event.args[0]
+                electronWindow.getTitle() !== title
               )
-                electronWindow.setTitle(event.args[0]);
+                electronWindow.setTitle(title);
             }
             break;
           case 'enhancer:select-tab':
@@ -746,7 +749,7 @@ module.exports = (store, __exports) => {
                   },
                   React.createElement('span', {
                     dangerouslySetInnerHTML: {
-                      __html: title,
+                      __html: (title.img || '') + (title.text || 'notion.so'),
                     },
                   }),
                   React.createElement(

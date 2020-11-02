@@ -46,7 +46,7 @@ npm unlink
 
 ## conventions
 
-the enhancer can be categorised as a **core** extended by included **modules**.
+the enhancer is a **core** extended by included **modules**.
 the core can be further split into the **installer** and the **modloader**.
 modules are either **extensions** or **themes**.
 

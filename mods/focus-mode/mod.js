@@ -19,8 +19,8 @@ module.exports = {
     {
       key: 'padded',
       label: 'add padding to bottom of the page',
-      description: `will only take effect when the sidebar is hidden. aims to make the canvas\
-        as symmetrical/consistent as possible: if there is empty space on 3 sides, the 4th should follow.z`,
+      desc: `will only take effect when the sidebar is hidden. aims to make the canvas\
+        as symmetrical/consistent as possible: if there is empty space on 3 sides, the 4th should follow.`,
       type: 'toggle',
       value: true,
     },

@@ -5,7 +5,11 @@
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 - [advanced math editor](https://github.com/Manueloccorso/NotionMathEditor_BrowserExtension)
 
-### v0.10.0 (wip)
+### v0.10.1 (wip)
+
+- bugfix: disable fadein of selected block halo with snappy transitions.
+
+### v0.10.0 (2020-11-02)
 
 a flexibility update.
 
@@ -51,8 +55,10 @@ a flexibility update.
   so system dark/light mode can be properly detected.
 - bugfix: make ctrl+f popover shadow less extreme.
 - bugfix: "weekly" calendar view name made case insensitive.
+- bugfix: re-show hidden windows when clicking on the dock.
 - tweak: sticky table/list rows.
 - theme: "material ocean" = an oceanic colour palette.
+- theme: "cherry cola" = a delightfully plummy, cherry cola flavored theme.
 - theme: "dracula" = a theme based on the popular dracula color palette
   originally by zeno rocha and friends.
 - extension: "tabs" = have multiple notion pages open in a single window. tabs can be controlled
@@ -69,6 +75,8 @@ a flexibility update.
   - moved: hide help.
 
 a fork of notion-deb-builder that does generate an app.asar has been created and is once again supported.
+
+> 📥 `npm i -g notion-enhancer@0.10.0`
 
 ### v0.9.1 (2020-09-26)
 
