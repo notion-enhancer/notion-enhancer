@@ -35,7 +35,7 @@ a chrome extension may be coming soon for web client support.
   - `CMD + ALT + ESC` on mac and `CTRL + ALT + DEL` on windows/linux to open task manager
 - [install node.js](https://nodejs.org/en/download/)
   - you may need to restart your computer
-  - notion-enhancer will use node.js, you do not need to interact with it
+  - notion-enhancer will use node.js, you do not need to interact with it aside from downloading to install notion-enhancer
 - open your computer's terminal, **not Node.js command prompt**
   - **windows 10:** search in your start menu (click windows key or icon in bottom left of screen) for *'cmd'* or *'command prompt'*
   - **mac:** search in spotlight (magnifying glass in top right of screen) for `*terminal*'
