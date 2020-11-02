@@ -387,7 +387,7 @@ module.exports = (store, __exports) => {
                 title =
                   (this.state.tabs.get(+id).emoji
                     ? `${this.state.tabs.get(+id).emoji} `
-                    : '') + this.state.tabs.get(+id).text;
+                    : '') + (this.state.tabs.get(+id).text || 'Notion Desktop');
               if (electronWindow && electronWindow.getTitle() !== title)
                 electronWindow.setTitle(title);
             }
@@ -439,7 +439,7 @@ module.exports = (store, __exports) => {
               const electronWindow = electron.remote.getCurrentWindow(),
                 title =
                   (event.args[0].emoji ? `${event.args[0].emoji} ` : '') +
-                  event.args[0].text;
+                  (event.args[0].text || 'Notion Desktop');
               if (
                 event.target.id == this.views.current.id &&
                 electronWindow.getTitle() !== title
@@ -749,7 +749,7 @@ module.exports = (store, __exports) => {
                   },
                   React.createElement('span', {
                     dangerouslySetInnerHTML: {
-                      __html: (title.img || '') + title.text,
+                      __html: (title.img || '') + (title.text || 'notion.so'),
                     },
                   }),
                   React.createElement(

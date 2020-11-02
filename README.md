@@ -168,7 +168,7 @@ these include:
 | new tab keybinding                                                    | [accelerator](https://github.com/electron/electron/blob/master/docs/api/accelerator.md) input | `CommandOrControl+T`                                                                               |
 | close tab keybinding                                                  | [accelerator](https://github.com/electron/electron/blob/master/docs/api/accelerator.md) input | `CommandOrControl+W`                                                                               |
 
-![](https://user-images.githubusercontent.com/16874139/97819548-5b5c2080-1cfd-11eb-9c3d-cbf586dc7235.png)
+![](https://user-images.githubusercontent.com/16874139/97821456-9dd62b00-1d06-11eb-8c3a-e9f77bbd740e.png)
 
 ### tweaks
 
