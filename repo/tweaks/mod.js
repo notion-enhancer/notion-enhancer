@@ -67,6 +67,21 @@ module.exports = {
       value: false,
     },
     {
+      key: 'condensed_bullets',
+      label: 'condense bullet points',
+      desc:
+        "makes bullet point blocks closer together and have tighter line spacing",
+      type: 'toggle',
+      value: false,
+    },
+    {
+      key: 'indentation_lines',
+      label: 'indentation lines for bullets',
+      desc:
+        "adds vertical indentation/relationship lines to make bullet trees\
+        easier to follow",
+    },
+    {
       key: 'scroll_db_toolbars',
       label: 'scroll database toolbars',
       type: 'toggle',
@@ -83,6 +98,8 @@ module.exports = {
           'thicker_bold',
           'spaced_lines',
           'hide_help',
+          'condensed_bullets',
+          'indentation_lines'
           'scroll_db_toolbars',
         ]
           .filter((tweak) => store()[tweak])
