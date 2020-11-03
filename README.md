@@ -33,10 +33,22 @@ a chrome extension may be coming soon for web client support.
 
 during installation/removal, make sure no notion processes are running! (check your task manager.)
 
-**win10, macOS**
+**win10**
 
-1. [install node.js](https://nodejs.org/en/download/) (_a computer restart may be required here._)
-2. execute `npm i -g notion-enhancer` in the terminal/command prompt.
+[install node.js](https://nodejs.org/en/download/) (_a computer restart may be required here_),
+then execute `npm i -g notion-enhancer` in the command prompt.
+
+**macOS**
+
+[install node.js](https://nodejs.org/en/download/) (_a computer restart may be required here_),
+then execute the following lines in the terminal:
+
+```
+sudo chmod -R a+wr /usr/local/lib/node_modules
+sudo chmod -R a+wr /usr/local/bin
+sudo chmod -R a+wr /Applications/Notion.app/Contents/Resources
+npm i -g notion-enhancer
+```
 
 **debian/ubuntu, chromeOS, WSL (to modify the win10 app)**
 
@@ -45,7 +57,7 @@ execute the following lines in the terminal:
 ```
 bash curl -sL https://deb.nodesource.com setup_current.x | sudo -E bash -
 sudo apt-get install -y nodejs
-sudo npm i -g notion-enhancer
+npm i -g notion-enhancer
 ```
 
 **arch linux, manjaro**
