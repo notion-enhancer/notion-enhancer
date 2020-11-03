@@ -66,6 +66,12 @@ module.exports = {
       type: 'toggle',
       value: false,
     },
+    {
+      key: 'scroll_db_toolbars',
+      label: 'scroll database toolbars',
+      type: 'toggle',
+      value: false,
+    },
   ],
   hacks: {
     'renderer/preload.js': (store, __exports) => {
@@ -77,6 +83,7 @@ module.exports = {
           'thicker_bold',
           'spaced_lines',
           'hide_help',
+          'scroll_db_toolbars',
         ]
           .filter((tweak) => store()[tweak])
           .map((tweak) => `[${tweak}]`)
