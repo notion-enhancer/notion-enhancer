@@ -59,3 +59,12 @@
   > div > div > div.notion-selectable.notion-bulleted_list-block {
   border-left: 1px dashed var(--theme--text_ui_info);
 }
+
+[data-tweaks*='[scroll_db_toolbars]'] .notion-frame > .notion-scroller > [style*="overflow: visible;"],
+[data-tweaks*='[scroll_db_toolbars]'] .notion-page-content .notion-collection_view-block > :first-child {
+    overflow-x: auto !important;
+}
+[data-tweaks*='[scroll_db_toolbars]'] .notion-frame > .notion-scroller > [style*="overflow: visible;"]::-webkit-scrollbar,
+[data-tweaks*='[scroll_db_toolbars]'] .notion-page-content .notion-collection_view-block > :first-child::-webkit-scrollbar {
+    display: none;
+}
