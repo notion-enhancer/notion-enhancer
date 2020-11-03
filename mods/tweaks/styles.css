@@ -47,11 +47,23 @@
   --theme_light--text-block_margin-top: 0.75em;
 }
 
+[data-tweaks*='[condensed_bullets]']
+  .notion-selectable.notion-bulleted_list-block {
+  line-height: 1.1 !important;
+  margin-top: -1.5px !important;
+  margin-bottom: -1.5px !important;
+}
+
+[data-tweaks*='[indentation_lines]']
+  div.notion-selectable.notion-bulleted_list-block
+  > div > div > div.notion-selectable.notion-bulleted_list-block {
+  border-left: 1px dashed var(--theme--text_ui_info);
+}
+
 [data-tweaks*='[scroll_db_toolbars]'] .notion-frame > .notion-scroller > [style*="overflow: visible;"],
 [data-tweaks*='[scroll_db_toolbars]'] .notion-page-content .notion-collection_view-block > :first-child {
     overflow-x: auto !important;
 }
-
 [data-tweaks*='[scroll_db_toolbars]'] .notion-frame > .notion-scroller > [style*="overflow: visible;"]::-webkit-scrollbar,
 [data-tweaks*='[scroll_db_toolbars]'] .notion-page-content .notion-collection_view-block > :first-child::-webkit-scrollbar {
     display: none;
