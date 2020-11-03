@@ -80,6 +80,10 @@ module.exports = {
       desc:
         "adds vertical indentation/relationship lines to make bullet trees\
         easier to follow",
+    },
+    {
+      key: 'scroll_db_toolbars',
+      label: 'scroll database toolbars',
       type: 'toggle',
       value: false,
     },
@@ -96,6 +100,7 @@ module.exports = {
           'hide_help',
           'condensed_bullets',
           'indentation_lines'
+          'scroll_db_toolbars',
         ]
           .filter((tweak) => store()[tweak])
           .map((tweak) => `[${tweak}]`)
