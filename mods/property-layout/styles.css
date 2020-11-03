@@ -5,20 +5,26 @@
  * under the MIT license
  */
 
+.propertylayout-enhanced {
+  overflow: hidden;
+  transition: max-height 200ms ease-in, opacity 200ms ease-in;
+}
 .propertylayout-hidden {
-  display: none;
+  max-height: 0 !important;
+  opacity: 0;
 }
 
 .propertylayout-toggle {
   width: 100%;
   text-align: left;
   font-size: 0.85em;
+  font-weight: 600;
   padding: 0.25em;
   background: transparent;
   color: var(--theme--text_ui);
   border: none;
   border-radius: 2px;
-  transition: background 200ms;
+  transition: background 200ms, margin-bottom 200ms ease-in;
 }
 .notion-scroller.vertical > div > :first-child .propertylayout-toggle {
   margin-top: 1em;
@@ -26,9 +32,17 @@
 .propertylayout-toggle[data-action='show'] {
   margin-bottom: 1em;
 }
-.propertylayout-toggle::before {
-  content: '→ ' attr(data-action) ' ';
-}
 .propertylayout-toggle:hover {
   background: var(--theme--interactive_hover);
+}
+
+.propertylayout-toggle .triangle {
+  width: 0.6875em;
+  height: 0.6875em;
+  margin: 0 0.75em 0 0.5em;
+  transition: transform 200ms ease-out 0s;
+  transform: rotateZ(90deg);
+}
+.propertylayout-toggle[data-action="hide"] .triangle {
+  transform: rotateZ(180deg);
 }
