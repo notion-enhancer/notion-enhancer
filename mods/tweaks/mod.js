@@ -66,23 +66,6 @@ module.exports = {
       type: 'toggle',
       value: false,
     },
-    {
-      key: 'condensed_bullets',
-      label: 'condense bullet points',
-      desc:
-        "makes bullet point blocks closer together and have tighter line spacing",
-      type: 'toggle',
-      value: false,
-    },
-    {
-      key: 'indentation_lines',
-      label: 'indentation lines for bullets',
-      desc:
-        "adds vertical indentation/relationship lines to make bullet trees\
-        easier to follow",
-      type: 'toggle',
-      value: false,
-    },
   ],
   hacks: {
     'renderer/preload.js': (store, __exports) => {
@@ -94,8 +77,6 @@ module.exports = {
           'thicker_bold',
           'spaced_lines',
           'hide_help',
-          'condensed_bullets',
-          'indentation_lines'
         ]
           .filter((tweak) => store()[tweak])
           .map((tweak) => `[${tweak}]`)
