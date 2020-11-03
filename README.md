@@ -28,42 +28,37 @@ a chrome extension may be coming soon for web client support.
 
 ## installation
 
-> coming from <= v0.7.0? things are a bit different - have a read of [the update guide](UPDATING.md)
-> before following these instructions.
+> **if you are updating from v0.7.0,** things have changed, more information is available
+> in this [update guide](UPDATING.md). please read that before following these instructions.
 
-during installation/removal, make sure no notion processes are running! (check your task manager.)
-
-**win10**
-
-[install node.js](https://nodejs.org/en/download/) (_a computer restart may be required here_),
-then execute `npm i -g notion-enhancer` in the command prompt.
-
-**macOS**
-
-[install node.js](https://nodejs.org/en/download/) (_a computer restart may be required here_),
-then execute the following lines in the terminal:
-
-```
-sudo chmod -R a+wr /usr/local/lib/node_modules
-sudo chmod -R a+wr /usr/local/bin
-sudo chmod -R a+wr /Applications/Notion.app/Contents/Resources
-npm i -g notion-enhancer
-```
-
-**debian/ubuntu, chromeOS, WSL (to modify the win10 app)**
-
-execute the following lines in the terminal:
-
-```
-bash curl -sL https://deb.nodesource.com setup_current.x | sudo -E bash -
-sudo apt-get install -y nodejs
-npm i -g notion-enhancer
-```
-
-**arch linux, manjaro**
-
-install the [aur package](https://aur.archlinux.org/packages/notion-enhancer)
-with your aur helper (e.g. `yay -S notion-enhancer`).
+- ensure that no notion windows/processes are running by ending all Notion processes in your task manager.
+  - `CMD + ALT + ESC` on mac and `CTRL + SHIFT + ESC` on windows/linux to open task manager
+- [install node.js](https://nodejs.org/en/download/)
+  - you may need to restart your computer
+  - notion-enhancer will use node.js, you do not need to interact with it aside from downloading to install notion-enhancer
+- open your computer's terminal, **not Node.js command prompt**
+  - **windows 10:** search in your start menu (click windows key or icon in bottom left of screen) for *'cmd'* or *'command prompt'*
+  - **mac:** search in spotlight (magnifying glass in top right of screen) for `*terminal*'
+- type and enter the following line(s) based on your operating system, if there are multiple lines, make sure to enter them *one by one* 
+  - **windows 10:**
+    ```
+    npm i -g notion-enhancer
+    ```
+  - **mac:** This may ask you to enter your password, instead of hiding your password with *** symbols, mac terminal hides it by making it invisible. Simply type your password and click enter.
+    ```
+    sudo chmod -R a+wr /usr/local/lib/node_modules
+    sudo chmod -R a+wr /usr/local/bin
+    sudo chmod -R a+wr /Applications/Notion.app/Contents/Resources
+    npm i -g notion-enhancer
+    ```
+  - **debian/ubuntu, chromeOS, WSL (to modify the win10 app):**
+    ```
+    bash curl -sL https://deb.nodesource.com setup_current.x | sudo -E bash -
+    sudo apt-get install -y nodejs
+    npm i -g notion-enhancer
+    ```
+  - **arch linux, manjaro:**
+    - install the [aur package](https://aur.archlinux.org/packages/notion-enhancer) with your aur helper (e.g. `yay -S notion-enhancer`).
 
 ### command-line interface
 
