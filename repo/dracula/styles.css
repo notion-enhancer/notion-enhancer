@@ -3,6 +3,7 @@
  * (c) 2020 @mimishahzad386#5651
  * (c) 2020 dracula
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2020 Alexa Baldon (https://github.com/runargs)
  * under the MIT license
  */
 
@@ -24,7 +25,7 @@
   --theme_dark--select_input: #474a5c;
   --theme_dark--table-border: #484b59;
   --theme_dark--ui-border: var(--theme_dark--table-border);
-  --theme_dark--interactive_hover: #3c3f50;
+  --theme_dark--interactive_hover: rgba(64, 73, 105, 0.7);
   --theme_dark--button_close: #ff5555;
 
   --theme_dark--selected: rgba(189, 147, 249, 0.3);

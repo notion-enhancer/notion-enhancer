@@ -1,6 +1,7 @@
 /*
  * dark+
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2020 Alexa Baldon (https://github.com/runargs)
  * under the MIT license
  */
 
@@ -19,7 +20,7 @@
   --theme_dark--select_input: rgb(12, 12, 12);
   --theme_dark--table-border: rgba(46, 46, 46, 0.7);
   --theme_dark--ui-border: var(--theme_dark--table-border);
-  --theme_dark--interactive_hover: #020202;
+  --theme_dark--interactive_hover:rgba(55, 56, 56, 0.3);
 
   --theme_dark--option_hover-background: rgb(32, 32, 32);
 

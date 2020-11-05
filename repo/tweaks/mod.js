@@ -99,8 +99,8 @@ module.exports = {
           'spaced_lines',
           'hide_help',
           'condensed_bullets',
-          'indentation_lines'
-          'scroll_db_toolbars',
+          'indentation_lines',
+          'scroll_db_toolbars'
         ]
           .filter((tweak) => store()[tweak])
           .map((tweak) => `[${tweak}]`)
