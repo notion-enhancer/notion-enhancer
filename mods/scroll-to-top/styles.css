@@ -53,3 +53,8 @@
   transition-property: opacity, transform, visibility;
   transition-delay: 0, 0, 700ms;
 }
+
+.notion-scroll-button > svg {
+  width: 18px;
+  height: 18px;
+}
