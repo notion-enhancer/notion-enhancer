@@ -77,6 +77,9 @@ module.exports = {
     {
       key: 'indentation_lines',
       label: 'indentation lines for bullets',
+      desc:
+        "adds vertical indentation or relationship lines to make bullet trees\
+        easier to follow",
       type: 'select',
       value: ['none', 'solid', 'dashed', 'dotted', 'soft'],
     },
