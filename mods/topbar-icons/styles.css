@@ -1,0 +1,28 @@
+/*
+ * topbar icons
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2020 CloudHill
+ * under the MIT license
+ */
+
+.notion-topbar-actions > div {
+  width: 32px;
+  padding: 0 7px !important;
+}
+
+.notion-topbar-actions > :not(:first-child):not(:last-child) > *:not(div) {
+  display: none !important;
+}
+
+.notion-topbar-actions > div > div,
+.notion-topbar-actions svg {
+  width: 18px;
+  height: 18px;
+}
+
+.notion-topbar-actions > [style*="padding-left: 8px"] > div > svg:last-child {
+  display: none;
+}
+.notion-topbar-actions > [style*="padding-left: 6px"] > div > svg:first-child {
+  display: none;
+}
