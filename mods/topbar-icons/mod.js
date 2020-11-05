@@ -16,12 +16,36 @@ module.exports = {
   tags: ['extension'],
   name: 'topbar icons',
   desc:
-    'replaces the topbar buttons (share, updates, favorite) with icons.',
+    'replaces the topbar buttons with icons.',
+  options: [
+    {
+      key: 'share',
+      label: 'share',
+      type: 'toggle',
+      value: true,
+    },
+    {
+      key: 'updates',
+      label: 'updates',
+      type: 'toggle',
+      value: true,
+    },
+    {
+      key: 'favorite',
+      label: 'favorite',
+      type: 'toggle',
+      value: true,
+    }, 
+  ],
   version: '1.0.0',
   author: 'CloudHill',
   hacks: {
     'renderer/preload.js'(store, __exports) {
       const icons = {
+        selected: [
+          ...(store().updates ? ['updates'] : []),
+          ...(store().favorite ? ['favorite'] : []),
+        ],
         share: fs.readFile(path.resolve(`${__dirname}/icons/share.svg`)),
         updates: {
           on: fs.readFile(path.resolve(`${__dirname}/icons/updates_on.svg`)),
@@ -73,12 +97,16 @@ module.exports = {
 
           async function setIcons(buttons) {
             const buttonList = buttons.children;
-            buttonList[0].innerHTML = await icons.share;
+            if (store().share) {
+              buttonList[0].classList.add('notion-topbar-icon');
+              buttonList[0].innerHTML = await icons.share;
+            }
             const elements = {
               updates: buttonList[1],
               favorite: buttonList[2],
             };
-            for (let btn of ['updates', 'favorite']) {
+            for (let btn of icons.selected) {
+              elements[btn].classList.add('notion-topbar-icon')
               elements[btn].prepend(
                 createElement(
                   `<div>${(await icons[btn].off).toString()}        
