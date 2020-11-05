@@ -86,6 +86,9 @@ module.exports = {
     {
       key: 'scroll_db_toolbars',
       label: 'scroll database toolbars',
+      desc:
+        "allows scrolling database toolbars horizontally if\
+        part of the toolbar is hidden (hold shift while scrolling)",
       type: 'toggle',
       value: false,
     },
