@@ -78,12 +78,17 @@ module.exports = {
       key: 'indentation_lines',
       label: 'indentation lines for bullets',
       desc:
-        "adds vertical indentation/relationship lines to make bullet trees\
+        "adds vertical indentation or relationship lines to make bullet trees\
         easier to follow",
+      type: 'select',
+      value: ['none', 'solid', 'dashed', 'dotted', 'soft'],
     },
     {
       key: 'scroll_db_toolbars',
       label: 'scroll database toolbars',
+      desc:
+        "allows scrolling database toolbars horizontally if\
+        part of the toolbar is hidden (hold shift while scrolling)",
       type: 'toggle',
       value: false,
     },
@@ -99,7 +104,6 @@ module.exports = {
           'spaced_lines',
           'hide_help',
           'condensed_bullets',
-          'indentation_lines',
           'scroll_db_toolbars'
         ]
           .filter((tweak) => store()[tweak])
@@ -119,6 +123,9 @@ module.exports = {
         };
         window.addEventListener('resize', addResponsiveBreakpoint);
         addResponsiveBreakpoint();
+        if (store().indentation_lines !== 'none') {
+          document.body.dataset.tweaks += `[indentation_lines_${store().indentation_lines}]`
+        }
       });
     },
   },
