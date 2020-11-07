@@ -426,7 +426,7 @@ the font you would like to use, or leave it blank to not change anything.
 
 **tags:** #extension
 
-**description:** calendar views named "weekly" will show only the 7 days of this week.
+**description:** calendar views with the word "weekly" included in the name will show only the 7 days of this week.
 
 **author:** [adihd](https://github.com/adihd/)
 

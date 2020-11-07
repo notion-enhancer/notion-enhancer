@@ -11,8 +11,8 @@ module.exports = {
   id: '4c7acaea-6596-4590-85e5-8ac5a1455e8f',
   tags: ['extension'],
   name: 'weekly view',
-  desc: 'calendar views named "weekly" will show only the 7 days of this week.',
-  version: '0.5.1',
+  desc: 'calendar views with the word "weekly" included in the name will show only the 7 days of this week.',
+  version: '0.5.2',
   author: 'adihd',
   hacks: {
     'renderer/preload.js'(store, __exports) {
@@ -31,7 +31,7 @@ module.exports = {
           document
             .querySelectorAll('.notion-collection-view-select')
             .forEach((collection_view) => {
-              if (collection_view.innerText.toLowerCase() !== 'weekly') return;
+              if (collection_view.innerText.toLowerCase().indexOf('weekly') === -1) return;
               const days = collection_view.parentElement.parentElement.parentElement.parentElement.getElementsByClassName(
                   'notion-calendar-view-day'
                 ),
