@@ -74,7 +74,7 @@ module.exports = {
                 );
                 
                 if (lines > 1) {
-                  block.children[0].classList.add('numbered');
+                  block.children[0].classList.add('code-numbered');
                   numbers.innerText = Array.from(
                     Array(lines),
                     (e, i) => i + 1
