@@ -7,6 +7,9 @@
 
 .notion-code-block.line-numbers > div {
     position: relative;
+}
+
+.numbered {
     padding-left: 48px !important;
 }
 
