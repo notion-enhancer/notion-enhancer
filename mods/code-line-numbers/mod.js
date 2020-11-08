@@ -16,6 +16,14 @@ module.exports = {
   desc: 'adds line numbers to code blocks.',
   version: '1.0.0',
   author: 'CloudHill',
+  options: [
+    {
+      key: 'single_lined',
+      label: 'show line numbers on single-lined code blocks',
+      type: 'toggle',
+      value: false
+    }
+  ],
   hacks: {
     'renderer/preload.js'(store, __exports) {
       document.addEventListener('readystatechange', (event) => {
@@ -65,10 +73,13 @@ module.exports = {
                   block.lineHeight
                 );
                 
-                numbers.innerText = Array.from(
-                  Array(lines),
-                  (e, i) => i + 1
-                ).join('\n');
+                if (lines > 1) {
+                  block.children[0].classList.add('numbered');
+                  numbers.innerText = Array.from(
+                    Array(lines),
+                    (e, i) => i + 1
+                  ).join('\n');
+                }
               }
             }
           }
