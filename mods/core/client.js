@@ -23,7 +23,13 @@ module.exports = (store, __exports) => {
     if (event.key === 'F5') location.reload();
     // open menu on hotkey toggle
     if (store().menu_toggle) {
-      const hotkey = toKeyEvent(store().menu_toggle);
+      const hotkey = {
+        ctrlKey: false,
+        metaKey: false,
+        altKey: false,
+        shiftKey: false,
+        ...toKeyEvent(store().menu_toggle),
+      };
       let triggered = true;
       for (let prop in hotkey)
         if (
@@ -37,7 +43,13 @@ module.exports = (store, __exports) => {
       const tabStore = () => store('e1692c29-475e-437b-b7ff-3eee872e1a42');
       if (tabStore().select_modifier) {
         // switch between tabs via key modifier
-        const select_tab_modifier = toKeyEvent(select_tab_modifier);
+        const select_tab_modifier = {
+          ctrlKey: false,
+          metaKey: false,
+          altKey: false,
+          shiftKey: false,
+          ...toKeyEvent(tabStore().select_modifier),
+        };
         let triggered = true;
         for (let prop in select_tab_modifier)
           if (select_tab_modifier[prop] !== event[prop]) triggered = false;
@@ -61,14 +73,26 @@ module.exports = (store, __exports) => {
       }
       if (tabStore().new_tab) {
         // create/close tab keybindings
-        const new_tab_keybinding = toKeyEvent(tabStore().new_tab);
+        const new_tab_keybinding = {
+          ctrlKey: false,
+          metaKey: false,
+          altKey: false,
+          shiftKey: false,
+          ...toKeyEvent(tabStore().new_tab),
+        };
         let triggered = true;
         for (let prop in new_tab_keybinding)
           if (new_tab_keybinding[prop] !== event[prop]) triggered = false;
         if (triggered) electron.ipcRenderer.sendToHost('enhancer:new-tab');
       }
       if (tabStore().close_tab) {
-        const close_tab_keybinding = toKeyEvent(tabStore().close_tab);
+        const close_tab_keybinding = {
+          ctrlKey: false,
+          metaKey: false,
+          altKey: false,
+          shiftKey: false,
+          ...toKeyEvent(tabStore().close_tab),
+        };
         let triggered = true;
         for (let prop in close_tab_keybinding)
           if (close_tab_keybinding[prop] !== event[prop]) triggered = false;
