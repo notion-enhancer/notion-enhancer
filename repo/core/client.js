@@ -22,55 +22,58 @@ module.exports = (store, __exports) => {
     // additional hotkeys
     if (event.key === 'F5') location.reload();
     // open menu on hotkey toggle
-    const hotkey = toKeyEvent(store().menu_toggle);
-    let triggered = true;
-    for (let prop in hotkey)
-      if (
-        hotkey[prop] !== event[prop] &&
-        !(prop === 'key' && event[prop] === 'Dead')
-      )
-        triggered = false;
-    if (triggered) electron.ipcRenderer.send('enhancer:open-menu');
-    if (tabsEnabled) {
-      // switch between tabs via key modifier
-      const select_tab_modifier = toKeyEvent(
-        store('e1692c29-475e-437b-b7ff-3eee872e1a42').select_modifier
-      );
+    if (store().menu_toggle) {
+      const hotkey = toKeyEvent(store().menu_toggle);
       let triggered = true;
-      for (let prop in select_tab_modifier)
-        if (select_tab_modifier[prop] !== event[prop]) triggered = false;
-      if (
-        triggered &&
-        [
-          '1',
-          '2',
-          '3',
-          '4',
-          '5',
-          '6',
-          '7',
-          '8',
-          '9',
-          'ArrowRight',
-          'ArrowLeft',
-        ].includes(event.key)
-      )
-        electron.ipcRenderer.sendToHost('enhancer:select-tab', event.key);
-      // create/close tab keybindings
-      const new_tab_keybinding = toKeyEvent(
-        store('e1692c29-475e-437b-b7ff-3eee872e1a42').new_tab
-      );
-      triggered = true;
-      for (let prop in new_tab_keybinding)
-        if (new_tab_keybinding[prop] !== event[prop]) triggered = false;
-      if (triggered) electron.ipcRenderer.sendToHost('enhancer:new-tab');
-      const close_tab_keybinding = toKeyEvent(
-        store('e1692c29-475e-437b-b7ff-3eee872e1a42').close_tab
-      );
-      triggered = true;
-      for (let prop in close_tab_keybinding)
-        if (close_tab_keybinding[prop] !== event[prop]) triggered = false;
-      if (triggered) electron.ipcRenderer.sendToHost('enhancer:close-tab');
+      for (let prop in hotkey)
+        if (
+          hotkey[prop] !== event[prop] &&
+          !(prop === 'key' && event[prop] === 'Dead')
+        )
+          triggered = false;
+      if (triggered) electron.ipcRenderer.send('enhancer:open-menu');
+    }
+    if (tabsEnabled) {
+      const tabStore = () => store('e1692c29-475e-437b-b7ff-3eee872e1a42');
+      if (tabStore().select_modifier) {
+        // switch between tabs via key modifier
+        const select_tab_modifier = toKeyEvent(select_tab_modifier);
+        let triggered = true;
+        for (let prop in select_tab_modifier)
+          if (select_tab_modifier[prop] !== event[prop]) triggered = false;
+        if (
+          triggered &&
+          [
+            '1',
+            '2',
+            '3',
+            '4',
+            '5',
+            '6',
+            '7',
+            '8',
+            '9',
+            'ArrowRight',
+            'ArrowLeft',
+          ].includes(event.key)
+        )
+          electron.ipcRenderer.sendToHost('enhancer:select-tab', event.key);
+      }
+      if (tabStore().new_tab) {
+        // create/close tab keybindings
+        const new_tab_keybinding = toKeyEvent(tabStore().new_tab);
+        let triggered = true;
+        for (let prop in new_tab_keybinding)
+          if (new_tab_keybinding[prop] !== event[prop]) triggered = false;
+        if (triggered) electron.ipcRenderer.sendToHost('enhancer:new-tab');
+      }
+      if (tabStore().close_tab) {
+        const close_tab_keybinding = toKeyEvent(tabStore().close_tab);
+        let triggered = true;
+        for (let prop in close_tab_keybinding)
+          if (close_tab_keybinding[prop] !== event[prop]) triggered = false;
+        if (triggered) electron.ipcRenderer.sendToHost('enhancer:close-tab');
+      }
     }
   });
 

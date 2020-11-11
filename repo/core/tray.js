@@ -246,11 +246,13 @@ module.exports = (store, __exports) => {
       else showWindows(windows);
     }
     tray.on('click', toggleWindows);
-    electron.globalShortcut.register(store().hotkey, () => {
-      const windows = getAllWindows();
-      if (windows.some((win) => win.isFocused() && win.isVisible()))
-        hideWindows(windows);
-      else showWindows(windows);
-    });
+    if (store().hotkey) {
+      electron.globalShortcut.register(store().hotkey, () => {
+        const windows = getAllWindows();
+        if (windows.some((win) => win.isFocused() && win.isVisible()))
+          hideWindows(windows);
+        else showWindows(windows);
+      });
+    }
   });
 };
