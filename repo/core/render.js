@@ -9,6 +9,7 @@
 const url = require('url'),
   path = require('path'),
   electron = require('electron'),
+  fs = require('fs-extra'),
   {
     __notion,
     getEnhancements,
@@ -422,10 +423,6 @@ module.exports = (store, __exports) => {
 
       communicateWithView(event) {
         switch (event.channel) {
-          case 'enhancer:set-tab-theme':
-            for (const style of event.args[0])
-              document.body.style.setProperty(style[0], style[1]);
-            break;
           case 'enhancer:set-tab-title':
             if (this.state.tabs.get(+event.target.id)) {
               this.setState({
@@ -978,7 +975,7 @@ module.exports = (store, __exports) => {
     }
 
     window['__start'] = () => {
-      document.head.innerHTML += `<link rel="stylesheet" href="${__dirname}/css/tabs.css" />`;
+      document.body.className = 'notion-dark-theme';
       document.body.setAttribute('data-platform', process.platform);
 
       const modules = getEnhancements();
@@ -991,6 +988,27 @@ module.exports = (store, __exports) => {
             );
         }
       }
+
+      for (let mod of modules.loaded) {
+        if (
+          mod.alwaysActive ||
+          store('mods', { [mod.id]: { enabled: false } })[mod.id].enabled
+        ) {
+          const fileExists = (file) => fs.pathExistsSync(path.resolve(file));
+          for (let sheet of ['tabs', 'variables']) {
+            if (fileExists(`${__dirname}/../${mod.dir}/${sheet}.css`)) {
+              document.head.appendChild(
+                createElement(
+                  `<link rel="stylesheet" href="enhancement://${mod.dir}/${sheet}.css">`
+                )
+              );
+            }
+          }
+        }
+      }
+      electron.ipcRenderer.on('enhancer:set-app-theme', (event, theme) => {
+        document.body.className = `notion-${theme}-theme`;
+      });
 
       // open menu on hotkey toggle
       document.addEventListener('keyup', (event) => {

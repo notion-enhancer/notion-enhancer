@@ -141,10 +141,10 @@ module.exports = (store, __exports) => {
     });
 
     function setAppTheme() {
-      electron.ipcRenderer.send(
-        'enhancer:set-app-theme',
-        document.querySelector('.notion-dark-theme') ? 'dark' : 'light'
-      );
+      const theme = document.querySelector('.notion-dark-theme')
+        ? 'dark'
+        : 'light';
+      electron.ipcRenderer.send('enhancer:set-app-theme', theme);
     }
     setAppTheme();
     new MutationObserver(setAppTheme).observe(
