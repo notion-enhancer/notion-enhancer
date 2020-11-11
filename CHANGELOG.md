@@ -7,10 +7,18 @@
 
 ### v0.11.0 (wip)
 
+- new: different css entrypoints for different components (tabs, menu, app).
 - improved: use an svg for the scroll-to-top button.
 - improved: use a better-matching icon and add transitions to the property layout toggle.
+- improved: themes are directly applied to tabs and menu rather than sync-ed between (infinite loading).
 - bugfix: disable fadein of selected block halo with snappy transitions.
 - bugfix: increase contrast of `--theme_dark--interactive_hover` in dark+ and dracula.
+- bugfix: tabs are focused properly for input.
+- bugfix: keyboard shortcut listeners are stricter so they don't conflict.
+- bugfix: dots indicating draggability are no longer next to the tabs mod in the menu.
+- bugfix: prevent empty hotkeys from triggering every keypress.
+- bugfix: don't try loading an empty default page url (infinite loading).
+- bugfix: remove `* { z-index: 1}` rule so format dropdowns in table view can be opened.
 - extension: "topbar icons" = replaces the topbar buttons with icons.
 - extension: "code line numbers" = adds line numbers to code blocks.
 - tweak: vertical indentation/relationship lines for lists.
