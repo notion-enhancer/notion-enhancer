@@ -37,6 +37,8 @@ npm link
 notion-enhancer apply -y
 ```
 
+to update the dev build, go into the downloaded folder and run `git pull`. (make sure any work-in-progress themes etc. are copied somewhere else safely first.)
+
 to remove the dev build, go into the downloaded folder and run:
 
 ```sh

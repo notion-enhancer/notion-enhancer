@@ -145,16 +145,18 @@ window['__start'] = async () => {
     )
       $popup.classList.remove('visible');
     // close window on hotkey toggle
-    const hotkey = toKeyEvent(coreStore().menu_toggle);
-    let triggered = true;
-    for (let prop in hotkey)
-      if (
-        hotkey[prop] !== event[prop] &&
-        !(prop === 'key' && event[prop] === 'Dead')
-      )
-        triggered = false;
-    if (triggered || ((event.ctrlKey || event.metaKey) && event.key === 'w'))
-      electron.remote.getCurrentWindow().close();
+    if (coreStore().menu_toggle) {
+      const hotkey = toKeyEvent(coreStore().menu_toggle);
+      let triggered = true;
+      for (let prop in hotkey)
+        if (
+          hotkey[prop] !== event[prop] &&
+          !(prop === 'key' && event[prop] === 'Dead')
+        )
+          triggered = false;
+      if (triggered || ((event.ctrlKey || event.metaKey) && event.key === 'w'))
+        electron.remote.getCurrentWindow().close();
+    }
     //  focus search
     const meta =
       !(event.ctrlKey || event.metaKey) && !event.altKey && !event.shiftKey;

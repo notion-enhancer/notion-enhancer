@@ -1010,19 +1010,6 @@ module.exports = (store, __exports) => {
         document.body.className = `notion-${theme}-theme`;
       });
 
-      // open menu on hotkey toggle
-      document.addEventListener('keyup', (event) => {
-        const hotkey = toKeyEvent(store().menu_toggle);
-        let triggered = true;
-        for (let prop in hotkey)
-          if (
-            hotkey[prop] !== event[prop] &&
-            !(prop === 'key' && event[prop] === 'Dead')
-          )
-            triggered = false;
-        if (triggered) electron.ipcRenderer.send('enhancer:open-menu');
-      });
-
       const parsed = url.parse(window.location.href, true),
         notionUrl =
           parsed.query.path ||
