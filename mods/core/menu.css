@@ -39,6 +39,7 @@ body {
   height: 100%;
   margin: 0;
   padding: 0;
+  display: block;
   overflow: hidden;
   background: var(--theme--main);
   color: var(--theme--text);
@@ -60,7 +61,6 @@ code {
   border-radius: 0.1em;
   padding: 0.2em 0.4em;
   font: 0.85em var(--theme--font_code);
-  /* color: var(--theme--code_inline-text); */
   background: var(--theme--code_inline-background);
 }
 
