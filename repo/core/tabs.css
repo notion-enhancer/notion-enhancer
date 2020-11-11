@@ -4,7 +4,7 @@
  * under the MIT license
  */
 
-@import './buttons.css';
+@import './css/buttons.css';
 
 * {
   box-sizing: border-box;
