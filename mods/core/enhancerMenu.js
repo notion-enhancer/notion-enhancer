@@ -7,7 +7,7 @@
 'use strict';
 
 const store = require('../../pkg/store.js'),
-  helpers = require('../../pkg/helpers.js'),
+  { createElement, getEnhancements } = require('../../pkg/helpers.js'),
   fs = require('fs-extra'),
   path = require('path'),
   electron = require('electron'),
@@ -17,13 +17,14 @@ window['__start'] = async () => {
   document.body.setAttribute('data-platform', process.platform);
 
   // mod loader
-  const modules = helpers.getEnhancements();
-  if (modules.loaded.length)
+  const modules = getEnhancements();
+  if (modules.loaded.length) {
     console.info(
       `<notion-enhancer> enhancements loaded: ${modules.loaded
         .map((mod) => mod.name)
         .join(', ')}.`
     );
+  }
   if (modules.invalid.length) {
     createAlert(
       'error',
@@ -43,6 +44,28 @@ window['__start'] = async () => {
       : store(args[0], { ...mod.defaults, ...args[1] });
   };
 
+  for (let mod of modules.loaded) {
+    if (
+      mod.alwaysActive ||
+      store('mods', { [mod.id]: { enabled: false } })[mod.id].enabled
+    ) {
+      const fileExists = (file) => fs.pathExistsSync(path.resolve(file));
+      for (let sheet of ['menu', 'variables']) {
+        if (fileExists(`${__dirname}/../${mod.dir}/${sheet}.css`)) {
+          document.head.appendChild(
+            createElement(
+              `<link rel="stylesheet" href="enhancement://${mod.dir}/${sheet}.css">`
+            )
+          );
+        }
+      }
+    }
+  }
+  electron.ipcRenderer.send('enhancer:get-app-theme');
+  electron.ipcRenderer.on('enhancer:set-app-theme', (event, theme) => {
+    document.body.className = `notion-${theme}-theme`;
+  });
+
   const buttons = require('./buttons.js')(() => ({
     '72886371-dada-49a7-9afc-9f275ecf29d3': {
       enabled: (store('mods')['72886371-dada-49a7-9afc-9f275ecf29d3'] || {})
@@ -53,16 +76,10 @@ window['__start'] = async () => {
   }));
   document.querySelector('#titlebar').appendChild(buttons.element);
 
-  electron.ipcRenderer.send('enhancer:get-menu-theme');
-  electron.ipcRenderer.on('enhancer:set-menu-theme', (event, theme) => {
-    for (const style of theme)
-      document.body.style.setProperty(style[0], style[1]);
-  });
-
   function createAlert(type, message) {
     if (!type)
       throw Error('<notion-enhancer> @ createAlert: no alert type specified');
-    const el = helpers.createElement(`
+    const el = createElement(`
       <section class="${type}" role="alert">
         <p>${message}</p>
       </section>
@@ -182,9 +199,7 @@ window['__start'] = async () => {
     .update();
   document
     .querySelector('#colorpicker')
-    .appendChild(
-      helpers.createElement('<button class="close-modal"></button>')
-    );
+    .appendChild(createElement('<button class="close-modal"></button>'));
   document.querySelectorAll('#popup .close-modal').forEach((el) =>
     el.addEventListener('click', (event) => {
       $popup.classList.remove('visible');
@@ -325,7 +340,7 @@ window['__start'] = async () => {
       throw Error('<notion-enhancer> @ createTag: no tagname specified');
     if (!onclick)
       throw Error('<notion-enhancer> @ createTag: no action specified');
-    const el = helpers.createElement(
+    const el = createElement(
       `<span class="selected" ${
         color ? `style="--tag_color: ${color}" ` : ''
       }tabindex="0">${tagname}</span>`
@@ -470,7 +485,7 @@ window['__start'] = async () => {
           </label>
         `;
     }
-    $opt = helpers.createElement(`<p class="${opt.type}">${$opt}</p>`);
+    $opt = createElement(`<p class="${opt.type}">${$opt}</p>`);
     if (opt.type === 'color') {
       $opt
         .querySelector(`#${opt.type}_${id}--${opt.key}`)
@@ -498,9 +513,7 @@ window['__start'] = async () => {
     for (let font of mod.fonts || []) {
       document
         .querySelector('head')
-        .appendChild(
-          helpers.createElement(`<link rel="stylesheet" href="${font}">`)
-        );
+        .appendChild(createElement(`<link rel="stylesheet" href="${font}">`));
     }
 
     const enabled =
@@ -516,7 +529,7 @@ window['__start'] = async () => {
               link: `https://github.com/${mod.author}`,
               avatar: `https://github.com/${mod.author}.png`,
             };
-    mod.elem = helpers.createElement(`
+    mod.elem = createElement(`
     <section class="${enabled ? 'enabled' : 'disabled'}" id="${mod.id}">
         <div class="meta">
         <h3 ${

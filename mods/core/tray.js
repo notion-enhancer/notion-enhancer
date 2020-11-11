@@ -57,15 +57,18 @@ module.exports = (store, __exports) => {
     // menu
 
     electron.ipcMain.on('enhancer:open-menu', openEnhancerMenu);
-    electron.ipcMain.on('enhancer:set-menu-theme', (event, arg) => {
-      if (!enhancer_menu) return;
-      enhancer_menu.webContents.send('enhancer:set-menu-theme', arg);
-    });
-    electron.ipcMain.on('enhancer:get-menu-theme', (event, arg) => {
+    electron.ipcMain.on('enhancer:set-app-theme', (event, arg) => {
       electron.webContents
         .getAllWebContents()
         .forEach((webContents) =>
-          webContents.send('enhancer:get-menu-theme', arg)
+          webContents.send('enhancer:set-app-theme', arg)
+        );
+    });
+    electron.ipcMain.on('enhancer:get-app-theme', (event, arg) => {
+      electron.webContents
+        .getAllWebContents()
+        .forEach((webContents) =>
+          webContents.send('enhancer:get-app-theme', arg)
         );
     });
     electron.ipcMain.on('enhancer:close-tab', (event, target, tab) => {

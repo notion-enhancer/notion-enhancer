@@ -181,7 +181,7 @@ notion's html structure needs some complex selectors to properly modify it,
 and it means theme authors don't have to worry about separately updating their theme every time something changes.
 
 the full/up-to-date list of variables and their default values can be found in the
-[`variables.css` source file](mods/core/css/variables.css). each variable is named something along the lines of
+[core `variables.css` file](mods/core/variables.css). each variable is named something along the lines of
 `--theme_mode--target_name-property`. still not sure what a variable does? try changing it and seeing what happens.
 
 these are all made possible by the core module. if you believe this set of variables is buggy or lacking in any way,
