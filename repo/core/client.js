@@ -78,7 +78,8 @@ module.exports = (store, __exports) => {
   async function enhance() {
     if (
       !document.querySelector('.notion-frame') ||
-      !document.querySelector('.notion-sidebar')
+      !document.querySelector('.notion-sidebar') ||
+      !document.querySelector('.notion-topbar')
     )
       return;
     clearInterval(attempt_interval);
