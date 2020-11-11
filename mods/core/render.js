@@ -166,68 +166,6 @@ module.exports = (store, __exports) => {
             this.$dragging = null;
           }
         });
-        document.addEventListener('keyup', (event) => {
-          if (!electron.remote.getCurrentWindow().isFocused()) return;
-          const tabStore = () => store('e1692c29-475e-437b-b7ff-3eee872e1a42');
-          if (tabStore().select_modifier) {
-            // switch between tabs via key modifier
-            const select_tab_modifier = {
-              ctrlKey: false,
-              metaKey: false,
-              altKey: false,
-              shiftKey: false,
-              ...toKeyEvent(tabStore().select_modifier),
-            };
-            let triggered = true;
-            for (let prop in select_tab_modifier)
-              if (select_tab_modifier[prop] !== event[prop]) triggered = false;
-            if (
-              triggered &&
-              [
-                '1',
-                '2',
-                '3',
-                '4',
-                '5',
-                '6',
-                '7',
-                '8',
-                '9',
-                'ArrowRight',
-                'ArrowLeft',
-              ].includes(event.key)
-            )
-              this.selectTab(event.key);
-          }
-          if (tabStore().new_tab) {
-            // create/close tab keybindings
-            const new_tab_keybinding = {
-              ctrlKey: false,
-              metaKey: false,
-              altKey: false,
-              shiftKey: false,
-              ...toKeyEvent(tabStore().new_tab),
-            };
-            let triggered = true;
-            for (let prop in new_tab_keybinding)
-              if (new_tab_keybinding[prop] !== event[prop]) triggered = false;
-            if (triggered) this.newTab();
-          }
-          if (tabStore().close_tab) {
-            const close_tab_keybinding = {
-              ctrlKey: false,
-              metaKey: false,
-              altKey: false,
-              shiftKey: false,
-              ...toKeyEvent(tabStore().close_tab),
-            };
-            let triggered = true;
-            for (let prop in close_tab_keybinding)
-              if (close_tab_keybinding[prop] !== event[prop]) triggered = false;
-            if (triggered && document.querySelector('.tab.current .close'))
-              document.querySelector('.tab.current .close').click();
-          }
-        });
         electron.ipcRenderer.on('enhancer:close-tab', (event, tab) => {
           this.closeTab(tab);
         });
@@ -269,6 +207,9 @@ module.exports = (store, __exports) => {
           } else if (dir === 'right' && webContents.canGoForward()) {
             webContents.goForward();
           }
+        });
+        electronWindow.addListener('focus', (e) => {
+          this.views.current.$el().focus();
         });
       }
 
@@ -727,6 +668,9 @@ module.exports = (store, __exports) => {
             id: 'titlebar',
             ref: ($titlebar) => {
               this.$titlebar = $titlebar;
+            },
+            onClick: (e) => {
+              this.views.current.$el().focus();
             },
           },
           React.createElement('button', {
