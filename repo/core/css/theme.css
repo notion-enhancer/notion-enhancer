@@ -91,14 +91,6 @@
   height: var(--theme--page_banner-height) !important;
 }
 
-/* prevent block hover options overlaying topbar */
-.notion-topbar {
-  background: var(--theme--main);
-}
-*:not([style*='z-index']) {
-  z-index: 1;
-}
-
 /* colour help button - one of the few specific classes notion does give us */
 .notion-help-button {
   background: var(--theme--interactive_hover) !important;
