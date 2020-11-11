@@ -18,5 +18,4 @@ module.exports = {
     link: 'https://www.reddit.com/user/zenith_illinois/',
     avatar: 'https://www.redditstatic.com/avatars/avatar_default_18_46A508.png',
   },
-  fonts: ['https://rsms.me/inter/inter.css'],
 };

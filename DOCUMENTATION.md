@@ -70,16 +70,16 @@ module.exports = {
 };
 ```
 
-| key     | value                                                                                                                 | type                   |
-| ------- | --------------------------------------------------------------------------------------------------------------------- | ---------------------- |
-| id      | **required:** uuidv4 - generate a new one [here](https://www.uuidgenerator.net)                                       | _string_               |
-| name    | **required:** short name (e.g. `'ocean theme'`)                                                                       | _string_               |
-| tags    | **required:** categories/type (e.g. `'extension'`, `'theme'`, `'light'`, `'dark'`)                                    | _array\<string\>_      |
-| desc    | **optional:** 1-3 sentence description of what the module is/does, with basic markdown support.                       | _string_               |
-| version | **required:** semver (e.g. `'0.3.7'`)                                                                                 | _string_               |
-| author  | **required:** see below: original extension creator                                                                   | _string_ or \<object\> |
-| options | **optional:** see below: options made available in the enhancer menu (accessible from the tray)                       | _array\<object\>_      |
-| hacks   | **optional:** see below: code inserted at various points                                                              | _object_               |
+| key     | value                                                                                           | type                   |
+| ------- | ----------------------------------------------------------------------------------------------- | ---------------------- |
+| id      | **required:** uuidv4 - generate a new one [here](https://www.uuidgenerator.net)                 | _string_               |
+| name    | **required:** short name (e.g. `'ocean theme'`)                                                 | _string_               |
+| tags    | **required:** categories/type (e.g. `'extension'`, `'theme'`, `'light'`, `'dark'`)              | _array\<string\>_      |
+| desc    | **optional:** 1-3 sentence description of what the module is/does, with basic markdown support. | _string_               |
+| version | **required:** semver (e.g. `'0.3.7'`)                                                           | _string_               |
+| author  | **required:** see below: original extension creator                                             | _string_ or \<object\> |
+| options | **optional:** see below: options made available in the enhancer menu (accessible from the tray) | _array\<object\>_      |
+| hacks   | **optional:** see below: code inserted at various points                                        | _object_               |
 
 > a module that with the primary function of being a hack should be tagged as an extension,
 > while a module that has the primary function of adding styles should be tagged as a theme.
@@ -99,14 +99,14 @@ if you'd rather customise this, pass this object:
 
 #### options
 
-| key               | value                                                                                    | type                      |
-| ----------------- | ---------------------------------------------------------------------------------------- | ------------------------- |
-| key               | **required:** key to save value to the mod `store`                                       | _string_                  |
-| label             | **required:** short description/name of option to be shown in menu                       | _string_                  |
-| desc              | **optional:** extended information to be shown on hover                                  | _string_                  |
-| type              | **required:** input type (see below)                                                     | _string_                  |
-| extensions        | **optional:** allowed file extensions (only use with a file option), e.g. `['js', 'ts']` | _array\<string\>_         |
-| value             | **optional:** default or possible value/s for option                                     | see below                 |
+| key               | value                                                                                    | type                        |
+| ----------------- | ---------------------------------------------------------------------------------------- | --------------------------- |
+| key               | **required:** key to save value to the mod `store`                                       | _string_                    |
+| label             | **required:** short description/name of option to be shown in menu                       | _string_                    |
+| desc              | **optional:** extended information to be shown on hover                                  | _string_                    |
+| type              | **required:** input type (see below)                                                     | _string_                    |
+| extensions        | **optional:** allowed file extensions (only use with a file option), e.g. `['js', 'ts']` | _array\<string\>_           |
+| value             | **optional:** default or possible value/s for option                                     | see below                   |
 | platformOverwrite | **optional:** remove the option from the menu and force a value on a specific platform   | _\<object\>_ as shown above |
 
 | type   | value                |
@@ -164,10 +164,11 @@ any files within the `mods` folder can be loaded with the `enhancement://` proto
 
 for example, inserting an image from the core mod: `<img src="enhancement://core/image.png">`.
 
-
 ## `variables.css`
 
 **inserted into all windows.**
+
+(put font import statements here too.)
 
 the enhancer has been designed with theming in mind, so as much of notion's colours
 and typography as possible and some basic spacing (both for the light and dark themes) have been mapped out
@@ -187,9 +188,9 @@ these are all made possible by the core module. if you believe this set of varia
 consider opening a pull request to fix those issues - please do not try and reinvent the wheel unnecessarily.
 
 > ### using variables
-> 
+>
 > variables should be defined per-mode, but used without specifying. for example:
-> 
+>
 > ```css
 > :root {
 >   --theme_dark--main: rgb(5, 5, 5);
@@ -198,7 +199,7 @@ consider opening a pull request to fix those issues - please do not try and rein
 >   background: var(--theme--main);
 > }
 > ```
-> 
+>
 > this to simplify styling and make it possible for things like the "night shift" module to work,
 > by leaving the choice of light/dark theme up to the user and then directing the right values to
 > the relevant variables.

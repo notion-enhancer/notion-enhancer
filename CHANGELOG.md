@@ -13,7 +13,7 @@
 - bugfix: increase contrast of `--theme_dark--interactive_hover` in dark+ and dracula.
 - extension: "topbar icons" = replaces the topbar buttons with icons.
 - extension: "code line numbers" = adds line numbers to code blocks.
-- tweak: vertical indentation/relationship lines for bullet points.
+- tweak: vertical indentation/relationship lines for lists.
 - tweak: scroll database toolbars horizontally if partially hidden.
 - tweak: condense bullet points (decrease line spacing).
 

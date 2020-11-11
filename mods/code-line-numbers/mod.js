@@ -21,23 +21,23 @@ module.exports = {
       key: 'single_lined',
       label: 'show line numbers on single-lined code blocks',
       type: 'toggle',
-      value: false
-    }
+      value: false,
+    },
   ],
   hacks: {
     'renderer/preload.js'(store, __exports) {
       document.addEventListener('readystatechange', (event) => {
-        if (document.readyState !== 'complete') return false; 
+        if (document.readyState !== 'complete') return false;
         let queue = [];
         const observer = new MutationObserver((list, observer) => {
-          if (!queue.length) requestAnimationFrame(() => process(queue));
+          if (!queue.length) requestAnimationFrame(() => handle(queue));
           queue.push(...list);
         });
         observer.observe(document.body, {
           childList: true,
           subtree: true,
         });
-        function process(list) {
+        function handle(list) {
           queue = [];
           for (let { addedNodes } of list) {
             if (
@@ -48,16 +48,18 @@ module.exports = {
             ) {
               const block = addedNodes[0].parentElement.parentElement;
               if (
-                block && 
+                block &&
                 block.classList &&
                 block.classList.contains('notion-code-block')
               ) {
                 let numbers = block.querySelector('#code-line-numbers');
                 if (!numbers) {
-                  numbers = createElement('<span id="code-line-numbers"></span>');                  
-                  
-                  const blockStyle = window.getComputedStyle(block.children[0])
-                  numbers.style.top = blockStyle.paddingTop; 
+                  numbers = createElement(
+                    '<span id="code-line-numbers"></span>'
+                  );
+
+                  const blockStyle = window.getComputedStyle(block.children[0]);
+                  numbers.style.top = blockStyle.paddingTop;
                   numbers.style.bottom = blockStyle.paddingBottom;
 
                   block.append(numbers);
@@ -69,10 +71,9 @@ module.exports = {
                 }
 
                 const lines = Math.round(
-                  numbers.getBoundingClientRect().height / 
-                  block.lineHeight
+                  numbers.getBoundingClientRect().height / block.lineHeight
                 );
-                
+
                 if (lines > 1) {
                   block.children[0].classList.add('code-numbered');
                   numbers.innerText = Array.from(

@@ -14,8 +14,4 @@ module.exports = {
   desc: 'smoother colours and fonts, designed to be more pleasing to the eye.',
   version: '0.1.4',
   author: 'arecsu',
-  fonts: [
-    'https://rsms.me/inter/inter.css',
-    'https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&display=swap',
-  ],
 };

@@ -20,38 +20,36 @@ for support, join the [discord server](https://discord.gg/sFWPXtA).
 - [@haydn-jones](https://github.com/haydn-jones/)'s fork of the
   linux [notion-deb-builder](https://github.com/haydn-jones/notion-deb-builder).
 
-(it can also be run from the wsl to apply enhancements to the windows app.)
-
 mobile clients are not supported and due to system limitations/restrictions cannot be.
 
 a chrome extension may be coming soon for web client support.
 
 ## installation
 
-> **if you are updating from v0.7.0,** things have changed, more information is available
+> **if you are updating from v0.7.0 or earlier,** things have changed, more information is available
 > in this [update guide](UPDATING.md). please read that before following these instructions.
 
 - ensure that no notion windows/processes are running by ending all Notion processes in your task manager.
-  - `CMD + ALT + ESC` on mac and `CTRL + SHIFT + ESC` on windows/linux to open task manager
+  - `CMD + ALT + ESC` on mac and `CTRL + SHIFT + ESC` on windows/linux to open task manager.
 - [install node.js](https://nodejs.org/en/download/)
-  - you may need to restart your computer
-  - notion-enhancer will use node.js, you do not need to interact with it aside from downloading to install notion-enhancer
-- open your computer's terminal, **not Node.js command prompt**
-  - **windows 10:** search in your start menu (click windows key or icon in bottom left of screen) for *'cmd'* or *'command prompt'*
-  - **mac:** search in spotlight (magnifying glass in top right of screen) for `*terminal*'
-- type and enter the following line(s) based on your operating system, if there are multiple lines, make sure to enter them *one by one* 
+  - you may need to restart your computer.
+  - notion-enhancer will use node.js, you do not need to interact with it aside from downloading to install notion-enhancer.
+- open your computer's terminal, **not the node.js command prompt.**
+  - **windows 10:** search in your start menu (click windows key or icon in bottom left of screen) for *'cmd'* or *'command prompt'*.
+  - **mac:** search in spotlight (magnifying glass in top right of screen) for *'terminal'*.
+- type and enter the following line(s) based on your operating system, if there are multiple lines, make sure to enter them *one by one* .
   - **windows 10:**
     ```
     npm i -g notion-enhancer
     ```
-  - **mac:** This may ask you to enter your password, instead of hiding your password with *** symbols, mac terminal hides it by making it invisible. Simply type your password and click enter.
+  - **mac:** this may ask you to enter your password, instead of hiding your password with *** symbols, mac terminal hides it by making it invisible. simply type your password and click enter.
     ```
     sudo chmod -R a+wr /usr/local/lib/node_modules
     sudo chmod -R a+wr /usr/local/bin
     sudo chmod -R a+wr /Applications/Notion.app/Contents/Resources
     npm i -g notion-enhancer
     ```
-  - **debian/ubuntu, chromeOS, WSL (to modify the win10 app):**
+  - **debian/ubuntu, chromeOS, wsl (to modify the win10 app):**
     ```
     bash curl -sL https://deb.nodesource.com setup_current.x | sudo -E bash -
     sudo apt-get install -y nodejs

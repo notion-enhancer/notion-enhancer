@@ -6,20 +6,19 @@
  */
 
 .notion-code-block.line-numbers > div {
-    position: relative;
+  position: relative;
 }
 
 .code-numbered {
-    padding-left: 48px !important;
+  padding-left: 48px !important;
 }
-
 #code-line-numbers {
-    font-size: var(--theme--font_code-size) !important;
-    font-family: var(--theme--font_code) !important;
-    opacity: 0.5;
-    text-align: right;
-    position: absolute;
-    right: calc(100% - 30px);
-    overflow: hidden;
-    pointer-events: none;
+  font-size: var(--theme--font_code-size) !important;
+  font-family: var(--theme--font_code) !important;
+  opacity: 0.5;
+  text-align: right;
+  position: absolute;
+  right: calc(100% - 30px);
+  overflow: hidden;
+  pointer-events: none;
 }

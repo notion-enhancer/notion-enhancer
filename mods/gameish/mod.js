@@ -19,7 +19,4 @@ module.exports = {
     avatar:
       'https://styles.redditmedia.com/t5_2js69j/styles/profileIcon_jvnzmo30fyq41.jpg',
   },
-  fonts: [
-    'https://fonts.googleapis.com/css2?family=Baumans&family=Comfortaa&family=DM+Mono&family=Gruppo&family=Nova+Mono&family=Offside&family=Press+Start+2P&family=Righteous&display=swap',
-  ],
 };

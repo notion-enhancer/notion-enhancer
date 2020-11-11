@@ -20,7 +20,7 @@ module.exports = {
         if (document.readyState !== 'complete') return false;
         let queue = [];
         const DOCUMENT_OBSERVER = new MutationObserver((list, observer) => {
-            if (!queue.length) requestIdleCallback(() => process(queue));
+            if (!queue.length) requestIdleCallback(() => handle(queue));
             queue.push(...list);
           }),
           PAGE_OBSERVER = new MutationObserver(autoAlignPageContent);
@@ -28,7 +28,7 @@ module.exports = {
           childList: true,
           subtree: true,
         });
-        function process(list) {
+        function handle(list) {
           queue = [];
           for (let { addedNodes } of list) {
             if (

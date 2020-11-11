@@ -1,5 +1,5 @@
 /*
- * notion-enhancer
+ * bracketed links
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * under the MIT license
  */

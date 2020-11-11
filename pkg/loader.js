@@ -65,18 +65,19 @@ module.exports = function (__file, __exports) {
       for (let mod of modules) {
         if (
           (mod.alwaysActive ||
-            store('mods', { [mod.id]: { enabled: false } })[mod.id].enabled) &&
-          fs.pathExistsSync(
-            path.resolve(`${__dirname}/../mods/${mod.dir}/app.css`)
-          )
+            store('mods', { [mod.id]: { enabled: false } })[mod.id].enabled)
         ) {
-          for (let rules of [
-            `enhancement://${mod.dir}/app.css`,
-            ...(mod.fonts || []),
-          ]) {
-            document.head.appendChild(
-              createElement(`<link rel="stylesheet" href="${rules}">`)
-            );
+          const fileExists = (file) => fs.pathExistsSync(
+              path.resolve(file)
+          )
+          for (let sheet of ['app', 'variables']) {
+            if (fileExists(`${__dirname}/../mods/${mod.dir}/${sheet}.css`)) {
+              document.head.appendChild(
+                createElement(
+                  `<link rel="stylesheet" href="enhancement://${mod.dir}/${sheet}.css">`
+                )
+              );
+            }
           }
         }
       }

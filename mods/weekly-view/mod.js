@@ -21,13 +21,13 @@ module.exports = {
         const notion_elem = document.querySelector('.notion-frame');
         if (!notion_elem) return;
         clearInterval(attempt_interval);
-        process([{ target: notion_elem }]);
-        const observer = new MutationObserver(process);
+        handle([{ target: notion_elem }]);
+        const observer = new MutationObserver(handle);
         observer.observe(notion_elem, {
           childList: true,
           subtree: true,
         });
-        function process(list, observer) {
+        function handle(list, observer) {
           document
             .querySelectorAll('.notion-collection-view-select')
             .forEach((collection_view) => {

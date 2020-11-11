@@ -1,0 +1,104 @@
+/*
+ * littlepig
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com>
+ * (c) 2020 Lizishan
+ * under the MIT license
+ */
+
+@import 'https://dev-cats.github.io/code-snippets/JetBrainsMono.css';
+
+:root {
+  --theme_light--font_sans: 'JetBrains Mono';
+  --theme_light--font_serif: 'JetBrains Mono';
+  --theme_light--font_mono: 'JetBrains Mono';
+  --theme_light--font_code: 'JetBrains Mono';
+
+  --theme_light--selected: rgba(177, 24, 24, 0.22);
+  --theme_light--primary: rgb(177, 24, 24);
+  --theme_light--primary_hover: rgb(202, 26, 26);
+  --theme_light--primary_click: rgb(219, 41, 41);
+  --theme_light--primary_indicator: rgb(202, 26, 26);
+
+  /* 文本颜色 */
+  --theme_light--text_gray: rgba(151, 154, 155, 0.95);
+  --theme_light--text_brown: rgb(167, 126, 100);
+  --theme_light--text_orange: rgb(255, 134, 0);
+  --theme_light--text_yellow: rgb(255, 195, 0);
+  --theme_light--text_green: rgb(0, 171, 0);
+  --theme_light--text_blue: rgb(0, 121, 255);
+  --theme_light--text_purple: rgb(126, 0, 255);
+  --theme_light--text_pink: rgb(255, 0, 208);
+  --theme_light--text_red: rgb(255, 0, 0);
+
+  /* 文本背景色 */
+  --theme_light--bg_gray: rgb(234, 234, 234);
+  --theme_light--bg_gray-text: rgb(17, 17, 17);
+  --theme_light--bg_brown: rgb(206, 206, 206);
+  --theme_light--bg_brown-text: rgb(85, 35, 1);
+  --theme_light--bg_orange: rgb(254, 214, 155);
+  --theme_light--bg_orange-text: rgb(199, 110, 0);
+  --theme_light--bg_yellow: #fcffd8;
+  --theme_light--bg_yellow-text: #ff8c22;
+  --theme_light--bg_green: #d5fded;
+  --theme_light--bg_green-text: #006a00;
+  --theme_light--bg_blue: #e2f5ff;
+  --theme_light--bg_blue-text: #00b2ff;
+  --theme_light--bg_purple: #efe6ff;
+  --theme_light--bg_purple-text: #8334ff;
+  --theme_light--bg_pink: #ffe9f1;
+  --theme_light--bg_pink-text: rgb(255, 0, 127);
+  --theme_light--bg_red: rgb(248, 215, 218);
+  --theme_light--bg_red-text: rgb(138, 0, 10);
+
+  --theme_light--select_gray: rgb(234, 234, 234);
+  --theme_light--select_gray-text: rgb(17, 17, 17);
+  --theme_light--select_brown: rgb(206, 206, 206);
+  --theme_light--select_brown-text: rgb(85, 35, 1);
+  --theme_light--select_orange: rgb(254, 214, 155);
+  --theme_light--select_orange-text: rgb(199, 110, 0);
+  --theme_light--select_yellow: #fcffd8;
+  --theme_light--select_yellow-text: #ff8c22;
+  --theme_light--select_green: #d5fded;
+  --theme_light--select_green-text: #006a00;
+  --theme_light--select_blue: #e2f5ff;
+  --theme_light--select_blue-text: #00b2ff;
+  --theme_light--select_purple: #efe6ff;
+  --theme_light--select_purple-text: #8334ff;
+  --theme_light--select_pink: #ffe9f1;
+  --theme_light--select_pink-text: rgb(255, 0, 127);
+  --theme_light--select_red: rgb(248, 215, 218);
+  --theme_light--select_red-text: rgb(138, 0, 10);
+
+  /* 标题色 */
+  --littlepig_light--h1_text: #008800;
+  --littlepig_light--h2_text: #006a00;
+  --littlepig_light--h3_text: #003e00;
+
+  /* todo */
+  --theme_light--option_active-color: #008800;
+  --theme_light--option_active-background: #ffffff;
+
+  /* inline code */
+  --theme_light--code_inline-text: #e0dfe2;
+  --theme_light--code_inline-background: rgb(179, 39, 39);
+
+  /* callout 颜色 */
+  --theme_light--callout_gray: #e2e3e5;
+  --theme_light--callout_gray-text: #383d41;
+  --theme_light--callout_brown: rgb(130, 118, 111);
+  --theme_light--callout_brown-text: rgb(85, 35, 1);
+  --theme_light--callout_orange: rgb(254, 214, 155);
+  --theme_light--callout_orange-text: rgb(255, 140, 0);
+  --theme_light--callout_yellow: #fcffd8;
+  --theme_light--callout_yellow-text: #c76e00;
+  --theme_light--callout_green: #d4edda;
+  --theme_light--callout_green-text: #155724;
+  --theme_light--callout_blue: #cce5ff;
+  --theme_light--callout_blue-text: #004085;
+  --theme_light--callout_purple: rgb(199, 178, 230);
+  --theme_light--callout_purple-text: rgb(90, 49, 148);
+  --theme_light--callout_pink: rgb(255, 206, 228);
+  --theme_light--callout_pink-text: rgb(255, 0, 127);
+  --theme_light--callout_red: #f8d7da;
+  --theme_light--callout_red-text: #721c24;
+}
