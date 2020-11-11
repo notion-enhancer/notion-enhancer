@@ -1077,7 +1077,8 @@ module.exports = (store, __exports) => {
         }).then(() => {
           if (
             document.getElementById('notion').getAttribute('src') ===
-            'notion://www.notion.so'
+              'notion://www.notion.so' &&
+            idToNotionURL(store().default_page)
           ) {
             document
               .getElementById('notion')
