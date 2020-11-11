@@ -67,11 +67,11 @@ module.exports = function (__file, __exports) {
           (mod.alwaysActive ||
             store('mods', { [mod.id]: { enabled: false } })[mod.id].enabled) &&
           fs.pathExistsSync(
-            path.resolve(`${__dirname}/../mods/${mod.dir}/styles.css`)
+            path.resolve(`${__dirname}/../mods/${mod.dir}/app.css`)
           )
         ) {
           for (let rules of [
-            `enhancement://${mod.dir}/styles.css`,
+            `enhancement://${mod.dir}/app.css`,
             ...(mod.fonts || []),
           ]) {
             document.head.appendChild(

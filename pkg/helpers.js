@@ -63,7 +63,7 @@ const is_wsl =
             .trim()}/Programs/Notion/resources`;
         } else {
           for (let loc of [
-            '/usr/lib/notion-desktop/resources', // https://github.com/davidbailey00/notion-deb-builder/
+            '/usr/lib/notion-desktop/resources', // https://github.com/haydn/notion-deb-builder/
             '/opt/notion-app', // https://aur.archlinux.org/packages/notion-app/
             '/opt/notion', // https://github.com/jaredallard/notion-app
           ]) {

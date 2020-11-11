@@ -5,9 +5,17 @@
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 - [advanced math editor](https://github.com/Manueloccorso/NotionMathEditor_BrowserExtension)
 
-### v0.10.1 (wip)
+### v0.11.0 (wip)
 
+- improved: use an svg for the scroll-to-top button.
+- improved: use a better-matching icon and add transitions to the property layout toggle.
 - bugfix: disable fadein of selected block halo with snappy transitions.
+- bugfix: increase contrast of `--theme_dark--interactive_hover` in dark+ and dracula.
+- extension: "topbar icons" = replaces the topbar buttons with icons.
+- extension: "code line numbers" = adds line numbers to code blocks.
+- tweak: vertical indentation/relationship lines for bullet points.
+- tweak: scroll database toolbars horizontally if partially hidden.
+- tweak: condense bullet points (decrease line spacing).
 
 ### v0.10.0 (2020-11-02)
 

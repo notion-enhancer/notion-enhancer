@@ -15,16 +15,17 @@ for support, join the [discord server](https://discord.gg/sFWPXtA).
 _to understand best how notion's app works, check out [the electron docs](https://www.electronjs.org/docs/),_
 _explore the contents of your local extracted `app.asar`, and navigate the html structure with the devtools web inspector._
 
-_look through [the existing modules](https://github.com/dragonwocky/notion-enhancer/tree/HEAD/mods/)_
+_look through [the existing modules](mods)_
 _for examples of the stuff described below in action._
 
 _at the moment, for ease of development and use (and security assurance), there's no way for users_
 _to install their own modules. this means that testing modules requires_
-_[running a dev build of the enhancer](https://github.com/dragonwocky/notion-enhancer/blob/master/CONTRIBUTING.md#testing). a better system is in the works._
+_[running a dev build of the enhancer](CONTRIBUTING.md#testing). a better system is in the works._
 
 _once your mod is working, open a pull request to add it to the enhancer!_
 
-each directory in the `mods` folder is considered a module, with the file entry points `mod.js` and `styles.css`.
+each directory in the `mods` folder is considered a module, with the file entry points `mod.js`,
+`variables.css`, `app.css`, `tabs.css` and `menu.css`.
 
 | file         | description                                                           |
 | ------------ | --------------------------------------------------------------------- |
@@ -60,7 +61,6 @@ module.exports = {
       linux?: Boolean or Array<String> or String or Number or null,
     }
   }>,
-  fonts: Array<String> of font_urls,
   hacks?: {
     [k: 'insert-point' (e.g. 'main/createWindow.js')]: function (
       store, // used for configuration and persisting of data (explanation below).
@@ -79,7 +79,6 @@ module.exports = {
 | version | **required:** semver (e.g. `'0.3.7'`)                                                                                 | _string_               |
 | author  | **required:** see below: original extension creator                                                                   | _string_ or \<object\> |
 | options | **optional:** see below: options made available in the enhancer menu (accessible from the tray)                       | _array\<object\>_      |
-| fonts   | **optional:** a list of any font imports - should be `https://` or [`enhancement://`](#the-enhancement-protocol) urls | _array\<string\>_      |
 | hacks   | **optional:** see below: code inserted at various points                                                              | _object_               |
 
 > a module that with the primary function of being a hack should be tagged as an extension,
@@ -108,7 +107,7 @@ if you'd rather customise this, pass this object:
 | type              | **required:** input type (see below)                                                     | _string_                  |
 | extensions        | **optional:** allowed file extensions (only use with a file option), e.g. `['js', 'ts']` | _array\<string\>_         |
 | value             | **optional:** default or possible value/s for option                                     | see below                 |
-| platformOverwrite | **optional:** remove the option from the menu and force a value on a specific platform   | _<object>_ as shown above |
+| platformOverwrite | **optional:** remove the option from the menu and force a value on a specific platform   | _\<object\>_ as shown above |
 
 | type   | value                |
 | ------ | -------------------- |
@@ -165,7 +164,10 @@ any files within the `mods` folder can be loaded with the `enhancement://` proto
 
 for example, inserting an image from the core mod: `<img src="enhancement://core/image.png">`.
 
-## styles.css
+
+## `variables.css`
+
+**inserted into all windows.**
 
 the enhancer has been designed with theming in mind, so as much of notion's colours
 and typography as possible and some basic spacing (both for the light and dark themes) have been mapped out
@@ -173,34 +175,42 @@ using css variables.
 
 this set of variables is 100% mandatory to use if you wish to use or change anything they handle
 (particularly colours). this is necessary to keep all themes consistently working
-(e.g. styling the menu and responding properly to light/dark theme changes),
-and it makes theming a lot easier - notion's html structure needs some complex selectors to properly modify it,
-and it means theme authors don't have to worry separately updating their theme every time something changes.
+(e.g. responding properly to light/dark theme changes), and it makes theming a lot easier -
+notion's html structure needs some complex selectors to properly modify it,
+and it means theme authors don't have to worry about separately updating their theme every time something changes.
 
 the full/up-to-date list of variables and their default values can be found in the
-[`variables.css` file](mods/core/css/variables.css). each variable is named something along the lines of
+[`variables.css` source file](mods/core/css/variables.css). each variable is named something along the lines of
 `--theme_mode--target_name-property`. still not sure what a variable does? try changing it and seeing what happens.
 
 these are all made possible by the core module. if you believe this set of variables is buggy or lacking in any way,
 consider opening a pull request to fix those issues - please do not try and reinvent the wheel unnecessarily.
 
-**want to import an external font or import an included font file? do that in the `mod.js` file, otherwise it**
-**won't be used for the enhancements menu.**
+> ### using variables
+> 
+> variables should be defined per-mode, but used without specifying. for example:
+> 
+> ```css
+> :root {
+>   --theme_dark--main: rgb(5, 5, 5);
+> }
+> .demo-element {
+>   background: var(--theme--main);
+> }
+> ```
+> 
+> this to simplify styling and make it possible for things like the "night shift" module to work,
+> by leaving the choice of light/dark theme up to the user and then directing the right values to
+> the relevant variables.
 
-### using variables
+## `app.css`
 
-variables should be used without specifying which mode they are relevant to. for example:
+**inserted into the notion app window.**
 
-```css
-:root {
-  --theme_dark--main: rgb(5, 5, 5);
-}
+## `tabs.css`
 
-.demo-element {
-  background: var(--theme--main);
-}
-```
+**inserted into the notion app container for styling tabs.**
 
-this to simplify styling and make it possible for things like the "night shift" module to work,
-by leaving the choice of light/dark theme up to the user and then directing the right values to
-the relevant variables.
+## `menu.css`
+
+**inserted into the enhancements menu.**
