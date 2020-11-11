@@ -129,7 +129,13 @@ window['__start'] = async () => {
       $popup.classList.remove('visible');
     // close window on hotkey toggle
     if (coreStore().menu_toggle) {
-      const hotkey = toKeyEvent(coreStore().menu_toggle);
+      const hotkey = {
+        ctrlKey: false,
+        metaKey: false,
+        altKey: false,
+        shiftKey: false,
+        ...toKeyEvent(coreStore().menu_toggle),
+      };
       let triggered = true;
       for (let prop in hotkey)
         if (
