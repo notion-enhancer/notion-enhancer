@@ -44,23 +44,6 @@ window['__start'] = async () => {
       : store(args[0], { ...mod.defaults, ...args[1] });
   };
 
-  for (let mod of modules.loaded) {
-    if (
-      mod.alwaysActive ||
-      store('mods', { [mod.id]: { enabled: false } })[mod.id].enabled
-    ) {
-      const fileExists = (file) => fs.pathExistsSync(path.resolve(file));
-      for (let sheet of ['menu', 'variables']) {
-        if (fileExists(`${__dirname}/../${mod.dir}/${sheet}.css`)) {
-          document.head.appendChild(
-            createElement(
-              `<link rel="stylesheet" href="enhancement://${mod.dir}/${sheet}.css">`
-            )
-          );
-        }
-      }
-    }
-  }
   electron.ipcRenderer.send('enhancer:get-app-theme');
   electron.ipcRenderer.on('enhancer:set-app-theme', (event, theme) => {
     document.body.className = `notion-${theme}-theme`;
@@ -509,15 +492,10 @@ window['__start'] = async () => {
     return $opt;
   }
 
-  const $modules = document.querySelector('#modules');
+  const $modules = document.querySelector('#modules'),
+    fileExists = (file) => fs.pathExistsSync(path.resolve(file));
 
   for (let mod of modules.loaded) {
-    for (let font of mod.fonts || []) {
-      document
-        .querySelector('head')
-        .appendChild(createElement(`<link rel="stylesheet" href="${font}">`));
-    }
-
     const enabled =
         mod.alwaysActive ||
         store('mods', {
@@ -531,8 +509,21 @@ window['__start'] = async () => {
               link: `https://github.com/${mod.author}`,
               avatar: `https://github.com/${mod.author}.png`,
             };
+    if (enabled) {
+      for (let sheet of ['menu', 'variables']) {
+        if (fileExists(`${__dirname}/../${mod.dir}/${sheet}.css`)) {
+          document.head.appendChild(
+            createElement(
+              `<link rel="stylesheet" href="enhancement://${mod.dir}/${sheet}.css">`
+            )
+          );
+        }
+      }
+    }
     mod.elem = createElement(`
-    <section class="${enabled ? 'enabled' : 'disabled'}" id="${mod.id}">
+    <section class="${enabled ? 'enabled' : 'disabled'}${
+      mod.tags.includes('core') ? ' core' : ''
+    }" id="${mod.id}">
         <div class="meta">
         <h3 ${
           mod.alwaysActive

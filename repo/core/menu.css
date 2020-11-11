@@ -663,10 +663,10 @@ svg[data-tooltip] {
 .reorder #modules .version {
   display: none;
 }
-.reorder #modules label {
-  cursor: pointer;
+.reorder #modules .core .toggle * {
+  cursor: text;
 }
-.reorder #modules label::before {
+.reorder #modules section:not(.core) label::before {
   content: '::';
   margin-right: 0.4em;
   color: var(--theme--text_ui);
