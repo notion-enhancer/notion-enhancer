@@ -22,14 +22,14 @@ module.exports = {
         if (document.readyState !== 'complete') return false;
         let queue = [];
         const observer = new MutationObserver((list, observer) => {
-          if (!queue.length) requestAnimationFrame(() => process(queue));
+          if (!queue.length) requestAnimationFrame(() => handle(queue));
           queue.push(...list);
         });
         observer.observe(document.body, {
           childList: true,
           subtree: true,
         });
-        function process(list) {
+        function handle(list) {
           queue = [];
           let properties = document.querySelector(
             '.notion-scroller.vertical [style*="env(safe-area-inset-left)"] > [style="width: 100%; font-size: 14px;"]'

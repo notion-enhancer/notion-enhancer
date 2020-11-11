@@ -68,7 +68,7 @@ module.exports = {
 
           let queue = [];
           const observer = new MutationObserver((list, observer) => {
-            if (!queue.length) requestAnimationFrame(() => process(queue));
+            if (!queue.length) requestAnimationFrame(() => handle(queue));
             queue.push(...list);
           });
           observer.observe(document.body, {
@@ -76,7 +76,7 @@ module.exports = {
             subtree: true,
           });
 
-          function process(list) {
+          function handle(list) {
             queue = [];
             for (let { addedNodes } of list) {
               if (

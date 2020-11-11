@@ -1,0 +1,71 @@
+/*
+ * gameish
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2020 u/LVL100ShrekCultist
+ * under the MIT license
+ */
+
+@import 'https://fonts.googleapis.com/css2?family=Baumans&family=Comfortaa&family=DM+Mono&family=Gruppo&family=Nova+Mono&family=Offside&family=Press+Start+2P&family=Righteous&display=swap';
+
+:root {
+  --theme_dark--main: #1e1c26;
+  --theme_dark--sidebar: #24222c;
+  --theme_dark--dragarea: #19181f;
+
+  --theme_dark--font_sans: 'Offside', -apple-system, BlinkMacSystemFont,
+    'Segoe UI', Helvetica, 'Apple Color Emoji', Arial, sans-serif,
+    'Segoe UI Emoji', 'Segoe UI Symbol';
+  --theme_dark--font_mono: 'DM Mono', iawriter-mono, Nitti, Menlo, Courier,
+    monospace;
+  --theme_dark--font_code: 'DM Mono', SFMono-Regular, Consolas,
+    'Liberation Mono', Menlo, Courier, monospace;
+
+  --theme_dark--scrollbar: #221f29;
+  --theme_dark--scrollbar_hover: #312d3c;
+
+  --theme_dark--gallery: rgba(162, 162, 162, 0.01);
+  --theme_dark--table-border: rgba(148, 148, 184, 0.5);
+  --theme_dark--interactive_hover: #282632;
+
+  --theme_dark--selected: rgba(85, 68, 156, 0.3);
+  --theme_dark--primary: rgb(106, 47, 200);
+  --theme_dark--primary_hover: rgb(110, 48, 211);
+  --theme_dark--primary_click: rgb(117, 65, 200);
+  --theme_dark--primary_indicator: rgb(150, 84, 226);
+
+  --theme_dark--option_hover-background: rgb(20, 0, 51);
+
+  --theme_dark--danger_text: rgb(235, 87, 87);
+  --theme_dark--danger_border: rgba(235, 87, 87, 0.5);
+
+  --theme_dark--text: rgba(255, 255, 255, 0.9);
+  --theme_dark--text_ui: rgba(255, 255, 255, 0.6);
+  --theme_dark--text_ui_info: rgba(255, 255, 255, 0.4);
+
+  --theme_dark--text_gray: rgba(151, 154, 155, 0.95);
+  --theme_dark--text_brown: rgb(112, 87, 77);
+  --theme_dark--text_yellow: #ffe529;
+  --theme_dark--text_green: #64d97b;
+  --theme_dark--text_purple: #d43cc7;
+  --theme_dark--text_red: #d93939;
+
+  --theme_dark--select_red: rgba(216, 57, 46, 0.5);
+
+  --theme_dark--bg_brown: rgb(78, 57, 48);
+  --theme_dark--bg_orange: rgb(136, 80, 48);
+  --theme_dark--bg_yellow: #fbe2287c;
+  --theme_dark--bg_red: rgb(151, 62, 62);
+
+  --theme_dark--line_brown: var(--theme_dark--bg_brown);
+  --theme_dark--line_orange: var(--theme_dark--bg_orange);
+  --theme_dark--line_yellow: var(--theme_dark--bg_yellow);
+  --theme_dark--line_red: var(--theme_dark--bg_red);
+
+  --theme_dark--callout_brown: var(--theme_dark--bg_brown);
+  --theme_dark--callout_orange: var(--theme_dark--bg_orange);
+  --theme_dark--callout_yellow: var(--theme_dark--bg_yellow);
+  --theme_dark--callout_red: var(--theme_dark--bg_red);
+
+  --theme_dark--code_inline-text: #d9cbec;
+  --theme_dark--code_inline-background: #24222c;
+}

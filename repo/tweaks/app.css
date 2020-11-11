@@ -55,11 +55,15 @@
 }
 
 [data-tweaks*='[indentation_lines']
-div.notion-selectable.notion-bulleted_list-block > div > div:last-child {
+div.notion-selectable.notion-bulleted_list-block > div > div:last-child,
+[data-tweaks*='[indentation_lines']
+div.notion-selectable.notion-numbered_list-block > div > div:last-child {
   position: relative;
 }
 [data-tweaks*='[indentation_lines']
-div.notion-selectable.notion-bulleted_list-block > div > div:last-child::before {
+div.notion-selectable.notion-bulleted_list-block > div > div:last-child::before,
+[data-tweaks*='[indentation_lines']
+div.notion-selectable.notion-numbered_list-block > div > div:last-child::before {
   content: "";
   position: absolute;
   height: calc(100% - 2em);
@@ -68,15 +72,21 @@ div.notion-selectable.notion-bulleted_list-block > div > div:last-child::before 
   border-left: 1px solid;
 }
 [data-tweaks*='[indentation_lines_dashed]']
-div.notion-selectable.notion-bulleted_list-block > div > div:last-child::before {
+div.notion-selectable.notion-bulleted_list-block > div > div:last-child::before,
+[data-tweaks*='[indentation_lines_dashed]']
+div.notion-selectable.notion-numbered_list-block > div > div:last-child::before {
   border-left-style: dashed;
 }
 [data-tweaks*='[indentation_lines_dotted]']
-div.notion-selectable.notion-bulleted_list-block > div > div:last-child::before {
+div.notion-selectable.notion-bulleted_list-block > div > div:last-child::before,
+[data-tweaks*='[indentation_lines_dotted]']
+div.notion-selectable.notion-numbered_list-block > div > div:last-child::before {
   border-left-style: dotted;
 }
 [data-tweaks*='[indentation_lines_soft]']
-div.notion-selectable.notion-bulleted_list-block > div > div:last-child::before {
+div.notion-selectable.notion-bulleted_list-block > div > div:last-child::before,
+[data-tweaks*='[indentation_lines_soft]']
+div.notion-selectable.notion-numbered_list-block > div > div:last-child::before {
   opacity: 0.25;
 }
 
