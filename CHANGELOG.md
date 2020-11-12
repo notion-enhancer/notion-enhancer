@@ -11,6 +11,7 @@
 - improved: use an svg for the scroll-to-top button.
 - improved: use a better-matching icon and add transitions to the property layout toggle.
 - improved: themes are directly applied to tabs and menu rather than sync-ed between (infinite loading).
+- improved: error message "is notion running?" --> clearer "make sure notion isn't running!"
 - bugfix: disable fadein of selected block halo with snappy transitions.
 - bugfix: increase contrast of `--theme_dark--interactive_hover` in dark+ and dracula.
 - bugfix: tabs are focused properly for input.
