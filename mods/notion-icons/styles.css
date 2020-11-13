@@ -1,0 +1,170 @@
+/*
+ * notion-icons
+ * (c) 2019 jayhxmo (https://jaymo.io/)
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2020 CloudHill
+ * under the MIT license
+ */
+
+.hide-active-bar > :nth-child(2) {
+  display: none;
+}
+
+.notion-icons--tab,
+.notion-icons--tab > div {
+  color: var(--theme--text) !important;
+}
+
+.notion-icons--tab > div:hover,
+.notion-icons--icon:hover,
+.notion-icons--toggle:hover {
+  background: var(--theme--interactive_hover);
+  box-shadow: 0 0 0 0.5px var(--theme--interactive_hover-border) !important;
+}
+
+#notion-icons {
+  position: absolute;
+  top: 1px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  background: var(--theme--card);
+  border-radius: 3px;
+  padding: 8px 12px;
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.notion-icons--icon-set {
+  margin-bottom: 8px;
+  color: var(--theme--text);
+  font-size: 11px;
+  line-height: 1.5;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 600;
+  border-radius: 2px;
+}
+
+
+.notion-icons--icon-set.error {
+  color: var(--theme--text_red);
+  background: var(--theme--line_red);
+  border: 1px solid var(--theme--select_red);
+  padding: 8px 16px;
+}
+.notion-icons--icon-set.error::after {
+  content: '!';
+  display: block;
+  font-size: 1.6em;
+  line-height: 0.9;
+  float: right;
+}
+
+.notion-icons--icon-set.alert .notion-icons--toggle {
+  color: var(--theme--line_yellow-text);
+  background: var(--theme--line_yellow);
+  border: 1px solid var(--theme--select_yellow);
+  margin-left: -1px;
+  margin-right: -1px;
+}
+.notion-icons--icon-set.alert .notion-icons--toggle:hover {
+  background: var(--theme--select_yellow);
+}
+
+.notion-icons--toggle {
+  display: flex;
+  align-items: center;
+  user-select: none;
+  cursor: pointer;
+  margin-bottom: 8px;
+  padding: 0.25em;
+  border-radius: 2px;
+  transition: background 200ms, margin-bottom 200ms ease-in;
+}
+
+.notion-icons--toggle .triangle {
+  width: 0.9em;
+  height: 1em;
+  margin: 0 0.75em 0 0.5em;
+  transition: transform 200ms ease-out 0s;
+  transform: rotateZ(180deg);
+}
+
+.notion-icons--toggle a {
+  color: var(--theme-text);
+  transition: color 20ms ease-in;
+}
+.notion-icons--toggle a:hover {
+  color: var(--theme--primary);
+}
+
+.notion-icons--body {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  flex-grow: 1;
+  margin-left: 1.2em;
+  overflow: hidden;
+  transition: height 200ms ease-in, opacity 200ms ease-in;
+}
+
+.hidden-set {
+  padding-bottom: 0;
+}
+.hidden-set .notion-icons--toggle {
+  margin-bottom: 0;
+}
+.hidden-set .triangle {
+  transform: rotateZ(90deg);
+}
+
+.hidden-set .notion-icons--body {
+  opacity: 0;
+}
+
+.notion-icons--icon {
+  cursor: pointer;
+  user-select: none;
+  transition: background 20ms ease-in;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  width: 40px;
+  height: 40px;
+  padding: 4px;
+}
+
+.notion-icons--icon.error {
+  font-size: 20px;
+  background: var(--theme--line_yellow);
+  border: 1px solid var(--theme--select_yellow);
+  color: var(--theme--text_yellow);
+}
+
+.notion-icons--icon.error:hover {
+  background: var(--theme--select_yellow);
+}
+
+.notion-icons--icon img {
+  width: 100%;
+  height: 100%;
+}
+
+.notion-icons--spinner img {
+  animation: rotation 1.3s infinite linear;
+}
+
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+}
