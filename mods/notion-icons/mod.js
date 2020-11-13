@@ -9,8 +9,7 @@
 'use strict';
 
 const { createElement } = require('../../pkg/helpers.js'),
-  fs = require('fs-extra'),
-  path = require('path'); 
+  fs = require('fs-extra');
 
 module.exports = {
   id: '2d1f4809-9581-40dd-9bf3-4239db406483',
@@ -37,14 +36,22 @@ module.exports = {
   hacks: {
     'renderer/preload.js'(store, __exports) {
       let garbageCollector = [];
+      const iconsUrl = 'https://raw.githubusercontent.com/notion-enhancer/icons/main/';
+
+      function getAsync(urlString, callback) {
+        let httpReq = new XMLHttpRequest();
+        httpReq.onreadystatechange = function() {
+          if (httpReq.readyState == 4 && httpReq.status == 200) callback(httpReq.responseText);
+        };
+        httpReq.open('GET', urlString, true);
+        httpReq.send(null);
+      }
 
       // Retrieve Icons data
       let notionIconsData;
-      (async () => {
-        notionIconsData = JSON.parse(
-          await fs.readFile( path.resolve(`${__dirname}/icons.json`) )
-        );
-      })();
+      getAsync(iconsUrl + 'icons.json', iconsData => {
+        notionIconsData = JSON.parse(iconsData);
+      });
 
       // Retrieve custom Icons data
       let customIconsData;
@@ -258,7 +265,7 @@ module.exports = {
 
           if (notionIconsData && notionIconsData.icons) {
             notionIconsData.icons.forEach(i => {
-              i.sourceUrl = i.sourceUrl || (notionIconsData.sourceUrl + i.source);
+              i.sourceUrl = i.sourceUrl || (iconsUrl + i.source);
               iconSets.push( renderIconSet(i) );
             });
           }
