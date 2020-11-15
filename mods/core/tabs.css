@@ -109,10 +109,10 @@ body,
   align-items: center;
 }
 #tabs .tab:not(.new):not(.current) {
-  flex: 1 1 60px;
-  min-width: 60px;
+  flex: 1 1 30px;
+  min-width: 30px;
 }
-#tabs button:nth-child(17) {
+#tabs button:nth-child(16) {
   display: none;
   opacity: 0;
 }
