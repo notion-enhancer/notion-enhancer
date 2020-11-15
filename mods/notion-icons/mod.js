@@ -182,7 +182,6 @@ module.exports = {
             iconSetBody.append(icon);
             garbageCollector.push(icon);
             icon.addEventListener('click', () => setPageIcon(iconUrl));
-            console.log(iconUrl)
             
             // Make sure elements load
             promiseArray.push(
