@@ -104,6 +104,17 @@ body,
 }
 #tabs {
   margin-top: auto;
+  flex-wrap: wrap;
+  display: flex;
+  align-items: center;
+}
+#tabs .tab:not(.new):not(.current) {
+  flex: 1 1 30px;
+  min-width: 30px;
+}
+#tabs button:nth-child(16) {
+  display: none;
+  opacity: 0;
 }
 #tabs .tab {
   display: inline-flex;
@@ -122,7 +133,7 @@ body,
   border-radius: 3px;
   margin: 0 0.5em -0.16em 0.1em;
 }
-#tabs .tab:first-child {
+#tabs .tab:not(.new) {
   margin-top: 0.5em;
 }
 #tabs .tab:not(.new) span:not(.close) {
@@ -153,6 +164,7 @@ body,
   background: none;
   border: none;
   margin-left: -0.1em;
+  margin-top: 0.3em;
 }
 #tabs .tab.new span {
   padding: 0 0.35em 0.1em 0.3em;
