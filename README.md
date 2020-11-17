@@ -1,71 +1,69 @@
 # <img src="./mods/core/icons/mac+linux.png" height="20px"> notion-enhancer
 
 notion.so is a pretty awesome tool already, but there's always room for improvements.
-it might just be a preference, it might be something crucial to your setup,
+It might just be a preference, it might be something crucial to your setup,
 it might be something users have been asking for for a long time,
 or it might even be something you haven't realised you need yet
 \- there's something that would make your user experience a lot better.
 
-this package is a mod-loader for the desktop app, with custom colour theming and extra feature enhancements.
+This package is a mod-loader for the desktop app, with custom colour theming and extra feature enhancements.
 
-want to contribute? check out the [contribution guidelines](CONTRIBUTING.md) and the [documentation](DOCUMENTATION.md).
+Want to contribute? Check out the [contribution guidelines](CONTRIBUTING.md) and the [documentation](DOCUMENTATION.md).
 
-for support, join the [discord server](https://discord.gg/sFWPXtA).
+For support, join the [discord server](https://discord.gg/sFWPXtA).
 
-### supported desktop clients
+### Supported Desktop Clients
 
-- the [official windows/mac releases](https://notion.so/desktop).
-- the arch linux AUR [notion-app](https://aur.archlinux.org/packages/notion-app/) package.
-- the linux [notion-app](https://github.com/jaredallard/notion-app) installer.
+- The [official Windows/MacOS releases](https://notion.so/desktop).
+- The Arch Linux AUR [notion-app](https://aur.archlinux.org/packages/notion-app/) package.
+- The Linux [notion-app](https://github.com/jaredallard/notion-app) installer.
 - [@haydn-jones](https://github.com/haydn-jones/)'s fork of the
-  linux [notion-deb-builder](https://github.com/haydn-jones/notion-deb-builder).
+  Linux [notion-deb-builder](https://github.com/haydn-jones/notion-deb-builder).
 
-mobile clients are not supported and due to system limitations/restrictions cannot be.
+Mobile clients are not supported and due to system limitations/restrictions cannot be.
 
-a chrome extension may be coming soon for web client support.
+A chrome extension may be coming soon for web client support.
 
-## installation
+## Installation
 
-> **if you are updating from v0.7.0 or earlier,** things have changed, more information is available
-> in this [update guide](UPDATING.md). please read that before following these instructions.
+> **If you are updating from v0.7.0 or earlier,** things have changed, more information is available
+> in this [update guide](UPDATING.md). Please read that before following these instructions.
 
-- ensure that no notion windows/processes are running by ending all Notion processes in your task manager.
-  - `CMD + ALT + ESC` on mac and `CTRL + SHIFT + ESC` on windows/linux to open task manager.
-- [install node.js](https://nodejs.org/en/download/)
-  - you may need to restart your computer.
+- Ensure that no notion windows/processes are running by ending all Notion processes in your task manager.
+  - `CMD + ALT + ESC` on mac and `CTRL + SHIFT + ESC` on Windows/Linux to open task manager.
+- [Install node.js](https://nodejs.org/en/download/)
+  - You may need to restart your computer.
   - notion-enhancer will use node.js, you do not need to interact with it aside from downloading to install notion-enhancer.
-- open your computer's terminal, **not the node.js command prompt.**
-  - **windows 10:** search in your start menu (click windows key or icon in bottom left of screen) for *'cmd'* or *'command prompt'*.
-  - **mac:** search in spotlight (magnifying glass in top right of screen) for *'terminal'*.
-- type and enter the following line(s) based on your operating system, if there are multiple lines, make sure to enter them *one by one* .
-  - **windows 10:**
+- Open your computer's terminal, **not the node.js command prompt.**
+  - **Windows 10:** search in your start menu (click windows key or icon in bottom left of screen) for *'cmd'* or *'command prompt'*.
+  - **MacOS:** search in spotlight (magnifying glass in top right of screen) for *'terminal'*.
+- Type and enter the following line(s) according to your operating system, if there are multiple lines, make sure to enter them *one by one*.
+  - **Windows 10:**
     ```
     npm i -g notion-enhancer
     ```
-  - **mac:** this may ask you to enter your password, instead of hiding your password with *** symbols, mac terminal hides it by making it invisible. simply type your password and click enter.
+  - **MacOS:** This may prompt you to enter your password. Instead of hiding your password with the \*\*\* symbols, the MacOS terminal hides it by making it invisible, so simply type your password and click enter.
     ```
     sudo chmod -R a+wr /usr/local/lib/node_modules
     sudo chmod -R a+wr /usr/local/bin
     sudo chmod -R a+wr /Applications/Notion.app/Contents/Resources
     npm i -g notion-enhancer
     ```
-  - **debian/ubuntu, chromeOS, wsl (to modify the win10 app):**
+  - **Debian/Ubuntu, ChromeOS, WSL (to modify the Win10 app):**
     ```
     bash curl -sL https://deb.nodesource.com setup_current.x | sudo -E bash -
     sudo apt-get install -y nodejs
     npm i -g notion-enhancer
     ```
-  - **arch linux, manjaro:**
-    - install the [aur package](https://aur.archlinux.org/packages/notion-enhancer) with your aur helper (e.g. `yay -S notion-enhancer`).
+  - **Arch Linux, Manjaro:**
+    - Install the [aur package](https://aur.archlinux.org/packages/notion-enhancer) with your AUR helper (e.g. `yay -S notion-enhancer`).
 
-### command-line interface
+### Command-line Interface
 
-the enhancements should be automatically applied on installation
-and automatically removed on uninstallation.
+The enhancements should be automatically applied on installation and automatically removed on uninstallation.
 
-on some platforms this may throw errors if done without
-elevated/admin permissions, though, so if it hasn't automatically
-installed you will still need to use these commands.
+On some platforms this may throw errors if done without elevated/admin permissions, though,
+so if it hasn't automatically installed you will still need to use these commands.
 
 ```
 Usage:
@@ -89,47 +87,47 @@ Options:
   -v, --version  : display version number
 ```
 
-### faq
+### FAQ
 
-**when will the update be out?**
-i code this in my free time, in-between my other commitments. there are no ETAs.
+**When will the update be out?**
+I code this in my free time, in-between my other commitments. There are no ETAs.
 
-**the themes aren't working?**
-if you pick a dark theme it will only be applied if notion is in dark mode,
+**The themes aren't working?**
+If you pick a dark theme it will only be applied if notion is in dark mode,
 and if you pick a light theme it will only work if notion is in light mode.
 do `CMD/CTRL+SHIFT+L` to toggle between them.
 
-**is this against notion's terms of service? can i get in trouble for using it?**
-definitely not! i contacted their support team to check, and the response was awesome:
+**Is this against notion's terms of service? can I get in trouble for using it?**
+Definitely not! I contacted their support team to check, and the response was awesome:
 
 > "Thanks for taking the time to share this with us. Userscripts and userstyles are definitely
-> cool ideas and would be helpful for many users! ... I'll also share this with the rest of the
+> cool ideas and would be helpful for many users! [...] I'll also share this with the rest of the
 > team to take to heart for future improvements."
 
-**how do i uninstall the enhancer?**
+**How do i uninstall the enhancer?**
 run `npm remove -g notion-enhancer`.
 
-## features
+## Features
 
-most of the enhancer's functionality is split into configurable enhancement modules,
+Most of the enhancer's functionality is split into configurable enhancement modules,
 but some basic improvements necessary for things to work are built in by values:
 
-- the notion:// url scheme/protocol is patched to work on linux.
-- a tray/menubar icon: links relevant to the enhancer + buttons to manage notion windows.
+- The notion:// url scheme/protocol is patched to work on Linux.
+- A tray/menubar icon: links relevant to the enhancer + buttons to manage notion windows.
 
-once applied, modules can be configured via the graphical menu,
+Once applied, modules can be configured via the graphical menu,
 which is opened from the tray/menubar icon or with `OPTION/ALT+E`.
 
 ![](https://user-images.githubusercontent.com/16874139/97819046-34e8b600-1cfa-11eb-8fa6-a3ad5374cd0b.png)
 
-currently all modules come pre-installed for technical reasons, security assurance, and ease-of-use.
+Currently all modules come pre-installed for technical reasons, security assurance, and ease-of-use.
 these include:
 
 ### notion-enhancer core
 
 **tags:** #core
 
-**description:** the cli, modloader, menu, & tray.
+**description:** The CLI, modloader, menu, & tray.
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
 
@@ -147,11 +145,11 @@ these include:
 
 ![](https://user-images.githubusercontent.com/16874139/97819249-7a59b300-1cfb-11eb-99fa-de945fe8e3d9.png)
 
-### tabs
+### Tabs
 
 **tags:** #core #extension
 
-**description:** have multiple notion pages open in a single window.
+**description:** Allow you to have multiple notion pages open in a single window.
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
 
@@ -163,11 +161,11 @@ these include:
 
 ![](https://user-images.githubusercontent.com/16874139/97821456-9dd62b00-1d06-11eb-8c3a-e9f77bbd740e.png)
 
-### tweaks
+### Tweaks
 
 **tags:** #core #extension
 
-**description:** common style/layout changes.
+**description:** Common style/layout changes.
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
 
@@ -183,60 +181,59 @@ these include:
 
 ![](https://user-images.githubusercontent.com/16874139/97819829-1638ee00-1cff-11eb-80c6-f270c2ba0f37.png)
 
-### always on top
+### Always on Top
 
 **tags:** #extension
 
-**description:** add an arrow/button to show the notion window
-on top of other windows even if it's not focused.
+**description:** Add an arrow/button to show the notion window on top of other windows even if it's not focused.
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
 
 ![](https://user-images.githubusercontent.com/16874139/97820478-79784f80-1d02-11eb-9e32-caac4563d8f0.png)
 
-### bracketed links
+### Bracketed Links
 
 **tags:** #extension
 
-**description:** render links surrounded with \[\[brackets]] instead of underlined.
+**description:** Render links surrounded with \[\[brackets]] instead of underlined.
 
 **author:** [arecsu](https://github.com/arecsu/)
 
 ![](https://user-images.githubusercontent.com/16874139/97820501-9f9def80-1d02-11eb-8ad8-b1ddf1ed9599.png)
 
-### bypass preview
+### Bypass Preview
 
 **tags:** #extension
 
-**description:** go straight to the normal full view when opening a page.
+**description:** Go straight to the normal full view when opening a page.
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
 
-### calendar scroll
+### Calendar Scroll
 
 **tags:** #extension
 
-**description:** add a button to scroll down to the current week in fullpage/infinite-scroll calendars.
+**description:** Add a button to scroll down to the current week in fullpage/infinite-scroll calendars.
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
 
 ![](https://user-images.githubusercontent.com/16874139/97820611-fe636900-1d02-11eb-8f78-0536103e25aa.png)
 
-### cherry cola
+### Cherry Cola
 
 **tags:** #theme #dark
 
-**description:** a delightfully plummy, cherry cola flavored theme.
+**description:** A delightfully plummy, cherry cola flavored theme.
 
 **author:** [runargs](https://github.com/runargs)
 
 ![](https://user-images.githubusercontent.com/16874139/97819898-9fe8bb80-1cff-11eb-846f-1a66e0302ebd.png)
 
-### custom inserts
+### Custom Inserts
 
 **tags:** #extension
 
-**description:** link files for small client-side tweaks. (not sure how to do something? check out the
+**description:** Link files for small client-side tweaks. (not sure how to do something? check out the
 [tweaks](https://github.com/dragonwocky/notion-enhancer/blob/master/TWEAKS.md) collection.)
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
@@ -246,11 +243,11 @@ on top of other windows even if it's not focused.
 | css insert            | file |
 | client-side js insert | file |
 
-### dark+
+### Dark+
 
 **tags:** #theme #dark
 
-**description:** a vivid-colour near-black theme.
+**description:** A vivid-colour near-black theme.
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
 
@@ -260,21 +257,21 @@ on top of other windows even if it's not focused.
 
 ![](https://user-images.githubusercontent.com/16874139/97820632-19ce7400-1d03-11eb-85a9-87f6d957dc96.png)
 
-### dracula
+### Dracula
 
 **tags:** #theme #dark
 
-**description:** a theme based on the popular dracula color palette originally by zeno rocha and friends.
+**description:** A theme based on the popular dracula color palette originally by zeno rocha and friends.
 
 **author:** [dracula](https://github.com/dracula/)
 
 ![](https://user-images.githubusercontent.com/16874139/97820175-04f0e100-1d01-11eb-9ede-b6e033a28cbc.png)
 
-### emoji sets
+### Emoji Sets
 
 **tags:** #extension
 
-**description:** pick from a variety of emoji styles to use.
+**description:** Pick from a variety of emoji styles to use.
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
 
@@ -284,11 +281,11 @@ on top of other windows even if it's not focused.
 
 ![](https://user-images.githubusercontent.com/16874139/97820652-3f5b7d80-1d03-11eb-80a6-34089b946711.png)
 
-### focus mode
+### Focus mode
 
 **tags:** #extension
 
-**description:** hide the titlebar/menubar if the sidebar is closed (will be shown on hover).
+**description:** Hide the titlebar/menubar if the sidebar is closed (will be shown on hover).
 
 **author:** [arecsu](https://github.com/arecsu/)
 
@@ -298,11 +295,11 @@ on top of other windows even if it's not focused.
 
 ![](https://user-images.githubusercontent.com/16874139/97820337-da535800-1d01-11eb-9df5-55567cba2cc4.png)
 
-### font chooser
+### Font Chooser
 
 **tags:** #extension
 
-**description:** customize fonts. for each option, type in the name of
+**description:** Customize fonts. For each option, type in the name of
 the font you would like to use, or leave it blank to not change anything.
 
 **author:** [torchatlas](https://github.com/torchatlas)
@@ -316,99 +313,99 @@ the font you would like to use, or leave it blank to not change anything.
 
 ![](https://user-images.githubusercontent.com/16874139/97820678-61ed9680-1d03-11eb-8f9f-54c1c5faf25e.png)
 
-### gameish
+### Gameish
 
 **tags:** #theme #dark
 
-**description:** a purple, "gamer-styled" theme with a blocky-font.
+**description:** A purple, "gamer-styled" theme with a blocky-font.
 
 **author:** [LVL100ShrekCultist](https://reddit.com/user/LVL100ShrekCultist/)
 
 ![](https://user-images.githubusercontent.com/16874139/97820696-75006680-1d03-11eb-8046-c3cb871ad34c.png)
 
-### littlepig dark
+### Littlepig Dark
 
 **tags:** #theme #dark
 
-**description:** a purple monospaced theme using emojis and colourful text.
+**description:** A purple monospaced theme using emojis and colourful text.
 
 **author:** [Lizishan](https://www.reddit.com/user/Lizishan/)
 
 ![](https://user-images.githubusercontent.com/16874139/97820718-919c9e80-1d03-11eb-9749-e04faef82e2d.png)
 
-### littlepig light
+### Littlepig Light
 
 **tags:** #theme #light
 
-**description:** a bright monospaced theme using emojis and colourful text.
+**description:** A bright monospaced theme using emojis and colourful text.
 
 **author:** [Lizishan](https://www.reddit.com/user/Lizishan/)
 
 ![](https://user-images.githubusercontent.com/16874139/97820868-446cfc80-1d04-11eb-80ba-48cbedd62ed1.png)
 
-### material ocean
+### Material Ocean
 
 **tags:** #theme #dark
 
-**description:** an oceanic colour palette.
+**description:** An oceanic colour palette.
 
 **author:** [blacksuan19](https://github.com/blacksuan19)
 
 ![](https://user-images.githubusercontent.com/16874139/97820253-6d3fc280-1d01-11eb-86d1-9932b364bad8.png)
 
-### neutral
+### Neutral
 
 **tags:** #theme #dark
 
-**description:** smoother colours and fonts, designed to be more pleasing to the eye.
+**description:** Smoother colours and fonts, designed to be more pleasing to the eye.
 
 **author:** [arecsu](https://github.com/arecsu/)
 
 ![](https://user-images.githubusercontent.com/16874139/97821029-fad0e180-1d04-11eb-9bad-2c76e9fa7613.png)
 
-### night shift
+### Night Shift
 
 **tags:** #extension #theme
 
-**description:** sync dark/light theme with the system (overrides normal theme setting).
+**description:** Sync dark/light theme with the system (overrides normal theme setting).
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
 
-### pastel dark
+### Pastel Dark
 
 **tags:** #theme #dark
 
-**description:** a true dark theme with a hint of pastel.
+**description:** A true dark theme with a hint of pastel.
 
 **author:** [zenith_illinois](https://reddit.com/user/zenith_illinois/)
 
 ![](https://user-images.githubusercontent.com/16874139/97820893-60709e00-1d04-11eb-8d52-55ab44000786.png)
 
-### property layout
+### Property Layout
 
 **tags:** #extension
 
-**description:** auto-collapse page properties that usually push down page content.
+**description:** Auto-collapse page properties that usually push down page content.
 
 **author:** [alexander-kazakov](https://github.com/alexander-kazakov/)
 
 ![](https://user-images.githubusercontent.com/16874139/97820916-81d18a00-1d04-11eb-8e07-b7519590157a.png)
 
-### right-to-left
+### Right-to-left
 
 **tags:** #extension
 
-**description:** enables auto rtl/ltr text direction detection.
+**description:** Enables auto rtl/ltr text direction detection.
 
 **author:** [obahareth](https://github.com/obahareth/)
 
 ![](https://user-images.githubusercontent.com/16874139/97820953-a7f72a00-1d04-11eb-98c0-6ad83d097682.png)
 
-### scroll to top
+### Scroll to Top
 
 **tags:** #extension
 
-**description:** add an arrow above the help button to scroll back to the top of a page.
+**description:** Add an arrow above the help button to scroll back to the top of a page.
 
 **author:** [CloudHill](https://github.com/CloudHill/)
 
@@ -420,35 +417,35 @@ the font you would like to use, or leave it blank to not change anything.
 
 ![](https://user-images.githubusercontent.com/16874139/97820445-4c2ba180-1d02-11eb-9d1a-911bca266f7f.png)
 
-### weekly view
+### Weekly View
 
 **tags:** #extension
 
-**description:** calendar views named "weekly" will show only the 7 days of this week.
+**description:** Calendar views named "weekly" will show only the 7 days of this week.
 
 **author:** [adihd](https://github.com/adihd/)
 
 ![](https://user-images.githubusercontent.com/16874139/97820985-bf361780-1d04-11eb-9e2a-786a7c37477d.png)
 
-### word counter
+### Word Counter
 
 **tags:** #extension
 
-**description:** add page details: word/character/sentence/block count & speaking/reading times.
+**description:** Add page details: word/character/sentence/block count & speaking/reading times.
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
 
 ![](https://user-images.githubusercontent.com/16874139/97821003-d37a1480-1d04-11eb-8aaa-9e5dfea495eb.png)
 
-## contributors
+## Contributors
 
 [@TarasokUA](https://github.com/TarasokUA/) wrote the first versions of this in python, in early 2020.
 a couple months after I ([@dragonwocky](https://github.com/dragonwocky/)) picked the project up, at first extending
 upon the original base and later moving to the javascript module system.
 
-the enhancer wouldn't be anything near to what it is now though without
+The enhancer wouldn't be anything near to what it is now though without
 interested community members testing, coding and ideating features - some are listed as
 [contributors](https://github.com/dragonwocky/notion-enhancer/graphs/contributors) here on github,
 but many more have been helping out on discord and in emails.
 
-individual modules have their original authors attributed.
+Individual modules have their original authors attributed.
