@@ -229,6 +229,26 @@ to see how to do this, watch [this video](https://www.youtube.com/watch?v=6V7eqS
 
 <img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-default.jpg?raw=true" width="45%"></img> <img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-hideaddgroup.jpg?raw=true" width="45%"></img>
 
+### hide callout icon
+
+```css
+.notion-page-content > .notion-callout-block .notion-record-icon {
+  display: none !important;
+}
+```
+
+<img src="https://i.imgur.com/PROVqKM.png" width="45%"></img> <img src="https://i.imgur.com/liTBShH.png" width="45%"></img>
+
+### hide word counter information text
+
+```css
+#word-counter-details > div > span {
+    display: none;
+}
+```
+
+<img src="https://i.imgur.com/1e0nZZM.png" width="45%"></img> <img src="https://i.imgur.com/SRb1qFo.png" width="45%"></img>
+
 ### removing/decreasing side padding for boards
 
 ```css
