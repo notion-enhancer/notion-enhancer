@@ -157,7 +157,7 @@ module.exports = (store, __exports) => {
         label: 'GitHub',
         click: () => {
           electron.shell.openExternal(
-            'https://github.com/dragonwocky/notion-enhancer/blob/master/DOCUMENTATION.md'
+            'https://github.com/notion-enhancer/notion-enhancer/blob/master/DOCUMENTATION.md'
           );
         },
       },
@@ -176,7 +176,7 @@ module.exports = (store, __exports) => {
         label: 'Bug Report',
         click: () => {
           electron.shell.openExternal(
-            'https://github.com/dragonwocky/notion-enhancer/issues/new?labels=bug&template=bug-report.md'
+            'https://github.com/notion-enhancer/notion-enhancer/issues/new?labels=bug&template=bug-report.md'
           );
         },
       },
@@ -185,7 +185,7 @@ module.exports = (store, __exports) => {
         label: 'Feature Request',
         click: () => {
           electron.shell.openExternal(
-            'https://github.com/dragonwocky/notion-enhancer/issues/new?labels=enhancement&template=feature-request.md'
+            'https://github.com/notion-enhancer/notion-enhancer/issues/new?labels=enhancement&template=feature-request.md'
           );
         },
       },
