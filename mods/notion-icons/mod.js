@@ -177,25 +177,31 @@ module.exports = {
               : `${iconData.sourceUrl}/${iconData.source}_${i}.${iconData.extension}`
             : iconData.source[i];
 
-            const icon = createElement(`<div class="notion-icons--icon"><img src="${iconUrl}" /></div>`);
-            
-            iconSetBody.append(icon);
-            garbageCollector.push(icon);
-            icon.addEventListener('click', () => setPageIcon(iconUrl));
-            
-            // Make sure elements load
-            promiseArray.push(
-              new Promise((resolve, reject) => {
+            const icon = createElement(`<div class="notion-icons--icon"></div>`);
+            if (iconData.enhancerIcons) {
+              // Load sprite sheet
+              icon.innerHTML = 
+                `<div style="width: 32px; height: 32px; background: url(${iconsUrl}${iconData.source}/sprite.png) 0 -${i * 32}px no-repeat; background-size: cover;"></div>`;
+            } else {
+              icon.innerHTML = `<img src="${iconUrl}" />`;
+              // Make sure icons load
+              promiseArray.push(
+                new Promise((resolve, reject) => {
                   icon.firstChild.onload = resolve;
                   icon.firstChild.onerror = () => {
                     reject();
                     icon.classList.add('error');
                     icon.innerHTML = '!';
                   };
-              })
-            );
-          }
+                })
+              );
+            }
 
+            iconSetBody.append(icon);
+            garbageCollector.push(icon);
+            icon.addEventListener('click', () => setPageIcon(iconUrl));
+          }
+          
           // Hide spinner after all icons finish loading
           (async () => {      
             const spinner = iconSetToggle.querySelector('.notion-icons--spinner'),
@@ -265,6 +271,7 @@ module.exports = {
           if (notionIconsData && notionIconsData.icons) {
             notionIconsData.icons.forEach(i => {
               i.sourceUrl = i.sourceUrl || (iconsUrl + i.source);
+              i.enhancerIcons = true;
               iconSets.push( renderIconSet(i) );
             });
           }
