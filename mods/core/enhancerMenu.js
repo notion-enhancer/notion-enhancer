@@ -85,7 +85,7 @@ window['__start'] = async () => {
 
   // update checker
   fetch(
-    `https://api.github.com/repos/dragonwocky/notion-enhancer/releases/latest`
+    `https://api.github.com/repos/notion-enhancer/notion-enhancer/releases/latest`
   )
     .then((res) => res.json())
     .then((res) => {

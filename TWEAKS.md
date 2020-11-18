@@ -28,7 +28,7 @@ or [try a free short course like the one on codecademy](https://www.codecademy.c
 - thinner cover image
 
 if you are attempting to customise the web client, the css previously used for these can be found
-[in the legacy documentation](https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/STYLING.md).
+[in the legacy documentation](https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/STYLING.md).
 
 ### hide discussions (the comment threads at the top of each page)
 
@@ -40,7 +40,7 @@ if you are attempting to customise the web client, the css previously used for t
 }
 ```
 
-<img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/discussion-default.jpg?raw=true" width="45%"></img> <img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/discussion-hidden.jpg?raw=true" width="45%"></img>
+<img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/discussion-default.jpg?raw=true" width="45%"></img> <img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/discussion-hidden.jpg?raw=true" width="45%"></img>
 
 ### hide backlinks
 
@@ -120,7 +120,7 @@ to see how to do this, watch [this video](https://www.youtube.com/watch?v=6V7eqS
 }
 ```
 
-<img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-before.jpg?raw=true" width="45%"></img> <img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-columnunder100px.jpg?raw=true" width="45%"></img>
+<img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-before.jpg?raw=true" width="45%"></img> <img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-columnunder100px.jpg?raw=true" width="45%"></img>
 
 ### hide '+ new' table row
 
@@ -130,7 +130,7 @@ to see how to do this, watch [this video](https://www.youtube.com/watch?v=6V7eqS
 }
 ```
 
-<img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-before.jpg?raw=true" width="45%"></img> <img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-hideaddrow.jpg?raw=true" width="45%"></img>
+<img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-before.jpg?raw=true" width="45%"></img> <img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-hideaddrow.jpg?raw=true" width="45%"></img>
 
 ### hide calculations table row
 
@@ -140,7 +140,7 @@ to see how to do this, watch [this video](https://www.youtube.com/watch?v=6V7eqS
 }
 ```
 
-<img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-before.jpg?raw=true" width="45%"></img> <img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-hidecalculationsrow.jpg?raw=true" width="45%"></img>
+<img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-before.jpg?raw=true" width="45%"></img> <img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-hidecalculationsrow.jpg?raw=true" width="45%"></img>
 
 ### centre-align table column headers
 
@@ -150,7 +150,7 @@ to see how to do this, watch [this video](https://www.youtube.com/watch?v=6V7eqS
 }
 ```
 
-<img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-before.jpg?raw=true" width="45%"></img> <img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-centredheaders.jpg?raw=true" width="45%"></img>
+<img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-before.jpg?raw=true" width="45%"></img> <img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-centredheaders.jpg?raw=true" width="45%"></img>
 
 ### smaller table column header icons
 
@@ -164,7 +164,7 @@ to see how to do this, watch [this video](https://www.youtube.com/watch?v=6V7eqS
 }
 ```
 
-<img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-before.jpg?raw=true" width="45%"></img> <img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-smallercolumnicons.jpg?raw=true" width="45%"></img>
+<img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-before.jpg?raw=true" width="45%"></img> <img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-smallercolumnicons.jpg?raw=true" width="45%"></img>
 
 ### remove icons from table column headers
 
@@ -174,7 +174,7 @@ to see how to do this, watch [this video](https://www.youtube.com/watch?v=6V7eqS
 }
 ```
 
-<img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-before.jpg?raw=true" width="45%"></img> <img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-hidecolumnicons.jpg?raw=true" width="45%"></img>
+<img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-before.jpg?raw=true" width="45%"></img> <img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-hidecolumnicons.jpg?raw=true" width="45%"></img>
 
 ### removing/decreasing side padding for tables
 
@@ -194,7 +194,7 @@ to see how to do this, watch [this video](https://www.youtube.com/watch?v=6V7eqS
 }
 ```
 
-<img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-before.jpg?raw=true" width="45%"></img> <img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-shrinkpadding.jpg?raw=true" width="45%"></img>
+<img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-before.jpg?raw=true" width="45%"></img> <img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/table-shrinkpadding.jpg?raw=true" width="45%"></img>
 
 ### hide '+ new' board row
 
@@ -205,7 +205,7 @@ to see how to do this, watch [this video](https://www.youtube.com/watch?v=6V7eqS
 }
 ```
 
-<img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-default.jpg?raw=true" width="45%"></img> <img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-hideaddnew.jpg?raw=true" width="45%"></img>
+<img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-default.jpg?raw=true" width="45%"></img> <img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-hideaddnew.jpg?raw=true" width="45%"></img>
 
 ### hide board view hidden columns
 
@@ -216,7 +216,7 @@ to see how to do this, watch [this video](https://www.youtube.com/watch?v=6V7eqS
 }
 ```
 
-<img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-default.jpg?raw=true" width="45%"></img> <img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-hidehidden.jpg?raw=true" width="45%"></img>
+<img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-default.jpg?raw=true" width="45%"></img> <img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-hidehidden.jpg?raw=true" width="45%"></img>
 
 ### hide board view 'add a group'
 
@@ -227,7 +227,7 @@ to see how to do this, watch [this video](https://www.youtube.com/watch?v=6V7eqS
 }
 ```
 
-<img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-default.jpg?raw=true" width="45%"></img> <img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-hideaddgroup.jpg?raw=true" width="45%"></img>
+<img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-default.jpg?raw=true" width="45%"></img> <img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-hideaddgroup.jpg?raw=true" width="45%"></img>
 
 ### removing/decreasing side padding for boards
 
@@ -238,4 +238,4 @@ to see how to do this, watch [this video](https://www.youtube.com/watch?v=6V7eqS
 }
 ```
 
-<img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-default.jpg?raw=true" width="45%"></img> <img src="https://github.com/dragonwocky/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-shrinkpadding.jpg?raw=true" width="45%"></img>
+<img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-default.jpg?raw=true" width="45%"></img> <img src="https://github.com/notion-enhancer/notion-enhancer/blob/b5043508d91df76f145f0f48c2c63d7dd1c27543/screenshots/board-shrinkpadding.jpg?raw=true" width="45%"></img>

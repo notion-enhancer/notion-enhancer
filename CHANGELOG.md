@@ -5,13 +5,21 @@
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 - [advanced math editor](https://github.com/Manueloccorso/NotionMathEditor_BrowserExtension)
 
-### v0.11.0 (wip)
+### v0.10.1 (2020-11-18)
+
+essentially a prerelease for v0.11.0: pushed out for urgent bugfixes during
+exam/study weeks when there's no time to code a full release.
+
+note that this means new features have not yet been fully documented and
+may not be fully ready for ideal use yet. however, things overall will
+work more reliably than v0.10.0.
 
 - new: different css entrypoints for different components (tabs, menu, app).
 - improved: use an svg for the scroll-to-top button.
 - improved: use a better-matching icon and add transitions to the property layout toggle.
 - improved: themes are directly applied to tabs and menu rather than sync-ed between (infinite loading).
 - improved: error message "is notion running?" --> clearer "make sure notion isn't running!"
+- improved: auto-shrink system for tabs (max of 15 open in a window).
 - bugfix: disable fadein of selected block halo with snappy transitions.
 - bugfix: increase contrast of `--theme_dark--interactive_hover` in dark+ and dracula.
 - bugfix: tabs are focused properly for input.
@@ -22,9 +30,12 @@
 - bugfix: remove `* { z-index: 1}` rule so format dropdowns in table view can be opened.
 - extension: "topbar icons" = replaces the topbar buttons with icons.
 - extension: "code line numbers" = adds line numbers to code blocks.
+- extension: "notion icons" = use custom icon sets directly in notion.
 - tweak: vertical indentation/relationship lines for lists.
 - tweak: scroll database toolbars horizontally if partially hidden.
 - tweak: condense bullet points (decrease line spacing).
+
+> 📥 `npm i -g notion-enhancer@0.10.1`
 
 ### v0.10.0 (2020-11-02)
 
@@ -235,7 +246,7 @@ complete rewrite with node.js.
 - bugfix: odd mix of `\\` and `/` being used for windows filepaths.
 - bugfix: app no longer crashes when sidebar is toggled.
 
-> 📥 [notion-enhancer.v0.7.0.zip](https://github.com/dragonwocky/notion-enhancer/archive/v0.7.0.zip)
+> 📥 [notion-enhancer.v0.7.0.zip](https://github.com/notion-enhancer/notion-enhancer/archive/v0.7.0.zip)
 
 ### v0.6.0 (2020-06-30)
 
@@ -249,7 +260,7 @@ complete rewrite with node.js.
 - improved: more obviously visible drag area.
 - bugfix: specify UTF-8 encoding to prevent multibyte/gbk codec errors (thanks to [@etnperlong](https://github.com/etnperlong)).
 
-> 📥 [notion-enhancer.v0.6.0.zip](https://github.com/dragonwocky/notion-enhancer/archive/v0.6.0.zip)
+> 📥 [notion-enhancer.v0.6.0.zip](https://github.com/notion-enhancer/notion-enhancer/archive/v0.6.0.zip)
 
 ### v0.5.0 (2020-05-23)
 
@@ -261,7 +272,7 @@ complete rewrite with node.js.
   improved: scrollbar colours that fit better with notion's theming.
 - bugfix: un-break having multiple notion windows open.
 
-> 📥 [notion-enhancer.v0.5.0.zip](https://github.com/dragonwocky/notion-enhancer/archive/v0.5.0.zip)
+> 📥 [notion-enhancer.v0.5.0.zip](https://github.com/notion-enhancer/notion-enhancer/archive/v0.5.0.zip)
 
 **development here taken over by [@dragonwocky](https://github.com/dragonwocky).**
 

@@ -115,7 +115,7 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
         `${helpers.__notion}/app/${insertion_target}`
       );
       if (insertion_target === 'main/main.js') {
-        // https://github.com/dragonwocky/notion-enhancer/issues/160
+        // https://github.com/notion-enhancer/notion-enhancer/issues/160
         // patch the notion:// url scheme/protocol to work on linux
         fs.readFile(insertion_file, 'utf8', (err, data) => {
           if (err) throw err;

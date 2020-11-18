@@ -56,7 +56,7 @@ cli
 let helpCalled = false;
 cli.globalCommand.option('-h, --help', ': display usage information');
 cli.globalCommand.helpCallback = (sections) => {
-  sections[0].body += '\nhttps://github.com/dragonwocky/notion-enhancer';
+  sections[0].body += '\nhttps://github.com/notion-enhancer/notion-enhancer';
   helpCalled = true;
 };
 cli.showHelpOnExit = true;

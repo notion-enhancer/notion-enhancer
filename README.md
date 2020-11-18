@@ -35,14 +35,14 @@ a chrome extension may be coming soon for web client support.
   - you may need to restart your computer.
   - notion-enhancer will use node.js, you do not need to interact with it aside from downloading to install notion-enhancer.
 - open your computer's terminal, **not the node.js command prompt.**
-  - **windows 10:** search in your start menu (click windows key or icon in bottom left of screen) for *'cmd'* or *'command prompt'*.
-  - **mac:** search in spotlight (magnifying glass in top right of screen) for *'terminal'*.
-- type and enter the following line(s) based on your operating system, if there are multiple lines, make sure to enter them *one by one* .
+  - **windows 10:** search in your start menu (click windows key or icon in bottom left of screen) for _'cmd'_ or _'command prompt'_.
+  - **mac:** search in spotlight (magnifying glass in top right of screen) for _'terminal'_.
+- type and enter the following line(s) based on your operating system, if there are multiple lines, make sure to enter them _one by one_ .
   - **windows 10:**
     ```
     npm i -g notion-enhancer
     ```
-  - **mac:** this may ask you to enter your password, instead of hiding your password with *** symbols, mac terminal hides it by making it invisible. simply type your password and click enter.
+  - **mac:** this may ask you to enter your password, instead of hiding your password with \*\*\* symbols, mac terminal hides it by making it invisible. simply type your password and click enter.
     ```
     sudo chmod -R a+wr /usr/local/lib/node_modules
     sudo chmod -R a+wr /usr/local/bin
@@ -237,7 +237,7 @@ on top of other windows even if it's not focused.
 **tags:** #extension
 
 **description:** link files for small client-side tweaks. (not sure how to do something? check out the
-[tweaks](https://github.com/dragonwocky/notion-enhancer/blob/master/TWEAKS.md) collection.)
+[tweaks](https://github.com/notion-enhancer/notion-enhancer/blob/master/TWEAKS.md) collection.)
 
 **author:** [dragonwocky](https://github.com/dragonwocky/)
 
@@ -448,7 +448,7 @@ upon the original base and later moving to the javascript module system.
 
 the enhancer wouldn't be anything near to what it is now though without
 interested community members testing, coding and ideating features - some are listed as
-[contributors](https://github.com/dragonwocky/notion-enhancer/graphs/contributors) here on github,
+[contributors](https://github.com/notion-enhancer/notion-enhancer/graphs/contributors) here on github,
 but many more have been helping out on discord and in emails.
 
 individual modules have their original authors attributed.
