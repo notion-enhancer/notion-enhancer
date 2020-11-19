@@ -20,6 +20,8 @@ for support, join the [discord server](https://discord.gg/sFWPXtA).
 - [@haydn-jones](https://github.com/haydn-jones/)'s fork of the
   linux [notion-deb-builder](https://github.com/haydn-jones/notion-deb-builder).
 
+linux clients must use a notion version >= 2.0.8.
+
 mobile clients are not supported and due to system limitations/restrictions cannot be.
 
 a chrome extension may be coming soon for web client support.
