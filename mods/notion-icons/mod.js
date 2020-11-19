@@ -317,8 +317,9 @@ module.exports = {
             for ( let { addedNodes } of list) {
               if (addedNodes[0] &&
                   addedNodes[0].style &&
-                  (addedNodes[0].style.cssText === 'pointer-events: auto; position: relative; z-index: 1;' ||
-                   addedNodes[0].style.cssText === 'pointer-events: auto; position: relative; z-index: 0;') &&
+                  (addedNodes[0].style.cssText === 'pointer-events: auto; position: relative; z-index: 0;' ||
+                   addedNodes[0].style.cssText === 'pointer-events: auto; position: relative; z-index: 1;' ||
+                   addedNodes[0].style.cssText === 'pointer-events: auto; position: relative; z-index: 2;') &&
                   document.querySelector('.notion-media-menu')
                 )
                 addIconsTab();
