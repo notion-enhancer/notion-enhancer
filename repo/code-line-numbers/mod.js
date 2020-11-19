@@ -14,7 +14,7 @@ module.exports = {
   tags: ['extension'],
   name: 'code line numbers',
   desc: 'adds line numbers to code blocks.',
-  version: '1.0.0',
+  version: '1.1.0',
   author: 'CloudHill',
   options: [
     {
@@ -37,52 +37,80 @@ module.exports = {
           childList: true,
           subtree: true,
         });
+
+        const resizeObserver = new ResizeObserver(
+          (list, observer) => number(list[0].target)
+        );
+
         function handle(list) {
           queue = [];
           for (let { addedNodes } of list) {
             if (
               addedNodes[0] &&
-              addedNodes[0].dataset &&
-              addedNodes[0].dataset.tokenIndex &&
-              addedNodes[0].parentElement
+              (
+                addedNodes[0].className === 'notion-page-content' ||
+                (
+                  addedNodes[0].querySelector &&
+                  addedNodes[0].querySelector('.notion-code-block.line-numbers')
+                )
+              )
             ) {
-              const block = addedNodes[0].parentElement.parentElement;
-              if (
-                block &&
-                block.classList &&
-                block.classList.contains('notion-code-block')
-              ) {
-                let numbers = block.querySelector('#code-line-numbers');
-                if (!numbers) {
-                  numbers = createElement(
-                    '<span id="code-line-numbers"></span>'
-                  );
-
-                  const blockStyle = window.getComputedStyle(block.children[0]);
-                  numbers.style.top = blockStyle.paddingTop;
-                  numbers.style.bottom = blockStyle.paddingBottom;
-
-                  block.append(numbers);
-
-                  const temp = createElement('<div>A</div>');
-                  block.children[0].append(temp);
-                  block.lineHeight = temp.getBoundingClientRect().height;
-                  temp.remove();
-                }
-
-                const lines = Math.round(
-                  numbers.getBoundingClientRect().height / block.lineHeight
-                );
-
-                if (lines > 1) {
-                  block.children[0].classList.add('code-numbered');
-                  numbers.innerText = Array.from(
-                    Array(lines),
-                    (e, i) => i + 1
-                  ).join('\n');
-                }
-              }
+              resizeObserver.disconnect();
+              const codeBlocks = document.querySelectorAll('.notion-code-block.line-numbers');
+              codeBlocks.forEach(block => {
+                number(block);
+                resizeObserver.observe(block);
+              })
             }
+          }
+        }
+        
+        function number(block) {
+          let codeLineNumbers = ''
+
+          let numbers = block.querySelector('#code-line-numbers');
+          if (!numbers) {
+            numbers = createElement(
+              '<span id="code-line-numbers"></span>'
+            );
+            
+            const blockStyle = window.getComputedStyle(block.children[0]);
+            numbers.style.top = blockStyle.paddingTop;
+            numbers.style.bottom = blockStyle.paddingBottom;
+            
+            block.append(numbers);
+          }
+
+          const temp = createElement('<div>A</div>');
+          block.children[0].append(temp);
+          const lineWidth = temp.getBoundingClientRect().width;
+          temp.style.display = 'inline';
+          const charWidth = temp.getBoundingClientRect().width;
+          temp.remove();
+
+          let codeString = ''
+          let lineCounter = 0;
+
+          const codeSpans = block.firstChild.querySelectorAll('span');
+          codeSpans.forEach(s => codeString += s.innerText)
+          const lines = codeString.split(/\r\n|\r|\n/);
+
+          for (let i = 0; i < lines.length - 1; i++) {
+            lineCounter++;
+            codeLineNumbers += `${lineCounter}\n`;
+
+            const lineWrap = (lines[i].length * charWidth) / lineWidth;
+            for (let j = 1; j < Math.ceil(lineWrap); j++)
+              codeLineNumbers += '\n';
+          }
+          
+          console.log(codeLineNumbers.length)
+          if (store().single_lined || codeLineNumbers.length > 2) {
+            block.children[0].classList.add('code-numbered');
+            numbers.innerText = codeLineNumbers;
+          } else {
+            block.children[0].classList.remove('code-numbered');
+            numbers.innerText = ''
           }
         }
       });
