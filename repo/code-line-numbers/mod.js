@@ -60,13 +60,13 @@ module.exports = {
               codeBlocks.forEach(block => {
                 number(block);
                 resizeObserver.observe(block);
-              })
+              });
             }
           }
         }
         
         function number(block) {
-          let codeLineNumbers = ''
+          let codeLineNumbers = '';
 
           let numbers = block.querySelector('#code-line-numbers');
           if (!numbers) {
@@ -79,38 +79,41 @@ module.exports = {
             numbers.style.bottom = blockStyle.paddingBottom;
             
             block.append(numbers);
+
+            const temp = createElement('<span>A</span>');
+            block.firstChild.append(temp);
+            block.lineHeight = temp.getBoundingClientRect().height;
+            temp.remove();
           }
 
-          const temp = createElement('<div>A</div>');
-          block.children[0].append(temp);
-          const lineWidth = temp.getBoundingClientRect().width;
-          temp.style.display = 'inline';
-          const charWidth = temp.getBoundingClientRect().width;
-          temp.remove();
-
-          let codeString = ''
+          const lines = block.firstChild.innerText.split(/\r\n|\r|\n/);
+          if (lines[lines.length - 1] === '') lines.pop();
           let lineCounter = 0;
+          const wordWrap = block.firstChild.style.wordBreak === 'break-all';
 
-          const codeSpans = block.firstChild.querySelectorAll('span');
-          codeSpans.forEach(s => codeString += s.innerText)
-          const lines = codeString.split(/\r\n|\r|\n/);
-
-          for (let i = 0; i < lines.length - 1; i++) {
+          for (let i = 0; i < lines.length; i++) {
             lineCounter++;
             codeLineNumbers += `${lineCounter}\n`;
+            console.log(lines[i])
 
-            const lineWrap = (lines[i].length * charWidth) / lineWidth;
-            for (let j = 1; j < Math.ceil(lineWrap); j++)
-              codeLineNumbers += '\n';
+            if (wordWrap) {
+              const temp = document.createElement('span');
+              temp.innerText = lines[i];
+              block.firstChild.append(temp);
+              const lineHeight = temp.getBoundingClientRect().height;
+              temp.remove();
+              
+              for (let j = 1; j < (lineHeight / block.lineHeight - 1); j++)
+                codeLineNumbers += '\n';
+            }
           }
           
-          console.log(codeLineNumbers.length)
           if (store().single_lined || codeLineNumbers.length > 2) {
-            block.children[0].classList.add('code-numbered');
+            block.firstChild.classList.add('code-numbered');
             numbers.innerText = codeLineNumbers;
           } else {
-            block.children[0].classList.remove('code-numbered');
-            numbers.innerText = ''
+            block.firstChild.classList.remove('code-numbered');
+            numbers.innerText = '';
           }
         }
       });
