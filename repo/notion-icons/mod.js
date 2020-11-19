@@ -92,10 +92,6 @@ module.exports = {
       }
 
       function addIconsTab() {
-        // Disconnect observer if the modal is open.
-        if (document.querySelector('.notion-overlay-container'))
-          overlayContainerObserver.disconnect();
-
         // Prevent Icons tab duplication
         if (getTab(5)) {
           removeIcons();
@@ -299,7 +295,7 @@ module.exports = {
           activeBar.remove();
           getTab(4).style.position = '';
         }
-        getTab(3).className = '';
+        if (getTab(3)) getTab(3).className = '';
 
         if (garbageCollector.length) {
           for (let i = 0; i < garbageCollector.length; i++) {
@@ -309,60 +305,30 @@ module.exports = {
         }
       }
 
-      // Wait for DOM change before adding the Icons tab
-      // (React does not render immediately on click)
-      const overlayContainerObserver = new MutationObserver(list => {
-        if (list) addIconsTab()
-      });
-      
-      function initializeIcons() {
-        overlayContainerObserver.observe(
-          document.querySelector('.notion-overlay-container'), 
-          { attributes: true, childList: true, characterData: true }
-        );
-      }
-
-      // Initialize icons tab when clicking on notion page icons
-      function initializeIconTriggerListener() {
-        const iconTriggers = document.querySelectorAll('.notion-record-icon[aria-disabled="false"]');
-        
-        iconTriggers.forEach(trigger => { 
-          trigger.removeEventListener('click', initializeIcons);
-          trigger.addEventListener('click', initializeIcons);
-
-          garbageCollector.push(trigger);
-        });
-      }
-
       document.addEventListener('readystatechange', () => {
         if (document.readyState !== 'complete') return false;
-        let queue = [];
-        const observer = new MutationObserver((list, observer) => {
-          if (!queue.length) requestAnimationFrame(() => process(queue));
-          queue.push(...list);
-        });
-        observer.observe(document.body, {
-          childList: true,
-          subtree: true,
-        });
-        function process(list) {
-          queue = [];
-          for (let { addedNodes } of list) {
-            if (
-              addedNodes[0] && (
-                (
-                  addedNodes[0].classList && ( 
-                    addedNodes[0].className === 'notion-page-content' ||
-                    addedNodes[0].classList.contains('notion-record-icon') ||
-                    addedNodes[0].classList.contains('notion-page-block') ||
-                    addedNodes[0].classList.contains('notion-callout-block')
-                  )
-                ) || addedNodes[0].nodeName === 'A'
-              )
-            ) {
-              initializeIconTriggerListener();
+        const attempt_interval = setInterval(enhance, 500);
+        function enhance() {
+          const overlay = document.querySelector('.notion-overlay-container');
+          if (!overlay) return;
+          clearInterval(attempt_interval);
+
+          const observer = new MutationObserver((list, observer) => {
+            for ( let { addedNodes } of list) {
+              if (addedNodes[0] &&
+                  addedNodes[0].style &&
+                  (addedNodes[0].style.cssText === 'pointer-events: auto; position: relative; z-index: 0;' ||
+                   addedNodes[0].style.cssText === 'pointer-events: auto; position: relative; z-index: 1;' ||
+                   addedNodes[0].style.cssText === 'pointer-events: auto; position: relative; z-index: 2;') &&
+                  document.querySelector('.notion-media-menu')
+                )
+                addIconsTab();
             }
-          }
+          });
+          observer.observe(overlay, {
+            childList: true,
+            subtree: true,
+          });
         }
       });
     },
