@@ -177,7 +177,7 @@ module.exports = {
             if (iconData.enhancerIcons) {
               // Load sprite sheet
               icon.innerHTML = 
-                `<div style="width: 32px; height: 32px; background: url(${iconsUrl}${iconData.source}/sprite.png) 0 -${i * 32}px no-repeat; background-size: cover;"></div>`;
+                `<div style="width: 32px; height: 32px; background: url(${iconsUrl}${iconData.source}/sprite.png) 0 -${i * 32}px no-repeat; background-size: 32px;"></div>`;
             } else {
               icon.innerHTML = `<img src="${iconUrl}" />`;
               // Make sure icons load
@@ -315,14 +315,18 @@ module.exports = {
 
           const observer = new MutationObserver((list, observer) => {
             for ( let { addedNodes } of list) {
-              if (addedNodes[0] &&
-                  addedNodes[0].style &&
-                  (addedNodes[0].style.cssText === 'pointer-events: auto; position: relative; z-index: 0;' ||
-                   addedNodes[0].style.cssText === 'pointer-events: auto; position: relative; z-index: 1;' ||
-                   addedNodes[0].style.cssText === 'pointer-events: auto; position: relative; z-index: 2;') &&
-                  document.querySelector('.notion-media-menu')
-                )
-                addIconsTab();
+              if (
+                addedNodes[0] &&
+                addedNodes[0].style &&
+                document.querySelector('.notion-media-menu')
+              ) {
+                for (let i = 0; i <= 3; i++) {
+                  if (addedNodes[0].style.cssText === `pointer-events: auto; position: relative; z-index: ${i};`) {
+                    addIconsTab();
+                    return;
+                  }
+                }
+              }
             }
           });
           observer.observe(overlay, {
