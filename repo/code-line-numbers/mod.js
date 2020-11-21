@@ -94,7 +94,6 @@ module.exports = {
           for (let i = 0; i < lines.length; i++) {
             lineCounter++;
             codeLineNumbers += `${lineCounter}\n`;
-            console.log(lines[i])
 
             if (wordWrap) {
               const temp = document.createElement('span');
