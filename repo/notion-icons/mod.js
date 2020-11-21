@@ -16,7 +16,7 @@ module.exports = {
   tags: ['extension'],
   name: 'notion icons',
   desc:
-    'Use custom icon sets directly in Notion.',
+    'use custom icon sets directly in Notion.',
   version: '1.0.0',
   author: 'jayhxmo',
   options: [
