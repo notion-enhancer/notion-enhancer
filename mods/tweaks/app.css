@@ -94,6 +94,6 @@ div.notion-selectable.notion-numbered_list-block > div > div:last-child::before 
     overflow-x: auto !important;
 }
 
-[data-tweaks*='[scroll_db_toolbars]'] [style*='min-height: 42px; padding-left: 96px; padding-right: 96px; flex-shrink: 0; z-index: 1; overflow: visible;'] > :first-child ::-webkit-scrollbar {
+[data-tweaks*='[scroll_db_toolbars]'] [style*='min-height: 42px; padding-left: 96px; padding-right: 96px; flex-shrink: 0; z-index: 1; overflow: visible;'] > :first-child::-webkit-scrollbar {
     display: none;
 }
