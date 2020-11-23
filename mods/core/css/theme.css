@@ -243,7 +243,12 @@
 }
 
 .notion-body.dark [style*='box-shadow: rgb(47, 52, 55) -3px 0px 0px'] {
-  box-shadow: var(--theme--main) -3px 0px 0px, rgb(77, 81, 83) 0px 1px 0px !important;
+  box-shadow: var(--theme--main) -3px 0px 0px;
+}
+
+.notion-body.dark [style*='rgb(47, 52, 55) -3px 0px 0px, rgb(77, 81, 83) 0px 1px 0px'] {
+  box-shadow: var(--theme--main) -3px 0px 0px, var(--theme--table-border) 0px 1px 0px !important;
+/*  border-top: 1px solid var(--theme--table-border) !important;*/
 }
 .notion-body:not(.dark) [style*='box-shadow: white -3px 0px 0px;'] {
   box-shadow: none !important;
