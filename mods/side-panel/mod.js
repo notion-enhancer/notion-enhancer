@@ -159,7 +159,7 @@ module.exports = {
             if (mod.panelJs) {
               curPanelJs = require(mod.panelJs)(store(mod.id));
               if (curPanelJs && curPanelJs.onLoad) curPanelJs.onLoad();
-            }
+            } else curPanelJs = null;
 
             if (mod.panelFullHeight) {
               panel.dataset.fullHeight = mod.panelFullHeight;
@@ -188,6 +188,10 @@ module.exports = {
             }
             
             hidePanel();
+
+            if (curPanelJs && curPanelJs.onUnlock) {
+              curPanelJs.onUnlock();
+            }
           }
   
           function lockPanel() {
@@ -201,6 +205,10 @@ module.exports = {
             // Hover event listeners
             panel.removeEventListener('mouseover', showPanel);
             panel.removeEventListener('mouseleave', hidePanel);
+
+            if (curPanelJs && curPanelJs.onLock) {
+              curPanelJs.onLock();
+            }
           }
   
           function togglePanel(e) {
@@ -302,10 +310,6 @@ module.exports = {
               frame.style.paddingRight = 0;
               panel.style.right = width + 'px';
             }
-
-            if (curPanelJs && curPanelJs.onResize) {
-              curPanelJs.onResize();
-            }
           }
 
           function enableResize() {
@@ -342,6 +346,10 @@ module.exports = {
               if (width < 190) width = 190;
               if (width > 480) width = 480;
               setPanelWidth(width);
+              
+              if (curPanelJs && curPanelJs.onResize) {
+                curPanelJs.onResize();
+              }
             }
             
             function stopDrag() {
