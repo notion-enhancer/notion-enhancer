@@ -151,19 +151,21 @@ module.exports = {
           function loadContent(mod) {
             if (curPanelJs && curPanelJs.onSwitch) curPanelJs.onSwitch();
 
+            if (mod.panelJs) {
+              curPanelJs = require(mod.panelJs)(store(mod.id));
+            } else curPanelJs = null;
+
             store().last_open = mod.id;
             panel.querySelector('.enhancer-panel--title').innerText = mod.panel.name || mod.name;
             panel.querySelector('.enhancer-panel--icon').innerHTML = mod.panelIcon;
             document.getElementById('enhancer-panel--content').innerHTML = mod.panelHtml;
-
-            if (mod.panelJs) {
-              curPanelJs = require(mod.panelJs)(store(mod.id));
-              if (curPanelJs && curPanelJs.onLoad) curPanelJs.onLoad();
-            } else curPanelJs = null;
-
+            
             if (mod.panelFullHeight) {
               panel.dataset.fullHeight = mod.panelFullHeight;
             } else panel.dataset.fullHeight = '';
+
+            if (curPanelJs && curPanelJs.onLoad)
+              curPanelJs.onLoad();
           }
 
           function unlockPanel(animate) {
