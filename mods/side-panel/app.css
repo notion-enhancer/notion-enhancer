@@ -18,7 +18,7 @@
   z-index: 99;
   height: 100vh;
   background: var(--theme--sidebar);
-  color: var(--theme--text_ui) !important;
+  color: var(--theme--text_ui);
   font-weight: 500;
   cursor: default;
   transition: box-shadow 300ms ease-in, width 300ms ease-in-out;
@@ -184,7 +184,7 @@
   align-items: center;
   width: 100%;
   padding: 8px 14px;
-  color: var(--theme--text_ui);
+  color: var(--theme--text);
   font-size: 14px;
   user-select: none;
   cursor: pointer;
