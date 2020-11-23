@@ -422,6 +422,7 @@ svg[data-tooltip] {
 
 .toggle input[type='checkbox'] + label {
   display: flex;
+  --menu--toggle_bg: rgba(135, 131, 120, 0.3);
 }
 .toggle input[type='checkbox'] + label .name {
   flex-basis: calc(100% - 2.25em);
@@ -429,51 +430,30 @@ svg[data-tooltip] {
 }
 .toggle input[type='checkbox'] + label .switch {
   position: relative;
-  margin-top: 0.5em;
+  top: 0.2em;
   float: right;
-  height: 0.65em;
-  width: 2em;
-  background: var(--theme--main);
-  border-radius: 5px;
+  height: 1em;
+  width: 1.85em;
+  padding: 0.1em;
+  background: var(--menu--toggle_bg);
+  border-radius: 3.14em;
   transition: background 300ms;
 }
 .toggle input[type='checkbox'] + label .switch::before {
   content: '';
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  border-radius: inherit;
-  background: linear-gradient(
-    90deg,
-    var(--theme--primary),
-    var(--theme--primary_click)
-  );
-  opacity: var(--menu--toggle_opacity, 0);
-  transition: opacity 300ms;
-}
-.toggle input[type='checkbox'] + label .switch .dot {
-  position: absolute;
-  width: 1em;
-  height: 1em;
-  top: -0.15em;
+  display: block;
+  width: 0.8em;
+  height: 0.8em;
   border-radius: 50%;
   transform: translateX(var(--menu--toggle_offset, 0));
   transition: transform 350ms, box-shadow 350ms;
   background: var(--theme--option_active-color);
   /* box-shadow: 2px 1px 4px var(--theme--table-border); */
 }
-.toggle input[type='checkbox']:checked:focus + label .switch {
-  background: none !important;
-}
-.toggle input[type='checkbox']:focus + label .switch::before,
-.toggle input[type='checkbox']:focus + label .switch .dot {
-  border: 1px solid var(--theme--table-border);
-}
+
 .toggle input[type='checkbox']:checked + label {
-  --menu--toggle_offset: 1em;
-  --menu--toggle_opacity: 1;
+  --menu--toggle_offset: 0.8em;
+  --menu--toggle_bg: var(--theme--primary);
 }
 
 .color {
