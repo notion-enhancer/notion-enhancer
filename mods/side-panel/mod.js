@@ -144,7 +144,8 @@ module.exports = {
                 loaded = true;
               }
             })
-          } else if (!loaded) {
+          }
+          if (!loaded) {
             loadContent(panelMods[0]);
           }
 
