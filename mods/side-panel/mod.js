@@ -68,6 +68,8 @@ module.exports = {
         if (panelMods.length < 1) return;
         const attempt_interval = setInterval(enhance, 500);
         function enhance() {
+          let curPanelJs;
+
           const frame = document.querySelector('.notion-frame');
           if (!frame) return;
           clearInterval(attempt_interval);
@@ -147,14 +149,18 @@ module.exports = {
           }
 
           function loadContent(mod) {
+            if (curPanelJs && curPanelJs.onSwitch) curPanelJs.onSwitch();
+
             store().last_open = mod.id;
             panel.querySelector('.enhancer-panel--title').innerText = mod.panel.name || mod.name;
             panel.querySelector('.enhancer-panel--icon').innerHTML = mod.panelIcon;
             document.getElementById('enhancer-panel--content').innerHTML = mod.panelHtml;
 
-            if (mod.panelJs)
-              require(mod.panelJs)(store(mod.id))();
-            
+            if (mod.panelJs) {
+              curPanelJs = require(mod.panelJs)(store(mod.id));
+              if (curPanelJs && curPanelJs.onLoad) curPanelJs.onLoad();
+            }
+
             if (mod.panelFullHeight) {
               panel.dataset.fullHeight = mod.panelFullHeight;
             } else panel.dataset.fullHeight = '';
@@ -295,6 +301,10 @@ module.exports = {
               container.style.width = 0;
               frame.style.paddingRight = 0;
               panel.style.right = width + 'px';
+            }
+
+            if (curPanelJs && curPanelJs.onResize) {
+              curPanelJs.onResize();
             }
           }
 
