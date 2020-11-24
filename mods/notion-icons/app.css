@@ -17,7 +17,9 @@
 
 .notion-icons--tab > div:hover,
 .notion-icons--icon:hover,
-.notion-icons--toggle:hover {
+.notion-icons--toggle:hover,
+.notion-icons--restore-button:hover,
+.notion-icons--removed-set:hover {
   background: var(--theme--interactive_hover);
   box-shadow: 0 0 0 0.5px var(--theme--interactive_hover-border) !important;
 }
@@ -50,7 +52,6 @@
   border-radius: 2px;
 }
 
-
 .notion-icons--icon-set.error {
   color: var(--theme--text_red);
   background: var(--theme--line_red);
@@ -65,17 +66,6 @@
   float: right;
 }
 
-.notion-icons--icon-set.alert .notion-icons--toggle {
-  color: var(--theme--line_yellow-text);
-  background: var(--theme--line_yellow);
-  border: 1px solid var(--theme--select_yellow);
-  margin-left: -1px;
-  margin-right: -1px;
-}
-.notion-icons--icon-set.alert .notion-icons--toggle:hover {
-  background: var(--theme--select_yellow);
-}
-
 .notion-icons--toggle {
   display: flex;
   align-items: center;
@@ -86,7 +76,6 @@
   border-radius: 2px;
   transition: background 200ms, margin-bottom 200ms ease-in;
 }
-
 .notion-icons--toggle .triangle {
   width: 0.9em;
   height: 1em;
@@ -94,13 +83,23 @@
   transition: transform 200ms ease-out 0s;
   transform: rotateZ(180deg);
 }
-
 .notion-icons--toggle a {
   color: var(--theme-text);
   transition: color 20ms ease-in;
 }
 .notion-icons--toggle a:hover {
   color: var(--theme--primary);
+}
+
+.notion-icons--icon-set.alert .notion-icons--toggle {
+  color: var(--theme--line_yellow-text);
+  background: var(--theme--line_yellow);
+  border: 1px solid var(--theme--select_yellow);
+  margin-left: -1px;
+  margin-right: -1px;
+}
+.notion-icons--icon-set.alert .notion-icons--toggle:hover {
+  background: var(--theme--select_yellow);
 }
 
 .notion-icons--body {
@@ -122,7 +121,6 @@
 .hidden-set .triangle {
   transform: rotateZ(90deg);
 }
-
 .hidden-set .notion-icons--body {
   opacity: 0;
 }
@@ -139,6 +137,10 @@
   height: 40px;
   padding: 4px;
 }
+.notion-icons--icon img {
+  width: 100%;
+  height: 100%;
+}
 
 .notion-icons--icon.error {
   font-size: 20px;
@@ -146,18 +148,95 @@
   border: 1px solid var(--theme--select_yellow);
   color: var(--theme--text_yellow);
 }
-
 .notion-icons--icon.error:hover {
   background: var(--theme--select_yellow);
 }
 
-.notion-icons--icon img {
-  width: 100%;
-  height: 100%;
+
+.notion-icons--extra {
+  margin-left: auto;
+  margin-right: 8px;
+  display: flex;
+  align-items: center;
 }
 
+.notion-icons--spinner { 
+  width: 12px;
+  height: 12px;
+}
 .notion-icons--spinner img {
+  width: 100%;
+  height: 100%;
   animation: rotation 1.3s infinite linear;
+}
+
+.notion-icons--remove-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 8px;
+  width: 16px;
+  height: 16px;
+  position: relative;
+}
+.notion-icons--remove-button::before {
+  content: 'Hide icon set';
+  position: absolute;
+  right: -3px;
+  padding: 4px 22px 4px 6px;
+  background: var(--theme--main);
+  box-shadow: var(--theme--box-shadow);
+  white-space: nowrap;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 50ms ease-in;
+}
+.notion-icons--remove-button:hover::before {
+  opacity: 1;
+  pointer-events: auto;
+}
+.notion-icons--remove-button svg {
+  width: 100%;
+  height: 100%;
+  fill: inherit;
+  z-index: 1;
+}
+.notion-icons--restore-button svg {
+  width: 16px;
+  height: 16px;
+  fill: inherit;
+}
+
+
+.notion-icons--overlay-container {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.notion-icons--restore {
+  max-width: 320px;
+  max-height: 320px;
+  position: relative;
+  border-radius: 3px;
+  padding: 8px 0;
+  box-shadow: var(--theme--box-shadow_strong);
+  background: var(--theme--card);
+  overflow: hidden auto;
+}
+
+.notion-icons--removed-set {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px 14px;
+  user-select: none;
+  cursor: pointer;
+  transition: background 0.4s ease;
 }
 
 @keyframes rotation {
