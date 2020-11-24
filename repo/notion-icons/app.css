@@ -77,6 +77,8 @@
   transition: background 200ms, margin-bottom 200ms ease-in;
 }
 .notion-icons--toggle .triangle {
+  flex-grow: 0;
+  flex-shrink: 0;
   width: 0.9em;
   height: 1em;
   margin: 0 0.75em 0 0.5em;
@@ -154,8 +156,9 @@
 
 
 .notion-icons--extra {
+  flex-grow: 0;
+  flex-shrink: 0;
   margin-left: auto;
-  margin-right: 8px;
   display: flex;
   align-items: center;
 }
