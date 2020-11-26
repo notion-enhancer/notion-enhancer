@@ -20,6 +20,14 @@ module.exports = {
   author: 'CloudHill',
   hacks: {
     'renderer/preload.js'(store, __exports) {
+      // Load icons
+      let icons = {};
+      (async () => {
+        icons.doubleChevron = await fs.readFile( path.resolve(__dirname, 'icons/double-chevron.svg') );
+        icons.switcher = await fs.readFile( path.resolve(__dirname, 'icons/switcher.svg') );
+        icons.reload = await fs.readFile( path.resolve(__dirname, 'icons/reload.svg') );
+      })();
+
       // Load panel mods
       let panelMods = getEnhancements().loaded.filter(mod => 
         (mod.panel && (store('mods')[mod.id] || {}).enabled)
@@ -31,29 +39,28 @@ module.exports = {
         try {
           if (typeof mod.panel === 'object') {
             // html
-            mod.panelHtml = await fs.readFile(
+            mod.panel.html = await fs.readFile(
               path.resolve(__dirname, `../${mod.dir}/${mod.panel.html}`)
             );
             // name
             if (!mod.panel.name) mod.panel.name = mod.name;
             // icon
-            mod.panelIcon = mod.panel.name[0];
             if (mod.panel.icon) {
               const iconPath = path.resolve(__dirname, `../${mod.dir}/${mod.panel.icon}`);
               if (await fs.pathExists(iconPath))
-                mod.panelIcon = await fs.readFile(iconPath);
+                mod.panel.icon = await fs.readFile(iconPath);
+            } else {
+              mod.panel.icon = mod.panel.name[0];
             }
             // js
             if (mod.panel.js) {
               const jsPath = `../${mod.dir}/${mod.panel.js}`;
               if (await fs.pathExists(path.resolve(__dirname, jsPath)))
-                mod.panelJs = jsPath;
+                mod.panel.js = require(jsPath)(store(mod.id));
             }
-            // fullHeight
-            if (mod.panel.fullHeight) mod.panelFullHeight = mod.panel.fullHeight;
           } else if (typeof mod.panel === 'string') {
-            mod.panelIcon = mod.name[0];
-            mod.panelHtml = await fs.readFile(
+            mod.panel.icon = mod.name[0];
+            mod.panel.html = await fs.readFile(
               path.resolve(__dirname, `../${mod.dir}/${mod.panel}`)
             );
           } else throw Error;
@@ -62,13 +69,14 @@ module.exports = {
           panelMods = panelMods.filter(panelMod => panelMod !== mod); 
         }
       }
-      
+
       document.addEventListener('readystatechange', (event) => {
         if (document.readyState !== 'complete') return false;
         if (panelMods.length < 1) return;
+
         const attempt_interval = setInterval(enhance, 500);
         function enhance() {
-          let curPanelJs;
+          let curPanel = {};
 
           const frame = document.querySelector('.notion-frame');
           if (!frame) return;
@@ -77,37 +85,32 @@ module.exports = {
           // Initialize panel
           const container = createElement(
             '<div class="enhancer-panel--container"></div>'
-          )
+          );
           const panel = createElement(
             `<div id="enhancer-panel"></div>`
-          )
+          );
           
           frame.after(container);
           container.appendChild(panel);
-
+          
           // Panel contents
           const header = createElement(`
             <div class="enhancer-panel--header">
               <div class="enhancer-panel--icon"></div>
               <div class="enhancer-panel--title"></div>
             </div>
-          `)
-          const toggle = createElement(`
-            <div class="enhancer-panel--toggle">
-                <svg viewBox="0 0 14 14" class="doubleChevron">
-                  <path d="M7 12.025L8.225 13.25L14 7.125L8.225 1L7 2.225L11.55 7.125L7 12.025ZM0 12.025L1.225 13.25L7 7.125L1.225 1L8.56743e-07 2.225L4.55 7.125L0 12.025Z">
-                  </path>
-                </svg>
-            </div>
-          `)
+          `);
+          const toggle = createElement(
+            `<div class="enhancer-panel--toggle">${icons.doubleChevron}</div>`
+          );
           const content = createElement(
             '<div id="enhancer-panel--content"></div>'
-          )
+          );
           const resize = createElement(`
             <div class="enhancer-panel--resize">
               <div style="cursor: col-resize;"></div>
             </div>
-          `)
+          `);
 
           panel.append(header, content, resize);
 
@@ -115,14 +118,9 @@ module.exports = {
           if (panelMods.length > 1) {
             header.addEventListener('click', renderSwitcher);
 
-            const switcherIcon = createElement(`
-              <div class="enhancer-panel--switcher-icon">
-                <svg viewBox="-1 -1 9 11" class="expand">
-                  <path d="M 3.5 0L 3.98809 -0.569442L 3.5 -0.987808L 3.01191 -0.569442L 3.5 0ZM 3.5 9L 3.01191 9.56944L 3.5 9.98781L 3.98809 9.56944L 3.5 9ZM 0.488094 3.56944L 3.98809 0.569442L 3.01191 -0.569442L -0.488094 2.43056L 0.488094 3.56944ZM 3.01191 0.569442L 6.51191 3.56944L 7.48809 2.43056L 3.98809 -0.569442L 3.01191 0.569442ZM -0.488094 6.56944L 3.01191 9.56944L 3.98809 8.43056L 0.488094 5.43056L -0.488094 6.56944ZM 3.98809 9.56944L 7.48809 6.56944L 6.51191 5.43056L 3.01191 8.43056L 3.98809 9.56944Z">
-                  </path>
-                </svg>
-              </div>
-            `)
+            const switcherIcon = createElement(
+              `<div class="enhancer-panel--switcher-icon">${icons.switcher}</div>`
+            )
             header.appendChild(switcherIcon);
           } else header.addEventListener('click', togglePanel);
 
@@ -150,23 +148,32 @@ module.exports = {
           }
 
           function loadContent(mod) {
-            if (curPanelJs && curPanelJs.onSwitch) curPanelJs.onSwitch();
-
-            if (mod.panelJs) {
-              curPanelJs = require(mod.panelJs)(store(mod.id));
-            } else curPanelJs = null;
+            if (curPanel.js && curPanel.js.onSwitch) curPanel.js.onSwitch();
+            curPanel = mod.panel;
 
             store().last_open = mod.id;
-            panel.querySelector('.enhancer-panel--title').innerText = mod.panel.name || mod.name;
-            panel.querySelector('.enhancer-panel--icon').innerHTML = mod.panelIcon;
-            document.getElementById('enhancer-panel--content').innerHTML = mod.panelHtml;
-            
-            if (mod.panelFullHeight) {
-              panel.dataset.fullHeight = mod.panelFullHeight;
-            } else panel.dataset.fullHeight = '';
+            panel.querySelector('.enhancer-panel--title').innerHTML = mod.panel.name || mod.name;
 
-            if (curPanelJs && curPanelJs.onLoad)
-              curPanelJs.onLoad();
+            // reload button
+            let reloadButton = document.querySelector('.enhancer-panel--reload-button');
+            if (reloadButton) reloadButton.remove();
+            if (mod.panel.reload) {
+              reloadButton = createElement(
+                `<div class="enhancer-panel--reload-button">${icons.reload}</div>`
+              )
+              reloadButton.addEventListener('click', e => { 
+                e.stopPropagation();
+                loadContent(mod);
+              })
+              panel.querySelector('.enhancer-panel--title').after(reloadButton);
+            }
+
+            panel.querySelector('.enhancer-panel--icon').innerHTML = mod.panel.icon;
+            document.getElementById('enhancer-panel--content').innerHTML = mod.panel.html;
+            panel.dataset.fullHeight = mod.panel.fullHeight || false;
+
+            if (curPanel.js && curPanel.js.onLoad)
+              curPanel.js.onLoad();
           }
 
           function unlockPanel(animate) {
@@ -192,8 +199,8 @@ module.exports = {
             
             hidePanel();
 
-            if (curPanelJs && curPanelJs.onUnlock) {
-              curPanelJs.onUnlock();
+            if (curPanel.js && curPanel.js.onUnlock) {
+              curPanel.js.onUnlock();
             }
           }
   
@@ -209,8 +216,8 @@ module.exports = {
             panel.removeEventListener('mouseover', showPanel);
             panel.removeEventListener('mouseleave', hidePanel);
 
-            if (curPanelJs && curPanelJs.onLock) {
-              curPanelJs.onLock();
+            if (curPanel.js && curPanel.js.onLock) {
+              curPanel.js.onLock();
             }
           }
   
@@ -239,7 +246,7 @@ module.exports = {
             if (mod.panel) {
               const item = createElement(
                 `<div class="enhancer-panel--switcher-item">
-                  <div class="enhancer-panel--icon">${mod.panelIcon}</div>
+                  <div class="enhancer-panel--icon">${mod.panel.icon}</div>
                   <div class="enhancer-panel--title">${mod.panel.name || mod.name}</div>                
                 </div>`
               );
@@ -350,8 +357,8 @@ module.exports = {
               if (width > 480) width = 480;
               setPanelWidth(width);
               
-              if (curPanelJs && curPanelJs.onResize) {
-                curPanelJs.onResize();
+              if (curPanel.js && curPanel.js.onResize) {
+                curPanel.js.onResize();
               }
             }
             
