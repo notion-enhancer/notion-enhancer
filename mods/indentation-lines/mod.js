@@ -18,7 +18,7 @@ module.exports = {
   name: 'indentation lines',
   desc: 'adds vertical relationship lines to make list trees easier to follow.',
   version: '1.0.0',
-  author: 'CloudHill',
+  author: 'runargs',
   options: [
     {
       key: 'style',
