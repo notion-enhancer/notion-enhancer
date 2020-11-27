@@ -8,9 +8,7 @@
 
 'use strict';
 
-const { createElement } = require('../../pkg/helpers.js'),
-path = require('path'),
-fs = require('fs-extra');
+const { createElement } = require('../../pkg/helpers.js');
 
 module.exports = {
   id: '35815b3b-3916-4dc6-8769-c9c2448f8b57',
@@ -56,12 +54,10 @@ module.exports = {
       document.addEventListener('readystatechange', (event) => {
         if (document.readyState !== 'complete') return false;
 
-        let selectors = [];
-        ['bulleted_list', 'numbered_list', 'to_do', 'toggle']
+        const selectors = 
+          ['bulleted_list', 'numbered_list', 'to_do', 'toggle']
           .filter(l => store()[l])
-          .forEach(
-            l => selectors.push(`.notion-page-content .notion-${l}-block > div > div:last-child`)
-          )
+          .map(l => `.notion-page-content .notion-${l}-block > div > div:last-child`);
          
         let style = 'solid';
         let opacity = 1;
