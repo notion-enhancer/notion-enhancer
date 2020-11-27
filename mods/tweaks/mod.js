@@ -75,15 +75,6 @@ module.exports = {
       value: false,
     },
     {
-      key: 'indentation_lines',
-      label: 'indentation lines for lists',
-      desc:
-        'adds vertical indentation or relationship lines to make list trees\
-        easier to follow',
-      type: 'select',
-      value: ['none', 'solid', 'dashed', 'dotted', 'soft'],
-    },
-    {
       key: 'scroll_db_toolbars',
       label: 'scroll database toolbars',
       desc:
@@ -123,11 +114,6 @@ module.exports = {
         };
         window.addEventListener('resize', addResponsiveBreakpoint);
         addResponsiveBreakpoint();
-        if (store().indentation_lines !== 'none') {
-          document.body.dataset.tweaks += `[indentation_lines_${
-            store().indentation_lines
-          }]`;
-        }
       });
     },
   },
