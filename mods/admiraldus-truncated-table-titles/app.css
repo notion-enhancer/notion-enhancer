@@ -1,0 +1,43 @@
+/*
+ * truncated table titles
+ * (c) 2020 admiraldus (https://github.com/admiraldus)
+ * under the MIT license
+ */
+
+/* target tooltip */
+.admiraldus-truncated-table-titles-tooltip
+{
+  position: fixed;
+}
+
+.admiraldus-truncated-table-titles-tooltip > div {
+  display: flex;
+  align-items: center;
+  border-radius: 3px;
+  background: var(--theme--card);
+  padding: 4px 8px;
+  box-shadow: var(--theme--box-shadow);
+}
+
+/* target tooltip icon */
+.admiraldus-truncated-table-titles-tooltip-svg {
+  display: flex;
+  align-items: center;
+}
+
+.admiraldus-truncated-table-titles-tooltip-svg > svg {
+  margin-right: 0.25em;
+  height: 1em;
+  width: 1em;
+  fill: var(--theme--text_ui_info);
+}
+
+/* target tooltip text  */
+.admiraldus-truncated-table-titles-tooltip-text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--theme--text_ui);
+}
