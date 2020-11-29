@@ -152,6 +152,8 @@ s {
   color: var(--theme--line_blue-text);
   background: var(--theme--line_blue);
   border-color: var(--theme--select_blue);
+  position: absolute;
+  z-index: 82;
 }
 #alerts .success::before {
   content: '✓';
