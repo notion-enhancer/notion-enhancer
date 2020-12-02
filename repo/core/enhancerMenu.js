@@ -422,7 +422,7 @@ window['__start'] = async () => {
           ${store(id, { [opt.key]: opt.value })[opt.key] ? 'checked' : ''}/>
           <label for="${opt.type}_${id}--${opt.key}">
             <span class="name">${opt.label}${desc}</span>
-            <span class="switch"><span class="dot"></span></span>
+            <span class="switch"></span>
           </label>
         `;
         break;
@@ -539,7 +539,7 @@ window['__start'] = async () => {
             ${enabled ? 'checked' : ''} />
             <label for="enable_${mod.id}">
             <span class="name">${mod.name}</span>
-              <span class="switch"><span class="dot"></span></span>
+              <span class="switch"></span>
               </label>`
         }</h3>
             <p class="tags">${mod.tags
