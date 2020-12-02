@@ -139,6 +139,7 @@ module.exports = (store, __exports) => {
           preload: path.resolve(`${__dirname}/enhancerMenu.js`),
           nodeIntegration: true,
           session: electron.session.fromPartition('persist:notion'),
+          enableRemoteModule: true,
         },
       });
       enhancer_menu.loadURL('enhancement://core/menu.html');
