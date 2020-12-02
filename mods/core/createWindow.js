@@ -49,6 +49,7 @@ module.exports = (store, __exports) => {
         preload: path.resolve(`${helpers.__notion}/app/renderer/index.js`),
         webviewTag: true,
         session: electron.session.fromPartition('persist:notion'),
+        enableRemoteModule: true,
       },
       ...rect,
     });
