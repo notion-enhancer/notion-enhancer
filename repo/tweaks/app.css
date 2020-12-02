@@ -54,42 +54,6 @@
   margin-bottom: -1.5px !important;
 }
 
-[data-tweaks*='[indentation_lines']
-div.notion-selectable.notion-bulleted_list-block > div > div:last-child,
-[data-tweaks*='[indentation_lines']
-div.notion-selectable.notion-numbered_list-block > div > div:last-child {
-  position: relative;
-}
-[data-tweaks*='[indentation_lines']
-div.notion-selectable.notion-bulleted_list-block > div > div:last-child::before,
-[data-tweaks*='[indentation_lines']
-div.notion-selectable.notion-numbered_list-block > div > div:last-child::before {
-  content: "";
-  position: absolute;
-  height: calc(100% - 2em);
-  top: 2em;
-  left: -14.48px;
-  border-left: 1px solid;
-}
-[data-tweaks*='[indentation_lines_dashed]']
-div.notion-selectable.notion-bulleted_list-block > div > div:last-child::before,
-[data-tweaks*='[indentation_lines_dashed]']
-div.notion-selectable.notion-numbered_list-block > div > div:last-child::before {
-  border-left-style: dashed;
-}
-[data-tweaks*='[indentation_lines_dotted]']
-div.notion-selectable.notion-bulleted_list-block > div > div:last-child::before,
-[data-tweaks*='[indentation_lines_dotted]']
-div.notion-selectable.notion-numbered_list-block > div > div:last-child::before {
-  border-left-style: dotted;
-}
-[data-tweaks*='[indentation_lines_soft]']
-div.notion-selectable.notion-bulleted_list-block > div > div:last-child::before,
-[data-tweaks*='[indentation_lines_soft]']
-div.notion-selectable.notion-numbered_list-block > div > div:last-child::before {
-  opacity: 0.25;
-}
-
 [data-tweaks*='[scroll_db_toolbars]'] .notion-frame > .notion-scroller > [style*="overflow: visible;"],
 [data-tweaks*='[scroll_db_toolbars]'] .notion-page-content .notion-collection_view-block > :first-child {
     overflow-x: auto !important;
