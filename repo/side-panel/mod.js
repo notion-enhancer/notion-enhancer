@@ -117,15 +117,30 @@ module.exports = {
           // Add switcher if there is more than one panel mods
           if (panelMods.length > 1) {
             header.addEventListener('click', renderSwitcher);
-
             const switcherIcon = createElement(
               `<div class="enhancer-panel--switcher-icon">${icons.switcher}</div>`
             )
             header.appendChild(switcherIcon);
-          } else header.addEventListener('click', togglePanel);
+          } else {
+            header.addEventListener('click', togglePanel);
+          } 
 
           header.appendChild(toggle);
           toggle.addEventListener('click', togglePanel);
+
+          // Keybind
+          document.addEventListener('keyup', e => {
+            const hotkey = {
+              code: 'Backslash',
+              ctrlKey: true,
+              shiftKey: true,
+              metaKey: false,
+              altKey: false,
+            };
+            for (let prop in hotkey)
+              if (hotkey[prop] !== e[prop]) return;
+            togglePanel();
+          });
           
           // Restore lock state
           if (store().locked === 'true') lockPanel();
@@ -154,7 +169,7 @@ module.exports = {
             store().last_open = mod.id;
             panel.querySelector('.enhancer-panel--title').innerHTML = mod.panel.name || mod.name;
 
-            // reload button
+            // Reload button
             let reloadButton = document.querySelector('.enhancer-panel--reload-button');
             if (reloadButton) reloadButton.remove();
             if (mod.panel.reload) {
@@ -222,7 +237,7 @@ module.exports = {
           }
   
           function togglePanel(e) {
-            e.stopPropagation();
+            if (e) e.stopPropagation();
             if (isLocked()) unlockPanel(true);
             else lockPanel();
             store().locked = panel.dataset.locked;
