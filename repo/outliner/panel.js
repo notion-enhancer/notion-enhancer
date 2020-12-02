@@ -64,6 +64,7 @@ module.exports = (store) => {
     const outline = document.querySelector('.outliner');
     if (!outline) return;
     outline.textContent = '';
+    if (store.lined) outline.setAttribute('lined', '');
 
     const pageContent = document.querySelector('.notion-page-content');
     const headerBlocks = pageContent.querySelectorAll('[class*="header-block"]');
@@ -77,7 +78,6 @@ module.exports = (store) => {
             placeholder="${placeholder}">${block.innerText}</a>
         </div>
       `);
-
       outline.append(header);
     })
   }

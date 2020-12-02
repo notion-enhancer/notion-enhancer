@@ -4,7 +4,7 @@
  * (c) 2020 CloudHill
  * under the MIT license
  */
- 
+
 .outliner {
   max-height: 100%;
   overflow: hidden auto;
@@ -29,7 +29,7 @@
   line-height: 2.2;
   color: inherit;
   text-decoration: none;
-  
+
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -48,4 +48,19 @@
 }
 .outline-header.notion-sub_sub_header-block a {
   text-indent: 36px;
+}
+
+.outliner[lined] .notion-sub_header-block::before,
+.outliner[lined] .notion-sub_sub_header-block::before {
+  content: "";
+  border-left: solid 1px;
+  height: 2.2em;
+  opacity: 0.25;
+  position: absolute;
+  left: 18px;
+  pointer-events: none;
+}
+.outliner[lined] .notion-sub_sub_header-block::before {
+  border-right: solid 1px;
+  width: 18px;
 }

@@ -18,6 +18,12 @@ module.exports = {
   author: 'CloudHill',
   options: [
     {
+      key: 'lined',
+      label: 'indentation lines',
+      type: 'toggle',
+      value: true
+    },
+    {
       key: 'fullHeight',
       label: 'full height',
       type: 'toggle',
