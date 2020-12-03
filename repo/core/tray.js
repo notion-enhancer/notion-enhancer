@@ -122,7 +122,6 @@ module.exports = (store, __exports) => {
         defaultWidth: 275,
         defaultHeight: 600,
       });
-      electron.shell.openExternal(JSON.stringify(window_state));
       enhancer_menu = new electron.BrowserWindow({
         show: true,
         frame: !store().frameless,
