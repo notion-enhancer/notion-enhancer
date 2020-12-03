@@ -76,6 +76,7 @@ module.exports = {
 
         const attempt_interval = setInterval(enhance, 500);
         function enhance() {
+          if (!store().width) store().width = 220;
           let curPanel = {};
 
           const frame = document.querySelector('.notion-frame');
@@ -143,8 +144,8 @@ module.exports = {
           });
           
           // Restore lock state
-          if (store().locked === 'true') lockPanel();
-          else unlockPanel(false);
+          if (store().locked === 'false') unlockPanel(false);
+          else lockPanel();
           
           enableResize();
 
