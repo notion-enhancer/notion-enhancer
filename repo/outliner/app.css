@@ -37,21 +37,18 @@
 
 .outline-header a:empty:before {
   color: var(--theme--text_ui_info);
-  content: attr(placeholder);
+  content: attr(outline-placeholder);
   display: block;
 }
-.outline-header.notion-header-block a {
-  text-indent: 0;
-}
-.outline-header.notion-sub_header-block a {
+
+.outline-header[header-level="2"] a {
   text-indent: 18px;
 }
-.outline-header.notion-sub_sub_header-block a {
+.outline-header[header-level="3"] a {
   text-indent: 36px;
 }
 
-.outliner[lined] .notion-sub_header-block::before,
-.outliner[lined] .notion-sub_sub_header-block::before {
+.outliner[lined] .outline-header:not([header-level="1"])::before {
   content: "";
   border-left: solid 1px var(--theme--text_ui_info);
   height: 2.2em;
@@ -60,7 +57,7 @@
   left: 18px;
   pointer-events: none;
 }
-.outliner[lined] .notion-sub_sub_header-block::before {
+.outliner[lined] .outline-header[header-level="3"]::before {
   border-right: solid 1px var(--theme--text_ui_info);
   width: 18px;
 }
