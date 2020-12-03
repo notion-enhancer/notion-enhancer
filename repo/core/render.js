@@ -26,12 +26,12 @@ const url = require('url'),
   ReactDOM = require(`${__notion}/app/node_modules/react-dom/index.js`),
   { toKeyEvent } = require('keyboardevent-from-electron-accelerator');
 
-const insertCSP = `
+const insertCSP = `{
   const csp = document.createElement('meta');
   csp.httpEquiv = 'Content-Security-Policy';
   csp.content = "script-src 'self' 'unsafe-inline' 'unsafe-eval' enhancement: https://gist.github.com https://apis.google.com https://api.amplitude.com https://widget.intercom.io https://js.intercomcdn.com https://logs-01.loggly.com https://cdn.segment.com https://analytics.pgncs.notion.so https://checkout.stripe.com https://embed.typeform.com https://admin.typeform.com https://platform.twitter.com https://cdn.syndication.twimg.com; connect-src 'self' https://msgstore.www.notion.so wss://msgstore.www.notion.so https://notion-emojis.s3-us-west-2.amazonaws.com https://s3-us-west-2.amazonaws.com https://s3.us-west-2.amazonaws.com https://notion-production-snapshots-2.s3.us-west-2.amazonaws.com https: http: https://api.amplitude.com https://api.embed.ly https://js.intercomcdn.com https://api-iam.intercom.io wss://nexus-websocket-a.intercom.io https://logs-01.loggly.com https://api.segment.io https://api.pgncs.notion.so https://checkout.stripe.com https://cdn.contentful.com https://preview.contentful.com https://images.ctfassets.net https://api.unsplash.com https://boards-api.greenhouse.io; font-src 'self' data: enhancement: https: http:; img-src 'self' data: blob: https: https://platform.twitter.com https://syndication.twitter.com https://pbs.twimg.com https://ton.twimg.com; style-src 'self' 'unsafe-inline' enhancement: https: http:; frame-src https: http:; media-src https: http:";
   document.head.appendChild(csp);
-`,
+}`,
   idToNotionURL = (id) =>
     `notion://www.notion.so/${
       url.parse(id).pathname.split('/').reverse()[0] || ''
@@ -193,19 +193,17 @@ module.exports = (store, __exports) => {
           return;
         }
         electronWindow.addListener('app-command', (e, cmd) => {
-          const webContents = this.views.current.$el().getWebContents();
           if (cmd === 'browser-backward' && webContents.canGoBack()) {
-            webContents.goBack();
+            this.views.current.$el().goBack();
           } else if (cmd === 'browser-forward' && webContents.canGoForward()) {
-            webContents.goForward();
+            this.views.current.$el().goForward();
           }
         });
         electronWindow.addListener('swipe', (e, dir) => {
-          const webContents = this.views.current.$el().getWebContents();
           if (dir === 'left' && webContents.canGoBack()) {
-            webContents.goBack();
+            this.views.current.$el().goBack();
           } else if (dir === 'right' && webContents.canGoForward()) {
-            webContents.goForward();
+            this.views.current.$el().goForward();
           }
         });
         electronWindow.addListener('focus', (e) => {
@@ -442,14 +440,14 @@ module.exports = (store, __exports) => {
         this.lastSearchQuery = undefined;
         this.views.current
           .$el()
-          .getWebContents()
+
           .stopFindInPage('clearSelection');
         notionIpc.sendIndexToNotion(this.views.current.$el(), 'search:stopped');
       }
       nextSearch(query) {
         this.views.current
           .$el()
-          .getWebContents()
+
           .findInPage(query, {
             forward: true,
             findNext: query === this.lastSearchQuery,
@@ -459,7 +457,7 @@ module.exports = (store, __exports) => {
       prevSearch(query) {
         this.views.current
           .$el()
-          .getWebContents()
+
           .findInPage(query, {
             forward: false,
             findNext: query === this.lastSearchQuery,
@@ -470,14 +468,14 @@ module.exports = (store, __exports) => {
         this.lastSearchQuery = undefined;
         this.views.current
           .$el()
-          .getWebContents()
+
           .stopFindInPage('clearSelection');
       }
       doneSearch() {
         this.lastSearchQuery = undefined;
         this.views.current
           .$el()
-          .getWebContents()
+
           .stopFindInPage('clearSelection');
         this.setState({ searching: false });
         if (document.activeElement instanceof HTMLElement) {
@@ -582,9 +580,9 @@ module.exports = (store, __exports) => {
               this.setState({ error: true });
             });
             $notion.addEventListener('dom-ready', () => {
-              $notion.getWebContents().executeJavaScript(insertCSP);
-              $notion
-                .getWebContents()
+              // $notion.executeJavaScript(insertCSP);
+              electron.remote.webContents
+                .fromId($notion.getWebContentsId())
                 .addListener('found-in-page', (event, result) => {
                   const matches = result
                     ? {
@@ -615,8 +613,8 @@ module.exports = (store, __exports) => {
               $notion,
               'zoom',
               (zoomFactor) => {
-                $notion.getWebContents().setZoomFactor(zoomFactor);
-                this.$search.getWebContents().setZoomFactor(zoomFactor);
+                $notion.setZoomFactor(zoomFactor);
+                this.$search.setZoomFactor(zoomFactor);
                 this.setState({ zoomFactor });
               }
             );
@@ -753,6 +751,7 @@ module.exports = (store, __exports) => {
                   partition: constants.electronSessionPartition,
                   preload: path.resolve(`${__notion}/app/renderer/preload.js`),
                   src: this.props.notionUrl,
+                  webpreferences: 'spellcheck=yes, enableremotemodule=yes',
                 }),
             ];
           })
@@ -811,6 +810,7 @@ module.exports = (store, __exports) => {
             src: `file://${path.resolve(
               `${__notion}/app/renderer/search.html`
             )}`,
+            webpreferences: 'spellcheck=no, enableremotemodule=yes',
           })
         );
       }
@@ -1057,10 +1057,7 @@ module.exports = (store, __exports) => {
           });
 
         document.getElementById('notion').addEventListener('dom-ready', () => {
-          document
-            .getElementById('notion')
-            .getWebContents()
-            .executeJavaScript(insertCSP);
+          // document.getElementById('notion').executeJavaScript(insertCSP);
         });
       }
     };
