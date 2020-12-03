@@ -53,14 +53,14 @@
 .outliner[lined] .notion-sub_header-block::before,
 .outliner[lined] .notion-sub_sub_header-block::before {
   content: "";
-  border-left: solid 1px;
+  border-left: solid 1px var(--theme--text_ui_info);
   height: 2.2em;
-  opacity: 0.25;
+  opacity: 0.6;
   position: absolute;
   left: 18px;
   pointer-events: none;
 }
 .outliner[lined] .notion-sub_sub_header-block::before {
-  border-right: solid 1px;
+  border-right: solid 1px var(--theme--text_ui_info);
   width: 18px;
 }
