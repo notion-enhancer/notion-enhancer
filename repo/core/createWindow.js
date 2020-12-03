@@ -40,7 +40,7 @@ module.exports = (store, __exports) => {
       rect.width = focused_window.getSize()[0];
       rect.height = focused_window.getSize()[1];
     }
-    const window = new electron.BrowserWindow({
+    let window = new electron.BrowserWindow({
       show: false,
       backgroundColor: '#ffffff',
       titleBarStyle: 'hiddenInset',
