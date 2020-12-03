@@ -118,6 +118,7 @@
   width: 100%;
   height: 100%;
   display: block;
+  fill: var(--theme--text_ui_info);
 }
 
 .enhancer-panel--toggle {
@@ -146,6 +147,7 @@
   height: 14px;
   fill: var(--theme--text_ui);
   transition: transform 400ms ease-in;
+  fill: var(--theme--text_ui_info);
 }
 #enhancer-panel[data-locked="false"] .enhancer-panel--toggle svg {
   transform: rotateZ(-180deg);
