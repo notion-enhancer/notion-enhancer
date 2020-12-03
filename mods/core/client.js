@@ -198,7 +198,7 @@ module.exports = (store, __exports) => {
             document.querySelector(
               '.notion-frame [style="padding-left: calc(96px + env(safe-area-inset-left)); padding-right: calc(96px + env(safe-area-inset-right)); max-width: 100%; margin-bottom: 8px; width: 100%;"]'
             ) ||
-            document.querySelector('.notion-peak-renderer') ||
+            document.querySelector('.notion-peek-renderer') ||
             document.querySelector('.notion-frame'),
           icon = $container.querySelector(
             '.notion-record-icon img:not([src^="data:"])'
