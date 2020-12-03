@@ -5,6 +5,29 @@
 - [highlight/mark viewer](https://chrome.google.com/webstore/detail/notion%2B-mark-manager/hipgmnlpnimedfepbfbfiaobohhffcfc)
 - [advanced math editor](https://github.com/Manueloccorso/NotionMathEditor_BrowserExtension)
 
+### v0.10.2 (wip)
+
+again, an emergency release for bugfixes.
+not properly documented and new features have not yet been fully reviewed/edited.
+
+- new: side panel - adds an extra sidebar on the right for use by other mods,
+  toggleable with `ctrl+shift+backslash`.
+- improved: notion icons uses spritesheets for faster loading of icons.
+- improved: icon sets can be hidden/toggled.
+- improved: toggles in the enhancer menu follow the same style as notion's toggles.
+- bugfix: notion icons tab is now visible in fullpage databases.
+- bugfix: code line numbers handles wrapped code blocks.
+- bugfix: file explorer no longer opens when enhancer menu is opened.
+- bugfix: enable the remote module in webviews (windows/tabs) for compatibility with the
+  updated version of electron used by new notion builds (>= 2.0.10).
+- extension: "outliner" = table of contents in right sidebar.
+- extension: "indentation lines" = adds vertical relationship lines to make list trees easier to follow.
+- extension: "truncated table titles" = see the full text of the truncated table titles on hover over.
+
+// todo
+
+- bugfix: add support for enhancing an `app` folder if there is no `app.asar` file present.
+
 ### v0.10.1 (2020-11-18)
 
 essentially a prerelease for v0.11.0: pushed out for urgent bugfixes during
