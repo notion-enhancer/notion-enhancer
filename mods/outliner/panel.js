@@ -73,9 +73,9 @@ module.exports = (store) => {
       const blockId = block.dataset.blockId.replace(/-/g, '');
       const placeholder = block.querySelector('[placeholder]').getAttribute('placeholder');
       const header = createElement(`
-        <div class="outline-header ${block.classList[1]}">
+        <div class="outline-header" header-level="${placeholder.slice(-1)}">
           <a href="${window.location.pathname}#${blockId}"
-            placeholder="${placeholder}">${block.innerText}</a>
+            outline-placeholder="${placeholder}">${block.innerText}</a>
         </div>
       `);
       outline.append(header);
