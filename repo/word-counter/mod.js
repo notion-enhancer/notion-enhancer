@@ -1,6 +1,7 @@
 /*
  * word counter
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2020 admiraldus (https://github.com/admiraldus)
  * under the MIT license
  */
 
@@ -14,8 +15,16 @@ module.exports = {
   name: 'word counter',
   desc:
     'add page details: word/character/sentence/block count & speaking/reading times.',
-  version: '0.1.0',
+  version: '0.2.0',
   author: 'dragonwocky',
+  options: [
+    {
+      key: 'hide_page_details_text',
+      label: 'hide "page details" text',
+      type: 'toggle',
+      value: false,
+    },
+  ],
   hacks: {
     'renderer/preload.js'(store, __exports) {
       const copyToClipboard = (str) => {
@@ -99,7 +108,7 @@ module.exports = {
           ];
 
           $container.children[0].innerHTML = `
-            <span><b>page details<br></b> (click to copy)</span>
+            ${store().hide_page_details_text ? '' : '<span><b>page details<br></b> (click to copy)</span>'}
             ${Object.keys(details).reduce(
               (prev, key) =>
                 prev +
