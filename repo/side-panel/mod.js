@@ -55,8 +55,18 @@ module.exports = {
             // js
             if (mod.panel.js) {
               const jsPath = `../${mod.dir}/${mod.panel.js}`;
-              if (await fs.pathExists(path.resolve(__dirname, jsPath)))
-                mod.panel.js = require(jsPath)(store(mod.id));
+              if (await fs.pathExists(path.resolve(__dirname, jsPath))) {
+                mod.panel.js = require(jsPath)((...args) => {
+                  if (!args.length) return store(mod.id, mod.defaults);
+                  if (args.length === 1 && typeof args[0] === 'object')
+                    return store(mod.id, { ...mod.defaults, ...args[0] });
+                  const other_mod = modules.find((m) => m.id === args[0]);
+                  return store(args[0], {
+                    ...(other_mod ? other_mod.defaults : {}),
+                    ...(args[1] || {})
+                  })
+                }, __exports);
+              }
             }
           } else if (typeof mod.panel === 'string') {
             mod.panel.icon = mod.name[0];
