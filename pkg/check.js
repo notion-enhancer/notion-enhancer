@@ -34,7 +34,7 @@ module.exports = async function () {
       backup = resolvePath(backup);
       executable = backup.replace(/\.bak$/, '');
       await fs.move(backup, executable);
-    } else executable = resolvePath(executable);
+    } else executable = executable ? resolvePath(executable) : '';
     return executable
       ? {
           code: 0,

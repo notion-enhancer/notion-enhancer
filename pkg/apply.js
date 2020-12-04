@@ -28,9 +28,11 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
     const check_app = await require('./check.js')();
     switch (check_app.code) {
       case 1:
+        throw Error(check_app.msg);
+      case 2:
         console.info(`~~ notion-enhancer v${version} already applied.`);
         return true;
-      case 2:
+      case 3:
         console.warn(` * ${check_app.msg}`);
         const valid = () =>
           typeof overwrite_version === 'string' &&
@@ -60,12 +62,16 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
           return false;
         }
     }
-    console.info(' ...unpacking app.asar.');
-    const asar_app = path.resolve(`${__notion}/app.asar`),
-      asar_bak = path.resolve(`${__notion}/app.asar.bak`);
-    extractAll(asar_app, `${path.resolve(`${__notion}/app`)}`);
-    if (await fs.pathExists(asar_bak)) fs.remove(asar_bak);
-    await fs.move(asar_app, asar_bak);
+    if (check_app.executable.endsWith('app.asar')) {
+      console.info(' ...unpacking app.asar.');
+      const asar_bak = path.resolve(`${__notion}/app.asar.bak`);
+      extractAll(check_app.executable, `${path.resolve(`${__notion}/app`)}`);
+      if (await fs.pathExists(asar_bak)) fs.remove(asar_bak);
+      await fs.move(check_app.executable, asar_bak);
+    } else {
+      console.info(' ...backing up default app.');
+      await fs.copy(check_app.executable, check_app.executable + '.bak');
+    }
 
     // patching launch script target of custom wrappers
     if (
@@ -149,7 +155,7 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
       }
     }
 
-    // not resolved, nothing else in application depends on it
+    // not resolved, nothing else in apply process depends on it
     // so it's just a "let it do its thing"
     console.info(' ...recording enhancement version.');
     fs.outputFile(
@@ -177,7 +183,7 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
                     )}"`
                   : ''
               }`
-        }`
+        }, and make sure path(s) are not open.`
       );
     } else if (['EIO', 'EBUSY'].includes(err.code) && friendly_errors) {
       console.error("file access failed: make sure notion isn't running!");

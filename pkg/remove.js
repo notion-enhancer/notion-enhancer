@@ -19,26 +19,20 @@ const fs = require('fs-extra'),
 // ### error ###
 
 module.exports = async function ({ delete_data, friendly_errors } = {}) {
-  const __notion = getNotionResources();
   try {
+    const __notion = getNotionResources(),
+      check_app = await require('./check.js')();
     // extracted asar: modded
-    const app_folder = path.resolve(`${__notion}/app`);
-    if (await fs.pathExists(app_folder)) {
-      console.info(` ...removing folder ${app_folder}`);
-      await fs.remove(app_folder);
-    } else console.warn(` * ${app_folder} not found: step skipped.`);
+    if (check_app.code > 1 && check_app.executable) {
+      console.info(` ...removing enhancements`);
+      await fs.remove(check_app.executable);
+    } else console.warn(` * enhancements not found: step skipped.`);
 
     // restoring original asar
-    const asar_bak = path.resolve(`${__notion}/app.asar.bak`);
-    if (await fs.pathExists(asar_bak)) {
-      console.info(' ...moving asar.app.bak to app.asar');
-
-      if (await fs.pathExists(path.resolve(`${__notion}/app.asar`))) {
-        console.warn(' * app.asar already exists!');
-        console.info(' -- removing app.asar.bak');
-        fs.remove(asar_bak);
-      } else await fs.move(asar_bak, path.resolve(`${__notion}/app.asar`));
-    } else console.warn(` * ${asar_bak} not found: step skipped.`);
+    if (check_app.backup) {
+      console.info(' ...restoring backup');
+      await fs.move(check_app.backup, check_app.backup.replace(/\.bak$/, ''));
+    } else console.warn(` * backup not found: step skipped.`);
 
     // cleaning data folder: ~/.notion-enhancer
     if (await fs.pathExists(__data)) {
@@ -107,7 +101,7 @@ module.exports = async function ({ delete_data, friendly_errors } = {}) {
                     )}"`
                   : ''
               }`
-        }`
+        }, and make sure path(s) are not open.`
       );
     } else if (['EIO', 'EBUSY'].includes(err.code) && friendly_errors) {
       console.error("file access failed: make sure notion isn't running!");

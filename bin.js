@@ -50,7 +50,9 @@ cli
       const status = await require('./pkg/check.js')();
       console.info(options.dev ? status : status.msg);
     } catch (err) {
-      console.error(err instanceof EnhancerError ? err.message : err);
+      console.error(
+        err instanceof EnhancerError && !options.dev ? err.message : err
+      );
     }
   });
 
