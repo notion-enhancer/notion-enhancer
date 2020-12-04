@@ -1036,6 +1036,9 @@
 .notion-code-block .token.keyword {
   color: var(--theme--code_keyword) !important;
 }
+.notion-code-block .token.constant {
+  color: var(--theme--code_constant) !important;
+}
 .notion-code-block .token.tag {
   color: var(--theme--code_tag) !important;
 }
@@ -1044,6 +1047,9 @@
 }
 .notion-code-block .token.important {
   color: var(--theme--code_important) !important;
+}
+.notion-code-block .token.regex {
+  color: var(--theme--code_regex) !important;
 }
 .notion-code-block .token.property {
   color: var(--theme--code_property) !important;

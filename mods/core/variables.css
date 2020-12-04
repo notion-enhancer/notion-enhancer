@@ -188,9 +188,11 @@
   --theme_dark--code_function: var(--theme_dark--code-text);
   --theme_dark--code_parameter: var(--theme_dark--code-text);
   --theme_dark--code_keyword: hsl(350, 40%, 70%);
+  --theme_dark--code_constant: hsl(350, 40%, 70%);
   --theme_dark--code_tag: hsl(350, 40%, 70%);
   --theme_dark--code_operator: hsl(40, 90%, 60%);
   --theme_dark--code_important: #e90;
+  --theme_dark--code_regex: #e90;
   --theme_dark--code_property: hsl(350, 40%, 70%);
   --theme_dark--code_builtin: hsl(75, 70%, 60%);
   --theme_dark--code_class-name: var(--theme_dark--code-text);
@@ -394,9 +396,11 @@
   --theme_light--code_function: #dd4a68;
   --theme_light--code_parameter: var(--theme_light--code-text);
   --theme_light--code_keyword: #07a;
+  --theme_light--code_constant: #905;
   --theme_light--code_tag: #905;
   --theme_light--code_operator: #9a6e3a;
   --theme_light--code_important: #e90;
+  --theme_light--code_regex: #e90;
   --theme_light--code_property: #905;
   --theme_light--code_builtin: #690;
   --theme_light--code_class-name: #dd4a68;
@@ -580,9 +584,11 @@
   --theme--code_function: var(--theme_dark--code_function);
   --theme--code_parameter: var(--theme_dark--code_parameter);
   --theme--code_keyword: var(--theme_dark--code_keyword);
+  --theme--code_constant: var(--theme_dark--code_constant);
   --theme--code_tag: var(--theme_dark--code_tag);
   --theme--code_operator: var(--theme_dark--code_operator);
   --theme--code_important: var(--theme_dark--code_important);
+  --theme--code_regex: var(--theme_dark--code_regex);
   --theme--code_property: var(--theme_dark--code_property);
   --theme--code_builtin: var(--theme_dark--code_builtin);
   --theme--code_class-name: var(--theme_dark--code_class-name);
@@ -766,9 +772,11 @@
   --theme--code_function: var(--theme_light--code_function);
   --theme--code_parameter: var(--theme_light--code_parameter);
   --theme--code_keyword: var(--theme_light--code_keyword);
+  --theme--code_constant: var(--theme_light--code_constant);
   --theme--code_tag: var(--theme_light--code_tag);
   --theme--code_operator: var(--theme_light--code_operator);
   --theme--code_important: var(--theme_light--code_important);
+  --theme--code_regex: var(--theme_light--code_regex);
   --theme--code_property: var(--theme_light--code_property);
   --theme--code_builtin: var(--theme_light--code_builtin);
   --theme--code_class-name: var(--theme_light--code_class-name);
