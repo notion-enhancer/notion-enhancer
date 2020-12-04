@@ -29,61 +29,16 @@ module.exports = {
       })();
 
       // Load panel mods
-      let panelMods = getEnhancements().loaded.filter(mod => 
-        (mod.panel && (store('mods')[mod.id] || {}).enabled)
-      );
-      
-      // Get panel info
-      panelMods.forEach(mod => initMod(mod));      
-      async function initMod(mod) {
-        try {
-          if (typeof mod.panel === 'object') {
-            // html
-            mod.panel.html = await fs.readFile(
-              path.resolve(__dirname, `../${mod.dir}/${mod.panel.html}`)
-            );
-            // name
-            if (!mod.panel.name) mod.panel.name = mod.name;
-            // icon
-            if (mod.panel.icon) {
-              const iconPath = path.resolve(__dirname, `../${mod.dir}/${mod.panel.icon}`);
-              if (await fs.pathExists(iconPath))
-                mod.panel.icon = await fs.readFile(iconPath);
-            } else {
-              mod.panel.icon = mod.panel.name[0];
-            }
-            // js
-            if (mod.panel.js) {
-              const jsPath = `../${mod.dir}/${mod.panel.js}`;
-              if (await fs.pathExists(path.resolve(__dirname, jsPath))) {
-                mod.panel.js = require(jsPath)((...args) => {
-                  if (!args.length) return store(mod.id, mod.defaults);
-                  if (args.length === 1 && typeof args[0] === 'object')
-                    return store(mod.id, { ...mod.defaults, ...args[0] });
-                  const other_mod = modules.find((m) => m.id === args[0]);
-                  return store(args[0], {
-                    ...(other_mod ? other_mod.defaults : {}),
-                    ...(args[1] || {})
-                  })
-                }, __exports);
-              }
-            }
-          } else if (typeof mod.panel === 'string') {
-            mod.panel.icon = mod.name[0];
-            mod.panel.html = await fs.readFile(
-              path.resolve(__dirname, `../${mod.dir}/${mod.panel}`)
-            );
-          } else throw Error;
-        } catch (err) {
-          console.log('invalid panel mod: ' + mod.name);
-          panelMods = panelMods.filter(panelMod => panelMod !== mod); 
-        }
-      }
+      let panelMods = 
+        getEnhancements().loaded.filter(
+          mod => (mod.panel && (store('mods')[mod.id] || {}).enabled)
+        );
+      panelMods.forEach(mod => initMod(mod));
 
       document.addEventListener('readystatechange', (event) => {
         if (document.readyState !== 'complete') return false;
         if (panelMods.length < 1) return;
-
+        
         const attempt_interval = setInterval(enhance, 500);
         function enhance() {
           if (!store().width) store().width = 220;
@@ -167,11 +122,9 @@ module.exports = {
                 loadContent(mod);
                 loaded = true;
               }
-            })
+            });
           }
-          if (!loaded) {
-            loadContent(panelMods[0]);
-          }
+          if (!loaded) loadContent(panelMods[0]);
 
           function loadContent(mod) {
             if (curPanel.js && curPanel.js.onSwitch) curPanel.js.onSwitch();
@@ -181,7 +134,7 @@ module.exports = {
             panel.querySelector('.enhancer-panel--title').innerHTML = mod.panel.name || mod.name;
 
             // Reload button
-            let reloadButton = document.querySelector('.enhancer-panel--reload-button');
+            let reloadButton = panel.querySelector('.enhancer-panel--reload-button');
             if (reloadButton) reloadButton.remove();
             if (mod.panel.reload) {
               reloadButton = createElement(
@@ -282,17 +235,19 @@ module.exports = {
           }
 
           function renderSwitcher() {
-            if (document.querySelector('.enhancer-panel--overlay-container')) return;
+            if (panel.querySelector('.enhancer-panel--overlay-container')) return;
 
             // Layer to close switcher
             const overlayContainer = createElement(
               '<div class="enhancer-panel--overlay-container"></div>'
             );
             overlayContainer.addEventListener('click', hideSwitcher)
-            document.querySelector('.notion-app-inner').appendChild(overlayContainer);
+            document
+              .querySelector('.notion-app-inner')
+              .appendChild(overlayContainer);
 
             // Position switcher below header
-            const rect = header.getBoundingClientRect();
+            const rect = panel.querySelector('.enhancer-panel--header').getBoundingClientRect();
             const div = createElement(`
               <div style="position: fixed; top: ${rect.top}px; left: ${rect.left}px; width: ${rect.width}px; height: ${rect.height}px ">
                 <div style="position: relative; top: 100%; pointer-events: auto;"></div>
@@ -349,7 +304,7 @@ module.exports = {
           }
 
           function enableResize() {
-            const handle = resize.firstElementChild;
+            const handle = panel.querySelector('.enhancer-panel--resize div');
             handle.addEventListener('mousedown', initDrag);
 
             let startX, startWidth;
@@ -410,6 +365,107 @@ module.exports = {
           }
         }
       });
+
+      // INITIALIZATION FUNCTIONS
+
+      async function initMod(mod) {
+        // load panel sites
+        if (mod.id === '0d541743-eb2c-4d77-83a8-3b2f5e8e5dff') {
+          panelMods = panelMods.filter(panelMod => panelMod !== mod);
+          return panelMods.push(...initPanelSites(mod));
+        }
+        try {
+          if (typeof mod.panel === 'object') {
+            // html
+            mod.panel.html = await fs.readFile(
+              path.resolve(__dirname, `../${mod.dir}/${mod.panel.html}`)
+            );
+            // name
+            if (!mod.panel.name) mod.panel.name = mod.name;
+            // icon
+            if (mod.panel.icon) {
+              const iconPath = path.resolve(__dirname, `../${mod.dir}/${mod.panel.icon}`);
+              if (await fs.pathExists(iconPath))
+                mod.panel.icon = await fs.readFile(iconPath);
+            } else {
+              mod.panel.icon = mod.panel.name[0];
+            }
+            // js
+            if (mod.panel.js) {
+              const jsPath = `../${mod.dir}/${mod.panel.js}`;
+              if (await fs.pathExists(path.resolve(__dirname, jsPath))) {
+                mod.panel.js = require(jsPath)(loadStore(mod), __exports);
+              }
+            }
+          } else if (typeof mod.panel === 'string') {
+            mod.panel.icon = mod.name[0];
+            mod.panel.html = await fs.readFile(
+              path.resolve(__dirname, `../${mod.dir}/${mod.panel}`)
+            );
+          } else throw Error;
+        } catch (err) {
+          console.log('invalid panel mod: ' + mod.name);
+          panelMods = panelMods.filter(panelMod => panelMod !== mod);
+        }
+      }
+
+      function initPanelSites(mod) {
+        let panelSites = [];
+        const sitesPath = store(mod.id).sites;
+        if (sitesPath) {
+          try {
+            const sites = require(sitesPath);
+            const invalid = false;
+            const sitePanelJs = require('../panel-sites/panel.js')(loadStore(mod), __exports);
+
+            const frameUrl = function(url, mobile) {
+              if (!/(^https?:\/\/)/.test(url)) url = 'https://' + url;
+              return `<iframe src=${url} class="panel-site" ${mobile ? 'mobile-user-agent' : ''}></iframe>`;
+            }
+
+            sites.forEach(site => {
+              if (site.url && site.name) {
+                
+                // get url and icon
+                const iframe = frameUrl(site.url, site.mobile);
+                const icon = `<img style="width: 100%; height: 100%;" 
+                    src="${site.icon || `https://www.google.com/s2/favicons?domain=${site.url}`}" />`;
+
+                const panelMod = {
+                  id: `${mod.id}-${site.url}`,
+                  panel: { 
+                    name: site.name,
+                    html: iframe,
+                    icon: icon,
+                    js: sitePanelJs,
+                    fullHeight: true,
+                    reload: true,
+                  },
+                }
+                panelSites.push(panelMod);
+              } else invalid = true;
+            });
+            if (invalid) throw Error;
+          }
+          catch (err) {
+            console.log('panel site error');
+          }
+        }
+        return panelSites;
+      }
+
+      function loadStore(mod) {
+          return (...args) => {
+          if (!args.length) return store(mod.id, mod.defaults);
+          if (args.length === 1 && typeof args[0] === 'object')
+            return store(mod.id, { ...mod.defaults, ...args[0] });
+          const other_mod = modules.find((m) => m.id === args[0]);
+          return store(args[0], {
+            ...(other_mod ? other_mod.defaults : {}),
+            ...(args[1] || {})
+          })
+        }
+      }
     },
   },
 };
