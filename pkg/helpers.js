@@ -94,6 +94,9 @@ const is_wsl =
     return folder;
   })();
 
+// safely backup & transform either an app folder or an app.asar file into a folder
+function enhanceableApp() {}
+
 // transform a wsl filepath to its relative windows filepath if necessary.
 function realpath(hack_path) {
   if (!is_wsl) return hack_path.replace(/\\/g, '/');
