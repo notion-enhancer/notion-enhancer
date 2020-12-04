@@ -19,13 +19,14 @@ module.exports = (store, __exports) => {
 
   __exports.createWindow = function (relativeUrl, focused_window) {
     if (!relativeUrl) relativeUrl = '';
-    const window_state = require(`${helpers.__notion.replace(
-        /\\/g,
-        '/'
-      )}/app/node_modules/electron-window-state/index.js`)({
-        defaultWidth: 1320,
-        defaultHeight: 860,
-      }),
+    const window_state = require(`${helpers
+        .getNotionResources()
+        .replace(/\\/g, '/')}/app/node_modules/electron-window-state/index.js`)(
+        {
+          defaultWidth: 1320,
+          defaultHeight: 860,
+        }
+      ),
       rect = {
         x: window_state.x,
         y: window_state.y,
@@ -46,7 +47,9 @@ module.exports = (store, __exports) => {
       titleBarStyle: 'hiddenInset',
       frame: !store().frameless,
       webPreferences: {
-        preload: path.resolve(`${helpers.__notion}/app/renderer/index.js`),
+        preload: path.resolve(
+          `${helpers.getNotionResources()}/app/renderer/index.js`
+        ),
         webviewTag: true,
         session: electron.session.fromPartition('persist:notion'),
         enableRemoteModule: true,

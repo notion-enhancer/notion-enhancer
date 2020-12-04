@@ -9,7 +9,8 @@
 module.exports = (store, __exports) => {
   const electron = require('electron'),
     fs = require('fs-extra'),
-    { __notion } = require('../../pkg/helpers.js'),
+    { getNotionResources } = require('../../pkg/helpers.js'),
+    __notion = getNotionResources(),
     createWindow = require(`${__notion}/app/main/createWindow.js`),
     config = require(`${__notion}/app/config.js`),
     notion_intl = require(`${__notion}/app/shared/notion-intl/index.js`),

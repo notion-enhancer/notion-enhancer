@@ -10,7 +10,7 @@ const fs = require('fs-extra'),
   path = require('path'),
   { readdirIterator } = require('readdir-enhanced'),
   { extractAll } = require('asar'),
-  helpers = require('./helpers.js'),
+  { readline, realpath, getNotionResources } = require('./helpers.js'),
   { version } = require('../package.json');
 
 // === title ===
@@ -22,6 +22,7 @@ const fs = require('fs-extra'),
 // ### error ###
 
 module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
+  const __notion = getNotionResources();
   try {
     // handle pre-existing installations: app.asar present? version set in data folder? overwrite?
     const check_app = await require('./check.js')();
@@ -41,7 +42,7 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
         }
         while (!valid()) {
           process.stdout.write(' > overwrite? [Y/n]: ');
-          overwrite_version = await helpers.readline();
+          overwrite_version = await readline();
         }
         if (overwrite_version.toLowerCase() === 'n') {
           console.info(' ~~ keeping previous version: exiting.');
@@ -60,9 +61,9 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
         }
     }
     console.info(' ...unpacking app.asar.');
-    const asar_app = path.resolve(`${helpers.__notion}/app.asar`),
-      asar_bak = path.resolve(`${helpers.__notion}/app.asar.bak`);
-    extractAll(asar_app, `${path.resolve(`${helpers.__notion}/app`)}`);
+    const asar_app = path.resolve(`${__notion}/app.asar`),
+      asar_bak = path.resolve(`${__notion}/app.asar.bak`);
+    extractAll(asar_app, `${path.resolve(`${__notion}/app`)}`);
     if (await fs.pathExists(asar_bak)) fs.remove(asar_bak);
     await fs.move(asar_app, asar_bak);
 
@@ -71,14 +72,14 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
       [
         '/opt/notion-app', // https://aur.archlinux.org/packages/notion-app/
         '/opt/notion', // https://github.com/jaredallard/notion-app
-      ].includes(helpers.__notion)
+      ].includes(__notion)
     ) {
       console.info(
         ' ...patching app launcher (notion-app linux wrappers only).'
       );
       for (let bin_path of [
-        `/usr/bin/${helpers.__notion.split('/')[2]}`,
-        `${helpers.__notion}/${helpers.__notion.split('/')[2]}`,
+        `/usr/bin/${__notion.split('/')[2]}`,
+        `${__notion}/${__notion.split('/')[2]}`,
       ]) {
         const bin_script = await fs.readFile(bin_path, 'utf8');
         if (bin_script.includes('app.asar')) {
@@ -95,24 +96,24 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
     // patching app properties so dark/light mode can be detected
     if (
       process.platform === 'darwin' &&
-      (await fs.pathExists(path.resolve(`${helpers.__notion}/../Info.plist`)))
+      (await fs.pathExists(path.resolve(`${__notion}/../Info.plist`)))
     ) {
       fs.copy(
         path.resolve(`${__dirname}/Info.plist`),
-        path.resolve(`${helpers.__notion}/../Info.plist`),
+        path.resolve(`${__notion}/../Info.plist`),
         { overwrite: true }
       );
     }
 
     for await (let insertion_target of readdirIterator(
-      path.resolve(`${helpers.__notion}/app`),
+      path.resolve(`${__notion}/app`),
       {
         deep: (stats) => stats.path.indexOf('node_modules') === -1,
         filter: (stats) => stats.isFile() && stats.path.endsWith('.js'),
       }
     )) {
       const insertion_file = path.resolve(
-        `${helpers.__notion}/app/${insertion_target}`
+        `${__notion}/app/${insertion_target}`
       );
       if (insertion_target === 'main/main.js') {
         // https://github.com/notion-enhancer/notion-enhancer/issues/160
@@ -129,7 +130,7 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
               .replace(
                 /else \{[\s\n]+const win = createWindow_1\.createWindow\(relativeUrl\);/g,
                 'else if (relativeUrl) { const win = createWindow_1.createWindow(relativeUrl);'
-              )}\n\n//notion-enhancer\nrequire('${helpers.realpath(
+              )}\n\n//notion-enhancer\nrequire('${realpath(
               __dirname
             )}/loader.js')(__filename, exports);`,
             'utf8',
@@ -141,7 +142,7 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
       } else {
         fs.appendFile(
           insertion_file,
-          `\n\n//notion-enhancer\nrequire('${helpers.realpath(
+          `\n\n//notion-enhancer\nrequire('${realpath(
             __dirname
           )}/loader.js')(__filename, exports);`
         );
@@ -152,7 +153,7 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
     // so it's just a "let it do its thing"
     console.info(' ...recording enhancement version.');
     fs.outputFile(
-      path.resolve(`${helpers.__notion}/app/ENHANCER_VERSION.txt`),
+      path.resolve(`${__notion}/app/ENHANCER_VERSION.txt`),
       version
     );
 

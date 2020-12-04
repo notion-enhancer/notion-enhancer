@@ -8,12 +8,16 @@
 
 const fs = require('fs-extra'),
   path = require('path'),
-  { __notion, getEnhancements, createElement } = require('./helpers.js'),
+  {
+    getNotionResources,
+    getEnhancements,
+    createElement,
+  } = require('./helpers.js'),
   store = require('./store.js');
 
 module.exports = function (__file, __exports) {
   __file = __file
-    .slice(path.resolve(`${__notion}/app`).length + 1)
+    .slice(path.resolve(`${getNotionResources()}/app`).length + 1)
     .replace(/\\/g, '/');
 
   if (__file === 'main/security.js') {
@@ -64,12 +68,10 @@ module.exports = function (__file, __exports) {
       if (document.readyState !== 'complete') return false;
       for (let mod of modules) {
         if (
-          (mod.alwaysActive ||
-            store('mods', { [mod.id]: { enabled: false } })[mod.id].enabled)
+          mod.alwaysActive ||
+          store('mods', { [mod.id]: { enabled: false } })[mod.id].enabled
         ) {
-          const fileExists = (file) => fs.pathExistsSync(
-              path.resolve(file)
-          )
+          const fileExists = (file) => fs.pathExistsSync(path.resolve(file));
           for (let sheet of ['app', 'variables']) {
             if (fileExists(`${__dirname}/../mods/${mod.dir}/${sheet}.css`)) {
               document.head.appendChild(

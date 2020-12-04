@@ -8,40 +8,63 @@
 
 const fs = require('fs-extra'),
   path = require('path'),
-  helpers = require('./helpers.js'),
-  { version } = require('../package.json'),
-  pathExists = (filepath) => fs.pathExists(path.resolve(filepath));
+  { getNotionResources } = require('./helpers.js'),
+  { version } = require('../package.json');
 
 module.exports = async function () {
-  const version_path = `${helpers.__notion}/app/ENHANCER_VERSION.txt`;
+  const __notion = getNotionResources(),
+    resolvePath = (filepath) => path.resolve(`${__notion}/${filepath}`),
+    pathExists = (filepath) => fs.pathExists(resolvePath(filepath)),
+    version_path = 'app/ENHANCER_VERSION.txt',
+    packed = await pathExists('app.asar.bak');
+  let backup = packed
+    ? (await pathExists('app.asar.bak'))
+      ? `app.asar.bak`
+      : undefined
+    : (await pathExists('app.bak'))
+    ? 'app.bak'
+    : undefined;
   if (!(await pathExists(version_path))) {
-    return {
-      msg: `notion-enhancer has not been applied.`,
-      code: 0,
-    };
-  }
-  const installed_version = await fs.readFile(version_path, 'utf8'),
-    packed = await pathExists(`${helpers.__notion}/app.asar`),
-    backup = packed
-      ? (await pathExists(`${helpers.__notion}/app.asar.bak`))
-        ? `${helpers.__notion}/app.asar.bak`
-        : undefined
-      : (await pathExists(`${helpers.__notion}/app.bak`))
-      ? `${helpers.__notion}/app.bak`
+    let executable = (await pathExists('app'))
+      ? 'app'
+      : (await pathExists('app.asar'))
+      ? 'app.asar'
       : undefined;
+    if (!executable && backup) {
+      backup = resolvePath(backup);
+      executable = backup.replace(/\.bak$/, '');
+      await fs.move(backup, executable);
+    } else executable = resolvePath(executable);
+    return executable
+      ? {
+          code: 0,
+          msg: `notion-enhancer has not been applied.`,
+          executable,
+        }
+      : {
+          code: 1,
+          msg: `notion installation has been corrupted: no executable found.`,
+        };
+  }
+  const installed_version = await fs.readFile(
+      resolvePath(version_path),
+      'utf8'
+    ),
+    meta = {
+      version: installed_version,
+      executable: resolvePath('app'),
+      packed: resolvePath(packed),
+      backup: resolvePath(backup),
+    };
   return installed_version === version
     ? {
+        code: 2,
         msg: `notion-enhancer v${version} applied.`,
-        version: installed_version,
-        packed,
-        backup,
-        code: 1,
+        ...meta,
       }
     : {
+        code: 3,
         msg: `notion-enhancer v${installed_version} found applied != v${version} package.`,
-        version: installed_version,
-        packed,
-        backup,
-        code: 2,
+        ...meta,
       };
 };

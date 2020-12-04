@@ -47,7 +47,8 @@ cli
   .command('check', ': check the current state of the notion app')
   .action(async (options) => {
     try {
-      console.info((await require('./pkg/check.js')()).msg);
+      const status = await require('./pkg/check.js')();
+      console.info(options.dev ? status : status.msg);
     } catch (err) {
       console.error(err instanceof EnhancerError ? err.message : err);
     }

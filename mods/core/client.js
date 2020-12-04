@@ -10,10 +10,9 @@
 module.exports = (store, __exports) => {
   const electron = require('electron'),
     helpers = require('../../pkg/helpers.js'),
-    notionIpc = require(`${helpers.__notion.replace(
-      /\\/g,
-      '/'
-    )}/app/helpers/notionIpc.js`),
+    notionIpc = require(`${helpers
+      .getNotionResources()
+      .replace(/\\/g, '/')}/app/helpers/notionIpc.js`),
     { toKeyEvent } = require('keyboardevent-from-electron-accelerator'),
     tabsEnabled = (store('mods')['e1692c29-475e-437b-b7ff-3eee872e1a42'] || {})
       .enabled;

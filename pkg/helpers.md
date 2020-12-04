@@ -43,20 +43,6 @@ and then inserting it into something that will not be executed until the app is 
 ---
 
 ```js
-const __notion;
-```
-
-use `helpers.__notion` to get the absolute path of the notion app parent folder.
-
-primarily used for internal modding of the app (e.g. to apply the modloader and patch launch scripts).
-
-if used immediately after being accessed, it should always work. however, if fetching its value during enhancement
-and then inserting it into something that will not be executed until the app is opened, it must be put through
-`helpers.realpath` before insertion.
-
----
-
-```js
 function realpath(hack_path) {
   return runtime_path;
 }
@@ -67,6 +53,22 @@ this is particularly useful for wsl compatibility, so every filepath that is fet
 and then inserted into something that will not be executed until the app is opened should be put through this.
 
 primarily used for internal handling of filepaths (e.g. for the modloader).
+
+---
+
+```js
+function getNotionResources() {
+  return __notionResourcesFolder;
+}
+```
+
+use `helpers.getNotionResources()` to get the absolute path of the notion app parent folder.
+
+primarily used for internal modding of the app (e.g. to apply the modloader and patch launch scripts).
+
+if used immediately after being accessed, it should always work. however, if fetching its value during enhancement
+and then inserting it into something that will not be executed until the app is opened, it must be put through
+`helpers.realpath` before insertion.
 
 ---
 

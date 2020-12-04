@@ -20,7 +20,9 @@ module.exports = (store, __exports) => {
   function newWindow() {
     require('./createWindow.js')(
       store,
-      require(path.resolve(`${helpers.__notion}/app/main/createWindow.js`))
+      require(path.resolve(
+        `${helpers.getNotionResources()}/app/main/createWindow.js`
+      ))
     )(
       '',
       getAllWindows().find((win) => win !== enhancer_menu)
@@ -113,15 +115,16 @@ module.exports = (store, __exports) => {
 
     function openEnhancerMenu() {
       if (enhancer_menu) return enhancer_menu.show();
-      const window_state = require(`${helpers.__notion.replace(
-        /\\/g,
-        '/'
-      )}/app/node_modules/electron-window-state/index.js`)({
-        file: 'menu.windowstate.json',
-        path: helpers.__data,
-        defaultWidth: 275,
-        defaultHeight: 600,
-      });
+      const window_state = require(`${helpers
+        .getNotionResources()
+        .replace(/\\/g, '/')}/app/node_modules/electron-window-state/index.js`)(
+        {
+          file: 'menu.windowstate.json',
+          path: helpers.__data,
+          defaultWidth: 275,
+          defaultHeight: 600,
+        }
+      );
       enhancer_menu = new electron.BrowserWindow({
         show: true,
         frame: !store().frameless,
