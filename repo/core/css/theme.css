@@ -4,6 +4,7 @@
  * (c) 2020 TarasokUA
  * (c) 2020 Arecsu
  * (c) 2020 u/zenith_illinois
+ * (c) 2020 admiraldus (https://github.com/admiraldus)
  * under the MIT license
  */
 
@@ -144,6 +145,9 @@
 }
 [style*='SFMono-Regular'] {
   font-family: var(--theme--font_code) !important;
+}
+.notion-selectable.notion-quote-block div[spellcheck="true"] {
+  font-family: var(--theme--font_quote) !important;	
 }
 .notion-frame .notion-page-block div[placeholder='Untitled'],
 .notion-overlay-container .notion-page-block div[placeholder='Untitled'] {

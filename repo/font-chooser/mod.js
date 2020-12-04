@@ -2,6 +2,7 @@
  * font chooser
  * (c) 2020 torchatlas (https://bit.ly/torchatlas)
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2020 admiraldus (https://github.com/admiraldus)
  * under the MIT license
  */
 
@@ -12,8 +13,8 @@ module.exports = {
   tags: ['extension'],
   name: 'font chooser',
   desc:
-    'customize fonts. for each option, type in the name of the font you would like to use, or leave it blank to not change anything.',
-  version: '0.1.1',
+    'customize fonts. for each option, type in the name of the font you would like to use, or leave it blank to not change anything.<br/><br/>make sure the fonts you type are installed on your device.',
+  version: '0.2.1',
   author: 'torchatlas',
   options: [
     {
@@ -40,6 +41,12 @@ module.exports = {
       type: 'input',
       value: '',
     },
+    {
+      key: 'quote',
+      label: 'quote:',
+      type: 'input',
+      value: '',
+    },
   ],
   hacks: {
     'renderer/preload.js'(store, __exports) {
@@ -47,7 +54,7 @@ module.exports = {
       async function enhance() {
         if (!document.querySelector('.notion-app-inner')) return;
         clearInterval(attempt_interval);
-        for (let style of ['sans', 'serif', 'mono', 'code']) {
+        for (let style of ['sans', 'serif', 'mono', 'code', 'quote']) {
           if (!store()[style]) continue;
           document
             .querySelector('.notion-app-inner')

@@ -4,6 +4,7 @@
  * (c) 2020 TarasokUA
  * (c) 2020 Arecsu
  * (c) 2020 u/zenith_illinois
+ * (c) 2020 admiraldus (https://github.com/admiraldus)
  * under the MIT license
  */
 
@@ -35,6 +36,7 @@
   --theme_dark--font_mono: iawriter-mono, Nitti, Menlo, Courier, monospace;
   --theme_dark--font_code: SFMono-Regular, Consolas, 'Liberation Mono', Menlo,
     Courier, monospace;
+  --theme_dark--font_quote: var(--theme_dark--font_sans);
 
   --theme_dark--font_title-size: 40px;
   --theme_dark--font_heading1-size: 1.875em;
@@ -219,6 +221,7 @@
   --theme_light--font_mono: iawriter-mono, Nitti, Menlo, Courier, monospace;
   --theme_light--font_code: SFMono-Regular, Consolas, 'Liberation Mono', Menlo,
     Courier, monospace;
+  --theme_light--font_quote: var(--theme_light--font_sans);
 
   --theme_light--font_title-size: 40px;
   --theme_light--font_heading1-size: 1.875em;
@@ -396,6 +399,7 @@
   --theme--font_serif: var(--theme_dark--font_serif);
   --theme--font_mono: var(--theme_dark--font_mono);
   --theme--font_code: var(--theme_dark--font_code);
+  --theme--font_quote: var(--theme_dark--font_sans);
   --theme--font_title-size: var(--theme_dark--font_title-size);
   --theme--font_heading1-size: var(--theme_dark--font_heading1-size);
   --theme--font_heading2-size: var(--theme_dark--font_heading2-size);
@@ -562,6 +566,7 @@
   --theme--font_serif: var(--theme_light--font_serif);
   --theme--font_mono: var(--theme_light--font_mono);
   --theme--font_code: var(--theme_light--font_code);
+  --theme--font_quote: var(--theme_light--font_sans);
   --theme--font_title-size: var(--theme_light--font_title-size);
   --theme--font_heading1-size: var(--theme_light--font_heading1-size);
   --theme--font_heading2-size: var(--theme_light--font_heading2-size);
