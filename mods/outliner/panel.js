@@ -9,7 +9,7 @@
 
 const { createElement } = require("../../pkg/helpers");
 
-module.exports = (store) => {   
+module.exports = (store, __exports) => {   
   // Observe for page changes
   const pageObserver = new MutationObserver((list, observer) => {
     for ( let { addedNodes } of list) {
@@ -64,7 +64,7 @@ module.exports = (store) => {
     const outline = document.querySelector('.outliner');
     if (!outline) return;
     outline.textContent = '';
-    if (store.lined) outline.setAttribute('lined', '');
+    if (store().lined) outline.setAttribute('lined', '');
 
     const pageContent = document.querySelector('.notion-page-content');
     const headerBlocks = pageContent.querySelectorAll('[class*="header-block"]');
