@@ -19,7 +19,7 @@ module.exports = {
   author: 'dragonwocky',
   options: [
     {
-      key: 'hidePageDetailsText',
+      key: 'hide_page_details_text',
       label: 'hide "page details" text',
       type: 'toggle',
       value: false,
@@ -108,7 +108,7 @@ module.exports = {
           ];
 
           $container.children[0].innerHTML = `
-            ${store().hidePageDetailsText ? '' : '<span><b>page details<br></b> (click to copy)</span>'}
+            ${store().hide_page_details_text ? '' : '<span><b>page details<br></b> (click to copy)</span>'}
             ${Object.keys(details).reduce(
               (prev, key) =>
                 prev +
