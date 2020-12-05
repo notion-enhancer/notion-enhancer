@@ -62,18 +62,10 @@ module.exports = {
         clearInterval(attempt_interval);
         for (let style of ['sans', 'serif', 'mono', 'code', 'quote', 'headings']) {
           if (!store()[style]) continue;
-
-          if (style == 'headings') {
-            for (let heading of ['heading1', 'heading2', 'heading3']) {
-              document
-                .querySelector('.notion-app-inner')
-                .style.setProperty(`--theme--font_${heading}`, store()[style]);
-            }
-          } else {
-            document
-              .querySelector('.notion-app-inner')
-              .style.setProperty(`--theme--font_${style}`, store()[style]);
-          }
+          
+          document
+            .querySelector('.notion-app-inner')
+            .style.setProperty(`--theme--font_${style}`, store()[style]);
         }
       }
     },
