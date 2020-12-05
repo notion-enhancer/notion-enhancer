@@ -1,13 +1,12 @@
 ---
 name: bug report
-about: report any broken/glitchy enhancer behaviour
+about: experienced any broken/glitchy enhancer behaviour?
 title: ''
 labels: bug
 assignees: ''
-
 ---
 
-FILL OUT THIS TEMPLATE, REMOVING/REPLACING EVERYTHING HERE WITH YOUR OWN INFORMATION.
+FILL OUT THIS TEMPLATE, REMOVING/REPLACING ALL NON-BOLD TEXT WITH YOUR OWN INFORMATION.
 BE AS CLEAR AND CONCISE AS POSSIBLE.
 
 **describe the bug**

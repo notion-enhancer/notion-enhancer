@@ -12,7 +12,7 @@ following them shows respect to the developer/s spending their free time on it, 
 > EMAIL ME INSTEAD: [thedragonring.bod@gmail.com](mailto:thedragonring.bod@gmail.com)
 
 **have a cool new feature idea / there's something you just wish you could do?** submit a
-[feature request](https://github.com/notion-enhancer/notion-enhancer/issues/new?labels=enhancement&template=feature-request.md).
+[feature proposal](https://github.com/notion-enhancer/notion-enhancer/issues/new?labels=enhancement&template=feature-proposal.md).
 
 > enhancements are applied only locally -
 > features should be designed only to improve the user experience.

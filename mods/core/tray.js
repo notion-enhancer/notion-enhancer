@@ -185,10 +185,10 @@ module.exports = (store, __exports) => {
       },
       {
         type: 'normal',
-        label: 'Feature Request',
+        label: 'Feature Proposal',
         click: () => {
           electron.shell.openExternal(
-            'https://github.com/notion-enhancer/notion-enhancer/issues/new?labels=enhancement&template=feature-request.md'
+            'https://github.com/notion-enhancer/notion-enhancer/issues/new?labels=enhancement&template=feature-proposal.md'
           );
         },
       },
