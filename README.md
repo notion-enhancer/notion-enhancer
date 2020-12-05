@@ -17,10 +17,9 @@ for support, join the [discord server](https://discord.gg/sFWPXtA).
 - the [official windows/mac releases](https://notion.so/desktop).
 - the arch linux AUR [notion-app](https://aur.archlinux.org/packages/notion-app/) package.
 - the linux [notion-app](https://github.com/jaredallard/notion-app) installer.
-- [@haydn-jones](https://github.com/haydn-jones/)'s fork of the
-  linux [notion-deb-builder](https://github.com/haydn-jones/notion-deb-builder).
+- the linux [notion-deb-builder](https://github.com/davidbailey00/notion-deb-builder).
 
-linux clients must use a notion version >= 2.0.8.
+outdated notion versions (< 2.0.10) probably won't work.
 
 mobile clients are not supported and due to system limitations/restrictions cannot be.
 
