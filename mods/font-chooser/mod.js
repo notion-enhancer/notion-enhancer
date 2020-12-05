@@ -14,7 +14,7 @@ module.exports = {
   name: 'font chooser',
   desc:
     'customize fonts. for each option, type in the name of the font you would like to use, or leave it blank to not change anything.<br/><br/>make sure the fonts you type are installed on your device.',
-  version: '0.3.1',
+  version: '0.3.0',
   author: 'torchatlas',
   options: [
     {
