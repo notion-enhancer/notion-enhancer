@@ -66,8 +66,8 @@ module.exports = {
           if (style == 'headings') {
             for (let heading of ['heading1', 'heading2', 'heading3']) {
               document
-              .querySelector('.notion-app-inner')
-              .style.setProperty(`--theme--font_${heading}`, store()[style]);
+                .querySelector('.notion-app-inner')
+                .style.setProperty(`--theme--font_${heading}`, store()[style]);
             }
           } else {
             document
