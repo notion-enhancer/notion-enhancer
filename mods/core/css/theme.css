@@ -149,14 +149,8 @@
 .notion-selectable.notion-quote-block div[spellcheck="true"] {
   font-family: var(--theme--font_quote) !important;	
 }
-[placeholder='Heading 1'] {
-  font-family: var(--theme--font_heading1) !important;
-}
-[placeholder='Heading 2'] {
-  font-family: var(--theme--font_heading2) !important;
-}
-[placeholder='Heading 3'] {
-  font-family: var(--theme--font_heading3) !important;
+[placeholder='Heading 1'], [placeholder='Heading 2'], [placeholder='Heading 3'] {
+  font-family: var(--theme--font_headings) !important;
 }
 .notion-frame .notion-page-block div[placeholder='Untitled'],
 .notion-overlay-container .notion-page-block div[placeholder='Untitled'] {
