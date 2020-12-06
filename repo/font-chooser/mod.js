@@ -14,7 +14,7 @@ module.exports = {
   name: 'font chooser',
   desc:
     'customize fonts. for each option, type in the name of the font you would like to use, or leave it blank to not change anything.<br/><br/>make sure the fonts you type are installed on your device.',
-  version: '0.2.1',
+  version: '0.3.0',
   author: 'torchatlas',
   options: [
     {
@@ -47,6 +47,12 @@ module.exports = {
       type: 'input',
       value: '',
     },
+    {
+      key: 'headings',
+      label: 'headings:',
+      type: 'input',
+      value: '',
+    },
   ],
   hacks: {
     'renderer/preload.js'(store, __exports) {
@@ -54,8 +60,9 @@ module.exports = {
       async function enhance() {
         if (!document.querySelector('.notion-app-inner')) return;
         clearInterval(attempt_interval);
-        for (let style of ['sans', 'serif', 'mono', 'code', 'quote']) {
+        for (let style of ['sans', 'serif', 'mono', 'code', 'quote', 'headings']) {
           if (!store()[style]) continue;
+          
           document
             .querySelector('.notion-app-inner')
             .style.setProperty(`--theme--font_${style}`, store()[style]);
