@@ -1,6 +1,7 @@
 /*
  * notion-enhancer
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2020 admiraldus (https://github.com/admiraldus)
  * under the MIT license
  */
 
@@ -298,12 +299,13 @@ s {
   color: currentColor;
 }
 #modules section .author img {
-  max-height: 1em;
-  max-width: 1em;
+  height: 1em;
+  width: 1em;
   margin-bottom: 0.15625em;
   display: inline-block;
   vertical-align: middle;
   border-radius: 50%;
+  object-fit: cover;
 }
 #modules section .tags,
 #modules section .version {
