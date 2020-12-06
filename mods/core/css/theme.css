@@ -149,6 +149,9 @@
 .notion-selectable.notion-quote-block div[spellcheck="true"] {
   font-family: var(--theme--font_quote) !important;	
 }
+[placeholder='Heading 1'], [placeholder='Heading 2'], [placeholder='Heading 3'] {
+  font-family: var(--theme--font_headings) !important;
+}
 .notion-frame .notion-page-block div[placeholder='Untitled'],
 .notion-overlay-container .notion-page-block div[placeholder='Untitled'] {
   font-size: calc(
