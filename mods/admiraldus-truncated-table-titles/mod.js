@@ -12,13 +12,13 @@ const FS = require('fs-extra');
 module.exports = {
   id: '1794c0bd-7b96-46ad-aa0b-fc4bd76fc7fb',
   name: 'truncated table titles',
-  tags: ['extension', 'admiraldus'],
+  tags: ['extension'],
   desc: 'see the full text of the truncated table titles on hover over.',
   version: '0.1.0',
   author: {
     name: 'admiraldus',
     link: 'https://github.com/admiraldus',
-    avatar: 'enhancement://admiraldus-cosmos/img/avatar.jpg',
+    avatar: 'https://raw.githubusercontent.com/admiraldus/admiraldus/main/module.gif',
   },
   hacks: {
     'renderer/preload.js'(store, __exports) {
