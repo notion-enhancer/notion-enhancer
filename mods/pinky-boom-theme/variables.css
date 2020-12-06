@@ -23,7 +23,7 @@
   --theme_light--scrollbar: #ff14ef;
   --theme_light--scrollbar-border: inherit;
   --theme_light--scrollbar_hover:  hsl(350, 40%, 70%);
-  --theme-light--interactive_hover: rgb(228, 208, 255);
+  --theme_light--interactive_hover: rgb(228, 208, 255);
   --theme_light--selected:hsl(294deg, 100%, 88%);
   --theme_light--primary: #fd98f5;
   --theme_light--primary_hover: deeppink;
