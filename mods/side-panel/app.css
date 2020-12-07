@@ -213,6 +213,7 @@
   overflow: hidden;
   transition: background 300ms ease;
 }
-.enhancer-panel--switcher-item:hover {
+.enhancer-panel--switcher-item:hover,
+.enhancer-panel--switcher-item:focus {
   background: var(--theme--interactive_hover);
 }

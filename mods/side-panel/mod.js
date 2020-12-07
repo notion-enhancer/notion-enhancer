@@ -16,7 +16,7 @@ module.exports = {
   tags: ['extension', 'panel'],
   name: 'side panel',
   desc: 'adds a side panel to notion.',
-  version: '1.0.0',
+  version: '1.1.0',
   author: 'CloudHill',
   hacks: {
     'renderer/preload.js'(store, __exports) {
@@ -224,7 +224,7 @@ module.exports = {
           function renderSwitcherItem(mod) {
             if (mod.panel) {
               const item = createElement(
-                `<div class="enhancer-panel--switcher-item">
+                `<div class="enhancer-panel--switcher-item" tabindex="0">
                   <div class="enhancer-panel--icon">${mod.panel.icon}</div>
                   <div class="enhancer-panel--title">${mod.panel.name || mod.name}</div>                
                 </div>`
@@ -235,7 +235,7 @@ module.exports = {
           }
 
           function renderSwitcher() {
-            if (panel.querySelector('.enhancer-panel--overlay-container')) return;
+            if (document.querySelector('.enhancer-panel--overlay-container')) return;
 
             // Layer to close switcher
             const overlayContainer = createElement(
@@ -261,9 +261,11 @@ module.exports = {
             panelMods.forEach(mod => 
               switcher.append(renderSwitcherItem(mod))
             );
-
+            
             overlayContainer.appendChild(div);
             div.firstElementChild.appendChild(switcher);
+
+            switcher.firstElementChild.focus();
 
             // Fade in
             switcher.animate(
@@ -273,12 +275,16 @@ module.exports = {
 
             // Prevent panel from closing if unlocked
             panel.removeEventListener('mouseleave', hidePanel);
+
+            // Escape key listener
+            document.addEventListener('keydown', switcherKeyEvent);
           }
 
           function hideSwitcher() {
             const overlayContainer = document.querySelector('.enhancer-panel--overlay-container');
             overlayContainer.removeEventListener('click', hideSwitcher);
-
+            document.removeEventListener('keydown', switcherKeyEvent);
+          
             // Fade out
             document.querySelector('.enhancer-panel--switcher').animate(
               [ {opacity: 1}, {opacity: 0} ],
@@ -362,6 +368,35 @@ module.exports = {
           function isLocked() {
             if (panel.dataset.locked === 'true') return true;
             else return false;
+          }
+
+          function switcherKeyEvent(e) {
+            e.stopPropagation();
+
+            if (e.key === 'Escape') return hideSwitcher();
+            
+            const currentFocus = document.activeElement;
+            if ([' ', 'Enter'].includes(e.key)) return currentFocus.click();
+            
+            const focusNext = () => {
+              const nextEl = currentFocus.nextElementSibling;
+              if (nextEl) nextEl.focus();
+              else currentFocus.parentElement.firstElementChild.focus();
+            }
+            const focusPrevious = () => {
+              const prevEl = currentFocus.previousElementSibling;
+              if (prevEl) prevEl.focus();
+              else currentFocus.parentElement.lastElementChild.focus();
+            }
+            
+            if (e.key === 'ArrowUp') focusPrevious();
+            else if (e.key === 'ArrowDown') focusNext();
+            else if (e.key === 'Tab') {
+              if (e.shiftKey) focusPrevious();
+              else focusNext();
+
+              e.preventDefault();
+            }
           }
         }
       });
