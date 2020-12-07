@@ -66,7 +66,7 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
       console.info(' ...unpacking app.asar.');
       const asar_bak = path.resolve(`${__notion}/app.asar.bak`);
       extractAll(check_app.executable, `${path.resolve(`${__notion}/app`)}`);
-      if (await fs.pathExists(asar_bak)) fs.remove(asar_bak);
+      if (await fs.pathExists(asar_bak)) await fs.remove(asar_bak);
       await fs.move(check_app.executable, asar_bak);
     } else {
       console.info(' ...backing up default app.');
@@ -104,7 +104,7 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
       process.platform === 'darwin' &&
       (await fs.pathExists(path.resolve(`${__notion}/../Info.plist`)))
     ) {
-      fs.copy(
+      await fs.copy(
         path.resolve(`${__dirname}/Info.plist`),
         path.resolve(`${__notion}/../Info.plist`),
         { overwrite: true }
@@ -124,27 +124,25 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
       if (insertion_target === 'main/main.js') {
         // https://github.com/notion-enhancer/notion-enhancer/issues/160
         // patch the notion:// url scheme/protocol to work on linux
-        fs.readFile(insertion_file, 'utf8', (err, data) => {
-          if (err) throw err;
-          fs.writeFile(
-            insertion_file,
-            data
-              .replace(
-                /process.platform === "win32"/g,
-                'process.platform === "win32" || process.platform === "linux"'
-              )
-              .replace(
-                /else \{[\s\n]+const win = createWindow_1\.createWindow\(relativeUrl\);/g,
-                'else if (relativeUrl) { const win = createWindow_1.createWindow(relativeUrl);'
-              ),
-            'utf8',
-            (err) => {
-              if (err) throw err;
-            }
-          );
-        });
+        const data = await fs.readFile(insertion_file, 'utf8');
+        await fs.writeFile(
+          insertion_file,
+          data
+            .replace(
+              /process.platform === "win32"/g,
+              'process.platform === "win32" || process.platform === "linux"'
+            )
+            .replace(
+              /else \{[\s\n]+const win = createWindow_1\.createWindow\(relativeUrl\);/g,
+              'else if (relativeUrl) { const win = createWindow_1.createWindow(relativeUrl);'
+            ),
+          'utf8',
+          (err) => {
+            if (err) throw err;
+          }
+        );
       }
-      fs.appendFile(
+      await fs.appendFile(
         insertion_file,
         `\n\n//notion-enhancer\nrequire('notion-enhancer/pkg/loader.js')(__filename, exports);`
       );
@@ -153,7 +151,7 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
     // not resolved, nothing else in apply process depends on it
     // so it's just a "let it do its thing"
     console.info(' ...recording enhancement version.');
-    fs.outputFile(
+    await fs.outputFile(
       path.resolve(`${__notion}/app/ENHANCER_VERSION.txt`),
       version
     );
