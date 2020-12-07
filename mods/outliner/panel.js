@@ -76,10 +76,11 @@ module.exports = (store, __exports) => {
 
       const outlineHeader = createElement(`
         <div class="outline-header" header-level="${placeholder.slice(-1)}">
-          <a href="${window.location.pathname}#${blockId}"
-            outline-placeholder="${placeholder}">${headerEl.innerHTML}</a>
+          <a href="${window.location.pathname}#${blockId}" class="outline-link"
+            outline-placeholder="${placeholder}"></a>
         </div>
       `);
+      outlineHeader.firstElementChild.innerHTML = headerEl.innerHTML;
       outline.append(outlineHeader);
     })
   }
@@ -117,3 +118,6 @@ module.exports = (store, __exports) => {
     }
   }
 }
+
+
+

@@ -23,7 +23,7 @@
   background: var(--theme--interactive_hover);
 }
 
-.outline-header a {
+.outline-header .outline-link {
   width: 100%;
   height: 100%;
   padding: 0 14px;
@@ -36,16 +36,16 @@
   text-overflow: ellipsis;
 }
 
-.outline-header a:empty:before {
+.outline-header .outline-link:empty:before {
   color: var(--theme--text_ui_info);
   content: attr(outline-placeholder);
   display: block;
 }
 
-.outline-header[header-level="2"] a {
+.outline-header[header-level="2"] .outline-link {
   text-indent: 18px;
 }
-.outline-header[header-level="3"] a {
+.outline-header[header-level="3"] .outline-link {
   text-indent: 36px;
 }
 
