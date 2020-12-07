@@ -10,7 +10,7 @@ const fs = require('fs-extra'),
   path = require('path'),
   { readdirIterator } = require('readdir-enhanced'),
   { extractAll } = require('asar'),
-  { readline, realpath, getNotionResources } = require('./helpers.js'),
+  { readline, getNotionResources } = require('./helpers.js'),
   { version } = require('../package.json');
 
 // === title ===

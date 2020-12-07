@@ -8,8 +8,7 @@
 
 const os = require('os'),
   path = require('path'),
-  fs = require('fs-extra'),
-  { execSync } = require('child_process');
+  fs = require('fs-extra');
 
 // used to differentiate between "enhancer failed" and "code broken" errors.
 class EnhancerError extends Error {
@@ -22,35 +21,26 @@ class EnhancerError extends Error {
 // checks if being run on the windows subsystem for linux:
 // used to modify windows notion app.
 const is_wsl =
-    process.platform === 'linux' &&
-    os.release().toLowerCase().includes('microsoft'),
-  // ~/.notion-enhancer absolute path.
-  __data = path.resolve(
-    `${
-      is_wsl
-        ? (() => {
-            const stdout = execSync('cmd.exe /c echo %systemdrive%%homepath%', {
-                encoding: 'utf8',
-              }),
-              drive = stdout[0];
-            return `/mnt/${drive.toLowerCase()}${stdout
-              .replace(/\\/g, '/')
-              .slice(2)
-              .trim()}`;
-          })()
-        : os.homedir()
-    }/.notion-enhancer`
-  );
+  process.platform === 'linux' &&
+  os.release().toLowerCase().includes('microsoft');
 
-// transform a wsl filepath to its relative windows filepath if necessary.
-function realpath(hack_path) {
-  if (!is_wsl) return hack_path.replace(/\\/g, '/');
-  hack_path = fs.realpathSync(hack_path);
-  if (hack_path.startsWith('/mnt/')) {
-    hack_path = `${hack_path[5].toUpperCase()}:${hack_path.slice(6)}`;
-  } else hack_path = `//wsl$/${process.env.WSL_DISTRO_NAME}${hack_path}`;
-  return hack_path;
-}
+// ~/.notion-enhancer absolute path.
+const __data = path.resolve(
+  `${
+    is_wsl
+      ? (() => {
+          const stdout = execSync('cmd.exe /c echo %systemdrive%%homepath%', {
+              encoding: 'utf8',
+            }),
+            drive = stdout[0];
+          return `/mnt/${drive.toLowerCase()}${stdout
+            .replace(/\\/g, '/')
+            .slice(2)
+            .trim()}`;
+        })()
+      : os.homedir()
+  }/.notion-enhancer`
+);
 
 // gets system notion app filepath.
 function getNotionResources() {
@@ -159,9 +149,7 @@ function createElement(html) {
 
 module.exports = {
   EnhancerError,
-  is_wsl,
   __data,
-  realpath,
   getNotionResources,
   getEnhancements,
   getJSON,

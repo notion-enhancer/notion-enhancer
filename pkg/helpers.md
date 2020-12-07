@@ -20,39 +20,11 @@ but is not caused by faulty programming: e.g. if a file that is known to exist c
 ---
 
 ```js
-const is_wsl;
-```
-
-use `helpers.is_wsl` to check if the enhancer was run from the windows subsystem for linux.
-
-primarily used for internal handling of filepaths (e.g. in the `helpers.realpath` function).
-
----
-
-```js
 const __data;
 ```
 
 use `helpers.__data` to get the absolute path of the directory configuration
 data is saved to by the enhancer.
-
-if used immediately after being accessed, it should always work. however, if fetching its value during enhancement
-and then inserting it into something that will not be executed until the app is opened, it must be put through
-`helpers.realpath` before insertion.
-
----
-
-```js
-function realpath(hack_path) {
-  return runtime_path;
-}
-```
-
-use `helpers.realpath(hack_path)` to transform a path valid at enhancement time into one valid when the app is opened.
-this is particularly useful for wsl compatibility, so every filepath that is fetched during enhancement
-and then inserted into something that will not be executed until the app is opened should be put through this.
-
-primarily used for internal handling of filepaths (e.g. for the modloader).
 
 ---
 
@@ -65,10 +37,6 @@ function getNotionResources() {
 use `helpers.getNotionResources()` to get the absolute path of the notion app parent folder.
 
 primarily used for internal modding of the app (e.g. to apply the modloader and patch launch scripts).
-
-if used immediately after being accessed, it should always work. however, if fetching its value during enhancement
-and then inserting it into something that will not be executed until the app is opened, it must be put through
-`helpers.realpath` before insertion.
 
 ---
 
