@@ -128,7 +128,7 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
           if (err) throw err;
           fs.writeFile(
             insertion_file,
-            `${data
+            data
               .replace(
                 /process.platform === "win32"/g,
                 'process.platform === "win32" || process.platform === "linux"'
@@ -136,21 +136,18 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
               .replace(
                 /else \{[\s\n]+const win = createWindow_1\.createWindow\(relativeUrl\);/g,
                 'else if (relativeUrl) { const win = createWindow_1.createWindow(relativeUrl);'
-              )}\n\n//notion-enhancer\nrequire('${realpath(
-              __dirname
-            )}/loader.js')(__filename, exports);`,
+              ),
             'utf8',
             (err) => {
               if (err) throw err;
             }
           );
         });
-      } else {
-        fs.appendFile(
-          insertion_file,
-          `\n\n//notion-enhancer\nrequire('notion-enhancer/pkg/loader.js')(__filename, exports);`
-        );
       }
+      fs.appendFile(
+        insertion_file,
+        `\n\n//notion-enhancer\nrequire('notion-enhancer/pkg/loader.js')(__filename, exports);`
+      );
     }
 
     // not resolved, nothing else in apply process depends on it
