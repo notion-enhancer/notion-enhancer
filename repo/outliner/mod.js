@@ -14,7 +14,7 @@ module.exports = {
   tags: ['extension', 'panel'],
   name: 'outliner',
   desc: 'table of contents.',
-  version: '1.0.0',
+  version: '1.1.0',
   author: 'CloudHill',
   options: [
     {

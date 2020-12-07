@@ -69,16 +69,18 @@ module.exports = (store, __exports) => {
     const pageContent = document.querySelector('.notion-page-content');
     const headerBlocks = pageContent.querySelectorAll('[class*="header-block"]');
     
-    headerBlocks.forEach(block => {
-      const blockId = block.dataset.blockId.replace(/-/g, '');
-      const placeholder = block.querySelector('[placeholder]').getAttribute('placeholder');
-      const header = createElement(`
+    headerBlocks.forEach(header => {
+      const blockId = header.dataset.blockId.replace(/-/g, '');
+      const headerEl = header.querySelector('[placeholder]');
+      const placeholder = headerEl.getAttribute('placeholder');
+
+      const outlineHeader = createElement(`
         <div class="outline-header" header-level="${placeholder.slice(-1)}">
           <a href="${window.location.pathname}#${blockId}"
-            outline-placeholder="${placeholder}">${block.innerText}</a>
+            outline-placeholder="${placeholder}">${headerEl.innerHTML}</a>
         </div>
       `);
-      outline.append(header);
+      outline.append(outlineHeader);
     })
   }
 
