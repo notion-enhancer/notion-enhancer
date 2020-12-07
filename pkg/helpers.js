@@ -52,39 +52,14 @@ function realpath(hack_path) {
   return hack_path;
 }
 
-// gets possible system notion app filepaths.
+// gets system notion app filepath.
 function getNotionResources() {
-  let folder = '';
-  switch (process.platform) {
-    case 'darwin':
-      folder = '/Applications/Notion.app/Contents/Resources';
-      break;
-    case 'win32':
-      folder = process.env.LOCALAPPDATA + '\\Programs\\Notion\\resources';
-      break;
-    case 'linux':
-      if (is_wsl) {
-        const stdout = execSync('cmd.exe /c echo %localappdata%', {
-            encoding: 'utf8',
-          }),
-          drive = stdout[0];
-        folder = `/mnt/${drive.toLowerCase()}${stdout
-          .replace(/\\/g, '/')
-          .slice(2)
-          .trim()}/Programs/Notion/resources`;
-      } else {
-        for (let loc of [
-          '/usr/lib/notion-desktop/resources', // https://github.com/davidbailey00/notion-deb-builder/
-          '/opt/notion-app', // https://aur.archlinux.org/packages/notion-app/
-          '/opt/notion', // https://github.com/jaredallard/notion-app
-        ]) {
-          if (fs.pathExistsSync(loc)) folder = loc;
-        }
-      }
-  }
-  if (!folder)
-    throw new EnhancerError('nothing found: platform not supported.');
-  return folder;
+  // __dirname: pkg
+  // __dirname/..: notion-enhancer
+  // __dirname/../..: node_modules
+  // __dirname/../../..: app
+  // __dirname/../../../..: resources
+  return path.resolve(__dirname + '/../../../..');
 }
 
 // lists/fetches all available extensions + themes
