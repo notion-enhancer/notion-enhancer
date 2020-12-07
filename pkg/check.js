@@ -8,12 +8,10 @@
 
 const fs = require('fs-extra'),
   path = require('path'),
-  { getNotionResources } = require('./helpers.js'),
   { version } = require('../package.json');
 
-module.exports = async function () {
-  const __notion = getNotionResources(),
-    resolvePath = (filepath) => path.resolve(`${__notion}/${filepath}`),
+module.exports = async function ({ __notion }) {
+  const resolvePath = (filepath) => path.resolve(`${__notion}/${filepath}`),
     pathExists = (filepath) => fs.pathExists(resolvePath(filepath)),
     version_path = 'app/ENHANCER_VERSION.txt',
     packed = await pathExists('app.asar.bak');

@@ -8,7 +8,7 @@
 
 const fs = require('fs-extra'),
   path = require('path'),
-  { readline, getNotionResources, __data } = require('./helpers.js');
+  { readline, __data } = require('./helpers.js');
 
 // === title ===
 //  ...information
@@ -18,10 +18,13 @@ const fs = require('fs-extra'),
 //  ~~ exit
 // ### error ###
 
-module.exports = async function ({ delete_data, friendly_errors } = {}) {
+module.exports = async function ({
+  __notion,
+  delete_data,
+  friendly_errors,
+} = {}) {
   try {
-    const __notion = getNotionResources(),
-      check_app = await require('./check.js')();
+    const check_app = await require('./check.js')({ __notion });
     // extracted asar: modded
     if (check_app.code > 1 && check_app.executable) {
       console.info(` ...removing enhancements`);

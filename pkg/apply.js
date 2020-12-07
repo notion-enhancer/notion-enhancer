@@ -10,7 +10,7 @@ const fs = require('fs-extra'),
   path = require('path'),
   { readdirIterator } = require('readdir-enhanced'),
   { extractAll } = require('asar'),
-  { readline, getNotionResources } = require('./helpers.js'),
+  { readline } = require('./helpers.js'),
   { version } = require('../package.json');
 
 // === title ===
@@ -21,11 +21,14 @@ const fs = require('fs-extra'),
 //  ~~ exit
 // ### error ###
 
-module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
-  const __notion = getNotionResources();
+module.exports = async function ({
+  __notion,
+  overwrite_version,
+  friendly_errors,
+} = {}) {
   try {
     // handle pre-existing installations: app.asar present? version set in data folder? overwrite?
-    const check_app = await require('./check.js')();
+    const check_app = await require('./check.js')({ __notion });
     switch (check_app.code) {
       case 1:
         throw Error(check_app.msg);
@@ -55,6 +58,7 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
         );
         if (
           !(await require('./remove.js')({
+            __notion,
             delete_data: 'n',
             friendly_errors,
           }))

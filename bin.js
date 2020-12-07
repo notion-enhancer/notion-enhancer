@@ -24,30 +24,37 @@ cli.option('-n, --no', ': skip prompts (may cause failures)');
 cli.option('-d, --dev', ': show detailed error messages (for debug purposes)');
 
 cli
-  .command('apply', ': add the enhancer to the notion app')
-  .action(async (options) => {
+  .command('apply <path>', ': add the enhancer to the notion app')
+  .action(async (path, options) => {
     console.info('=== NOTION ENHANCEMENT LOG ===');
     await require('./pkg/apply.js')({
+      __notion: path,
       overwrite_version: options.yes ? 'y' : options.no ? 'n' : undefined,
       friendly_errors: !options.dev,
     });
     console.info('=== END OF LOG ===');
   });
 cli
-  .command('remove', ': return notion to its pre-enhanced/pre-modded state')
-  .action(async (options) => {
+  .command(
+    'remove <path>',
+    ': return notion to its pre-enhanced/pre-modded state'
+  )
+  .action(async (path, options) => {
     console.info('=== NOTION RESTORATION LOG ===');
     await require('./pkg/remove.js')({
+      __notion: path,
       delete_data: options.yes ? 'y' : options.no ? 'n' : undefined,
       friendly_errors: !options.dev,
     });
     console.info('=== END OF LOG ===');
   });
 cli
-  .command('check', ': check the current state of the notion app')
-  .action(async (options) => {
+  .command('check <path>', ': check the current state of the notion app')
+  .action(async (path, options) => {
     try {
-      const status = await require('./pkg/check.js')();
+      const status = await require('./pkg/check.js')({
+        __notion: path,
+      });
       console.info(options.dev ? status : status.msg);
     } catch (err) {
       console.error(
