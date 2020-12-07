@@ -148,9 +148,7 @@ module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
       } else {
         fs.appendFile(
           insertion_file,
-          `\n\n//notion-enhancer\nrequire('${realpath(
-            __dirname
-          )}/loader.js')(__filename, exports);`
+          `\n\n//notion-enhancer\nrequire('notion-enhancer/pkg/loader.js')(__filename, exports);`
         );
       }
     }
