@@ -152,6 +152,12 @@ module.exports = async function ({
       );
     }
 
+    // copy notion-enhancer into node_modules
+    await fs.copy(
+      `${__dirname}/..`,
+      `${__notion}/app/node_modules/notion-enhancer`
+    );
+
     // not resolved, nothing else in apply process depends on it
     // so it's just a "let it do its thing"
     console.info(' ...recording enhancement version.');
