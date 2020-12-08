@@ -9,7 +9,9 @@
 
 const { createElement } = require("../../pkg/helpers");
 
-module.exports = (store, __exports) => {   
+module.exports = (store, __exports) => {
+  let lastSearch;
+
   // Observe for page changes
   const pageObserver = new MutationObserver((list, observer) => {
     for ( let { addedNodes } of list) {
@@ -30,18 +32,30 @@ module.exports = (store, __exports) => {
   // Observe for header changes
   const contentObserver = new MutationObserver((list, observer) => {
     list.forEach(m => {
+      let header;
       if (
         (
           m.type === 'childList' &&
           (
-            isHeaderElement(m.target) ||
-            isHeaderElement(m.addedNodes[0]) ||
-            isHeaderElement(m.removedNodes[0])
+            m.target.hasAttribute('placeholder') ||
+            m.target.className?.includes('header-block')
+          ) &&
+          (
+            (header = getHeaderBlock(m.target)) ||
+            (header = getHeaderBlock(m.addedNodes[0]))
           )
         ) ||
         (
           m.type === 'characterData' &&
-          isHeaderElement(m.target.parentElement)
+          (header = getHeaderBlock(m.target.parentElement))
+        )
+      ) updateOutlineHeader(header);
+
+      else if (
+        m.type === 'childList' && m.removedNodes[0] &&
+        (
+          isHeaderElement(m.removedNodes[0]) ||
+          m.removedNodes[0].querySelector?.('[class*="header-block"]')
         )
       ) findHeaders();
     })
@@ -61,6 +75,10 @@ module.exports = (store, __exports) => {
   }
 
   function findHeaders() {
+    // Add cooldown to prevent the function being run twice at the 'same' time
+    if (lastSearch >= (Date.now() - 10)) return;
+    lastSearch = Date.now();
+    
     const outline = document.querySelector('.outliner');
     if (!outline) return;
     outline.textContent = '';
@@ -80,22 +98,38 @@ module.exports = (store, __exports) => {
             outline-placeholder="${placeholder}"></a>
         </div>
       `);
+      header.outline = outlineHeader;
       outlineHeader.firstElementChild.innerHTML = headerEl.innerHTML;
       outline.append(outlineHeader);
     })
   }
 
+  function updateOutlineHeader(header) {
+    const headerEl = header.querySelector('[placeholder]') || header;
+    if (!(
+      headerEl &&
+      header.outline &&
+      header.outline.parentElement
+    )) return findHeaders();
+    const outlineHeader = header.outline;
+    outlineHeader.firstElementChild.innerHTML = headerEl.innerHTML;
+    updateOutlineLevel(outlineHeader, headerEl.getAttribute('placeholder').slice(-1));
+  }
+
+  function updateOutlineLevel(outlineHeader, level) {
+    outlineHeader.setAttribute('header-level', level);
+    outlineHeader.firstElementChild.setAttribute('outline-placeholder', `Header ${level}`)
+  }
+
+  function getHeaderBlock(el) {
+    return el?.closest?.('[class*="header-block"]');
+  }
+
   function isHeaderElement(el) {
     let placeholder;
     if (el) {
-      if (
-        el.querySelector && 
-        el.querySelector('[placeholder]')
-      ) {
-        placeholder = el.querySelector('[placeholder]').getAttribute('placeholder')
-      } else if (el.getAttribute) {
-        placeholder = el.getAttribute('placeholder');
-      } 
+      placeholder = el.getAttribute?.('placeholder') || 
+        el.querySelector?.('[placeholder]')?.getAttribute('placeholder');
     }
     if (!placeholder) placeholder = '';
     return placeholder.includes('Heading');
