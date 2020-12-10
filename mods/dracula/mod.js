@@ -13,6 +13,6 @@ module.exports = {
   name: 'dracula',
   desc:
     'a theme based on the popular dracula color palette originally by zeno rocha and friends. ',
-  version: '0.1.0',
+  version: '0.2.0',
   author: 'dracula',
 };
