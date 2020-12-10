@@ -1,6 +1,7 @@
 /*
  * tweaks
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2020 admiraldus (https://github.com/admiraldus)
  * under the MIT license
  */
 
@@ -34,6 +35,15 @@
   display: none !important;
 }
 
+[data-tweaks*='[hide_empty_sidebar_arrow]'] .tweaks-arrow {
+  opacity: 0 !important;
+  transition: opacity .2s ease !important;
+}
+
+[data-tweaks*='[hide_empty_sidebar_arrow]'] .notion-sidebar [data-block-id]:hover .tweaks-arrow {
+  opacity: 1 !important;
+}
+
 [data-tweaks*='[thicker_bold]']
   .notion-page-content
   span[style*='font-weight:600'] {
@@ -56,9 +66,9 @@
 
 [data-tweaks*='[scroll_db_toolbars]'] .notion-frame > .notion-scroller > [style*="overflow: visible;"],
 [data-tweaks*='[scroll_db_toolbars]'] .notion-page-content .notion-collection_view-block > :first-child {
-    overflow-x: auto !important;
+  overflow-x: auto !important;
 }
 [data-tweaks*='[scroll_db_toolbars]'] .notion-frame > .notion-scroller > [style*="overflow: visible;"]::-webkit-scrollbar,
 [data-tweaks*='[scroll_db_toolbars]'] .notion-page-content .notion-collection_view-block > :first-child::-webkit-scrollbar {
-    display: none;
+  display: none;
 }
