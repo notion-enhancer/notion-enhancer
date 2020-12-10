@@ -2,6 +2,7 @@
  * dracula
  * (c) 2020 @mimishahzad386#5651
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2020 CloudHill
  * under the MIT license
  */
  
@@ -74,4 +75,23 @@
 .notion-dark-theme [style*='background: rgba(226, 85, 161, 0.5)'],
 .notion-dark-theme [style*='background: rgba(255, 115, 105, 0.5)'] {
   box-shadow: 0 2px 4px rgb(0 0 0 / 66%) !important;
+}
+
+.notion-dark-theme .notion-code-block .token.parameter,
+.notion-dark-theme .notion-code-block .token.decorator,
+.notion-dark-theme .notion-code-block .token.id,
+.notion-dark-theme .notion-code-block .token.class,
+.notion-dark-theme .notion-code-block .token.pseudo-element,
+.notion-dark-theme .notion-code-block .token.pseudo-class,
+.notion-dark-theme .notion-code-block .token.attribute {
+  font-style: italic;
+}
+
+.notion-dark-theme .notion-code-block .token.punctuation {
+  opacity: 1;
+}
+
+
+.notion-dark-theme [class^="notion-outliner"] [style*="background: rgb(71, 76, 80);"] .triangle[fill] {
+  fill: var(--theme--text)
 }
