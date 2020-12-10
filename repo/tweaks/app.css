@@ -54,11 +54,9 @@
   margin-bottom: -1.5px !important;
 }
 
-[data-tweaks*='[scroll_db_toolbars]'] .notion-frame > .notion-scroller > [style*="overflow: visible;"],
-[data-tweaks*='[scroll_db_toolbars]'] .notion-page-content .notion-collection_view-block > :first-child {
-    overflow-x: auto !important;
+[data-tweaks*='[scroll_db_toolbars]'] .notion-collection_view-block > [style*=" height: 42px"] {
+  overflow-x: auto !important;
 }
-[data-tweaks*='[scroll_db_toolbars]'] .notion-frame > .notion-scroller > [style*="overflow: visible;"]::-webkit-scrollbar,
-[data-tweaks*='[scroll_db_toolbars]'] .notion-page-content .notion-collection_view-block > :first-child::-webkit-scrollbar {
-    display: none;
+[data-tweaks*='[scroll_db_toolbars]'] .notion-collection_view-block > [style*=" height: 42px"]::-webkit-scrollbar {
+  display: none;
 }
