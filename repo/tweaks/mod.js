@@ -1,6 +1,7 @@
 /*
  * tweaks
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2020 admiraldus (https://github.com/admiraldus)
  * under the MIT license
  */
 
@@ -12,7 +13,7 @@ module.exports = {
   tags: ['core', 'extension'],
   name: 'tweaks',
   desc: 'common style/layout changes.',
-  version: '0.1.0',
+  version: '0.2.0',
   author: 'dragonwocky',
   options: [
     {
@@ -67,6 +68,14 @@ module.exports = {
       value: false,
     },
     {
+      key: 'hide_empty_sidebar_arrow',
+      label: 'hide empty sidebar arrow',
+      desc:
+        'if the page does not have any subpages, hide the left arrow of the page in the sidebar.',
+      type: 'toggle',
+      value: false,
+    },
+    {
       key: 'condensed_bullets',
       label: 'condense bullet points',
       desc:
@@ -114,6 +123,40 @@ module.exports = {
         };
         window.addEventListener('resize', addResponsiveBreakpoint);
         addResponsiveBreakpoint();
+
+        const hideEmptyPageArrow = () => {
+          if (store().hide_empty_sidebar_arrow) {
+            if (document.querySelector('.notion-sidebar') !== null) {
+              const sidebar = document.querySelector('.notion-sidebar');
+              const sidebarObserver = new MutationObserver(() => {
+                const text_values = ['No pages inside', '하위 페이지가 없습니다'];
+                const div_elems = sidebar.querySelectorAll('[data-block-id] div[style*="color"]');
+                const empty_elems = Array.from(div_elems).filter(
+                  (div) => text_values.some(text => div.textContent === text));
+
+                Array.from(empty_elems).forEach((empty) => {
+                  empty.closest('[data-block-id]')
+                  .querySelector('a > div > div > div > div[role="button"]:not(.notion-record-icon)')
+                  .classList.add('tweaks-arrow');
+                });
+
+                const tweak_arrows = document.querySelectorAll('.tweaks-arrow');
+
+                tweak_arrows.forEach((arrow) => {
+                  if (arrow.closest('[data-block-id]').querySelector('[data-block-id]') !== null) {
+                    arrow.classList.remove('tweaks-arrow');
+                  }
+                });
+              });
+
+              sidebarObserver.observe(sidebar,{subtree: true, childList: true});
+              document.body.dataset.tweaks += '[hide_empty_sidebar_arrow]';
+            } else {
+              setTimeout(hideEmptyPageArrow, 500);
+            }
+          }
+        };
+        hideEmptyPageArrow();
       });
     },
   },
