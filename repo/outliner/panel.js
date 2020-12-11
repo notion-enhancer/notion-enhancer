@@ -82,15 +82,15 @@ module.exports = (store, __exports) => {
     const outline = document.querySelector('.outliner');
     if (!outline) return;
     outline.textContent = '';
-    if (store().lined) outline.setAttribute('lined', '');
 
-    const pageContent = document.querySelector('.notion-page-content');
-    const headerBlocks = pageContent.querySelectorAll('[class*="header-block"]');
-    
+    const pageContent = document.querySelector('.notion-page-content'),
+      headerBlocks = pageContent.querySelectorAll('[class*="header-block"]'),
+      fragment = new DocumentFragment();
+
     headerBlocks.forEach(header => {
-      const blockId = header.dataset.blockId.replace(/-/g, '');
-      const headerEl = header.querySelector('[placeholder]');
-      const placeholder = headerEl.getAttribute('placeholder');
+      const blockId = header.dataset.blockId.replace(/-/g, ''),
+        headerEl = header.querySelector('[placeholder]'),
+        placeholder = headerEl.getAttribute('placeholder');
 
       const outlineHeader = createElement(`
         <div class="outline-header" header-level="${placeholder.slice(-1)}">
@@ -100,23 +100,25 @@ module.exports = (store, __exports) => {
       `);
       header.outline = outlineHeader;
       outlineHeader.firstElementChild.innerHTML = headerEl.innerHTML;
-      outline.append(outlineHeader);
+
+      fragment.appendChild(outlineHeader);
     })
+
+    outline.appendChild(fragment);
   }
 
   function updateOutlineHeader(header) {
-    const headerEl = header.querySelector('[placeholder]') || header;
+    const headerEl = header.querySelector('[placeholder]');
     if (!(
       headerEl &&
-      header.outline &&
-      header.outline.parentElement
+      header.outline?.parentElement
     )) return findHeaders();
     const outlineHeader = header.outline;
     outlineHeader.firstElementChild.innerHTML = headerEl.innerHTML;
-    updateOutlineLevel(outlineHeader, headerEl.getAttribute('placeholder').slice(-1));
+    setOutlineLevel(outlineHeader, headerEl.getAttribute('placeholder').slice(-1));
   }
 
-  function updateOutlineLevel(outlineHeader, level) {
+  function setOutlineLevel(outlineHeader, level) {
     outlineHeader.setAttribute('header-level', level);
     outlineHeader.firstElementChild.setAttribute('outline-placeholder', `Header ${level}`)
   }
@@ -137,6 +139,11 @@ module.exports = (store, __exports) => {
 
   return {
     onLoad() {
+      if (store().lined) {
+        const outline = document.querySelector('.outliner');
+        outline?.setAttribute('lined', '');
+      }
+
       // Find headers when switching panels
       if (document.querySelector('.notion-page-content')) {
         startContentObserver();
@@ -152,6 +159,3 @@ module.exports = (store, __exports) => {
     }
   }
 }
-
-
-

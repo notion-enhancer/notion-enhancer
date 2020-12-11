@@ -14,7 +14,7 @@ module.exports = {
   tags: ['extension', 'panel'],
   name: 'outliner',
   desc: 'table of contents.',
-  version: '1.2.0',
+  version: '1.2.1',
   author: 'CloudHill',
   options: [
     {
@@ -35,6 +35,6 @@ module.exports = {
     name: "Outline",
     icon: "icon.svg",
     js: "panel.js",
-    fullHeight: store('87e077cc-5402-451c-ac70-27cc4ae65546').fullHeight
+    fullHeight: store('87e077cc-5402-451c-ac70-27cc4ae65546').fullHeight,
   }
 };
