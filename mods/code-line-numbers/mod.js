@@ -14,7 +14,7 @@ module.exports = {
   tags: ['extension'],
   name: 'code line numbers',
   desc: 'adds line numbers to code blocks.',
-  version: '1.1.0',
+  version: '1.1.1',
   author: 'CloudHill',
   options: [
     {
