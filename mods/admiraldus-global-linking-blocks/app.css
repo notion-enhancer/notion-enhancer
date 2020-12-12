@@ -1,0 +1,101 @@
+/*
+ * global linking blocks
+ * (c) 2020 admiraldus (https://github.com/admiraldus)
+ * under the MIT license
+ */
+
+/* ========== THE PAGE BUTTON ========== */
+.admiraldus-glb-page-button
+{
+  display: inline-flex;
+  align-items: center;
+  flex-shrink: 0;
+  border-radius: 3px;
+  height: 28px;
+  min-width: 0px;
+  padding-right: 8px;
+  padding-left: 6px;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 1.2;
+  color: var(--theme--text);
+  cursor: pointer;
+  transition: background 20ms ease-in 0s;
+  user-select: none;
+}
+
+.admiraldus-glb-page-button:hover
+{
+  background: var(--theme--interactive_hover);
+  box-shadow: 0 0 0 0.5px var(--theme--interactive_hover-border);
+}
+
+.admiraldus-glb-page-button > svg
+{
+  backface-visibility: hidden;
+  display: block;
+  flex-shrink: 0;
+  margin-right: 6px;
+  height: 14px;
+  width: 14px;
+  fill: var(--theme--text);
+}
+
+.admiraldus-glb-page-button > span {
+  opacity: 1;
+  transition: opacity .4s ease;
+}
+
+.admiraldus-glb-span-hide {
+  position: absolute;
+  top: -9999px;
+  opacity: 0 !important;
+}
+
+/* ========== THE BLOCK BUTTON ========== */
+.admiraldus-glb-block-button {
+  display: flex;
+  align-items: center;
+  min-height: 28px;
+  width: 100%;
+  font-size: var(--theme--font_label-size);
+  line-height: 120%;
+  cursor: pointer;
+  transition: background 20ms ease-in 0s;
+  user-select: none;
+}
+
+.admiraldus-glb-block-button:hover
+{
+  background: var(--theme--interactive_hover);
+  box-shadow: 0 0 0 0.5px var(--theme--interactive_hover-border);
+}
+
+.admiraldus-glb-block-button > svg {
+  backface-visibility: hidden;
+  display: flex;
+  display: block;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+  margin-left: 14px;
+  height: 17px;
+  width: 17px;
+  fill: inherit;
+}
+
+.admiraldus-glb-block-button > span {
+  margin-right: 14px;
+  margin-left: 8px;
+  min-width: 0px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1 1 auto;
+}
+
+/* ========== THE MENU ========== */
+.--on-hover div[role="button"]:not(.admiraldus-glb-block-button) {
+  background: transparent !important;
+  box-shadow: none !important;
+}
