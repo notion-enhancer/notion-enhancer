@@ -36,9 +36,9 @@
   display: block;
   flex-shrink: 0;
   margin-right: 6px;
-  height: 14px;
-  width: 14px;
-  fill: var(--theme--text);
+  height: 16px;
+  width: 16px;
+  fill: var(--theme--text_ui);
 }
 
 .admiraldus-glb-page-button > span {
@@ -81,7 +81,7 @@
   margin-left: 14px;
   height: 17px;
   width: 17px;
-  fill: inherit;
+  fill: var(--theme--text);
 }
 
 .admiraldus-glb-block-button > span {

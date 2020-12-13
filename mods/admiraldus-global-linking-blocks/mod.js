@@ -19,6 +19,14 @@ module.exports = {
     link: 'https://github.com/admiraldus',
     avatar: 'https://raw.githubusercontent.com/admiraldus/admiraldus/main/module.gif',
   },
+  options: [
+    {
+      key: 'hidePageButton',
+      label: 'show the page link button',
+      type: 'toggle',
+      value: true,
+    },
+  ],
   hacks: {
     'renderer/preload.js'(store, __exports) {
       document.addEventListener('readystatechange', () => {
@@ -39,31 +47,50 @@ module.exports = {
          * Everything happens here. ¯\_(ツ)_/¯
          */
         async function main() {
-          const icon = await x$.svg('/icons/link.svg');
+          const icons = {
+            globe: await x$.svg('/icons/globe.svg'),
+            chain: await x$.svg('/icons/chain.svg'),
+          };
           const pageClass = 'admiraldus-glb-page-button';
           const blockClass = 'admiraldus-glb-block-button';
           const spanClass = 'admiraldus-glb-span-hide';
-          /**
-           * Create the page link button and append it to the topbar.
-           *
-           * @return  {create}  Returns "create()" if not appended.
-           */
-          const pageButton = !function create() {
-            const target = x$.sel('.notion-topbar-share-menu');
-            const attr = [
-              `class="${pageClass}" role="button" tabindex="0"`,
-              `class="${spanClass}"`,
-            ];
-            const html = x$.el(
-                `<div ${attr[0]}>
-                  ${icon}
-                  <span>Global Link</span>
-                  <span ${attr[1]}>Link copied!</span
-                </div>`);
 
-            target.before(html);
-            if (html === null) return create();
-          }();
+          if (store().hidePageButton) {
+            /**
+             * Create the page link button and append it to the topbar.
+             *
+             * @return  {create}  Returns "create()" if not appended.
+             */
+            const pageButton = function create() {
+              const target = x$.sel('.notion-topbar-share-menu');
+              if (target === null) return;
+
+              const attr = [
+                `class="${pageClass}" role="button" tabindex="0"`,
+                `class="${spanClass}"`,
+              ];
+              const html = x$.el(
+                  `<div ${attr[0]}>
+                    ${icons.chain}
+                    <span>Copy link</span>
+                    <span ${attr[1]}>Link copied!</span
+                  </div>`);
+
+              target.before(html);
+              if (html === null) return create();
+            };
+            pageButton();
+
+            /**
+             * Observer for the topbar.
+             */
+            x$.obs(() => {
+              if (x$.sel(`.${pageClass}`) !== null) return;
+              pageButton();
+            }, x$.sel('.notion-topbar'), {
+              subtree: true, childList: true,
+            });
+          }
 
           /**
            * Create the block link button and append it to the block menu.
@@ -77,7 +104,7 @@ module.exports = {
             const attr = `class="${blockClass}" role="button" tabindex="0"`;
             const html = x$.el(
                 `<div ${attr}>
-                ${icon}
+                ${icons.globe}
                 <span>Global link</span>
                 </div>`);
 
@@ -151,6 +178,7 @@ module.exports = {
                   (div) => lang.some((text) => div.textContent === text));
             }
             if (x$.sel(`.${blockClass}`) !== null ||
+                x$.sel('.notion-selectable-halo') === null ||
                 getLinkButton() === undefined) return;
             blockButton(getLinkButton().closest('[role="button"]'));
           }, x$.sel('.notion-overlay-container'), {
