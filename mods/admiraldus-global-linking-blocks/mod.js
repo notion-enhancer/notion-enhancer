@@ -47,7 +47,10 @@ module.exports = {
          * Everything happens here. ¯\_(ツ)_/¯
          */
         async function main() {
-          const icon = await x$.svg('/icons/link.svg');
+          const icons = {
+            globe: await x$.svg('/icons/globe.svg'),
+            chain: await x$.svg('/icons/chain.svg'),
+          };
           const pageClass = 'admiraldus-glb-page-button';
           const blockClass = 'admiraldus-glb-block-button';
           const spanClass = 'admiraldus-glb-span-hide';
@@ -68,8 +71,8 @@ module.exports = {
               ];
               const html = x$.el(
                   `<div ${attr[0]}>
-                    ${icon}
-                    <span>Global Link</span>
+                    ${icons.chain}
+                    <span>Copy link</span>
                     <span ${attr[1]}>Link copied!</span
                   </div>`);
 
@@ -101,7 +104,7 @@ module.exports = {
             const attr = `class="${blockClass}" role="button" tabindex="0"`;
             const html = x$.el(
                 `<div ${attr}>
-                ${icon}
+                ${icons.globe}
                 <span>Global link</span>
                 </div>`);
 
