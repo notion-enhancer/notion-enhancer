@@ -1,0 +1,370 @@
+/*
+ * simpler databases
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2020 CloudHill
+ * under the MIT license
+ */
+ 
+.simpler-databases--config-button:hover {
+  background: var(--theme--interactive_hover);
+}
+  
+.simpler-databases--config-button svg {
+  width: 12px;
+  height: 12px;
+  fill: var(--theme--text_ui_info);
+}
+
+.simpler-databases--overlay-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.simpler-databases--config-menu {
+  position: relative;
+  width: 220px;
+  max-height: 70vh;
+  padding: 8px 0;
+  border-radius: 3px;
+  box-shadow: var(--theme--box-shadow_strong);
+  background: var(--theme--card);
+  overflow: hidden auto;
+}
+
+.simpler-databases--config-item-toggle,
+.simpler-databases--config-item-input {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 28px;
+  font-size: var(--theme--font_label-size);
+  line-height: 1.2;
+  user-select: none;
+}
+.simpler-databases--config-item-toggle {
+  cursor: pointer;
+}
+.simpler-databases--config-item-toggle:hover,
+.simpler-databases--config-item-toggle:focus {
+  background: var(--theme--interactive_hover);
+}
+
+.simpler-databases--config-title {
+  margin: 0 14px;
+  min-width: 0;
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.simpler-databases--config-toggle {
+  flex-shrink: 0;
+  position: relative;
+  height: 14px;
+  width: 26px;
+  margin-left: auto;
+  margin-right: 14px;
+  padding: 2px;
+  border-radius: 44px;
+  cursor: pointer;
+  user-select: none;
+  box-sizing: content-box;
+  background: rgba(202, 204, 206, 0.3);
+  transition: background 200ms ease 0s, box-shadow 200ms ease 0s;
+}
+
+.simpler-databases--config-toggle[data-toggled="true"] {
+  background: var(--theme--primary);
+}
+
+.simpler-databases--config-toggle::before {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 44px;
+  background: white;
+  transition: transform 200ms ease-out 0s, background 200ms ease-out 0s;
+}
+.simpler-databases--config-toggle[data-toggled="true"]::before {
+  transform: translateX(12px);
+}
+
+.simpler-databases--config-item-input {
+  padding: 6px 0;
+}
+
+.simpler-databases--config-input {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  margin: 0 14px;
+  padding: 3px 6px;
+  background: var(--theme--select_input);
+  box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px inset;
+  border-radius: 3px;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: text;
+}
+
+.notion-dark-theme .simpler-databases--config-input {
+  background: rgba(15, 15, 15, 0.3);
+  box-shadow: rgba(15, 15, 15, 0.2) 0px 0px 0px 1px inset;
+}
+
+.simpler-databases--config-input input {
+  font-size: inherit;
+  line-height: inherit;
+  border: none;
+  background: none;
+  width: 100%;
+  display: block;
+  resize: none;
+  padding: 0;
+}
+
+.simpler-databases--config-divider {
+  border-bottom: 1px solid var(--theme--ui-border);
+  width: 100%;
+  margin: 6px 0;
+}
+
+.notion-collection_view-block[data-tweaks*="[config-open]"] [style*=" height: 42px;"] > :not(:first-child) {
+  opacity: 1 !important;
+}
+
+
+/* TWEAKS */
+
+/* Toggle */
+.simpler-databases--toggle {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 20ms ease-in 0s;
+}
+.simpler-databases--toggle svg {
+  width: 12px;
+  height: 12px;
+  transform: rotateZ(180deg);
+  transition: transform 200ms ease-out 0s;
+}
+.simpler-databases--toggle:hover {
+  background: var(--theme--interactive_hover);
+}
+
+.notion-collection_view-block[data-tweaks*="[toggle]"][data-toggled-hidden="true"]
+  .simpler-databases--toggle svg {
+  transform: rotateZ(90deg);
+}
+
+.notion-collection_view-block[data-tweaks*="[toggle]"] > .notion-scroller {
+  transition: height 200ms ease-in, opacity 200ms ease-in;
+}
+.notion-collection_view-block[data-tweaks*="[toggle]"][data-toggled-hidden="true"] > .notion-scroller {
+  opacity: 0;
+  height: 0 !important;
+}
+.notion-collection_view-block[data-tweaks*="[toggle]"][data-toggled-hidden="true"]
+  [data-hide-items] .notion-collection-item {
+  display: none !important;
+}
+
+/* Title */
+
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[title]"])
+  [style*=" height: 42px;"] > [style*="white-space: nowrap; overflow: hidden;"] .notion-record-icon,
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[title]"])
+  [style*=" height: 42px;"] > [style*="white-space: nowrap; overflow: hidden;"] [placeholder] {
+  display: none !important;
+}
+
+/* Link Arrow - linked databases */
+
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[link]"])
+  [style*=" height: 42px;"] a :first-child[style*="margin-right: 6px"] {
+  display: none !important;
+}
+
+/* Views */
+
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[views]"])
+  [style*=" height: 42px;"] > [role="button"] {
+  display: none !important;
+}
+
+/* Toolbar */
+
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[toolbar]"])
+  .simpler-databases--config-button ~ * {
+  display: none !important;
+}
+
+/* Header - table, calendar */
+
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[header_row]"])
+  .notion-table-view > .notion-collection_view-block > :first-child,
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[header_row]"])
+  .notion-table-view > .notion-collection_view-block > :first-child + div {
+  display: none !important;
+}
+
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[header_row]"])
+  .notion-table-view .notion-collection_view-block > [style*="height: 34px"] + div {
+  border-top: 1px solid var(--theme--table-border_row);
+}
+
+/* New Item - table, board, timeline, list, gallery */
+
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[new_item]"])
+  .notion-table-view-add-row,
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[new_item]"])
+  .notion-board-view .notion-board-group > [role="button"]:not(.notion-collection-item),
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[new_item]"])
+  .notion-timeline-item-row:last-child,
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[new_item]"])
+  .notion-list-view > .notion-collection_view-block > [role="button"]:not(.notion-collection-item),
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[new_item]"])
+  .notion-gallery-view > .notion-collection_view-block > [role="button"]:not(.notion-collection-item) {
+  display: none !important;
+}
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[new_item]"])
+  .notion-timeline-view > [style*="padding-bottom: 34px;"] {
+  padding-bottom: 0 !important;
+}
+
+/* Calc Row - table, timeline */
+
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[calc_row]"])
+  .notion-table-view-add-row ~ div:not(.notion-selectable-halo):not([role="button"]),
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[calc_row]"])
+  .notion-timeline-view > [style*="z-index: 4;"]:last-child {
+  display: none !important;
+}
+
+/* Hidden Columns - board */
+
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[hidden_column]"])
+  .notion-board-view > .notion-collection_view-block [style*="width: 220px;"] {
+  display: none !important;
+}
+
+/* Add Group - board */
+
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[add_group]"])
+  .notion-board-view > .notion-collection_view-block [style*="width: 180px;"] {
+  display: none !important;
+}
+
+/* New Column - table */
+
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[new_column]"])
+  .notion-table-view-add-column,
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[new_column]"])
+  .notion-table-view .notion-collection-item > [style*="width: 32px;"] {
+  display: none !important;
+}
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[new_column]"])
+  .notion-table-view-add-row + [style*="padding-right: 32px;"] {
+  padding-right: 0 !important;
+}
+
+/* Full Width - table */
+
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[full_width]"])
+  .notion-table-view > .notion-collection_view-block {
+  max-width: fit-content;
+} 
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[full_width]"])
+  .notion-table-view .notion-collection_view-block > [style*="min-width"] {
+  min-width: 0 !important;
+}
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[full_width]"])
+  .notion-table-view .notion-collection-item {
+  width: fit-content;
+}
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[full_width]"])
+  .notion-table-view .notion-collection_view-block > [style*="height: 34px"] + div,
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[full_width]"])
+  .notion-table-view .notion-collection_view-block > :first-child {
+  border-left: 1px solid var(--theme--table-border_row);
+}
+
+/* COMPOUND TWEAKS */
+
+/* Title and Link disabled > Hide title container */
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[title]"]):not([data-tweaks*="[link]"])
+  [style*=" height: 42px;"] > [style*="white-space: nowrap; overflow: hidden;"] {
+  display: none !important;
+}
+
+/* New Row and Calc Row disabled > Add bottom border - table */
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[calc_row]"]):not([data-tweaks*="[new_item]"])
+  .notion-table-view .notion-collection_view-block > [style*="height: 34px"] + div {
+  border-bottom: 1px solid var(--theme--table-border_row);
+}
+
+/* New Column enabled with Full Width disabled > Add right border - table */
+.notion-collection_view-block[data-tweaks][data-tweaks*="[new_column]"]:not([data-tweaks*="[full_width]"])
+  .notion-table-view .notion-collection_view-block > [style*="height: 34px"] + div,
+.notion-collection_view-block[data-tweaks][data-tweaks*="[new_column]"]:not([data-tweaks*="[full_width]"])
+  .notion-table-view .notion-collection_view-block > :first-child {
+  border-right: 1px solid var(--theme--table-border_row);
+}
+
+/* REMOVE DATABASE HEADER < Title, Link, Toggle, Views, and Toolbar disabled */
+
+/* Hide Header */
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[title]"]):not([data-tweaks*="[link]"]):not([data-tweaks*="[toggle]"]):not([data-tweaks*="[views"]):not([data-tweaks*="[toolbar]"])
+  [style*="min-height: 42px"] {
+  min-height: 0 !important;
+  max-height: 0;
+  pointer-events: none;
+}
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[title]"]):not([data-tweaks*="[link]"]):not([data-tweaks*="[toggle]"]):not([data-tweaks*="[views"]):not([data-tweaks*="[toolbar]"])
+  [style*="height: 42px"] {
+  overflow: visible !important;
+}
+
+/* Config Button */
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[title]"]):not([data-tweaks*="[link]"]):not([data-tweaks*="[toggle]"]):not([data-tweaks*="[views"]):not([data-tweaks*="[toolbar]"])
+  [style*=" height: 42px;"] > :last-child {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  z-index: 99;
+  pointer-events: auto;
+}
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[title]"]):not([data-tweaks*="[link]"]):not([data-tweaks*="[toggle]"]):not([data-tweaks*="[views"]):not([data-tweaks*="[toolbar]"])
+  .simpler-databases--config-button {
+  background: var(--theme--main);
+  box-shadow: var(--theme--box-shadow);
+}
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[title]"]):not([data-tweaks*="[link]"]):not([data-tweaks*="[toggle]"]):not([data-tweaks*="[views"]):not([data-tweaks*="[toolbar]"])
+  .simpler-databases--config-button:hover {
+  background: var(--theme--interactive_hover);
+}
+
+/* Hide Top Border */
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[title]"]):not([data-tweaks*="[link]"]):not([data-tweaks*="[toggle]"]):not([data-tweaks*="[views"]):not([data-tweaks*="[toolbar]"])
+  :not(.notion-table-view) > .notion-collection_view-block > [style*="box-shadow"] {
+  box-shadow: none !important;
+}
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[title]"]):not([data-tweaks*="[link]"]):not([data-tweaks*="[toggle]"]):not([data-tweaks*="[views"]):not([data-tweaks*="[toolbar]"])
+  :not(.notion-table-view) > .notion-collection_view-block[style*="border-top"],
+.notion-collection_view-block[data-tweaks]:not([data-tweaks*="[title]"]):not([data-tweaks*="[link]"]):not([data-tweaks*="[toggle]"]):not([data-tweaks*="[views"]):not([data-tweaks*="[toolbar]"])
+  :not(.notion-table-view) > .notion-collection_view-block > [style*="border-top"] {
+  border-top: none !important;
+}
