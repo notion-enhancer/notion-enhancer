@@ -13,12 +13,15 @@
   padding-left: 48px !important;
 }
 #code-line-numbers {
-  font-size: var(--theme--font_code-size) !important;
-  font-family: var(--theme--font_code) !important;
+  font-size: var(--theme--font_code-size);
+  font-family: var(--theme--font_code);
   color: var(--theme--text_ui_info);
+  background: var(--theme--code-background);
   text-align: right;
   position: absolute;
-  right: calc(100% - 30px);
+  left: 0;
+  right: calc(100% - 48px);
+  padding-right: 18px;
   overflow: hidden;
   pointer-events: none;
 }
