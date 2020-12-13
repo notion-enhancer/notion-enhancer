@@ -1,6 +1,6 @@
 /*
  * notion-icons
- * (c) 2019 jayhxmo (https://jaymo.io/)
+ * (c) 2020 jayhxmo (https://jaymo.io/)
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (c) 2020 CloudHill
  * under the MIT license
@@ -10,7 +10,8 @@
 
 const { createElement } = require('../../pkg/helpers.js'),
   fs = require('fs-extra'),
-  path = require('path');
+  path = require('path'),
+  notionIconsUrl = 'https://raw.githubusercontent.com/notion-enhancer/icons/main/';
 
 module.exports = {
   id: '2d1f4809-9581-40dd-9bf3-4239db406483',
@@ -18,7 +19,7 @@ module.exports = {
   name: 'notion icons',
   desc:
     'use custom icon sets directly in notion.',
-  version: '1.0.0',
+  version: '1.2.0',
   author: 'jayhxmo',
   options: [
     {
@@ -36,9 +37,9 @@ module.exports = {
   ],
   hacks: {
     'renderer/preload.js'(store, __exports) {
-      let garbageCollector = [];
-      const iconsUrl = 'https://raw.githubusercontent.com/notion-enhancer/icons/main/';
-
+      let garbageCollector = [],
+        filterMap = new WeakMap();
+        
       function getAsync(urlString, callback) {
         let httpReq = new XMLHttpRequest();
         httpReq.onreadystatechange = function() {
@@ -48,120 +49,358 @@ module.exports = {
         httpReq.send(null);
       }
 
-      let modalIcons;
+      const menuIcons = {};
       (async () => {
-        modalIcons = {
-          remove: await fs.readFile( path.resolve(__dirname, 'icons/remove.svg') ),
-          restore: await fs.readFile( path.resolve(__dirname, 'icons/restore.svg') ),
-        }
+        menuIcons.triangle = await fs.readFile( path.resolve(__dirname, 'icons/triangle.svg') );
+        menuIcons.remove   = await fs.readFile( path.resolve(__dirname, 'icons/remove.svg'  ) );
+        menuIcons.restore  = await fs.readFile( path.resolve(__dirname, 'icons/restore.svg' ) );
+        menuIcons.search   = await fs.readFile( path.resolve(__dirname, 'icons/search.svg'  ) );
       })();
 
-      // Retrieve icons data
-      let notionIconsData;
-      getAsync(iconsUrl + 'icons.json', iconsData => {
-        notionIconsData = JSON.parse(iconsData);
+      // source => icon data
+      const enhancerIconSets = new Map();
+      getAsync(notionIconsUrl + 'icons.json', iconsData => {
+        const data = JSON.parse(iconsData);
+        (data.icons || data).forEach(set => {
+          enhancerIconSets.set(set.source, set);
+        })
       });
 
-      // Retrieve custom icons data
-      let customIconsData;
+      // array
+      let customIconSets;
       if (store().json) {
-        customIconsData = JSON.parse(
+        const customData = JSON.parse(
           fs.readFileSync(store().json)
         )
+        customIconSets = customData.icons || customData;
       }
 
-      function getTab(n, button = false) {
-        return document.querySelector(
-          `.notion-media-menu > :first-child > :first-child > :nth-child(${n}) ${button ? 'div' : ''}`
-        );
-      } 
-
-      function isCurrentTab(n) {
-        return getTab(n).childNodes.length > 1;
-      }
-
-      // Submits the icon's url as an image link
-      function setPageIcon(iconUrl) {
-        const input = document.querySelector('input[type=url]');
-
-        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
-          window.HTMLInputElement.prototype, 'value'
-        ).set;
-        nativeInputValueSetter.call(input, iconUrl);
-
-        input.dispatchEvent(
-          new Event('input', { bubbles: true })
-        );
-
-        input.dispatchEvent(
-          new KeyboardEvent('keydown', { bubbles: true, cancelable: true, keyCode: 13 })
-        );
-
-        removeIcons();
-      }
+      // notion icons overlay
 
       function addIconsTab() {
-        // Prevent icons tab duplication
-        if (getTab(5)) {
-          removeIcons();
-          return;
-        }
-        // Change 'Upload an image' to 'Upload'
+        // prevent icons tab duplication
+        if (getTab(5))
+          return removeIconsOverlay();
+        
+        // change 'Upload an image' to 'Upload'
         getTab(2, true).innerText = 'Upload';
 
-        // Initialize icons tab
+        // initialize icons tab
         const iconsTab = getTab(3).cloneNode(true);
         iconsTab.className = 'notion-icons--tab';
         iconsTab.firstChild.innerText = 'Icons';
         iconsTab.firstChild.addEventListener('click', renderIconsOverlay);
         
-        // Insert icons tab
+        // insert icons tab
         const tabStrip = getTab(1).parentElement;
         tabStrip.insertBefore(iconsTab, tabStrip.lastChild);
 
-        // Remove the icons overlay when clicking...
-        const closeTriggers = [
-          // The fog layer
+        initCloseTriggers();
+      }
+
+      function renderIconsOverlay() {
+        if (!isCurrentTab(4)) {
+          // switch to 3rd tab so that the link can be input in the underlay
+          if (!isCurrentTab(3)) getTab(3, true).click();
+
+          if (
+            store().removedSets?.length > 0 && 
+            enhancerIconSets.size > 0
+          )
+            addRestoreButton();
+
+          // set active bar on icons tab
+          const iconsTab = getTab(4),
+            activeBar = createElement(
+              `<div id="notion-icons--active-bar"></div>`
+            );
+          iconsTab.style.position = 'relative';
+          iconsTab.appendChild(activeBar);
+          getTab(3).setAttribute('hide-active-bar', '');
+
+          // create icons overlay
+          const notionIcons = createElement(
+            '<div id="notion-icons"></div>'
+          );
+
+          // render search bar
+          const search = createElement(`
+              <div class="notion-icons--search notion-focusable">
+                ${menuIcons.search}
+                <input placeholder="Filter…" type="text">
+              </div>
+            `),
+            searchInput = search.lastElementChild;
+          
+          searchInput.addEventListener('input', () => {
+            filterIcons(searchInput.value);
+          });
+          
+          // render scroller and icon sets
+          const scroller = createElement(`
+            <div class="notion-icons--scroller"></div>
+          `);
+          scroller.appendChild( loadIconSets() );
+
+          notionIcons.append(search, scroller);
+          
+          // insert icons overlay
+          document.querySelector('.notion-media-menu > .notion-scroller')
+            .appendChild(notionIcons);
+
+          // focus on search bar
+          requestAnimationFrame(() => {
+            searchInput.focus();
+          });
+        }
+      }
+
+      // convert icons data into renderable
+      function loadIconSets() {
+        const iconSets = new DocumentFragment();
+
+        if (customIconSets) {
+          customIconSets.forEach(i => {
+            iconSets.appendChild( renderIconSet(i) );
+          });
+
+          // divider
+          iconSets.appendChild(
+            createElement('<div class="notion-icons--divider"></div>')
+          );
+        }
+
+        if (enhancerIconSets.size > 0) {
+          enhancerIconSets.forEach((i, source) => {
+            // ignore removed icon sets
+            if ( store().removedSets?.includes(source) ) return;
+  
+            i.sourceUrl = i.sourceUrl || (notionIconsUrl + source);
+            iconSets.appendChild( renderIconSet(i, true) );
+          });
+        }
+
+        return iconSets;
+      }
+
+      // returns icon set element
+      function renderIconSet(iconData, enhancerSet = false) {
+        const iconSet = createElement(
+          '<div class="notion-icons--icon-set"></div>'
+        );
+
+        try {
+          const author = iconData.author 
+            ? iconData.authorUrl
+              ? ` by <a target="_blank" href="${iconData.authorUrl}">${iconData.author}</a>`
+              : ` by <span>${iconData.author}</span>`
+            : '';
+
+          const toggle = createElement(`
+            <div class="notion-icons--toggle">
+              ${menuIcons.triangle}
+              <div class="notion-icons--author">${iconData.name}${author}</div>
+              <div class="notion-icons--actions">
+                <div class="notion-icons--spinner">
+                  <img src="/images/loading-spinner.4dc19970.svg" />
+                </div>
+              </div>
+            </div>
+          `);
+        
+          const iconSetBody = createElement(
+            '<div class="notion-icons--body"></div>'
+          );
+
+          iconSet.append(toggle, iconSetBody);
+
+          const promiseArray = [];
+          // render icons
+          for (let i = 0; i < (iconData.count || iconData.source.length); i++) {
+
+            const iconUrl = iconData.sourceUrl
+              ? Array.isArray(iconData.source)
+                ? `${iconData.sourceUrl}/${iconData.source[i]}.${iconData.extension}`
+                : `${iconData.sourceUrl}/${iconData.source}_${i}.${iconData.extension}`
+              : iconData.source[i];
+
+            const icon = createElement(`<div class="notion-icons--icon"></div>`);
+            icon.innerHTML = enhancerSet
+              // load sprite sheet
+              ? `<div style="background-image: url(${notionIconsUrl}${iconData.source}/sprite.png); background-position: 0 -${i * 32}px;"></div>`
+              : `<img src="${iconUrl}" />`;
+
+            // add filters to filterMap
+            const filters = [];
+
+            if (iconData.filter) {
+              if (iconData.filter === 'source') {
+                const filename = iconUrl.match(/.*\/(.+?)\./);
+                if (filename?.length > 1) {
+                  filters.push(...filename[1].split(/[ \-_]/));
+                }
+              }
+              else if (Array.isArray(iconData.filter)) {
+                filters.push(...iconData.filter[i]);
+              }
+              icon.setAttribute('filter', filters.join(' '));
+            }
+
+            // add set name and author to filters
+            filters.push(...iconData.name.toLowerCase().split(' '));
+            if (iconData.author) filters.push(...iconData.author.toLowerCase().split(' '));
+
+            filterMap.set(icon, filters);
+
+            // make sure icons load
+            if (!enhancerSet) {
+              promiseArray.push(
+                new Promise((resolve, reject) => {
+                  icon.firstChild.onload = resolve;
+                  icon.firstChild.onerror = () => {
+                    reject();
+                    icon.classList.add('error');
+                    icon.innerHTML = '!';
+                  };
+                })
+              );
+            }
+
+            garbageCollector.push(icon);
+            icon.addEventListener('click', () => setPageIcon(iconUrl));
+            iconSetBody.appendChild(icon);
+          }
+          
+          // hide spinner after all icons finish loading
+          (async () => {      
+            const spinner = toggle.querySelector('.notion-icons--spinner'),
+              loadPromise = Promise.all(promiseArray);
+            loadPromise.then(
+              () => spinner.remove(),
+              () => {
+                iconSet.classList.add('alert')
+                spinner.remove();
+              }
+            );
+          })();
+
+          // add remove icon set button
+          if (enhancerSet) {
+            const removeButton = createElement(
+              `<div class="notion-icons--remove-button">${menuIcons.remove}</div>`
+            );
+            removeButton.addEventListener('click', e => {
+              e.stopPropagation();
+              removeIconSet(iconData);
+            });
+            iconSet.querySelector('.notion-icons--actions')
+              .appendChild(removeButton);
+          }
+
+          // set up toggle
+          toggle.addEventListener('click', e => {
+            if (e.target.nodeName === 'A') return;
+            toggleIconSet(iconSet);
+          });
+
+          // hide by default?
+          if (store().hide)
+            requestAnimationFrame(() => toggleIconSet(iconSet))
+
+          // tooltip
+          let timeout;
+          iconSetBody.addEventListener('mouseover', e => {
+            const el = e.target;
+            if (!el.hasAttribute('filter')) return;
+            
+            document.querySelector('.notion-icons--tooltip')?.remove();
+            timeout = setTimeout(() => {
+              renderTooltip(el, el.getAttribute('filter'))
+            }, 300);
+          })
+          iconSetBody.addEventListener('mouseout', e => {
+            const el = e.target;
+            if (!el.hasAttribute('filter')) return;
+            
+            document.querySelector('.notion-icons--tooltip')?.remove();
+            clearTimeout(timeout);
+          });
+
+        } catch (err) {
+          iconSet.classList.add('error');
+          iconSet.innerHTML = `Invalid Icon Set: ${iconData.name}`;
+        }
+
+        return iconSet;
+      }
+
+      function removeIconsOverlay() {
+        const elements = [
+          document.getElementById('notion-icons'),
+          document.getElementById('notion-icons--active-bar'),
+          document.querySelector('.notion-icons--restore-button'),
+          document.querySelector('.notion-icons--tooltip'),
+        ]
+        elements.forEach(el => {
+          if (el) el.remove();
+        })
+
+        getTab(4).style.position = '';
+
+        if (getTab(3)) 
+          getTab(3).removeAttribute('hide-active-bar');
+
+        if (
+          document.querySelector('.notion-icons--overlay-container')
+        ) closeRestoreOverlay();
+
+        if (garbageCollector.length) {
+          for (let i = 0; i < garbageCollector.length; i++) {
+            garbageCollector[i] = null;
+          }
+          garbageCollector = [];
+        }
+      }
+
+      function initCloseTriggers() {
+        // remove the icons overlay when clicking...
+        const triggers = [
+          // the fog layer
           document.querySelector('.notion-overlay-container [style*="width: 100vw; height: 100vh;"]'),
-          // The first three buttons
-          ...Array.from( Array(3), (e, i) => getTab(i + 1, true) ),
-          // The remove button
-          getTab(5).lastChild,
+          // the first three buttons
+          ...[1, 2, 3].map( n => getTab(n, true) ),
+          // the remove button
+          (getTab(5) || getTab(4)).lastElementChild,
         ];
 
-        closeTriggers.forEach(trigger => {
-          trigger.addEventListener('click', removeIcons);
-          garbageCollector.push(trigger);
+        triggers.forEach(t => {
+          t.addEventListener('click', removeIconsOverlay);
+          garbageCollector.push(t);
         })
         
-        // Remove the icons overlay when pressing the Escape key
+        // remove the icons overlay when pressing the Escape key
         document.querySelector('.notion-media-menu')
           .addEventListener('keydown', e => {
-            if (e.keyCode === 27) removeIcons();
+            if (e.keyCode === 27) removeIconsOverlay();
           });
       }
 
-
+      // restore overlay
+      
       function addRestoreButton() {
-        const buttons = getTab(5) ? getTab(5) : getTab(4);
-        const restoreButton = buttons.lastChild.cloneNode(true);
+        const buttons = getTab(1).parentElement.lastElementChild;
+
+        const restoreButton = buttons.lastElementChild.cloneNode(true);
         restoreButton.className = 'notion-icons--restore-button';
-        restoreButton.innerHTML = modalIcons.restore;
-        buttons.prepend(restoreButton);
+        restoreButton.innerHTML = menuIcons.restore;
         restoreButton.addEventListener('click', renderRestoreOverlay);
+        
+        buttons.prepend(restoreButton);
       }
 
       function renderRestoreOverlay() {
         if (!store().removedSets) return;
-
-        store().removedSets.sort((a, b) => {
-          const setA = a.name.toLowerCase(),
-            setB = b.name.toLowerCase();
-  
-          if (setA < setB) return -1;
-          if (setA > setB) return 1;
-          return 0;
-        });
+        store().removedSets.sort();
 
         const overlayContainer = createElement(`
           <div class="notion-icons--overlay-container"></div>
@@ -181,23 +420,25 @@ module.exports = {
           <div class="notion-icons--restore"></div>
         `)
 
+        store().removedSets.forEach(source => {
+          restoreOverlay.appendChild( renderRestoreItem(source) );
+        })
+
         overlayContainer.appendChild(div);
         div.firstElementChild.appendChild(restoreOverlay);
 
-        // Fade in
+        // fade in
         restoreOverlay.animate(
           [ {opacity: 0}, {opacity: 1} ],
           { duration: 200 }
         );
-
-        store().removedSets.forEach(iconData => {
-          const restoreItem = renderRestoreItem(iconData);
-          restoreOverlay.appendChild(restoreItem);
-        })
       }
 
-      function renderRestoreItem(iconData) {
-        const iconUrl = `${iconData.sourceUrl}/${iconData.source}_${0}.${iconData.extension}`;
+      function renderRestoreItem(source) {
+        const iconData = enhancerIconSets.get(source);
+        const iconUrl = `
+          ${iconData.sourceUrl || (notionIconsUrl + source)}/${source}_${0}.${iconData.extension}
+        `;
         const restoreItem = createElement(`
           <div class="notion-icons--removed-set">
             <div style="flex-grow: 0; flex-shrink: 0; width: 32px; height: 32px;">
@@ -213,245 +454,161 @@ module.exports = {
       function closeRestoreOverlay() {
         const overlayContainer = document.querySelector('.notion-icons--overlay-container');
         overlayContainer.removeEventListener('click', closeRestoreOverlay);
-        // Fade out
+        // fade out
         document.querySelector('.notion-icons--restore').animate(
           [ {opacity: 1}, {opacity: 0} ],
           { duration: 200 }
         ).onfinish = () => overlayContainer.remove();
       }
 
-      function renderIconsOverlay() {
-        if (!isCurrentTab(4)) {
-          // Switch to 3rd tab so that the link can be inputed in the underlay
-          if (!isCurrentTab(3)) getTab(3, true).click();
+      // icon set actions
 
-          if (
-            store().removedSets &&
-            store().removedSets.length > 0
-          ) {
-            addRestoreButton();
-          }
+      function toggleIconSet(iconSet, hide) {
+        const isHidden = iconSet.hasAttribute('hidden-set');
+        if (hide == null) hide = !isHidden;
 
-          // Set active bar on icons tab
-          const iconsTab = getTab(4);
-          const activeBar = createElement(
-            `<div id="notion-icons--active-bar"></div>`
-          )
-          activeBar.style = 'border-bottom: 2px solid var(--theme--text); position: absolute; bottom: -1px; left: 8px; right: 8px;';
-          iconsTab.appendChild(activeBar);
-          getTab(4).style.position = 'relative';
-          getTab(3).className = 'hide-active-bar';
-
-          // Convert icons data into renderable 
-          const iconSets = [];          
-
-          if (customIconsData && customIconsData.icons) {
-            customIconsData.icons.forEach(i => {
-              iconSets.push( renderIconSet(i) );
-            });
-
-            // Divider
-            iconSets.push(
-              createElement(
-                '<div style="height: 1px; margin-bottom: 9px; border-bottom: 1px solid var(--theme--table-border);"></div>'
-              )
-            )
-          }
-
-          if (notionIconsData && notionIconsData.icons) {
-            notionIconsData.icons.forEach(i => {
-              i.sourceUrl = i.sourceUrl || (iconsUrl + i.source);
-              if ( store().removedSets ) {
-                for (let iconData of store().removedSets) {
-                  if (iconData.source === i.source) return;
-                }
-              }
-              
-              i.enhancerIcons = true;
-              iconSets.push( renderIconSet(i) );
-            });
-          }
-
-          // Create icons overlay
-          const notionIcons = createElement(
-            '<div id="notion-icons"></div>'
+        const body = iconSet.lastChild;
+        if (hide && !isHidden) {
+          iconSet.setAttribute('hidden-set', '');
+          body.style.height = body.offsetHeight + 'px';
+          requestAnimationFrame(
+            () => body.style.height = 0
           );
-          iconSets.forEach( set => notionIcons.appendChild(set) );
-          
-          // Insert icons overlay
-          document.querySelector('.notion-media-menu > .notion-scroller')
-            .appendChild(notionIcons);
         }
-      }
+        else if (!hide && isHidden) {
+          iconSet.removeAttribute('hidden-set');
+          // get height
+          body.style.height = '';
+          const height = body.offsetHeight;
+          body.style.height = 0;
 
-      function renderIconSet(iconData) {
-        const iconSet = createElement('<div class="notion-icons--icon-set"></div>')
-
-        try {
-          const authorText = iconData.author 
-            ? iconData.authorUrl
-              ? ` by <a target="_blank" href="${iconData.authorUrl}" style="opacity: 0.6;">${iconData.author}</a>`
-              : ` by <span style="opacity: 0.6;">${iconData.author}</span>`
-            : '';
-
-          const iconSetToggle = createElement(
-            `<div class="notion-icons--toggle">
-              <svg viewBox="0 0 100 100" class="triangle"><polygon points="5.9,88.2 50,11.8 94.1,88.2"></polygon></svg>
-              <div style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">${iconData.name}${authorText}</div>
-              <div class="notion-icons--extra">
-                <div class="notion-icons--spinner">
-                  <img src="/images/loading-spinner.4dc19970.svg" />
-                </div>
-              </div>
-            </div>`
+          requestAnimationFrame(
+            () => body.style.height = height + 'px'
           );
-        
-          const iconSetBody = createElement(
-            '<div class="notion-icons--body"></div>'
+          setTimeout(
+            () => body.style.height = '', 200
           );
-
-          iconSet.appendChild(iconSetToggle);
-          iconSet.appendChild(iconSetBody);
-
-          const promiseArray = [];
-          // Render icons
-          for (let i = 0; i < (iconData.count || iconData.source.length); i++) {
-            const iconUrl = iconData.sourceUrl
-              ? Array.isArray(iconData.source)
-                ? `${iconData.sourceUrl}/${iconData.source[i]}.${iconData.extension}`
-                : `${iconData.sourceUrl}/${iconData.source}_${i}.${iconData.extension}`
-              : iconData.source[i];
-
-            const icon = createElement(`<div class="notion-icons--icon"></div>`);
-            if (iconData.enhancerIcons) {
-              // Load sprite sheet
-              icon.innerHTML = `
-                <div style="width: 32px; height: 32px; background: url(${iconsUrl}${iconData.source}/sprite.png) 0 -${i * 32}px no-repeat; background-size: 32px;">
-                </div>
-              `;
-            } else {
-              icon.innerHTML = `<img src="${iconUrl}" />`;
-              // Make sure icons load
-              promiseArray.push(
-                new Promise((resolve, reject) => {
-                  icon.firstChild.onload = resolve;
-                  icon.firstChild.onerror = () => {
-                    reject();
-                    icon.classList.add('error');
-                    icon.innerHTML = '!';
-                  };
-                })
-              );
-            }
-
-            iconSetBody.appendChild(icon);
-            garbageCollector.push(icon);
-            icon.addEventListener('click', () => setPageIcon(iconUrl));
-          }
-          
-          // Hide spinner after all icons finish loading
-          (async () => {      
-            const spinner = iconSetToggle.querySelector('.notion-icons--spinner'),
-              loadPromise = Promise.all(promiseArray);
-            loadPromise.then(
-              () => spinner.remove(),
-              () => {
-                iconSet.classList.add('alert')
-                spinner.remove();
-              }
-            )
-          })();
-
-          // Add hide icon set button
-          if (iconData.enhancerIcons) {
-            const removeButton = createElement(
-              '<div class="notion-icons--remove-button"></div>'
-            );
-            removeButton.innerHTML = modalIcons.remove;
-            removeButton.addEventListener('click', e => {
-              e.stopPropagation();
-              removeIconSet(iconData)
-            });
-            iconSet.querySelector('.notion-icons--extra')
-              .appendChild(removeButton);
-          }
-
-          // Set up Toggle
-          requestAnimationFrame(() => {
-            iconSetBody.style.height = iconSetBody.style.maxHeight = `${iconSetBody.offsetHeight}px`;
-            if (store().removed) iconSetToggle.click();
-          });
-          
-          iconSetToggle.addEventListener('click', e => {
-            if (e.target.nodeName === 'A') return;
-            toggleIconSet(iconSet);
-          });
-    
-        } catch (err) {
-          iconSet.classList.add('error');
-          iconSet.innerHTML = `Invalid Icon Set: ${iconData.name}`;
-        }
-
-        return iconSet;
-      }
-
-      function toggleIconSet(iconSet) {
-        iconSet.classList.toggle('hidden-set');
-        const iconSetBody = iconSet.lastChild;
-        if (iconSetBody) {
-          iconSetBody.style.height = iconSet.classList.contains('hidden-set')
-            ? 0
-            : iconSetBody.style.maxHeight;
         }
       }
 
       function removeIconSet(iconData) {
         if (!store().removedSets) store().removedSets = [];
-        for (const hiddenIconData of store().removedSets) {
-          if (hiddenIconData.source === iconData.source) return;
-        }
-        store().removedSets.push(iconData);
-        removeIcons();
+        if (!store().removedSets.includes(iconData.source))
+          store().removedSets.push(iconData.source);
+        removeIconsOverlay();
         renderIconsOverlay();
       }
 
       function restoreIconSet(iconData) {
         if (!store().removedSets) return;
-        for (let i = 0; i < store().removedSets.length; i++) {
-          if (store().removedSets[i].source === iconData.source)
-            store().removedSets.splice(i, 1);
-        }
-        removeIcons();
+        store().removedSets = store().removedSets
+          .filter(source => source !== iconData.source);
+        removeIconsOverlay();
         renderIconsOverlay();
       }
 
-      function removeIcons() {
-        const notionIcons = document.getElementById('notion-icons'),
-          activeBar = document.getElementById('notion-icons--active-bar'),
-          restoreButton = document.querySelector('.notion-icons--restore-button'),
-          overlayContainer = document.querySelector('.notion-icons--overlay-container');
+      // other actions
 
-        if (notionIcons)
-          notionIcons.remove();
+      // submit the icon's url as an image link
+      function setPageIcon(iconUrl) {
+        const input = document.querySelector('.notion-media-menu input[type=url]');
 
-        if (activeBar) {
-          activeBar.remove();
-          getTab(4).style.position = '';
-        }
-        if (getTab(3)) getTab(3).className = '';
+        const nativeInputValueSetter = Object.getOwnPropertyDescriptor(
+          window.HTMLInputElement.prototype, 'value'
+        ).set;
+        nativeInputValueSetter.call(input, iconUrl);
 
-        if (restoreButton)
-          restoreButton.remove();
+        input.dispatchEvent(
+          new Event('input', { bubbles: true })
+        );
 
-        if (overlayContainer)
-          closeRestoreOverlay();
+        input.dispatchEvent(
+          new KeyboardEvent('keydown', { bubbles: true, cancelable: true, keyCode: 13 })
+        );
 
-        if (garbageCollector.length) {
-          for (let i = 0; i < garbageCollector.length; i++) {
-            garbageCollector[i] = null;
+        removeIconsOverlay();
+      }
+
+      function filterIcons(input) {
+        const iconSets = document.querySelectorAll('.notion-icons--icon-set');
+        if (!iconSets) return;
+
+        // show all sets and icons
+        if (!input) return iconSets.forEach(set => {
+          set.style.display = '';
+          set.querySelectorAll('.notion-icons--icon')
+            .forEach(i => i.style.display = '');
+        });
+        // split input into an array
+        else input = input.toLowerCase().trim().split(' ');
+
+        const findMatch = icon => {
+          const iconFilters = filterMap.get(icon).slice();
+
+          // match whole words for the first terms
+          if (input.length > 1) {
+            let index;
+            for (let i of input.slice(0, -1)) {
+              if (
+                ( index = iconFilters.indexOf(i) ) >= 0
+              ) {
+                iconFilters.splice(index, 1);
+                continue;
+              }
+              return false;
+            }
           }
-          garbageCollector = [];
+
+          // match partially for the last term
+          for (let iconFilter of iconFilters) {
+            if (iconFilter.includes(input[input.length - 1])) {
+              return true;
+            };
+          }
+
+          return false;
         }
+
+        iconSets.forEach(set => {
+          let found = false;
+
+          set.querySelectorAll('.notion-icons--icon')
+            .forEach(i => {
+              // hide icon set
+              if (!filterMap.has(i)) return; 
+    
+              if (findMatch(i)) {
+                i.style.display = '';
+                found = true;
+              } else i.style.display = 'none';
+            });
+
+          if (!found) set.style.display = 'none';
+          else {
+            set.style.display = '';
+            toggleIconSet(set, false);
+          }
+        })
+      }
+
+      function renderTooltip(el, text) {
+        const rect = el.getBoundingClientRect();
+        const overlayContainer = document.querySelector('.notion-overlay-container')
+
+        const tooltip = createElement(`
+            <div class="notion-icons--tooltip" style="left: ${rect.left}px; top: ${rect.top}px;">
+              <div></div>
+            </div>
+          `), tooltipText = createElement(
+            `<div class="notion-icons--tooltip-text">${text}</div>`
+          );
+
+        tooltip.firstElementChild.appendChild(tooltipText);      
+        overlayContainer.appendChild(tooltip);
+
+        // prevent tooltip from rendering outside the window
+        const left = (tooltipText.offsetWidth / 2) - (rect.width / 2) - rect.left + 4;
+        if (left > 0) tooltipText.style.left = left + 'px';
       }
 
       document.addEventListener('readystatechange', () => {
@@ -465,16 +622,11 @@ module.exports = {
           const observer = new MutationObserver((list, observer) => {
             for ( let { addedNodes } of list) {
               if (
-                addedNodes[0] &&
-                addedNodes[0].style &&
-                document.querySelector('.notion-media-menu')
+                addedNodes[0]?.querySelector?.('.notion-media-menu') &&
+                /^pointer-events: auto; position: relative; z-index: \d;$/
+                  .test(addedNodes[0].style.cssText)
               ) {
-                for (let i = 0; i <= 3; i++) {
-                  if (addedNodes[0].style.cssText === `pointer-events: auto; position: relative; z-index: ${i};`) {
-                    addIconsTab();
-                    return;
-                  }
-                }
+                addIconsTab();
               }
             }
           });
@@ -484,6 +636,18 @@ module.exports = {
           });
         }
       });
+    
+      // helpers
+
+      function getTab(n, button = false) {
+        return document.querySelector(
+          `.notion-media-menu > :first-child > :first-child > :nth-child(${n}) ${button ? 'div' : ''}`
+        );
+      } 
+
+      function isCurrentTab(n) {
+        return getTab(n).childNodes.length > 1;
+      }
     },
   },
 };
