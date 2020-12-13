@@ -151,6 +151,7 @@ module.exports = {
                   (div) => lang.some((text) => div.textContent === text));
             }
             if (x$.sel(`.${blockClass}`) !== null ||
+                x$.sel('.notion-selectable-halo') === null ||
                 getLinkButton() === undefined) return;
             blockButton(getLinkButton().closest('[role="button"]'));
           }, x$.sel('.notion-overlay-container'), {
