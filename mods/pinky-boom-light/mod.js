@@ -8,7 +8,7 @@
 
 module.exports = {
     id: "fbef391c-58ff-4938-bd45-b85ae0435e4e",
-    name: "Pinky Boom Theme",
+    name: "pinky boom theme",
     tags: ['theme', 'light', 'pink'],
     desc: "pinkify your light theme",
     version: "1.0.0",
