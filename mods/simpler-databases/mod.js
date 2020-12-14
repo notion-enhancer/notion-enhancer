@@ -18,6 +18,8 @@ module.exports = {
   author: 'CloudHill',
   hacks: {
     'renderer/preload.js'(store, __exports) {
+      if (!store().blocks) store().blocks = {};
+
       const menuItems = [
         {
           key: 'replace_title',
@@ -429,7 +431,7 @@ module.exports = {
 
       function getView(collection) {
         return collection.querySelector('.notion-scroller [class$="view"]')
-          .className.split('-')[1]
+          ?.className.split('-')[1]
       }
 
       // add/remove keys to data-tweaks
