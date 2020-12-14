@@ -37,7 +37,7 @@ module.exports = {
       value: true,
     }, 
   ],
-  version: '1.0.0',
+  version: '1.1.0',
   author: 'CloudHill',
   hacks: {
     'renderer/preload.js'(store, __exports) {
@@ -96,22 +96,26 @@ module.exports = {
           }
 
           async function setIcons(buttons) {
-            const buttonList = buttons.children;
+            const $shareButton = buttons.querySelector('.notion-topbar-share-menu');
+            
             if (store().share) {
-              buttonList[0].classList.add('notion-topbar-icon');
-              buttonList[0].innerHTML = await icons.share;
+              $shareButton.classList.add('notion-topbar-icon');
+              $shareButton.innerHTML = await icons.share;
             }
+            
             const elements = {
-              updates: buttonList[1],
-              favorite: buttonList[2],
+              updates: $shareButton.nextElementSibling,
+              favorite: $shareButton.nextElementSibling.nextElementSibling,
             };
             for (let btn of icons.selected) {
               elements[btn].classList.add('notion-topbar-icon')
               elements[btn].prepend(
-                createElement(
-                  `<div>${(await icons[btn].off).toString()}        
-                  ${(await icons[btn].on).toString()}</div>`        
-                )
+                createElement(`
+                  <div>
+                    ${(await icons[btn].off)}        
+                    ${(await icons[btn].on)}
+                  </div>
+                `)
               );
             }
           }
