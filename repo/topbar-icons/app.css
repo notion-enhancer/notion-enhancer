@@ -10,7 +10,7 @@
   padding: 0 7px !important;
 }
 
-.notion-topbar-icon:not(:first-child) > *:not(div) {
+.notion-topbar-icon:not(.notion-topbar-share-menu) > *:not(div) {
   display: none !important;
 }
 
