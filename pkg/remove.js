@@ -1,111 +1,107 @@
 /*
  * notion-enhancer
- * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/) (https://dragonwocky.me/)
- * under the MIT license
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://dragonwocky.me/notion-enhancer) under the MIT license
  */
 
 'use strict';
 
-const fs = require('fs-extra'),
-  path = require('path'),
-  { readline, getNotionResources, __data } = require('./helpers.js');
+import fs from 'fs';
+import fsp from 'fs/promises';
+import check from './check.js';
+import { locations, line } from './helpers.js';
 
-// === title ===
-//  ...information
-//  * warning
-//  > prompt
-//  -- response
-//  ~~ exit
-// ### error ###
+export default async function ({
+  deleteConfig,
+  deleteCache,
+  __notion = locations.notion(),
+} = {}) {
+  const status = check({ __notion });
+  let spinner;
 
-module.exports = async function ({ delete_data, friendly_errors } = {}) {
-  try {
-    const __notion = getNotionResources(),
-      check_app = await require('./check.js')();
-    // extracted asar: modded
-    if (check_app.code > 1 && check_app.executable) {
-      console.info(` ...removing enhancements`);
-      await fs.remove(check_app.executable);
-    } else console.warn(` * enhancements not found: step skipped.`);
+  if (status.code > 1 && status.executable) {
+    spinner = line.spinner('  * removing enhancements').loop();
+    await fsp.rmdir(status.executable, { recursive: true });
+    spinner.stop();
+  } else console.warn(line.chalk.grey('  * enhancements not found: skipping'));
 
-    // restoring original asar
-    if (check_app.backup) {
-      console.info(' ...restoring backup');
-      await fs.move(check_app.backup, check_app.backup.replace(/\.bak$/, ''));
-    } else console.warn(` * backup not found: step skipped.`);
+  if (status.restored || status.backup) {
+    spinner = line.spinner('  * restoring backup').loop();
+    if (status.backup)
+      await fsp.rename(status.backup, status.backup.replace(/\.bak$/, ''));
+    spinner.stop();
+  } else console.warn(line.chalk.grey('  * backup not found: skipping'));
 
-    // cleaning data folder: ~/.notion-enhancer
-    if (await fs.pathExists(__data)) {
-      console.info(` ...data folder ${__data} found.`);
-      const valid = () =>
-        typeof delete_data === 'string' &&
-        ['y', 'n', ''].includes(delete_data.toLowerCase());
-      if (valid())
-        console.info(` > delete? [Y/n]: ${delete_data.toLowerCase()}`);
-      while (!valid()) {
-        process.stdout.write(' > delete? [Y/n]: ');
-        delete_data = await readline();
-      }
-      console.info(
-        delete_data.toLowerCase() === 'n'
-          ? ` -- keeping ${__data}`
-          : ` -- deleting ${__data}`
+  const prompt = {
+    prefix: line.chalk`  {inverse > delete? [Y/n]:} `,
+    responses: ['Y', 'y', 'N', 'n', ''],
+  };
+  for (let folder of [
+    {
+      description: 'config folder',
+      name: 'config',
+      action: deleteConfig,
+      location: locations.config(),
+    },
+    {
+      description: 'module cache',
+      name: 'cache',
+      action: deleteCache,
+      location: locations.cache(),
+    },
+  ]) {
+    if (fs.existsSync(folder.location)) {
+      console.info(`  * ${folder.description} ${folder.location} found`);
+      const action = prompt.responses.includes(folder.action)
+        ? folder.action
+        : (await line.read(prompt.prefix, prompt.responses)).toLowerCase();
+      if (action === folder.action)
+        console.info(
+          `${prompt.prefix}${folder.action} ${line.chalk.grey('(auto-filled)')}`
+        );
+      if (action !== 'n') {
+        spinner = line.spinner(`  * deleting ${folder.name}`).loop();
+        await fsp.rmdir(folder.location, { recursive: true });
+        spinner.stop();
+      } else console.info(`  * keeping ${folder.name}`);
+    } else
+      console.warn(
+        line.chalk.grey(`  * ${folder.description} not found: skipping`)
       );
-      if (delete_data.toLowerCase() !== 'n') await fs.remove(__data);
-    } else console.warn(` * ${__data} not found: step skipped.`);
+  }
 
-    // patching launch script target of custom wrappers
-    if (
-      [
-        '/opt/notion-app', // https://aur.archlinux.org/packages/notion-app/
-        '/opt/notion', // https://github.com/jaredallard/notion-app
-      ].includes(__notion)
-    ) {
-      console.info(
-        ' ...patching app launcher (notion-app linux wrappers only).'
-      );
-      for (let bin_path of [
-        `/usr/bin/${__notion.split('/')[2]}`,
-        `${__notion}/${__notion.split('/')[2]}`,
-      ]) {
-        const bin_script = await fs.readFile(bin_path, 'utf8');
-        if (!bin_script.includes('app.asar')) {
-          await fs.outputFile(
-            bin_path,
-            bin_script
-              .replace('electron app', 'electron app.asar')
-              .replace('electron6 app', 'electron6 app.asar')
-              .replace(/(.asar)+/g, '.asar')
-          );
-        }
+  if (
+    !fs.existsSync(locations.config()) &&
+    !fs.existsSync(locations.cache()) &&
+    fs.existsSync(locations.enhancer())
+  )
+    fsp.rmdir(locations.enhancer()).catch((err) => {});
+
+  if (
+    status.packed &&
+    [
+      '/opt/notion-app', // https://aur.archlinux.org/packages/notion-app/
+      '/opt/notion', // https://github.com/jaredallard/notion-app
+    ].includes(__notion)
+  ) {
+    spinner = line
+      .spinner(
+        line.chalk`  * patching app launcher {grey (notion-app linux wrappers only)}`
+      )
+      .loop();
+    for (let bin of [
+      `/usr/bin/${__notion.split('/')[2]}`,
+      `${__notion}/${__notion.split('/')[2]}`,
+    ]) {
+      const script = await fsp.readFile(bin, 'utf8');
+      if (!script.includes('app.asar')) {
+        await fsp.writeFile(
+          bin,
+          script.replace(/(electron\d*) app(.asar)+/g, '$1 app.asar')
+        );
       }
     }
-
-    console.info(' ~~ success.');
-    return true;
-  } catch (err) {
-    console.error('### ERROR ###');
-    if (err.code === 'EACCES' && friendly_errors) {
-      console.error(
-        `file access forbidden - ${
-          process.platform === 'win32'
-            ? 'make sure your user has elevated permissions.'
-            : `try running "sudo chmod -R a+wr ${err.path.replace(
-                'Notion.app',
-                'Notion'
-              )}" ${
-                err.dest
-                  ? `and/or "sudo chmod -R a+wr ${err.dest.replace(
-                      'Notion.app',
-                      'Notion'
-                    )}"`
-                  : ''
-              }`
-        }, and make sure path(s) are not open.`
-      );
-    } else if (['EIO', 'EBUSY'].includes(err.code) && friendly_errors) {
-      console.error("file access failed: make sure notion isn't running!");
-    } else console.error(err);
-    return false;
+    spinner.stop();
   }
-};
+  return true;
+}

@@ -1,70 +1,75 @@
 /*
  * notion-enhancer
- * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/) (https://dragonwocky.me/)
- * under the MIT license
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://dragonwocky.me/notion-enhancer) under the MIT license
  */
 
 'use strict';
 
-const fs = require('fs-extra'),
-  path = require('path'),
-  { getNotionResources } = require('./helpers.js'),
-  { version } = require('../package.json');
+import path from 'path';
+import fs from 'fs';
+import { locations, files } from './helpers.js';
 
-module.exports = async function () {
-  const __notion = getNotionResources(),
-    resolvePath = (filepath) => path.resolve(`${__notion}/${filepath}`),
-    pathExists = (filepath) => fs.pathExists(resolvePath(filepath)),
-    version_path = 'app/ENHANCER_VERSION.txt',
-    packed = await pathExists('app.asar.bak');
-  let backup = packed
-    ? (await pathExists('app.asar.bak'))
-      ? `app.asar.bak`
+export default function ({ __notion = locations.notion() }) {
+  const resolvePath = (filepath) => path.resolve(`${__notion}/${filepath}`),
+    pathExists = (filepath) => fs.existsSync(resolvePath(filepath)),
+    enhancerVersion = files.pkgJSON().version;
+  let notion = {
+    packed: pathExists('app.asar.bak'),
+  };
+  notion.backup = notion.packed
+    ? pathExists('app.asar.bak')
+      ? 'app.asar.bak'
       : undefined
-    : (await pathExists('app.bak'))
+    : pathExists('app.bak')
     ? 'app.bak'
     : undefined;
-  if (!(await pathExists(version_path))) {
-    let executable = (await pathExists('app'))
+  if (!pathExists('app/node_modules/notion-enhancer')) {
+    notion.executable = pathExists('app')
       ? 'app'
-      : (await pathExists('app.asar'))
+      : pathExists('app.asar')
       ? 'app.asar'
       : undefined;
-    if (!executable && backup) {
-      backup = resolvePath(backup);
-      executable = backup.replace(/\.bak$/, '');
-      await fs.move(backup, executable);
-    } else executable = executable ? resolvePath(executable) : '';
-    return executable
+    if (!notion.executable && notion.backup) {
+      notion.restored = true;
+      notion.backup = resolvePath(notion.backup);
+      notion.executable = notion.backup.replace(/\.bak$/, '');
+      fs.renameSync(notion.backup, notion.executable);
+    } else {
+      notion.executable = notion.executable
+        ? resolvePath(notion.executable)
+        : '';
+    }
+    return notion.executable
       ? {
           code: 0,
           msg: `notion-enhancer has not been applied.`,
-          executable,
+          executable: notion.executable,
+          restored: notion.restored || false,
         }
       : {
           code: 1,
           msg: `notion installation has been corrupted: no executable found.`,
+          restored: notion.restored || false,
         };
   }
-  const installed_version = await fs.readFile(
-      resolvePath(version_path),
-      'utf8'
-    ),
-    meta = {
-      version: installed_version,
-      executable: resolvePath('app'),
-      packed: resolvePath(packed),
-      backup: resolvePath(backup),
-    };
-  return installed_version === version
+  notion = {
+    version: files.readJSON(
+      resolvePath('app/node_modules/notion-enhancer/package.json')
+    ).version,
+    executable: resolvePath('app'),
+    packed: resolvePath(notion.packed),
+    backup: resolvePath(notion.backup),
+  };
+  return notion.version === enhancerVersion
     ? {
         code: 2,
-        msg: `notion-enhancer v${version} applied.`,
-        ...meta,
+        msg: `notion-enhancer v${enhancerVersion} applied.`,
+        ...notion,
       }
     : {
         code: 3,
-        msg: `notion-enhancer v${installed_version} found applied != v${version} package.`,
-        ...meta,
+        msg: `notion-enhancer v${notion.version} found applied != v${enhancerVersion} package.`,
+        ...notion,
       };
-};
+}

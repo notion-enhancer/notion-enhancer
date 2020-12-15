@@ -1,193 +1,133 @@
 /*
  * notion-enhancer
- * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/) (https://dragonwocky.me/)
- * under the MIT license
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://dragonwocky.me/notion-enhancer) under the MIT license
  */
 
 'use strict';
 
-const fs = require('fs-extra'),
-  path = require('path'),
-  { readdirIterator } = require('readdir-enhanced'),
-  { extractAll } = require('asar'),
-  { readline, realpath, getNotionResources } = require('./helpers.js'),
-  { version } = require('../package.json');
+import fs from 'fs';
+import fsp from 'fs/promises';
+import path from 'path';
+import asar from 'asar';
+import check from './check.js';
+import remove from './remove.js';
+import { locations, line, files } from './helpers.js';
 
-// === title ===
-//  ...information
-//  * warning
-//  > prompt
-//  -- response
-//  ~~ exit
-// ### error ###
-
-module.exports = async function ({ overwrite_version, friendly_errors } = {}) {
-  const __notion = getNotionResources();
-  try {
-    // handle pre-existing installations: app.asar present? version set in data folder? overwrite?
-    const check_app = await require('./check.js')();
-    switch (check_app.code) {
-      case 1:
-        throw Error(check_app.msg);
-      case 2:
-        console.info(`~~ notion-enhancer v${version} already applied.`);
-        return true;
-      case 3:
-        console.warn(` * ${check_app.msg}`);
-        const valid = () =>
-          typeof overwrite_version === 'string' &&
-          ['y', 'n', ''].includes(overwrite_version.toLowerCase());
-        if (valid()) {
-          console.info(
-            ` > overwrite? [Y/n]: ${overwrite_version.toLowerCase()}`
-          );
-        }
-        while (!valid()) {
-          process.stdout.write(' > overwrite? [Y/n]: ');
-          overwrite_version = await readline();
-        }
-        if (overwrite_version.toLowerCase() === 'n') {
-          console.info(' ~~ keeping previous version: exiting.');
-          return false;
-        }
-        console.info(
-          ' -- removing previous enhancements before applying new version.'
-        );
-        if (
-          !(await require('./remove.js')({
-            delete_data: 'n',
-            friendly_errors,
-          }))
-        ) {
-          return false;
-        }
-    }
-    if (check_app.executable.endsWith('app.asar')) {
-      console.info(' ...unpacking app.asar.');
-      const asar_bak = path.resolve(`${__notion}/app.asar.bak`);
-      extractAll(check_app.executable, `${path.resolve(`${__notion}/app`)}`);
-      if (await fs.pathExists(asar_bak)) fs.remove(asar_bak);
-      await fs.move(check_app.executable, asar_bak);
-    } else {
-      console.info(' ...backing up default app.');
-      await fs.copy(check_app.executable, check_app.executable + '.bak');
-    }
-
-    // patching launch script target of custom wrappers
-    if (
-      [
-        '/opt/notion-app', // https://aur.archlinux.org/packages/notion-app/
-        '/opt/notion', // https://github.com/jaredallard/notion-app
-      ].includes(__notion)
-    ) {
+export default async function ({
+  overwriteOld,
+  __notion = locations.notion(),
+} = {}) {
+  let status = check({ __notion }),
+    spinner;
+  switch (status.code) {
+    case 1:
+      throw Error(status.msg);
+    case 2:
       console.info(
-        ' ...patching app launcher (notion-app linux wrappers only).'
+        line.chalk`  {grey * notion-enhancer v${status.version} already applied}`
       );
-      for (let bin_path of [
-        `/usr/bin/${__notion.split('/')[2]}`,
-        `${__notion}/${__notion.split('/')[2]}`,
-      ]) {
-        const bin_script = await fs.readFile(bin_path, 'utf8');
-        if (bin_script.includes('app.asar')) {
-          await fs.outputFile(
-            bin_path,
-            bin_script
-              .replace('electron app.asar', 'electron app')
-              .replace('electron6 app.asar', 'electron6 app')
-          );
-        }
+      return true;
+    case 3:
+      console.warn(`  * ${status.msg}`);
+      const prompt = {
+          prefix: line.chalk`  {inverse > overwrite? [Y/n]:} `,
+          responses: ['Y', 'y', 'N', 'n', ''],
+        },
+        action = prompt.responses.includes(overwriteOld)
+          ? overwriteOld
+          : (await line.read(prompt.prefix, prompt.responses)).toLowerCase();
+      if (action.toLowerCase() === 'n') {
+        console.info('  * keeping previous version: exiting');
+        return false;
       }
-    }
+      await remove({ deleteConfig: 'n', deleteCache: 'n' });
+      status = check();
+  }
+  if (status.executable.endsWith('app.asar')) {
+    spinner = line.spinner('  * unpacking app files').loop();
+    asar.extractAll(
+      status.executable,
+      status.executable.replace(/\.asar$/, '')
+    );
+    spinner.stop();
+    spinner = line.spinner('  * backing up default app').loop();
+    await fsp.rename(status.executable, status.executable + '.bak');
+    status.executable = status.executable.replace(/\.asar$/, '');
+    spinner.stop();
+  } else {
+    spinner = line.spinner('  * backing up default app').loop();
+    await files.copyDir(status.executable, status.executable + '.bak');
+    spinner.stop();
+  }
 
-    // patching app properties so dark/light mode can be detected
-    if (
-      process.platform === 'darwin' &&
-      (await fs.pathExists(path.resolve(`${__notion}/../Info.plist`)))
-    ) {
-      fs.copy(
-        path.resolve(`${__dirname}/Info.plist`),
-        path.resolve(`${__notion}/../Info.plist`),
-        { overwrite: true }
-      );
-    }
-
-    for await (let insertion_target of readdirIterator(
-      path.resolve(`${__notion}/app`),
-      {
-        deep: (stats) => stats.path.indexOf('node_modules') === -1,
-        filter: (stats) => stats.isFile() && stats.path.endsWith('.js'),
-      }
-    )) {
-      const insertion_file = path.resolve(
-        `${__notion}/app/${insertion_target}`
-      );
-      if (insertion_target === 'main/main.js') {
-        // https://github.com/notion-enhancer/notion-enhancer/issues/160
-        // patch the notion:// url scheme/protocol to work on linux
-        fs.readFile(insertion_file, 'utf8', (err, data) => {
-          if (err) throw err;
-          fs.writeFile(
-            insertion_file,
-            `${data
-              .replace(
-                /process.platform === "win32"/g,
-                'process.platform === "win32" || process.platform === "linux"'
-              )
-              .replace(
-                /else \{[\s\n]+const win = createWindow_1\.createWindow\(relativeUrl\);/g,
-                'else if (relativeUrl) { const win = createWindow_1.createWindow(relativeUrl);'
-              )}\n\n//notion-enhancer\nrequire('${realpath(
-              __dirname
-            )}/loader.js')(__filename, exports);`,
-            'utf8',
-            (err) => {
-              if (err) throw err;
-            }
-          );
-        });
-      } else {
-        fs.appendFile(
-          insertion_file,
-          `\n\n//notion-enhancer\nrequire('${realpath(
-            __dirname
-          )}/loader.js')(__filename, exports);`
+  if (
+    status.packed &&
+    [
+      '/opt/notion-app', // https://aur.archlinux.org/packages/notion-app/
+      '/opt/notion', // https://github.com/jaredallard/notion-app
+    ].includes(__notion)
+  ) {
+    spinner = line
+      .spinner(
+        line.chalk`  * patching app launcher {grey (notion-app linux wrappers only)}`
+      )
+      .loop();
+    for (let bin of [
+      `/usr/bin/${__notion.split('/')[2]}`,
+      `${__notion}/${__notion.split('/')[2]}`,
+    ]) {
+      const script = await fsp.readFile(bin, 'utf8');
+      if (script.includes('app.asar')) {
+        await fsp.writeFile(
+          bin,
+          script.replace(/(electron\d*) app(.asar)+/g, '$1 app')
         );
       }
     }
-
-    // not resolved, nothing else in apply process depends on it
-    // so it's just a "let it do its thing"
-    console.info(' ...recording enhancement version.');
-    fs.outputFile(
-      path.resolve(`${__notion}/app/ENHANCER_VERSION.txt`),
-      version
-    );
-
-    console.info(' ~~ success.');
-    return true;
-  } catch (err) {
-    console.error('### ERROR ###');
-    if (err.code === 'EACCES' && friendly_errors) {
-      console.error(
-        `file access forbidden - ${
-          process.platform === 'win32'
-            ? 'make sure your user has elevated permissions.'
-            : `try running "sudo chmod -R a+wr ${err.path.replace(
-                'Notion.app',
-                'Notion'
-              )}" ${
-                err.dest
-                  ? `and/or "sudo chmod -R a+wr ${err.dest.replace(
-                      'Notion.app',
-                      'Notion'
-                    )}"`
-                  : ''
-              }`
-        }, and make sure path(s) are not open.`
-      );
-    } else if (['EIO', 'EBUSY'].includes(err.code) && friendly_errors) {
-      console.error("file access failed: make sure notion isn't running!");
-    } else console.error(err);
-    return false;
+    spinner.stop();
   }
-};
+
+  // todo: patch app properties so dark/light mode can be detected
+  // process.platform === 'darwin' && path.resolve(`${status.executable}/../../Info.plist`)
+
+  spinner = line
+    .spinner('  * inserting enhancements + recording version')
+    .loop();
+
+  for (let file of (await files.readDirDeep(status.executable))
+    .map((file) => file.path)
+    .filter((file) => file.endsWith('.js') && !file.includes('node_modules'))) {
+    const target = file.slice(status.executable.length + 1);
+    let replacer = path.resolve(
+      `${files.__dirname(import.meta)}/replacers/${target}`
+    );
+    if (fs.existsSync(replacer)) {
+      replacer = (await import(replacer)).default;
+      await replacer(file);
+    }
+    await fsp.appendFile(
+      file,
+      `\n\n//notion-enhancer\nrequire('notion-enhancer')('${target}', exports);`
+    );
+  }
+
+  const node_modules = path.resolve(
+    `${status.executable}/node_modules/notion-enhancer`
+  );
+  await files.copyDir(
+    `${files.__dirname(import.meta)}/../insert`,
+    node_modules
+  );
+  await fsp.writeFile(
+    path.resolve(`${node_modules}/package.json`),
+    `{
+      "name": "notion-enhancer",
+      "version": "${files.pkgJSON().version}",
+      "main": "loader.js"
+    }`
+  );
+
+  spinner.stop();
+  return true;
+}

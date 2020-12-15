@@ -6,190 +6,245 @@
 
 'use strict';
 
-const os = require('os'),
-  path = require('path'),
-  fs = require('fs-extra'),
-  { execSync } = require('child_process');
+import os from 'os';
+import fs from 'fs';
+import fsp from 'fs/promises';
+import path from 'path';
+import chalk from 'chalk';
+import { fileURLToPath } from 'url';
+import { execSync } from 'child_process';
 
-// used to differentiate between "enhancer failed" and "code broken" errors.
-class EnhancerError extends Error {
-  constructor(message) {
-    super(message);
-    this.name = 'EnhancerError';
-  }
-}
-
-// checks if being run on the windows subsystem for linux:
-// used to modify windows notion app.
-const is_wsl =
+const platform =
     process.platform === 'linux' &&
-    os.release().toLowerCase().includes('microsoft'),
-  // ~/.notion-enhancer absolute path.
-  __data = path.resolve(
-    `${
-      is_wsl
-        ? (() => {
-            const stdout = execSync('cmd.exe /c echo %systemdrive%%homepath%', {
-                encoding: 'utf8',
-              }),
-              drive = stdout[0];
-            return `/mnt/${drive.toLowerCase()}${stdout
-              .replace(/\\/g, '/')
-              .slice(2)
-              .trim()}`;
-          })()
-        : os.homedir()
-    }/.notion-enhancer`
-  );
+    os.release().toLowerCase().includes('microsoft')
+      ? 'wsl'
+      : process.platform,
+  locationCache = {};
 
-// transform a wsl filepath to its relative windows filepath if necessary.
-function realpath(hack_path) {
-  if (!is_wsl) return hack_path.replace(/\\/g, '/');
-  hack_path = fs.realpathSync(hack_path);
-  if (hack_path.startsWith('/mnt/')) {
-    hack_path = `${hack_path[5].toUpperCase()}:${hack_path.slice(6)}`;
-  } else hack_path = `//wsl$/${process.env.WSL_DISTRO_NAME}${hack_path}`;
-  return hack_path;
-}
-
-// gets possible system notion app filepaths.
-function getNotionResources() {
-  let folder = '';
-  switch (process.platform) {
-    case 'darwin':
-      folder = '/Applications/Notion.app/Contents/Resources';
-      break;
-    case 'win32':
-      folder = process.env.LOCALAPPDATA + '\\Programs\\Notion\\resources';
-      break;
-    case 'linux':
-      if (is_wsl) {
-        const stdout = execSync('cmd.exe /c echo %localappdata%', {
+export const locations = {
+  notion() {
+    if (locationCache.notion) return locationCache.notion;
+    switch (platform) {
+      case 'darwin':
+        locationCache.notion = '/Applications/Notion.app/Contents/Resources';
+        break;
+      case 'win32':
+        locationCache.notion =
+          process.env.LOCALAPPDATA + '\\Programs\\Notion\\resources';
+        break;
+      case 'wsl':
+        const [drive, ...windowsPath] = execSync(
+          'cmd.exe /c echo %localappdata%',
+          {
             encoding: 'utf8',
-          }),
-          drive = stdout[0];
-        folder = `/mnt/${drive.toLowerCase()}${stdout
-          .replace(/\\/g, '/')
-          .slice(2)
-          .trim()}/Programs/Notion/resources`;
-      } else {
-        for (let loc of [
+            stdio: 'pipe',
+          }
+        );
+        locationCache.notion = `/mnt/${drive.toLowerCase()}${windowsPath
+          .slice(1, -2)
+          .join('')
+          .replace(/\\/g, '/')}/Programs/Notion/resources`;
+        break;
+      case 'linux':
+        for (let folder of [
           '/usr/lib/notion-desktop/resources', // https://github.com/davidbailey00/notion-deb-builder/
           '/opt/notion-app', // https://aur.archlinux.org/packages/notion-app/
           '/opt/notion', // https://github.com/jaredallard/notion-app
-        ]) {
-          if (fs.pathExistsSync(loc)) folder = loc;
-        }
-      }
-  }
-  if (!folder)
-    throw new EnhancerError('nothing found: platform not supported.');
-  return folder;
-}
-
-// lists/fetches all available extensions + themes
-function getEnhancements() {
-  const modules = {
-    loaded: [],
-    invalid: [],
-    dirs: fs
-      .readdirSync(path.resolve(`${__dirname}/../mods`))
-      .filter((dir) => !dir.startsWith('.')),
-    IDs: [],
-  };
-  for (let dir of modules.dirs) {
-    try {
-      const mod = require(`../mods/${dir}/mod.js`);
-      if (!mod.tags) mod.tags = [];
-      if (
-        !mod.id ||
-        modules.IDs.includes(mod.id) ||
-        !mod.name ||
-        !mod.version ||
-        !mod.author ||
-        !mod.tags.every((tag) => typeof tag === 'string') ||
-        (mod.fonts && !mod.fonts.every((font) => typeof font === 'string')) ||
-        (mod.options &&
-          !mod.options.every((opt) =>
-            ['toggle', 'select', 'input', 'file', 'color'].includes(opt.type)
-          ))
-      )
-        throw Error;
-      mod.defaults = {};
-      for (let opt of mod.options || []) {
-        if (
-          Object.keys(opt.platformOverwrite || {}).some(
-            (platform) => process.platform === platform
-          )
-        ) {
-          mod.defaults[opt.key] = opt.platformOverwrite[process.platform];
-        } else
-          mod.defaults[opt.key] = Array.isArray(opt.value)
-            ? opt.value[0]
-            : opt.value;
-      }
-      modules.IDs.push(mod.id);
-      modules.loaded.push({
-        ...mod,
-        dir,
-      });
-      if (!mod.tags.includes('core')) mod.alwaysActive = false;
-    } catch (err) {
-      // console.error(err);
-      modules.invalid.push(dir);
+        ])
+          if (fs.existsSync(folder)) locationCache.notion = folder;
     }
-  }
-  modules.loaded = modules.loaded.sort((a, b) => a.name.localeCompare(b.name));
-  const priority = require('./store.js')('mods', { priority: [] }).priority;
-  modules.loaded = [
-    ...modules.loaded.filter((m) => m.tags.includes('core')),
-    ...modules.loaded.filter(
-      (m) => !m.tags.includes('core') && !priority.includes(m.id)
-    ),
-    ...priority
-      .map((id) => modules.loaded.find((m) => m.id === id))
-      .filter((m) => m),
-  ];
-  return modules;
-}
+    return locationCache.notion;
+  },
+  enhancer() {
+    if (locationCache.enhancer) return locationCache.enhancer;
+    let home = os.homedir();
+    if (platform === 'wsl') {
+      const [drive, ...windowsPath] = execSync(
+        'cmd.exe /c echo %systemdrive%%homepath%',
+        {
+          encoding: 'utf8',
+          stdio: 'pipe',
+        }
+      );
+      home = `/mnt/${drive.toLowerCase()}${windowsPath
+        .slice(1, -2)
+        .join('')
+        .replace(/\\/g, '/')}`;
+    }
+    locationCache.enhancer = path.resolve(`${home}/.notion-enhancer`);
+    return locationCache.enhancer;
+  },
+  config() {
+    return `${this.enhancer()}/config`;
+  },
+  cache() {
+    return `${this.enhancer()}/cache`;
+  },
+};
 
-// attempts to read a JSON file, falls back to empty object.
-function getJSON(from) {
-  try {
-    return fs.readJsonSync(from);
-  } catch (err) {
-    return {};
-  }
-}
+export const line = {
+  chalk: chalk,
+  style: {
+    title: chalk.bold.rgb(245, 245, 245),
+  },
+  clear: () => process.stdout.write('\r\x1b[K'),
+  write: (string) => process.stdout.write(string),
+  prev: (n = 1) => process.stdout.write(`\x1b[${n}A`),
+  next: (n = 1) => process.stdout.write(`\x1b[${n}B`),
+  forward: (n = 1) => process.stdout.write(`\x1b[${n}C`),
+  back: (n = 1) => process.stdout.write(`\x1b[${n}D`),
+  new: () => process.stdout.write('\n'),
+  async read(prompt = '', values = []) {
+    let input = '';
+    this.write(prompt);
+    this.new();
+    do {
+      for (let i = 0; i < prompt.split('\n').length; i++) {
+        this.prev();
+        this.clear();
+      }
+      this.write(prompt);
+      input = await new Promise((res, rej) => {
+        process.stdin.resume();
+        process.stdin.setEncoding('utf8');
+        process.stdin.once('data', (key) => {
+          process.stdin.pause();
+          res(key.slice(0, -1));
+        });
+      });
+    } while (values.length && !values.includes(input));
+    return input;
+  },
+  spinner(
+    message,
+    frames = ['⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏'],
+    complete = '→'
+  ) {
+    const spinner = {
+      message,
+      frames,
+      complete,
+      interval: undefined,
+      i: 0,
+    };
+    spinner.step = () => {
+      spinner.i = (spinner.i + 1) % spinner.frames.length;
+      this.clear();
+      this.write(
+        line.chalk`${spinner.message} {bold.yellow ${frames[spinner.i]}} `
+      );
+      return spinner;
+    };
+    spinner.loop = (ms = 80) => {
+      if (!spinner.interval) spinner.interval = setInterval(spinner.step, ms);
+      return spinner;
+    };
+    spinner.stop = () => {
+      if (spinner.interval) clearInterval(spinner.interval);
+      this.clear();
+      this.write(line.chalk`${spinner.message} {bold.yellow ${complete}}\r\n`);
+      return spinner;
+    };
+    spinner.step();
+    return spinner;
+  },
+};
 
-// wait for console input, returns keys when enter pressed.
-function readline() {
-  return new Promise((res, rej) => {
-    process.stdin.resume();
-    process.stdin.setEncoding('utf8');
-    process.stdin.on('data', (key) => {
-      if (key === '\u0003') process.exit(); // CTRL+C
-      process.stdin.pause();
-      res(key.trim());
-    });
-  });
-}
+export const cli = {
+  args() {
+    return process.argv.slice(2).filter((arg) => !arg.startsWith('-'));
+  },
+  options(aliases = {}) {
+    return new Map(
+      process.argv
+        .slice(2)
+        .filter((arg) => arg.startsWith('-'))
+        .map((arg) => {
+          let opt,
+            val = true;
+          if (arg.startsWith('--')) {
+            if (arg.includes('=')) {
+              [opt, val] = arg.slice(2).split(/=((.+)|$)/);
+            } else opt = arg.slice(2);
+          } else {
+            opt = arg.slice(1);
+          }
+          if (parseInt(val).toString() === val) val = +val;
+          if (aliases[opt]) opt = aliases[opt];
+          return [opt, val];
+        })
+    );
+  },
+  help({
+    name = process.argv[1].split('/').reverse()[0],
+    usage = `${name} <command> [options]`,
+    version = '',
+    link = '',
+    commands = [],
+    options = [],
+  }) {
+    if (version) version = ' v' + version;
+    if (link) link = '\n' + link;
+    const cmdPad = Math.max(...commands.map((cmd) => cmd[0].length));
+    commands = commands
+      .map((cmd) => `  ${cmd[0].padEnd(cmdPad)}  :  ${cmd[1]}`)
+      .join('\n');
+    const optPad = Math.max(...options.map((opt) => opt[0].length));
+    options = options
+      .map((opt) => `  ${opt[0].padEnd(optPad)}  :  ${opt[1]}`)
+      .join('\n');
+    return `${line.style.title(name)}${line.style.title(version)}${link}
+\n${line.style.title('USAGE')}
+  ${line.chalk.yellow('$')} ${usage}
+\n${line.style.title('COMMANDS')}\n${commands}
+\n${line.style.title('OPTIONS')}\n${options}`;
+  },
+};
 
-// construct a HTMLElement from a string
-function createElement(html) {
-  const template = document.createElement('template');
-  template.innerHTML = html.trim();
-  return template.content.firstElementChild;
-}
-
-module.exports = {
-  EnhancerError,
-  is_wsl,
-  __data,
-  realpath,
-  getNotionResources,
-  getEnhancements,
-  getJSON,
-  readline,
-  createElement,
+export const files = {
+  __dirname: (meta) => path.dirname(fileURLToPath(meta.url)),
+  readJSON(file, defaults = {}) {
+    try {
+      return {
+        ...defaults,
+        ...JSON.parse(fs.readFileSync(path.resolve(file))),
+      };
+    } catch {
+      return defaults;
+    }
+  },
+  pkgJSON() {
+    return this.readJSON(`${this.__dirname(import.meta)}/../package.json`);
+  },
+  async copyDir(src, dest) {
+    src = path.resolve(src);
+    dest = path.resolve(dest);
+    if (!fs.existsSync(dest)) await fsp.mkdir(dest);
+    for (let file of await fsp.readdir(src)) {
+      const stat = await fsp.lstat(path.join(src, file));
+      if (stat.isDirectory()) {
+        await this.copyDir(path.join(src, file), path.join(dest, file));
+      } else if (stat.isSymbolicLink()) {
+        await fsp.symlink(
+          await fsp.readlink(path.join(src, file)),
+          path.join(dest, file)
+        );
+      } else await fsp.copyFile(path.join(src, file), path.join(dest, file));
+    }
+    return true;
+  },
+  async readDirDeep(dir) {
+    dir = path.resolve(dir);
+    let files = [];
+    for (let file of await fsp.readdir(dir)) {
+      file = path.join(dir, file);
+      const stat = await fsp.lstat(file);
+      if (stat.isDirectory()) {
+        files = files.concat(await this.readDirDeep(file));
+      } else if (stat.isSymbolicLink()) {
+        files.push({ type: 'symbolic', path: file });
+      } else files.push({ type: 'file', path: file });
+    }
+    return files;
+  },
 };
