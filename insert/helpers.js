@@ -19,6 +19,7 @@ enhancements.validate = (mod, others = []) => {
       typeof mod.id === 'string',
       !others.find((m) => m.id === mod.id),
       typeof mod.name === 'string',
+      mod.desc ? typeof mod.desc === 'string' : true,
       typeof mod.version === 'string',
       Array.isArray(mod.authors),
       mod.authors.every(
@@ -98,6 +99,7 @@ enhancements.get = (id) => {
   return all.find((m) => m.id === id);
 };
 enhancements.styles = (id) => {
+  if (!helperCache.styles) helperCache.styles = {};
   if (helperCache.styles[id]) return helperCache.styles[id];
   const mod = enhancements.get(id);
   helperCache.styles[id] = {};
