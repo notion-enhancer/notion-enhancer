@@ -11,7 +11,7 @@ const os = require('os'),
   fs = require('fs-extra'),
   { execSync } = require('child_process');
 
-// used to differentiate between "enhancer failed" and "code broken" errors.
+// used to differentiate between "enhancer failed' and "code broken" errors.
 class EnhancerError extends Error {
   constructor(message) {
     super(message);
