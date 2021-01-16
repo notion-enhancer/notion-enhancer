@@ -11,7 +11,7 @@ const os = require('os'),
   fs = require('fs-extra'),
   { execSync } = require('child_process');
 
-// used to differentiate between "enhancer failed" and "code broken" errors.
+// used to differentiate between "enhancer failed' and "code broken" errors.
 class EnhancerError extends Error {
   constructor(message) {
     super(message);
@@ -57,7 +57,12 @@ function getNotionResources() {
   let folder = '';
   switch (process.platform) {
     case 'darwin':
-      folder = '/Applications/Notion.app/Contents/Resources';
+      for (let loc of [
+        `/Users/${process.env.USER}/Applications/Notion.app/Contents/Resources`, // Notion is installed only for the current user
+        '/Applications/Notion.app/Contents/Resources' // Notion is installed globally
+      ]) {
+        if (fs.pathExistsSync(loc)) folder = loc;
+      }
       break;
     case 'win32':
       folder = process.env.LOCALAPPDATA + '\\Programs\\Notion\\resources';
