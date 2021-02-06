@@ -15,9 +15,9 @@ for support, join the [discord server](https://discord.gg/sFWPXtA).
 ### supported desktop clients
 
 - the [official windows/mac releases](https://notion.so/desktop).
+- [notion-linux](https://github.com/davidbailey00/notion-linux) which provides pre-enhanced packages.
 - the arch linux AUR [notion-app](https://aur.archlinux.org/packages/notion-app/) package.
 - the linux [notion-app](https://github.com/jaredallard/notion-app) installer.
-- the linux [notion-deb-builder](https://github.com/davidbailey00/notion-deb-builder).
 
 outdated notion versions (< 2.0.10) probably won't work.
 
@@ -27,6 +27,8 @@ a chrome extension may be coming soon for web client support.
 
 ## installation
 
+> **if you are using a Debian-based or RPM-based Linux distribution,** you can install pre-enhanced packages from [notion-linux](https://github.com/davidbailey00/notion-linux), instead of following these instructions.
+>
 > **if you are updating from v0.7.0 or earlier,** things have changed, more information is available
 > in this [update guide](UPDATING.md). please read that before following these instructions.
 
