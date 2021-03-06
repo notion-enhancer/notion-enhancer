@@ -1,5 +1,11 @@
 # <img src="./mods/core/icons/mac+linux.png" height="20px"> notion-enhancer
 
+this is fork from https://github.com/notion-enhancer/notion-enhancer
+
+to install 
+    ```
+npm i https://github.com/superastorh/notion-enhancer
+    ```
 notion.so is a pretty awesome tool already, but there's always room for improvements.
 it might just be a preference, it might be something crucial to your setup,
 it might be something users have been asking for for a long time,
