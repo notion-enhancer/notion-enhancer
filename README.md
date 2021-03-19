@@ -1,13 +1,5 @@
 # <img src="./mods/core/icons/mac+linux.png" height="20px"> notion-enhancer
 
-this is fork from https://github.com/notion-enhancer/notion-enhancer
-
-to install 
-
-```
-npm i -g https://github.com/superastorh/notion-enhancer
-```
-    
 notion.so is a pretty awesome tool already, but there's always room for improvements.
 it might just be a preference, it might be something crucial to your setup,
 it might be something users have been asking for for a long time,
@@ -51,20 +43,20 @@ a chrome extension may be coming soon for web client support.
 - type and enter the following line(s) based on your operating system, if there are multiple lines, make sure to enter them _one by one_ .
   - **windows 10:**
     ```
-    npm i -g https://github.com/superastorh/notion-enhancer
+    npm i -g notion-enhancer
     ```
   - **mac:** this may ask you to enter your password, instead of hiding your password with \*\*\* symbols, mac terminal hides it by making it invisible. simply type your password and click enter.
     ```
     sudo chmod -R a+wr /usr/local/lib/node_modules
     sudo chmod -R a+wr /usr/local/bin
     sudo chmod -R a+wr /Applications/Notion.app/Contents/Resources
-    npm i -g https://github.com/superastorh/notion-enhancer
+    npm i -g notion-enhancer
     ```
   - **debian/ubuntu, chromeOS, wsl (to modify the win10 app):**
     ```
     bash curl -sL https://deb.nodesource.com setup_current.x | sudo -E bash -
     sudo apt-get install -y nodejs
-    npm i -g https://github.com/superastorh/notion-enhancer
+    npm i -g notion-enhancer
     ```
   - **arch linux, manjaro:**
     - install the [aur package](https://aur.archlinux.org/packages/notion-enhancer) with your aur helper (e.g. `yay -S notion-enhancer`).
