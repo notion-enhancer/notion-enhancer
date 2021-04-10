@@ -60,6 +60,7 @@ a chrome extension may be coming soon for web client support.
     ```
   - **arch linux, manjaro:**
     - install the [aur package](https://aur.archlinux.org/packages/notion-enhancer) with your aur helper (e.g. `yay -S notion-enhancer`).
+- ⚠ important - on the notion desktop app version 2.0.13 and newer, a small fix is necessary to make notion enhancer work. follow the [steps here](https://www.notion.so/hack-notion-enhancer-v0-10-2-to-work-with-notion-s-v2-0-13-app-a4ab1267e67b4126b6448641ca4a0041) to fix notion. there's also a [video version](https://www.youtube.com/watch?v=vcwUpwpQ2sY) of the instructions.
 
 ### command-line interface
 
