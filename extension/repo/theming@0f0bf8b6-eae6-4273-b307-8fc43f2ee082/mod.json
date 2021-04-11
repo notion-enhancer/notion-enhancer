@@ -1,0 +1,18 @@
+{
+  "name": "theming",
+  "id": "0f0bf8b6-eae6-4273-b307-8fc43f2ee082",
+  "description": "the default theme variables, required by other themes & extensions.",
+  "version": "0.11.0",
+  "tags": ["core", "theme"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "url": "https://dragonwocky.me/",
+      "icon": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "css": {
+    "client": ["client.css"]
+  }
+}

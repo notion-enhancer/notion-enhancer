@@ -1,0 +1,34 @@
+{
+  "name": "notion-enhancer",
+  "author": "dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)",
+  "description": "an enhancer/customiser for the all-in-one productivity workspace notion.so",
+  "homepage_url": "https://notion-enhancer.github.io",
+  "version": "0.11.0",
+  "icons": {
+    "16": "icons/colour-x16.png",
+    "32": "icons/colour-x32.png",
+    "48": "icons/colour-x48.png",
+    "128": "icons/colour-x128.png"
+  },
+  "manifest_version": 3,
+  "background": {
+    "service_worker": "src/worker.js"
+  },
+  "action": {
+    "default_popup": "src/gui.html"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": ["registry.json", "src/*", "repo/*"],
+      "matches": ["https://*.notion.so/*"]
+    }
+  ],
+  "content_scripts": [
+    {
+      "matches": ["https://*.notion.so/*"],
+      "js": ["content-loader.js"]
+    }
+  ],
+  "permissions": ["activeTab"],
+  "host_permissions": ["https://*.notion.so/*"]
+}
