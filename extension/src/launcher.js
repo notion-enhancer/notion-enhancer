@@ -14,6 +14,9 @@ export default async () => {
       for (let sheet of mod.css?.client || []) {
         web.loadStyleset(`repo/${mod.dir}/${sheet}`);
       }
+      for (let script of mod.js?.client || []) {
+        import(chrome.runtime.getURL(`repo/${mod.dir}/${script}`));
+      }
     }
   });
 };

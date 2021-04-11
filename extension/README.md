@@ -10,4 +10,4 @@ bringing all your favourite notion-enhancer features to the browser (wip)
 >
 > i'll be building the enhancer chrome-first from now on, since it'll be more limited there (and it's easier to add extra features when porting than to take features out), and then releasing the app loader a little afterwards. both the app loader and the chrome extension will source the same themes & extensions from the mod repository, and updates & releases of individual mods won't require waiting for the enhancer version anymore.
 
-- from the #announcements channel of the [notion-enhancer discord](https://discord.gg/sFWPXtA)
+-- from the #announcements channel of the [notion-enhancer discord](https://discord.gg/sFWPXtA)

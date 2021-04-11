@@ -6,7 +6,7 @@
 
 'use strict';
 
-const registry = fetch(chrome.runtime.getURL('registry.json')).then((response) =>
+const registry = fetch(chrome.runtime.getURL('/registry.json')).then((response) =>
   response.json()
 );
 
