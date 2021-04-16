@@ -11,15 +11,13 @@
     "128": "icons/colour-x128.png"
   },
   "manifest_version": 3,
+  "action": {},
   "background": {
     "service_worker": "worker.js"
   },
-  "action": {
-    "default_popup": "src/gui.html"
-  },
   "web_accessible_resources": [
     {
-      "resources": ["registry.json", "src/*", "repo/*"],
+      "resources": ["icons/*", "src/*", "repo/*"],
       "matches": ["https://*.notion.so/*"]
     }
   ],
@@ -29,6 +27,5 @@
       "js": ["content-loader.js"]
     }
   ],
-  "permissions": ["activeTab"],
   "host_permissions": ["https://*.notion.so/*"]
 }

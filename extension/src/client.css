@@ -1,0 +1,46 @@
+/*
+ * notion-enhancer
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+.enhancer--sidebarMenuTrigger {
+  user-select: none;
+  transition: background 20ms ease-in 0s;
+  cursor: pointer;
+}
+.enhancer--sidebarMenuTrigger:hover {
+  background: var(--theme--button-hover);
+}
+.enhancer--sidebarMenuTrigger svg {
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+}
+.enhancer--sidebarMenuTrigger > div {
+  display: flex;
+  align-items: center;
+  min-height: 27px;
+  font-size: 14px;
+  padding: 2px 14px;
+  width: 100%;
+}
+.enhancer--sidebarMenuTrigger > div > div:first-child {
+  flex-shrink: 0;
+  flex-grow: 0;
+  border-radius: 3px;
+  color: var(--theme--text_sidebar);
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+}
+.enhancer--sidebarMenuTrigger > div > div:last-child {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  min-width: 0px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
