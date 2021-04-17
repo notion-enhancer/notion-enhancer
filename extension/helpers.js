@@ -5,9 +5,15 @@
  */
 
 'use strict';
-const ERROR = Symbol();
+export const ERROR = Symbol();
 
-const web = {};
+export const env = {};
+env.name = 'browser';
+
+env.openEnhancerMenu = () => chrome.runtime.sendMessage({ type: 'enhancerMenu.open' });
+
+export const web = {};
+
 web.whenReady = (selectors = [], callback = () => {}) => {
   return new Promise((res, rej) => {
     function onLoad() {
@@ -29,11 +35,20 @@ web.whenReady = (selectors = [], callback = () => {}) => {
     } else onLoad();
   });
 };
+
+/**
+ * @param {string} html
+ * @returns HTMLElement
+ */
 web.createElement = (html) => {
   const template = document.createElement('template');
   template.innerHTML = html.trim();
   return template.content.firstElementChild;
 };
+
+/**
+ * @param {string} sheet
+ */
 web.loadStyleset = (sheet) => {
   document.head.appendChild(
     web.createElement(`<link rel="stylesheet" href="${chrome.runtime.getURL(sheet)}">`)
@@ -41,25 +56,53 @@ web.loadStyleset = (sheet) => {
   return true;
 };
 
-//
+/**
+ * @param {array} keys
+ * @param {function} callback
+ */
+web.hotkeyListener = (keys, callback) => {
+  if (!web._hotkeyListener) {
+    web._hotkeys = [];
+    web._hotkeyListener = document.addEventListener('keyup', (event) => {
+      for (let hotkey of web._hotkeys) {
+        const matchesEvent = hotkey.keys.every((key) => {
+          const modifiers = {
+            altKey: 'alt',
+            ctrlKey: 'ctrl',
+            metaKey: 'meta',
+            shiftKey: 'shift',
+          };
+          for (let modifier in modifiers) {
+            if (key.toLowerCase() === modifiers[modifier] && event[modifier]) return true;
+          }
+          const pressedKeycode = [event.key.toLowerCase(), event.code.toLowerCase()];
+          if (pressedKeycode.includes(key.toLowerCase())) return true;
+        });
+        if (matchesEvent) hotkey.callback();
+      }
+    });
+  }
+  web._hotkeys.push({ keys, callback });
+};
 
-const fs = {};
+export const fs = {};
 
+/**
+ * @param {string} path
+ */
 fs.getJSON = (path) => fetch(chrome.runtime.getURL(path)).then((res) => res.json());
 fs.getText = (path) => fetch(chrome.runtime.getURL(path)).then((res) => res.text());
 
 fs.isFile = async (path) => {
   try {
-    await fetch(chrome.runtime.getURL(`/repo/${path}`));
+    await fetch(chrome.runtime.getURL(`repo/${path}`));
     return true;
   } catch {
     return false;
   }
 };
 
-//
-
-const regexers = {
+export const regexers = {
   uuid(str) {
     const match = str.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
     if (match && match.length) return true;
@@ -92,9 +135,7 @@ const regexers = {
   },
 };
 
-//
-
-const registry = {};
+export const registry = {};
 
 registry.validate = async (mod, err, check) =>
   Promise.all(
@@ -135,7 +176,7 @@ registry.validate = async (mod, err, check) =>
       ).then((css) => {
         if (css === ERROR) return ERROR;
         if (!css) return undefined;
-        return ['frame', 'client', 'gui']
+        return ['frame', 'client', 'menu']
           .filter((dest) => css[dest])
           .map(async (dest) =>
             check(`css.${dest}`, css[dest], Array.isArray(css[dest])).then((files) =>
@@ -208,7 +249,7 @@ registry.validate = async (mod, err, check) =>
         if (filepath === ERROR) return ERROR;
         if (!filepath) return undefined;
         try {
-          const options = await fs.getJSON(`/repo/${mod._dir}/${mod.options}`);
+          const options = await fs.getJSON(`repo/${mod._dir}/${mod.options}`);
           // todo: validate options
         } catch {
           err(`invalid options ${filepath}`);
@@ -220,10 +261,10 @@ registry.validate = async (mod, err, check) =>
 registry.get = async (callback = () => {}) => {
   registry._list = [];
   if (!registry._errors) registry._errors = [];
-  for (const dir of await fs.getJSON('/repo/registry.json')) {
+  for (const dir of await fs.getJSON('repo/registry.json')) {
     const err = (message) => [registry._errors.push({ source: dir, message }), ERROR][1];
     try {
-      const mod = await fs.getJSON(`/repo/${dir}/mod.json`);
+      const mod = await fs.getJSON(`repo/${dir}/mod.json`);
       mod._dir = dir;
       mod.tags = mod.tags ?? [];
       mod.css = mod.css ?? [];
@@ -247,4 +288,36 @@ registry.errors = async (callback = () => {}) => {
   return registry._errors;
 };
 
-export { web, fs, regexers, registry };
+export const markdown = {};
+
+markdown.simple = (string) =>
+  string
+    .split('\n')
+    .map((line) =>
+      line
+        .trim()
+        .replace(/\s+/g, ' ')
+        // > quote
+        .replace(/^>\s+(.+)$/g, '<blockquote>$1</blockquote>')
+        // ~~strikethrough~~
+        .replace(/([^\\])?~~((?:(?!~~).)*[^\\])~~/g, '$1<s>$2</s>')
+        // __underline__
+        .replace(/([^\\])?__((?:(?!__).)*[^\\])__/g, '$1<u>$2</u>')
+        // **bold**
+        .replace(/([^\\])?\*\*((?:(?!\*\*).)*[^\\])\*\*/g, '$1<b>$2</b>')
+        // *italic*
+        .replace(/([^\\])?\*([^*]*[^\\*])\*/g, '$1<i>$2</i>')
+        // _italic_
+        .replace(/([^\\])?_([^_]*[^\\_])_/g, '$1<i>$2</i>')
+        // `code`
+        .replace(/([^\\])?`([^`]*[^\\`])`/g, '$1<code>$2</code>')
+        // ![image_title](source)
+        .replace(
+          /([^\\])?\!\[([^\]]*[^\\\]]?)\]\(([^)]*[^\\)])\)/g,
+          `$1<img alt="$2" src="$3" onerror="this.remove()">`
+        )
+        // [link](destination)
+        .replace(/([^\\])?\[([^\]]*[^\\\]]?)\]\(([^)]*[^\\)])\)/g, '$1<a href="$3">$2</a>')
+    )
+    .map((line) => (line.startsWith('<blockquote>') ? line : `<p>${line}</p>`))
+    .join('');

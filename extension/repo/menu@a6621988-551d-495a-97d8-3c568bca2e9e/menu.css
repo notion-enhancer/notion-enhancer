@@ -1,0 +1,147 @@
+/*
+ * notion-enhancer core: menu
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+* {
+  box-sizing: border-box;
+  word-break: break-word;
+  text-size-adjust: 100%;
+  font-family: var(--theme--font_sans);
+  color: var(--theme--text);
+}
+
+body {
+  padding: 1.5rem;
+  background: var(--theme--sidebar);
+}
+
+header {
+  display: flex;
+  margin-bottom: 1.25rem;
+}
+header > * {
+  margin: 0 1.25rem 0 0;
+  font-size: 1.25rem;
+}
+header img {
+  height: 100%;
+  width: 24px;
+}
+header h1 a:not([data-active]) {
+  text-decoration: none;
+}
+
+main section[data-container='library'] {
+  display: grid;
+  grid-gap: 1.25em;
+  grid-template-columns: 1fr 1fr 1fr;
+}
+main section[data-container='library'] article {
+  border-radius: 5px;
+  box-shadow: rgb(0 0 0 / 10%) 0px 20px 25px -5px, rgb(0 0 0 / 4%) 0px 10px 10px -5px;
+  border: 1px solid var(--theme--divider);
+  background: var(--theme--page);
+}
+main section[data-container='library'] article > img {
+  max-width: 100%;
+  border-bottom: 1px solid var(--theme--divider);
+}
+main section[data-container='library'] article > div {
+  padding: 1em;
+  border-bottom: 1px solid var(--theme--divider);
+}
+.library--title {
+  margin: 0;
+}
+.library--version {
+  font-weight: normal;
+  font-size: 0.8rem;
+  border-radius: 5px;
+  padding: 0.125rem 0.25rem;
+  background: var(--theme--tag_default);
+  color: var(--theme--tag_default-text);
+}
+.library--toggle_label {
+  align-items: center;
+  display: flex;
+  cursor: pointer;
+}
+.library--toggle {
+  position: relative;
+  margin-left: auto;
+}
+.library--toggle {
+  width: 2rem;
+  height: 1.25rem;
+  display: block;
+  border-radius: 9999px;
+  background: var(--theme--toggle_off);
+}
+.library--toggle::after {
+  content: '';
+  transition: transform 200ms ease-out 0s, background 200ms ease-out 0s;
+  height: 0.85rem;
+  width: 0.8rem;
+  left: 0.18rem;
+  top: 0.175rem;
+  position: absolute;
+  border-radius: 9999px;
+  background: var(--theme--toggle_dot);
+}
+.library--toggle_label input[type='checkbox']:checked ~ .library--toggle {
+  background: var(--theme--toggle_on);
+}
+.library--toggle_label input[type='checkbox']:checked ~ .library--toggle::after {
+  transform: translateX(100%);
+}
+.library--toggle_label input[type='checkbox'] {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+.library--description {
+  font-size: 0.8rem;
+}
+.library--tags,
+.library--authors {
+  padding: 0;
+  list-style-type: none;
+  display: flex;
+  margin: 0.5em 0;
+}
+.library--tags li {
+  margin: 0 0.5rem 0 0;
+  opacity: 0.7;
+}
+.library--authors li {
+  margin: 0 0.5rem 0 0;
+}
+.library--authors a {
+  font-size: 0.8rem;
+  text-decoration: none;
+  border-radius: 5px;
+  padding: 0.125rem 0.25rem 0.25rem 0.25rem;
+  background: var(--theme--tag_default);
+  color: var(--theme--tag_default-text);
+}
+.library--authors img {
+  height: 1em;
+  width: 1em;
+  margin-bottom: 0.15625em;
+  display: inline-block;
+  vertical-align: middle;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+main section:not([data-active]) {
+  display: none;
+}

@@ -6,26 +6,50 @@
 
 'use strict';
 
-let _enhancerMenuTab;
-async function openEnhancerMenu() {
-  if (!_enhancerMenuTab) {
-    _enhancerMenuTab = await new Promise((res, rej) => {
+const enhancerMenu = {
+  _tab: {},
+  highlight() {
+    return new Promise((res, rej) =>
+      chrome.tabs.get(this._tab.id, async (tab) => {
+        if (chrome.runtime.lastError) {
+          chrome.tabs.highlight({ 'tabs': (await this.create()).index });
+        } else {
+          chrome.tabs.highlight({ 'tabs': tab.index });
+        }
+        res(this._tab);
+      })
+    );
+  },
+  create() {
+    return new Promise((res, rej) =>
       chrome.tabs.create(
         {
-          url: chrome.runtime.getURL('/src/gui.html'),
+          url: chrome.runtime.getURL(
+            'repo/menu@a6621988-551d-495a-97d8-3c568bca2e9e/menu.html'
+          ),
         },
-        res
-      );
-    });
-  }
-  chrome.tabs.highlight({ 'tabs': _enhancerMenuTab.index }, function () {});
-}
-chrome.action.onClicked.addListener(openEnhancerMenu);
+        (tab) => {
+          this._tab = tab;
+          res(this._tab);
+        }
+      )
+    );
+  },
+  async open() {
+    try {
+      await this.highlight();
+    } catch {
+      await this.create();
+    }
+    return this._tab;
+  },
+};
+chrome.action.onClicked.addListener(enhancerMenu.open);
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.type) {
-    case 'openEnhancerMenu':
-      openEnhancerMenu();
+    case 'enhancerMenu.open':
+      enhancerMenu.open();
       break;
   }
   return true;

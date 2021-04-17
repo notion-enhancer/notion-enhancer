@@ -1,7 +1,7 @@
 {
-  "name": "theming",
-  "id": "0f0bf8b6-eae6-4273-b307-8fc43f2ee082",
-  "description": "the default theme variables, required by other themes & extensions.",
+  "name": "menu",
+  "id": "a6621988-551d-495a-97d8-3c568bca2e9e",
+  "description": "the enhancer's graphical menu, related buttons and shortcuts.",
   "version": "0.11.0",
   "tags": ["core"],
   "authors": [
@@ -14,6 +14,9 @@
   ],
   "css": {
     "client": ["client.css"],
-    "menu": ["variables.css"]
+    "menu": ["menu.css"]
+  },
+  "js": {
+    "client": ["client.js"]
   }
 }

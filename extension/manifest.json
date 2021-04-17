@@ -17,14 +17,14 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["icons/*", "src/*", "repo/*"],
+      "resources": ["icons/*", "repo/*", "helpers.js"],
       "matches": ["https://*.notion.so/*"]
     }
   ],
   "content_scripts": [
     {
       "matches": ["https://*.notion.so/*"],
-      "js": ["content-loader.js"]
+      "js": ["launcher.js"]
     }
   ],
   "host_permissions": ["https://*.notion.so/*"]
