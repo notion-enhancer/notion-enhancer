@@ -44,7 +44,7 @@ const enhancerMenu = {
     return this._tab;
   },
 };
-chrome.action.onClicked.addListener(enhancerMenu.open);
+chrome.action.onClicked.addListener(() => enhancerMenu.open());
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
   switch (request.type) {

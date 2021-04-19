@@ -5,6 +5,9 @@
  */
 
 'use strict';
+
+import './dep/markdown-it.min.js';
+
 export const ERROR = Symbol();
 
 export const env = {};
@@ -42,7 +45,12 @@ web.whenReady = (selectors = [], callback = () => {}) => {
  */
 web.createElement = (html) => {
   const template = document.createElement('template');
-  template.innerHTML = html.trim();
+  template.innerHTML = html.includes('<pre')
+    ? html.trim()
+    : html
+        .split(/\n/)
+        .map((line) => line.trim())
+        .join('');
   return template.content.firstElementChild;
 };
 
@@ -95,7 +103,7 @@ fs.getText = (path) => fetch(chrome.runtime.getURL(path)).then((res) => res.text
 
 fs.isFile = async (path) => {
   try {
-    await fetch(chrome.runtime.getURL(`repo/${path}`));
+    await fetch(chrome.runtime.getURL(path));
     return true;
   } catch {
     return false;
@@ -137,79 +145,88 @@ export const regexers = {
 
 export const registry = {};
 
-registry.validate = async (mod, err, check) =>
-  Promise.all(
-    [
-      check('name', mod.name, typeof mod.name === 'string'),
-      check('id', mod.id, typeof mod.id === 'string').then((id) =>
-        id === ERROR ? ERROR : regexers.uuid(id)
-      ),
-      check('description', mod.description, typeof mod.description === 'string'),
-      check('version', mod.version, typeof mod.version === 'string').then((version) =>
-        version === ERROR ? ERROR : regexers.semver(version)
-      ),
-      check('tags', mod.tags, Array.isArray(mod.tags)).then((tags) =>
-        tags === ERROR ? ERROR : tags.map((tag) => check('tag', tag, typeof tag === 'string'))
-      ),
-      check('authors', mod.authors, Array.isArray(mod.authors)).then((authors) =>
-        authors === ERROR
+registry.validate = async (mod, err, check) => {
+  let conditions = [
+    check('name', mod.name, typeof mod.name === 'string'),
+    check('id', mod.id, typeof mod.id === 'string').then((id) =>
+      id === ERROR ? ERROR : regexers.uuid(id)
+    ),
+    check('version', mod.version, typeof mod.version === 'string').then((version) =>
+      version === ERROR ? ERROR : regexers.semver(version)
+    ),
+    check('description', mod.description, typeof mod.description === 'string'),
+    check(
+      'preview',
+      mod.preview,
+      mod.preview === undefined || typeof mod.preview === 'string'
+    ).then((preview) =>
+      preview ? (preview === ERROR ? ERROR : regexers.url(preview)) : undefined
+    ),
+    check('tags', mod.tags, Array.isArray(mod.tags)).then((tags) =>
+      tags === ERROR ? ERROR : tags.map((tag) => check('tag', tag, typeof tag === 'string'))
+    ),
+    check('authors', mod.authors, Array.isArray(mod.authors)).then((authors) =>
+      authors === ERROR
+        ? ERROR
+        : authors.map((author) => [
+            check('author.name', author.name, typeof author.name === 'string'),
+            check(
+              'author.email',
+              author.email,
+              typeof author.email === 'string'
+            ).then((email) => (email === ERROR ? ERROR : regexers.email(email))),
+            check('author.url', author.url, typeof author.url === 'string').then((url) =>
+              url === ERROR ? ERROR : regexers.url(url)
+            ),
+            check('author.icon', author.icon, typeof author.icon === 'string').then((icon) =>
+              icon === ERROR ? ERROR : regexers.url(icon)
+            ),
+          ])
+    ),
+    check(
+      'css',
+      mod.css,
+      mod.css && typeof mod.css === 'object' && !Array.isArray(mod.css)
+    ).then((css) =>
+      css
+        ? css === ERROR
           ? ERROR
-          : authors.map((author) => [
-              check('author.name', author.name, typeof author.name === 'string'),
-              check(
-                'author.email',
-                author.email,
-                typeof author.email === 'string'
-              ).then((email) => (email === ERROR ? ERROR : regexers.email(email))),
-              check('author.url', author.url, typeof author.url === 'string').then((url) =>
-                url === ERROR ? ERROR : regexers.url(url)
-              ),
-              check('author.icon', author.icon, typeof author.icon === 'string').then((icon) =>
-                icon === ERROR ? ERROR : regexers.url(icon)
-              ),
-            ])
-      ),
-      check(
-        'css',
-        mod.css,
-        !!mod.css && typeof mod.css === 'object' && !Array.isArray(mod.css)
-      ).then((css) => {
-        if (css === ERROR) return ERROR;
-        if (!css) return undefined;
-        return ['frame', 'client', 'menu']
-          .filter((dest) => css[dest])
-          .map(async (dest) =>
-            check(`css.${dest}`, css[dest], Array.isArray(css[dest])).then((files) =>
-              files === ERROR
-                ? ERROR
-                : files.map(async (file) =>
-                    check(
-                      `css.${dest} file`,
-                      file,
-                      await fs.isFile(`${mod._dir}/${file}`, '.css')
-                    )
-                  )
-            )
-          );
-      }),
-      check(
-        'js',
-        mod.js,
-        !!mod.js && typeof mod.js === 'object' && !Array.isArray(mod.js)
-      ).then(async (js) => {
+          : ['frame', 'client', 'menu']
+              .filter((dest) => css[dest])
+              .map(async (dest) =>
+                check(`css.${dest}`, css[dest], Array.isArray(css[dest])).then((files) =>
+                  files === ERROR
+                    ? ERROR
+                    : files.map(async (file) =>
+                        check(
+                          `css.${dest} file`,
+                          file,
+                          await fs.isFile(`repo/${mod._dir}/${file}`, '.css')
+                        )
+                      )
+                )
+              )
+        : undefined
+    ),
+    check('js', mod.js, mod.js && typeof mod.js === 'object' && !Array.isArray(mod.js)).then(
+      async (js) => {
         if (js === ERROR) return ERROR;
         if (!js) return undefined;
         return [
-          check('js.client', js.client, !js.client ?? Array.isArray(js.client)).then(
+          check('js.client', js.client, !js.client || Array.isArray(js.client)).then(
             (client) => {
               if (client === ERROR) return ERROR;
               if (!client) return undefined;
               return client.map(async (file) =>
-                check('js.client file', file, await fs.isFile(file, '.js'))
+                check(
+                  'js.client file',
+                  file,
+                  await fs.isFile(`repo/${mod._dir}/${file}`, '.js')
+                )
               );
             }
           ),
-          check('js.electron', js.electron, !js.electron ?? Array.isArray(js.electron)).then(
+          check('js.electron', js.electron, !js.electron || Array.isArray(js.electron)).then(
             (electron) => {
               if (electron === ERROR) return ERROR;
               if (!electron) return undefined;
@@ -217,7 +234,7 @@ registry.validate = async (mod, err, check) =>
                 check(
                   'js.electron file',
                   file,
-                  !!file && typeof file === 'object' && !Array.isArray(file)
+                  file && typeof file === 'object' && !Array.isArray(file)
                 ).then(async (file) =>
                   file === ERROR
                     ? ERROR
@@ -225,7 +242,7 @@ registry.validate = async (mod, err, check) =>
                         check(
                           'js.electron file source',
                           file.source,
-                          await fs.isFile(file.source, '.js')
+                          await fs.isFile(`repo/${mod._dir}/${file.source}`, '.js')
                         ),
                         // referencing the file within the electron app
                         // existence can't be validated, so only format is
@@ -240,23 +257,86 @@ registry.validate = async (mod, err, check) =>
             }
           ),
         ];
-      }),
-      check(
-        'options',
-        mod.options,
-        !mod.options ?? (await fs.isFile(mod.options, '.json'))
-      ).then(async (filepath) => {
-        if (filepath === ERROR) return ERROR;
-        if (!filepath) return undefined;
-        try {
-          const options = await fs.getJSON(`repo/${mod._dir}/${mod.options}`);
-          // todo: validate options
-        } catch {
-          err(`invalid options ${filepath}`);
-        }
-      }),
-    ].flat(Infinity)
-  );
+      }
+    ),
+    check('options', mod.options, Array.isArray(mod.options)).then((options) =>
+      options === ERROR
+        ? ERROR
+        : options.map((option) => {
+            const conditions = [];
+            switch (option.type) {
+              case 'toggle':
+                conditions.push(
+                  check('option.value', option.value, typeof option.value === 'boolean')
+                );
+                break;
+              case 'select':
+                conditions.push(
+                  check(
+                    'option.values',
+                    option.values,
+                    Array.isArray(option.values)
+                  ).then((value) =>
+                    value === ERROR
+                      ? ERROR
+                      : value.map((option) =>
+                          check('option.values option', option, typeof option === 'string')
+                        )
+                  )
+                );
+                break;
+              case 'text':
+                conditions.push(
+                  check('option.value', option.value, typeof option.value === 'string')
+                );
+                break;
+              case 'number':
+                conditions.push(
+                  check('option.value', option.value, typeof option.value === 'number')
+                );
+                break;
+              case 'file':
+                conditions.push(
+                  check(
+                    'option.extensions',
+                    option.extensions,
+                    !option.extensions || Array.isArray(option.extensions)
+                  ).then((extensions) =>
+                    extensions
+                      ? extensions === ERROR
+                        ? ERROR
+                        : extensions.map((ext) =>
+                            check('option.extension', ext, typeof ext === 'string')
+                          )
+                      : undefined
+                  )
+                );
+                break;
+              default:
+                return check('option.type', option.type, false);
+            }
+            return [
+              conditions,
+              check(
+                'option.key',
+                option.key,
+                typeof option.key === 'string' && !option.key.match(/\s/)
+              ),
+              check('option.label', option.label, typeof option.label === 'string'),
+              check(
+                'option.description',
+                option.description,
+                !option.description || typeof option.description === 'string'
+              ),
+            ];
+          })
+    ),
+  ];
+  do {
+    conditions = await Promise.all(conditions.flat(Infinity));
+  } while (conditions.some((condition) => Array.isArray(condition)));
+  return conditions;
+};
 
 registry.get = async (callback = () => {}) => {
   registry._list = [];
@@ -269,6 +349,7 @@ registry.get = async (callback = () => {}) => {
       mod.tags = mod.tags ?? [];
       mod.css = mod.css ?? [];
       mod.js = mod.js ?? {};
+      mod.options = mod.options ?? [];
 
       const check = (prop, value, condition) =>
           Promise.resolve(condition ? value : err(`invalid ${prop} ${JSON.stringify(value)}`)),
@@ -288,36 +369,10 @@ registry.errors = async (callback = () => {}) => {
   return registry._errors;
 };
 
-export const markdown = {};
-
-markdown.simple = (string) =>
-  string
-    .split('\n')
-    .map((line) =>
-      line
-        .trim()
-        .replace(/\s+/g, ' ')
-        // > quote
-        .replace(/^>\s+(.+)$/g, '<blockquote>$1</blockquote>')
-        // ~~strikethrough~~
-        .replace(/([^\\])?~~((?:(?!~~).)*[^\\])~~/g, '$1<s>$2</s>')
-        // __underline__
-        .replace(/([^\\])?__((?:(?!__).)*[^\\])__/g, '$1<u>$2</u>')
-        // **bold**
-        .replace(/([^\\])?\*\*((?:(?!\*\*).)*[^\\])\*\*/g, '$1<b>$2</b>')
-        // *italic*
-        .replace(/([^\\])?\*([^*]*[^\\*])\*/g, '$1<i>$2</i>')
-        // _italic_
-        .replace(/([^\\])?_([^_]*[^\\_])_/g, '$1<i>$2</i>')
-        // `code`
-        .replace(/([^\\])?`([^`]*[^\\`])`/g, '$1<code>$2</code>')
-        // ![image_title](source)
-        .replace(
-          /([^\\])?\!\[([^\]]*[^\\\]]?)\]\(([^)]*[^\\)])\)/g,
-          `$1<img alt="$2" src="$3" onerror="this.remove()">`
-        )
-        // [link](destination)
-        .replace(/([^\\])?\[([^\]]*[^\\\]]?)\]\(([^)]*[^\\)])\)/g, '$1<a href="$3">$2</a>')
-    )
-    .map((line) => (line.startsWith('<blockquote>') ? line : `<p>${line}</p>`))
-    .join('');
+export const markdown = new markdownit({
+  linkify: true,
+  highlight(...args) {
+    console.log(args);
+    return '';
+  },
+});

@@ -1,8 +1,9 @@
 {
   "name": "menu",
   "id": "a6621988-551d-495a-97d8-3c568bca2e9e",
-  "description": "the enhancer's graphical menu, related buttons and shortcuts.",
   "version": "0.11.0",
+  "description": "the enhancer's [graphical](https://github.com) menu, related buttons and shortcuts.",
+  "preview": "https://raw.githubusercontent.com/notion-enhancer/notion-enhancer/dev/notion-enhancer%20v0.10.0%20banner.jpg",
   "tags": ["core"],
   "authors": [
     {
@@ -18,5 +19,37 @@
   },
   "js": {
     "client": ["client.js"]
-  }
+  },
+  "options": [
+    {
+      "type": "toggle",
+      "key": "toggle",
+      "label": "toggle",
+      "value": true
+    },
+    {
+      "type": "select",
+      "key": "select",
+      "label": "select",
+      "values": ["option a", "option b", "option c"]
+    },
+    {
+      "type": "text",
+      "key": "text",
+      "label": "text",
+      "value": "default"
+    },
+    {
+      "type": "number",
+      "key": "number",
+      "label": "number",
+      "value": 0
+    },
+    {
+      "type": "file",
+      "key": "file",
+      "label": "file picker (.css only)",
+      "extensions": [".css"]
+    }
+  ]
 }
