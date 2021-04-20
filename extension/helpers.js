@@ -53,6 +53,13 @@ web.createElement = (html) => {
         .join('');
   return template.content.firstElementChild;
 };
+web.htmlEscape = (str) =>
+  str
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/'/g, '&#39;')
+    .replace(/"/g, '&quot;');
 
 /**
  * @param {string} sheet

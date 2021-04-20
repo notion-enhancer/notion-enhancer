@@ -88,9 +88,6 @@ main section[data-container] article {
 main section[data-container] article img {
   max-width: 100%;
 }
-main section[data-container] article > img {
-  border-bottom: 1px solid var(--theme--divider);
-}
 main section[data-container] article > div {
   padding: 1rem;
 }
@@ -132,6 +129,9 @@ main section[data-container] article > div {
   fill: var(--theme--text_property);
 }
 
+.library--preview {
+  border-bottom: 1px solid var(--theme--divider);
+}
 .library--version {
   font-weight: normal;
   font-size: 0.8rem;
