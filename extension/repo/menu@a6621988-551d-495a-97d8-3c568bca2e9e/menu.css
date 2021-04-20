@@ -12,6 +12,13 @@
   color: var(--theme--text);
 }
 
+html {
+  transition: opacity 50ms ease-out;
+}
+html[class] {
+  opacity: 1 !important;
+}
+
 body {
   padding: 1.5rem;
   background: var(--theme--sidebar);
@@ -37,12 +44,14 @@ main section[data-container] {
   display: grid;
   grid-gap: 1.25em;
   grid-template-columns: 1fr;
+  opacity: 1;
+  transition: opacity 200ms ease-out;
 }
 @media (min-width: 550px) {
   main section[data-container] {
     grid-template-columns: 1fr 1fr;
   }
-  main section[data-container='page'] > .documentation--buttons {
+  main section[data-container='mod'] > .documentation--buttons {
     grid-column: span 2;
   }
 }
@@ -50,10 +59,10 @@ main section[data-container] {
   main section[data-container] {
     grid-template-columns: 1fr 1fr 1fr;
   }
-  main section[data-container='page'] > .documentation--buttons {
+  main section[data-container='mod'] > .documentation--buttons {
     grid-column: span 3;
   }
-  main section[data-container='page'] > .documentation--body {
+  main section[data-container='mod'] > .documentation--body {
     grid-column: span 2;
   }
 }
@@ -61,10 +70,10 @@ main section[data-container] {
   main section[data-container] {
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
-  main section[data-container='page'] > .documentation--buttons {
+  main section[data-container='mod'] > .documentation--buttons {
     grid-column: span 4;
   }
-  main section[data-container='page'] > .documentation--body {
+  main section[data-container='mod'] > .documentation--body {
     grid-column: span 3;
   }
 }
@@ -72,10 +81,10 @@ main section[data-container] {
   main section[data-container] {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   }
-  main section[data-container='page'] > .documentation--buttons {
+  main section[data-container='mod'] > .documentation--buttons {
     grid-column: span 5;
   }
-  main section[data-container='page'] > .documentation--body {
+  main section[data-container='mod'] > .documentation--body {
     grid-column: span 4;
   }
 }
@@ -122,10 +131,8 @@ main section[data-container] article > div {
   padding-top: 2px;
   margin-right: 0.3rem;
 }
-.documentation--buttons svg polygon,
-.documentation--buttons svg path,
-.library--expand svg polygon,
-.library--expand svg path {
+.documentation--buttons svg *,
+.library--expand svg * {
   fill: var(--theme--text_property);
 }
 
@@ -222,7 +229,7 @@ main section[data-container] article > div {
 }
 .library--toggle_label > :not(input) .library--toggle::after {
   content: '';
-  transition: transform 200ms ease-out 0s, background 200ms ease-out 0s;
+  transition: transform 200ms ease-out, background 200ms ease-out;
   height: 0.8rem;
   width: 0.8rem;
   left: 0.325rem;
@@ -268,13 +275,12 @@ main section[data-container] article > div {
   border-radius: 3px;
   border: none;
   box-shadow: var(--theme--input-border) 0px 0px 0px 1px inset;
-  --theme--input_icon: var(--theme_dark--input_icon);
 }
 .library--select_label .library--select select {
   outline: none;
 }
 .library--select_label .library--select select option {
-  background: var(--theme_dark--tag_select);
+  background: var(--theme--tag_select);
 }
 .library--select_label .library--select,
 .library--file_label .library--file {
@@ -291,6 +297,10 @@ main section[data-container] article > div {
 .library--file_label .library--file > :first-child svg {
   width: 0.9em;
   margin: auto 0;
+}
+.library--select_label .library--select > :first-child svg *,
+.library--file_label .library--file > :first-child svg * {
+  color: var(--theme--input_icon);
 }
 .library--select_label .library--select > :last-child,
 .library--file_label .library--file > :last-child {
@@ -312,7 +322,7 @@ main section[data-container] article > div {
   padding-bottom: 0.25rem;
 }
 
-.library--full_card,
+main section[data-container='mod'] .library--card,
 .documentation--body {
   max-height: calc(100vh - 10rem);
   overflow: auto;

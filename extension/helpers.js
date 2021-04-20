@@ -13,7 +13,8 @@ export const ERROR = Symbol();
 export const env = {};
 env.name = 'browser';
 
-env.openEnhancerMenu = () => chrome.runtime.sendMessage({ type: 'enhancerMenu.open' });
+env.openEnhancerMenu = ({ theme } = {}) =>
+  chrome.runtime.sendMessage({ type: 'enhancerMenu.open', data: { theme } });
 
 export const web = {};
 
@@ -50,7 +51,7 @@ web.createElement = (html) => {
     : html
         .split(/\n/)
         .map((line) => line.trim())
-        .join('');
+        .join(' ');
   return template.content.firstElementChild;
 };
 web.htmlEscape = (str) =>

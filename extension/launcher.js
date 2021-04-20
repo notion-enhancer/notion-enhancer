@@ -16,6 +16,5 @@ import(chrome.runtime.getURL('helpers.js')).then(({ web, registry }) => {
         import(chrome.runtime.getURL(`repo/${mod._dir}/${script}`));
       }
     }
-    console.log(await registry.errors());
   });
 });

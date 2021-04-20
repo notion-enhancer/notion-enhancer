@@ -15,7 +15,19 @@ web.whenReady([sidebarSelector], async () => {
     enhancerSidebarElement = web.createElement(
       `<div class="enhancer--sidebarMenuTrigger" role="button" tabindex="0"><div><div>${enhancerIcon}</div><div><div>notion-enhancer</div></div></div></div>`
     );
-  enhancerSidebarElement.addEventListener('click', env.openEnhancerMenu);
+  const setTheme = () =>
+    new Promise((res, rej) =>
+      chrome.storage.local.set(
+        { 'notion.theme': document.querySelector('.notion-dark-theme') ? 'dark' : 'light' },
+        res
+      )
+    );
+  enhancerSidebarElement.addEventListener('click', () =>
+    setTheme().then(env.openEnhancerMenu)
+  );
+  window.addEventListener('focus', setTheme);
+  window.addEventListener('blur', setTheme);
+  setTheme();
   document.querySelector(sidebarSelector).appendChild(enhancerSidebarElement);
 });
 web.hotkeyListener(['Ctrl', 'Alt', 'E'], env.openEnhancerMenu);

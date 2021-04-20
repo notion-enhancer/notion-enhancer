@@ -27,5 +27,6 @@
       "js": ["launcher.js"]
     }
   ],
+  "permissions": ["storage"],
   "host_permissions": ["https://*.notion.so/*"]
 }
