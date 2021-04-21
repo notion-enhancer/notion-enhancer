@@ -13,7 +13,8 @@
     }
   ],
   "css": {
-    "client": ["client.css"],
+    "frame": ["variables.css"],
+    "client": ["variables.css", "client.css"],
     "menu": ["variables.css"]
   }
 }

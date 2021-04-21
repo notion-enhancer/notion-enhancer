@@ -15,6 +15,7 @@
 
 html {
   transition: opacity 50ms ease-out;
+  font-size: var(--theme--font_body-size);
 }
 html[class] {
   opacity: 1 !important;
@@ -32,7 +33,7 @@ header {
 }
 header > * {
   margin: 0 1.25rem 0 0;
-  font-size: 1.25rem;
+  font-size: var(--theme--font_heading1-size);
 }
 header img {
   height: 100%;
@@ -40,6 +41,10 @@ header img {
 }
 header h1 a:not([data-active]) {
   text-decoration: none;
+}
+
+img[data-target='notion'] {
+  cursor: pointer;
 }
 
 [data-container] {
@@ -108,10 +113,6 @@ header h1 a:not([data-active]) {
   max-width: 100%;
 }
 
-[data-container='mod'] .library--card,
-.documentation--body {
-  overflow-x: auto;
-}
 .documentation--buttons,
 .library--expand {
   margin: 0;
@@ -152,14 +153,14 @@ header h1 a:not([data-active]) {
 }
 .library--version {
   font-weight: normal;
-  font-size: 0.8rem;
+  font-size: var(--theme--font_ui-size);
   border-radius: 5px;
   padding: 0.125rem 0.25rem;
   background: var(--theme--tag_default);
   color: var(--theme--tag_default-text);
 }
 .library--description {
-  font-size: 0.8rem;
+  font-size: 1rem;
   margin: 0.25rem 0;
 }
 .library--tags,
@@ -171,14 +172,16 @@ header h1 a:not([data-active]) {
   margin: 0.5em 0;
 }
 .library--tags li {
+  font-size: var(--theme--font_ui-size);
   margin: 0 0.5rem 0 0;
   opacity: 0.7;
 }
 .library--authors li {
+  font-size: var(--theme--font_ui-size);
   margin: 0 0.5rem 0 0;
 }
 .library--authors a {
-  font-size: 0.8rem;
+  font-size: var(--theme--font_ui-size);
   text-decoration: none;
   border-radius: 5px;
   padding: 0.125rem 0.25rem 0.25rem 0;
@@ -204,7 +207,7 @@ header h1 a:not([data-active]) {
   margin: 0.6rem 0;
   display: block;
   appearance: none;
-  font-size: 0.8rem;
+  font-size: var(--theme--font_ui-size);
 }
 .library--toggle_label *,
 .library--select_label *,
@@ -212,7 +215,11 @@ header h1 a:not([data-active]) {
 .library--number_label *,
 .library--file_label * {
   appearance: none;
-  font-size: 0.8rem;
+  font-size: var(--theme--font_ui-size);
+}
+label > p:not([class]),
+label > span:not([class]) {
+  font-size: 1rem;
 }
 .library--toggle_label > p,
 .library--toggle_label > p,
@@ -226,7 +233,7 @@ header h1 a:not([data-active]) {
   align-items: center;
   display: flex;
   cursor: pointer;
-  --toggle--buttonsground: var(--theme--toggle_off);
+  --toggle--bg: var(--theme--toggle_off);
   --toggle--translation: 0%;
 }
 .library--toggle_label > :not(input) .library--toggle {
@@ -236,7 +243,7 @@ header h1 a:not([data-active]) {
   height: 1.25rem;
   display: block;
   border-radius: 40px;
-  background: var(--toggle--buttonsground);
+  background: var(--toggle--bg);
 }
 .library--toggle_label > :not(input) .library--toggle::after {
   content: '';
@@ -251,7 +258,7 @@ header h1 a:not([data-active]) {
   transform: translateX(var(--toggle--translation));
 }
 .library--toggle_label input[type='checkbox']:checked + :not(input) {
-  --toggle--buttonsground: var(--theme--toggle_on);
+  --toggle--bg: var(--theme--toggle_on);
   --toggle--translation: 100%;
 }
 .library--toggle_label:focus-within .library--toggle,
@@ -329,56 +336,20 @@ header h1 a:not([data-active]) {
   margin: 0;
 }
 .library--title h2 > span {
-  font-size: 1.25rem;
+  font-size: var(--theme_light--font_heading2-size);
   padding-bottom: 0.25rem;
 }
 
-.library--card {
+.library--card > div {
   padding: 1rem;
 }
-
+[data-container='mod'] .library--card {
+  overflow-x: auto;
+}
 .documentation--body {
   padding: 1rem 2rem;
-  font-size: 0.8rem;
-}
-.documentation--body table {
-  border-spacing: 0;
-  border: 1px solid var(--theme--sidebar);
-}
-.documentation--body table th {
-  text-align: left;
-}
-.documentation--body table th,
-.documentation--body table td {
-  padding: 5px 8px 6px;
-  border: 1px solid var(--theme--sidebar);
-}
-.documentation--body h1 {
-  font-size: var(--theme--font_heading1-size);
-  margin: 1rem 0 0.5rem 0;
-}
-.documentation--body h2 {
-  font-size: var(--theme--font_heading2-size);
-  margin: 1rem 0 0.5rem 0;
-}
-.documentation--body h3 {
-  font-size: var(--theme--font_heading3-size);
-  margin: 1rem 0 0.5rem 0;
-}
-.documentation--body ul,
-.documentation--body ol {
-  padding-left: 1.25rem;
-}
-.documentation--body li {
-  margin: 0.4rem 0;
-}
-.documentation--body ol li {
-  padding-left: 0.25rem;
-}
-.documentation--body blockquote {
-  border-left: 2px solid currentColor;
-  padding-left: 0.5rem;
-  margin: 0.5rem 0 0.5rem 0;
+  font-size: 1rem;
+  overflow-x: auto;
 }
 
 ::-webkit-scrollbar {

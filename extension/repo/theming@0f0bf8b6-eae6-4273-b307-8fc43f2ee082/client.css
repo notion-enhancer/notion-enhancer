@@ -9,8 +9,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-@import url('./variables.css');
-
 /** layout ui **/
 
 .notion-frame .notion-scroller [style*='env(safe-area-inset-'][style*=' width: 900px'],

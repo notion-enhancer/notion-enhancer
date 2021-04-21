@@ -6,50 +6,37 @@
 
 'use strict';
 
-const enhancerMenu = {
-  _tab: {},
-  highlight() {
-    return new Promise((res, rej) =>
-      chrome.tabs.get(this._tab.id, async (tab) => {
-        if (chrome.runtime.lastError) {
-          chrome.tabs.highlight({ 'tabs': (await this.create()).index });
-        } else {
-          chrome.tabs.highlight({ 'tabs': tab.index });
-        }
-        res(this._tab);
-      })
-    );
-  },
-  create() {
-    return new Promise((res, rej) =>
-      chrome.tabs.create(
-        {
-          url: chrome.runtime.getURL(
-            'repo/menu@a6621988-551d-495a-97d8-3c568bca2e9e/menu.html'
-          ),
-        },
-        (tab) => {
-          this._tab = tab;
-          res(this._tab);
-        }
-      )
-    );
-  },
-  async open() {
-    try {
-      await this.highlight();
-    } catch {
-      await this.create();
+function openEnhancerMenu() {
+  chrome.tabs.query({ windowId: chrome.windows.WINDOW_ID_CURRENT }, (tabs) => {
+    const enhancerMenuURL = chrome.runtime.getURL(
+        'repo/menu@a6621988-551d-495a-97d8-3c568bca2e9e/menu.html'
+      ),
+      enhancerMenuTab = tabs.find((tab) => tab.url.startsWith(enhancerMenuURL));
+    if (enhancerMenuTab) {
+      chrome.tabs.highlight({ 'tabs': enhancerMenuTab.index });
+    } else chrome.tabs.create({ url: enhancerMenuURL });
+  });
+}
+chrome.action.onClicked.addListener(openEnhancerMenu);
+
+function focusNotion() {
+  chrome.tabs.query(
+    { url: 'https://*.notion.so/*', windowId: chrome.windows.WINDOW_ID_CURRENT },
+    (tabs) => {
+      if (tabs.length) {
+        chrome.tabs.highlight({ 'tabs': tabs[0].index });
+      } else chrome.tabs.create({ url: 'https://notion.so/' });
     }
-    return this._tab;
-  },
-};
-chrome.action.onClicked.addListener(() => enhancerMenu.open());
+  );
+}
 
 chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
-  switch (request.type) {
-    case 'enhancerMenu.open':
-      enhancerMenu.open();
+  switch (request.action) {
+    case 'openEnhancerMenu':
+      openEnhancerMenu();
+      break;
+    case 'focusNotion':
+      focusNotion();
       break;
   }
   return true;

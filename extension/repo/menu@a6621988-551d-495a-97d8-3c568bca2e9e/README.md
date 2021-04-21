@@ -42,6 +42,14 @@ can [see the source for it by adding '.text' to the URL](/projects/markdown/synt
 
 ---
 
+```css
+:root {
+  --theme_dark--db_today-text: #fff;
+  --theme_dark--timeline_divider_thin: rgba(255, 255, 255, 0.07);
+  --theme_dark--timeline_arrow: rgb(47, 52, 55);
+}
+```
+
 ## Overview
 
 ### Philosophy

@@ -11,7 +11,8 @@ export const ERROR = Symbol();
 export const env = {};
 env.name = 'browser';
 
-env.openEnhancerMenu = () => chrome.runtime.sendMessage({ type: 'enhancerMenu.open' });
+env.openEnhancerMenu = () => chrome.runtime.sendMessage({ action: 'openEnhancerMenu' });
+env.focusNotion = () => chrome.runtime.sendMessage({ action: 'focusNotion' });
 
 /** - */
 
@@ -66,7 +67,7 @@ web.createElement = (html) => {
 };
 web.escapeHtml = (str) =>
   str
-    .replace(/&(?![^\s]+;)/g, '&amp;')
+    .replace(/&/g, '&amp;') // (?![^\s]+;)
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/'/g, '&#39;')

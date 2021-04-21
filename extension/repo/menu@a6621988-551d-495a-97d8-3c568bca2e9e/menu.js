@@ -7,13 +7,16 @@
 'use strict';
 
 const _id = 'a6621988-551d-495a-97d8-3c568bca2e9e';
-import { storage, web, fmt, fs, registry } from '../../helpers.js';
+import { env, storage, web, fmt, fs, registry } from '../../helpers.js';
 
 for (let mod of await registry.get()) {
   for (let sheet of mod.css?.menu || []) {
     web.loadStyleset(`repo/${mod._dir}/${sheet}`);
   }
 }
+
+document.querySelector('img[data-target="notion"]').addEventListener('click', env.focusNotion);
+web.hotkeyListener(['Ctrl', 'Alt', 'E'], env.focusNotion);
 
 const components = {};
 components.card = {
@@ -43,7 +46,9 @@ components.card = {
     </ul>`),
   description: ({ description }) =>
     web.createElement(
-      web.html`<p class="library--description">${fmt.md.renderInline(description)}</p>`
+      web.html`<p class="library--description markdown">${fmt.md.renderInline(
+        description
+      )}</p>`
     ),
   authors: ({ authors }) =>
     web.createElement(web.html`<ul class="library--authors">
@@ -184,7 +189,7 @@ components.documentation = {
       </a>
     </p>`),
   readme: async (mod) => {
-    const readme = web.createElement(web.html`<article class="documentation--body">
+    const readme = web.createElement(web.html`<article class="documentation--body markdown">
       ${
         (await fs.isFile(`repo/${mod._dir}/README.md`))
           ? fmt.md.render(await fs.getText(`repo/${mod._dir}/README.md`))
