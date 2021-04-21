@@ -142,7 +142,40 @@ fmt.md.renderer.rules.code_block = (tokens, idx, options, env, slf) =>
   web.html`<pre${slf.renderAttrs(tokens[idx])}><code>${web.escapeHtml(
     tokens[idx].content
   )}</code></pre>\n`;
+fmt.md.core.ruler.push(
+  'heading_ids',
+  function (md, state) {
+    const slugs = new Set();
+    state.tokens.forEach(function (token, i) {
+      if (token.type === 'heading_open') {
+        const text = md.renderer.render(state.tokens[i + 1].children, md.options),
+          slug = fmt.slugger(text, slugs);
+        slugs.add(slug);
+        const idx = token.attrIndex('id');
+        if (idx === -1) {
+          token.attrPush(['id', slug]);
+        } else {
+          token.attrs[idx][1] = slug;
+        }
+      }
+    });
+  }.bind(null, fmt.md)
+);
 // delete globalThis['markdownit'];
+
+fmt.slugger = (heading, slugs = new Set()) => {
+  heading = heading
+    .replace(/\s/g, '-')
+    .replace(/[^A-Za-z0-9-_]/g, '')
+    .toLowerCase();
+  let i = 0,
+    slug = heading;
+  while (slugs.has(slug)) {
+    i++;
+    slug = `${heading}-${i}`;
+  }
+  return slug;
+};
 
 /** - */
 

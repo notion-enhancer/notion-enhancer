@@ -212,12 +212,16 @@ const views = {
   },
   _navigator(event) {
     event.preventDefault();
-    console.log(event);
+    document.getElementById(event.target.getAttribute('href').slice(1)).scrollIntoView(true);
+    document.documentElement.scrollTop = 0;
   },
   _reset() {
     document
       .querySelectorAll('a[href^="?"]')
       .forEach((a) => a.removeEventListener('click', this._router));
+    document
+      .querySelectorAll('a[href^="#"]')
+      .forEach((a) => a.removeEventListener('click', this._navigator));
     this.$container.style.opacity = 0;
     return new Promise((res, rej) => {
       setTimeout(() => {
@@ -262,6 +266,9 @@ const views = {
     document
       .querySelectorAll('a[href^="?"]')
       .forEach((a) => a.addEventListener('click', this._router));
+    document
+      .querySelectorAll('a[href^="#"]')
+      .forEach((a) => a.addEventListener('click', this._navigator));
   },
   async alerts() {
     this.$container.dataset.container = 'alerts';

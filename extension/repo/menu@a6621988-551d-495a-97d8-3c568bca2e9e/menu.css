@@ -27,6 +27,7 @@ body {
 
 header {
   display: flex;
+  flex-wrap: wrap;
   margin-bottom: 1.25rem;
 }
 header > * {
@@ -66,6 +67,14 @@ header h1 a:not([data-active]) {
   [data-container='mod'] > .documentation--body {
     grid-column: span 2;
   }
+  [data-container='mod'] .library--card,
+  .documentation--body {
+    max-height: calc(100vh - 10rem);
+    overflow-y: auto;
+  }
+  body {
+    overflow: hidden;
+  }
 }
 @media (min-width: 1350px) {
   [data-container] {
@@ -99,6 +108,10 @@ header h1 a:not([data-active]) {
   max-width: 100%;
 }
 
+[data-container='mod'] .library--card,
+.documentation--body {
+  overflow-x: auto;
+}
 .documentation--buttons,
 .library--expand {
   margin: 0;
@@ -324,11 +337,6 @@ header h1 a:not([data-active]) {
   padding: 1rem;
 }
 
-[data-container='mod'] .library--card,
-.documentation--body {
-  max-height: calc(100vh - 10rem);
-  overflow: auto;
-}
 .documentation--body {
   padding: 1rem 2rem;
   font-size: 0.8rem;
