@@ -6,15 +6,25 @@
 
 'use strict';
 
-import './dep/markdown-it.min.js';
-
 export const ERROR = Symbol();
 
 export const env = {};
 env.name = 'browser';
 
-env.openEnhancerMenu = ({ theme } = {}) =>
-  chrome.runtime.sendMessage({ type: 'enhancerMenu.open', data: { theme } });
+env.openEnhancerMenu = () => chrome.runtime.sendMessage({ type: 'enhancerMenu.open' });
+
+/** - */
+
+export const storage = {};
+
+storage.set = (id, key, value) =>
+  new Promise((res, rej) => chrome.storage.sync.set({ [`[${id}]${key}`]: value }, res));
+storage.get = (id, key) =>
+  new Promise((res, rej) =>
+    chrome.storage.sync.get([`[${id}]${key}`], (values) => res(values[`[${id}]${key}`]))
+  );
+
+/** - */
 
 export const web = {};
 
@@ -66,17 +76,6 @@ web.escapeHtml = (str) =>
 // https://marketplace.visualstudio.com/items?itemName=bierner.lit-html
 web.html = (html, ...templates) => html.map((str) => str + (templates.shift() || '')).join('');
 
-web.Prism = async () => {
-  try {
-    return Prism;
-  } catch {
-    await import('./dep/prism.js');
-    Prism.manual = true;
-    web.loadStyleset('./dep/prism.css');
-  }
-  return Prism;
-};
-
 /**
  * @param {string} sheet
  */
@@ -116,6 +115,37 @@ web.hotkeyListener = (keys, callback) => {
   web._hotkeys.push({ keys, callback });
 };
 
+/** - */
+
+export const fmt = {};
+
+import './dep/prism.js';
+fmt.Prism = Prism;
+fmt.Prism.manual = true;
+fmt.Prism.hooks.add('complete', (event) => {
+  if (!fmt.Prism._stylesheetLoaded) {
+    web.loadStyleset('./dep/prism.css');
+    fmt.Prism._stylesheetLoaded = true;
+  }
+});
+// delete globalThis['Prism'];
+
+import './dep/markdown-it.min.js';
+fmt.md = new markdownit({
+  linkify: true,
+  highlight: (str, lang) =>
+    web.html`<pre${lang ? ` class="language-${lang}"` : ''}><code>${web.escapeHtml(
+      str
+    )}</code></pre>`,
+});
+fmt.md.renderer.rules.code_block = (tokens, idx, options, env, slf) =>
+  web.html`<pre${slf.renderAttrs(tokens[idx])}><code>${web.escapeHtml(
+    tokens[idx].content
+  )}</code></pre>\n`;
+// delete globalThis['markdownit'];
+
+/** - */
+
 export const fs = {};
 
 /**
@@ -132,6 +162,8 @@ fs.isFile = async (path) => {
     return false;
   }
 };
+
+/** - */
 
 export const regexers = {
   uuid(str) {
@@ -165,6 +197,8 @@ export const regexers = {
     return false;
   },
 };
+
+/** - */
 
 export const registry = {};
 
@@ -391,15 +425,3 @@ registry.errors = async (callback = () => {}) => {
   callback(registry._errors);
   return registry._errors;
 };
-
-export const markdown = new markdownit({
-  linkify: true,
-  highlight: (str, lang) =>
-    web.html`<pre${lang ? ` class="language-${lang}"` : ''}><code>${web.escapeHtml(
-      str
-    )}</code></pre>`,
-});
-markdown.renderer.rules.code_block = (tokens, idx, options, env, slf) =>
-  web.html`<pre${slf.renderAttrs(tokens[idx])}><code>${web.escapeHtml(
-    tokens[idx].content
-  )}</code></pre>\n`;

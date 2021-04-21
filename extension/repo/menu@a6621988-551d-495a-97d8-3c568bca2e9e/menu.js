@@ -6,7 +6,8 @@
 
 'use strict';
 
-import { web, fs, registry, markdown } from '../../helpers.js';
+const _id = 'a6621988-551d-495a-97d8-3c568bca2e9e';
+import { storage, web, fmt, fs, registry } from '../../helpers.js';
 
 for (let mod of await registry.get()) {
   for (let sheet of mod.css?.menu || []) {
@@ -42,7 +43,7 @@ components.card = {
     </ul>`),
   description: ({ description }) =>
     web.createElement(
-      web.html`<p class="library--description">${markdown.renderInline(description)}</p>`
+      web.html`<p class="library--description">${fmt.md.renderInline(description)}</p>`
     ),
   authors: ({ authors }) =>
     web.createElement(web.html`<ul class="library--authors">
@@ -129,7 +130,6 @@ components.options = {
       <p>${web.escapeHtml(label)}</p>
       <input id="number--${web.escapeHtml(`${id}.${key}`)}" type="number" />
     </label>`),
-
   async file(id, { key, label, extensions }) {
     const opt = web.createElement(web.html`<label
       for="file--${web.escapeHtml(`${id}.${key}`)}"
@@ -187,11 +187,11 @@ components.documentation = {
     const readme = web.createElement(web.html`<article class="documentation--body">
       ${
         (await fs.isFile(`repo/${mod._dir}/README.md`))
-          ? markdown.render(await fs.getText(`repo/${mod._dir}/README.md`))
+          ? fmt.md.render(await fs.getText(`repo/${mod._dir}/README.md`))
           : ''
       }
     </article>`);
-    (await web.Prism()).highlightAllUnder(readme);
+    fmt.Prism.highlightAllUnder(readme);
     return readme;
   },
 };
@@ -290,10 +290,10 @@ window.addEventListener('popstate', (ev) => {
   if (ev.state) views._load();
 });
 
-function theme() {
-  chrome.storage.local.get(['notion.theme'], (result) => {
-    document.documentElement.className = `notion-${result['notion.theme'] || 'dark'}-theme`;
-  });
+async function theme() {
+  document.documentElement.className = `notion-${
+    (await storage.get(_id, 'theme')) || 'dark'
+  }-theme`;
 }
 window.addEventListener('focus', theme);
 theme();
