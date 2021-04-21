@@ -54,13 +54,28 @@ web.createElement = (html) => {
         .join(' ');
   return template.content.firstElementChild;
 };
-web.htmlEscape = (str) =>
+web.escapeHtml = (str) =>
   str
-    .replace(/&/g, '&amp;')
+    .replace(/&(?![^\s]+;)/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/'/g, '&#39;')
     .replace(/"/g, '&quot;');
+
+// why a tagged template? because it syntax highlights
+// https://marketplace.visualstudio.com/items?itemName=bierner.lit-html
+web.html = (html, ...templates) => html.map((str) => str + (templates.shift() || '')).join('');
+
+web.Prism = async () => {
+  try {
+    return Prism;
+  } catch {
+    await import('./dep/prism.js');
+    Prism.manual = true;
+    web.loadStyleset('./dep/prism.css');
+  }
+  return Prism;
+};
 
 /**
  * @param {string} sheet
@@ -379,8 +394,12 @@ registry.errors = async (callback = () => {}) => {
 
 export const markdown = new markdownit({
   linkify: true,
-  highlight(...args) {
-    console.log(args);
-    return '';
-  },
+  highlight: (str, lang) =>
+    web.html`<pre${lang ? ` class="language-${lang}"` : ''}><code>${web.escapeHtml(
+      str
+    )}</code></pre>`,
 });
+markdown.renderer.rules.code_block = (tokens, idx, options, env, slf) =>
+  web.html`<pre${slf.renderAttrs(tokens[idx])}><code>${web.escapeHtml(
+    tokens[idx].content
+  )}</code></pre>\n`;

@@ -8,6 +8,7 @@
   box-sizing: border-box;
   word-break: break-word;
   text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
   font-family: var(--theme--font_sans);
   color: var(--theme--text);
 }
@@ -40,7 +41,7 @@ header h1 a:not([data-active]) {
   text-decoration: none;
 }
 
-main section[data-container] {
+[data-container] {
   display: grid;
   grid-gap: 1.25em;
   grid-template-columns: 1fr;
@@ -48,57 +49,54 @@ main section[data-container] {
   transition: opacity 200ms ease-out;
 }
 @media (min-width: 550px) {
-  main section[data-container] {
+  [data-container] {
     grid-template-columns: 1fr 1fr;
   }
-  main section[data-container='mod'] > .documentation--buttons {
+  [data-container='mod'] > .documentation--buttons {
     grid-column: span 2;
   }
 }
 @media (min-width: 850px) {
-  main section[data-container] {
+  [data-container] {
     grid-template-columns: 1fr 1fr 1fr;
   }
-  main section[data-container='mod'] > .documentation--buttons {
+  [data-container='mod'] > .documentation--buttons {
     grid-column: span 3;
   }
-  main section[data-container='mod'] > .documentation--body {
+  [data-container='mod'] > .documentation--body {
     grid-column: span 2;
   }
 }
 @media (min-width: 1350px) {
-  main section[data-container] {
+  [data-container] {
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
-  main section[data-container='mod'] > .documentation--buttons {
+  [data-container='mod'] > .documentation--buttons {
     grid-column: span 4;
   }
-  main section[data-container='mod'] > .documentation--body {
+  [data-container='mod'] > .documentation--body {
     grid-column: span 3;
   }
 }
 @media (min-width: 2050px) {
-  main section[data-container] {
+  [data-container] {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   }
-  main section[data-container='mod'] > .documentation--buttons {
+  [data-container='mod'] > .documentation--buttons {
     grid-column: span 5;
   }
-  main section[data-container='mod'] > .documentation--body {
+  [data-container='mod'] > .documentation--body {
     grid-column: span 4;
   }
 }
-main section[data-container] article {
+[data-container] article {
   border-radius: 5px;
   box-shadow: rgb(0 0 0 / 10%) 0px 20px 25px -5px, rgb(0 0 0 / 4%) 0px 10px 10px -5px;
   border: 1px solid var(--theme--divider);
   background: var(--theme--page);
 }
-main section[data-container] article img {
+[data-container] article img {
   max-width: 100%;
-}
-main section[data-container] article > div {
-  padding: 1rem;
 }
 
 .documentation--buttons,
@@ -322,7 +320,11 @@ main section[data-container] article > div {
   padding-bottom: 0.25rem;
 }
 
-main section[data-container='mod'] .library--card,
+.library--card {
+  padding: 1rem;
+}
+
+[data-container='mod'] .library--card,
 .documentation--body {
   max-height: calc(100vh - 10rem);
   overflow: auto;

@@ -1,3 +1,10 @@
+```js
+const check = (prop, value, condition) =>
+    Promise.resolve(condition ? value : err(`invalid ${prop} ${JSON.stringify(value)}`)),
+  validation = await registry.validate(mod, err, check);
+if (validation.every((condition) => condition !== ERROR)) registry._list.push(mod);
+```
+
 # markdown tester
 
 ## table
@@ -14,25 +21,21 @@
 
 # Markdown: Syntax
 
-- [Overview](#overview)
-  - [Philosophy](#philosophy)
-  - [Inline HTML](#html)
-  - [Automatic Escaping for Special Characters](#autoescape)
-- [Block Elements](#block)
-  - [Paragraphs and Line Breaks](#p)
-  - [Headers](#header)
-  - [Blockquotes](#blockquote)
-  - [Lists](#list)
-  - [Code Blocks](#precode)
-  - [Horizontal Rules](#hr)
-- [Span Elements](#span)
-  - [Links](#link)
-  - [Emphasis](#em)
-  - [Code](#code)
-  - [Images](#img)
-- [Miscellaneous](#misc)
-  - [Backslash Escapes](#backslash)
-  - [Automatic Links](#autolink)
+- [markdown tester](#markdown-tester)
+  - [table](#table)
+- [Markdown: Syntax](#markdown-syntax)
+  - [Overview](#overview)
+    - [Philosophy](#philosophy)
+  - [Block Elements](#block-elements)
+    - [Paragraphs and Line Breaks](#paragraphs-and-line-breaks)
+    - [Headers](#headers)
+    - [Blockquotes](#blockquotes)
+    - [Lists](#lists)
+    - [Code Blocks](#code-blocks)
+  - [Span Elements](#span-elements)
+    - [Links](#links)
+    - [Emphasis](#emphasis)
+    - [Code](#code)
 
 **Note:** This document is itself written using Markdown; you
 can [see the source for it by adding '.text' to the URL](/projects/markdown/syntax.text).
@@ -267,9 +270,9 @@ easy to include example HTML source code using Markdown -- just paste
 it and indent it, and Markdown will handle the hassle of encoding the
 ampersands and angle brackets. For example, this:
 
-    <div class="footer">
-        &copy; 2004 Foo Corporation
-    </div>
+```html
+<div class="footer">&copy; 2004 Foo Corporation</div>
+```
 
 Regular Markdown syntax is not processed within code blocks. E.g.,
 asterisks are just literal asterisks within a code block. This means

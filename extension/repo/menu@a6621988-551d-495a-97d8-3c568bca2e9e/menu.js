@@ -14,50 +14,45 @@ for (let mod of await registry.get()) {
   }
 }
 
-// why a tagged template? because it syntax highlights
-// https://marketplace.visualstudio.com/items?itemName=bierner.lit-html
-const html = (html, ...templates) =>
-  html.map((str) => str + (templates.shift() || '')).join('');
-
 const components = {};
 components.card = {
   preview: ({ preview = '' }) =>
-    web.createElement(html`<img
+    web.createElement(web.html`<img
       alt=""
       class="library--preview"
-      src="${web.htmlEscape(preview)}"
+      src="${web.escapeHtml(preview)}"
     />`),
   name: ({ name, id, version }) =>
-    web.createElement(html`<label
-      for="enable--${web.htmlEscape(id)}"
+    web.createElement(web.html`<label
+      for="enable--${web.escapeHtml(id)}"
       class="library--title library--toggle_label"
     >
-      <input type="checkbox" id="enable--${web.htmlEscape(id)}" />
+      <input type="checkbox" id="enable--${web.escapeHtml(id)}" />
       <h2>
         <span>
-          ${web.htmlEscape(name)}
-          <span class="library--version">v${web.htmlEscape(version)}</span>
+          ${web.escapeHtml(name)}
+          <span class="library--version">v${web.escapeHtml(version)}</span>
         </span>
         <span class="library--toggle"></span>
       </h2>
     </label>`),
   tags: ({ tags = [] }) =>
-    web.createElement(html`<ul class="library--tags">
-      ${tags.map((tag) => html`<li>#${web.htmlEscape(tag)}</li>`).join('')}
+    web.createElement(web.html`<ul class="library--tags">
+      ${tags.map((tag) => web.html`<li>#${web.escapeHtml(tag)}</li>`).join('')}
     </ul>`),
   description: ({ description }) =>
     web.createElement(
-      html`<p class="library--description">${markdown.renderInline(description)}</p>`
+      web.html`<p class="library--description">${markdown.renderInline(description)}</p>`
     ),
   authors: ({ authors }) =>
-    web.createElement(html`<ul class="library--authors">
+    web.createElement(web.html`<ul class="library--authors">
       ${authors
         .map(
           (author) =>
-            html`<li>
-              <a href="${web.htmlEscape(author.url)}">
-                <img src="${web.htmlEscape(author.icon)}" />
-                <span>${web.htmlEscape(author.name)}</span>
+            web.html`<li>
+              <a href="${web.escapeHtml(author.url)}">
+                <img alt="" src="${web.escapeHtml(author.icon)}" />
+                <span>${web.escapeHtml(author.name)}</span>
               </a>
             </li>`
         )
@@ -65,16 +60,16 @@ components.card = {
     </ul>`),
   expand: async ({ id }) =>
     web.createElement(
-      html`<p class="library--expand">
-        <a href="?view=mod&id=${web.htmlEscape(id)}">
+      web.html`<p class="library--expand">
+        <a href="?view=mod&id=${web.escapeHtml(id)}">
           <span>${await fs.getText('icons/fontawesome/long-arrow-alt-right.svg')}</span>
           <span>settings & documentation</span>
         </a>
       </p>`
     ),
   async _generate(mod) {
-    const card = web.createElement(html`<article class="library--card"></article>`),
-      body = web.createElement(html`<div></div>`);
+    const card = web.createElement(web.html`<article class="library--card"></article>`),
+      body = web.createElement(web.html`<div></div>`);
     card.append(this.preview(mod));
     body.append(this.name(mod));
     body.append(this.tags(mod));
@@ -87,36 +82,38 @@ components.card = {
 };
 components.options = {
   toggle: (id, { key, label, value }) =>
-    web.createElement(html`<label
-      for="toggle--${web.htmlEscape(`${id}.${key}`)}"
+    web.createElement(web.html`<label
+      for="toggle--${web.escapeHtml(`${id}.${key}`)}"
       class="library--toggle_label"
     >
-      <input type="checkbox" id="toggle--${web.htmlEscape(`${id}.${key}`)}" />
+      <input type="checkbox" id="toggle--${web.escapeHtml(`${id}.${key}`)}" />
       <p><span>${label}</span><span class="library--toggle"></span></p
     ></label>`),
   select: async (id, { key, label, values }) =>
-    web.createElement(html`<label
-      for="select--${web.htmlEscape(`${id}.${key}`)}"
+    web.createElement(web.html`<label
+      for="select--${web.escapeHtml(`${id}.${key}`)}"
       class="library--select_label"
     >
       <p>${label}</p>
       <p class="library--select">
         <span> ${await fs.getText('icons/fontawesome/caret-down.svg')}</span>
-        <select id="select--${web.htmlEscape(`${id}.${key}`)}">
+        <select id="select--${web.escapeHtml(`${id}.${key}`)}">
           ${values.map(
             (value) =>
-              html`<option value="${web.htmlEscape(value)}">${web.htmlEscape(value)}</option>`
+              web.html`<option value="${web.escapeHtml(value)}">${web.escapeHtml(
+                value
+              )}</option>`
           )}
         </select>
       </p>
     </label>`),
   text(id, { key, label, value }) {
-    const opt = web.createElement(html`<label
-      for="text--${web.htmlEscape(`${id}.${key}`)}"
+    const opt = web.createElement(web.html`<label
+      for="text--${web.escapeHtml(`${id}.${key}`)}"
       class="library--text_label"
     >
       <p>${label}</p>
-      <textarea id="text--${web.htmlEscape(`${id}.${key}`)}" rows="1"></textarea>
+      <textarea id="text--${web.escapeHtml(`${id}.${key}`)}" rows="1"></textarea>
     </label>`);
     opt.querySelector('textarea').addEventListener('input', (ev) => {
       ev.target.style.removeProperty('--txt--scroll-height');
@@ -125,29 +122,29 @@ components.options = {
     return opt;
   },
   number: (id, { key, label, value }) =>
-    web.createElement(html`<label
-      for="number--${web.htmlEscape(`${id}.${key}`)}"
+    web.createElement(web.html`<label
+      for="number--${web.escapeHtml(`${id}.${key}`)}"
       class="library--number_label"
     >
-      <p>${web.htmlEscape(label)}</p>
-      <input id="number--${web.htmlEscape(`${id}.${key}`)}" type="number" />
+      <p>${web.escapeHtml(label)}</p>
+      <input id="number--${web.escapeHtml(`${id}.${key}`)}" type="number" />
     </label>`),
 
   async file(id, { key, label, extensions }) {
-    const opt = web.createElement(html`<label
-      for="file--${web.htmlEscape(`${id}.${key}`)}"
+    const opt = web.createElement(web.html`<label
+      for="file--${web.escapeHtml(`${id}.${key}`)}"
       class="library--file_label"
     >
       <input
         type="file"
-        id="file--${web.htmlEscape(`${id}.${key}`)}"
-        ${web.htmlEscape(
+        id="file--${web.escapeHtml(`${id}.${key}`)}"
+        ${web.escapeHtml(
           extensions && extensions.length
-            ? ` accept="${web.htmlEscape(extensions.join(','))}"`
+            ? ` accept="${web.escapeHtml(extensions.join(','))}"`
             : ''
         )}
       />
-      <p>${web.htmlEscape(label)}</p>
+      <p>${web.escapeHtml(label)}</p>
       <p class="library--file">
         <span>${await fs.getText('icons/fontawesome/file.svg')}</span>
         <span class="library--file_path">choose file...</span>
@@ -162,7 +159,7 @@ components.options = {
     const card = await components.card._generate(mod);
     card.querySelector('.library--expand').remove();
     if (mod.options && mod.options.length) {
-      const options = web.createElement(html`<div class="library--options"></div>`),
+      const options = web.createElement(web.html`<div class="library--options"></div>`),
         inputs = await Promise.all(mod.options.map((opt) => this[opt.type](mod.id, opt)));
       inputs.forEach((opt) => options.append(opt));
       card.append(options);
@@ -172,7 +169,7 @@ components.options = {
 };
 components.documentation = {
   buttons: async ({ _dir }) =>
-    web.createElement(html`<p class="documentation--buttons">
+    web.createElement(web.html`<p class="documentation--buttons">
       <a href="?view=library">
         <span>${await fs.getText('icons/fontawesome/long-arrow-alt-left.svg')}</span>
         <span>back to library</span>
@@ -186,12 +183,17 @@ components.documentation = {
         <span>view source code</span>
       </a>
     </p>`),
-  readme: async (mod) =>
-    web.createElement(html`<article class="documentation--body">
-      ${(await fs.isFile(`repo/${mod._dir}/README.md`))
-        ? markdown.render(await fs.getText(`repo/${mod._dir}/README.md`))
-        : ''}
-    </article>`),
+  readme: async (mod) => {
+    const readme = web.createElement(web.html`<article class="documentation--body">
+      ${
+        (await fs.isFile(`repo/${mod._dir}/README.md`))
+          ? markdown.render(await fs.getText(`repo/${mod._dir}/README.md`))
+          : ''
+      }
+    </article>`);
+    (await web.Prism()).highlightAllUnder(readme);
+    return readme;
+  },
 };
 const views = {
   $container: document.querySelector('[data-container]'),
@@ -204,9 +206,13 @@ const views = {
       i++;
     } while (anchor.nodeName !== 'A');
     if (location.search !== anchor.getAttribute('href')) {
-      window.history.pushState({}, '', anchor.href);
+      window.history.pushState({ search: anchor.href }, '', anchor.href);
       this._load();
     }
+  },
+  _navigator(event) {
+    event.preventDefault();
+    console.log(event);
   },
   _reset() {
     document
@@ -278,8 +284,11 @@ const views = {
   },
 };
 views._router = views._router.bind(views);
+views._navigator = views._navigator.bind(views);
 views._load();
-window.addEventListener('popstate', (ev) => views._load());
+window.addEventListener('popstate', (ev) => {
+  if (ev.state) views._load();
+});
 
 function theme() {
   chrome.storage.local.get(['notion.theme'], (result) => {
