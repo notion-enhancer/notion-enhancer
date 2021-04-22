@@ -211,14 +211,20 @@ const views = {
       i++;
     } while (anchor.nodeName !== 'A');
     if (location.search !== anchor.getAttribute('href')) {
-      window.history.pushState({ search: anchor.href }, '', anchor.href);
+      window.history.pushState(
+        { search: anchor.getAttribute('href'), hash: '' },
+        '',
+        anchor.href
+      );
       this._load();
     }
   },
   _navigator(event) {
     event.preventDefault();
-    document.getElementById(event.target.getAttribute('href').slice(1)).scrollIntoView(true);
+    const hash = event.target.getAttribute('href').slice(1);
+    document.getElementById(hash).scrollIntoView(true);
     document.documentElement.scrollTop = 0;
+    history.replaceState({ search: location.search, hash }, null, `#${hash}`);
   },
   _reset() {
     document
@@ -261,10 +267,18 @@ const views = {
         await this.library();
         break;
       default:
-        window.history.replaceState({}, '', '?view=library');
+        window.history.replaceState(
+          { search: '?view=library', hash: '' },
+          null,
+          '?view=library'
+        );
         return this._load();
     }
 
+    setTimeout(() => {
+      document.getElementById(location.hash.slice(1))?.scrollIntoView(true);
+      document.documentElement.scrollTop = 0;
+    }, 50);
     document
       .querySelectorAll('img')
       .forEach((img) => (img.onerror = (ev) => ev.target.remove()));

@@ -123,11 +123,14 @@ export const fmt = {};
 import './dep/prism.js';
 fmt.Prism = Prism;
 fmt.Prism.manual = true;
-fmt.Prism.hooks.add('complete', (event) => {
-  if (!fmt.Prism._stylesheetLoaded) {
-    web.loadStyleset('./dep/prism.css');
-    fmt.Prism._stylesheetLoaded = true;
-  }
+fmt.Prism.hooks.add('complete', async (event) => {
+  event.element.parentElement.parentElement
+    .querySelector('.copy-to-clipboard-button')
+    .prepend(web.createElement(await fs.getText('icons/fontawesome/copy.svg')));
+  // if (!fmt.Prism._stylesheetLoaded) {
+  //   web.loadStyleset('./dep/prism.css');
+  //   fmt.Prism._stylesheetLoaded = true;
+  // }
 });
 // delete globalThis['Prism'];
 
@@ -135,14 +138,19 @@ import './dep/markdown-it.min.js';
 fmt.md = new markdownit({
   linkify: true,
   highlight: (str, lang) =>
-    web.html`<pre${lang ? ` class="language-${lang}"` : ''}><code>${web.escapeHtml(
-      str
-    )}</code></pre>`,
+    web.html`<pre${
+      lang ? ` class="language-${lang} match-braces"` : ''
+    }><code>${web.escapeHtml(str)}</code></pre>`,
 });
-fmt.md.renderer.rules.code_block = (tokens, idx, options, env, slf) =>
-  web.html`<pre${slf.renderAttrs(tokens[idx])}><code>${web.escapeHtml(
+fmt.md.renderer.rules.code_block = (tokens, idx, options, env, slf) => {
+  const attrIdx = tokens[idx].attrIndex('class');
+  if (attrIdx === -1) {
+    tokens[idx].attrPush(['class', 'match-braces']);
+  } else tokens[idx].attrs[attrIdx][1] = 'match-braces';
+  return web.html`<pre${slf.renderAttrs(tokens[idx])}><code>${web.escapeHtml(
     tokens[idx].content
   )}</code></pre>\n`;
+};
 fmt.md.core.ruler.push(
   'heading_ids',
   function (md, state) {
@@ -152,12 +160,10 @@ fmt.md.core.ruler.push(
         const text = md.renderer.render(state.tokens[i + 1].children, md.options),
           slug = fmt.slugger(text, slugs);
         slugs.add(slug);
-        const idx = token.attrIndex('id');
-        if (idx === -1) {
+        const attrIdx = token.attrIndex('id');
+        if (attrIdx === -1) {
           token.attrPush(['id', slug]);
-        } else {
-          token.attrs[idx][1] = slug;
-        }
+        } else token.attrs[attrIdx][1] = slug;
       }
     });
   }.bind(null, fmt.md)

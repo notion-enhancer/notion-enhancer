@@ -9,8 +9,6 @@
   word-break: break-word;
   text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
-  font-family: var(--theme--font_sans);
-  color: var(--theme--text);
 }
 
 html {
@@ -24,6 +22,11 @@ html[class] {
 body {
   padding: 1.5rem;
   background: var(--theme--sidebar);
+  color: var(--theme--text);
+  font-family: var(--theme--font_sans);
+}
+body a {
+  color: inherit;
 }
 
 header {
@@ -61,6 +64,11 @@ img[data-target='notion'] {
   [data-container='mod'] > .documentation--buttons {
     grid-column: span 2;
   }
+  [data-container='mod'] .library--card,
+  .documentation--body {
+    max-height: calc(100vh - 10rem);
+    overflow-y: auto;
+  }
 }
 @media (min-width: 850px) {
   [data-container] {
@@ -71,11 +79,6 @@ img[data-target='notion'] {
   }
   [data-container='mod'] > .documentation--body {
     grid-column: span 2;
-  }
-  [data-container='mod'] .library--card,
-  .documentation--body {
-    max-height: calc(100vh - 10rem);
-    overflow-y: auto;
   }
   body {
     overflow: hidden;
@@ -217,7 +220,8 @@ img[data-target='notion'] {
   appearance: none;
   font-size: var(--theme--font_ui-size);
 }
-label > p:not([class]),
+label p:not([class]),
+label p > span:not([class]),
 label > span:not([class]) {
   font-size: 1rem;
 }
@@ -336,8 +340,7 @@ label > span:not([class]) {
   margin: 0;
 }
 .library--title h2 > span {
-  font-size: var(--theme_light--font_heading2-size);
-  padding-bottom: 0.25rem;
+  font-size: var(--theme--font_heading2-size);
 }
 
 .library--card > div {
