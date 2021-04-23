@@ -89,7 +89,7 @@
 /*
  * https://prismjs.com/plugins/inline-color/
  */
-span.inline-color-wrapper {
+.inline-color-wrapper {
   /*
 	 * base64 svg (https://stackoverflow.com/a/21626701/7595472 - prevents visual glitches)
 	 * <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2">
@@ -108,7 +108,7 @@ span.inline-color-wrapper {
   border: 0.5px solid var(--theme--code_plain);
   overflow: hidden;
 }
-span.inline-color {
+.inline-color {
   display: block;
   height: 120%;
   width: 120%;

@@ -15,8 +15,14 @@ for (let mod of await registry.get()) {
   }
 }
 
+
 document.querySelector('img[data-target="notion"]').addEventListener('click', env.focusNotion);
 web.hotkeyListener(['Ctrl', 'Alt', 'E'], env.focusNotion);
+
+document.querySelectorAll('[data-fa]').forEach(icon => fs.getText(`icons/fontawesome/${icon.dataset.fa}.svg`).then(svg => {
+  svg = web.createElement(svg);
+  svg.dataset.fa = icon.dataset.fa; icon.replaceWith(svg);
+}))
 
 const components = {};
 components.card = {
@@ -254,9 +260,6 @@ const views = {
         .map((query) => query.split('='))
     );
     switch (search.get('view')) {
-      case 'alerts':
-        await this.alerts();
-        break;
       case 'mod':
         const mod = (await registry.get()).find((mod) => mod.id === search.get('id'));
         if (mod) {
@@ -288,12 +291,6 @@ const views = {
     document
       .querySelectorAll('a[href^="#"]')
       .forEach((a) => a.addEventListener('click', this._navigator));
-  },
-  async alerts() {
-    this.$container.dataset.container = 'alerts';
-    document.querySelector('header [data-target="alerts"]').dataset.active = true;
-    for (let mod of await registry.get())
-      this.$container.append(await components.card._generate(mod));
   },
   async mod(mod) {
     this.$container.dataset.container = 'mod';

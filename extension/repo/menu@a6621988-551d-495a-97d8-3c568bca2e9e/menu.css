@@ -20,7 +20,8 @@ html[class] {
 }
 
 body {
-  padding: 1.5rem;
+  padding: 2rem 2.5rem;
+  margin: 0;
   background: var(--theme--sidebar);
   color: var(--theme--text);
   font-family: var(--theme--font_sans);
@@ -38,12 +39,26 @@ header > * {
   margin: 0 1.25rem 0 0;
   font-size: var(--theme--font_heading1-size);
 }
-header img {
-  height: 100%;
-  width: 24px;
-}
 header h1 a:not([data-active]) {
   text-decoration: none;
+}
+header h1 img {
+  width: 0.95em;
+  height: 0.95em;
+  margin-right: 0.5em;
+  margin-bottom: -0.1em;
+}
+header h1 svg {
+  width: 1em;
+  height: 1em;
+  padding-top: 0.3em;
+  margin-right: 0.2em;
+}
+header h1 svg[data-fa='info'] {
+  margin-right: 0em;
+}
+header h1 svg[data-fa='code'] {
+  margin-right: 0.3em;
 }
 
 img[data-target='notion'] {
@@ -218,7 +233,9 @@ img[data-target='notion'] {
 .library--number_label *,
 .library--file_label * {
   appearance: none;
+  font-family: var(--theme--font_sans);
   font-size: var(--theme--font_ui-size);
+  color: var(--theme--text);
 }
 label p:not([class]),
 label p > span:not([class]),
@@ -353,6 +370,57 @@ label > span:not([class]) {
   padding: 1rem 2rem;
   font-size: 1rem;
   overflow-x: auto;
+}
+
+.alert--list {
+  position: absolute;
+  bottom: 1.5rem;
+  right: 1.5rem;
+}
+[role='alert'] {
+  max-width: calc(100vw - 3rem);
+  width: 25rem;
+  background: var(--theme--block_blue);
+  color: var(--theme--block_blue-text);
+  font-size: var(--theme--font_ui-size);
+  border-top: 4px currentColor solid;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  padding: 1.25em 1.5em;
+  display: flex;
+  margin-top: 1rem;
+  position: relative;
+}
+[role='alert'] svg {
+  height: 1.5rem;
+  width: 1.5rem;
+  margin-top: 0.25rem;
+  margin-right: 1rem;
+}
+[role='alert'] h3 {
+  margin: 0 0 0.25rem 0;
+  font-weight: bold;
+}
+[role='alert'] p {
+  margin: 0.25rem 0 0.5rem 0;
+}
+[role='alert'] .alert--dismiss {
+  position: absolute;
+  top: 0.5rem;
+  right: 0.75rem;
+  background: none;
+  border: none;
+  padding: 0.25rem 0.35rem;
+  font-size: var(--theme--font_body-size);
+  color: currentColor;
+  cursor: pointer;
+  transition: opacity 200ms ease-in-out;
+  opacity: 0;
+}
+[role='alert']:hover .alert--dismiss,
+[role='alert']:focus-within .alert--dismiss {
+  opacity: 1;
 }
 
 ::-webkit-scrollbar {

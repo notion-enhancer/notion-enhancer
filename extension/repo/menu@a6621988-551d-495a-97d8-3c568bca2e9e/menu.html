@@ -7,15 +7,59 @@
   </head>
   <body>
     <header>
-      <p><img data-target="notion" alt="" width="24" src="../../icons/colour.svg" /></p>
-      <h1><a href="?view=library" data-target="library">library</a></h1>
-      <h1><a href="?view=alerts" data-target="alerts">alerts</a></h1>
-      <h1><a href="https://github.com/notion-enhancer/extension">github</a></h1>
-      <h1><a href="https://discord.gg/sFWPXtA">discord</a></h1>
+      <h1>
+        <img data-target="notion" alt="" width="24" src="../../icons/colour.svg" /><a
+          href="?view=library"
+          data-target="library"
+          >library</a
+        >
+      </h1>
+      <h1>
+        <span data-fa="info"></span><a href="https://notion-enhancer.github.io/">website</a>
+      </h1>
+      <h1>
+        <span data-fa="code"></span
+        ><a href="https://github.com/notion-enhancer/extension">source code</a>
+      </h1>
+      <h1><span data-fa="discord"></span><a href="https://discord.gg/sFWPXtA">support</a></h1>
     </header>
     <main>
       <section data-container></section>
     </main>
+    <footer class="alert--list">
+      <div role="alert">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path
+              fill="currentColor"
+              d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"
+            />
+          </svg>
+        </div>
+        <div>
+          <h3>v0.11.0 released</h3>
+          <p>
+            <a href="chrome://extensions">read the changelog</a> and
+            <a href="">update the extension</a>
+          </p>
+        </div>
+        <button class="alert--dismiss">&times;</button>
+      </div>
+      <div role="alert">
+        <div>
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path
+              fill="currentColor"
+              d="M2.93 17.07A10 10 0 1 1 17.07 2.93 10 10 0 0 1 2.93 17.07zm12.73-1.41A8 8 0 1 0 4.34 4.34a8 8 0 0 0 11.32 11.32zM9 11V9h2v6H9v-4zm0-6h2v2H9V5z"
+            />
+          </svg>
+        </div>
+        <div>
+          <h3>alert</h3>
+          <p>description</p>
+        </div>
+      </div>
+    </footer>
     <script src="./menu.js" type="module"></script>
   </body>
 </html>

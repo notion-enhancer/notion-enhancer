@@ -124,6 +124,7 @@ import './dep/prism.js';
 fmt.Prism = Prism;
 fmt.Prism.manual = true;
 fmt.Prism.hooks.add('complete', async (event) => {
+  event.element.parentElement.removeAttribute('tabindex');
   event.element.parentElement.parentElement
     .querySelector('.copy-to-clipboard-button')
     .prepend(web.createElement(await fs.getText('icons/fontawesome/copy.svg')));
@@ -138,15 +139,15 @@ import './dep/markdown-it.min.js';
 fmt.md = new markdownit({
   linkify: true,
   highlight: (str, lang) =>
-    web.html`<pre${
-      lang ? ` class="language-${lang} match-braces"` : ''
-    }><code>${web.escapeHtml(str)}</code></pre>`,
+    web.html`<pre class="language-${lang || 'plaintext'} match-braces"><code>${web.escapeHtml(
+      str
+    )}</code></pre>`,
 });
 fmt.md.renderer.rules.code_block = (tokens, idx, options, env, slf) => {
   const attrIdx = tokens[idx].attrIndex('class');
   if (attrIdx === -1) {
-    tokens[idx].attrPush(['class', 'match-braces']);
-  } else tokens[idx].attrs[attrIdx][1] = 'match-braces';
+    tokens[idx].attrPush(['class', 'match-braces language-plaintext']);
+  } else tokens[idx].attrs[attrIdx][1] = 'match-braces language-plaintext';
   return web.html`<pre${slf.renderAttrs(tokens[idx])}><code>${web.escapeHtml(
     tokens[idx].content
   )}</code></pre>\n`;
