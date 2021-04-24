@@ -12,18 +12,37 @@ import { env, storage, web, fs } from '../../helpers.js';
 const sidebarSelector =
   '#notion-app > div > div.notion-cursor-listener > div.notion-sidebar-container > div > div > div > div:nth-child(4)';
 web.whenReady([sidebarSelector], async () => {
-  const enhancerIcon = await fs.getText('icons/colour.svg'),
-    enhancerSidebarElement = web.createElement(
-      `<div class="enhancer--sidebarMenuTrigger" role="button" tabindex="0"><div><div>${enhancerIcon}</div><div><div>notion-enhancer</div></div></div></div>`
+  const $enhancerSidebarElement = web.createElement(
+      web.html`<div class="enhancer--sidebarMenuTrigger" role="button" tabindex="0">
+        <div>
+          <div>${await fs.getText('icons/colour.svg')}</div>
+          <div><div>notion-enhancer</div></div>
+        </div>
+      </div>`
+    ),
+    notifications = {
+      list: await fs.getJSON('https://notion-enhancer.github.io/notifications.json'),
+      dismissed: await storage.get(_id, 'notifications', []),
+    };
+  notifications.waiting = notifications.list.filter(
+    ({ id }) => !notifications.dismissed.includes(id)
+  );
+  if (notifications.waiting.length) {
+    $enhancerSidebarElement.classList.add('enhancer--notifications');
+    $enhancerSidebarElement.children[0].append(
+      web.createElement(
+        web.html`<div><div><span>${notifications.waiting.length}</span></div></div>`
+      )
     );
+  }
   const setTheme = () =>
     storage.set(_id, 'theme', document.querySelector('.notion-dark-theme') ? 'dark' : 'light');
-  enhancerSidebarElement.addEventListener('click', () => {
+  $enhancerSidebarElement.addEventListener('click', () => {
     setTheme().then(env.openEnhancerMenu);
   });
   window.addEventListener('focus', setTheme);
   window.addEventListener('blur', setTheme);
   setTheme();
-  document.querySelector(sidebarSelector).appendChild(enhancerSidebarElement);
+  document.querySelector(sidebarSelector).appendChild($enhancerSidebarElement);
 });
 web.hotkeyListener(['Ctrl', 'Alt', 'E'], env.openEnhancerMenu);

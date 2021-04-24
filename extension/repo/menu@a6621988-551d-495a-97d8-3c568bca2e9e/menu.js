@@ -15,14 +15,8 @@ for (let mod of await registry.get()) {
   }
 }
 
-
 document.querySelector('img[data-target="notion"]').addEventListener('click', env.focusNotion);
 web.hotkeyListener(['Ctrl', 'Alt', 'E'], env.focusNotion);
-
-document.querySelectorAll('[data-fa]').forEach(icon => fs.getText(`icons/fontawesome/${icon.dataset.fa}.svg`).then(svg => {
-  svg = web.createElement(svg);
-  svg.dataset.fa = icon.dataset.fa; icon.replaceWith(svg);
-}))
 
 const components = {};
 components.card = {
@@ -74,7 +68,7 @@ components.card = {
     web.createElement(
       web.html`<p class="library--expand">
         <a href="?view=mod&id=${web.escapeHtml(id)}">
-          <span>${await fs.getText('icons/fontawesome/long-arrow-alt-right.svg')}</span>
+          <span><i data-icon="fa/long-arrow-alt-right"></i></span>
           <span>settings & documentation</span>
         </a>
       </p>`
@@ -108,7 +102,7 @@ components.options = {
     >
       <p>${label}</p>
       <p class="library--select">
-        <span> ${await fs.getText('icons/fontawesome/caret-down.svg')}</span>
+        <span><i data-icon="fa/caret-down"></i></span>
         <select id="select--${web.escapeHtml(`${id}.${key}`)}">
           ${values.map(
             (value) =>
@@ -157,7 +151,7 @@ components.options = {
       />
       <p>${web.escapeHtml(label)}</p>
       <p class="library--file">
-        <span>${await fs.getText('icons/fontawesome/file.svg')}</span>
+        <span><i data-icon="fa/file"></i></span>
         <span class="library--file_path">choose file...</span>
       </p>
     </label>`);
@@ -182,7 +176,7 @@ components.documentation = {
   buttons: async ({ _dir }) =>
     web.createElement(web.html`<p class="documentation--buttons">
       <a href="?view=library">
-        <span>${await fs.getText('icons/fontawesome/long-arrow-alt-left.svg')}</span>
+        <span><i data-icon="fa/long-arrow-alt-left"></i></span>
         <span>back to library</span>
       </a>
       <a
@@ -190,7 +184,7 @@ components.documentation = {
           _dir
         )}"
       >
-        <span>${await fs.getText('icons/fontawesome/code.svg')}</span>
+        <span><i data-icon="fa/code"></i></span>
         <span>view source code</span>
       </a>
     </p>`),
@@ -291,6 +285,13 @@ const views = {
     document
       .querySelectorAll('a[href^="#"]')
       .forEach((a) => a.addEventListener('click', this._navigator));
+    document.querySelectorAll('[data-icon]').forEach((icon) =>
+      fs.getText(`icons/${icon.dataset.icon}.svg`).then((svg) => {
+        svg = web.createElement(svg);
+        svg.dataset.icon = icon.dataset.icon;
+        icon.replaceWith(svg);
+      })
+    );
   },
   async mod(mod) {
     this.$container.dataset.container = 'mod';
@@ -312,6 +313,76 @@ views._load();
 window.addEventListener('popstate', (ev) => {
   if (ev.state) views._load();
 });
+
+const notifications = {
+  _generate({ heading, message = '', type = 'information' }, callback = () => {}) {
+    let svg = '',
+      className = 'notification';
+    switch (type) {
+      case 'celebration':
+        svg = web.html`<i data-icon="monster/party"></i>`;
+        className += ' celebration';
+        break;
+      case 'information':
+        svg = web.html`<i data-icon="fa/info"></i>`;
+        className += ' information';
+        break;
+      case 'warning':
+        svg = web.html`<i data-icon="fa/exclamation-triangle"></i>`;
+        className += ' warning';
+        break;
+    }
+    const $notif = web.createElement(web.html`<div role="alert" class="${className}">
+      <div>${svg}</div>
+      <div>
+        <h3>${web.escapeHtml(heading)}</h3>
+        <p>${fmt.md.renderInline(message)}</p>
+      </div>
+      <button class="notification--dismiss">&times;</button>
+    </div>`);
+    $notif.querySelector('.notification--dismiss').addEventListener('click', (event) => {
+      $notif.style.opacity = 0;
+      $notif.style.transform = 'scaleY(0)';
+      $notif.style.marginTop = `-${
+        $notif.offsetHeight / parseFloat(getComputedStyle(document.documentElement).fontSize)
+      }rem`;
+      setTimeout(() => $notif.remove(), 400);
+      callback();
+    });
+    setTimeout(() => {
+      $notif.style.opacity = 1;
+    }, 100);
+    return $notif;
+  },
+  async load() {
+    let notifications = {
+      list: await fs.getJSON('https://notion-enhancer.github.io/notifications.json'),
+      dismissed: await storage.get(_id, 'notifications', []),
+    };
+    notifications.list = notifications.list.sort((a, b) => b.id - a.id);
+    notifications.waiting = notifications.list.filter(
+      ({ id }) => !notifications.dismissed.includes(id)
+    );
+    const $list = document.querySelector('.notification--list');
+    for (let notification of notifications.waiting) {
+      if (
+        notification.heading &&
+        notification.appears_on &&
+        (notification.appears_on.versions.includes('*') ||
+          notification.appears_on.versions.includes(env.version)) &&
+        notification.appears_on.extension
+      ) {
+        $list.append(
+          this._generate(notification, async () => {
+            const dismissed = await storage.get(_id, 'notifications', []);
+            storage.set(_id, 'notifications', [...new Set([...dismissed, notification.id])]);
+          })
+        );
+      }
+    }
+  },
+};
+notifications.load();
 
 async function theme() {
   document.documentElement.className = `notion-${

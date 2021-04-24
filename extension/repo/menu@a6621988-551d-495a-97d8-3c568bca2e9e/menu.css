@@ -54,10 +54,10 @@ header h1 svg {
   padding-top: 0.3em;
   margin-right: 0.2em;
 }
-header h1 svg[data-fa='info'] {
+header h1 svg[data-icon='info'] {
   margin-right: 0em;
 }
-header h1 svg[data-fa='code'] {
+header h1 svg[data-icon='code'] {
   margin-right: 0.3em;
 }
 
@@ -372,16 +372,16 @@ label > span:not([class]) {
   overflow-x: auto;
 }
 
-.alert--list {
+.notification--list {
   position: absolute;
   bottom: 1.5rem;
   right: 1.5rem;
 }
-[role='alert'] {
+.notification {
+  background: var(--theme--block_grey);
+  color: var(--theme--block_grey-text);
   max-width: calc(100vw - 3rem);
   width: 25rem;
-  background: var(--theme--block_blue);
-  color: var(--theme--block_blue-text);
   font-size: var(--theme--font_ui-size);
   border-top: 4px currentColor solid;
   border-bottom-left-radius: 3px;
@@ -391,21 +391,26 @@ label > span:not([class]) {
   display: flex;
   margin-top: 1rem;
   position: relative;
+  transition: opacity 200ms ease-in-out, transform 115ms ease-out 200ms,
+    margin-top 115ms ease-out 200ms;
+  transform: scaleY(1);
+  transform-origin: 100% 100%;
+  opacity: 0;
 }
-[role='alert'] svg {
+.notification svg {
   height: 1.5rem;
   width: 1.5rem;
   margin-top: 0.25rem;
   margin-right: 1rem;
 }
-[role='alert'] h3 {
+.notification h3 {
   margin: 0 0 0.25rem 0;
   font-weight: bold;
 }
-[role='alert'] p {
+.notification p {
   margin: 0.25rem 0 0.5rem 0;
 }
-[role='alert'] .alert--dismiss {
+.notification .notification--dismiss {
   position: absolute;
   top: 0.5rem;
   right: 0.75rem;
@@ -418,9 +423,19 @@ label > span:not([class]) {
   transition: opacity 200ms ease-in-out;
   opacity: 0;
 }
-[role='alert']:hover .alert--dismiss,
-[role='alert']:focus-within .alert--dismiss {
+.notification:hover .notification--dismiss,
+.notification:focus-within .notification--dismiss {
   opacity: 1;
+}
+.notification.celebration,
+.notification.information {
+  background: var(--theme--block_blue);
+  color: var(--theme--block_blue-text);
+}
+.notification.warning,
+.notification.danger {
+  background: var(--theme--block_red);
+  color: var(--theme--block_red-text);
 }
 
 ::-webkit-scrollbar {

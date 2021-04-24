@@ -9,7 +9,8 @@
 export const ERROR = Symbol();
 
 export const env = {};
-env.name = 'browser';
+env.name = 'extension';
+env.version = chrome.runtime.getManifest().version;
 
 env.openEnhancerMenu = () => chrome.runtime.sendMessage({ action: 'openEnhancerMenu' });
 env.focusNotion = () => chrome.runtime.sendMessage({ action: 'focusNotion' });
@@ -20,9 +21,11 @@ export const storage = {};
 
 storage.set = (id, key, value) =>
   new Promise((res, rej) => chrome.storage.sync.set({ [`[${id}]${key}`]: value }, res));
-storage.get = (id, key) =>
+storage.get = (id, key, fallback = undefined) =>
   new Promise((res, rej) =>
-    chrome.storage.sync.get([`[${id}]${key}`], (values) => res(values[`[${id}]${key}`]))
+    chrome.storage.sync.get([`[${id}]${key}`], (values) =>
+      res(values[`[${id}]${key}`] ?? fallback)
+    )
   );
 
 /** - */
@@ -127,7 +130,7 @@ fmt.Prism.hooks.add('complete', async (event) => {
   event.element.parentElement.removeAttribute('tabindex');
   event.element.parentElement.parentElement
     .querySelector('.copy-to-clipboard-button')
-    .prepend(web.createElement(await fs.getText('icons/fontawesome/copy.svg')));
+    .prepend(web.createElement(await fs.getText('icons/fa/copy.svg')));
   // if (!fmt.Prism._stylesheetLoaded) {
   //   web.loadStyleset('./dep/prism.css');
   //   fmt.Prism._stylesheetLoaded = true;
@@ -192,8 +195,14 @@ export const fs = {};
 /**
  * @param {string} path
  */
-fs.getJSON = (path) => fetch(chrome.runtime.getURL(path)).then((res) => res.json());
-fs.getText = (path) => fetch(chrome.runtime.getURL(path)).then((res) => res.text());
+fs.getJSON = (path) =>
+  fetch(path.startsWith('https://') ? path : chrome.runtime.getURL(path)).then((res) =>
+    res.json()
+  );
+fs.getText = (path) =>
+  fetch(path.startsWith('https://') ? path : chrome.runtime.getURL(path)).then((res) =>
+    res.text()
+  );
 
 fs.isFile = async (path) => {
   try {
