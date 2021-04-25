@@ -87,16 +87,22 @@ components.card = {
   },
 };
 components.options = {
-  toggle: (id, { key, label, value }) =>
-    web.createElement(web.html`<label
+  async toggle(id, { key, label }) {
+    const state = await storage.get(id, key),
+      opt = web.createElement(web.html`<label
       for="toggle--${web.escapeHtml(`${id}.${key}`)}"
       class="library--toggle_label"
     >
-      <input type="checkbox" id="toggle--${web.escapeHtml(`${id}.${key}`)}" />
+      <input type="checkbox" id="toggle--${web.escapeHtml(`${id}.${key}`)}"
+        ${state ? 'checked' : ''}/>
       <p><span>${label}</span><span class="library--toggle"></span></p
-    ></label>`),
-  select: async (id, { key, label, values }) =>
-    web.createElement(web.html`<label
+    ></label>`);
+    opt.addEventListener('change', (event) => storage.set(id, key, event.target.checked));
+    return opt;
+  },
+  async select(id, { key, label, values }) {
+    const state = await storage.get(id, key),
+      opt = web.createElement(web.html`<label
       for="select--${web.escapeHtml(`${id}.${key}`)}"
       class="library--select_label"
     >
@@ -106,37 +112,47 @@ components.options = {
         <select id="select--${web.escapeHtml(`${id}.${key}`)}">
           ${values.map(
             (value) =>
-              web.html`<option value="${web.escapeHtml(value)}">${web.escapeHtml(
-                value
-              )}</option>`
+              web.html`<option value="${web.escapeHtml(value)}"
+              ${value === state ? 'selected' : ''}>
+              ${web.escapeHtml(value)}</option>`
           )}
         </select>
       </p>
-    </label>`),
-  text(id, { key, label, value }) {
-    const opt = web.createElement(web.html`<label
+    </label>`);
+    opt.addEventListener('change', (event) => storage.set(id, key, event.target.value));
+    return opt;
+  },
+  async text(id, { key, label }) {
+    const state = await storage.get(id, key),
+      opt = web.createElement(web.html`<label
       for="text--${web.escapeHtml(`${id}.${key}`)}"
       class="library--text_label"
     >
       <p>${label}</p>
-      <textarea id="text--${web.escapeHtml(`${id}.${key}`)}" rows="1"></textarea>
+      <textarea id="text--${web.escapeHtml(`${id}.${key}`)}" rows="1">${state}</textarea>
     </label>`);
-    opt.querySelector('textarea').addEventListener('input', (ev) => {
-      ev.target.style.removeProperty('--txt--scroll-height');
-      ev.target.style.setProperty('--txt--scroll-height', ev.target.scrollHeight + 'px');
+    opt.querySelector('textarea').addEventListener('input', (event) => {
+      event.target.style.removeProperty('--txt--scroll-height');
+      event.target.style.setProperty('--txt--scroll-height', event.target.scrollHeight + 'px');
     });
+    opt.addEventListener('change', (event) => storage.set(id, key, event.target.value));
     return opt;
   },
-  number: (id, { key, label, value }) =>
-    web.createElement(web.html`<label
+  async number(id, { key, label }) {
+    const state = await storage.get(id, key),
+      opt = web.createElement(web.html`<label
       for="number--${web.escapeHtml(`${id}.${key}`)}"
       class="library--number_label"
     >
       <p>${web.escapeHtml(label)}</p>
-      <input id="number--${web.escapeHtml(`${id}.${key}`)}" type="number" />
-    </label>`),
+      <input id="number--${web.escapeHtml(`${id}.${key}`)}" type="number" value="${state}"/>
+    </label>`);
+    opt.addEventListener('change', (event) => storage.set(id, key, event.target.value));
+    return opt;
+  },
   async file(id, { key, label, extensions }) {
-    const opt = web.createElement(web.html`<label
+    const state = await storage.get(id, key),
+      opt = web.createElement(web.html`<label
       for="file--${web.escapeHtml(`${id}.${key}`)}"
       class="library--file_label"
     >
@@ -145,18 +161,33 @@ components.options = {
         id="file--${web.escapeHtml(`${id}.${key}`)}"
         ${web.escapeHtml(
           extensions && extensions.length
-            ? ` accept="${web.escapeHtml(extensions.join(','))}"`
+            ? ` accept=${web.escapeHtml(extensions.join(','))}`
             : ''
         )}
       />
       <p>${web.escapeHtml(label)}</p>
       <p class="library--file">
         <span><i data-icon="fa/file"></i></span>
-        <span class="library--file_path">choose file...</span>
+        <span class="library--file_path">${state || 'choose file...'}</span>
+      </p>
+      <p class="library--warning">
+        warning: browser extensions do not have true filesystem access,
+        so the content of the file is saved on selection. after editing it,
+        the file will need to be re-selected.
       </p>
     </label>`);
-    opt.querySelector('input').addEventListener('change', (ev) => {
-      opt.querySelector('.library--file_path').innerText = ev.target.files[0].name;
+    opt.addEventListener('change', (event) => {
+      const file = event.target.files[0],
+        reader = new FileReader();
+      opt.querySelector('.library--file_path').innerText = file.name;
+      storage.set(id, key, file.name);
+      reader.onload = (progress) => {
+        storage.set(id, `_file.${key}`, progress.currentTarget.result);
+      };
+      reader.readAsText(file);
+    });
+    opt.addEventListener('click', (event) => {
+      document.documentElement.scrollTop = 0;
     });
     return opt;
   },
@@ -278,7 +309,7 @@ const views = {
     }, 50);
     document
       .querySelectorAll('img')
-      .forEach((img) => (img.onerror = (ev) => ev.target.remove()));
+      .forEach((img) => (img.onerror = (event) => event.target.remove()));
     document
       .querySelectorAll('a[href^="?"]')
       .forEach((a) => a.addEventListener('click', this._router));
@@ -310,12 +341,12 @@ const views = {
 views._router = views._router.bind(views);
 views._navigator = views._navigator.bind(views);
 views._load();
-window.addEventListener('popstate', (ev) => {
-  if (ev.state) views._load();
+window.addEventListener('popstate', (event) => {
+  if (event.state) views._load();
 });
 
 const notifications = {
-  _generate({ heading, message = '', type = 'information' }, callback = () => {}) {
+  _generate({ heading, message = '', type = 'information' }, onDismiss = () => {}) {
     let svg = '',
       className = 'notification';
     switch (type) {
@@ -347,7 +378,7 @@ const notifications = {
         $notif.offsetHeight / parseFloat(getComputedStyle(document.documentElement).fontSize)
       }rem`;
       setTimeout(() => $notif.remove(), 400);
-      callback();
+      onDismiss();
     });
     setTimeout(() => {
       $notif.style.opacity = 1;
@@ -355,7 +386,7 @@ const notifications = {
     return $notif;
   },
   async load() {
-    let notifications = {
+    const notifications = {
       list: await fs.getJSON('https://notion-enhancer.github.io/notifications.json'),
       dismissed: await storage.get(_id, 'notifications', []),
     };

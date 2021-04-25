@@ -6,33 +6,56 @@
 
 'use strict';
 
-export const ERROR = Symbol();
+export const ERROR = Symbol(),
+  env = {},
+  storage = {},
+  fs = {},
+  web = {},
+  fmt = {},
+  regexers = {},
+  registry = {};
 
-export const env = {};
 env.name = 'extension';
 env.version = chrome.runtime.getManifest().version;
-
 env.openEnhancerMenu = () => chrome.runtime.sendMessage({ action: 'openEnhancerMenu' });
 env.focusNotion = () => chrome.runtime.sendMessage({ action: 'focusNotion' });
 
-/** - */
-
-export const storage = {};
-
-storage.set = (id, key, value) =>
-  new Promise((res, rej) => chrome.storage.sync.set({ [`[${id}]${key}`]: value }, res));
-storage.get = (id, key, fallback = undefined) =>
+storage.get = (namespace, key = undefined, fallback = undefined) =>
   new Promise((res, rej) =>
-    chrome.storage.sync.get([`[${id}]${key}`], (values) =>
-      res(values[`[${id}]${key}`] ?? fallback)
-    )
+    chrome.storage.sync.get([namespace], async (values) => {
+      values =
+        values[namespace] && Object.getOwnPropertyNames(values[namespace]).length
+          ? values[namespace]
+          : await registry.defaults(namespace);
+      res((key ? values[key] : values) ?? fallback);
+    })
   );
+storage.set = (namespace, key, value) =>
+  new Promise(async (res, rej) => {
+    const values = await storage.get(namespace, undefined, {});
+    chrome.storage.sync.set({ [namespace]: { ...values, [key]: value } }, res);
+  });
+storage.reset = (namespace) =>
+  new Promise((res, rej) => chrome.storage.sync.set({ [namespace]: undefined }, res));
 
-/** - */
+fs.getJSON = (path) =>
+  fetch(path.startsWith('https://') ? path : chrome.runtime.getURL(path)).then((res) =>
+    res.json()
+  );
+fs.getText = (path) =>
+  fetch(path.startsWith('https://') ? path : chrome.runtime.getURL(path)).then((res) =>
+    res.text()
+  );
+fs.isFile = async (path) => {
+  try {
+    await fetch(chrome.runtime.getURL(path));
+    return true;
+  } catch {
+    return false;
+  }
+};
 
-export const web = {};
-
-web.whenReady = (selectors = [], callback = () => {}) => {
+web.whenReady = (selectors = []) => {
   return new Promise((res, rej) => {
     function onLoad() {
       let isReadyInt;
@@ -40,7 +63,6 @@ web.whenReady = (selectors = [], callback = () => {}) => {
       function isReadyTest() {
         if (selectors.every((selector) => document.querySelector(selector))) {
           clearInterval(isReadyInt);
-          callback();
           res(true);
         }
       }
@@ -53,11 +75,12 @@ web.whenReady = (selectors = [], callback = () => {}) => {
     } else onLoad();
   });
 };
-
-/**
- * @param {string} html
- * @returns HTMLElement
- */
+web.loadStyleset = (path) => {
+  document.head.appendChild(
+    web.createElement(`<link rel="stylesheet" href="${chrome.runtime.getURL(path)}">`)
+  );
+  return true;
+};
 web.createElement = (html) => {
   const template = document.createElement('template');
   template.innerHTML = html.includes('<pre')
@@ -70,25 +93,14 @@ web.createElement = (html) => {
 };
 web.escapeHtml = (str) =>
   str
-    .replace(/&/g, '&amp;') // (?![^\s]+;)
+    .replace(/&/g, '&amp;')
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/'/g, '&#39;')
     .replace(/"/g, '&quot;');
-
 // why a tagged template? because it syntax highlights
 // https://marketplace.visualstudio.com/items?itemName=bierner.lit-html
-web.html = (html, ...templates) => html.map((str) => str + (templates.shift() || '')).join('');
-
-/**
- * @param {string} sheet
- */
-web.loadStyleset = (sheet) => {
-  document.head.appendChild(
-    web.createElement(`<link rel="stylesheet" href="${chrome.runtime.getURL(sheet)}">`)
-  );
-  return true;
-};
+web.html = (html, ...templates) => html.map((str) => str + (templates.shift() ?? '')).join('');
 
 /**
  * @param {array} keys
@@ -118,10 +130,6 @@ web.hotkeyListener = (keys, callback) => {
   }
   web._hotkeys.push({ keys, callback });
 };
-
-/** - */
-
-export const fmt = {};
 
 import './dep/prism.js';
 fmt.Prism = Prism;
@@ -188,69 +196,36 @@ fmt.slugger = (heading, slugs = new Set()) => {
   return slug;
 };
 
-/** - */
-
-export const fs = {};
-
-/**
- * @param {string} path
- */
-fs.getJSON = (path) =>
-  fetch(path.startsWith('https://') ? path : chrome.runtime.getURL(path)).then((res) =>
-    res.json()
-  );
-fs.getText = (path) =>
-  fetch(path.startsWith('https://') ? path : chrome.runtime.getURL(path)).then((res) =>
-    res.text()
-  );
-
-fs.isFile = async (path) => {
-  try {
-    await fetch(chrome.runtime.getURL(path));
-    return true;
-  } catch {
-    return false;
-  }
+regexers.uuid = (str) => {
+  const match = str.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
+  if (match && match.length) return true;
+  error(`invalid uuid ${str}`);
+  return false;
 };
-
-/** - */
-
-export const regexers = {
-  uuid(str) {
-    const match = str.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
-    if (match && match.length) return true;
-    error(`invalid uuid ${str}`);
-    return false;
-  },
-  semver(str) {
-    const match = str.match(
-      /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/i
-    );
-    if (match && match.length) return true;
-    error(`invalid semver ${str}`);
-    return false;
-  },
-  email(str) {
-    const match = str.match(
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i
-    );
-    if (match && match.length) return true;
-    error(`invalid email ${str}`);
-    return false;
-  },
-  url(str) {
-    const match = str.match(
-      /^[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/i
-    );
-    if (match && match.length) return true;
-    error(`invalid url ${str}`);
-    return false;
-  },
+regexers.semver = (str) => {
+  const match = str.match(
+    /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/i
+  );
+  if (match && match.length) return true;
+  error(`invalid semver ${str}`);
+  return false;
 };
-
-/** - */
-
-export const registry = {};
+regexers.email = (str) => {
+  const match = str.match(
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i
+  );
+  if (match && match.length) return true;
+  error(`invalid email ${str}`);
+  return false;
+};
+regexers.url = (str) => {
+  const match = str.match(
+    /^[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/i
+  );
+  if (match && match.length) return true;
+  error(`invalid url ${str}`);
+  return false;
+};
 
 registry.validate = async (mod, err, check) => {
   let conditions = [
@@ -444,8 +419,33 @@ registry.validate = async (mod, err, check) => {
   } while (conditions.some((condition) => Array.isArray(condition)));
   return conditions;
 };
+registry.defaults = async (id) => {
+  const mod = (await registry.get()).find((mod) => mod.id === id);
+  if (!mod || !mod.options) return {};
+  const defaults = {};
+  for (const opt of mod.options) {
+    switch (opt.type) {
+      case 'toggle':
+        defaults[opt.key] = opt.value;
+        break;
+      case 'select':
+        defaults[opt.key] = opt.values[0];
+        break;
+      case 'text':
+        defaults[opt.key] = opt.value;
+        break;
+      case 'number':
+        defaults[opt.key] = opt.value;
+        break;
+      case 'file':
+        defaults[opt.key] = undefined;
+        break;
+    }
+  }
+  return defaults;
+};
 
-registry.get = async (callback = () => {}) => {
+registry.get = async () => {
   registry._list = [];
   if (!registry._errors) registry._errors = [];
   for (const dir of await fs.getJSON('repo/registry.json')) {
@@ -466,12 +466,9 @@ registry.get = async (callback = () => {}) => {
       err('invalid mod.json');
     }
   }
-  callback(registry._list);
   return registry._list;
 };
-
-registry.errors = async (callback = () => {}) => {
+registry.errors = async () => {
   if (!registry._errors) await registry.get();
-  callback(registry._errors);
   return registry._errors;
 };

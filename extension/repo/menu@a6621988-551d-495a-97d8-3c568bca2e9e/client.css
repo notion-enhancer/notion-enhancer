@@ -51,8 +51,6 @@
   display: flex;
 }
 .enhancer--notifications > div > :last-child > div {
-  margin-left: auto;
-  margin-bottom: 2px;
   display: inline-flex;
   align-items: center;
   justify-content: center;

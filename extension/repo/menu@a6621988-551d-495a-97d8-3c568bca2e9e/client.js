@@ -11,7 +11,7 @@ import { env, storage, web, fs } from '../../helpers.js';
 
 const sidebarSelector =
   '#notion-app > div > div.notion-cursor-listener > div.notion-sidebar-container > div > div > div > div:nth-child(4)';
-web.whenReady([sidebarSelector], async () => {
+web.whenReady([sidebarSelector]).then(async () => {
   const $enhancerSidebarElement = web.createElement(
       web.html`<div class="enhancer--sidebarMenuTrigger" role="button" tabindex="0">
         <div>
