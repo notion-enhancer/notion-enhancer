@@ -25,31 +25,36 @@
       "type": "toggle",
       "key": "toggle",
       "label": "toggle",
-      "value": true
+      "value": true,
+      "description": "a toggle"
     },
     {
       "type": "select",
       "key": "select",
       "label": "select",
-      "values": ["option a", "option b", "option c"]
+      "values": ["option a", "option b", "option c"],
+      "description": "a select"
     },
     {
       "type": "text",
       "key": "text",
       "label": "text",
-      "value": "default"
+      "value": "default",
+      "description": "a text input"
     },
     {
       "type": "number",
       "key": "number",
       "label": "number",
-      "value": 0
+      "value": 0,
+      "description": "a number input"
     },
     {
       "type": "file",
       "key": "file",
       "label": "file picker (.css only)",
-      "extensions": [".css"]
+      "extensions": [".css"],
+      "description": "a file picker"
     }
   ]
 }

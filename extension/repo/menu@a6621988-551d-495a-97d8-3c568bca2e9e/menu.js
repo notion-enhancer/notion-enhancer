@@ -15,8 +15,29 @@ for (let mod of await registry.get()) {
   }
 }
 
-document.querySelector('img[data-target="notion"]').addEventListener('click', env.focusNotion);
+document
+  .querySelector('img[data-view-target="notion"]')
+  .addEventListener('click', env.focusNotion);
 web.hotkeyListener(['Ctrl', 'Alt', 'E'], env.focusNotion);
+
+const tooltips = {
+  $list: document.querySelector('.tooltip--list'),
+  _generate($target, text) {
+    const $tooltip = web.createElement(web.html`<div>${fmt.md.render(text)}</div>`);
+    this.$list.appendChild($tooltip);
+    $target.addEventListener('mouseover', (event) => {
+      $tooltip.style.display = 'block';
+    });
+    $target.addEventListener('mousemove', (event) => {
+      $tooltip.style.top = event.clientY - $tooltip.clientHeight + 'px';
+      $tooltip.style.left =
+        event.clientX < window.innerWidth / 2 ? event.clientX + 20 + 'px' : '';
+    });
+    $target.addEventListener('mouseout', (event) => {
+      $tooltip.style.display = '';
+    });
+  },
+};
 
 const components = {};
 components.card = {
@@ -87,25 +108,26 @@ components.card = {
   },
 };
 components.options = {
-  async toggle(id, { key, label }) {
+  async toggle(id, { key, label, description }) {
     const state = await storage.get(id, key),
       opt = web.createElement(web.html`<label
       for="toggle--${web.escapeHtml(`${id}.${key}`)}"
       class="library--toggle_label"
-    >
+      >
       <input type="checkbox" id="toggle--${web.escapeHtml(`${id}.${key}`)}"
-        ${state ? 'checked' : ''}/>
+      ${state ? 'checked' : ''}/>
       <p><span>${label}</span><span class="library--toggle"></span></p
-    ></label>`);
+      ></label>`);
     opt.addEventListener('change', (event) => storage.set(id, key, event.target.checked));
+    tooltips._generate(opt, description);
     return opt;
   },
-  async select(id, { key, label, values }) {
+  async select(id, { key, label, description, values }) {
     const state = await storage.get(id, key),
       opt = web.createElement(web.html`<label
       for="select--${web.escapeHtml(`${id}.${key}`)}"
       class="library--select_label"
-    >
+      >
       <p>${label}</p>
       <p class="library--select">
         <span><i data-icon="fa/caret-down"></i></span>
@@ -120,14 +142,15 @@ components.options = {
       </p>
     </label>`);
     opt.addEventListener('change', (event) => storage.set(id, key, event.target.value));
+    tooltips._generate(opt, description);
     return opt;
   },
-  async text(id, { key, label }) {
+  async text(id, { key, label, description }) {
     const state = await storage.get(id, key),
       opt = web.createElement(web.html`<label
       for="text--${web.escapeHtml(`${id}.${key}`)}"
       class="library--text_label"
-    >
+      >
       <p>${label}</p>
       <textarea id="text--${web.escapeHtml(`${id}.${key}`)}" rows="1">${state}</textarea>
     </label>`);
@@ -136,26 +159,28 @@ components.options = {
       event.target.style.setProperty('--txt--scroll-height', event.target.scrollHeight + 'px');
     });
     opt.addEventListener('change', (event) => storage.set(id, key, event.target.value));
+    tooltips._generate(opt, description);
     return opt;
   },
-  async number(id, { key, label }) {
+  async number(id, { key, label, description }) {
     const state = await storage.get(id, key),
       opt = web.createElement(web.html`<label
       for="number--${web.escapeHtml(`${id}.${key}`)}"
       class="library--number_label"
-    >
+      >
       <p>${web.escapeHtml(label)}</p>
       <input id="number--${web.escapeHtml(`${id}.${key}`)}" type="number" value="${state}"/>
     </label>`);
     opt.addEventListener('change', (event) => storage.set(id, key, event.target.value));
+    tooltips._generate(opt, description);
     return opt;
   },
-  async file(id, { key, label, extensions }) {
+  async file(id, { key, label, description, extensions }) {
     const state = await storage.get(id, key),
       opt = web.createElement(web.html`<label
       for="file--${web.escapeHtml(`${id}.${key}`)}"
       class="library--file_label"
-    >
+      >
       <input
         type="file"
         id="file--${web.escapeHtml(`${id}.${key}`)}"
@@ -169,11 +194,6 @@ components.options = {
       <p class="library--file">
         <span><i data-icon="fa/file"></i></span>
         <span class="library--file_path">${state || 'choose file...'}</span>
-      </p>
-      <p class="library--warning">
-        warning: browser extensions do not have true filesystem access,
-        so the content of the file is saved on selection. after editing it,
-        the file will need to be re-selected.
       </p>
     </label>`);
     opt.addEventListener('change', (event) => {
@@ -189,6 +209,12 @@ components.options = {
     opt.addEventListener('click', (event) => {
       document.documentElement.scrollTop = 0;
     });
+    tooltips._generate(
+      opt,
+      `${description}\n\n**warning:** browser extensions do not have true filesystem access,
+      so the content of the file is saved on selection. after editing it,
+      the file will need to be re-selected.`
+    );
     return opt;
   },
   async _generate(mod) {
@@ -270,7 +296,9 @@ const views = {
         this.$container.innerHTML = '';
         this.$container.style.opacity = '';
         this.$container.dataset.container = '';
-        document.querySelector('[data-target][data-active]')?.removeAttribute('data-active');
+        document
+          .querySelector('[data-view-target][data-view-active]')
+          ?.removeAttribute('data-view-active');
         res();
       }, 200);
     });
@@ -326,14 +354,14 @@ const views = {
   },
   async mod(mod) {
     this.$container.dataset.container = 'mod';
-    document.querySelector('header [data-target="library"]').dataset.active = true;
+    document.querySelector('header [data-view-target="library"]').dataset.active = true;
     this.$container.append(await components.documentation.buttons(mod));
     this.$container.append(await components.options._generate(mod));
     this.$container.append(await components.documentation.readme(mod));
   },
   async library() {
     this.$container.dataset.container = 'library';
-    document.querySelector('header [data-target="library"]').dataset.active = true;
+    document.querySelector('header [data-view-target="library"]').dataset.active = true;
     for (let mod of await registry.get())
       this.$container.append(await components.card._generate(mod));
   },

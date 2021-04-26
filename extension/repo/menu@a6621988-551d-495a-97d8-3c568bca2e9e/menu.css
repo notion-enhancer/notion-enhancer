@@ -21,6 +21,7 @@ html[class] {
 
 body {
   padding: 2rem 2.5rem;
+  position: relative;
   margin: 0;
   background: var(--theme--sidebar);
   color: var(--theme--text);
@@ -39,7 +40,7 @@ header > * {
   margin: 0 1.25rem 0 0;
   font-size: var(--theme--font_heading1-size);
 }
-header h1 a:not([data-active]) {
+header h1 a:not([data-view-active]) {
   text-decoration: none;
 }
 header h1 img {
@@ -61,7 +62,7 @@ header h1 svg[data-icon='code'] {
   margin-right: 0.3em;
 }
 
-img[data-target='notion'] {
+img[data-view-target='notion'] {
   cursor: pointer;
 }
 
@@ -95,8 +96,9 @@ img[data-target='notion'] {
   [data-container='mod'] > .documentation--body {
     grid-column: span 2;
   }
-  body {
+  [data-container='mod'] {
     overflow: hidden;
+    max-height: calc(100vh);
   }
 }
 @media (min-width: 1350px) {
@@ -370,6 +372,21 @@ label > span:not([class]) {
   padding: 1rem 2rem;
   font-size: 1rem;
   overflow-x: auto;
+}
+
+.tooltip--list > div {
+  position: absolute;
+  background: var(--theme--tooltip);
+  color: var(--theme--tooltip-text);
+  font-size: var(--theme--font_ui_small-size);
+  padding: 0.5rem;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
+  border-radius: 3px;
+  max-width: 20rem;
+  display: none;
+}
+.tooltip--list p {
+  margin: 0.25rem 0;
 }
 
 .notification--list {
