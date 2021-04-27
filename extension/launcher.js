@@ -9,6 +9,7 @@
 import(chrome.runtime.getURL('helpers.js')).then(({ web, registry }) => {
   web.whenReady().then(async () => {
     for (let mod of await registry.get()) {
+      if (!(await registry.enabled(mod.id))) continue;
       for (let sheet of mod.css?.client || []) {
         web.loadStyleset(`repo/${mod._dir}/${sheet}`);
       }

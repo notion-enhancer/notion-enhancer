@@ -196,45 +196,50 @@ fmt.slugger = (heading, slugs = new Set()) => {
   return slug;
 };
 
-regexers.uuid = (str) => {
+regexers.uuid = (str, err = () => {}) => {
   const match = str.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
   if (match && match.length) return true;
-  error(`invalid uuid ${str}`);
-  return false;
+  err(`invalid uuid ${str}`);
+  return ERROR;
 };
-regexers.semver = (str) => {
+regexers.semver = (str, err = () => {}) => {
   const match = str.match(
     /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/i
   );
   if (match && match.length) return true;
-  error(`invalid semver ${str}`);
-  return false;
+  err(`invalid semver ${str}`);
+  return ERROR;
 };
-regexers.email = (str) => {
+regexers.email = (str, err = () => {}) => {
   const match = str.match(
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i
   );
   if (match && match.length) return true;
-  error(`invalid email ${str}`);
-  return false;
+  err(`invalid email ${str}`);
+  return ERROR;
 };
-regexers.url = (str) => {
+regexers.url = (str, err = () => {}) => {
   const match = str.match(
     /^[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/i
   );
   if (match && match.length) return true;
-  error(`invalid url ${str}`);
-  return false;
+  err(`invalid url ${str}`);
+  return ERROR;
 };
+
+registry.CORE = [
+  'a6621988-551d-495a-97d8-3c568bca2e9e',
+  '0f0bf8b6-eae6-4273-b307-8fc43f2ee082',
+];
 
 registry.validate = async (mod, err, check) => {
   let conditions = [
     check('name', mod.name, typeof mod.name === 'string'),
     check('id', mod.id, typeof mod.id === 'string').then((id) =>
-      id === ERROR ? ERROR : regexers.uuid(id)
+      id === ERROR ? ERROR : regexers.uuid(id, err)
     ),
     check('version', mod.version, typeof mod.version === 'string').then((version) =>
-      version === ERROR ? ERROR : regexers.semver(version)
+      version === ERROR ? ERROR : regexers.semver(version, err)
     ),
     check('description', mod.description, typeof mod.description === 'string'),
     check(
@@ -242,7 +247,7 @@ registry.validate = async (mod, err, check) => {
       mod.preview,
       mod.preview === undefined || typeof mod.preview === 'string'
     ).then((preview) =>
-      preview ? (preview === ERROR ? ERROR : regexers.url(preview)) : undefined
+      preview ? (preview === ERROR ? ERROR : regexers.url(preview, err)) : undefined
     ),
     check('tags', mod.tags, Array.isArray(mod.tags)).then((tags) =>
       tags === ERROR ? ERROR : tags.map((tag) => check('tag', tag, typeof tag === 'string'))
@@ -256,12 +261,12 @@ registry.validate = async (mod, err, check) => {
               'author.email',
               author.email,
               typeof author.email === 'string'
-            ).then((email) => (email === ERROR ? ERROR : regexers.email(email))),
+            ).then((email) => (email === ERROR ? ERROR : regexers.email(email, err))),
             check('author.url', author.url, typeof author.url === 'string').then((url) =>
-              url === ERROR ? ERROR : regexers.url(url)
+              url === ERROR ? ERROR : regexers.url(url, err)
             ),
             check('author.icon', author.icon, typeof author.icon === 'string').then((icon) =>
-              icon === ERROR ? ERROR : regexers.url(icon)
+              icon === ERROR ? ERROR : regexers.url(icon, err)
             ),
           ])
     ),
@@ -420,7 +425,10 @@ registry.validate = async (mod, err, check) => {
   return conditions;
 };
 registry.defaults = async (id) => {
-  const mod = (await registry.get()).find((mod) => mod.id === id);
+  const mod =
+    regexers.uuid(id) !== ERROR
+      ? (await registry.get()).find((mod) => mod.id === id)
+      : undefined;
   if (!mod || !mod.options) return {};
   const defaults = {};
   for (const opt of mod.options) {
@@ -445,7 +453,8 @@ registry.defaults = async (id) => {
   return defaults;
 };
 
-registry.get = async () => {
+registry.get = async (enabled) => {
+  if (registry._list && registry._list.length) return registry._list;
   registry._list = [];
   if (!registry._errors) registry._errors = [];
   for (const dir of await fs.getJSON('repo/registry.json')) {
@@ -471,4 +480,8 @@ registry.get = async () => {
 registry.errors = async () => {
   if (!registry._errors) await registry.get();
   return registry._errors;
+};
+registry.enabled = async (id) => {
+  if (registry.CORE.includes(id)) return true;
+  return await storage.get('_enabled', id, false);
 };

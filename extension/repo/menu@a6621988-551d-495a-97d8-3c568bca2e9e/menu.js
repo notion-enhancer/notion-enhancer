@@ -10,6 +10,7 @@ const _id = 'a6621988-551d-495a-97d8-3c568bca2e9e';
 import { env, storage, web, fmt, fs, registry } from '../../helpers.js';
 
 for (let mod of await registry.get()) {
+  if (!(await registry.enabled(mod.id))) continue;
   for (let sheet of mod.css?.menu || []) {
     web.loadStyleset(`repo/${mod._dir}/${sheet}`);
   }
@@ -50,13 +51,21 @@ components.card = {
       alt=""
       class="library--preview"
       src="${web.escapeHtml(preview)}"
-    />`),
-  name: ({ name, id, version }) =>
-    web.createElement(web.html`<label
+      />`),
+  async name({ name, id, version }) {
+    if (registry.CORE.includes(id))
+      return web.createElement(web.html`<div class="library--title"><h2>
+      <span>
+        ${web.escapeHtml(name)}
+        <span class="library--version">v${web.escapeHtml(version)}</span>
+      </span>
+    </h2></div>`);
+    const $name = web.createElement(web.html`<label
       for="enable--${web.escapeHtml(id)}"
       class="library--title library--toggle_label"
-    >
-      <input type="checkbox" id="enable--${web.escapeHtml(id)}" />
+      >
+      <input type="checkbox" id="enable--${web.escapeHtml(id)}"
+      ${(await storage.get('_enabled', id, false)) ? 'checked' : ''}/>
       <h2>
         <span>
           ${web.escapeHtml(name)}
@@ -64,7 +73,12 @@ components.card = {
         </span>
         <span class="library--toggle"></span>
       </h2>
-    </label>`),
+    </label>`);
+    $name.addEventListener('change', async (event) =>
+      storage.set('_enabled', id, !(await storage.get('_enabled', id, false)))
+    );
+    return $name;
+  },
   tags: ({ tags = [] }) =>
     web.createElement(web.html`<ul class="library--tags">
       ${tags.map((tag) => web.html`<li>#${web.escapeHtml(tag)}</li>`).join('')}
@@ -102,7 +116,7 @@ components.card = {
     const card = web.createElement(web.html`<article class="library--card"></article>`),
       body = web.createElement(web.html`<div></div>`);
     card.append(this.preview(mod));
-    body.append(this.name(mod));
+    body.append(await this.name(mod));
     body.append(this.tags(mod));
     body.append(this.description(mod));
     body.append(this.authors(mod));

@@ -361,11 +361,10 @@ label [data-icon='fa/question-circle'] {
   border: none;
   background: none;
 }
-.library--title {
-  margin: 0;
-}
+.library--title,
 .library--title h2 {
   margin: 0;
+  font-size: var(--theme--font_ui-size);
 }
 .library--title h2 > span {
   font-size: var(--theme--font_heading2-size);
