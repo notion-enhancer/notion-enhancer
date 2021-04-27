@@ -406,9 +406,9 @@ registry.validate = async (mod, err, check) => {
               ),
               check('option.label', option.label, typeof option.label === 'string'),
               check(
-                'option.description',
-                option.description,
-                !option.description || typeof option.description === 'string'
+                'option.tooltip',
+                option.tooltip,
+                !option.tooltip || typeof option.tooltip === 'string'
               ),
             ];
           })

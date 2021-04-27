@@ -26,6 +26,7 @@ body {
   background: var(--theme--sidebar);
   color: var(--theme--text);
   font-family: var(--theme--font_sans);
+  min-height: 100vh;
 }
 body a {
   color: inherit;
@@ -66,7 +67,7 @@ img[data-view-target='notion'] {
   cursor: pointer;
 }
 
-[data-container] {
+main {
   display: grid;
   grid-gap: 1.25em;
   grid-template-columns: 1fr;
@@ -74,62 +75,62 @@ img[data-view-target='notion'] {
   transition: opacity 200ms ease-out;
 }
 @media (min-width: 550px) {
-  [data-container] {
+  main {
     grid-template-columns: 1fr 1fr;
   }
-  [data-container='mod'] > .documentation--buttons {
+  [data-view='mod'] main > .documentation--buttons {
     grid-column: span 2;
   }
-  [data-container='mod'] .library--card,
+  [data-view='mod'] main .library--card,
   .documentation--body {
     max-height: calc(100vh - 10rem);
     overflow-y: auto;
   }
+  [data-view='mod'] {
+    overflow: hidden;
+    height: 100vh;
+  }
 }
 @media (min-width: 850px) {
-  [data-container] {
+  main {
     grid-template-columns: 1fr 1fr 1fr;
   }
-  [data-container='mod'] > .documentation--buttons {
+  [data-view='mod'] main > .documentation--buttons {
     grid-column: span 3;
   }
-  [data-container='mod'] > .documentation--body {
+  [data-view='mod'] main > .documentation--body {
     grid-column: span 2;
-  }
-  [data-container='mod'] {
-    overflow: hidden;
-    max-height: calc(100vh);
   }
 }
 @media (min-width: 1350px) {
-  [data-container] {
+  main {
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
-  [data-container='mod'] > .documentation--buttons {
+  [data-view='mod'] main > .documentation--buttons {
     grid-column: span 4;
   }
-  [data-container='mod'] > .documentation--body {
+  [data-view='mod'] main > .documentation--body {
     grid-column: span 3;
   }
 }
 @media (min-width: 2050px) {
-  [data-container] {
+  main {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   }
-  [data-container='mod'] > .documentation--buttons {
+  [data-view='mod'] main > .documentation--buttons {
     grid-column: span 5;
   }
-  [data-container='mod'] > .documentation--body {
+  [data-view='mod'] main > .documentation--body {
     grid-column: span 4;
   }
 }
-[data-container] article {
+main article {
   border-radius: 5px;
   box-shadow: rgb(0 0 0 / 10%) 0px 20px 25px -5px, rgb(0 0 0 / 4%) 0px 10px 10px -5px;
   border: 1px solid var(--theme--divider);
   background: var(--theme--page);
 }
-[data-container] article img {
+main article img {
   max-width: 100%;
 }
 
@@ -244,6 +245,12 @@ label p > span:not([class]),
 label > span:not([class]) {
   font-size: 1rem;
 }
+label [data-icon='fa/question-circle'] {
+  height: var(--theme--font_ui_small-size);
+  width: var(--theme--font_ui_small-size);
+  margin-left: 0.25em;
+  margin-bottom: -1px;
+}
 .library--toggle_label > p,
 .library--toggle_label > p,
 .library--select_label > p,
@@ -255,7 +262,6 @@ label > span:not([class]) {
 .library--toggle_label > :not(input) {
   align-items: center;
   display: flex;
-  cursor: pointer;
   --toggle--bg: var(--theme--toggle_off);
   --toggle--translation: 0%;
 }
@@ -267,6 +273,7 @@ label > span:not([class]) {
   display: block;
   border-radius: 40px;
   background: var(--toggle--bg);
+  cursor: pointer;
 }
 .library--toggle_label > :not(input) .library--toggle::after {
   content: '';
@@ -319,6 +326,7 @@ label > span:not([class]) {
 }
 .library--select_label .library--select select {
   outline: none;
+  cursor: pointer;
 }
 .library--select_label .library--select select option {
   background: var(--theme--tag_select);
@@ -327,6 +335,7 @@ label > span:not([class]) {
 .library--file_label .library--file {
   padding: 0;
   display: flex;
+  cursor: pointer;
 }
 .library--select_label .library--select > :first-child,
 .library--file_label .library--file > :first-child {
@@ -365,7 +374,7 @@ label > span:not([class]) {
 .library--card > div {
   padding: 1rem;
 }
-[data-container='mod'] .library--card {
+[data-view='mod'] main .library--card {
   overflow-x: auto;
 }
 .documentation--body {
@@ -374,18 +383,18 @@ label > span:not([class]) {
   overflow-x: auto;
 }
 
-.tooltip--list > div {
+.tooltip {
   position: absolute;
   background: var(--theme--tooltip);
   color: var(--theme--tooltip-text);
   font-size: var(--theme--font_ui_small-size);
-  padding: 0.5rem;
+  padding: 0.15rem 0.4rem;
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
   border-radius: 3px;
   max-width: 20rem;
   display: none;
 }
-.tooltip--list p {
+.tooltip p {
   margin: 0.25rem 0;
 }
 

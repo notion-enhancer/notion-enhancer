@@ -20,21 +20,25 @@ document
   .addEventListener('click', env.focusNotion);
 web.hotkeyListener(['Ctrl', 'Alt', 'E'], env.focusNotion);
 
-const tooltips = {
-  $list: document.querySelector('.tooltip--list'),
-  _generate($target, text) {
-    const $tooltip = web.createElement(web.html`<div>${fmt.md.render(text)}</div>`);
-    this.$list.appendChild($tooltip);
-    $target.addEventListener('mouseover', (event) => {
-      $tooltip.style.display = 'block';
+const hovertip = {
+  $el: document.querySelector('.tooltip'),
+  add($parent, selector, text) {
+    text = fmt.md.render(text);
+    $parent.addEventListener('mouseover', (event) => {
+      if (event.target.matches(selector) || event.target.matches(`${selector} *`)) {
+        this.$el.innerHTML = text;
+        this.$el.style.display = 'block';
+      }
     });
-    $target.addEventListener('mousemove', (event) => {
-      $tooltip.style.top = event.clientY - $tooltip.clientHeight + 'px';
-      $tooltip.style.left =
+    $parent.addEventListener('mousemove', (event) => {
+      this.$el.style.top = event.clientY - this.$el.clientHeight + 'px';
+      this.$el.style.left =
         event.clientX < window.innerWidth / 2 ? event.clientX + 20 + 'px' : '';
     });
-    $target.addEventListener('mouseout', (event) => {
-      $tooltip.style.display = '';
+    $parent.addEventListener('mouseout', (event) => {
+      if (event.target.matches(selector) || event.target.matches(`${selector} *`)) {
+        this.$el.style.display = '';
+      }
     });
   },
 };
@@ -108,7 +112,7 @@ components.card = {
   },
 };
 components.options = {
-  async toggle(id, { key, label, description }) {
+  async toggle(id, { key, label, tooltip }) {
     const state = await storage.get(id, key),
       opt = web.createElement(web.html`<label
       for="toggle--${web.escapeHtml(`${id}.${key}`)}"
@@ -116,19 +120,24 @@ components.options = {
       >
       <input type="checkbox" id="toggle--${web.escapeHtml(`${id}.${key}`)}"
       ${state ? 'checked' : ''}/>
-      <p><span>${label}</span><span class="library--toggle"></span></p
-      ></label>`);
+      <p>
+        <span data-tooltip>${web.escapeHtml(label)}
+        <i data-icon="fa/question-circle"></i></span>
+        <span class="library--toggle"></span>
+      </p>
+      </label>`);
     opt.addEventListener('change', (event) => storage.set(id, key, event.target.checked));
-    tooltips._generate(opt, description);
+    hovertip.add(opt, '[data-tooltip]', tooltip);
     return opt;
   },
-  async select(id, { key, label, description, values }) {
+  async select(id, { key, label, tooltip, values }) {
     const state = await storage.get(id, key),
       opt = web.createElement(web.html`<label
-      for="select--${web.escapeHtml(`${id}.${key}`)}"
-      class="library--select_label"
+        for="select--${web.escapeHtml(`${id}.${key}`)}"
+        class="library--select_label"
       >
-      <p>${label}</p>
+      <p><span data-tooltip>${web.escapeHtml(label)}
+      <i data-icon="fa/question-circle"></i></span></p>
       <p class="library--select">
         <span><i data-icon="fa/caret-down"></i></span>
         <select id="select--${web.escapeHtml(`${id}.${key}`)}">
@@ -142,40 +151,44 @@ components.options = {
       </p>
     </label>`);
     opt.addEventListener('change', (event) => storage.set(id, key, event.target.value));
-    tooltips._generate(opt, description);
+    hovertip.add(opt, '[data-tooltip]', tooltip);
     return opt;
   },
-  async text(id, { key, label, description }) {
+  async text(id, { key, label, tooltip }) {
     const state = await storage.get(id, key),
       opt = web.createElement(web.html`<label
       for="text--${web.escapeHtml(`${id}.${key}`)}"
       class="library--text_label"
       >
-      <p>${label}</p>
-      <textarea id="text--${web.escapeHtml(`${id}.${key}`)}" rows="1">${state}</textarea>
+      <p><span data-tooltip>${web.escapeHtml(label)}
+      <i data-icon="fa/question-circle"></i></span></p>
+      <textarea id="text--${web.escapeHtml(`${id}.${key}`)}"
+      rows="1">${web.escapeHtml(state)}</textarea>
     </label>`);
     opt.querySelector('textarea').addEventListener('input', (event) => {
       event.target.style.removeProperty('--txt--scroll-height');
       event.target.style.setProperty('--txt--scroll-height', event.target.scrollHeight + 'px');
     });
     opt.addEventListener('change', (event) => storage.set(id, key, event.target.value));
-    tooltips._generate(opt, description);
+    hovertip.add(opt, '[data-tooltip]', tooltip);
     return opt;
   },
-  async number(id, { key, label, description }) {
+  async number(id, { key, label, tooltip }) {
     const state = await storage.get(id, key),
       opt = web.createElement(web.html`<label
       for="number--${web.escapeHtml(`${id}.${key}`)}"
       class="library--number_label"
       >
-      <p>${web.escapeHtml(label)}</p>
-      <input id="number--${web.escapeHtml(`${id}.${key}`)}" type="number" value="${state}"/>
+      <p><span data-tooltip>${web.escapeHtml(label)}
+      <i data-icon="fa/question-circle"></i></span></p>
+      <input id="number--${web.escapeHtml(`${id}.${key}`)}"
+      type="number" value="${web.escapeHtml(state.toString())}"/>
     </label>`);
     opt.addEventListener('change', (event) => storage.set(id, key, event.target.value));
-    tooltips._generate(opt, description);
+    hovertip.add(opt, '[data-tooltip]', tooltip);
     return opt;
   },
-  async file(id, { key, label, description, extensions }) {
+  async file(id, { key, label, tooltip, extensions }) {
     const state = await storage.get(id, key),
       opt = web.createElement(web.html`<label
       for="file--${web.escapeHtml(`${id}.${key}`)}"
@@ -190,10 +203,11 @@ components.options = {
             : ''
         )}
       />
-      <p>${web.escapeHtml(label)}</p>
+      <p><span data-tooltip>${web.escapeHtml(label)}
+      <i data-icon="fa/question-circle"></i></span></p>
       <p class="library--file">
         <span><i data-icon="fa/file"></i></span>
-        <span class="library--file_path">${state || 'choose file...'}</span>
+        <span class="library--file_path">${web.escapeHtml(state || 'choose file...')}</span>
       </p>
     </label>`);
     opt.addEventListener('change', (event) => {
@@ -209,9 +223,10 @@ components.options = {
     opt.addEventListener('click', (event) => {
       document.documentElement.scrollTop = 0;
     });
-    tooltips._generate(
+    hovertip.add(
       opt,
-      `${description}\n\n**warning:** browser extensions do not have true filesystem access,
+      '[data-tooltip]',
+      `${tooltip}\n\n**warning:** browser extensions do not have true filesystem access,
       so the content of the file is saved on selection. after editing it,
       the file will need to be re-selected.`
     );
@@ -258,7 +273,7 @@ components.documentation = {
   },
 };
 const views = {
-  $container: document.querySelector('[data-container]'),
+  $container: document.querySelector('main'),
   _router(event) {
     event.preventDefault();
     let anchor,
@@ -295,7 +310,7 @@ const views = {
       setTimeout(() => {
         this.$container.innerHTML = '';
         this.$container.style.opacity = '';
-        this.$container.dataset.container = '';
+        document.body.dataset.view = '';
         document
           .querySelector('[data-view-target][data-view-active]')
           ?.removeAttribute('data-view-active');
@@ -347,20 +362,22 @@ const views = {
     document.querySelectorAll('[data-icon]').forEach((icon) =>
       fs.getText(`icons/${icon.dataset.icon}.svg`).then((svg) => {
         svg = web.createElement(svg);
-        svg.dataset.icon = icon.dataset.icon;
+        for (const attr of icon.attributes) {
+          svg.setAttribute(attr.name, attr.value);
+        }
         icon.replaceWith(svg);
       })
     );
   },
   async mod(mod) {
-    this.$container.dataset.container = 'mod';
+    document.body.dataset.view = 'mod';
     document.querySelector('header [data-view-target="library"]').dataset.active = true;
     this.$container.append(await components.documentation.buttons(mod));
     this.$container.append(await components.options._generate(mod));
     this.$container.append(await components.documentation.readme(mod));
   },
   async library() {
-    this.$container.dataset.container = 'library';
+    document.body.dataset.view = 'library';
     document.querySelector('header [data-view-target="library"]').dataset.active = true;
     for (let mod of await registry.get())
       this.$container.append(await components.card._generate(mod));
@@ -413,7 +430,7 @@ const notifications = {
     }, 100);
     return $notif;
   },
-  async load() {
+  async fetch() {
     const notifications = {
       list: await fs.getJSON('https://notion-enhancer.github.io/notifications.json'),
       dismissed: await storage.get(_id, 'notifications', []),
@@ -441,7 +458,7 @@ const notifications = {
     }
   },
 };
-notifications.load();
+notifications.fetch();
 
 async function theme() {
   document.documentElement.className = `notion-${
