@@ -2,8 +2,7 @@
   "name": "menu",
   "id": "a6621988-551d-495a-97d8-3c568bca2e9e",
   "version": "0.11.0",
-  "description": "the enhancer's [graphical](https://github.com) menu, related buttons and shortcuts.",
-  "preview": "https://raw.githubusercontent.com/notion-enhancer/notion-enhancer/dev/notion-enhancer%20v0.10.0%20banner.jpg",
+  "description": "the enhancer's graphical menu, related buttons and shortcuts.",
   "tags": ["core"],
   "authors": [
     {
@@ -23,38 +22,17 @@
   "options": [
     {
       "type": "toggle",
-      "key": "toggle",
-      "label": "toggle",
+      "key": "themes.autoresolve",
+      "label": "auto-resolve theme conflicts",
       "value": true,
-      "tooltip": "a toggle"
-    },
-    {
-      "type": "select",
-      "key": "select",
-      "label": "select",
-      "values": ["option a", "option b", "option c"],
-      "tooltip": "a select"
+      "tooltip": "when a theme is enabled any other themes of the same mode (light/dark) will be disabled"
     },
     {
       "type": "text",
-      "key": "text",
-      "label": "text",
-      "value": "default",
-      "tooltip": "a text input"
-    },
-    {
-      "type": "number",
-      "key": "number",
-      "label": "number",
-      "value": 0,
-      "tooltip": "a number input"
-    },
-    {
-      "type": "file",
-      "key": "file",
-      "label": "file picker (.css only)",
-      "extensions": [".css"],
-      "tooltip": "a file picker"
+      "key": "hotkey.focustoggle",
+      "label": "toggle hotkey",
+      "value": "Ctrl+Alt+E",
+      "tooltip": "toggles focus between notion & the enhancer menu"
     }
   ]
 }

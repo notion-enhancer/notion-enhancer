@@ -19,7 +19,7 @@ for (let mod of await registry.get()) {
 document
   .querySelector('img[data-view-target="notion"]')
   .addEventListener('click', env.focusNotion);
-web.hotkeyListener(['Ctrl', 'Alt', 'E'], env.focusNotion);
+web.hotkeyListener(await storage.get(_id, 'hotkey.focustoggle'), env.focusNotion);
 
 const hovertip = {
   $el: document.querySelector('.tooltip'),
@@ -47,11 +47,13 @@ const hovertip = {
 const components = {};
 components.card = {
   preview: ({ preview = '' }) =>
-    web.createElement(web.html`<img
+    preview
+      ? web.createElement(web.html`<img
       alt=""
       class="library--preview"
       src="${web.escapeHtml(preview)}"
-      />`),
+      />`)
+      : '',
   async name({ name, id, version }) {
     if (registry.CORE.includes(id))
       return web.createElement(web.html`<div class="library--title"><h2>
@@ -60,7 +62,7 @@ components.card = {
         <span class="library--version">v${web.escapeHtml(version)}</span>
       </span>
     </h2></div>`);
-    const $name = web.createElement(web.html`<label
+    const $el = web.createElement(web.html`<label
       for="enable--${web.escapeHtml(id)}"
       class="library--title library--toggle_label"
       >
@@ -74,10 +76,10 @@ components.card = {
         <span class="library--toggle"></span>
       </h2>
     </label>`);
-    $name.addEventListener('change', async (event) =>
+    $el.addEventListener('change', async (event) =>
       storage.set('_enabled', id, !(await storage.get('_enabled', id, false)))
     );
-    return $name;
+    return $el;
   },
   tags: ({ tags = [] }) =>
     web.createElement(web.html`<ul class="library--tags">
@@ -181,7 +183,10 @@ components.options = {
     </label>`);
     opt.querySelector('textarea').addEventListener('input', (event) => {
       event.target.style.removeProperty('--txt--scroll-height');
-      event.target.style.setProperty('--txt--scroll-height', event.target.scrollHeight + 'px');
+      event.target.style.setProperty(
+        '--txt--scroll-height',
+        event.target.scrollHeight + 1 + 'px'
+      );
     });
     opt.addEventListener('change', (event) => storage.set(id, key, event.target.value));
     hovertip.add(opt, '[data-tooltip]', tooltip);
@@ -259,8 +264,9 @@ components.options = {
   },
 };
 components.documentation = {
-  buttons: async ({ _dir }) =>
-    web.createElement(web.html`<p class="documentation--buttons">
+  _reloadTriggered: false,
+  buttons({ _dir }) {
+    const $el = web.createElement(web.html`<p class="documentation--buttons">
       <a href="?view=library">
         <span><i data-icon="fa/long-arrow-alt-left"></i></span>
         <span>back to library</span>
@@ -273,7 +279,21 @@ components.documentation = {
         <span><i data-icon="fa/code"></i></span>
         <span>view source code</span>
       </a>
-    </p>`),
+      <button class="documentation--reload"${this._reloadTriggered ? ' data-triggered' : ''}>
+        <span><i data-icon="fa/redo"></i></span>
+        <span>reload tabs to apply changes</span>
+      </button>
+    </p>`);
+    storage.onChange(() => {
+      const $reload = $el.querySelector('.documentation--reload');
+      if (document.body.contains($el) && !$reload.dataset.triggered) {
+        $reload.dataset.triggered = true;
+        this._reloadTriggered = true;
+      }
+    });
+    $el.querySelector('.documentation--reload').addEventListener('click', env.reloadTabs);
+    return $el;
+  },
   readme: async (mod) => {
     const readme = web.createElement(web.html`<article class="documentation--body markdown">
       ${
@@ -386,7 +406,7 @@ const views = {
   async mod(mod) {
     document.body.dataset.view = 'mod';
     document.querySelector('header [data-view-target="library"]').dataset.active = true;
-    this.$container.append(await components.documentation.buttons(mod));
+    this.$container.append(components.documentation.buttons(mod));
     this.$container.append(await components.options._generate(mod));
     this.$container.append(await components.documentation.readme(mod));
   },

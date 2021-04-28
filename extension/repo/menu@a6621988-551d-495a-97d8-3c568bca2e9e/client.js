@@ -45,4 +45,4 @@ web.whenReady([sidebarSelector]).then(async () => {
   setTheme();
   document.querySelector(sidebarSelector).appendChild($enhancerSidebarElement);
 });
-web.hotkeyListener(['Ctrl', 'Alt', 'E'], env.openEnhancerMenu);
+web.hotkeyListener(await storage.get(_id, 'hotkey.focustoggle'), env.openEnhancerMenu);

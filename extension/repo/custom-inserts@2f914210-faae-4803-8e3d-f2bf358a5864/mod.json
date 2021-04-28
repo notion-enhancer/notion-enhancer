@@ -1,0 +1,54 @@
+{
+  "name": "custom-inserts",
+  "id": "2f914210-faae-4803-8e3d-f2bf358a5864",
+  "version": "0.11.0",
+  "description": "the enhancer's [graphical](https://github.com) menu, related buttons and shortcuts.",
+  "preview": "https://raw.githubusercontent.com/notion-enhancer/notion-enhancer/dev/notion-enhancer%20v0.10.0%20banner.jpg",
+  "tags": ["core"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "url": "https://dragonwocky.me/",
+      "icon": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "js": {},
+  "options": [
+    {
+      "type": "toggle",
+      "key": "toggle",
+      "label": "toggle",
+      "value": true,
+      "tooltip": "a toggle"
+    },
+    {
+      "type": "select",
+      "key": "select",
+      "label": "select",
+      "values": ["option a", "option b", "option c"],
+      "tooltip": "a select"
+    },
+    {
+      "type": "text",
+      "key": "text",
+      "label": "text",
+      "value": "default",
+      "tooltip": "a text input"
+    },
+    {
+      "type": "number",
+      "key": "number",
+      "label": "number",
+      "value": 0,
+      "tooltip": "a number input"
+    },
+    {
+      "type": "file",
+      "key": "file",
+      "label": "file picker (.css only)",
+      "extensions": [".css"],
+      "tooltip": "a file picker"
+    }
+  ]
+}

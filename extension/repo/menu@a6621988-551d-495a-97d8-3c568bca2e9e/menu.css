@@ -9,6 +9,8 @@
   word-break: break-word;
   text-size-adjust: 100%;
   -webkit-text-size-adjust: 100%;
+  font-size: inherit;
+  font-family: inherit;
 }
 
 html {
@@ -38,7 +40,7 @@ header {
   margin-bottom: 1.25rem;
 }
 header > * {
-  margin: 0 1.25rem 0 0;
+  margin: 0 1.25rem 0.1em 0;
   font-size: var(--theme--font_heading1-size);
 }
 header h1 a:not([data-view-active]) {
@@ -138,6 +140,8 @@ main article img {
 .library--expand {
   margin: 0;
   display: flex;
+  flex-wrap: wrap;
+  gap: 0.53em;
 }
 .library--expand a {
   margin-left: auto;
@@ -148,6 +152,26 @@ main article img {
   padding: 0.35rem 0.45rem;
   text-decoration: none;
   display: flex;
+}
+.documentation--buttons .documentation--reload {
+  cursor: pointer;
+  border-radius: 3px;
+  padding: 0.35rem 0.45rem;
+  background: var(--theme--block_grey);
+  color: var(--theme--block_grey-text);
+  border: none;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+}
+.documentation--buttons .documentation--reload[data-triggered] {
+  pointer-events: all;
+  opacity: 1;
+}
+.documentation--buttons .documentation--reload[data-triggered]:hover {
+  background: none;
+  color: var(--theme--block_grey-text);
+  box-shadow: var(--theme--block_grey) 0px 0px 0px 1px inset;
 }
 .documentation--buttons span,
 .library--expand span {

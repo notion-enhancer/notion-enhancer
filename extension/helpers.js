@@ -19,24 +19,40 @@ env.name = 'extension';
 env.version = chrome.runtime.getManifest().version;
 env.openEnhancerMenu = () => chrome.runtime.sendMessage({ action: 'openEnhancerMenu' });
 env.focusNotion = () => chrome.runtime.sendMessage({ action: 'focusNotion' });
+env.reloadTabs = () => chrome.runtime.sendMessage({ action: 'reloadTabs' });
 
 storage.get = (namespace, key = undefined, fallback = undefined) =>
   new Promise((res, rej) =>
     chrome.storage.sync.get([namespace], async (values) => {
+      const defaults = await registry.defaults(namespace);
       values =
-        values[namespace] && Object.getOwnPropertyNames(values[namespace]).length
+        values[namespace] &&
+        Object.getOwnPropertyNames(values[namespace]).length &&
+        (!key || Object.getOwnPropertyNames(values[namespace]).includes(key))
           ? values[namespace]
-          : await registry.defaults(namespace);
+          : defaults;
       res((key ? values[key] : values) ?? fallback);
     })
   );
-storage.set = (namespace, key, value) =>
-  new Promise(async (res, rej) => {
+storage.set = (namespace, key, value) => {
+  storage._onChangeListeners.forEach((listener) =>
+    listener({ type: 'set', namespace, key, value })
+  );
+  return new Promise(async (res, rej) => {
     const values = await storage.get(namespace, undefined, {});
     chrome.storage.sync.set({ [namespace]: { ...values, [key]: value } }, res);
   });
-storage.reset = (namespace) =>
-  new Promise((res, rej) => chrome.storage.sync.set({ [namespace]: undefined }, res));
+};
+storage.reset = (namespace) => {
+  storage._onChangeListeners.forEach((listener) =>
+    listener({ type: 'reset', namespace, key: undefined, value: undefined })
+  );
+  return new Promise((res, rej) => chrome.storage.sync.set({ [namespace]: undefined }, res));
+};
+storage._onChangeListeners = [];
+storage.onChange = (listener) => {
+  storage._onChangeListeners.push(listener);
+};
 
 fs.getJSON = (path) =>
   fetch(path.startsWith('https://') ? path : chrome.runtime.getURL(path)).then((res) =>
@@ -107,6 +123,7 @@ web.html = (html, ...templates) => html.map((str) => str + (templates.shift() ??
  * @param {function} callback
  */
 web.hotkeyListener = (keys, callback) => {
+  if (typeof keys === 'string') keys = keys.split('+');
   if (!web._hotkeyListener) {
     web._hotkeys = [];
     web._hotkeyListener = document.addEventListener('keyup', (event) => {
