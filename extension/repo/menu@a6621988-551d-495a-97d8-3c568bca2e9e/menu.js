@@ -54,7 +54,7 @@ components.card = {
       src="${web.escapeHtml(preview)}"
       />`)
       : '',
-  async name({ name, id, version }) {
+  async name({ name, id, version, tags }) {
     if (registry.CORE.includes(id))
       return web.createElement(web.html`<div class="library--title"><h2>
       <span>
@@ -76,9 +76,28 @@ components.card = {
         <span class="library--toggle"></span>
       </h2>
     </label>`);
-    $el.addEventListener('change', async (event) =>
-      storage.set('_enabled', id, !(await storage.get('_enabled', id, false)))
-    );
+    $el.addEventListener('change', async (event) => {
+      storage.set('_enabled', id, event.target.checked);
+      if (
+        event.target.checked &&
+        tags.includes('theme') &&
+        (await storage.get(_id, 'themes.autoresolve', true))
+      ) {
+        const themes = (await registry.get()).filter(
+          (mod) =>
+            mod.tags.includes('theme') &&
+            mod.id !== id &&
+            ((mod.tags.includes('dark') && tags.includes('dark')) ||
+              (mod.tags.includes('light') && tags.includes('light')))
+        );
+        for (const theme of themes) {
+          if (document.body.dataset.view === 'library') {
+            const $toggle = document.getElementById(`enable--${theme.id}`);
+            if ($toggle.checked) $toggle.click();
+          } else storage.set('_enabled', theme.id, false);
+        }
+      }
+    });
     return $el;
   },
   tags: ({ tags = [] }) =>
@@ -425,7 +444,8 @@ window.addEventListener('popstate', (event) => {
 });
 
 const notifications = {
-  _generate({ heading, message = '', type = 'information' }, onDismiss = () => {}) {
+  $list: document.querySelector('.notification--list'),
+  push({ heading, message = '', type = 'information' }, onDismiss = () => {}) {
     let svg = '',
       className = 'notification';
     switch (type) {
@@ -462,7 +482,7 @@ const notifications = {
     setTimeout(() => {
       $notif.style.opacity = 1;
     }, 100);
-    return $notif;
+    return this.$list.append($notif);
   },
   async fetch() {
     const notifications = {
@@ -473,7 +493,6 @@ const notifications = {
     notifications.waiting = notifications.list.filter(
       ({ id }) => !notifications.dismissed.includes(id)
     );
-    const $list = document.querySelector('.notification--list');
     for (let notification of notifications.waiting) {
       if (
         notification.heading &&
@@ -482,16 +501,23 @@ const notifications = {
           notification.appears_on.versions.includes(env.version)) &&
         notification.appears_on.extension
       ) {
-        $list.append(
-          this._generate(notification, async () => {
-            const dismissed = await storage.get(_id, 'notifications', []);
-            storage.set(_id, 'notifications', [...new Set([...dismissed, notification.id])]);
-          })
-        );
+        this.push(notification, async () => {
+          const dismissed = await storage.get(_id, 'notifications', []);
+          storage.set('_notifications', 'external', [
+            ...new Set([...dismissed, notification.id]),
+          ]);
+        });
       }
     }
   },
 };
+for (const error of await registry.errors()) {
+  notifications.push({
+    heading: `error: ${error.source}`,
+    message: error.message,
+    type: 'warning',
+  });
+}
 notifications.fetch();
 
 async function theme() {

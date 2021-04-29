@@ -480,7 +480,7 @@ registry.get = async (enabled) => {
       const mod = await fs.getJSON(`repo/${dir}/mod.json`);
       mod._dir = dir;
       mod.tags = mod.tags ?? [];
-      mod.css = mod.css ?? [];
+      mod.css = mod.css ?? {};
       mod.js = mod.js ?? {};
       mod.options = mod.options ?? [];
 

@@ -7,7 +7,7 @@
 'use strict';
 
 const _id = 'a6621988-551d-495a-97d8-3c568bca2e9e';
-import { env, storage, web, fs } from '../../helpers.js';
+import { env, storage, web, fs, registry } from '../../helpers.js';
 
 const sidebarSelector =
   '#notion-app > div > div.notion-cursor-listener > div.notion-sidebar-container > div > div > div > div:nth-child(4)';
@@ -20,6 +20,7 @@ web.whenReady([sidebarSelector]).then(async () => {
         </div>
       </div>`
     ),
+    errors = await registry.errors(),
     notifications = {
       list: await fs.getJSON('https://notion-enhancer.github.io/notifications.json'),
       dismissed: await storage.get(_id, 'notifications', []),
@@ -27,11 +28,13 @@ web.whenReady([sidebarSelector]).then(async () => {
   notifications.waiting = notifications.list.filter(
     ({ id }) => !notifications.dismissed.includes(id)
   );
-  if (notifications.waiting.length) {
+  if (notifications.waiting.length + errors.length) {
     $enhancerSidebarElement.classList.add('enhancer--notifications');
     $enhancerSidebarElement.children[0].append(
       web.createElement(
-        web.html`<div><div><span>${notifications.waiting.length}</span></div></div>`
+        web.html`<div><div><span>${
+          notifications.waiting.length + errors.length
+        }</span></div></div>`
       )
     );
   }
