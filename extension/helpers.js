@@ -432,6 +432,19 @@ registry.validate = async (mod, err, check) => {
                 option.tooltip,
                 !option.tooltip || typeof option.tooltip === 'string'
               ),
+              check(
+                'option.environments',
+                option.environments,
+                !option.environments || Array.isArray(option.environments)
+              ).then((environments) =>
+                environments
+                  ? environments === ERROR
+                    ? ERROR
+                    : environments.map((env) =>
+                        check('option.environment', env, typeof env === 'string')
+                      )
+                  : undefined
+              ),
             ];
           })
     ),

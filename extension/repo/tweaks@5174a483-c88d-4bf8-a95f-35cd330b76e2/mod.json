@@ -1,10 +1,9 @@
 {
   "name": "tweaks",
   "id": "5174a483-c88d-4bf8-a95f-35cd330b76e2",
-  "version": "0.11.0",
-  "description": "the enhancer's [graphical](https://github.com) menu, related buttons and shortcuts.",
-  "preview": "https://raw.githubusercontent.com/notion-enhancer/notion-enhancer/dev/notion-enhancer%20v0.10.0%20banner.jpg",
-  "tags": ["theme", "light"],
+  "version": "0.2.0",
+  "description": "common style/layout changes.",
+  "tags": ["extension", "customisation"],
   "authors": [
     {
       "name": "dragonwocky",
@@ -13,42 +12,67 @@
       "icon": "https://dragonwocky.me/avatar.jpg"
     }
   ],
-  "js": {},
+  "css": {
+    "client": ["client.css"]
+  },
+  "js": {
+    "client": ["client.js"]
+  },
   "options": [
     {
-      "type": "toggle",
-      "key": "toggle",
-      "label": "toggle",
-      "value": true,
-      "tooltip": "a toggle"
-    },
-    {
-      "type": "select",
-      "key": "select",
-      "label": "select",
-      "values": ["option a", "option b", "option c"],
-      "tooltip": "a select"
-    },
-    {
-      "type": "text",
-      "key": "text",
-      "label": "text",
-      "value": "default",
-      "tooltip": "a text input"
-    },
-    {
+      "key": "tweak.dragarea_height",
+      "label": "height of frameless dragarea:",
+      "tooltip": "the rectangle added at the top of a window in 'integrated titlebar' mode, used to drag/move the window.",
       "type": "number",
-      "key": "number",
-      "label": "number",
-      "value": 0,
-      "tooltip": "a number input"
+      "value": 15,
+      "environments": ["linux", "win32"]
     },
     {
-      "type": "file",
-      "key": "file",
-      "label": "file picker (.css only)",
-      "extensions": [".css"],
-      "tooltip": "a file picker"
+      "key": "tweak.responsive_breakpoint",
+      "label": "responsive columns breakpoint (px)",
+      "tooltip": "the width in pixels below which in-page columns are resized to appear full-width so content isn't squished.",
+      "type": "number",
+      "value": 600
+    },
+    {
+      "key": "tweak.snappy_transitions",
+      "label": "snappy transitions",
+      "tooltip": "set animation time for all css-driven animations to 0s. may not affect element motion e.g. the sidebar popping out.",
+      "type": "toggle",
+      "value": false
+    },
+    {
+      "key": "tweak.hide_help",
+      "label": "hide help button",
+      "type": "toggle",
+      "value": false
+    },
+    {
+      "key": "tweak.thicker_bold",
+      "label": "thicker bold text",
+      "type": "toggle",
+      "value": true
+    },
+    {
+      "key": "tweak.spaced_lines",
+      "label": "readable line spacing",
+      "tooltip": "greater line spacing between text blocks.",
+      "type": "toggle",
+      "value": false
+    },
+    {
+      "key": "tweak.condensed_bullets",
+      "label": "condense bullet points",
+      "tooltip": "tighter line spacing between bullet point blocks.",
+      "type": "toggle",
+      "value": false
+    },
+    {
+      "key": "tweak.scroll_db_toolbars",
+      "label": "horizontally scroll dbs with shift",
+      "tooltip": "hold the shift key down while scrolling. up = left, down = right.",
+      "type": "toggle",
+      "value": true
     }
   ]
 }

@@ -21,7 +21,7 @@ document
   .addEventListener('click', env.focusNotion);
 web.hotkeyListener(await storage.get(_id, 'hotkey.focustoggle'), env.focusNotion);
 
-const hovertip = {
+const tooltips = {
   $el: document.querySelector('.tooltip'),
   add($parent, selector, text) {
     text = fmt.md.render(text);
@@ -157,12 +157,12 @@ components.options = {
       ${state ? 'checked' : ''}/>
       <p>
         <span data-tooltip>${web.escapeHtml(label)}
-        <i data-icon="fa/question-circle"></i></span>
+        ${tooltip ? web.html`<i data-icon="fa/question-circle"></i>` : ''}</span>
         <span class="library--toggle"></span>
       </p>
       </label>`);
     opt.addEventListener('change', (event) => storage.set(id, key, event.target.checked));
-    hovertip.add(opt, '[data-tooltip]', tooltip);
+    if (tooltip) tooltips.add(opt, '[data-tooltip]', tooltip);
     return opt;
   },
   async select(id, { key, label, tooltip, values }) {
@@ -172,7 +172,7 @@ components.options = {
         class="library--select_label"
       >
       <p><span data-tooltip>${web.escapeHtml(label)}
-      <i data-icon="fa/question-circle"></i></span></p>
+      ${tooltip ? web.html`<i data-icon="fa/question-circle"></i>` : ''}</span></p>
       <p class="library--select">
         <span><i data-icon="fa/caret-down"></i></span>
         <select id="select--${web.escapeHtml(`${id}.${key}`)}">
@@ -186,7 +186,7 @@ components.options = {
       </p>
     </label>`);
     opt.addEventListener('change', (event) => storage.set(id, key, event.target.value));
-    hovertip.add(opt, '[data-tooltip]', tooltip);
+    if (tooltip) tooltips.add(opt, '[data-tooltip]', tooltip);
     return opt;
   },
   async text(id, { key, label, tooltip }) {
@@ -196,7 +196,7 @@ components.options = {
       class="library--text_label"
       >
       <p><span data-tooltip>${web.escapeHtml(label)}
-      <i data-icon="fa/question-circle"></i></span></p>
+      ${tooltip ? web.html`<i data-icon="fa/question-circle"></i>` : ''}</span></p>
       <textarea id="text--${web.escapeHtml(`${id}.${key}`)}"
       rows="1">${web.escapeHtml(state)}</textarea>
     </label>`);
@@ -208,7 +208,7 @@ components.options = {
       );
     });
     opt.addEventListener('change', (event) => storage.set(id, key, event.target.value));
-    hovertip.add(opt, '[data-tooltip]', tooltip);
+    if (tooltip) tooltips.add(opt, '[data-tooltip]', tooltip);
     return opt;
   },
   async number(id, { key, label, tooltip }) {
@@ -218,12 +218,12 @@ components.options = {
       class="library--number_label"
       >
       <p><span data-tooltip>${web.escapeHtml(label)}
-      <i data-icon="fa/question-circle"></i></span></p>
+      ${tooltip ? web.html`<i data-icon="fa/question-circle"></i>` : ''}</span></p>
       <input id="number--${web.escapeHtml(`${id}.${key}`)}"
       type="number" value="${web.escapeHtml(state.toString())}"/>
     </label>`);
     opt.addEventListener('change', (event) => storage.set(id, key, event.target.value));
-    hovertip.add(opt, '[data-tooltip]', tooltip);
+    if (tooltip) tooltips.add(opt, '[data-tooltip]', tooltip);
     return opt;
   },
   async file(id, { key, label, tooltip, extensions }) {
@@ -261,12 +261,13 @@ components.options = {
     opt.addEventListener('click', (event) => {
       document.documentElement.scrollTop = 0;
     });
-    hovertip.add(
+    tooltips.add(
       opt,
       '[data-tooltip]',
-      `${tooltip}\n\n**warning:** browser extensions do not have true filesystem access,
-      so the content of the file is saved on selection. after editing it,
-      the file will need to be re-selected.`
+      `${
+        tooltip ? `${tooltip}\n\n` : ''
+      }**warning:** browser extensions do not have true filesystem access,
+      so file content is only saved on selection. re-select files to apply edits.`
     );
     return opt;
   },
@@ -275,7 +276,11 @@ components.options = {
     card.querySelector('.library--expand').remove();
     if (mod.options && mod.options.length) {
       const options = web.createElement(web.html`<div class="library--options"></div>`),
-        inputs = await Promise.all(mod.options.map((opt) => this[opt.type](mod.id, opt)));
+        inputs = await Promise.all(
+          mod.options
+            .filter((opt) => !opt.environments || opt.environments.includes(env.name))
+            .map((opt) => this[opt.type](mod.id, opt))
+        );
       inputs.forEach((opt) => options.append(opt));
       card.append(options);
     }

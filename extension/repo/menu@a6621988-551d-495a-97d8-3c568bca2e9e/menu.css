@@ -305,7 +305,7 @@ label [data-icon='fa/question-circle'] {
   height: 0.8rem;
   width: 0.8rem;
   left: 0.325rem;
-  top: 0.18rem;
+  top: 0.225rem;
   position: absolute;
   border-radius: 100%;
   background: var(--theme--toggle_dot);
