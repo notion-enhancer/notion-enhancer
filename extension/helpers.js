@@ -16,6 +16,7 @@ export const ERROR = Symbol(),
   registry = {};
 
 env.name = 'extension';
+env.supported = ['linux', 'win32', 'darwin', 'extension'];
 env.version = chrome.runtime.getManifest().version;
 env.openEnhancerMenu = () => chrome.runtime.sendMessage({ action: 'openEnhancerMenu' });
 env.focusNotion = () => chrome.runtime.sendMessage({ action: 'focusNotion' });
@@ -288,6 +289,19 @@ registry.validate = async (mod, err, check) => {
           ])
     ),
     check(
+      'environments',
+      mod.environments,
+      !mod.environments || Array.isArray(mod.environments)
+    ).then((environments) =>
+      environments
+        ? environments === ERROR
+          ? ERROR
+          : environments.map((environment) =>
+              check('environment', environment, env.supported.includes(environment))
+            )
+        : undefined
+    ),
+    check(
       'css',
       mod.css,
       mod.css && typeof mod.css === 'object' && !Array.isArray(mod.css)
@@ -440,8 +454,12 @@ registry.validate = async (mod, err, check) => {
                 environments
                   ? environments === ERROR
                     ? ERROR
-                    : environments.map((env) =>
-                        check('option.environment', env, typeof env === 'string')
+                    : environments.map((environment) =>
+                        check(
+                          'option.environment',
+                          environment,
+                          env.supported.includes(environment)
+                        )
                       )
                   : undefined
               ),
@@ -483,29 +501,33 @@ registry.defaults = async (id) => {
   return defaults;
 };
 
-registry.get = async (enabled) => {
-  if (registry._list && registry._list.length) return registry._list;
-  registry._list = [];
+registry.get = async (filter = (mod) => mod) => {
   if (!registry._errors) registry._errors = [];
-  for (const dir of await fs.getJSON('repo/registry.json')) {
-    const err = (message) => [registry._errors.push({ source: dir, message }), ERROR][1];
-    try {
-      const mod = await fs.getJSON(`repo/${dir}/mod.json`);
-      mod._dir = dir;
-      mod.tags = mod.tags ?? [];
-      mod.css = mod.css ?? {};
-      mod.js = mod.js ?? {};
-      mod.options = mod.options ?? [];
-
-      const check = (prop, value, condition) =>
-          Promise.resolve(condition ? value : err(`invalid ${prop} ${JSON.stringify(value)}`)),
-        validation = await registry.validate(mod, err, check);
-      if (validation.every((condition) => condition !== ERROR)) registry._list.push(mod);
-    } catch (e) {
-      err('invalid mod.json');
+  if (!registry._list || !registry._list.length) {
+    registry._list = [];
+    for (const dir of await fs.getJSON('repo/registry.json')) {
+      const err = (message) => [registry._errors.push({ source: dir, message }), ERROR][1];
+      try {
+        const mod = await fs.getJSON(`repo/${dir}/mod.json`);
+        mod._dir = dir;
+        mod.tags = mod.tags ?? [];
+        mod.css = mod.css ?? {};
+        mod.js = mod.js ?? {};
+        mod.options = mod.options ?? [];
+        const check = (prop, value, condition) =>
+            Promise.resolve(
+              condition ? value : err(`invalid ${prop} ${JSON.stringify(value)}`)
+            ),
+          validation = await registry.validate(mod, err, check);
+        if (validation.every((condition) => condition !== ERROR)) registry._list.push(mod);
+      } catch (e) {
+        err('invalid mod.json');
+      }
     }
   }
-  return registry._list;
+  const list = [];
+  for (const mod of registry._list) if (await filter(mod)) list.push(mod);
+  return list;
 };
 registry.errors = async () => {
   if (!registry._errors) await registry.get();

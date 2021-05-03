@@ -292,6 +292,7 @@ label [data-icon='fa/question-circle'] {
 .library--toggle_label > :not(input) .library--toggle {
   position: relative;
   margin: auto 0 auto auto;
+  min-width: 2.25rem;
   width: 2.25rem;
   height: 1.25rem;
   display: block;
@@ -404,6 +405,12 @@ label [data-icon='fa/question-circle'] {
   padding: 1rem 2rem;
   font-size: 1rem;
   overflow-x: auto;
+}
+
+/* is this weird? absolutely. but intentional. cos i wanted markdown __underline__ */
+strong {
+  text-decoration: underline;
+  font-weight: normal;
 }
 
 .tooltip {

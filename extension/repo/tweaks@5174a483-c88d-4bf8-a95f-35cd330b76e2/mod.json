@@ -73,6 +73,13 @@
       "tooltip": "hold the shift key down while scrolling. up = left, down = right.",
       "type": "toggle",
       "value": true
+    },
+    {
+      "key": "tweak.bracketed_links",
+      "label": "bracketed links",
+      "tooltip": "render links surrounded with [[brackets]] instead of __underlined__.",
+      "type": "toggle",
+      "value": false
     }
   ]
 }

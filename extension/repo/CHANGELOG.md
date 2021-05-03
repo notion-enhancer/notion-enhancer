@@ -4,6 +4,7 @@
 
 - improved: split the core mod into the theming & menu mods.
 - improved: new larger menu layout, with individual mod pages.
+- improved: merged bracketed-links into tweaks.
 - removed: integrated scrollbar tweak (notion now includes by default).
 
 #### todo
@@ -18,6 +19,7 @@
 
 - dragarea height tweak
 - tray
+- always on top
 
 **changelog below this point is a mix of the app enhancer and all mods.**
 **above this, changelogs have been split: see the**

@@ -1,6 +1,7 @@
 /*
  * notion-enhancer: tweaks
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2020 arecsu
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
@@ -43,4 +44,22 @@
 .tweak--responsive_breakpoint .notion-app-inner {
   --theme--page-width: 100%;
   --theme--page-padding: calc(48px + env(safe-area-inset-left));
+}
+
+.tweak--bracketed_links .notion-link-token span {
+  border-bottom: none !important;
+}
+.tweak--bracketed_links .notion-link-token:before {
+  content: '[[';
+  opacity: 0.7;
+  transition: opacity 100ms ease-in;
+}
+.tweak--bracketed_links .notion-link-token:after {
+  content: ']]';
+  opacity: 0.7;
+  transition: opacity 100ms ease-in;
+}
+.tweak--bracketed_links .notion-link-token:hover::before,
+.tweak--bracketed_links .notion-link-token:hover::after {
+  opacity: 1;
 }

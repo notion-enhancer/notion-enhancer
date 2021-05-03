@@ -11,7 +11,7 @@ import { env, storage, web } from '../../helpers.js';
 
 web.whenReady().then(async () => {
   if (['linux', 'win32'].includes(env.name)) {
-    // 'dragarea_height',
+    // dragarea_height
   }
 
   for (const tweak of [
@@ -21,6 +21,7 @@ web.whenReady().then(async () => {
     'hide_help',
     'condensed_bullets',
     'scroll_db_toolbars',
+    'bracketed_links',
   ]) {
     if (await storage.get(_id, `tweak.${tweak}`)) {
       document.body.classList.add(`tweak--${tweak}`);

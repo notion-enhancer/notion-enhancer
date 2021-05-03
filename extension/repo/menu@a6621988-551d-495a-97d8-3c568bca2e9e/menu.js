@@ -9,8 +9,11 @@
 const _id = 'a6621988-551d-495a-97d8-3c568bca2e9e';
 import { env, storage, web, fmt, fs, registry } from '../../helpers.js';
 
-for (let mod of await registry.get()) {
-  if (!(await registry.enabled(mod.id))) continue;
+for (let mod of await registry.get(
+  async (mod) =>
+    (await registry.enabled(mod.id)) &&
+    (!mod.environments || mod.environments.includes(env.name))
+)) {
   for (let sheet of mod.css?.menu || []) {
     web.loadStyleset(`repo/${mod._dir}/${sheet}`);
   }
@@ -83,7 +86,7 @@ components.card = {
         tags.includes('theme') &&
         (await storage.get(_id, 'themes.autoresolve', true))
       ) {
-        const themes = (await registry.get()).filter(
+        const themes = await registry.get(
           (mod) =>
             mod.tags.includes('theme') &&
             mod.id !== id &&
@@ -437,8 +440,11 @@ const views = {
   async library() {
     document.body.dataset.view = 'library';
     document.querySelector('header [data-view-target="library"]').dataset.active = true;
-    for (let mod of await registry.get())
+    for (const mod of await registry.get(
+      (mod) => !mod.environments || mod.environments.includes(env.name)
+    )) {
       this.$container.append(await components.card._generate(mod));
+    }
   },
 };
 views._router = views._router.bind(views);
