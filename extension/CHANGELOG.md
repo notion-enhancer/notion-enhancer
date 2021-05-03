@@ -4,12 +4,8 @@
 
 a rework of the enhancer and port to the browser as a chrome extension.
 
-- new: cross-environment helpers api
+- new: cross-environment and properly documented api to replace helpers
 - new: cross-environment mod loader structure
-
-#### todo
-
-- jsdoc helpers?
 
 **changelog below this point is a mix of the app enhancer and all mods.**
 **above this, changelogs have been split: see the**

@@ -7,7 +7,7 @@
 'use strict';
 
 const _id = '5174a483-c88d-4bf8-a95f-35cd330b76e2';
-import { env, storage, web } from '../../helpers.js';
+import { env, storage, web } from '../../api.js';
 
 web.whenReady().then(async () => {
   if (['linux', 'win32'].includes(env.name)) {

@@ -7,14 +7,10 @@
 'use strict';
 
 const _id = 'a6621988-551d-495a-97d8-3c568bca2e9e';
-import { env, storage, web, fmt, fs, registry } from '../../helpers.js';
+import { env, storage, web, fmt, fs, registry } from '../../api.js';
 
-for (let mod of await registry.get(
-  async (mod) =>
-    (await registry.enabled(mod.id)) &&
-    (!mod.environments || mod.environments.includes(env.name))
-)) {
-  for (let sheet of mod.css?.menu || []) {
+for (const mod of await registry.get((mod) => registry.enabled(mod.id))) {
+  for (const sheet of mod.css?.menu || []) {
     web.loadStyleset(`repo/${mod._dir}/${sheet}`);
   }
 }
@@ -504,7 +500,7 @@ const notifications = {
     notifications.waiting = notifications.list.filter(
       ({ id }) => !notifications.dismissed.includes(id)
     );
-    for (let notification of notifications.waiting) {
+    for (const notification of notifications.waiting) {
       if (
         notification.heading &&
         notification.appears_on &&

@@ -7,7 +7,7 @@
 'use strict';
 
 const _id = 'a6621988-551d-495a-97d8-3c568bca2e9e';
-import { env, storage, web, fs, registry } from '../../helpers.js';
+import { env, storage, web, fs, registry } from '../../api.js';
 
 const sidebarSelector =
   '#notion-app > div > div.notion-cursor-listener > div.notion-sidebar-container > div > div > div > div:nth-child(4)';

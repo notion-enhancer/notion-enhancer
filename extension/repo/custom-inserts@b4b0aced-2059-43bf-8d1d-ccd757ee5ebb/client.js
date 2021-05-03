@@ -7,7 +7,7 @@
 'use strict';
 
 const _id = 'b4b0aced-2059-43bf-8d1d-ccd757ee5ebb';
-import { env, storage, web } from '../../helpers.js';
+import { env, storage, web } from '../../api.js';
 
 const inserts = {
   js: await storage.get(_id, '_file.js'),

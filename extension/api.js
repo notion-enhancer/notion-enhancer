@@ -4,24 +4,36 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+/** @module notion-enhancer/api */
+
 'use strict';
 
-export const ERROR = Symbol(),
-  env = {},
-  storage = {},
-  fs = {},
-  web = {},
-  fmt = {},
-  regexers = {},
-  registry = {};
-
+/** environment-specific methods and constants */
+export const env = {};
+/** an error constant used in validation, distinct from null or undefined */
+env.ERROR = Symbol();
+/** the environment/platform name code is currently being executed in */
 env.name = 'extension';
+/** all environments/platforms currently supported by the enhancer */
 env.supported = ['linux', 'win32', 'darwin', 'extension'];
+/** the current version of the enhancer */
 env.version = chrome.runtime.getManifest().version;
+/** open the enhancer's menu */
 env.openEnhancerMenu = () => chrome.runtime.sendMessage({ action: 'openEnhancerMenu' });
+/** focus an active notion tab */
 env.focusNotion = () => chrome.runtime.sendMessage({ action: 'focusNotion' });
+/** reload all notion and enhancer menu tabs to apply changes */
 env.reloadTabs = () => chrome.runtime.sendMessage({ action: 'reloadTabs' });
 
+/** environment-specific data persistence */
+export const storage = {};
+/**
+ * get data persisted within an enhancer store
+ * @param {string} namespace - the name of the store, e.g. a mod id
+ * @param {string} [key] - the key being looked up
+ * @param {*} [fallback] - a default value if the key does not exist
+ * @returns {Promise} value ?? fallback
+ */
 storage.get = (namespace, key = undefined, fallback = undefined) =>
   new Promise((res, rej) =>
     chrome.storage.sync.get([namespace], async (values) => {
@@ -35,43 +47,91 @@ storage.get = (namespace, key = undefined, fallback = undefined) =>
       res((key ? values[key] : values) ?? fallback);
     })
   );
+/**
+ * persist data to an enhancer store
+ * @param {string} namespace - the name of the store, e.g. a mod id
+ * @param {string} key - the key associated with the value
+ * @param {*} value - the data to save
+ */
 storage.set = (namespace, key, value) => {
-  storage._onChangeListeners.forEach((listener) =>
-    listener({ type: 'set', namespace, key, value })
-  );
   return new Promise(async (res, rej) => {
     const values = await storage.get(namespace, undefined, {});
+    storage._onChangeListeners.forEach((listener) =>
+      listener({ type: 'set', namespace, key, new: value, old: values[key] })
+    );
     chrome.storage.sync.set({ [namespace]: { ...values, [key]: value } }, res);
   });
 };
+/**
+ * clear data from an enhancer store
+ * @param {string} namespace - the name of the store, e.g. a mod id
+ */
 storage.reset = (namespace) => {
   storage._onChangeListeners.forEach((listener) =>
-    listener({ type: 'reset', namespace, key: undefined, value: undefined })
+    listener({ type: 'reset', namespace, key: undefined, new: undefined, old: undefined })
   );
   return new Promise((res, rej) => chrome.storage.sync.set({ [namespace]: undefined }, res));
 };
 storage._onChangeListeners = [];
+/**
+ * add an event listener for changes in storage
+ * @param {onStorageChangeCallback} listener - called whenever a change in
+ * storage is initiated from the current process
+ */
 storage.onChange = (listener) => {
   storage._onChangeListeners.push(listener);
 };
+/**
+ * @callback onStorageChangeCallback
+ * @param {object} event
+ * @param {string} event.type - 'set' or 'reset'
+ * @param {string} event.namespace- the name of the store, e.g. a mod id
+ * @param {string} [event.key] - the key associated with the changed value
+ * @param {string} [event.new] - the new value being persisted to the store
+ * @param {string} [event.old] - the previous value associated with the key
+ */
 
+/** environment-specific filesystem reading */
+export const fs = {};
+/**
+ * fetch and parse a json file's contents
+ * @param {string} path - a url or within-the-enhancer filepath
+ * @returns {object} the json value of the requested file as a js object
+ */
 fs.getJSON = (path) =>
   fetch(path.startsWith('https://') ? path : chrome.runtime.getURL(path)).then((res) =>
     res.json()
   );
+/**
+ * fetch a text file's contents
+ * @param {string} path - a url or within-the-enhancer filepath
+ * @returns {object} the text content of the requested file
+ */
 fs.getText = (path) =>
   fetch(path.startsWith('https://') ? path : chrome.runtime.getURL(path)).then((res) =>
     res.text()
   );
+/**
+ * check if a file exists
+ * @param {string} path - a url or within-the-enhancer filepath
+ * @returns {boolean} whether or not the file exists
+ */
 fs.isFile = async (path) => {
   try {
-    await fetch(chrome.runtime.getURL(path));
+    await fetch(path.startsWith('https://') ? path : chrome.runtime.getURL(path));
     return true;
   } catch {
     return false;
   }
 };
 
+/** helpers for manipulation of a webpage */
+export const web = {};
+/**
+ * wait until a page is loaded and ready for modification
+ * @param {array} [selectors=[]] - wait for the existence fo elements that match these css selectors
+ * @returns {Promise} a promise that will resolve when the page is ready
+ */
 web.whenReady = (selectors = []) => {
   return new Promise((res, rej) => {
     function onLoad() {
@@ -92,12 +152,26 @@ web.whenReady = (selectors = []) => {
     } else onLoad();
   });
 };
+/**
+ * loads/applies a css stylesheet to the page
+ * @param {string} path - a url or within-the-enhancer filepath
+ */
 web.loadStyleset = (path) => {
   document.head.appendChild(
-    web.createElement(`<link rel="stylesheet" href="${chrome.runtime.getURL(path)}">`)
+    web.createElement(
+      web.html`<link rel="stylesheet" href="${
+        path.startsWith('https://') ? path : chrome.runtime.getURL(path)
+      }">`
+    )
   );
   return true;
 };
+/**
+ * create a html element from a string instead of separately
+ * creating the element and then applying attributes and appending children
+ * @param {string} html - the full html of an element inc. attributes and children
+ * @returns {Element} the constructed html element
+ */
 web.createElement = (html) => {
   const template = document.createElement('template');
   template.innerHTML = html.includes('<pre')
@@ -108,6 +182,11 @@ web.createElement = (html) => {
         .join(' ');
   return template.content.firstElementChild;
 };
+/**
+ * replace special html characters with escaped versions
+ * @param {string} str
+ * @returns {string} escaped string
+ */
 web.escapeHtml = (str) =>
   str
     .replace(/&/g, '&amp;')
@@ -115,20 +194,27 @@ web.escapeHtml = (str) =>
     .replace(/>/g, '&gt;')
     .replace(/'/g, '&#39;')
     .replace(/"/g, '&quot;');
-// why a tagged template? because it syntax highlights
-// https://marketplace.visualstudio.com/items?itemName=bierner.lit-html
-web.html = (html, ...templates) => html.map((str) => str + (templates.shift() ?? '')).join('');
-
 /**
- * @param {array} keys
- * @param {function} callback
+ * a tagged template processor for syntax higlighting purposes
+ * (https://marketplace.visualstudio.com/items?itemName=bierner.lit-html)
+ * @example
+ * const el = web.html`<p>hello</p>`; // = '<p>hello</p>'
+ * document.body.append(web.createElement(el));
+ */
+web.html = (html, ...templates) => html.map((str) => str + (templates.shift() ?? '')).join('');
+/**
+ * register a hotkey listener to the page
+ * @param {array} keys - the combination of keys that will trigger the hotkey.
+ * key codes can be tested at http://keycode.info/.
+ * available modifiers are 'alt', 'ctrl', 'meta', and 'shift'
+ * @param {function} callback - called whenever the keys are pressed
  */
 web.hotkeyListener = (keys, callback) => {
   if (typeof keys === 'string') keys = keys.split('+');
   if (!web._hotkeyListener) {
     web._hotkeys = [];
     web._hotkeyListener = document.addEventListener('keyup', (event) => {
-      for (let hotkey of web._hotkeys) {
+      for (const hotkey of web._hotkeys) {
         const matchesEvent = hotkey.keys.every((key) => {
           const modifiers = {
             altKey: 'alt',
@@ -136,7 +222,7 @@ web.hotkeyListener = (keys, callback) => {
             metaKey: 'meta',
             shiftKey: 'shift',
           };
-          for (let modifier in modifiers) {
+          for (const modifier in modifiers) {
             if (key.toLowerCase() === modifiers[modifier] && event[modifier]) return true;
           }
           const pressedKeycode = [event.key.toLowerCase(), event.code.toLowerCase()];
@@ -149,7 +235,10 @@ web.hotkeyListener = (keys, callback) => {
   web._hotkeys.push({ keys, callback });
 };
 
+/** helpers for formatting or parsing text */
+export const fmt = {};
 import './dep/prism.js';
+/** syntax highlighting using https://prismjs.com/ */
 fmt.Prism = Prism;
 fmt.Prism.manual = true;
 fmt.Prism.hooks.add('complete', async (event) => {
@@ -163,8 +252,8 @@ fmt.Prism.hooks.add('complete', async (event) => {
   // }
 });
 // delete globalThis['Prism'];
-
 import './dep/markdown-it.min.js';
+/** markdown -> html using https://github.com/markdown-it/markdown-it/ */
 fmt.md = new markdownit({
   linkify: true,
   highlight: (str, lang) =>
@@ -199,7 +288,13 @@ fmt.md.core.ruler.push(
   }.bind(null, fmt.md)
 );
 // delete globalThis['markdownit'];
-
+/**
+ * transform a heading into a slug (a lowercase alphanumeric string separated by dashes),
+ * e.g. for use as an anchor id
+ * @param {string} heading - the original heading to be slugified
+ * @param {Set<string>} [slugs] - a list of pre-generated slugs to avoid duplicates
+ * @returns
+ */
 fmt.slugger = (heading, slugs = new Set()) => {
   heading = heading
     .replace(/\s/g, '-')
@@ -214,50 +309,85 @@ fmt.slugger = (heading, slugs = new Set()) => {
   return slug;
 };
 
+/** pattern validators */
+export const regexers = {};
+/**
+ * check for a valid uuid (8-4-4-4-12 hexadecimal digits)
+ * @param {string} str - the string to test
+ * @param {function} err - a callback to execute if the test fails
+ * @returns {boolean | env.ERROR} true or the env.ERROR constant
+ */
 regexers.uuid = (str, err = () => {}) => {
   const match = str.match(/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i);
   if (match && match.length) return true;
   err(`invalid uuid ${str}`);
-  return ERROR;
+  return env.ERROR;
 };
+/**
+ * check for a valid semver (MAJOR.MINOR.PATCH)
+ * @param {string} str - the string to test
+ * @param {function} err - a callback to execute if the test fails
+ * @returns {boolean | env.ERROR} true or the env.ERROR constant
+ */
 regexers.semver = (str, err = () => {}) => {
   const match = str.match(
     /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/i
   );
   if (match && match.length) return true;
   err(`invalid semver ${str}`);
-  return ERROR;
+  return env.ERROR;
 };
+/**
+ * check for a valid email (someone@somewhere.domain)
+ * @param {string} str - the string to test
+ * @param {function} err - a callback to execute if the test fails
+ * @returns {boolean | env.ERROR} true or the env.ERROR constant
+ */
 regexers.email = (str, err = () => {}) => {
   const match = str.match(
     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i
   );
   if (match && match.length) return true;
   err(`invalid email ${str}`);
-  return ERROR;
+  return env.ERROR;
 };
+/**
+ * check for a valid url (https://example.com/path)
+ * @param {string} str - the string to test
+ * @param {function} err - a callback to execute if the test fails
+ * @returns {boolean | env.ERROR} true or the env.ERROR constant
+ */
 regexers.url = (str, err = () => {}) => {
   const match = str.match(
     /^[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/i
   );
   if (match && match.length) return true;
   err(`invalid url ${str}`);
-  return ERROR;
+  return env.ERROR;
 };
 
+/** an api for interacting with the enhancer's repository of mods */
+export const registry = {};
+/** mod ids whitelisted as part of the enhancer's core, permanently enabled */
 registry.CORE = [
   'a6621988-551d-495a-97d8-3c568bca2e9e',
   '0f0bf8b6-eae6-4273-b307-8fc43f2ee082',
 ];
-
+/**
+ * internally used to validate mod.json files and provide helpful errors
+ * @param {object} mod - a mod's mod.json in object form
+ * @param {*} err - a callback to execute if a test fails
+ * @param {*} check - a function to test a condition
+ * @returns {array} the results of the validation
+ */
 registry.validate = async (mod, err, check) => {
   let conditions = [
     check('name', mod.name, typeof mod.name === 'string'),
     check('id', mod.id, typeof mod.id === 'string').then((id) =>
-      id === ERROR ? ERROR : regexers.uuid(id, err)
+      id === env.ERROR ? env.ERROR : regexers.uuid(id, err)
     ),
     check('version', mod.version, typeof mod.version === 'string').then((version) =>
-      version === ERROR ? ERROR : regexers.semver(version, err)
+      version === env.ERROR ? env.ERROR : regexers.semver(version, err)
     ),
     check('description', mod.description, typeof mod.description === 'string'),
     check(
@@ -265,26 +395,28 @@ registry.validate = async (mod, err, check) => {
       mod.preview,
       mod.preview === undefined || typeof mod.preview === 'string'
     ).then((preview) =>
-      preview ? (preview === ERROR ? ERROR : regexers.url(preview, err)) : undefined
+      preview ? (preview === env.ERROR ? env.ERROR : regexers.url(preview, err)) : undefined
     ),
     check('tags', mod.tags, Array.isArray(mod.tags)).then((tags) =>
-      tags === ERROR ? ERROR : tags.map((tag) => check('tag', tag, typeof tag === 'string'))
+      tags === env.ERROR
+        ? env.ERROR
+        : tags.map((tag) => check('tag', tag, typeof tag === 'string'))
     ),
     check('authors', mod.authors, Array.isArray(mod.authors)).then((authors) =>
-      authors === ERROR
-        ? ERROR
+      authors === env.ERROR
+        ? env.ERROR
         : authors.map((author) => [
             check('author.name', author.name, typeof author.name === 'string'),
             check(
               'author.email',
               author.email,
               typeof author.email === 'string'
-            ).then((email) => (email === ERROR ? ERROR : regexers.email(email, err))),
+            ).then((email) => (email === env.ERROR ? env.ERROR : regexers.email(email, err))),
             check('author.url', author.url, typeof author.url === 'string').then((url) =>
-              url === ERROR ? ERROR : regexers.url(url, err)
+              url === env.ERROR ? env.ERROR : regexers.url(url, err)
             ),
             check('author.icon', author.icon, typeof author.icon === 'string').then((icon) =>
-              icon === ERROR ? ERROR : regexers.url(icon, err)
+              icon === env.ERROR ? env.ERROR : regexers.url(icon, err)
             ),
           ])
     ),
@@ -294,8 +426,8 @@ registry.validate = async (mod, err, check) => {
       !mod.environments || Array.isArray(mod.environments)
     ).then((environments) =>
       environments
-        ? environments === ERROR
-          ? ERROR
+        ? environments === env.ERROR
+          ? env.ERROR
           : environments.map((environment) =>
               check('environment', environment, env.supported.includes(environment))
             )
@@ -307,14 +439,14 @@ registry.validate = async (mod, err, check) => {
       mod.css && typeof mod.css === 'object' && !Array.isArray(mod.css)
     ).then((css) =>
       css
-        ? css === ERROR
-          ? ERROR
+        ? css === env.ERROR
+          ? env.ERROR
           : ['frame', 'client', 'menu']
               .filter((dest) => css[dest])
               .map(async (dest) =>
                 check(`css.${dest}`, css[dest], Array.isArray(css[dest])).then((files) =>
-                  files === ERROR
-                    ? ERROR
+                  files === env.ERROR
+                    ? env.ERROR
                     : files.map(async (file) =>
                         check(
                           `css.${dest} file`,
@@ -328,12 +460,12 @@ registry.validate = async (mod, err, check) => {
     ),
     check('js', mod.js, mod.js && typeof mod.js === 'object' && !Array.isArray(mod.js)).then(
       async (js) => {
-        if (js === ERROR) return ERROR;
+        if (js === env.ERROR) return env.ERROR;
         if (!js) return undefined;
         return [
           check('js.client', js.client, !js.client || Array.isArray(js.client)).then(
             (client) => {
-              if (client === ERROR) return ERROR;
+              if (client === env.ERROR) return env.ERROR;
               if (!client) return undefined;
               return client.map(async (file) =>
                 check(
@@ -346,7 +478,7 @@ registry.validate = async (mod, err, check) => {
           ),
           check('js.electron', js.electron, !js.electron || Array.isArray(js.electron)).then(
             (electron) => {
-              if (electron === ERROR) return ERROR;
+              if (electron === env.ERROR) return env.ERROR;
               if (!electron) return undefined;
               return electron.map((file) =>
                 check(
@@ -354,8 +486,8 @@ registry.validate = async (mod, err, check) => {
                   file,
                   file && typeof file === 'object' && !Array.isArray(file)
                 ).then(async (file) =>
-                  file === ERROR
-                    ? ERROR
+                  file === env.ERROR
+                    ? env.ERROR
                     : [
                         check(
                           'js.electron file source',
@@ -378,8 +510,8 @@ registry.validate = async (mod, err, check) => {
       }
     ),
     check('options', mod.options, Array.isArray(mod.options)).then((options) =>
-      options === ERROR
-        ? ERROR
+      options === env.ERROR
+        ? env.ERROR
         : options.map((option) => {
             const conditions = [];
             switch (option.type) {
@@ -395,8 +527,8 @@ registry.validate = async (mod, err, check) => {
                     option.values,
                     Array.isArray(option.values)
                   ).then((value) =>
-                    value === ERROR
-                      ? ERROR
+                    value === env.ERROR
+                      ? env.ERROR
                       : value.map((option) =>
                           check('option.values option', option, typeof option === 'string')
                         )
@@ -421,8 +553,8 @@ registry.validate = async (mod, err, check) => {
                     !option.extensions || Array.isArray(option.extensions)
                   ).then((extensions) =>
                     extensions
-                      ? extensions === ERROR
-                        ? ERROR
+                      ? extensions === env.ERROR
+                        ? env.ERROR
                         : extensions.map((ext) =>
                             check('option.extension', ext, typeof ext === 'string')
                           )
@@ -452,8 +584,8 @@ registry.validate = async (mod, err, check) => {
                 !option.environments || Array.isArray(option.environments)
               ).then((environments) =>
                 environments
-                  ? environments === ERROR
-                    ? ERROR
+                  ? environments === env.ERROR
+                    ? env.ERROR
                     : environments.map((environment) =>
                         check(
                           'option.environment',
@@ -472,9 +604,14 @@ registry.validate = async (mod, err, check) => {
   } while (conditions.some((condition) => Array.isArray(condition)));
   return conditions;
 };
+/**
+ * get the default values of a mod's options according to its mod.json
+ * @param {string} id - the uuid of the mod
+ * @returns {object} the mod's default values
+ */
 registry.defaults = async (id) => {
   const mod =
-    regexers.uuid(id) !== ERROR
+    regexers.uuid(id) !== env.ERROR
       ? (await registry.get()).find((mod) => mod.id === id)
       : undefined;
   if (!mod || !mod.options) return {};
@@ -500,13 +637,20 @@ registry.defaults = async (id) => {
   }
   return defaults;
 };
-
-registry.get = async (filter = (mod) => mod) => {
+/**
+ * get all available enhancer mods in the repo
+ * @param {function} filter - a function to filter out mods
+ * @returns {array} the filtered and validated list of mod.json objects
+ * @example
+ * // will only get mods that are enabled in the current environment
+ * await registry.get((mod) => registry.enabled(mod.id))
+ */
+registry.get = async (filter = (mod) => true) => {
   if (!registry._errors) registry._errors = [];
   if (!registry._list || !registry._list.length) {
     registry._list = [];
     for (const dir of await fs.getJSON('repo/registry.json')) {
-      const err = (message) => [registry._errors.push({ source: dir, message }), ERROR][1];
+      const err = (message) => [registry._errors.push({ source: dir, message }), env.ERROR][1];
       try {
         const mod = await fs.getJSON(`repo/${dir}/mod.json`);
         mod._dir = dir;
@@ -519,7 +663,7 @@ registry.get = async (filter = (mod) => mod) => {
               condition ? value : err(`invalid ${prop} ${JSON.stringify(value)}`)
             ),
           validation = await registry.validate(mod, err, check);
-        if (validation.every((condition) => condition !== ERROR)) registry._list.push(mod);
+        if (validation.every((condition) => condition !== env.ERROR)) registry._list.push(mod);
       } catch (e) {
         err('invalid mod.json');
       }
@@ -529,11 +673,22 @@ registry.get = async (filter = (mod) => mod) => {
   for (const mod of registry._list) if (await filter(mod)) list.push(mod);
   return list;
 };
+/**
+ * gets a list of errors encountered while validating the mod.json files
+ * @returns {object} - {source: directory, message: string }
+ */
 registry.errors = async () => {
   if (!registry._errors) await registry.get();
   return registry._errors;
 };
+/**
+ * checks if a mod is core whitelisted, environment disabled or menu enabled
+ * @param {string} id - the uuid of the mod
+ * @returns {boolean} whether or not the mod is enabled
+ */
 registry.enabled = async (id) => {
+  const mod = (await registry.get()).find((mod) => mod.id === id);
+  if (mod.environments && !mod.environments.includes(env.name)) return false;
   if (registry.CORE.includes(id)) return true;
   return await storage.get('_enabled', id, false);
 };

@@ -17,7 +17,7 @@
   },
   "web_accessible_resources": [
     {
-      "resources": ["helpers.js", "repo/*", "icons/*", "dep/*"],
+      "resources": ["api.js", "repo/*", "icons/*", "dep/*"],
       "matches": ["https://*.notion.so/*"]
     }
   ],

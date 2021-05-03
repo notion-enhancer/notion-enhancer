@@ -6,17 +6,13 @@
 
 'use strict';
 
-import(chrome.runtime.getURL('helpers.js')).then(({ env, web, registry }) => {
+import(chrome.runtime.getURL('api.js')).then(({ env, web, registry }) => {
   web.whenReady().then(async () => {
-    for (let mod of await registry.get(
-      async (mod) =>
-        (await registry.enabled(mod.id)) &&
-        (!mod.environments || mod.environments.includes(env.name))
-    )) {
-      for (let sheet of mod.css?.client || []) {
+    for (const mod of await registry.get((mod) => registry.enabled(mod.id))) {
+      for (const sheet of mod.css?.client || []) {
         web.loadStyleset(`repo/${mod._dir}/${sheet}`);
       }
-      for (let script of mod.js?.client || []) {
+      for (const script of mod.js?.client || []) {
         import(chrome.runtime.getURL(`repo/${mod._dir}/${script}`));
       }
     }
