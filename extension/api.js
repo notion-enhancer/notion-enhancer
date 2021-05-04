@@ -4,19 +4,37 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-/** @module notion-enhancer/api */
+/**
+ * @module notion-enhancer/api
+ * @version 0.11.0
+ */
 
 'use strict';
 
-/** environment-specific methods and constants */
+/**
+ * environment-specific methods and constants
+ * @namespace env
+ */
 export const env = {};
-/** an error constant used in validation, distinct from null or undefined */
+/**
+ * an error constant used in validation, distinct from null or undefined
+ * @constant {Symbol}
+ */
 env.ERROR = Symbol();
-/** the environment/platform name code is currently being executed in */
+/**
+ * the environment/platform name code is currently being executed in
+ * @constant {string}
+ */
 env.name = 'extension';
-/** all environments/platforms currently supported by the enhancer */
+/**
+ * all environments/platforms currently supported by the enhancer
+ * @constant {array<string>}
+ */
 env.supported = ['linux', 'win32', 'darwin', 'extension'];
-/** the current version of the enhancer */
+/**
+ * the current version of the enhancer
+ * @constant {string}
+ */
 env.version = chrome.runtime.getManifest().version;
 /** open the enhancer's menu */
 env.openEnhancerMenu = () => chrome.runtime.sendMessage({ action: 'openEnhancerMenu' });
@@ -25,7 +43,10 @@ env.focusNotion = () => chrome.runtime.sendMessage({ action: 'focusNotion' });
 /** reload all notion and enhancer menu tabs to apply changes */
 env.reloadTabs = () => chrome.runtime.sendMessage({ action: 'reloadTabs' });
 
-/** environment-specific data persistence */
+/**
+ * environment-specific data persistence
+ * @namespace storage
+ */
 export const storage = {};
 /**
  * get data persisted within an enhancer store
@@ -91,7 +112,10 @@ storage.onChange = (listener) => {
  * @param {string} [event.old] - the previous value associated with the key
  */
 
-/** environment-specific filesystem reading */
+/**
+ * environment-specific filesystem reading
+ * @namespace fs
+ */
 export const fs = {};
 /**
  * fetch and parse a json file's contents
@@ -125,7 +149,10 @@ fs.isFile = async (path) => {
   }
 };
 
-/** helpers for manipulation of a webpage */
+/**
+ * helpers for manipulation of a webpage
+ * @namespace web
+ */
 export const web = {};
 /**
  * wait until a page is loaded and ready for modification
@@ -235,7 +262,10 @@ web.hotkeyListener = (keys, callback) => {
   web._hotkeys.push({ keys, callback });
 };
 
-/** helpers for formatting or parsing text */
+/**
+ * helpers for formatting or parsing text
+ * @namespace fmt
+ */
 export const fmt = {};
 import './dep/prism.js';
 /** syntax highlighting using https://prismjs.com/ */
@@ -251,7 +281,7 @@ fmt.Prism.hooks.add('complete', async (event) => {
   //   fmt.Prism._stylesheetLoaded = true;
   // }
 });
-// delete globalThis['Prism'];
+// delete memberThis['Prism'];
 import './dep/markdown-it.min.js';
 /** markdown -> html using https://github.com/markdown-it/markdown-it/ */
 fmt.md = new markdownit({
@@ -287,13 +317,13 @@ fmt.md.core.ruler.push(
     });
   }.bind(null, fmt.md)
 );
-// delete globalThis['markdownit'];
+// delete memberThis['markdownit'];
 /**
  * transform a heading into a slug (a lowercase alphanumeric string separated by dashes),
  * e.g. for use as an anchor id
  * @param {string} heading - the original heading to be slugified
  * @param {Set<string>} [slugs] - a list of pre-generated slugs to avoid duplicates
- * @returns
+ * @returns {string} the generated slug
  */
 fmt.slugger = (heading, slugs = new Set()) => {
   heading = heading
@@ -309,7 +339,10 @@ fmt.slugger = (heading, slugs = new Set()) => {
   return slug;
 };
 
-/** pattern validators */
+/**
+ * pattern validators
+ * @namespace regexers
+ */
 export const regexers = {};
 /**
  * check for a valid uuid (8-4-4-4-12 hexadecimal digits)
@@ -366,7 +399,10 @@ regexers.url = (str, err = () => {}) => {
   return env.ERROR;
 };
 
-/** an api for interacting with the enhancer's repository of mods */
+/**
+ * an api for interacting with the enhancer's repository of mods
+ * @namespace registry
+ */
 export const registry = {};
 /** mod ids whitelisted as part of the enhancer's core, permanently enabled */
 registry.CORE = [
@@ -375,6 +411,7 @@ registry.CORE = [
 ];
 /**
  * internally used to validate mod.json files and provide helpful errors
+ * @private
  * @param {object} mod - a mod's mod.json in object form
  * @param {*} err - a callback to execute if a test fails
  * @param {*} check - a function to test a condition
@@ -664,7 +701,7 @@ registry.get = async (filter = (mod) => true) => {
             ),
           validation = await registry.validate(mod, err, check);
         if (validation.every((condition) => condition !== env.ERROR)) registry._list.push(mod);
-      } catch (e) {
+      } catch {
         err('invalid mod.json');
       }
     }
