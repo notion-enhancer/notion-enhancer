@@ -407,12 +407,6 @@ label [data-icon='fa/question-circle'] {
   overflow-x: auto;
 }
 
-/* is this weird? absolutely. but intentional. cos i wanted markdown __underline__ */
-strong {
-  text-decoration: underline;
-  font-weight: normal;
-}
-
 .tooltip {
   position: absolute;
   background: var(--theme--tooltip);

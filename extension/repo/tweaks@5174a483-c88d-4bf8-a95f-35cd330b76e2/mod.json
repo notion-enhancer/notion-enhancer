@@ -2,7 +2,7 @@
   "name": "tweaks",
   "id": "5174a483-c88d-4bf8-a95f-35cd330b76e2",
   "version": "0.2.0",
-  "description": "common style/layout changes.",
+  "description": "common style/layout changes and custom inserts.",
   "tags": ["extension", "customisation"],
   "authors": [
     {
@@ -19,6 +19,12 @@
     "client": ["client.js"]
   },
   "options": [
+    {
+      "type": "file",
+      "key": "insert.css",
+      "label": "css insert",
+      "extensions": [".css"]
+    },
     {
       "key": "tweak.dragarea_height",
       "label": "height of frameless dragarea:",

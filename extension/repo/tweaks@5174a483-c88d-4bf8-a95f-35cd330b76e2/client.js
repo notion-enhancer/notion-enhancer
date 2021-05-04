@@ -10,6 +10,17 @@ const _id = '5174a483-c88d-4bf8-a95f-35cd330b76e2';
 import { env, storage, web } from '../../api.js';
 
 web.whenReady().then(async () => {
+  const cssInsert = await storage.get(_id, '_file.insert.css');
+  if (cssInsert) {
+    document.body.append(
+      web.createElement(
+        web.html`<style id="${await storage.get(_id, 'insert.css')}@${_id}">
+        ${cssInsert}
+        </style>`
+      )
+    );
+  }
+
   if (['linux', 'win32'].includes(env.name)) {
     // dragarea_height
   }
@@ -31,7 +42,6 @@ web.whenReady().then(async () => {
   const responsiveBreakpoint = await storage.get(_id, 'tweak.responsive_breakpoint'),
     addResponsiveBreakpoint = () => {
       document.body.classList.remove('tweak--responsive_breakpoint');
-      console.log(window.outerWidth, responsiveBreakpoint);
       if (window.innerWidth <= responsiveBreakpoint) {
         document.body.classList.add('tweak--responsive_breakpoint');
       }

@@ -6,6 +6,7 @@
 - improved: new larger menu layout, with individual mod pages.
 - improved: merged bracketed-links into tweaks.
 - removed: integrated scrollbar tweak (notion now includes by default).
+- removed: js insert. css insert moved to tweaks mod.
 
 #### todo
 
