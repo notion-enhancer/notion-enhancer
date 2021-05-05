@@ -240,8 +240,9 @@ components.options = {
             : ''
         )}
       />
-      <p><span data-tooltip>${web.escapeHtml(label)}
-      <i data-icon="fa/question-circle"></i></span></p>
+      <p class="library--file_title"><span data-tooltip>${web.escapeHtml(label)}
+      <i data-icon="fa/question-circle"></i></span>
+      <span class="library--file_remove"><i data-icon="fa/minus"></i></span></p>
       <p class="library--file">
         <span><i data-icon="fa/file"></i></span>
         <span class="library--file_path">${web.escapeHtml(state || 'choose file...')}</span>
@@ -250,13 +251,24 @@ components.options = {
     opt.addEventListener('change', (event) => {
       const file = event.target.files[0],
         reader = new FileReader();
-      opt.querySelector('.library--file_path').innerText = file.name;
-      storage.set(id, key, file.name);
-      reader.onload = (progress) => {
+        opt.querySelector('.library--file_path').innerText = file.name;
+        reader.onload = (progress) => {
+        storage.set(id, key, file.name);
         storage.set(id, `_file.${key}`, progress.currentTarget.result);
       };
       reader.readAsText(file);
     });
+    opt.querySelector('.library--file_remove').addEventListener(
+      'click',
+      (event) => {
+        event.preventDefault();
+        opt.querySelector('input').value = '';
+        opt.querySelector('.library--file_path').innerText = 'choose file...';
+        storage.set(id, key, undefined);
+        storage.set(id, `_file.${key}`, undefined);
+      },
+      false
+    );
     opt.addEventListener('click', (event) => {
       document.documentElement.scrollTop = 0;
     });

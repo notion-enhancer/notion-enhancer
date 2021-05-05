@@ -74,14 +74,24 @@ storage.get = (namespace, key = undefined, fallback = undefined) =>
  * @param {string} key - the key associated with the value
  * @param {*} value - the data to save
  */
+storage._queue = [];
 storage.set = (namespace, key, value) => {
-  return new Promise(async (res, rej) => {
-    const values = await storage.get(namespace, undefined, {});
-    storage._onChangeListeners.forEach((listener) =>
-      listener({ type: 'set', namespace, key, new: value, old: values[key] })
-    );
-    chrome.storage.sync.set({ [namespace]: { ...values, [key]: value } }, res);
-  });
+  const precursor = storage._queue[storage._queue.length - 1] || undefined,
+    interaction = new Promise(async (res, rej) => {
+      if (precursor !== undefined) {
+        await precursor;
+        storage._queue.shift();
+      }
+      const values = await storage.get(namespace, undefined, {});
+      if (values.hasOwnProperty(key)) delete values[key];
+      storage._onChangeListeners.forEach((listener) =>
+        listener({ type: 'set', namespace, key, new: value, old: values[key] })
+      );
+      console.log(namespace, key, value, { ...values, [key]: value });
+      chrome.storage.sync.set({ [namespace]: { ...values, [key]: value } }, res);
+    });
+  storage._queue.push(interaction);
+  return interaction;
 };
 /**
  * clear data from an enhancer store

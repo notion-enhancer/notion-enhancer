@@ -386,6 +386,18 @@ label [data-icon='fa/question-circle'] {
   border: none;
   background: none;
 }
+.library--file_label .library--file_title {
+  display: flex;
+}
+.library--file_title .library--file_remove {
+  margin-top: auto;
+  padding-top: 0.2em;
+  margin-left: auto;
+}
+.library--file_title .library--file_remove svg {
+  cursor: pointer;
+  width: 0.8em;
+}
 .library--title,
 .library--title h2 {
   margin: 0;
