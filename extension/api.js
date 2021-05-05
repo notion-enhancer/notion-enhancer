@@ -87,7 +87,6 @@ storage.set = (namespace, key, value) => {
       storage._onChangeListeners.forEach((listener) =>
         listener({ type: 'set', namespace, key, new: value, old: values[key] })
       );
-      console.log(namespace, key, value, { ...values, [key]: value });
       chrome.storage.sync.set({ [namespace]: { ...values, [key]: value } }, res);
     });
   storage._queue.push(interaction);
@@ -270,6 +269,39 @@ web.hotkeyListener = (keys, callback) => {
     });
   }
   web._hotkeys.push({ keys, callback });
+};
+web.observeDocument = (callback, selectors = []) => {
+  if (!web._documentObserver) {
+    web._documentObserverListeners = [];
+    web._documentObserverEvents = [];
+    const handle = (queue) => {
+      while (queue.length) {
+        const event = queue.shift();
+        for (const listener of web._documentObserverListeners) {
+          if (
+            !listener.selectors.length ||
+            listener.selectors.some(
+              (selector) =>
+                event.target.matches(selector) || event.target.matches(`${selector} *`)
+            )
+          ) {
+            listener.callback(event);
+          }
+        }
+      }
+    };
+    web._documentObserver = new MutationObserver((list, observer) => {
+      if (!web._documentObserverEvents.length)
+        requestIdleCallback(() => handle(web._documentObserverEvents));
+      web._documentObserverEvents.push(...list);
+    });
+    web._documentObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+    });
+  }
+  web._documentObserverListeners.push({ callback, selectors });
 };
 
 /**

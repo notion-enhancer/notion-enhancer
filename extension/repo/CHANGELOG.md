@@ -13,7 +13,6 @@
 - tag sort
 - documentation e.g. \_file
 - complete/bugfix theming variables
-- clear file pickers
 - color pickers
 
 #### app-specific
