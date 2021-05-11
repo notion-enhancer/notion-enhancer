@@ -6,9 +6,9 @@
 
 'use strict';
 
-import(chrome.runtime.getURL('api.js')).then(({ env, web, registry }) => {
+import(chrome.runtime.getURL('api.js')).then(({ web, registry }) => {
   web.whenReady().then(async () => {
-    for (const mod of await registry.get((mod) => registry.enabled(mod.id))) {
+    for (const mod of await registry.get((mod) => registry.isEnabled(mod.id))) {
       for (const sheet of mod.css?.client || []) {
         web.loadStyleset(`repo/${mod._dir}/${sheet}`);
       }

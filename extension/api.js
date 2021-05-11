@@ -105,11 +105,20 @@ storage.reset = (namespace) => {
 storage._onChangeListeners = [];
 /**
  * add an event listener for changes in storage
- * @param {onStorageChangeCallback} listener - called whenever a change in
+ * @param {onStorageChangeCallback} callback - called whenever a change in
  * storage is initiated from the current process
  */
-storage.onChange = (listener) => {
-  storage._onChangeListeners.push(listener);
+storage.addChangeListener = (callback) => {
+  storage._onChangeListeners.push(callback);
+};
+/**
+ * remove a listener added with storage.addChangeListener
+ * @param {onStorageChangeCallback} callback
+ */
+storage.removeChangeListener = (callback) => {
+  storage._onChangeListeners = storage._onChangeListeners.filter(
+    (listener) => listener !== callback
+  );
 };
 /**
  * @callback onStorageChangeCallback
@@ -203,20 +212,45 @@ web.loadStyleset = (path) => {
   return true;
 };
 /**
- * create a html element from a string instead of separately
- * creating the element and then applying attributes and appending children
+ * fetch an icon from the icons folder
+ * @param {string} path - the path to the icon within the folder
+ * @returns {string} the content of an svg file
+ */
+web.getIcon = (path) => fs.getText(`icons/${path}.svg`);
+/** replace all [data-icon] elems with matching svgs from the icons folder */
+web.loadIcons = () => {
+  document.querySelectorAll('[data-icon]:not(svg:not(:empty))').forEach(async (icon) => {
+    const svg = web.createElement(await web.getIcon(icon.dataset.icon));
+    for (const attr of icon.attributes) {
+      svg.setAttribute(attr.name, attr.value);
+    }
+    icon.replaceWith(svg);
+  });
+};
+/**
+ * create a html fragment (collection of nodes) from a string
+ * @param {string} html - a valid html string
+ * @returns {Element} the constructed html fragment
+ */
+web.createFragment = (html = '') => {
+  return document.createRange().createContextualFragment(
+    html.includes('<pre')
+      ? html.trim()
+      : html
+          .split(/\n/)
+          .map((line) => line.trim())
+          .filter((line) => line.length)
+          .join(' ')
+  );
+};
+/**
+ * create a single html element from a string (instead of separately
+ * creating the element and then applying attributes and appending children)
  * @param {string} html - the full html of an element inc. attributes and children
  * @returns {Element} the constructed html element
  */
 web.createElement = (html) => {
-  const template = document.createElement('template');
-  template.innerHTML = html.includes('<pre')
-    ? html.trim()
-    : html
-        .split(/\n/)
-        .map((line) => line.trim())
-        .join(' ');
-  return template.content.firstElementChild;
+  return web.createFragment(html).children[0];
 };
 /**
  * replace special html characters with escaped versions
@@ -238,6 +272,7 @@ web.escapeHtml = (str) =>
  * document.body.append(web.createElement(el));
  */
 web.html = (html, ...templates) => html.map((str) => str + (templates.shift() ?? '')).join('');
+web._hotkeyEventListeners = [];
 /**
  * register a hotkey listener to the page
  * @param {array} keys - the combination of keys that will trigger the hotkey.
@@ -245,12 +280,11 @@ web.html = (html, ...templates) => html.map((str) => str + (templates.shift() ??
  * available modifiers are 'alt', 'ctrl', 'meta', and 'shift'
  * @param {function} callback - called whenever the keys are pressed
  */
-web.hotkeyListener = (keys, callback) => {
+web.addHotkeyListener = (keys, callback) => {
   if (typeof keys === 'string') keys = keys.split('+');
-  if (!web._hotkeyListener) {
-    web._hotkeys = [];
-    web._hotkeyListener = document.addEventListener('keyup', (event) => {
-      for (const hotkey of web._hotkeys) {
+  if (!web._hotkeyEvent) {
+    web._hotkeyEvent = document.addEventListener('keyup', (event) => {
+      for (const hotkey of web._hotkeyEventListeners) {
         const matchesEvent = hotkey.keys.every((key) => {
           const modifiers = {
             altKey: 'alt',
@@ -268,12 +302,26 @@ web.hotkeyListener = (keys, callback) => {
       }
     });
   }
-  web._hotkeys.push({ keys, callback });
+  web._hotkeyEventListeners.push({ keys, callback });
 };
-web.observeDocument = (callback, selectors = []) => {
+/**
+ * remove a listener added with web.addHotkeyListener
+ * @param {function} callback
+ */
+web.removeHotkeyListener = (callback) => {
+  web._hotkeyEventListeners = web._hotkeyEventListeners.filter(
+    (listener) => listener.callback !== callback
+  );
+};
+web._documentObserverListeners = [];
+web._documentObserverEvents = [];
+/**
+ * add a listener to watch for changes to the dom
+ * @param {onDocumentObservedCallback} callback
+ * @param {array<string>} [selectors]
+ */
+web.addDocumentObserver = (callback, selectors = []) => {
   if (!web._documentObserver) {
-    web._documentObserverListeners = [];
-    web._documentObserverEvents = [];
     const handle = (queue) => {
       while (queue.length) {
         const event = queue.shift();
@@ -303,6 +351,43 @@ web.observeDocument = (callback, selectors = []) => {
   }
   web._documentObserverListeners.push({ callback, selectors });
 };
+/**
+ * remove a listener added with web.addDocumentObserver
+ * @param {onDocumentObservedCallback} callback
+ */
+web.removeDocumentObserver = (callback) => {
+  web._documentObserverListeners = web._documentObserverListeners.filter(
+    (listener) => listener.callback !== callback
+  );
+};
+/**
+ * @callback onDocumentObservedCallback
+ * @param {MutationRecord} event - the observed dom mutation event
+ */
+/**
+ * add a tooltip to show extra information on hover
+ * @param {HTMLElement} $element - the element that will trigger the tooltip when hovered
+ * @param {string} text - the markdown content of the tooltip
+ */
+web.addTooltip = ($element, text) => {
+  if (!web._$tooltip) {
+    web._$tooltip = web.createElement(web.html`<div class="enhancer--tooltip"></div>`);
+    document.body.append(web._$tooltip);
+  }
+  text = fmt.md.render(text);
+  $element.addEventListener('mouseover', (event) => {
+    web._$tooltip.innerHTML = text;
+    web._$tooltip.style.display = 'block';
+  });
+  $element.addEventListener('mousemove', (event) => {
+    web._$tooltip.style.top = event.clientY - web._$tooltip.clientHeight + 'px';
+    web._$tooltip.style.left =
+      event.clientX < window.innerWidth / 2 ? event.clientX + 20 + 'px' : '';
+  });
+  $element.addEventListener('mouseout', (event) => {
+    web._$tooltip.style.display = '';
+  });
+};
 
 /**
  * helpers for formatting or parsing text
@@ -317,7 +402,7 @@ fmt.Prism.hooks.add('complete', async (event) => {
   event.element.parentElement.removeAttribute('tabindex');
   event.element.parentElement.parentElement
     .querySelector('.copy-to-clipboard-button')
-    .prepend(web.createElement(await fs.getText('icons/fa/copy.svg')));
+    .prepend(web.createElement(await web.getIcon('fa/regular/copy')));
   // if (!fmt.Prism._stylesheetLoaded) {
   //   web.loadStyleset('./dep/prism.css');
   //   fmt.Prism._stylesheetLoaded = true;
@@ -486,11 +571,9 @@ registry.validate = async (mod, err, check) => {
         ? env.ERROR
         : authors.map((author) => [
             check('author.name', author.name, typeof author.name === 'string'),
-            check(
-              'author.email',
-              author.email,
-              typeof author.email === 'string'
-            ).then((email) => (email === env.ERROR ? env.ERROR : regexers.email(email, err))),
+            check('author.email', author.email, typeof author.email === 'string').then(
+              (email) => (email === env.ERROR ? env.ERROR : regexers.email(email, err))
+            ),
             check('author.url', author.url, typeof author.url === 'string').then((url) =>
               url === env.ERROR ? env.ERROR : regexers.url(url, err)
             ),
@@ -601,16 +684,13 @@ registry.validate = async (mod, err, check) => {
                 break;
               case 'select':
                 conditions.push(
-                  check(
-                    'option.values',
-                    option.values,
-                    Array.isArray(option.values)
-                  ).then((value) =>
-                    value === env.ERROR
-                      ? env.ERROR
-                      : value.map((option) =>
-                          check('option.values option', option, typeof option === 'string')
-                        )
+                  check('option.values', option.values, Array.isArray(option.values)).then(
+                    (value) =>
+                      value === env.ERROR
+                        ? env.ERROR
+                        : value.map((option) =>
+                            check('option.values option', option, typeof option === 'string')
+                          )
                   )
                 );
                 break;
@@ -722,7 +802,7 @@ registry.defaults = async (id) => {
  * @returns {array} the filtered and validated list of mod.json objects
  * @example
  * // will only get mods that are enabled in the current environment
- * await registry.get((mod) => registry.enabled(mod.id))
+ * await registry.get((mod) => registry.isEnabled(mod.id))
  */
 registry.get = async (filter = (mod) => true) => {
   if (!registry._errors) registry._errors = [];
@@ -765,9 +845,9 @@ registry.errors = async () => {
  * @param {string} id - the uuid of the mod
  * @returns {boolean} whether or not the mod is enabled
  */
-registry.enabled = async (id) => {
+registry.isEnabled = async (id) => {
   const mod = (await registry.get()).find((mod) => mod.id === id);
   if (mod.environments && !mod.environments.includes(env.name)) return false;
   if (registry.CORE.includes(id)) return true;
-  return await storage.get('_enabled', id, false);
+  return await storage.get('_mods', id, false);
 };
