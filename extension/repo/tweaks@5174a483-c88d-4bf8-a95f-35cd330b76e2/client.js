@@ -14,9 +14,8 @@ web.whenReady().then(async () => {
   if (cssInsert) {
     document.body.append(
       web.createElement(
-        web.html`<style id="${await storage.get(_id, 'insert.css')}@${_id}">
-        ${cssInsert}
-        </style>`
+        web.html`
+        <style id="${await storage.get(_id, 'insert.css')}@${_id}">${cssInsert}</style>`
       )
     );
   }

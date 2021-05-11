@@ -13,8 +13,9 @@
     }
   ],
   "css": {
-    "client": ["client.css"],
-    "menu": ["menu.css", "markdown.css"]
+    "frame": ["tooltips.css"],
+    "client": ["client.css", "tooltips.css"],
+    "menu": ["menu.css", "markdown.css", "tooltips.css"]
   },
   "js": {
     "client": ["client.js"]

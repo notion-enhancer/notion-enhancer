@@ -4,6 +4,8 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+'use strict';
+
 import { web } from '../../api.js';
 
 web.whenReady().then(async () => {
@@ -23,7 +25,7 @@ function getCurrentPage() {
   return { type: 'page', id: location.pathname.split(/(-|\/)/g).reverse()[0] };
 }
 let lastPage = getCurrentPage();
-web.observeDocument((event) => {
+web.addDocumentObserver((event) => {
   const currentPage = getCurrentPage();
   if (currentPage.id !== lastPage.id || currentPage.type !== lastPage.type) {
     const openAsPage = document.querySelector(

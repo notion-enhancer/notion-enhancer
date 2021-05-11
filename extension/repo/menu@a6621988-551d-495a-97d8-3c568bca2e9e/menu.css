@@ -11,6 +11,7 @@
   -webkit-text-size-adjust: 100%;
   font-size: inherit;
   font-family: inherit;
+  fill: currentColor;
 }
 
 html {
@@ -43,7 +44,7 @@ header > * {
   margin: 0 1.25rem 0.1em 0;
   font-size: var(--theme--font_heading1-size);
 }
-header h1 a:not([data-view-active]) {
+header h1 a {
   text-decoration: none;
 }
 header h1 img {
@@ -80,7 +81,7 @@ main {
   main {
     grid-template-columns: 1fr 1fr;
   }
-  [data-view='mod'] main > .documentation--buttons {
+  main > .action--buttons {
     grid-column: span 2;
   }
   [data-view='mod'] main .library--card,
@@ -97,7 +98,7 @@ main {
   main {
     grid-template-columns: 1fr 1fr 1fr;
   }
-  [data-view='mod'] main > .documentation--buttons {
+  main > .action--buttons {
     grid-column: span 3;
   }
   [data-view='mod'] main > .documentation--body {
@@ -108,7 +109,7 @@ main {
   main {
     grid-template-columns: 1fr 1fr 1fr 1fr;
   }
-  [data-view='mod'] main > .documentation--buttons {
+  main > .action--buttons {
     grid-column: span 4;
   }
   [data-view='mod'] main > .documentation--body {
@@ -119,7 +120,7 @@ main {
   main {
     grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   }
-  [data-view='mod'] main > .documentation--buttons {
+  main > .action--buttons {
     grid-column: span 5;
   }
   [data-view='mod'] main > .documentation--body {
@@ -136,7 +137,7 @@ main article img {
   max-width: 100%;
 }
 
-.documentation--buttons,
+.action--buttons,
 .library--expand {
   margin: 0;
   display: flex;
@@ -146,14 +147,14 @@ main article img {
 .library--expand a {
   margin-left: auto;
 }
-.documentation--buttons a,
+.action--buttons a,
 .library--expand a {
   border-radius: 3px;
   padding: 0.35rem 0.45rem;
   text-decoration: none;
   display: flex;
 }
-.documentation--buttons .documentation--reload {
+.action--buttons .action--alert {
   cursor: pointer;
   border-radius: 3px;
   padding: 0.35rem 0.45rem;
@@ -164,31 +165,32 @@ main article img {
   opacity: 0;
   transition: opacity 200ms ease-in-out;
 }
-.documentation--buttons .documentation--reload[data-triggered] {
+.action--buttons .action--alert[data-triggered] {
   pointer-events: all;
   opacity: 1;
 }
-.documentation--buttons .documentation--reload[data-triggered]:hover {
+.action--buttons .action--alert[data-triggered]:hover {
   background: none;
   color: var(--theme--block_grey-text);
   box-shadow: var(--theme--block_grey) 0px 0px 0px 1px inset;
 }
-.documentation--buttons span,
+.action--buttons span,
 .library--expand span {
   color: var(--theme--text_property);
 }
-.documentation--buttons a:hover,
+.action--buttons a:hover,
+.action--buttons a.action--active,
 .library--expand a:hover {
   background: var(--theme--button-hover);
 }
-.documentation--buttons svg,
+.action--buttons svg,
 .library--expand svg {
   width: 1em;
   height: 1em;
   padding-top: 2px;
   margin-right: 0.3rem;
 }
-.documentation--buttons svg *,
+.action--buttons svg *,
 .library--expand svg * {
   fill: var(--theme--text_property);
 }
@@ -269,7 +271,7 @@ label p > span:not([class]),
 label > span:not([class]) {
   font-size: 1rem;
 }
-label [data-icon='fa/question-circle'] {
+label [data-icon='fa/solid/question-circle'] {
   height: var(--theme--font_ui_small-size);
   width: var(--theme--font_ui_small-size);
   margin-left: 0.25em;
@@ -306,7 +308,7 @@ label [data-icon='fa/question-circle'] {
   height: 0.8rem;
   width: 0.8rem;
   left: 0.325rem;
-  top: 0.225rem;
+  top: 0.2rem;
   position: absolute;
   border-radius: 100%;
   background: var(--theme--toggle_dot);
@@ -419,22 +421,7 @@ label [data-icon='fa/question-circle'] {
   overflow-x: auto;
 }
 
-.tooltip {
-  position: absolute;
-  background: var(--theme--tooltip);
-  color: var(--theme--tooltip-text);
-  font-size: var(--theme--font_ui_small-size);
-  padding: 0.15rem 0.4rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-  border-radius: 3px;
-  max-width: 20rem;
-  display: none;
-}
-.tooltip p {
-  margin: 0.25rem 0;
-}
-
-.notification--list {
+.notifications {
   position: absolute;
   bottom: 1.5rem;
   right: 1.5rem;
@@ -459,7 +446,7 @@ label [data-icon='fa/question-circle'] {
   transform-origin: 100% 100%;
   opacity: 0;
 }
-.notification svg {
+.notification :not(.notification--dismiss) > svg {
   height: 1.5rem;
   width: 1.5rem;
   margin-top: 0.25rem;
@@ -478,26 +465,19 @@ label [data-icon='fa/question-circle'] {
   right: 0.75rem;
   background: none;
   border: none;
-  padding: 0.25rem 0.35rem;
-  font-size: var(--theme--font_body-size);
+  padding: 0.15rem 0 0.15rem 0.5rem;
+  width: var(--theme--font_body-size);
   color: currentColor;
   cursor: pointer;
   transition: opacity 200ms ease-in-out;
   opacity: 0;
 }
+.notification .notification--dismiss svg {
+  width: 100%;
+}
 .notification:hover .notification--dismiss,
 .notification:focus-within .notification--dismiss {
   opacity: 1;
-}
-.notification.celebration,
-.notification.information {
-  background: var(--theme--block_blue);
-  color: var(--theme--block_blue-text);
-}
-.notification.warning,
-.notification.danger {
-  background: var(--theme--block_red);
-  color: var(--theme--block_red-text);
 }
 
 ::-webkit-scrollbar {

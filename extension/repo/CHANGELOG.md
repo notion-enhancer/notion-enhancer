@@ -5,12 +5,13 @@
 - improved: split the core mod into the theming & menu mods.
 - improved: new larger menu layout, with individual mod pages.
 - improved: merged bracketed-links into tweaks.
+- improved: replaced confusing all-tag filters with themes/extensions/enabled/disabled filters.
 - removed: integrated scrollbar tweak (notion now includes by default).
 - removed: js insert. css insert moved to tweaks mod.
+- ported: tweaks, bypass-preview.
 
 #### todo
 
-- tag sort
 - documentation e.g. \_file
 - complete/bugfix theming variables
 - color pickers

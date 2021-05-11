@@ -1,7 +1,7 @@
 {
   "name": "bypass-preview",
   "id": "cb6fd684-f113-4a7a-9423-8f0f0cff069f",
-  "description": "go straight to the normal full view when opening a page..",
+  "description": "go straight to the normal full view when opening a page.",
   "version": "0.2.0",
   "tags": ["extension", "automation"],
   "authors": [
