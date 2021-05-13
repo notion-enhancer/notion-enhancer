@@ -16,5 +16,10 @@ import(chrome.runtime.getURL('api.js')).then(({ web, registry }) => {
         import(chrome.runtime.getURL(`repo/${mod._dir}/${script}`));
       }
     }
+    const errors = await registry.errors();
+    if (errors.length) {
+      console.log('notion-enhancer errors:');
+      console.table(errors);
+    }
   });
 });

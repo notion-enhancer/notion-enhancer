@@ -7,7 +7,7 @@
 'use strict';
 
 const _id = 'a6621988-551d-495a-97d8-3c568bca2e9e';
-import { env, storage, web, fmt, fs, registry } from '../../api.js';
+import { env, storage, web, fmt, fs, registry, regexers } from '../../api.js';
 
 for (const mod of await registry.get((mod) => registry.isEnabled(mod.id))) {
   for (const sheet of mod.css?.menu || []) {
@@ -232,6 +232,46 @@ components.options = {
     if (tooltip) web.addTooltip(opt.querySelector('[data-tooltip]'), tooltip);
     return opt;
   },
+  async color(id, { key, label, tooltip }) {
+    const state = await storage.get(id, key),
+      opt = web.createElement(web.html`
+      <label for="color--${web.escapeHtml(`${id}.${key}`)}" class="library--color_label">
+        <p class="library--color_title">
+        <span data-tooltip>${web.escapeHtml(label)}
+          <i data-icon="fa/solid/question-circle"></i>
+        </span>
+        <p class="library--color">
+          <span><i data-icon="fa/solid/eye-dropper"></i></span>
+          <input type="text" id="color--${web.escapeHtml(`${id}.${key}`)}"/>
+        </p>
+      </label>`);
+    const $fill = opt.querySelector('input'),
+      paintInput = () => {
+        $fill.style.background = picker.toBackground();
+        $fill.style.color = picker.isLight() ? '#000' : '#fff';
+      },
+      picker = new fmt.JSColor($fill, {
+        value: state,
+        previewSize: 0,
+        borderRadius: 3,
+        borderColor: 'var(--theme--divider)',
+        controlBorderColor: 'var(--theme--divider)',
+        backgroundColor: 'var(--theme--page)',
+        onInput() {
+          paintInput();
+        },
+        onChange() {
+          paintInput();
+          storage.set(id, key, this.toRGBAString());
+        },
+      });
+    paintInput();
+    opt.addEventListener('click', (event) => {
+      picker.show();
+    });
+    if (tooltip) web.addTooltip(opt.querySelector('[data-tooltip]'), tooltip);
+    return opt;
+  },
   async file(id, { key, label, tooltip, extensions }) {
     const state = await storage.get(id, key),
       opt = web.createElement(web.html`
@@ -295,15 +335,13 @@ const actionButtons = {
   _reloadTriggered: false,
   async reload($fragment = document) {
     let $reload = $fragment.querySelector('[data-reload]');
-    if (!$reload) {
+    if (!$reload && this._reloadTriggered) {
       $reload = web.createElement(web.html`
       <button class="action--alert" data-reload>
         <span><i data-icon="fa/solid/redo"></i></span>
         <span>reload tabs to apply changes</span>
       </button>`);
       $reload.addEventListener('click', env.reloadTabs);
-    }
-    if (this._reloadTriggered) {
       $fragment.querySelector('.action--buttons').append($reload);
       await new Promise((res, rej) => requestAnimationFrame(res));
       $reload.dataset.triggered = true;
@@ -311,19 +349,19 @@ const actionButtons = {
   },
   async clearFilters($fragment = document) {
     let $clearFilters = $fragment.querySelector('[data-clear-filters]');
-    if (!$clearFilters) {
-      $clearFilters = web.createElement(web.html`
-      <a class="action--alert" href="?view=library" data-clear-filters>
-        <span><i data-icon="fa/solid/times"></i></span>
-        <span>clear filters</span>
-      </a>`);
-    }
     const search = router.getSearch();
     if (search.get('tag') || search.has('enabled') || search.has('disabled')) {
-      $fragment.querySelector('.action--buttons').append($clearFilters);
-      await new Promise((res, rej) => requestAnimationFrame(res));
-      $clearFilters.dataset.triggered = true;
-    } else $clearFilters.remove();
+      if (!$clearFilters) {
+        $clearFilters = web.createElement(web.html`
+        <a class="action--alert" href="?view=library" data-clear-filters>
+          <span><i data-icon="fa/solid/times"></i></span>
+          <span>clear filters</span>
+        </a>`);
+        $fragment.querySelector('.action--buttons').append($clearFilters);
+        await new Promise((res, rej) => requestAnimationFrame(res));
+        $clearFilters.dataset.triggered = true;
+      }
+    } else if ($clearFilters) $clearFilters.remove();
   },
 };
 storage.addChangeListener(async (event) => {
@@ -395,22 +433,24 @@ router.addView(
         .querySelector(`.action--buttons > [href="?view=library&${filter}"]`)
         .classList[active ? 'add' : 'remove']('action--active');
     }
-    for (const card of document.querySelectorAll('main > .library--card')) {
-      const { tags } = (await registry.get()).find((mod) => mod.id === card.dataset.mod),
-        isEnabled = await registry.isEnabled(card.dataset.mod);
-      if (
-        (search.has('tag') ? tags.includes(search.get('tag')) : true) &&
-        (search.has('enabled') && search.has('disabled')
-          ? true
-          : search.has('enabled')
-          ? isEnabled
-          : search.has('disabled')
-          ? !isEnabled
-          : true)
-      ) {
-        card.style.display = '';
-      } else card.style.display = 'none';
+    const visible = new Set();
+    for (const mod of await registry.get()) {
+      const isEnabled = await registry.isEnabled(mod.id),
+        filterConditions =
+          (search.has('tag') ? mod.tags.includes(search.get('tag')) : true) &&
+          (search.has('enabled') && search.has('disabled')
+            ? true
+            : search.has('enabled')
+            ? isEnabled
+            : search.has('disabled')
+            ? !isEnabled
+            : true);
+      if (filterConditions) visible.add(mod.id);
     }
+    for (const card of document.querySelectorAll('main > .library--card'))
+      card.style.display = 'none';
+    for (const card of document.querySelectorAll('main > .library--card'))
+      if (visible.has(card.dataset.mod)) card.style.display = '';
     actionButtons.clearFilters();
   }
 );

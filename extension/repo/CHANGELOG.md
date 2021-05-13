@@ -14,7 +14,6 @@
 
 - documentation e.g. \_file
 - complete/bugfix theming variables
-- color pickers
 
 #### app-specific
 

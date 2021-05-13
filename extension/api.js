@@ -394,6 +394,9 @@ web.addTooltip = ($element, text) => {
  * @namespace fmt
  */
 export const fmt = {};
+import './dep/jscolor.min.js';
+/** color picker with alpha channel using https://jscolor.com/ */
+fmt.JSColor = JSColor;
 import './dep/prism.js';
 /** syntax highlighting using https://prismjs.com/ */
 fmt.Prism = Prism;
@@ -523,6 +526,18 @@ regexers.url = (str, err = () => {}) => {
   );
   if (match && match.length) return true;
   err(`invalid url ${str}`);
+  return env.ERROR;
+};
+/**
+ * check for a valid color (https://regexr.com/39cgj)
+ * @param {string} str - the string to test
+ * @param {function} err - a callback to execute if the test fails
+ * @returns {boolean | env.ERROR} true or the env.ERROR constant
+ */
+regexers.color = (str, err = () => {}) => {
+  const match = str.match(/^(?:#|0x)(?:[a-f0-9]{3}|[a-f0-9]{6})\b|(?:rgb|hsl)a?\([^\)]*\)$/i);
+  if (match && match.length) return true;
+  err(`invalid color ${str}`);
   return env.ERROR;
 };
 
@@ -704,6 +719,13 @@ registry.validate = async (mod, err, check) => {
                   check('option.value', option.value, typeof option.value === 'number')
                 );
                 break;
+              case 'color':
+                conditions.push(
+                  check('option.value', option.value, typeof option.value === 'string').then(
+                    (color) => (color === env.ERROR ? env.ERROR : regexers.color(color, err))
+                  )
+                );
+                break;
               case 'file':
                 conditions.push(
                   check(
@@ -778,16 +800,13 @@ registry.defaults = async (id) => {
   for (const opt of mod.options) {
     switch (opt.type) {
       case 'toggle':
+      case 'text':
+      case 'number':
+      case 'color':
         defaults[opt.key] = opt.value;
         break;
       case 'select':
         defaults[opt.key] = opt.values[0];
-        break;
-      case 'text':
-        defaults[opt.key] = opt.value;
-        break;
-      case 'number':
-        defaults[opt.key] = opt.value;
         break;
       case 'file':
         defaults[opt.key] = undefined;

@@ -25,7 +25,6 @@ web.whenReady([sidebarSelector]).then(async () => {
       list: await fs.getJSON('https://notion-enhancer.github.io/notifications.json'),
       dismissed: await storage.get(_id, 'notifications', []),
     };
-  console.log($enhancerSidebarElement);
   notifications.waiting = notifications.list.filter(
     ({ id }) => !notifications.dismissed.includes(id)
   );

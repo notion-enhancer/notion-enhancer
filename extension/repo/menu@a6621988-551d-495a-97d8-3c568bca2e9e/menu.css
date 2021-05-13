@@ -250,6 +250,7 @@ main article img {
 .library--select_label,
 .library--text_label,
 .library--number_label,
+.library--color_label,
 .library--file_label {
   margin: 0.6rem 0;
   display: block;
@@ -260,6 +261,7 @@ main article img {
 .library--select_label *,
 .library--text_label *,
 .library--number_label *,
+.library--color_label *,
 .library--file_label * {
   appearance: none;
   font-family: var(--theme--font_sans);
@@ -282,6 +284,7 @@ label [data-icon='fa/solid/question-circle'] {
 .library--select_label > p,
 .library--text_label > p,
 .library--number_label > p,
+.library--color_label > p,
 .library--file_label > p {
   margin: 0.6rem 0;
 }
@@ -320,10 +323,11 @@ label [data-icon='fa/solid/question-circle'] {
 }
 .library--toggle_label:focus-within .library--toggle,
 .library--file_label:focus-within .library--file,
+.library--color_label:focus-within .library--color,
 .library--select_label .library--select:focus-within {
-  outline: solid thin;
+  outline: -webkit-focus-ring-color auto 1px;
 }
-.library--toggle_label input[type='checkbox'],
+.library--toggle_label input,
 .library--file_label input {
   position: absolute;
   width: 1px;
@@ -343,6 +347,7 @@ label [data-icon='fa/solid/question-circle'] {
 .library--text_label textarea,
 .library--number_label input,
 .library--select_label .library--select,
+.library--color_label .library--color,
 .library--file_label .library--file {
   width: 100%;
   padding: 6px 8px;
@@ -351,35 +356,44 @@ label [data-icon='fa/solid/question-circle'] {
   border: none;
   box-shadow: var(--theme--input-border) 0px 0px 0px 1px inset;
 }
-.library--select_label .library--select select {
+.library--select_label .library--select select,
+.library--color_label .library--color input {
   outline: none;
   cursor: pointer;
+}
+.library--color_label .library--color input {
+  border-radius: 0;
 }
 .library--select_label .library--select select option {
   background: var(--theme--tag_select);
 }
 .library--select_label .library--select,
+.library--color_label .library--color,
 .library--file_label .library--file {
   padding: 0;
   display: flex;
   cursor: pointer;
 }
 .library--select_label .library--select > :first-child,
+.library--color_label .library--color > :first-child,
 .library--file_label .library--file > :first-child {
   display: flex;
   padding: 6px 8px;
   background: var(--theme--input-border);
 }
 .library--select_label .library--select > :first-child svg,
+.library--color_label .library--color > :first-child svg,
 .library--file_label .library--file > :first-child svg {
   width: 0.9em;
   margin: auto 0;
 }
 .library--select_label .library--select > :first-child svg *,
+.library--color_label .library--color > :first-child svg *,
 .library--file_label .library--file > :first-child svg * {
   color: var(--theme--input_icon);
 }
 .library--select_label .library--select > :last-child,
+.library--color_label .library--color > :last-child,
 .library--file_label .library--file > :last-child {
   margin: auto 0;
   padding: 6px 8px;
