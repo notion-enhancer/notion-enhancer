@@ -56,12 +56,14 @@ function navigator(event) {
 export async function load(force = false) {
   const $container = document.querySelector('main'),
     search = getSearch(),
-    fallbackView = () =>
+    fallbackView = () => {
       window.history.replaceState(
         { search: `?view=${defaultView}`, hash: '' },
         null,
         `?view=${defaultView}`
       );
+      return load();
+    };
   if (force || !search.get('view') || document.body.dataset.view !== search.get('view')) {
     if (views.get(search.get('view'))) {
       const $body = await (views.get(search.get('view')) || (() => void 0))();
