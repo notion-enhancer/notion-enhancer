@@ -16,8 +16,7 @@ for support, join the [discord server](https://discord.gg/sFWPXtA).
 
 - the [official windows/mac releases](https://notion.so/desktop).
 - [notion-linux](https://github.com/davidbailey00/notion-linux) which provides pre-enhanced packages.
-- the arch linux AUR [notion-app](https://aur.archlinux.org/packages/notion-app/) package.
-- the linux [notion-app](https://github.com/jaredallard/notion-app) installer.
+- the arch linux AUR [notion-app-enhanced](https://aur.archlinux.org/packages/notion-app-enhanced/) package, which is pre-enhanced.
 
 outdated notion versions (< 2.0.10) probably won't work.
 
@@ -28,6 +27,8 @@ a chrome extension may be coming soon for web client support.
 ## installation
 
 > **if you are using a Debian-based or RPM-based Linux distribution,** you can install pre-enhanced packages from [notion-linux](https://github.com/davidbailey00/notion-linux), instead of following these instructions.
+>
+> **if you are using Arch or derivatives like Manjaro**, you can install [notion-app-enhanced](https://aur.archlinux.org/packages/notion-app-enhanced/) which is pre-enhanced and doesn't require any additional steps to get working.
 >
 > **if you are updating from v0.7.0 or earlier,** things have changed, more information is available
 > in this [update guide](UPDATING.md). please read that before following these instructions.
@@ -58,8 +59,7 @@ a chrome extension may be coming soon for web client support.
     sudo apt-get install -y nodejs
     npm i -g notion-enhancer
     ```
-  - **arch linux, manjaro:**
-    - install the [aur package](https://aur.archlinux.org/packages/notion-enhancer) with your aur helper (e.g. `yay -S notion-enhancer`).
+
 - ⚠ important - on the notion desktop app version 2.0.13 and newer, a small fix is necessary to make notion enhancer work. follow the [steps here](https://www.notion.so/hack-notion-enhancer-v0-10-2-to-work-with-notion-s-v2-0-13-app-a4ab1267e67b4126b6448641ca4a0041) to fix notion. there's also a [video version](https://www.youtube.com/watch?v=vcwUpwpQ2sY) of the instructions.
 
 ### command-line interface
