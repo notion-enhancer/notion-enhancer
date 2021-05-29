@@ -17,7 +17,6 @@ for support, join the [discord server](https://discord.gg/sFWPXtA).
 - the [official windows/mac releases](https://notion.so/desktop).
 - [notion-linux](https://github.com/davidbailey00/notion-linux) which provides pre-enhanced packages.
 - the arch linux AUR [notion-app-enhanced](https://aur.archlinux.org/packages/notion-app-enhanced/) package, which is pre-enhanced.
-- the linux [notion-app](https://github.com/jaredallard/notion-app) installer.
 
 outdated notion versions (< 2.0.10) probably won't work.
 
