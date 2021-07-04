@@ -12,11 +12,12 @@ want to contribute? check out the [contribution guidelines](CONTRIBUTING.md) and
 
 for support, join the [discord server](https://discord.gg/sFWPXtA).
 
-### supported desktop clients
+## Supported desktop clients
 
-- the [official windows/mac releases](https://notion.so/desktop).
-- [notion-linux](https://github.com/davidbailey00/notion-linux) which provides pre-enhanced packages.
-- the arch linux AUR [notion-app-enhanced](https://aur.archlinux.org/packages/notion-app-enhanced/) package, which is pre-enhanced.
+- the pre-enhanced builds available at [notion-repackaged](https://github.com/notion-enhancer/notion-repackaged). Built for Windows, Linux and Mac (Intel and M1)
+- manually patching the [official windows/mac releases](https://notion.so/desktop)
+- the pre-enhanced packages for by [notion-linux](https://github.com/davidbailey00/notion-linux)
+- the pre-enhanced arch linux AUR package [notion-app-enhanced](https://aur.archlinux.org/packages/notion-app-enhanced/)
 
 outdated notion versions (< 2.0.10) probably won't work.
 
@@ -24,12 +25,27 @@ mobile clients are not supported and due to system limitations/restrictions cann
 
 a chrome extension may be coming soon for web client support.
 
-## installation
+## Installation
 
-> **if you are using a Debian-based or RPM-based Linux distribution,** you can install pre-enhanced packages from [notion-linux](https://github.com/davidbailey00/notion-linux), instead of following these instructions.
->
+### Installing notion-repackaged builds
+
 > **if you are using Arch or derivatives like Manjaro**, you can install [notion-app-enhanced](https://aur.archlinux.org/packages/notion-app-enhanced/) which is pre-enhanced and doesn't require any additional steps to get working.
 >
+
+The [notion-enhancer/notion-repackaged](https://github.com/notion-enhancer/notion-repackaged) project provides prebuilt builds for Windows, Linux and Mac that are ready to install and use. These builds are pre-enhanced and aim to provide the fastest and easiest way to use notion-enhancer.
+
+The [available release builds](https://github.com/notion-enhancer/notion-repackaged/releases/) include:
+
+- Windows (`.exe` installer, only x64)
+- Linux (`AppImage`, `deb`, `rpm`, `pacman` packages, only x64)
+- Mac (`dmg` package, for Intel and Apple Silicon)
+
+The builds are not signed, so your operating system might complain when installing even though the builds are completely safe to use.
+
+For more information, please head over to [notion-repackaged's documentation](https://github.com/notion-enhancer/notion-repackaged)
+
+### Patching manually
+
 > **if you are updating from v0.7.0 or earlier,** things have changed, more information is available
 > in this [update guide](UPDATING.md). please read that before following these instructions.
 
@@ -62,7 +78,7 @@ a chrome extension may be coming soon for web client support.
 
 - ⚠ important - on the notion desktop app version 2.0.13 and newer, a small fix is necessary to make notion enhancer work. follow the [steps here](https://www.notion.so/hack-notion-enhancer-v0-10-2-to-work-with-notion-s-v2-0-13-app-a4ab1267e67b4126b6448641ca4a0041) to fix notion. there's also a [video version](https://www.youtube.com/watch?v=vcwUpwpQ2sY) of the instructions.
 
-### command-line interface
+#### Command-line interface
 
 the enhancements should be automatically applied on installation
 and automatically removed on uninstallation.
@@ -93,7 +109,7 @@ Options:
   -v, --version  : display version number
 ```
 
-### faq
+## Frequently asked questions
 
 **when will the update be out?**
 i code this in my free time, in-between my other commitments. there are no ETAs.
@@ -113,7 +129,7 @@ definitely not! i contacted their support team to check, and the response was aw
 **how do i uninstall the enhancer?**
 run `npm remove -g notion-enhancer`.
 
-## features
+## Features
 
 most of the enhancer's functionality is split into configurable enhancement modules,
 but some basic improvements necessary for things to work are built in by values:
