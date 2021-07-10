@@ -23,6 +23,18 @@ module.exports = {
       value: true,
     },
     {
+        key: 'canMouseWheel',
+        label: 'use mouse wheel to scale',
+        type: 'toggle',
+        value: true,
+    },
+    {
+        key: 'canHotkey',
+        label: 'use keyboard hotkey to scale',
+        type: 'toggle',
+        value: true,
+    },
+    {
       key: 'offset',
       label: 'set scale plus and minus offset',
       type: 'input',
@@ -43,6 +55,7 @@ module.exports = {
             const attempt_interval = setInterval(enhance, 500);
             function enhance() {
                 if (!document.querySelector('.notion-frame')) return;
+                if (!document.querySelector('.notion-topbar-actions')) return;
                 clearInterval(attempt_interval);
 
                 electron.webFrame.setZoomFactor(store().zoom / 100) 
@@ -51,9 +64,7 @@ module.exports = {
                 let minZoom = 0.5
                 let maxZoom = 2
 
-                const $container = document.createElement('div');
-                const $helpButton = document.querySelector('.notion-help-button');
-
+                const $topBarActionShareMenu = document.querySelector('.notion-topbar-share-menu');
                 const $scaleSet = createElement('<div class="notion-scale-contaienr"></div>');
                 const $scalePlusButton = createElement('<div class="notion-scale-button">＋</div>');
                 const $scaleView = createElement('<div class="notion-scale-view">100%</div>');
@@ -73,26 +84,47 @@ module.exports = {
                     $scaleSet.append($scaleView)
                     $scaleSet.append($scaleMinusButton)
                     
-                    $container.className = 'bottom-right-buttons';
-                    $helpButton.after($container);
-                    $container.append($scaleSet);
-                    $container.append($helpButton);
+                    $topBarActionShareMenu.before($scaleSet);
 
                     changeScaleViewUIValue()
                 }
+                if(store().canMouseWheel){
+                    document.defaultView.addEventListener('wheel', (event)=>{
+                        if (event.ctrlKey && event.deltaY < 0){
+                            zoomPlus()
+                            if(store().showUI) changeScaleViewUIValue()
+                        }
+    
+                        if (event.ctrlKey && event.deltaY > 0){
+                            zoomMinus()
+                            if(store().showUI) changeScaleViewUIValue()
+                        }
+                    });
+                }
 
-                document.defaultView.addEventListener('keydown', (event) => {
-                    if (event.key == '+' && event.ctrlKey){
-                        zoomPlus()
-                        if(store().showUI) changeScaleViewUIValue()
-                    }
-                        
-                    if (event.key == '-' && event.ctrlKey){
-                        zoomMinus()
-                        if(store().showUI) changeScaleViewUIValue()
-                    }
-                })
-        
+                if(store().canHotkey){
+                    document.defaultView.addEventListener('keydown', (event) => {
+                        if (event.key == '+' && event.ctrlKey){
+                            zoomPlus()
+                            if(store().showUI) changeScaleViewUIValue()
+                        }
+                            
+                        if (event.key == '-' && event.ctrlKey){
+                            zoomMinus()
+                            if(store().showUI) changeScaleViewUIValue()
+                        }
+                    })
+                }
+                
+                const observer = new MutationObserver((list, observer) => {
+                    electron.webFrame.setZoomFactor(zoom)
+                    if(store().showUI) changeScaleViewUIValue()
+                });
+
+                observer.observe(document.querySelector('.notion-frame'), {
+                    childList: true
+                });
+
                 function zoomPlus() {
                     if(zoom + offset > maxZoom) return
                     zoom += offset
