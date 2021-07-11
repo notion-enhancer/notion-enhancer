@@ -17,35 +17,57 @@ module.exports = {
   author: 'SP12893678',
   options: [
     {
-      key: 'showUI',
+      key: 'show_ui',
       label: 'show scale ui',
       type: 'toggle',
       value: true,
     },
     {
-        key: 'canMouseWheel',
-        label: 'use mouse wheel to scale',
-        type: 'toggle',
-        value: true,
+        key: 'offset',
+        label: 'set scale plus and minus offset',
+        type: 'input',
+        value: 10,
     },
     {
-        key: 'canHotkey',
+          key: 'zoom',
+          label: 'set scale default value',
+          type: 'input',
+          value: 100,
+    },
+    {
+        key: 'can_hotkey',
         label: 'use keyboard hotkey to scale',
         type: 'toggle',
         value: true,
     },
     {
-      key: 'offset',
-      label: 'set scale plus and minus offset',
-      type: 'input',
-      value: 10,
+        key: 'keyboard_select_modifier',
+        label:
+          'keyboard hotkey select modifier',
+        type: 'select',
+        value: [
+            'Control',
+            'Alt',
+        ],
     },
     {
-        key: 'zoom',
-        label: 'set scale default value',
-        type: 'input',
-        value: 100,
-    }
+        key: 'can_mouse_wheel',
+        label: 'use mouse wheel to scale',
+        type: 'toggle',
+        value: true,
+    },
+    {
+        key: 'mouse_wheel_select_modifier',
+        label:
+          'mouse wheel select modifier',
+        type: 'select',
+        value: [
+            'Control',
+            'Alt',
+            'Command',
+            'Shift',
+        ],
+    },
   ],
   hacks: {
     'renderer/preload.js'(store, __exports) {
@@ -70,15 +92,9 @@ module.exports = {
                 const $scaleView = createElement('<div class="notion-scale-view">100%</div>');
                 const $scaleMinusButton = createElement('<div class="notion-scale-button">－</div>');
 
-                if(store().showUI){
-                    $scalePlusButton.addEventListener('click',()=>{
-                        zoomPlus()
-                        if(store().showUI) changeScaleViewUIValue()
-                    })
-                    $scaleMinusButton.addEventListener('click',()=>{
-                        zoomMinus()
-                        if(store().showUI) changeScaleViewUIValue()
-                    })
+                if(store().show_ui){
+                    $scalePlusButton.addEventListener('click',()=> zoomPlus())
+                    $scaleMinusButton.addEventListener('click',()=> zoomMinus())
     
                     $scaleSet.append($scalePlusButton)
                     $scaleSet.append($scaleView)
@@ -88,37 +104,30 @@ module.exports = {
 
                     changeScaleViewUIValue()
                 }
-                if(store().canMouseWheel){
+
+                if(store().can_mouse_wheel){
                     document.defaultView.addEventListener('wheel', (event)=>{
-                        if (event.ctrlKey && event.deltaY < 0){
-                            zoomPlus()
-                            if(store().showUI) changeScaleViewUIValue()
-                        }
-    
-                        if (event.ctrlKey && event.deltaY > 0){
-                            zoomMinus()
-                            if(store().showUI) changeScaleViewUIValue()
-                        }
+                        let key = getSelectModifierInKeyBoradKey(store().mouse_wheel_select_modifier)
+                        if (event[key] && event.deltaY < 0) zoomPlus()
+                        if (event[key] && event.deltaY > 0) zoomMinus()
                     });
                 }
 
-                if(store().canHotkey){
-                    document.defaultView.addEventListener('keydown', (event) => {
-                        if (event.key == '+' && event.ctrlKey){
-                            zoomPlus()
-                            if(store().showUI) changeScaleViewUIValue()
-                        }
-                            
-                        if (event.key == '-' && event.ctrlKey){
-                            zoomMinus()
-                            if(store().showUI) changeScaleViewUIValue()
-                        }
+                if(store().can_hotkey){
+                    document.defaultView.addEventListener('keyup', (event) => {
+                        let key = getSelectModifierInKeyBoradKey(store().keyboard_select_modifier)
+                        if (event[key] && event.key == '+') zoomPlus()
+                        if (event[key] && event.key == '-') zoomMinus()
                     })
                 }
+
+                document.defaultView.addEventListener('resize',(event) =>{
+                    zoom = electron.webFrame.getZoomFactor()
+                    if(store().show_ui) changeScaleViewUIValue()
+                });
                 
                 const observer = new MutationObserver((list, observer) => {
                     electron.webFrame.setZoomFactor(zoom)
-                    if(store().showUI) changeScaleViewUIValue()
                 });
 
                 observer.observe(document.querySelector('.notion-frame'), {
@@ -126,12 +135,14 @@ module.exports = {
                 });
 
                 function zoomPlus() {
+                    zoom = electron.webFrame.getZoomFactor()
                     if(zoom + offset > maxZoom) return
                     zoom += offset
                     electron.webFrame.setZoomFactor(zoom)
                 }
         
                 function zoomMinus() {
+                    zoom = electron.webFrame.getZoomFactor()
                     if(zoom + offset < minZoom) return
                     zoom -= offset
                     electron.webFrame.setZoomFactor(zoom)    
@@ -139,6 +150,27 @@ module.exports = {
 
                 function changeScaleViewUIValue() {
                     $scaleView.innerHTML = Math.round(zoom * 100) + "%"
+                }
+
+                function getSelectModifierInKeyBoradKey(select_modifier) {
+                    let key = 'ctrlKey'
+                    switch (select_modifier) {
+                        case 'Control':
+                            key = 'ctrlKey'
+                            break;
+                        case 'Alt':
+                            key = 'altKey'
+                            break;
+                        case 'Command':
+                            key = 'metaKey'
+                            break;
+                        case 'Shift':
+                            key = 'shiftKey'
+                            break;
+                        default:
+                            break;
+                    }
+                    return key
                 }
             }
         })
