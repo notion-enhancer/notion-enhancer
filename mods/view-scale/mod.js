@@ -87,21 +87,28 @@ module.exports = {
                 let maxZoom = 2
 
                 const $topBarActionShareMenu = document.querySelector('.notion-topbar-share-menu');
-                const $scaleSet = createElement('<div class="notion-scale-contaienr"></div>');
-                const $scalePlusButton = createElement('<div class="notion-scale-button">＋</div>');
+                const $scaleSet = createElement('<div class="notion-scale-container"></div>');
+                const $scaleSilder = createElement('<input class="notion-scale-slider" type="range" min="50" max="200" value="100"></input>');
                 const $scaleView = createElement('<div class="notion-scale-view">100%</div>');
+                const $scalePlusButton = createElement('<div class="notion-scale-button">＋</div>');
                 const $scaleMinusButton = createElement('<div class="notion-scale-button">－</div>');
 
+
                 if(store().show_ui){
+                    $scaleSilder.addEventListener('input',()=>{
+                        zoom = $scaleSilder.value/100
+                        changeScaleViewUIValue()
+                    })
+                    $scaleSilder.addEventListener('change',()=> electron.webFrame.setZoomFactor(zoom))
                     $scalePlusButton.addEventListener('click',()=> zoomPlus())
                     $scaleMinusButton.addEventListener('click',()=> zoomMinus())
     
-                    $scaleSet.append($scalePlusButton)
+                    $scaleSet.append($scaleSilder)
                     $scaleSet.append($scaleView)
+                    $scaleSet.append($scalePlusButton)
                     $scaleSet.append($scaleMinusButton)
                     
                     $topBarActionShareMenu.before($scaleSet);
-
                     changeScaleViewUIValue()
                 }
 
