@@ -66,6 +66,7 @@
   --theme_dark--ui-border: rgba(255, 255, 255, 0.07);
   --theme_dark--interactive_hover: rgb(71, 76, 80);
   --theme_dark--interactive_hover-border: transparent;
+  --theme_dark--interactive_hover-border-radius: 0px 0px 0px 0px;
   --theme_dark--button_close: #e81123;
   --theme_dark--button_close-fill: white;
 
@@ -275,6 +276,7 @@
   --theme_light--ui-border: rgba(55, 53, 47, 0.09);
   --theme_light--interactive_hover: rgb(239, 239, 239);
   --theme_light--interactive_hover-border: transparent;
+  --theme_dark--interactive_hover-border-radius: 0px 0px 0px 0px;
   --theme_light--button_close: #e81123;
   --theme_light--button_close-fill: white;
 
@@ -475,6 +477,7 @@
   --theme--interactive_hover-border: var(
     --theme_dark--interactive_hover-border
   );
+  --theme--interactive_hover-border-radius: var(--theme_dark--interactive_hover-border-radius);
   --theme--button_close: var(--theme_dark--button_close);
   --theme--button_close-fill: var(--theme_dark--button_close-fill);
   --theme--selected: var(--theme_dark--selected);
@@ -665,6 +668,7 @@
   --theme--interactive_hover-border: var(
     --theme_light--interactive_hover-border
   );
+  --theme--interactive_hover-border-radius: var(--theme_light--interactive_hover-border-radius);
   --theme--button_close: var(--theme_light--button_close);
   --theme--button_close-fill: var(--theme_light--button_close-fill);
   --theme--selected: var(--theme_light--selected);
