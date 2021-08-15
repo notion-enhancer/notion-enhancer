@@ -386,6 +386,7 @@
 .notion-body:not(.dark) [style*='background: rgba(206, 205, 202, 0.5)'] {
   background: var(--theme--interactive_hover) !important;
   box-shadow: 0 0 0 0.5px var(--theme--interactive_hover-border) !important;
+  border-radius: var(--theme--interactive_hover-border-radius) !important;
 }
 
 /* normalise inline-table size */
