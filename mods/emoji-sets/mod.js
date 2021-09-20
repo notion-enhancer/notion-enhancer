@@ -1,6 +1,7 @@
 /*
  * emoji sets
  * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) minor fixes by Arecsu from martyr⁠— (https://martyr.shop/)
  * under the MIT license
  */
 
@@ -46,13 +47,19 @@ module.exports = {
           if (!queue.length) requestAnimationFrame(handle);
           queue.push(...list);
         });
-        observer.observe(document.body, {
-          childList: true,
-          subtree: true,
-          characterData: true,
-        });
+        
+        const observe = ()=> {
+          observer.observe(document.body, {
+            childList: true,
+            subtree: true,
+            characterData: true,
+          });
+        };
+        observe(); // initiate observer
+        
         function handle() {
           queue = [];
+          observer.disconnect(); // stop observer from getting stuck into an infinite loop from here
           const isMac = process.platform === 'darwin',
             native =
               (store().style === 'microsoft' && process.platform === 'win32') ||
@@ -138,6 +145,7 @@ module.exports = {
             }
             tweaked = true;
           }
+          observe(); // re-initiating the observer now that we don't risk an infinite loop
         }
       });
     },
