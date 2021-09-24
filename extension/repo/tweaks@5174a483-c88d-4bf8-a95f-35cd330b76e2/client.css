@@ -21,9 +21,9 @@
   font-weight: 700 !important;
 }
 
-.tweak--spaced_lines {
-  --theme--text_block-line_height: 1.65;
-  --theme--text_block-margin_top: 0.75em;
+.tweak--spaced_lines .notion-page-content .notion-selectable.notion-text-block {
+  line-height: 1.65 !important;
+  margin-top: 0.75em !important;
 }
 
 .tweak--condensed_bullets .notion-selectable.notion-bulleted_list-block {

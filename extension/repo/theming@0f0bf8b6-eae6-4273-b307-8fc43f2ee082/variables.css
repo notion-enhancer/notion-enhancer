@@ -1,1136 +1,204 @@
 /*
  * notion-enhancer core: theming
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
- * (c) 2020 TarasokUA
- * (c) 2020 Arecsu
- * (c) 2020 u/zenith_illinois
  * (c) 2020 admiraldus
  * (c) 2020 CloudHill
  * (https://notion-enhancer.github.io/) under the MIT license
+ *
+ * (rgb|hsl|#)[^;]+;
  */
 
 :root {
-  /** dark **/
+  --theme--page-padding: calc(96px + env(safe-area-inset-left));
+  --theme--page-width: 900px;
+  --theme--page-width_full: 100%;
+  --theme--page_banner-height: 30vh;
+  --theme--page_preview-padding: 8rem;
+  --theme--page_preview-width: 977px;
+  --theme--page_preview_banner-height: 20vh;
 
-  --theme_dark--page-width: 900px;
-  --theme_dark--page_full-width: 100%;
-  --theme_dark--page-padding: calc(96px + env(safe-area-inset-left));
-  --theme_dark--page_banner-height: 30vh;
-  --theme_dark--preview-width: 977px;
-  --theme_dark--preview-padding: 8rem;
-  --theme_dark--preview_banner-height: 20vh;
+  --theme--bg: rgb(47, 52, 55);
+  --theme--bg_sidebar: rgb(55, 60, 63);
+  --theme--bg_popup: rgb(63, 68, 71);
+  --theme--bg_table: rgb(55, 60, 63);
 
-  --theme_dark--dragarea: #272d2f;
-  --theme_dark--page: rgb(47, 52, 55);
-  --theme_dark--sidebar: rgb(55, 60, 63);
-  --theme_dark--sidebar_popout: rgb(55, 60, 63);
-  --theme_dark--preview: rgb(47, 52, 55);
-  --theme_dark--preview_shadow: rgba(0, 0, 0, 0.4);
-  --theme_dark--quickfind_shadow: rgba(15, 15, 15, 0.6);
-  --theme_dark--popout: rgb(63, 68, 71);
-  --theme_dark--popout_link_underline: rgba(255, 255, 255, 0.3);
-  --theme_dark--popout_shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px,
-    rgba(15, 15, 15, 0.2) 0px 3px 6px, rgba(15, 15, 15, 0.4) 0px 9px 24px;
-  --theme_dark--shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px inset,
-    rgba(15, 15, 15, 0.1) 0px 1px 2px;
-  --theme_dark--introduction_overlay: rgba(15, 15, 15, 0.2);
+  --theme--scrollbar_track: rgba(202, 204, 206, 0.04);
+  --theme--scrollbar_thumb: #474c50;
+  --theme--scrollbar_thumb-hover: rgba(202, 204, 206, 0.3);
 
-  --theme_dark--selected: rgba(46, 170, 220, 0.2);
-  --theme_dark--accent: rgb(46, 170, 220);
-  --theme_dark--accent-text: #fff;
-  --theme_dark--accent_semitransparent: rgba(46, 170, 220, 0.15);
-  --theme_dark--accent_button-hover: rgb(6, 156, 205);
-  --theme_dark--accent_button-active: rgb(0, 141, 190);
-  --theme_dark--accent_date-hover: rgba(45, 156, 219, 0.2);
-  --theme_dark--notion_ui_link-hover: #eb5757;
-  --theme_dark--notion_plan_choose_checkmark_hue-rotate: 0deg;
+  --theme--font_sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
+    'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --theme--font_serif: Lyon-Text, Georgia, YuMincho, 'Yu Mincho', 'Hiragino Mincho ProN',
+    'Hiragino Mincho Pro', 'Songti TC', 'Songti SC', SimSun, 'Nanum Myeongjo', NanumMyeongjo,
+    Batang, serif;
+  --theme--font_mono: iawriter-mono, Nitti, Menlo, Courier, monospace;
+  --theme--font_code: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+  --theme--font_quote: var(--theme--font_sans);
+  --theme--font_headings: var(--theme--font_sans);
 
-  --theme_dark--db_card: rgb(63, 68, 71);
-  --theme_dark--db_card-hover: rgb(71, 76, 80);
-  --theme_dark--db_card_preview: rgba(255, 255, 255, 0.05);
-  --theme_dark--db_weekend: rgb(55, 60, 63);
-  --theme_dark--db_today: rgb(235, 87, 87);
-  --theme_dark--db_today-text: #fff;
-  --theme_dark--timeline_divider_thin: rgba(255, 255, 255, 0.07);
-  --theme_dark--timeline_arrow: rgb(47, 52, 55);
-  --theme_dark--timeline_arrow_box: rgba(202, 204, 206, 0.6);
-  --theme_dark--timeline_arrow_box-hover: rgb(202, 204, 206);
-
-  --theme_dark--checkbox: transparent;
-  --theme_dark--checkbox-text: #fff;
-  --theme_dark--checkbox-hover: rgb(71, 76, 80);
-  --theme_dark--checkbox-hover-text: #fff;
-  --theme_dark--checkbox-active: var(--theme_dark--accent);
-  --theme_dark--checkbox-active-text: #fff;
-
-  --theme_dark--toggle_on: var(--theme_dark--accent);
+  --theme_dark--daypicker_outside-text: #8b9898;
+  --theme_dark--page_mention_hover: rgba(148, 148, 148, 0.15);
+  --theme_dark--toggle_on: rgb(26, 170, 220);
   --theme_dark--toggle_off: rgba(202, 204, 206, 0.3);
-  --theme_dark--toggle_dot: #fff;
-
-  --theme_dark--input: rgba(15, 15, 15, 0.3);
-  --theme_dark--input-border: rgba(15, 15, 15, 0.2);
-  /* for filter value inputs, other locs. not yet identified */
-  --theme_dark--input_hover-backlight: rgb(71, 76, 80);
-  --theme_dark--input_icon: rgb(202, 204, 206); /* # */
-  --theme_dark--filter: rgb(80, 85, 88);
-  --theme_dark--sub_filter: rgba(255, 255, 255, 0.02);
-  --theme_dark--tag_select: rgb(55, 60, 63);
-  /* three-dot menus for images & bookmarks */
-  --theme_dark--button_semitransparent: rgba(0, 0, 0, 0.6);
-  --theme_dark--button-hover: rgb(71, 76, 80);
-  --theme_dark--button-active: rgb(63, 68, 71);
-  /* change cover | reposition, cell expansions: <-> open, 123, phone/email/url */
-  --theme_dark--expand: rgb(47, 52, 55);
-  --theme_dark--expand_icon: #fff;
-  --theme_dark--expand-text: #fff;
-  --theme_dark--expand-hover: rgb(98, 102, 104);
-  --theme_dark--expand-active: rgb(120, 123, 123);
-  --theme_dark--reminder_future: #2eaadc; /* # */
-  --theme_dark--reminder_past: #eb5757; /* # */
-  --theme_dark--divider: rgba(255, 255, 255, 0.07);
-
-  --theme_dark--embed_block: rgb(63, 68, 71);
-  --theme_dark--equation_block: rgb(55, 60, 63);
-  --theme_dark--equation_editor: rgba(15, 15, 15, 0.3);
-  --theme_dark--equation_inline: rgba(255, 255, 255, 0.2);
-  --theme_dark--equation_inline-text: var(--theme_dark--text);
-  --theme_dark--equation_error-text: rgba(235, 87, 87, 0.8);
-  --theme_dark--equation_error_block: rgba(235, 87, 87, 0.15);
-  --theme_dark--equation_error_inline-text: #eb5757;
-
-  --theme_dark--reposition_cover: rgba(0, 0, 0, 0.4);
-  --theme_dark--reposition_cover-text: #fff;
-  --theme_dark--resizer: rgba(15, 15, 15, 0.6);
-  --theme_dark--resizer-border: rgba(255, 255, 255, 0.9);
+  --theme_dark--toggle_feature: #fff;
   --theme_dark--tooltip: rgb(202, 204, 206);
   --theme_dark--tooltip-text: rgb(15, 15, 15);
   --theme_dark--tooltip-text_grey: rgba(47, 52, 55, 0.6);
 
-  --theme_dark--help: rgb(80, 85, 88);
-  --theme_dark--help-hover: rgb(98, 102, 104);
-
-  --theme_dark--settings_danger_button-text: rgb(235, 87, 87);
-  --theme_dark--settings_danger_button-border: rgba(235, 87, 87, 0.5);
-  --theme_dark--settings_danger_button-hover: rgba(235, 87, 87, 0.1);
-
-  --theme_dark--scrollbar_track: rgba(202, 204, 206, 0.04);
-  --theme_dark--scrollbar_thumb: #474c50;
-  --theme_dark--scrollbar_thumb-hover: rgba(202, 204, 206, 0.3);
-
-  --theme_dark--font_sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
-    'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol';
-  --theme_dark--font_serif: Lyon-Text, Georgia, YuMincho, 'Yu Mincho', 'Hiragino Mincho ProN',
-    'Hiragino Mincho Pro', 'Songti TC', 'Songti SC', SimSun, 'Nanum Myeongjo', NanumMyeongjo,
-    Batang, serif;
-  --theme_dark--font_mono: iawriter-mono, Nitti, Menlo, Courier, monospace;
-  --theme_dark--font_code: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier,
-    monospace;
-  --theme_dark--font_quote: var(--theme_dark--font_sans);
-  --theme_dark--font_headings: var(--theme_dark--font_sans);
-
-  --theme_dark--font_title-size: 40px;
-  --theme_dark--font_heading1-size: 1.875em;
-  --theme_dark--font_heading2-size: 1.5em;
-  --theme_dark--font_heading3-size: 1.25em;
-  --theme_dark--font_body-size: 16px;
-  --theme_dark--font_quote-size: 1.2em;
-  --theme_dark--font_code-size: 85%;
-  --theme_dark--font_ui-size: 14px;
-  /* sidebar titles, block copy & caption buttons */
-  --theme_dark--font_ui_small-size: 11.5px;
-  --theme_dark--font_popout_title-size: 11px;
-  --theme_dark--font_description-size: 12px;
-  --theme_dark--font_callout_icon-size: 16.8px;
-  --theme_dark--font_help_icon-size: 20px;
-
-  --theme_dark--text_block-line_height: 1.5;
-  --theme_dark--text_block-margin_top: 1px;
-
-  --theme_dark--icon: rgba(202, 204, 206, 0.6);
-  --theme_dark--icon_topbar: rgb(202, 204, 206);
-  --theme_dark--text: rgba(255, 255, 255, 0.9);
-  --theme_dark--text_property: rgba(255, 255, 255, 0.6);
-  --theme_dark--text_placeholder: rgba(255, 255, 255, 0.4);
-  --theme_dark--text_pseudo: rgba(202, 204, 206, 0.4);
-  --theme_dark--text_sidebar: rgba(255, 255, 255, 0.6);
-
-  --theme_dark--code_inline: rgba(135, 131, 120, 0.15);
-  --theme_dark--code_inline-text: #eb5757;
-
-  --theme_dark--code: rgb(63, 68, 71);
-  --theme_dark--code_plain: var(--theme_dark--text);
-  --theme_dark--code_property: hsl(350, 40%, 70%);
-  --theme_dark--code_tag: var(--theme_dark--code_property);
-  --theme_dark--code_boolean: var(--theme_dark--code_property);
-  --theme_dark--code_number: var(--theme_dark--code_property);
-  --theme_dark--code_constant: var(--theme_dark--code_property);
-  --theme_dark--code_symbol: var(--theme_dark--code_property);
-  --theme_dark--code_deleted: red;
-  --theme_dark--code_selector: hsl(75, 70%, 60%);
-  --theme_dark--code_attr-name: var(--theme_dark--code_selector);
-  --theme_dark--code_string: var(--theme_dark--code_selector);
-  --theme_dark--code_char: var(--theme_dark--code_selector);
-  --theme_dark--code_builtin: var(--theme_dark--code_selector);
-  --theme_dark--code_inserted: var(--theme_dark--code_selector);
-  --theme_dark--code_operator: hsl(40, 90%, 60%);
-  --theme_dark--code_entity: var(--theme_dark--code_operator);
-  --theme_dark--code_url: var(--theme_dark--code_operator);
-  --theme_dark--code_variable: var(--theme_dark--code_operator);
-  --theme_dark--code_comment: hsl(30, 20%, 50%);
-  --theme_dark--code_cdata: var(--theme_dark--code_comment);
-  --theme_dark--code_prolog: var(--theme_dark--code_comment);
-  --theme_dark--code_doctype: var(--theme_dark--code_comment);
-  --theme_dark--code_atrule: hsl(350, 40%, 70%);
-  --theme_dark--code_attr-value: var(--theme_dark--code_atrule);
-  --theme_dark--code_keyword: var(--theme_dark--code_atrule);
-  --theme_dark--code_regex: #e90;
-  --theme_dark--code_important: var(--theme_dark--code_regex);
-  --theme_dark--code_function: var(--theme_dark--code_plain);
-  --theme_dark--code_class-name: var(--theme_dark--code_function);
-  --theme_dark--code_parameter: var(--theme_dark--code_plain);
-  --theme_dark--code_decorator: var(--theme_dark--code_plain);
-  --theme_dark--code_id: var(--theme_dark--code_plain);
-  --theme_dark--code_class: var(--theme_dark--code_plain);
-  --theme_dark--code_pseudo-element: var(--theme_dark--code_plain);
-  --theme_dark--code_pseudo-class: var(--theme_dark--code_plain);
-  --theme_dark--code_attribute: var(--theme_dark--code_plain);
-  --theme_dark--code_value: var(--theme_dark--code_plain);
-  --theme_dark--code_unit: var(--theme_dark--code_plain);
-  --theme_dark--code_punctuation: var(--theme_dark--code_plain);
-  --theme_dark--code_annotation: var(--theme_dark--code_plain);
-
-  --theme_dark--text_grey: rgba(151, 154, 155, 0.95);
-  --theme_dark--text_brown: rgb(147, 114, 100);
-  --theme_dark--text_orange: rgb(255, 163, 68);
-  --theme_dark--text_yellow: rgb(255, 220, 73);
-  --theme_dark--text_green: rgb(77, 171, 154);
-  --theme_dark--text_blue: rgb(82, 156, 202);
-  --theme_dark--text_purple: rgb(154, 109, 215);
-  --theme_dark--text_pink: rgb(226, 85, 161);
-  --theme_dark--text_red: rgb(255, 115, 105);
-
-  --theme_dark--highlight-text: var(--theme_dark--text);
-  --theme_dark--highlight_grey: rgb(69, 75, 78);
-  --theme_dark--highlight_grey-text: var(--theme_dark--highlight-text);
-  --theme_dark--highlight_brown: rgb(67, 64, 64);
-  --theme_dark--highlight_brown-text: var(--theme_dark--highlight-text);
-  --theme_dark--highlight_orange: rgb(89, 74, 58);
-  --theme_dark--highlight_orange-text: var(--theme_dark--highlight-text);
-  --theme_dark--highlight_yellow: rgb(89, 86, 59);
-  --theme_dark--highlight_yellow-text: var(--theme_dark--highlight-text);
-  --theme_dark--highlight_green: rgb(53, 76, 75);
-  --theme_dark--highlight_green-text: var(--theme_dark--highlight-text);
-  --theme_dark--highlight_blue: rgb(54, 73, 84);
-  --theme_dark--highlight_blue-text: var(--theme_dark--highlight-text);
-  --theme_dark--highlight_purple: rgb(68, 63, 87);
-  --theme_dark--highlight_purple-text: var(--theme_dark--highlight-text);
-  --theme_dark--highlight_pink: rgb(83, 59, 76);
-  --theme_dark--highlight_pink-text: var(--theme_dark--highlight-text);
-  --theme_dark--highlight_red: rgb(89, 65, 65);
-  --theme_dark--highlight_red-text: var(--theme_dark--highlight-text);
-
-  --theme_dark--block-text: var(--theme_dark--text);
-  --theme_dark--block_grey: rgb(69, 75, 78);
-  --theme_dark--block_grey-text: var(--theme_dark--block-text);
-  --theme_dark--block_brown: rgb(67, 64, 64);
-  --theme_dark--block_brown-text: var(--theme_dark--block-text);
-  --theme_dark--block_orange: rgb(89, 74, 58);
-  --theme_dark--block_orange-text: var(--theme_dark--block-text);
-  --theme_dark--block_yellow: rgb(89, 86, 59);
-  --theme_dark--block_yellow-text: var(--theme_dark--block-text);
-  --theme_dark--block_green: rgb(53, 76, 75);
-  --theme_dark--block_green-text: var(--theme_dark--block-text);
-  --theme_dark--block_blue: rgb(54, 73, 84);
-  --theme_dark--block_blue-text: var(--theme_dark--block-text);
-  --theme_dark--block_purple: rgb(68, 63, 87);
-  --theme_dark--block_purple-text: var(--theme_dark--block-text);
-  --theme_dark--block_pink: rgb(83, 59, 76);
-  --theme_dark--block_pink-text: var(--theme_dark--block-text);
-  --theme_dark--block_red: rgb(89, 65, 65);
-  --theme_dark--block_red-text: var(--theme_dark--block-text);
-
-  --theme_dark--tag-text: var(--theme_dark--text);
-  --theme_dark--tag_default: rgb(80, 85, 88);
-  --theme_dark--tag_default-text: var(--theme_dark--tag-text);
-  --theme_dark--tag_plan: var(--theme_dark--tag_default);
-  --theme_dark--tag_plan-text: rgba(255, 255, 255, 0.6);
-  --theme_dark--tag_new: rgb(235, 87, 87);
-  --theme_dark--tag_new-text: #fff;
-  --theme_dark--tag_grey: rgba(151, 154, 155, 0.5);
-  --theme_dark--tag_grey-text: var(--theme_dark--tag-text);
-  --theme_dark--tag_brown: rgba(147, 114, 100, 0.5);
-  --theme_dark--tag_brown-text: var(--theme_dark--tag-text);
-  --theme_dark--tag_orange: rgba(255, 163, 68, 0.5);
-  --theme_dark--tag_orange-text: var(--theme_dark--tag-text);
-  --theme_dark--tag_yellow: rgba(255, 220, 73, 0.5);
-  --theme_dark--tag_yellow-text: var(--theme_dark--tag-text);
-  --theme_dark--tag_green: rgba(77, 171, 154, 0.5);
-  --theme_dark--tag_green-text: var(--theme_dark--tag-text);
-  --theme_dark--tag_blue: rgba(82, 156, 202, 0.5);
-  --theme_dark--tag_blue-text: var(--theme_dark--tag-text);
-  --theme_dark--tag_purple: rgba(154, 109, 215, 0.5);
-  --theme_dark--tag_purple-text: var(--theme_dark--tag-text);
-  --theme_dark--tag_pink: rgba(226, 85, 161, 0.5);
-  --theme_dark--tag_pink-text: var(--theme_dark--tag-text);
-  --theme_dark--tag_red: rgba(255, 115, 105, 0.5);
-  --theme_dark--tag_red-text: var(--theme_dark--tag-text);
-
-  --theme_dark--callout-text: var(--theme_dark--text);
-  --theme_dark--callout_grey: rgba(69, 75, 78, 0.3);
-  --theme_dark--callout_grey-text: var(--theme_dark--callout-text);
-  --theme_dark--callout_brown: rgba(67, 64, 64, 0.3);
-  --theme_dark--callout_brown-text: var(--theme_dark--callout-text);
-  --theme_dark--callout_orange: rgba(89, 74, 58, 0.3);
-  --theme_dark--callout_orange-text: var(--theme_dark--callout-text);
-  --theme_dark--callout_yellow: rgba(89, 86, 59, 0.3);
-  --theme_dark--callout_yellow-text: var(--theme_dark--callout-text);
-  --theme_dark--callout_green: rgba(53, 76, 75, 0.3);
-  --theme_dark--callout_green-text: var(--theme_dark--callout-text);
-  --theme_dark--callout_blue: rgba(54, 73, 84, 0.3);
-  --theme_dark--callout_blue-text: var(--theme_dark--callout-text);
-  --theme_dark--callout_purple: rgba(68, 63, 87, 0.3);
-  --theme_dark--callout_purple-text: var(--theme_dark--callout-text);
-  --theme_dark--callout_pink: rgba(83, 59, 76, 0.3);
-  --theme_dark--callout_pink-text: var(--theme_dark--callout-text);
-  --theme_dark--callout_red: rgba(89, 65, 65, 0.3);
-  --theme_dark--callout_red-text: var(--theme_dark--callout-text);
-
-  /** light **/
-
-  --theme_light--page-width: 900px;
-  --theme_light--page_full-width: 100%;
-  --theme_light--page-padding: calc(96px + env(safe-area-inset-left));
-  --theme_light--page_banner-height: 30vh;
-  --theme_light--preview-width: 977px;
-  --theme_light--preview-padding: 8rem;
-  --theme_light--preview_banner-height: 20vh;
-
-  --theme_light--dragarea: rgba(55, 53, 47, 0.04);
-  --theme_light--page: #fff;
-  --theme_light--sidebar: rgb(247, 246, 243);
-  --theme_light--sidebar_popout: #fff;
-  --theme_light--preview: #fff;
-  --theme_light--preview_shadow: rgba(0, 0, 0, 0.4);
-  --theme_light--quickfind_shadow: rgba(15, 15, 15, 0.6);
-  --theme_light--popout: #fff;
-  --theme_light--popout_link_underline: rgba(55, 53, 47, 0.25);
-  --theme_light--popout_shadow: rgba(15, 15, 15, 0.05) 0px 0px 0px 1px,
-    rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px;
-  --theme_light--shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px inset,
-    rgba(15, 15, 15, 0.1) 0px 1px 2px;
-  --theme_light--introduction_overlay: rgba(247, 246, 243, 0.8);
-
-  --theme_light--selected: rgba(46, 170, 220, 0.2);
-  --theme_light--accent: rgb(46, 170, 220);
-  --theme_light--accent-text: #fff;
-  --theme_light--accent_semitransparent: rgba(46, 170, 220, 0.15);
-  --theme_light--accent_button-hover: rgb(6, 156, 205);
-  --theme_light--accent_button-active: rgb(0, 141, 190);
-  --theme_light--accent_date-hover: rgba(45, 156, 219, 0.2);
-  --theme_light--notion_ui_link-hover: #eb5757;
-  --theme_light--notion_plan_choose_checkmark_hue-rotate: 0deg;
-
-  --theme_light--db_card: #fff;
-  --theme_light--db_card-hover: rgba(55, 53, 47, 0.03);
-  --theme_light--db_card_preview: rgba(55, 53, 47, 0.024);
-  --theme_light--db_weekend: rgb(247, 246, 243);
-  --theme_light--db_today: rgb(235, 87, 87);
-  --theme_light--db_today-text: #fff;
-  --theme_light--timeline_divider_thin: rgba(55, 53, 47, 0.09);
-  --theme_light--timeline_arrow: #fff;
-  --theme_light--timeline_arrow_box: rgba(55, 53, 47, 0.4);
-  --theme_light--timeline_arrow_box-hover: rgba(55, 53, 47, 0.8);
-
-  --theme_light--checkbox: transparent;
-  --theme_light--checkbox-text: #000;
-  --theme_light--checkbox-hover: rgba(55, 53, 47, 0.08);
-  --theme_light--checkbox-hover-text: #000;
-  --theme_light--checkbox-active: var(--theme_light--accent);
-  --theme_light--checkbox-active-text: #fff;
-
-  --theme_light--toggle_on: var(--theme_light--accent);
-  --theme_light--toggle_off: rgba(135, 131, 120, 0.3);
-  --theme_light--toggle_dot: #fff;
-
-  --theme_light--input: rgba(242, 241, 238, 0.6);
-  --theme_light--input-border: rgba(15, 15, 15, 0.1);
-  /* for filter value inputs, other locs. not yet identified */
-  --theme_light--input_hover-backlight: rgba(55, 53, 47, 0.08);
-  --theme_light--input_icon: rgba(55, 53, 47, 0.8);
-  --theme_light--filter: #fff;
-  --theme_light--sub_filter: rgba(0, 0, 0, 0.02);
-  --theme_light--tag_select: rgba(242, 241, 238, 0.6);
-  /* three-dot menus for images & bookmarks */
-  --theme_light--button_semitransparent: rgba(0, 0, 0, 0.6);
-  --theme_light--button-hover: rgba(55, 53, 47, 0.08);
-  --theme_light--button-active: rgba(55, 53, 47, 0.16);
-  /* change cover | reposition, cell expansions: <-> open, 123, phone/email/url */
-  --theme_light--expand: #fff;
-  --theme_light--expand_icon: rgba(55, 53, 47, 0.6);
-  --theme_light--expand-text: rgba(55, 53, 47, 0.6);
-  --theme_light--expand-hover: rgb(239, 239, 238);
-  --theme_light--expand-active: rgb(223, 223, 222);
-  --theme_light--reminder_future: #2eaadc;
-  --theme_light--reminder_past: #eb5757;
-  --theme_light--divider: rgba(55, 53, 47, 0.09);
-
-  --theme_light--embed_block: rgb(242, 241, 238);
-  --theme_light--equation_block: rgb(247, 246, 243);
-  --theme_light--equation_editor: rgba(242, 241, 238, 0.6);
-  --theme_light--equation_inline: rgba(46, 170, 220, 0.2);
-  --theme_light--equation_inline-text: var(--theme_light--text);
-  --theme_light--equation_error-text: rgba(235, 87, 87, 0.8);
-  --theme_light--equation_error_block: rgba(235, 87, 87, 0.15);
-  --theme_light--equation_error_inline-text: #eb5757;
-
-  --theme_light--reposition_cover: rgba(0, 0, 0, 0.4);
-  --theme_light--reposition_cover-text: #fff;
-  --theme_light--resizer: rgba(15, 15, 15, 0.6);
-  --theme_light--resizer-border: rgba(255, 255, 255, 0.9);
-  --theme_light--tooltip: rgb(15, 15, 15);
-  --theme_light--tooltip-text: rgba(255, 255, 255, 0.9);
-  --theme_light--tooltip-text_grey: rgba(206, 205, 202, 0.6);
-
-  --theme_light--help: #fff;
-  --theme_light--help-hover: rgb(239, 239, 238);
-
-  --theme_light--settings_danger_button-text: rgb(235, 87, 87);
-  --theme_light--settings_danger_button-border: rgba(235, 87, 87, 0.5);
-  --theme_light--settings_danger_button-hover: rgba(235, 87, 87, 0.1);
-
-  --theme_light--scrollbar_track: #edece9;
-  --theme_light--scrollbar_thumb: #d3d1cb;
-  --theme_light--scrollbar_thumb-hover: #aeaca6;
-
-  --theme_light--font_sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
-    'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol';
-  --theme_light--font_serif: Lyon-Text, Georgia, YuMincho, 'Yu Mincho', 'Hiragino Mincho ProN',
-    'Hiragino Mincho Pro', 'Songti TC', 'Songti SC', SimSun, 'Nanum Myeongjo', NanumMyeongjo,
-    Batang, serif;
-  --theme_light--font_mono: iawriter-mono, Nitti, Menlo, Courier, monospace;
-  --theme_light--font_code: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier,
-    monospace;
-  --theme_light--font_quote: var(--theme_light--font_sans);
-  --theme_light--font_headings: var(--theme_light--font_sans);
-
-  --theme_light--font_title-size: 40px;
-  --theme_light--font_heading1-size: 1.875em;
-  --theme_light--font_heading2-size: 1.5em;
-  --theme_light--font_heading3-size: 1.25em;
-  --theme_light--font_body-size: 16px;
-  --theme_light--font_quote-size: 1.2em;
-  --theme_light--font_code-size: 85%;
-  --theme_light--font_ui-size: 14px;
-  /* sidebar titles, block copy & caption buttons */
-  --theme_light--font_ui_small-size: 11.5px;
-  --theme_light--font_popout_title-size: 11px;
-  --theme_light--font_description-size: 12px;
-  --theme_light--font_callout_icon-size: 16.8px;
-  --theme_light--font_help_icon-size: 20px;
-
-  --theme_light--text_block-line_height: 1.5;
-  --theme_light--text_block-margin_top: 1px;
-
-  --theme_light--icon: rgba(55, 53, 47, 0.4);
-  --theme_light--icon_topbar: rgba(55, 53, 47, 0.8);
-  --theme_light--text: rgb(55, 53, 47);
-  --theme_light--text_property: rgba(55, 53, 47, 0.6);
-  --theme_light--text_placeholder: rgba(55, 53, 47, 0.4);
-  --theme_light--text_pseudo: rgba(55, 53, 47, 0.3);
-  --theme_light--text_sidebar: rgba(25, 23, 17, 0.6);
-
-  --theme_light--code_inline: rgba(135, 131, 120, 0.15);
-  --theme_light--code_inline-text: #eb5757;
-
-  --theme_light--code: rgb(247, 246, 243);
-  --theme_light--code_plain: var(--theme_light--text);
-  --theme_light--code_property: #905;
-  --theme_light--code_tag: var(--theme_light--code_property);
-  --theme_light--code_boolean: var(--theme_light--code_property);
-  --theme_light--code_number: var(--theme_light--code_property);
-  --theme_light--code_constant: var(--theme_light--code_property);
-  --theme_light--code_symbol: var(--theme_light--code_property);
-  --theme_light--code_deleted: var(--theme_light--code_property);
-  --theme_light--code_selector: #690;
-  --theme_light--code_attr-name: var(--theme_light--code_selector);
-  --theme_light--code_string: var(--theme_light--code_selector);
-  --theme_light--code_char: var(--theme_light--code_selector);
-  --theme_light--code_builtin: var(--theme_light--code_selector);
-  --theme_light--code_inserted: var(--theme_light--code_selector);
-  --theme_light--code_operator: #9a6e3a;
-  --theme_light--code_entity: var(--theme_light--code_operator);
-  --theme_light--code_url: var(--theme_light--code_operator);
-  --theme_light--code_variable: var(--theme_light--code_regex);
-  --theme_light--code_comment: slategray;
-  --theme_light--code_cdata: var(--theme_light--code_comment);
-  --theme_light--code_prolog: var(--theme_light--code_comment);
-  --theme_light--code_doctype: var(--theme_light--code_comment);
-  --theme_light--code_atrule: #07a;
-  --theme_light--code_attr-value: var(--theme_light--code_atrule);
-  --theme_light--code_keyword: var(--theme_light--code_atrule);
-  --theme_light--code_regex: #e90;
-  --theme_light--code_important: var(--theme_light--code_regex);
-  --theme_light--code_function: #dd4a68;
-  --theme_light--code_class-name: var(--theme_light--code_function);
-  --theme_light--code_parameter: var(--theme_light--code_plain);
-  --theme_light--code_decorator: var(--theme_light--code_plain);
-  --theme_light--code_id: var(--theme_light--code_plain);
-  --theme_light--code_class: var(--theme_light--code_plain);
-  --theme_light--code_pseudo-element: var(--theme_light--code_plain);
-  --theme_light--code_pseudo-class: var(--theme_light--code_plain);
-  --theme_light--code_attribute: var(--theme_light--code_plain);
-  --theme_light--code_value: var(--theme_light--code_plain);
-  --theme_light--code_unit: var(--theme_light--code_plain);
-  --theme_light--code_punctuation: #999;
-  --theme_light--code_annotation: var(--theme_light--code_plain);
-
-  --theme_light--text_grey: rgb(155, 154, 151);
-  --theme_light--text_brown: rgb(100, 71, 58);
-  --theme_light--text_orange: rgb(217, 115, 13);
-  --theme_light--text_yellow: rgb(223, 171, 1);
-  --theme_light--text_green: rgb(15, 123, 108);
-  --theme_light--text_blue: rgb(11, 110, 153);
-  --theme_light--text_purple: rgb(105, 64, 165);
-  --theme_light--text_pink: rgb(173, 26, 114);
-  --theme_light--text_red: rgb(224, 62, 62);
-
-  --theme_light--highlight-text: var(--theme_light--text);
-  --theme_light--highlight_grey: rgb(235, 236, 237);
-  --theme_light--highlight_grey-text: var(--theme_light--highlight-text);
-  --theme_light--highlight_brown: rgb(233, 229, 227);
-  --theme_light--highlight_brown-text: var(--theme_light--highlight-text);
-  --theme_light--highlight_orange: rgb(250, 235, 221);
-  --theme_light--highlight_orange-text: var(--theme_light--highlight-text);
-  --theme_light--highlight_yellow: rgb(251, 243, 219);
-  --theme_light--highlight_yellow-text: var(--theme_light--highlight-text);
-  --theme_light--highlight_green: rgb(221, 237, 234);
-  --theme_light--highlight_green-text: var(--theme_light--highlight-text);
-  --theme_light--highlight_blue: rgb(221, 235, 241);
-  --theme_light--highlight_blue-text: var(--theme_light--highlight-text);
-  --theme_light--highlight_purple: rgb(234, 228, 242);
-  --theme_light--highlight_purple-text: var(--theme_light--highlight-text);
-  --theme_light--highlight_pink: rgb(244, 223, 235);
-  --theme_light--highlight_pink-text: var(--theme_light--highlight-text);
-  --theme_light--highlight_red: rgb(251, 228, 228);
-  --theme_light--highlight_red-text: var(--theme_light--highlight-text);
-
-  --theme_light--block-text: var(--theme_light--text);
-  --theme_light--block_grey: rgb(235, 236, 237);
-  --theme_light--block_grey-text: var(--theme_light--block-text);
-  --theme_light--block_brown: rgb(233, 229, 227);
-  --theme_light--block_brown-text: var(--theme_light--block-text);
-  --theme_light--block_orange: rgb(250, 235, 221);
-  --theme_light--block_orange-text: var(--theme_light--block-text);
-  --theme_light--block_yellow: rgb(251, 243, 219);
-  --theme_light--block_yellow-text: var(--theme_light--block-text);
-  --theme_light--block_green: rgb(221, 237, 234);
-  --theme_light--block_green-text: var(--theme_light--block-text);
-  --theme_light--block_blue: rgb(221, 235, 241);
-  --theme_light--block_blue-text: var(--theme_light--block-text);
-  --theme_light--block_purple: rgb(234, 228, 242);
-  --theme_light--block_purple-text: var(--theme_light--block-text);
-  --theme_light--block_pink: rgb(244, 223, 235);
-  --theme_light--block_pink-text: var(--theme_light--block-text);
-  --theme_light--block_red: rgb(251, 228, 228);
-  --theme_light--block_red-text: var(--theme_light--block-text);
-
-  --theme_light--tag-text: var(--theme_light--text);
-  --theme_light--tag_default: rgba(206, 205, 202, 0.5);
-  --theme_light--tag_default-text: var(--theme_light--tag-text);
-  --theme_light--tag_plan: var(--theme_light--tag_default);
-  --theme_light--tag_plan-text: rgba(55, 53, 47, 0.6);
-  --theme_light--tag_new: rgb(235, 87, 87);
-  --theme_light--tag_new-text: #fff;
-  --theme_light--tag_grey: rgba(140, 46, 0, 0.2);
-  --theme_light--tag_grey-text: var(--theme_light--tag-text);
-  --theme_light--tag_brown: rgba(140, 46, 0, 0.2);
-  --theme_light--tag_brown-text: var(--theme_light--tag-text);
-  --theme_light--tag_orange: rgba(245, 93, 0, 0.2);
-  --theme_light--tag_orange-text: var(--theme_light--tag-text);
-  --theme_light--tag_yellow: rgba(233, 168, 0, 0.2);
-  --theme_light--tag_yellow-text: var(--theme_light--tag-text);
-  --theme_light--tag_green: rgba(0, 135, 107, 0.2);
-  --theme_light--tag_green-text: var(--theme_light--tag-text);
-  --theme_light--tag_blue: rgba(0, 120, 223, 0.2);
-  --theme_light--tag_blue-text: var(--theme_light--tag-text);
-  --theme_light--tag_purple: rgba(103, 36, 222, 0.2);
-  --theme_light--tag_purple-text: var(--theme_light--tag-text);
-  --theme_light--tag_pink: rgba(221, 0, 129, 0.2);
-  --theme_light--tag_pink-text: var(--theme_light--tag-text);
-  --theme_light--tag_red: rgba(255, 0, 26, 0.2);
-  --theme_light--tag_red-text: var(--theme_light--tag-text);
-
-  --theme_light--callout-text: var(--theme_light--text);
-  --theme_light--callout_grey: rgba(235, 236, 237, 0.3);
-  --theme_light--callout_grey-text: var(--theme_light--callout-text);
-  --theme_light--callout_brown: rgba(233, 229, 227, 0.3);
-  --theme_light--callout_brown-text: var(--theme_light--callout-text);
-  --theme_light--callout_orange: rgba(250, 235, 221, 0.3);
-  --theme_light--callout_orange-text: var(--theme_light--callout-text);
-  --theme_light--callout_yellow: rgba(251, 243, 219, 0.3);
-  --theme_light--callout_yellow-text: var(--theme_light--callout-text);
-  --theme_light--callout_green: rgba(221, 237, 234, 0.3);
-  --theme_light--callout_green-text: var(--theme_light--callout-text);
-  --theme_light--callout_blue: rgba(221, 235, 241, 0.3);
-  --theme_light--callout_blue-text: var(--theme_light--callout-text);
-  --theme_light--callout_purple: rgba(234, 228, 242, 0.3);
-  --theme_light--callout_purple-text: var(--theme_light--callout-text);
-  --theme_light--callout_pink: rgba(244, 223, 235, 0.3);
-  --theme_light--callout_pink-text: var(--theme_light--callout-text);
-  --theme_light--callout_red: rgba(251, 228, 228, 0.3);
-  --theme_light--callout_red-text: var(--theme_light--callout-text);
-}
-
-.notion-dark-theme {
-  --theme--page-width: var(--theme_dark--page-width);
-  --theme--page_full-width: var(--theme_dark--page_full-width);
-  --theme--page-padding: var(--theme_dark--page-padding);
-  --theme--page_banner-height: var(--theme_dark--page_banner-height);
-  --theme--preview-width: var(--theme_dark--preview-width);
-  --theme--preview-padding: var(--theme_dark--preview-padding);
-  --theme--preview_banner-height: var(--theme_dark--preview_banner-height);
-
-  --theme--dragarea: var(--theme_dark--dragarea);
-  --theme--page: var(--theme_dark--page);
-  --theme--sidebar: var(--theme_dark--sidebar);
-  --theme--sidebar_popout: var(--theme_dark--sidebar_popout);
-  --theme--preview: var(--theme_dark--preview);
-  --theme--preview_shadow: var(--theme_dark--preview_shadow);
-  --theme--quickfind_shadow: var(--theme_dark--quickfind_shadow);
-  --theme--popout: var(--theme_dark--popout);
-  --theme--popout_link_underline: var(--theme_dark--popout_link_underline);
-  --theme--popout_shadow: var(--theme_dark--popout_shadow);
-  --theme--shadow: var(--theme_dark--shadow);
-  --theme--introduction_overlay: var(--theme_dark--introduction_overlay);
-
-  --theme--selected: var(--theme_dark--selected);
-  --theme--accent: var(--theme_dark--accent);
-  --theme--accent-text: var(--theme_dark--accent-text);
-  --theme--accent_semitransparent: var(--theme_dark--accent_semitransparent);
-  --theme--accent_button-hover: var(--theme_dark--accent_button-hover);
-  --theme--accent_button-active: var(--theme_dark--accent_button-active);
-  --theme--accent_date-hover: var(--theme_dark--accent_date-hover);
-  --theme--notion_ui_link-hover: var(--theme_dark--notion_ui_link-hover);
-  --theme--notion_plan_choose_checkmark_hue-rotate: var(
-    --theme_dark--notion_plan_choose_checkmark_hue-rotate
-  );
-
-  --theme--db_card: var(--theme_dark--db_card);
-  --theme--db_card-hover: var(--theme_dark--db_card-hover);
-  --theme--db_card_preview: var(--theme_dark--db_card_preview);
-  --theme--db_weekend: var(--theme_dark--db_weekend);
-  --theme--db_today: var(--theme_dark--db_today);
-  --theme--db_today-text: var(--theme_dark--db_today-text);
-  --theme--timeline_divider_thin: var(--theme_dark--timeline_divider_thin);
-  --theme--timeline_arrow: var(--theme_dark--timeline_arrow);
-  --theme--timeline_arrow_box: var(--theme_dark--timeline_arrow_box);
-  --theme--timeline_arrow_box-hover: var(--theme_dark--timeline_arrow_box-hover);
-
-  --theme--checkbox: var(--theme_dark--checkbox);
-  --theme--checkbox-text: var(--theme_dark--checkbox-text);
-  --theme--checkbox-hover: var(--theme_dark--checkbox-hover);
-  --theme--checkbox-hover-text: var(--theme_dark--checkbox-hover-text);
-  --theme--checkbox-active: var(--theme_dark--checkbox-active);
-  --theme--checkbox-active-text: var(--theme_dark--checkbox-active-text);
-
-  --theme--toggle_on: var(--theme_dark--toggle_on);
-  --theme--toggle_off: var(--theme_dark--toggle_off);
-  --theme--toggle_dot: var(--theme_dark--toggle_dot);
-
-  --theme--input: var(--theme_dark--input);
-  --theme--input-border: var(--theme_dark--input-border);
-  --theme--input_hover-backlight: var(--theme_dark--input_hover-backlight);
-  --theme--input_icon: var(--theme_dark--input_icon);
-  --theme--filter: var(--theme_dark--filter);
-  --theme--sub_filter: var(--theme_dark--sub_filter);
-  --theme--tag_select: var(--theme_dark--tag_select);
-  --theme--button_semitransparent: var(--theme_dark--button_semitransparent);
-  --theme--button-hover: var(--theme_dark--button-hover);
-  --theme--button-active: var(--theme_dark--button-active);
-  --theme--expand: var(--theme_dark--expand);
-  --theme--expand_icon: var(--theme_dark--expand_icon);
-  --theme--expand-text: var(--theme_dark--expand-text);
-  --theme--expand-hover: var(--theme_dark--expand-hover);
-  --theme--expand-active: var(--theme_dark--expand-active);
-  --theme--reminder_future: var(--theme_dark--reminder_future);
-  --theme--reminder_past: var(--theme_dark--reminder_past);
-  --theme--divider: var(--theme_dark--divider);
-
-  --theme--embed_block: var(--theme_dark--embed_block);
-  --theme--equation_block: var(--theme_dark--equation_block);
-  --theme--equation_editor: var(--theme_dark--equation_editor);
-  --theme--equation_inline: var(--theme_dark--equation_inline);
-  --theme--equation_inline-text: var(--theme_dark--equation_inline-text);
-  --theme--equation_error-text: var(--theme_dark--equation_error-text);
-  --theme--equation_error_block: var(--theme_dark--equation_error_block);
-  --theme--equation_error_inline-text: var(--theme_dark--equation_error_inline-text);
-
-  --theme--reposition_cover: var(--theme_dark--reposition_cover);
-  --theme--reposition_cover-text: var(--theme_dark--reposition_cover-text);
-  --theme--resizer: var(--theme_dark--resizer);
-  --theme--resizer-border: var(--theme_dark--resizer-border);
-  --theme--tooltip: var(--theme_dark--tooltip);
-  --theme--tooltip-text: var(--theme_dark--tooltip-text);
-  --theme--tooltip-text_grey: var(--theme_dark--tooltip-text_grey);
-
-  --theme--help: var(--theme_dark--help);
-  --theme--help-hover: var(--theme_dark--help-hover);
-
-  --theme--settings_danger_button-text: var(--theme_dark--settings_danger_button-text);
-  --theme--settings_danger_button-border: var(--theme_dark--settings_danger_button-border);
-  --theme--settings_danger_button-hover: var(--theme_dark--settings_danger_button-hover);
-
-  --theme--scrollbar_track: var(--theme_dark--scrollbar_track);
-  --theme--scrollbar_thumb: var(--theme_dark--scrollbar_thumb);
-  --theme--scrollbar_thumb-hover: var(--theme_dark--scrollbar_thumb-hover);
-
-  --theme--font_sans: var(--theme_dark--font_sans);
-  --theme--font_serif: var(--theme_dark--font_serif);
-  --theme--font_mono: var(--theme_dark--font_mono);
-  --theme--font_code: var(--theme_dark--font_code);
-  --theme--font_quote: var(--theme_dark--font_quote);
-  --theme--font_headings: var(--theme_dark--font_headings);
-
-  --theme--font_title-size: var(--theme_dark--font_title-size);
-  --theme--font_heading1-size: var(--theme_dark--font_heading1-size);
-  --theme--font_heading2-size: var(--theme_dark--font_heading2-size);
-  --theme--font_heading3-size: var(--theme_dark--font_heading3-size);
-  --theme--font_body-size: var(--theme_dark--font_body-size);
-  --theme--font_quote-size: var(--theme_dark--font_quote-size);
-  --theme--font_code-size: var(--theme_dark--font_code-size);
-  --theme--font_ui-size: var(--theme_dark--font_ui-size);
-  --theme--font_ui_small-size: var(--theme_dark--font_ui_small-size);
-  --theme--font_popout_title-size: var(--theme_dark--font_popout_title-size);
-  --theme--font_description-size: var(--theme_dark--font_description-size);
-  --theme--font_callout_icon-size: var(--theme_dark--font_callout_icon-size);
-  --theme--font_help_icon-size: var(--theme_dark--font_help_icon-size);
-
-  --theme--text_block-line_height: var(--theme_dark--text_block-line_height);
-  --theme--text_block-margin_top: var(--theme_dark--text_block-margin_top);
-
-  --theme--icon: var(--theme_dark--icon);
-  --theme--icon_topbar: var(--theme_dark--icon_topbar);
-  --theme--text: var(--theme_dark--text);
-  --theme--text_property: var(--theme_dark--text_property);
-  --theme--text_placeholder: var(--theme_dark--text_placeholder);
-  --theme--text_pseudo: var(--theme_dark--text_pseudo);
-  --theme--text_sidebar: var(--theme_dark--text_sidebar);
-
-  --theme--code_inline: var(--theme_dark--code_inline);
-  --theme--code_inline-text: var(--theme_dark--code_inline-text);
-
-  --theme--code: var(--theme_dark--code);
-  --theme--code_plain: var(--theme_dark--code_plain);
-  --theme--code_property: var(--theme_dark--code_property);
-  --theme--code_tag: var(--theme_dark--code_tag);
-  --theme--code_boolean: var(--theme_dark--code_boolean);
-  --theme--code_number: var(--theme_dark--code_number);
-  --theme--code_constant: var(--theme_dark--code_constant);
-  --theme--code_symbol: var(--theme_dark--code_symbol);
-  --theme--code_deleted: var(--theme_dark--code_deleted);
-  --theme--code_selector: var(--theme_dark--code_selector);
-  --theme--code_attr-name: var(--theme_dark--code_attr-name);
-  --theme--code_string: var(--theme_dark--code_string);
-  --theme--code_char: var(--theme_dark--code_char);
-  --theme--code_builtin: var(--theme_dark--code_builtin);
-  --theme--code_inserted: var(--theme_dark--code_inserted);
-  --theme--code_operator: var(--theme_dark--code_operator);
-  --theme--code_entity: var(--theme_dark--code_entity);
-  --theme--code_url: var(--theme_dark--code_url);
-  --theme--code_variable: var(--theme_dark--code_variable);
-  --theme--code_comment: var(--theme_dark--code_comment);
-  --theme--code_cdata: var(--theme_dark--code_cdata);
-  --theme--code_prolog: var(--theme_dark--code_prolog);
-  --theme--code_doctype: var(--theme_dark--code_doctype);
-  --theme--code_atrule: var(--theme_dark--code_atrule);
-  --theme--code_attr-value: var(--theme_dark--code_attr-value);
-  --theme--code_keyword: var(--theme_dark--code_keyword);
-  --theme--code_regex: var(--theme_dark--code_regex);
-  --theme--code_important: var(--theme_dark--code_important);
-  --theme--code_function: var(--theme_dark--code_function);
-  --theme--code_class-name: var(--theme_dark--code_class-name);
-  --theme--code_parameter: var(--theme_dark--code_parameter);
-  --theme--code_decorator: var(--theme_dark--code_decorator);
-  --theme--code_id: var(--theme_dark--code_id);
-  --theme--code_class: var(--theme_dark--code_class);
-  --theme--code_pseudo-element: var(--theme_dark--code_pseudo-element);
-  --theme--code_pseudo-class: var(--theme_dark--code_pseudo-class);
-  --theme--code_attribute: var(--theme_dark--code_attribute);
-  --theme--code_value: var(--theme_dark--code_value);
-  --theme--code_unit: var(--theme_dark--code_unit);
-  --theme--code_punctuation: var(--theme_dark--code_punctuation);
-  --theme--code_annotation: var(--theme_dark--code_annotation);
-
-  --theme--text_grey: var(--theme_dark--text_grey);
-  --theme--text_brown: var(--theme_dark--text_brown);
-  --theme--text_orange: var(--theme_dark--text_orange);
-  --theme--text_yellow: var(--theme_dark--text_yellow);
-  --theme--text_green: var(--theme_dark--text_green);
-  --theme--text_blue: var(--theme_dark--text_blue);
-  --theme--text_purple: var(--theme_dark--text_purple);
-  --theme--text_pink: var(--theme_dark--text_pink);
-  --theme--text_red: var(--theme_dark--text_red);
-
-  --theme--highlight-text: var(--theme_dark--highlight-text);
-  --theme--highlight_grey: var(--theme_dark--highlight_grey);
-  --theme--highlight_grey-text: var(--theme_dark--highlight_grey-text);
-  --theme--highlight_brown: var(--theme_dark--highlight_brown);
-  --theme--highlight_brown-text: var(--theme_dark--highlight_brown-text);
-  --theme--highlight_orange: var(--theme_dark--highlight_orange);
-  --theme--highlight_orange-text: var(--theme_dark--highlight_orange-text);
-  --theme--highlight_yellow: var(--theme_dark--highlight_yellow);
-  --theme--highlight_yellow-text: var(--theme_dark--highlight_yellow-text);
-  --theme--highlight_green: var(--theme_dark--highlight_green);
-  --theme--highlight_green-text: var(--theme_dark--highlight_green-text);
-  --theme--highlight_blue: var(--theme_dark--highlight_blue);
-  --theme--highlight_blue-text: var(--theme_dark--highlight_blue-text);
-  --theme--highlight_purple: var(--theme_dark--highlight_purple);
-  --theme--highlight_purple-text: var(--theme_dark--highlight_purple-text);
-  --theme--highlight_pink: var(--theme_dark--highlight_pink);
-  --theme--highlight_pink-text: var(--theme_dark--highlight_pink-text);
-  --theme--highlight_red: var(--theme_dark--highlight_red);
-  --theme--highlight_red-text: var(--theme_dark--highlight_red-text);
-
-  --theme--block-text: var(--theme_dark--block-text);
-  --theme--block_grey: var(--theme_dark--block_grey);
-  --theme--block_grey-text: var(--theme_dark--block_grey-text);
-  --theme--block_brown: var(--theme_dark--block_brown);
-  --theme--block_brown-text: var(--theme_dark--block_brown-text);
-  --theme--block_orange: var(--theme_dark--block_orange);
-  --theme--block_orange-text: var(--theme_dark--block_orange-text);
-  --theme--block_yellow: var(--theme_dark--block_yellow);
-  --theme--block_yellow-text: var(--theme_dark--block_yellow-text);
-  --theme--block_green: var(--theme_dark--block_green);
-  --theme--block_green-text: var(--theme_dark--block_green-text);
-  --theme--block_blue: var(--theme_dark--block_blue);
-  --theme--block_blue-text: var(--theme_dark--block_blue-text);
-  --theme--block_purple: var(--theme_dark--block_purple);
-  --theme--block_purple-text: var(--theme_dark--block_purple-text);
-  --theme--block_pink: var(--theme_dark--block_pink);
-  --theme--block_pink-text: var(--theme_dark--block_pink-text);
-  --theme--block_red: var(--theme_dark--block_red);
-  --theme--block_red-text: var(--theme_dark--block_red-text);
-
-  --theme--tag-text: var(--theme_dark--tag-text);
-  --theme--tag_default: var(--theme_dark--tag_default);
-  --theme--tag_default-text: var(--theme_dark--tag_default-text);
-  --theme--tag_plan: var(--theme_dark--tag_plan);
-  --theme--tag_plan-text: var(--theme_dark--tag_plan-text);
-  --theme--tag_new: var(--theme_dark--tag_new);
-  --theme--tag_new-text: var(--theme_dark--tag_new-text);
-  --theme--tag_grey: var(--theme_dark--tag_grey);
-  --theme--tag_grey-text: var(--theme_dark--tag_grey-text);
-  --theme--tag_brown: var(--theme_dark--tag_brown);
-  --theme--tag_brown-text: var(--theme_dark--tag_brown-text);
-  --theme--tag_orange: var(--theme_dark--tag_orange);
-  --theme--tag_orange-text: var(--theme_dark--tag_orange-text);
-  --theme--tag_yellow: var(--theme_dark--tag_yellow);
-  --theme--tag_yellow-text: var(--theme_dark--tag_yellow-text);
-  --theme--tag_green: var(--theme_dark--tag_green);
-  --theme--tag_green-text: var(--theme_dark--tag_green-text);
-  --theme--tag_blue: var(--theme_dark--tag_blue);
-  --theme--tag_blue-text: var(--theme_dark--tag_blue-text);
-  --theme--tag_purple: var(--theme_dark--tag_purple);
-  --theme--tag_purple-text: var(--theme_dark--tag_purple-text);
-  --theme--tag_pink: var(--theme_dark--tag_pink);
-  --theme--tag_pink-text: var(--theme_dark--tag_pink-text);
-  --theme--tag_red: var(--theme_dark--tag_red);
-  --theme--tag_red-text: var(--theme_dark--tag_red-text);
-
-  --theme--callout-text: var(--theme_dark--callout-text);
-  --theme--callout_grey: var(--theme_dark--callout_grey);
-  --theme--callout_grey-text: var(--theme_dark--callout_grey-text);
-  --theme--callout_brown: var(--theme_dark--callout_brown);
-  --theme--callout_brown-text: var(--theme_dark--callout_brown-text);
-  --theme--callout_orange: var(--theme_dark--callout_orange);
-  --theme--callout_orange-text: var(--theme_dark--callout_orange-text);
-  --theme--callout_yellow: var(--theme_dark--callout_yellow);
-  --theme--callout_yellow-text: var(--theme_dark--callout_yellow-text);
-  --theme--callout_green: var(--theme_dark--callout_green);
-  --theme--callout_green-text: var(--theme_dark--callout_green-text);
-  --theme--callout_blue: var(--theme_dark--callout_blue);
-  --theme--callout_blue-text: var(--theme_dark--callout_blue-text);
-  --theme--callout_purple: var(--theme_dark--callout_purple);
-  --theme--callout_purple-text: var(--theme_dark--callout_purple-text);
-  --theme--callout_pink: var(--theme_dark--callout_pink);
-  --theme--callout_pink-text: var(--theme_dark--callout_pink-text);
-  --theme--callout_red: var(--theme_dark--callout_red);
-  --theme--callout_red-text: var(--theme_dark--callout_red-text);
-}
-
-.notion-light-theme {
-  --theme--page-width: var(--theme_light--page-width);
-  --theme--page_full-width: var(--theme_light--page_full-width);
-  --theme--page-padding: var(--theme_light--page-padding);
-  --theme--page_banner-height: var(--theme_light--page_banner-height);
-  --theme--preview-width: var(--theme_light--preview-width);
-  --theme--preview-padding: var(--theme_light--preview-padding);
-  --theme--preview_banner-height: var(--theme_light--preview_banner-height);
-
-  --theme--dragarea: var(--theme_light--dragarea);
-  --theme--page: var(--theme_light--page);
-  --theme--sidebar: var(--theme_light--sidebar);
-  --theme--sidebar_popout: var(--theme_light--sidebar_popout);
-  --theme--preview: var(--theme_light--preview);
-  --theme--preview_shadow: var(--theme_light--preview_shadow);
-  --theme--quickfind_shadow: var(--theme_light--quickfind_shadow);
-  --theme--popout: var(--theme_light--popout);
-  --theme--popout_link_underline: var(--theme_light--popout_link_underline);
-  --theme--popout_shadow: var(--theme_light--popout_shadow);
-  --theme--shadow: var(--theme_light--shadow);
-  --theme--introduction_overlay: var(--theme_light--introduction_overlay);
-
-  --theme--selected: var(--theme_light--selected);
-  --theme--accent: var(--theme_light--accent);
-  --theme--accent-text: var(--theme_light--accent-text);
-  --theme--accent_semitransparent: var(--theme_light--accent_semitransparent);
-  --theme--accent_button-hover: var(--theme_light--accent_button-hover);
-  --theme--accent_button-active: var(--theme_light--accent_button-active);
-  --theme--accent_date-hover: var(--theme_light--accent_date-hover);
-  --theme--notion_ui_link-hover: var(--theme_light--notion_ui_link-hover);
-  --theme--notion_plan_choose_checkmark_hue-rotate: var(
-    --theme_light--notion_plan_choose_checkmark_hue-rotate
-  );
-
-  --theme--db_card: var(--theme_light--db_card);
-  --theme--db_card-hover: var(--theme_light--db_card-hover);
-  --theme--db_card_preview: var(--theme_light--db_card_preview);
-  --theme--db_weekend: var(--theme_light--db_weekend);
-  --theme--db_today: var(--theme_light--db_today);
-  --theme--db_today-text: var(--theme_light--db_today-text);
-  --theme--timeline_divider_thin: var(--theme_light--timeline_divider_thin);
-  --theme--timeline_arrow: var(--theme_light--timeline_arrow);
-  --theme--timeline_arrow_box: var(--theme_light--timeline_arrow_box);
-  --theme--timeline_arrow_box-hover: var(--theme_light--timeline_arrow_box-hover);
-
-  --theme--checkbox: var(--theme_light--checkbox);
-  --theme--checkbox-text: var(--theme_light--checkbox-text);
-  --theme--checkbox-hover: var(--theme_light--checkbox-hover);
-  --theme--checkbox-hover-text: var(--theme_light--checkbox-hover-text);
-  --theme--checkbox-active: var(--theme_light--checkbox-active);
-  --theme--checkbox-active-text: var(--theme_light--checkbox-active-text);
-
-  --theme--toggle_on: var(--theme_light--toggle_on);
-  --theme--toggle_off: var(--theme_light--toggle_off);
-  --theme--toggle_dot: var(--theme_light--toggle_dot);
-
-  --theme--input: var(--theme_light--input);
-  --theme--input-border: var(--theme_light--input-border);
-  --theme--input_hover-backlight: var(--theme_light--input_hover-backlight);
-  --theme--input_icon: var(--theme_light--input_icon);
-  --theme--filter: var(--theme_light--filter);
-  --theme--sub_filter: var(--theme_light--sub_filter);
-  --theme--tag_select: var(--theme_light--tag_select);
-  --theme--button_semitransparent: var(--theme_light--button_semitransparent);
-  --theme--button-hover: var(--theme_light--button-hover);
-  --theme--button-active: var(--theme_light--button-active);
-  --theme--expand: var(--theme_light--expand);
-  --theme--expand_icon: var(--theme_light--expand_icon);
-  --theme--expand-text: var(--theme_light--expand-text);
-  --theme--expand-hover: var(--theme_light--expand-hover);
-  --theme--expand-active: var(--theme_light--expand-active);
-  --theme--reminder_future: var(--theme_light--reminder_future);
-  --theme--reminder_past: var(--theme_light--reminder_past);
-  --theme--divider: var(--theme_light--divider);
-
-  --theme--embed_block: var(--theme_light--embed_block);
-  --theme--equation_block: var(--theme_light--equation_block);
-  --theme--equation_editor: var(--theme_light--equation_editor);
-  --theme--equation_inline: var(--theme_light--equation_inline);
-  --theme--equation_inline-text: var(--theme_light--equation_inline-text);
-  --theme--equation_error-text: var(--theme_light--equation_error-text);
-  --theme--equation_error_block: var(--theme_light--equation_error_block);
-  --theme--equation_error_inline-text: var(--theme_light--equation_error_inline-text);
-
-  --theme--reposition_cover: var(--theme_light--reposition_cover);
-  --theme--reposition_cover-text: var(--theme_light--reposition_cover-text);
-  --theme--resizer: var(--theme_light--resizer);
-  --theme--resizer-border: var(--theme_light--resizer-border);
-  --theme--tooltip: var(--theme_light--tooltip);
-  --theme--tooltip-text: var(--theme_light--tooltip-text);
-  --theme--tooltip-text_grey: var(--theme_light--tooltip-text_grey);
-
-  --theme--help: var(--theme_light--help);
-  --theme--help-hover: var(--theme_light--help-hover);
-
-  --theme--settings_danger_button-text: var(--theme_light--settings_danger_button-text);
-  --theme--settings_danger_button-border: var(--theme_light--settings_danger_button-border);
-  --theme--settings_danger_button-hover: var(--theme_light--settings_danger_button-hover);
-
-  --theme--scrollbar_track: var(--theme_light--scrollbar_track);
-  --theme--scrollbar_thumb: var(--theme_light--scrollbar_thumb);
-  --theme--scrollbar_thumb-hover: var(--theme_light--scrollbar_thumb-hover);
-
-  --theme--font_sans: var(--theme_light--font_sans);
-  --theme--font_serif: var(--theme_light--font_serif);
-  --theme--font_mono: var(--theme_light--font_mono);
-  --theme--font_code: var(--theme_light--font_code);
-  --theme--font_quote: var(--theme_light--font_quote);
-  --theme--font_headings: var(--theme_light--font_headings);
-
-  --theme--font_title-size: var(--theme_light--font_title-size);
-  --theme--font_heading1-size: var(--theme_light--font_heading1-size);
-  --theme--font_heading2-size: var(--theme_light--font_heading2-size);
-  --theme--font_heading3-size: var(--theme_light--font_heading3-size);
-  --theme--font_body-size: var(--theme_light--font_body-size);
-  --theme--font_quote-size: var(--theme_light--font_quote-size);
-  --theme--font_code-size: var(--theme_light--font_code-size);
-  --theme--font_ui-size: var(--theme_light--font_ui-size);
-  --theme--font_ui_small-size: var(--theme_light--font_ui_small-size);
-  --theme--font_popout_title-size: var(--theme_light--font_popout_title-size);
-  --theme--font_description-size: var(--theme_light--font_description-size);
-  --theme--font_callout_icon-size: var(--theme_light--font_callout_icon-size);
-  --theme--font_help_icon-size: var(--theme_light--font_help_icon-size);
-
-  --theme--text_block-line_height: var(--theme_light--text_block-line_height);
-  --theme--text_block-margin_top: var(--theme_light--text_block-margin_top);
-
-  --theme--icon: var(--theme_light--icon);
-  --theme--icon_topbar: var(--theme_light--icon_topbar);
-  --theme--text: var(--theme_light--text);
-  --theme--text_property: var(--theme_light--text_property);
-  --theme--text_placeholder: var(--theme_light--text_placeholder);
-  --theme--text_pseudo: var(--theme_light--text_pseudo);
-  --theme--text_sidebar: var(--theme_light--text_sidebar);
-
-  --theme--code_inline: var(--theme_light--code_inline);
-  --theme--code_inline-text: var(--theme_light--code_inline-text);
-
-  --theme--code: var(--theme_light--code);
-  --theme--code_plain: var(--theme_light--code_plain);
-  --theme--code_property: var(--theme_light--code_property);
-  --theme--code_tag: var(--theme_light--code_tag);
-  --theme--code_boolean: var(--theme_light--code_boolean);
-  --theme--code_number: var(--theme_light--code_number);
-  --theme--code_constant: var(--theme_light--code_constant);
-  --theme--code_symbol: var(--theme_light--code_symbol);
-  --theme--code_deleted: var(--theme_light--code_deleted);
-  --theme--code_selector: var(--theme_light--code_selector);
-  --theme--code_attr-name: var(--theme_light--code_attr-name);
-  --theme--code_string: var(--theme_light--code_string);
-  --theme--code_char: var(--theme_light--code_char);
-  --theme--code_builtin: var(--theme_light--code_builtin);
-  --theme--code_inserted: var(--theme_light--code_inserted);
-  --theme--code_operator: var(--theme_light--code_operator);
-  --theme--code_entity: var(--theme_light--code_entity);
-  --theme--code_url: var(--theme_light--code_url);
-  --theme--code_variable: var(--theme_light--code_variable);
-  --theme--code_comment: var(--theme_light--code_comment);
-  --theme--code_cdata: var(--theme_light--code_cdata);
-  --theme--code_prolog: var(--theme_light--code_prolog);
-  --theme--code_doctype: var(--theme_light--code_doctype);
-  --theme--code_atrule: var(--theme_light--code_atrule);
-  --theme--code_attr-value: var(--theme_light--code_attr-value);
-  --theme--code_keyword: var(--theme_light--code_keyword);
-  --theme--code_regex: var(--theme_light--code_regex);
-  --theme--code_important: var(--theme_light--code_important);
-  --theme--code_function: var(--theme_light--code_function);
-  --theme--code_class-name: var(--theme_light--code_class-name);
-  --theme--code_parameter: var(--theme_light--code_parameter);
-  --theme--code_decorator: var(--theme_light--code_decorator);
-  --theme--code_id: var(--theme_light--code_id);
-  --theme--code_class: var(--theme_light--code_class);
-  --theme--code_pseudo-element: var(--theme_light--code_pseudo-element);
-  --theme--code_pseudo-class: var(--theme_light--code_pseudo-class);
-  --theme--code_attribute: var(--theme_light--code_attribute);
-  --theme--code_value: var(--theme_light--code_value);
-  --theme--code_unit: var(--theme_light--code_unit);
-  --theme--code_punctuation: var(--theme_light--code_punctuation);
-  --theme--code_annotation: var(--theme_light--code_annotation);
-
-  --theme--text_grey: var(--theme_light--text_grey);
-  --theme--text_brown: var(--theme_light--text_brown);
-  --theme--text_orange: var(--theme_light--text_orange);
-  --theme--text_yellow: var(--theme_light--text_yellow);
-  --theme--text_green: var(--theme_light--text_green);
-  --theme--text_blue: var(--theme_light--text_blue);
-  --theme--text_purple: var(--theme_light--text_purple);
-  --theme--text_pink: var(--theme_light--text_pink);
-  --theme--text_red: var(--theme_light--text_red);
-
-  --theme--highlight-text: var(--theme_light--highlight-text);
-  --theme--highlight_grey: var(--theme_light--highlight_grey);
-  --theme--highlight_grey-text: var(--theme_light--highlight_grey-text);
-  --theme--highlight_brown: var(--theme_light--highlight_brown);
-  --theme--highlight_brown-text: var(--theme_light--highlight_brown-text);
-  --theme--highlight_orange: var(--theme_light--highlight_orange);
-  --theme--highlight_orange-text: var(--theme_light--highlight_orange-text);
-  --theme--highlight_yellow: var(--theme_light--highlight_yellow);
-  --theme--highlight_yellow-text: var(--theme_light--highlight_yellow-text);
-  --theme--highlight_green: var(--theme_light--highlight_green);
-  --theme--highlight_green-text: var(--theme_light--highlight_green-text);
-  --theme--highlight_blue: var(--theme_light--highlight_blue);
-  --theme--highlight_blue-text: var(--theme_light--highlight_blue-text);
-  --theme--highlight_purple: var(--theme_light--highlight_purple);
-  --theme--highlight_purple-text: var(--theme_light--highlight_purple-text);
-  --theme--highlight_pink: var(--theme_light--highlight_pink);
-  --theme--highlight_pink-text: var(--theme_light--highlight_pink-text);
-  --theme--highlight_red: var(--theme_light--highlight_red);
-  --theme--highlight_red-text: var(--theme_light--highlight_red-text);
-
-  --theme--block-text: var(--theme_light--block-text);
-  --theme--block_grey: var(--theme_light--block_grey);
-  --theme--block_grey-text: var(--theme_light--block_grey-text);
-  --theme--block_brown: var(--theme_light--block_brown);
-  --theme--block_brown-text: var(--theme_light--block_brown-text);
-  --theme--block_orange: var(--theme_light--block_orange);
-  --theme--block_orange-text: var(--theme_light--block_orange-text);
-  --theme--block_yellow: var(--theme_light--block_yellow);
-  --theme--block_yellow-text: var(--theme_light--block_yellow-text);
-  --theme--block_green: var(--theme_light--block_green);
-  --theme--block_green-text: var(--theme_light--block_green-text);
-  --theme--block_blue: var(--theme_light--block_blue);
-  --theme--block_blue-text: var(--theme_light--block_blue-text);
-  --theme--block_purple: var(--theme_light--block_purple);
-  --theme--block_purple-text: var(--theme_light--block_purple-text);
-  --theme--block_pink: var(--theme_light--block_pink);
-  --theme--block_pink-text: var(--theme_light--block_pink-text);
-  --theme--block_red: var(--theme_light--block_red);
-  --theme--block_red-text: var(--theme_light--block_red-text);
-
-  --theme--tag-text: var(--theme_light--tag-text);
-  --theme--tag_default: var(--theme_light--tag_default);
-  --theme--tag_default-text: var(--theme_light--tag_default-text);
-  --theme--tag_plan: var(--theme_light--tag_plan);
-  --theme--tag_plan-text: var(--theme_light--tag_plan-text);
-  --theme--tag_new: var(--theme_light--tag_new);
-  --theme--tag_new-text: var(--theme_light--tag_new-text);
-  --theme--tag_grey: var(--theme_light--tag_grey);
-  --theme--tag_grey-text: var(--theme_light--tag_grey-text);
-  --theme--tag_brown: var(--theme_light--tag_brown);
-  --theme--tag_brown-text: var(--theme_light--tag_brown-text);
-  --theme--tag_orange: var(--theme_light--tag_orange);
-  --theme--tag_orange-text: var(--theme_light--tag_orange-text);
-  --theme--tag_yellow: var(--theme_light--tag_yellow);
-  --theme--tag_yellow-text: var(--theme_light--tag_yellow-text);
-  --theme--tag_green: var(--theme_light--tag_green);
-  --theme--tag_green-text: var(--theme_light--tag_green-text);
-  --theme--tag_blue: var(--theme_light--tag_blue);
-  --theme--tag_blue-text: var(--theme_light--tag_blue-text);
-  --theme--tag_purple: var(--theme_light--tag_purple);
-  --theme--tag_purple-text: var(--theme_light--tag_purple-text);
-  --theme--tag_pink: var(--theme_light--tag_pink);
-  --theme--tag_pink-text: var(--theme_light--tag_pink-text);
-  --theme--tag_red: var(--theme_light--tag_red);
-  --theme--tag_red-text: var(--theme_light--tag_red-text);
-
-  --theme--callout-text: var(--theme_light--callout-text);
-  --theme--callout_grey: var(--theme_light--callout_grey);
-  --theme--callout_grey-text: var(--theme_light--callout_grey-text);
-  --theme--callout_brown: var(--theme_light--callout_brown);
-  --theme--callout_brown-text: var(--theme_light--callout_brown-text);
-  --theme--callout_orange: var(--theme_light--callout_orange);
-  --theme--callout_orange-text: var(--theme_light--callout_orange-text);
-  --theme--callout_yellow: var(--theme_light--callout_yellow);
-  --theme--callout_yellow-text: var(--theme_light--callout_yellow-text);
-  --theme--callout_green: var(--theme_light--callout_green);
-  --theme--callout_green-text: var(--theme_light--callout_green-text);
-  --theme--callout_blue: var(--theme_light--callout_blue);
-  --theme--callout_blue-text: var(--theme_light--callout_blue-text);
-  --theme--callout_purple: var(--theme_light--callout_purple);
-  --theme--callout_purple-text: var(--theme_light--callout_purple-text);
-  --theme--callout_pink: var(--theme_light--callout_pink);
-  --theme--callout_pink-text: var(--theme_light--callout_pink-text);
-  --theme--callout_red: var(--theme_light--callout_red);
-  --theme--callout_red-text: var(--theme_light--callout_red-text);
+  --theme--ui_shadow: rgba(15, 15, 15, 0.15);
+  --theme--ui_divider: rgb(255, 255, 255, 0.07);
+  --theme--ui_interactive-hover: rgb(71, 76, 80);
+  --theme--ui_interactive-active: rgb(63, 68, 71);
+
+  --theme--accent_blue: rgb(46, 170, 220);
+  --theme--accent_blue-selection: rgb(46, 170, 220, 0.25);
+  --theme--accent_blue-hover: rgb(6, 156, 205);
+  --theme--accent_blue-active: rgb(0, 141, 190);
+  --theme--accent_blue-text: #fff;
+  --theme--accent_red: #eb5757;
+  --theme--accent_red-hover: rgba(235, 87, 87, 0.1);
+  --theme--accent_red-text: #fff;
+
+  --theme--icon: rgba(202, 204, 206);
+  --theme--icon_ui: rgb(202, 204, 206, 0.6);
+
+  --theme--text: rgba(255, 255, 255, 0.9);
+  --theme--text_ui: rgba(255, 255, 255, 0.6);
+  --theme--text_decoration: rgba(255, 255, 255, 0.4);
+  --theme--text_grey: rgba(151, 154, 155, 0.95);
+  --theme--text_brown: rgb(147, 114, 100);
+  --theme--text_orange: rgb(255, 163, 68);
+  --theme--text_yellow: rgb(255, 220, 73);
+  --theme--text_green: rgb(77, 171, 154);
+  --theme--text_blue: rgb(82, 156, 202);
+  --theme--text_purple: rgb(154, 109, 215);
+  --theme--text_pink: rgb(226, 85, 161);
+  --theme--text_red: rgb(255, 115, 105);
+
+  --theme--highlight-text: var(--theme--text);
+  --theme--highlight_grey: rgb(69, 75, 78);
+  --theme--highlight_grey-text: var(--theme--highlight-text);
+  --theme--highlight_brown: rgb(67, 64, 64);
+  --theme--highlight_brown-text: var(--theme--highlight-text);
+  --theme--highlight_orange: rgb(89, 74, 58);
+  --theme--highlight_orange-text: var(--theme--highlight-text);
+  --theme--highlight_yellow: rgb(89, 86, 59);
+  --theme--highlight_yellow-text: var(--theme--highlight-text);
+  --theme--highlight_green: rgb(53, 76, 75);
+  --theme--highlight_green-text: var(--theme--highlight-text);
+  --theme--highlight_blue: rgb(54, 73, 84);
+  --theme--highlight_blue-text: var(--theme--highlight-text);
+  --theme--highlight_purple: rgb(68, 63, 87);
+  --theme--highlight_purple-text: var(--theme--highlight-text);
+  --theme--highlight_pink: rgb(83, 59, 76);
+  --theme--highlight_pink-text: var(--theme--highlight-text);
+  --theme--highlight_red: rgb(89, 65, 65);
+  --theme--highlight_red-text: var(--theme--highlight-text);
+
+  --theme--block-text: var(--theme--text);
+  --theme--block_grey: rgb(69, 75, 78);
+  --theme--block_grey-text: var(--theme--block-text);
+  --theme--block_brown: rgb(67, 64, 64);
+  --theme--block_brown-text: var(--theme--block-text);
+  --theme--block_orange: rgb(89, 74, 58);
+  --theme--block_orange-text: var(--theme--block-text);
+  --theme--block_yellow: rgb(89, 86, 59);
+  --theme--block_yellow-text: var(--theme--block-text);
+  --theme--block_green: rgb(53, 76, 75);
+  --theme--block_green-text: var(--theme--block-text);
+  --theme--block_blue: rgb(54, 73, 84);
+  --theme--block_blue-text: var(--theme--block-text);
+  --theme--block_purple: rgb(68, 63, 87);
+  --theme--block_purple-text: var(--theme--block-text);
+  --theme--block_pink: rgb(83, 59, 76);
+  --theme--block_pink-text: var(--theme--block-text);
+  --theme--block_red: rgb(89, 65, 65);
+  --theme--block_red-text: var(--theme--block-text);
+
+  --theme--tag-text: var(--theme--text);
+  --theme--tag_default: rgb(80, 85, 88);
+  --theme--tag_default-text: var(--theme--tag-text);
+  --theme--tag_grey: rgba(151, 154, 155, 0.5);
+  --theme--tag_grey-text: var(--theme--tag-text);
+  --theme--tag_brown: rgba(147, 114, 100, 0.5);
+  --theme--tag_brown-text: var(--theme--tag-text);
+  --theme--tag_orange: rgba(255, 163, 68, 0.5);
+  --theme--tag_orange-text: var(--theme--tag-text);
+  --theme--tag_yellow: rgba(255, 220, 73, 0.5);
+  --theme--tag_yellow-text: var(--theme--tag-text);
+  --theme--tag_green: rgba(77, 171, 154, 0.5);
+  --theme--tag_green-text: var(--theme--tag-text);
+  --theme--tag_blue: rgba(82, 156, 202, 0.5);
+  --theme--tag_blue-text: var(--theme--tag-text);
+  --theme--tag_purple: rgba(154, 109, 215, 0.5);
+  --theme--tag_purple-text: var(--theme--tag-text);
+  --theme--tag_pink: rgba(226, 85, 161, 0.5);
+  --theme--tag_pink-text: var(--theme--tag-text);
+  --theme--tag_red: rgba(255, 115, 105, 0.5);
+  --theme--tag_red-text: var(--theme--tag-text);
+
+  --theme--callout-text: var(--theme--text);
+  --theme--callout_grey: rgba(69, 75, 78, 0.3);
+  --theme--callout_grey-text: var(--theme--callout-text);
+  --theme--callout_brown: rgba(67, 64, 64, 0.3);
+  --theme--callout_brown-text: var(--theme--callout-text);
+  --theme--callout_orange: rgba(89, 74, 58, 0.3);
+  --theme--callout_orange-text: var(--theme--callout-text);
+  --theme--callout_yellow: rgba(89, 86, 59, 0.3);
+  --theme--callout_yellow-text: var(--theme--callout-text);
+  --theme--callout_green: rgba(53, 76, 75, 0.3);
+  --theme--callout_green-text: var(--theme--callout-text);
+  --theme--callout_blue: rgba(54, 73, 84, 0.3);
+  --theme--callout_blue-text: var(--theme--callout-text);
+  --theme--callout_purple: rgba(68, 63, 87, 0.3);
+  --theme--callout_purple-text: var(--theme--callout-text);
+  --theme--callout_pink: rgba(83, 59, 76, 0.3);
+  --theme--callout_pink-text: var(--theme--callout-text);
+  --theme--callout_red: rgba(89, 65, 65, 0.3);
+  --theme--callout_red-text: var(--theme--callout-text);
+
+  --theme--code_inline: rgba(135, 131, 120, 0.15);
+  --theme--code_inline-text: #eb5757;
+
+  --theme--code: rgb(63, 68, 71);
+  --theme--code_plain: var(--theme--text);
+  --theme--code_property: hsl(350, 40%, 70%);
+  --theme--code_tag: var(--theme--code_property);
+  --theme--code_boolean: var(--theme--code_property);
+  --theme--code_number: var(--theme--code_property);
+  --theme--code_constant: var(--theme--code_property);
+  --theme--code_symbol: var(--theme--code_property);
+  --theme--code_deleted: #f00;
+  --theme--code_selector: hsl(75, 70%, 60%);
+  --theme--code_attr-name: var(--theme--code_selector);
+  --theme--code_string: var(--theme--code_selector);
+  --theme--code_char: var(--theme--code_selector);
+  --theme--code_builtin: var(--theme--code_selector);
+  --theme--code_inserted: var(--theme--code_selector);
+  --theme--code_operator: hsl(40, 90%, 60%);
+  --theme--code_entity: var(--theme--code_operator);
+  --theme--code_url: var(--theme--code_operator);
+  --theme--code_variable: var(--theme--code_operator);
+  --theme--code_comment: hsl(30, 20%, 50%);
+  --theme--code_cdata: var(--theme--code_comment);
+  --theme--code_prolog: var(--theme--code_comment);
+  --theme--code_doctype: var(--theme--code_comment);
+  --theme--code_atrule: hsl(350, 40%, 70%);
+  --theme--code_attr-value: var(--theme--code_atrule);
+  --theme--code_keyword: var(--theme--code_atrule);
+  --theme--code_regex: #e90;
+  --theme--code_important: var(--theme--code_regex);
+  --theme--code_function: var(--theme--code_plain);
+  --theme--code_class-name: var(--theme--code_function);
+  --theme--code_parameter: var(--theme--code_plain);
+  --theme--code_decorator: var(--theme--code_plain);
+  --theme--code_id: var(--theme--code_plain);
+  --theme--code_class: var(--theme--code_plain);
+  --theme--code_pseudo-element: var(--theme--code_plain);
+  --theme--code_pseudo-class: var(--theme--code_plain);
+  --theme--code_attribute: var(--theme--code_plain);
+  --theme--code_value: var(--theme--code_plain);
+  --theme--code_unit: var(--theme--code_plain);
+  --theme--code_punctuation: var(--theme--code_plain);
+  --theme--code_annotation: var(--theme--code_plain);
 }

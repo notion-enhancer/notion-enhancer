@@ -8,6 +8,7 @@
 - improved: replaced confusing all-tag filters with themes/extensions/enabled/disabled filters.
 - removed: integrated scrollbar tweak (notion now includes by default).
 - removed: js insert. css insert moved to tweaks mod.
+- removed: majority of layout and font size variables - better to leave former to notion and use `ctrl +` for latter.
 - ported: tweaks, bypass-preview.
 
 #### todo
