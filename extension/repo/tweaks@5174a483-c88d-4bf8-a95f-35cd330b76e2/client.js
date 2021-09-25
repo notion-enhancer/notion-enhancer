@@ -30,7 +30,6 @@ web.whenReady().then(async () => {
     'spaced_lines',
     'hide_help',
     'condensed_bullets',
-    'scroll_db_toolbars',
     'bracketed_links',
   ]) {
     if (await storage.get(_id, `tweak.${tweak}`)) {

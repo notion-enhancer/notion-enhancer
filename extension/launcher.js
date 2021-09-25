@@ -6,8 +6,12 @@
 
 'use strict';
 
-import(chrome.runtime.getURL('api.js')).then(({ web, registry }) => {
-  web.whenReady().then(async () => {
+// only load if user is logged into notion and viewing a page
+if (
+  localStorage['LRU:KeyValueStore2:current-user-id'] &&
+  location.pathname.split(/[/-]/g).reverse()[0].length === 32
+) {
+  import(chrome.runtime.getURL('api.js')).then(async ({ web, registry }) => {
     for (const mod of await registry.get((mod) => registry.isEnabled(mod.id))) {
       for (const sheet of mod.css?.client || []) {
         web.loadStyleset(`repo/${mod._dir}/${sheet}`);
@@ -22,4 +26,4 @@ import(chrome.runtime.getURL('api.js')).then(({ web, registry }) => {
       console.table(errors);
     }
   });
-});
+}

@@ -74,13 +74,6 @@
       "value": false
     },
     {
-      "key": "tweak.scroll_db_toolbars",
-      "label": "horizontally scroll dbs with shift",
-      "tooltip": "hold the shift key down while scrolling. up = left, down = right.",
-      "type": "toggle",
-      "value": true
-    },
-    {
       "key": "tweak.bracketed_links",
       "label": "bracketed links",
       "tooltip": "render links surrounded with [[brackets]] instead of __underlined__.",

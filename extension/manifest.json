@@ -12,9 +12,8 @@
   },
   "manifest_version": 3,
   "action": {},
-  "background": {
-    "service_worker": "worker.js"
-  },
+  "background": { "service_worker": "worker.js" },
+  "options_page": "repo/menu@a6621988-551d-495a-97d8-3c568bca2e9e/menu.html",
   "web_accessible_resources": [
     {
       "resources": ["api.js", "repo/*", "icons/*", "dep/*"],

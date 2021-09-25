@@ -31,10 +31,6 @@
   margin-bottom: -1.5px !important;
 }
 
-.tweak--scroll_db_toolbars .notion-collection_view-block > [style*=' height: 42px'] {
-  overflow-x: auto !important;
-}
-
 .tweak--responsive_breakpoint .notion-column_list-block [style='display: flex;'] > div {
   width: 100% !important;
 }

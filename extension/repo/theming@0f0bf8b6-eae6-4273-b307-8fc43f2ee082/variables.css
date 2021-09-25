@@ -1,8 +1,6 @@
 /*
  * notion-enhancer core: theming
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
- * (c) 2020 admiraldus
- * (c) 2020 CloudHill
  * (https://notion-enhancer.github.io/) under the MIT license
  *
  * (rgb|hsl|#)[^;]+;
@@ -18,9 +16,8 @@
   --theme--page_preview_banner-height: 20vh;
 
   --theme--bg: rgb(47, 52, 55);
-  --theme--bg_sidebar: rgb(55, 60, 63);
+  --theme--bg_secondary: rgb(55, 60, 63);
   --theme--bg_popup: rgb(63, 68, 71);
-  --theme--bg_table: rgb(55, 60, 63);
 
   --theme--scrollbar_track: rgba(202, 204, 206, 0.04);
   --theme--scrollbar_thumb: #474c50;
@@ -36,19 +33,17 @@
   --theme--font_quote: var(--theme--font_sans);
   --theme--font_headings: var(--theme--font_sans);
 
-  --theme_dark--daypicker_outside-text: #8b9898;
-  --theme_dark--page_mention_hover: rgba(148, 148, 148, 0.15);
-  --theme_dark--toggle_on: rgb(26, 170, 220);
-  --theme_dark--toggle_off: rgba(202, 204, 206, 0.3);
-  --theme_dark--toggle_feature: #fff;
-  --theme_dark--tooltip: rgb(202, 204, 206);
-  --theme_dark--tooltip-text: rgb(15, 15, 15);
-  --theme_dark--tooltip-text_grey: rgba(47, 52, 55, 0.6);
-
   --theme--ui_shadow: rgba(15, 15, 15, 0.15);
   --theme--ui_divider: rgb(255, 255, 255, 0.07);
   --theme--ui_interactive-hover: rgb(71, 76, 80);
   --theme--ui_interactive-active: rgb(63, 68, 71);
+  --theme--ui_toggle-on: var(--theme--accent_blue);
+  --theme--ui_toggle-off: rgba(202, 204, 206, 0.3);
+  --theme--ui_toggle-feature: #fff;
+  --theme--ui_input: rgba(15, 15, 15, 0.3);
+  --theme--ui_tooltip: rgb(202, 204, 206);
+  --theme--ui_tooltip-title: rgb(15, 15, 15);
+  --theme--ui_tooltip-description: rgba(47, 52, 55, 0.6);
 
   --theme--accent_blue: rgb(46, 170, 220);
   --theme--accent_blue-selection: rgb(46, 170, 220, 0.25);
