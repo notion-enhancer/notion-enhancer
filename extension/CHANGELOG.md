@@ -1,16 +1,22 @@
 # changelog
 
-### v0.11.0-extension (wip)
+### v0.11.0 (dev)
 
-a rework of the enhancer and port to the browser as a chrome extension.
+a complete rework of the enhancer including a port to the browser as a chrome extension.
 
-- new: cross-environment and properly documented api to replace helpers
-- new: cross-environment mod loader structure
+- new: cross-environment and properly documented api to replace helpers.
+- new: cross-environment mod loader structure.
+- new: notifications sourced from an online endpoint for sending global user alerts.
+- improved: a redesigned menu with a better overview of all mods and separate pages for options and documentation.
+- improved: theming variables that are more specific, less laggy, and less complicated.
+- improved: switched from fontawesome to [feather](https://feathericons.com/) icons.
 
-**changelog below this point is a mix of the app enhancer and all mods.**
-**above this, changelogs have been split: see the**
-**[app enhancer changelog](https://github.com/notion-enhancer/app/blob/dev/CHANGELOG.md)**
-**and the [mods changelog](https://github.com/notion-enhancer/mods/blob/dev/CHANGELOG.md).**
+// todo
+
+- new: separate menu profiles for mod configurations.
+
+**below this point the enhancer was desktop-only. in v0.11.0 it was been ported to also**
+**run as a chrome extension. changes made to both are indicated above.**
 
 ### v0.10.2 (2020-12-05)
 
