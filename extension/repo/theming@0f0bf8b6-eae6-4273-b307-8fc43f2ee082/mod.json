@@ -16,5 +16,8 @@
     "frame": ["variables.css"],
     "client": ["variables.css", "prism.css", "theme.css"],
     "menu": ["variables.css", "prism.css"]
+  },
+  "js": {
+    "client": ["client.js"]
   }
 }
