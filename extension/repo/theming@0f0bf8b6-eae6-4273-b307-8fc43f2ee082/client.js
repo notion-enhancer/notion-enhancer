@@ -6,7 +6,7 @@
 
 'use strict';
 
-import { web } from '../../api.js';
+import { web } from '../../api/_.mjs';
 
 const $root = document.querySelector(':root');
 web.addDocumentObserver((mutation) => {

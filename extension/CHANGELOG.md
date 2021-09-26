@@ -9,7 +9,6 @@ a complete rework of the enhancer including a port to the browser as a chrome ex
 - new: notifications sourced from an online endpoint for sending global user alerts.
 - improved: a redesigned menu with a better overview of all mods and separate pages for options and documentation.
 - improved: theming variables that are more specific, less laggy, and less complicated.
-- improved: switched from fontawesome to [feather](https://feathericons.com/) icons.
 
 // todo
 

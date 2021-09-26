@@ -6,7 +6,7 @@
 
 'use strict';
 
-import { web } from '../../api.js';
+import { web } from '../../api/_.mjs';
 
 web.whenReady().then(async () => {
   const openAsPage = document.querySelector(

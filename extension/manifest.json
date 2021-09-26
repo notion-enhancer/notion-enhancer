@@ -1,24 +1,24 @@
 {
   "manifest_version": 3,
   "name": "notion-enhancer",
-  "version": "0.11.0-dev",
+  "version": "0.11.0",
   "author": "dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)",
   "description": "an enhancer/customiser for the all-in-one productivity workspace notion.so",
   "homepage_url": "https://notion-enhancer.github.io",
   "icons": {
-    "16": "icons/colour-x16.png",
-    "32": "icons/colour-x32.png",
-    "48": "icons/colour-x48.png",
-    "128": "icons/colour-x128.png",
-    "256": "icons/colour-x256.png",
-    "512": "icons/colour-x512.png"
+    "16": "icon/colour-x16.png",
+    "32": "icon/colour-x32.png",
+    "48": "icon/colour-x48.png",
+    "128": "icon/colour-x128.png",
+    "256": "icon/colour-x256.png",
+    "512": "icon/colour-x512.png"
   },
   "action": {},
   "background": { "service_worker": "worker.js" },
   "options_page": "repo/menu@a6621988-551d-495a-97d8-3c568bca2e9e/menu.html",
   "web_accessible_resources": [
     {
-      "resources": ["api.js", "repo/*", "icons/*", "dep/*"],
+      "resources": ["api/*", "dep/*", "icon/*", "repo/*"],
       "matches": ["https://*.notion.so/*"]
     }
   ],

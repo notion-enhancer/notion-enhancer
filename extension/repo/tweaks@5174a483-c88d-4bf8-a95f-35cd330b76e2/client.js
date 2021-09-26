@@ -7,7 +7,7 @@
 'use strict';
 
 const _id = '5174a483-c88d-4bf8-a95f-35cd330b76e2';
-import { env, storage, web } from '../../api.js';
+import { env, storage, web } from '../../api/_.mjs';
 
 web.whenReady().then(async () => {
   const cssInsert = await storage.get(_id, '_file.insert.css');

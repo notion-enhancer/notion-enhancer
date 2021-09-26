@@ -6,7 +6,7 @@
 
 'use strict';
 
-import { web } from '../../api.js';
+import { web } from '../../api/_.mjs';
 
 const $button = web.createElement(
   web.html`<button id="calendar-scroll-to-week">Scroll</button>`
