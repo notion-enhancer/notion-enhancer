@@ -153,7 +153,7 @@ body,
 
 .notion-overlay-container.notion-default-overlay-container
   [style*='display: flex']
-  > [style*='position: relative; max-width:'][style*='overflow: hidden']:not([style*='border-radius: 3px;'][style*='position: relative; max-width: calc(100vw - 24px); box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px; overflow: hidden;'][style*='padding: 4px 8px; font-size: 12px; line-height: 1.4; font-weight: 500; white-space: nowrap;']),
+  > [style*='position: relative; max-width:'][style*='overflow: hidden']:not([style*='border-radius: 3px;'][style*='position: relative; max-width: calc(100vw - 24px); box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px; overflow: hidden;'][style*='padding: 4px 8px; font-size: 12px; line-height: 1.4; font-weight: 500;']),
 .notion-overlay-container.notion-default-overlay-container
   [style*='display: flex']
   > [style*='position: relative; max-width:'][style*='overflow: hidden']
@@ -391,13 +391,13 @@ body,
 }
 
 .notion-overlay-container
-  [style*='border-radius: 3px;'][style*='position: relative; max-width: calc(100vw - 24px); box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px; overflow: hidden;'][style*='padding: 4px 8px; font-size: 12px; line-height: 1.4; font-weight: 500; white-space: nowrap;'] {
+  [style*='border-radius: 3px;'][style*='position: relative; max-width: calc(100vw - 24px); box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px; overflow: hidden;'][style*='padding: 4px 8px; font-size: 12px; line-height: 1.4; font-weight: 500;'] {
   background: var(--theme--ui_tooltip) !important;
   box-shadow: var(--theme--ui_shadow) 0px 1px 4px !important;
   color: var(--theme--ui_tooltip-title) !important;
 }
 .notion-overlay-container
-  [style*='border-radius: 3px;'][style*='position: relative; max-width: calc(100vw - 24px); box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px; overflow: hidden;'][style*='padding: 4px 8px; font-size: 12px; line-height: 1.4; font-weight: 500; white-space: nowrap;']
+  [style*='border-radius: 3px;'][style*='position: relative; max-width: calc(100vw - 24px); box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px; overflow: hidden;'][style*='padding: 4px 8px; font-size: 12px; line-height: 1.4; font-weight: 500;']
   [style*='color: '] {
   color: var(--theme--ui_tooltip-description) !important;
 }

@@ -2,7 +2,6 @@
   "name": "calendar-scroll",
   "id": "b1c7db33-dfee-489a-a76c-0dd66f7ed29a",
   "version": "0.2.0",
-  "environments": ["linux", "win32", "darwin", "extension"],
   "description": "add a button to scroll down to the current week in fullpage/infinite-scroll calendars.",
   "tags": ["extension", "shortcut"],
   "authors": [
@@ -14,7 +13,7 @@
     }
   ],
   "js": {
-    "client": ["client.mjs"]
+    "client": ["client.mjs?"]
   },
   "css": {
     "client": ["client.css"]

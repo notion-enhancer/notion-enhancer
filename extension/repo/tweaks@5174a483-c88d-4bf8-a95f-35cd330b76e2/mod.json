@@ -2,7 +2,6 @@
   "name": "tweaks",
   "id": "5174a483-c88d-4bf8-a95f-35cd330b76e2",
   "version": "0.2.0",
-  "environments": ["linux", "win32", "darwin", "extension"],
   "description": "common style/layout changes and custom inserts.",
   "tags": ["extension", "customisation"],
   "authors": [

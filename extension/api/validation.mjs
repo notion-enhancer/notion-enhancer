@@ -88,8 +88,9 @@ export const is = async (value, type, { extension = '' } = {}) => {
     case 'undefined':
     case 'boolean':
     case 'number':
-    case 'string':
       return typeof value === type && extension;
+    case 'string':
+      return typeof value === type && value.length && extension;
     case 'alphanumeric':
     case 'uuid':
     case 'semver':
@@ -98,7 +99,7 @@ export const is = async (value, type, { extension = '' } = {}) => {
     case 'color':
       return typeof value === 'string' && test(value, patterns[type]) && extension;
     case 'file':
-      return typeof value === 'string' && (await isFile(value)) && extension;
+      return typeof value === 'string' && value && (await isFile(value)) && extension;
     case 'env':
       return supported.includes(value);
     case 'optionType':

@@ -2,7 +2,6 @@
   "name": "bypass-preview",
   "id": "cb6fd684-f113-4a7a-9423-8f0f0cff069f",
   "version": "0.2.0",
-  "environments": ["linux", "win32", "darwin", "extension"],
   "description": "go straight to the normal full view when opening a page.",
   "tags": ["extension", "automation"],
   "authors": [

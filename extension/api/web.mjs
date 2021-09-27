@@ -128,7 +128,7 @@ export const empty = ($container) => {
  * loads/applies a css stylesheet to the page
  * @param {string} path - a url or within-the-enhancer filepath
  */
-export const stylesheet = (path) => {
+export const loadStylesheet = (path) => {
   render(
     document.head,
     html`<link

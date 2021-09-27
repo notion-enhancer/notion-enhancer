@@ -2,7 +2,6 @@
   "name": "menu",
   "id": "a6621988-551d-495a-97d8-3c568bca2e9e",
   "version": "0.11.0",
-  "environments": ["linux", "win32", "darwin", "extension"],
   "description": "the enhancer's graphical menu, related buttons and shortcuts.",
   "tags": ["core"],
   "authors": [
@@ -14,24 +13,16 @@
     }
   ],
   "css": {
-    "frame": ["tooltips.css"],
-    "client": ["client.css", "tooltips.css"],
-    "menu": ["menu.css", "markdown.css", "tooltips.css"]
+    "client": ["client.css"],
+    "menu": ["menu.css", "markdown.css"]
   },
   "js": {
     "client": ["client.mjs"]
   },
   "options": [
     {
-      "type": "toggle",
-      "key": "themes.autoresolve",
-      "label": "auto-resolve theme conflicts",
-      "value": true,
-      "tooltip": "when a theme is enabled any other themes of the same mode (light/dark) will be disabled"
-    },
-    {
       "type": "text",
-      "key": "hotkey.focustoggle",
+      "key": "hotkey",
       "label": "toggle hotkey",
       "value": "Ctrl+Alt+E",
       "tooltip": "toggles focus between notion & the enhancer menu"

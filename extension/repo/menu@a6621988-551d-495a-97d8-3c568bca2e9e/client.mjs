@@ -6,46 +6,44 @@
 
 'use strict';
 
-const _id = 'a6621988-551d-495a-97d8-3c568bca2e9e';
-import { env, storage, web, fs, registry } from '../../api/_.mjs';
+export default async function (api, db) {
+  const { env, fs, registry, web } = api,
+    sidebarSelector = '.notion-sidebar-container .notion-sidebar > div:nth-child(4)';
+  await web.whenReady([sidebarSelector]);
 
-const sidebarSelector =
-  '#notion-app > div > div.notion-cursor-listener > div.notion-sidebar-container > div > div > div > div:nth-child(4)';
-web.whenReady([sidebarSelector]).then(async () => {
-  const $enhancerSidebarElement = web.createElement(
-      web.html`<div class="enhancer--sidebarMenuTrigger" role="button" tabindex="0">
-        <div>
-          <div>${await fs.getText('icons/colour.svg')}</div>
-          <div><div>notion-enhancer</div></div>
-        </div>
-      </div>`
-    ),
-    errors = await registry.errors(),
-    notifications = {
-      list: await fs.getJSON('https://notion-enhancer.github.io/notifications.json'),
-      dismissed: await storage.get(_id, 'notifications', []),
-    };
-  notifications.waiting = notifications.list.filter(
-    ({ id }) => !notifications.dismissed.includes(id)
-  );
-  if (notifications.waiting.length + errors.length) {
-    $enhancerSidebarElement.classList.add('enhancer--notifications');
-    $enhancerSidebarElement.children[0].append(
-      web.createElement(
-        web.html`<div><div><span>${
-          notifications.waiting.length + errors.length
-        }</span></div></div>`
-      )
-    );
-  }
+  const $sidebarLink = web.html`<div class="enhancer--sidebarMenuLink" role="button" tabindex="0">
+      <div>
+        <div>${await fs.getText('icon/colour.svg')}</div>
+        <div><div>notion-enhancer</div></div>
+      </div>
+    </div>`;
+  web.addHotkeyListener(await db.get(['hotkey']), env.openEnhancerMenu);
+
   const setTheme = () =>
-    storage.set(_id, 'theme', document.querySelector('.notion-dark-theme') ? 'dark' : 'light');
-  $enhancerSidebarElement.addEventListener('click', () => {
+    db.set(['theme'], document.querySelector('.notion-dark-theme') ? 'dark' : 'light');
+  $sidebarLink.addEventListener('click', () => {
     setTheme().then(env.openEnhancerMenu);
   });
   window.addEventListener('focus', setTheme);
   window.addEventListener('blur', setTheme);
   setTheme();
-  document.querySelector(sidebarSelector).appendChild($enhancerSidebarElement);
-});
-web.addHotkeyListener(await storage.get(_id, 'hotkey.focustoggle'), env.openEnhancerMenu);
+
+  const errors = await registry.errors(),
+    notifications = {
+      cache: await db.get(['notifications'], []),
+      provider: await fs.getJSON('https://notion-enhancer.github.io/notifications.json'),
+      count: errors.length,
+    };
+  for (const notification of notifications.provider) {
+    if (!notifications.cache.includes(notification.id)) notifications.count++;
+  }
+  if (notifications.count) {
+    $sidebarLink.dataset.hasNotifications = true;
+    web.render(
+      $sidebarLink.children[0],
+      web.html`<div class="enhancer--notificationBubble"><div><span>${notifications.count}</span></div></div>`
+    );
+  }
+
+  web.render(document.querySelector(sidebarSelector), $sidebarLink);
+}

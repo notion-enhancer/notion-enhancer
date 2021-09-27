@@ -47,9 +47,13 @@ async function validate(mod) {
       optional = false,
     } = {}
   ) => {
-    const test = await is(type === 'file' ? `repo/${mod._dir}/${value}` : value, type, {
-      extension,
-    });
+    const test = await is(
+      type === 'file' && value ? `repo/${mod._dir}/${value}` : value,
+      type,
+      {
+        extension,
+      }
+    );
     if (!test) {
       if (optional && (await is(value, 'undefined'))) return true;
       if (error) _errors.push({ source: mod._dir, message: error });
@@ -61,9 +65,14 @@ async function validate(mod) {
     check('name', mod.name, 'string'),
     check('id', mod.id, 'uuid'),
     check('version', mod.version, 'semver'),
-    check('environments', mod.environments, 'array').then((passed) =>
-      passed ? mod.environments.map((tag) => check('environments.env', tag, 'env')) : 0
-    ),
+    check('environments', mod.environments, 'array', { optional: true }).then((passed) => {
+      if (!passed) return false;
+      if (!mod.environments) {
+        mod.environments = env.supported;
+        return true;
+      }
+      return mod.environments.map((tag) => check('environments.env', tag, 'env'));
+    }),
     check('description', mod.description, 'string'),
     // file doubles for url here
     check('preview', mod.preview, 'file', { optional: true }),
@@ -202,9 +211,10 @@ async function validate(mod) {
 
 /**
  * list all available mods in the repo
+ * @param {function} filter - a function to filter out mods
  * @returns {array} a validated list of mod.json objects
  */
-export const list = async () => {
+export const list = async (filter = (mod) => true) => {
   if (!_cache.length) {
     for (const dir of await getJSON('repo/registry.json')) {
       try {
@@ -216,7 +226,9 @@ export const list = async () => {
       }
     }
   }
-  return _cache;
+  const list = [];
+  for (const mod of _cache) if (await filter(mod)) list.push(mod);
+  return list;
 };
 
 /**
@@ -263,6 +275,7 @@ export const enabled = async (id) => {
 export const optionDefault = async (id, key) => {
   const mod = await get(id),
     opt = mod.options.find((opt) => opt.key === key);
+  if (!opt) return undefined;
   switch (opt.type) {
     case 'toggle':
     case 'text':
@@ -272,6 +285,6 @@ export const optionDefault = async (id, key) => {
     case 'select':
       return opt.values[0];
     case 'file':
+      return undefined;
   }
-  return undefined;
 };

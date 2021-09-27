@@ -24,15 +24,15 @@ export const get = (path, fallback = undefined) => {
   if (!path.length) return fallback;
   const namespace = path.shift();
   return new Promise((res, rej) =>
-    chrome.storage.sync.get([namespace], async (values) => {
+    chrome.storage.sync.get(async (values) => {
       let value = values[namespace];
-      while (path.length) {
-        value = value[path.shift()];
-        if (path.length && !value) {
+      do {
+        if (value === undefined) {
           value = fallback;
           break;
         }
-      }
+        value = value[path.shift()];
+      } while (path.length);
       res(value ?? fallback);
     })
   );
@@ -54,17 +54,18 @@ export const set = (path, value) => {
       }
       const pathClone = [...path],
         namespace = path.shift();
-      chrome.storage.sync.get([namespace], async (values) => {
+      chrome.storage.sync.get([], async (values) => {
         const update = values[namespace] ?? {};
         let pointer = update,
           old;
-        while (true) {
+        while (path.length) {
           const key = path.shift();
           if (!path.length) {
             old = pointer[key];
             pointer[key] = value;
             break;
-          } else if (!pointer[key]) pointer[key] = {};
+          }
+          pointer[key] = pointer[key] ?? {};
           pointer = pointer[key];
         }
         chrome.storage.sync.set({ [namespace]: update }, () => {
@@ -82,14 +83,14 @@ export const set = (path, value) => {
 /**
  * create a wrapper for accessing a partition of the storage
  * @param {array<string>} namespace - the path of keys to prefix all storage requests with
- * @param {Function} [get] - the storage get function to be wrapped
- * @param {Function} [set] - the storage set function to be wrapped
+ * @param {function} [get] - the storage get function to be wrapped
+ * @param {function} [set] - the storage set function to be wrapped
  * @returns {object} an object with the wrapped get/set functions
  */
-export const db = (namespace, get = get, set = set) => {
+export const db = (namespace, getFunc = get, setFunc = set) => {
   return {
-    get: (path, fallback = undefined) => get([namespace, ...path], fallback),
-    set: (path, value) => set([namespace, ...path], value),
+    get: (path = [], fallback = undefined) => getFunc([...namespace, ...path], fallback),
+    set: (path, value) => setFunc([...namespace, ...path], value),
   };
 };
 

@@ -6,11 +6,14 @@
 
 'use strict';
 
-import { web } from '../../api/_.mjs';
+export default function (api, db) {
+  const { web } = api;
 
-const $root = document.querySelector(':root');
-web.addDocumentObserver((mutation) => {
-  if (mutation.target === document.body) {
-    $root.classList[document.body.classList.contains('dark') ? 'add' : 'remove']('dark');
-  }
-});
+  const $root = document.querySelector(':root');
+  $root.classList[document.body.classList.contains('dark') ? 'add' : 'remove']('dark');
+  web.addDocumentObserver((mutation) => {
+    if (mutation.target === document.body) {
+      $root.classList[document.body.classList.contains('dark') ? 'add' : 'remove']('dark');
+    }
+  });
+}

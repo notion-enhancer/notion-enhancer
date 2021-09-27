@@ -4,22 +4,22 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-.enhancer--sidebarMenuTrigger {
+.enhancer--sidebarMenuLink {
   user-select: none;
   -webkit-user-select: none;
   transition: background 20ms ease-in 0s;
   cursor: pointer;
-  color: var(--theme--text_sidebar);
+  color: var(--theme--text_ui);
 }
-.enhancer--sidebarMenuTrigger:hover {
-  background: var(--theme--button-hover);
+.enhancer--sidebarMenuLink:hover {
+  background: var(--theme--ui_interactive-hover);
 }
-.enhancer--sidebarMenuTrigger svg {
+.enhancer--sidebarMenuLink svg {
   width: 16px;
   height: 16px;
   margin-left: 2px;
 }
-.enhancer--sidebarMenuTrigger > div {
+.enhancer--sidebarMenuLink > div {
   display: flex;
   align-items: center;
   min-height: 27px;
@@ -27,7 +27,7 @@
   padding: 2px 14px;
   width: 100%;
 }
-.enhancer--sidebarMenuTrigger > div > :first-child {
+.enhancer--sidebarMenuLink > div > :first-child {
   flex-shrink: 0;
   flex-grow: 0;
   border-radius: 3px;
@@ -38,19 +38,20 @@
   justify-content: center;
   margin-right: 8px;
 }
-.enhancer--sidebarMenuTrigger > div > :nth-child(2) {
+.enhancer--sidebarMenuLink > div > :nth-child(2) {
   flex: 1 1 auto;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.enhancer--notifications {
+
+.enhancer--sidebarMenuLink[data-has-notifications] {
   color: var(--theme--text);
 }
-.enhancer--notifications > div > :last-child {
+.enhancer--sidebarMenuLink > div > .enhancer--notificationBubble {
   display: flex;
 }
-.enhancer--notifications > div > :last-child > div {
+.enhancer--sidebarMenuLink > div > .enhancer--notificationBubble > div {
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -59,10 +60,10 @@
   font-size: 10px;
   font-weight: 600;
   border-radius: 3px;
-  color: var(--theme--tag_new-text);
-  background: var(--theme--tag_new);
+  color: var(--theme--accent_red-text);
+  background: var(--theme--accent_red);
 }
-.enhancer--notifications > div > :last-child > div > span {
+.enhancer--sidebarMenuLink > div > .enhancer--notificationBubble > div > span {
   margin-bottom: 1px;
   margin-left: -0.5px;
 }
