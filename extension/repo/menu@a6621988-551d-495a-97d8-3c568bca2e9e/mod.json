@@ -2,14 +2,15 @@
   "name": "menu",
   "id": "a6621988-551d-495a-97d8-3c568bca2e9e",
   "version": "0.11.0",
+  "environments": ["linux", "win32", "darwin", "extension"],
   "description": "the enhancer's graphical menu, related buttons and shortcuts.",
   "tags": ["core"],
   "authors": [
     {
       "name": "dragonwocky",
       "email": "thedragonring.bod@gmail.com",
-      "url": "https://dragonwocky.me/",
-      "icon": "https://dragonwocky.me/avatar.jpg"
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
     }
   ],
   "css": {
@@ -18,7 +19,7 @@
     "menu": ["menu.css", "markdown.css", "tooltips.css"]
   },
   "js": {
-    "client": ["client.js"]
+    "client": ["client.mjs"]
   },
   "options": [
     {

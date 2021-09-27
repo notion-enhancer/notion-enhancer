@@ -1,21 +1,23 @@
 {
   "name": "bypass-preview",
   "id": "cb6fd684-f113-4a7a-9423-8f0f0cff069f",
-  "description": "go straight to the normal full view when opening a page.",
   "version": "0.2.0",
+  "environments": ["linux", "win32", "darwin", "extension"],
+  "description": "go straight to the normal full view when opening a page.",
   "tags": ["extension", "automation"],
   "authors": [
     {
       "name": "dragonwocky",
       "email": "thedragonring.bod@gmail.com",
-      "url": "https://dragonwocky.me/",
-      "icon": "https://dragonwocky.me/avatar.jpg"
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
     }
   ],
   "js": {
-    "client": ["client.js"]
+    "client": ["client.mjs"]
   },
   "css": {
     "client": ["client.css"]
-  }
+  },
+  "options": []
 }

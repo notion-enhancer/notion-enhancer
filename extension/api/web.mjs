@@ -8,7 +8,7 @@
 
 /**
  * helpers for manipulation of a webpage
- * @module notion-enhancer/api/env
+ * @module notion-enhancer/api/web
  */
 
 import { localPath } from './fs.mjs';

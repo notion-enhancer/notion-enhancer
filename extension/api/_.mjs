@@ -14,9 +14,11 @@ export * as env from './env.mjs';
 export * as fmt from './fmt.mjs';
 /** environment-specific filesystem reading */
 export * as fs from './fs.mjs';
-/** pattern validators */
-export * as regex from './regex.mjs';
 /** interactions with the enhancer's repository of mods */
-// export * as registry from './registry.mjs';
+export * as registry from './registry.mjs';
 /** environment-specific data persistence */
 export * as storage from './storage.mjs';
+/** pattern and type validators */
+export * as validation from './validation.mjs';
+/** helpers for manipulation of a webpage */
+export * as web from './web.mjs';

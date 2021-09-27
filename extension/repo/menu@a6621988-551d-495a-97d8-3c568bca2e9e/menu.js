@@ -7,7 +7,7 @@
 'use strict';
 
 const _id = 'a6621988-551d-495a-97d8-3c568bca2e9e';
-import { env, storage, web, fmt, fs, registry, regexers } from '../../api/_.mjs';
+import { env, storage, web, fmt, fs, registry } from '../../api/_.mjs';
 
 for (const mod of await registry.get((mod) => registry.isEnabled(mod.id))) {
   for (const sheet of mod.css?.menu || []) {

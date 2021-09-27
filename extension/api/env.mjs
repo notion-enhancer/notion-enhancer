@@ -12,12 +12,6 @@
  */
 
 /**
- * an error constant used in validation, distinct from null or undefined
- * @constant {Symbol}
- */
-export const ERROR = Symbol();
-
-/**
  * the environment/platform name code is currently being executed in
  * @constant {string}
  */

@@ -42,6 +42,7 @@ export const get = (path, fallback = undefined) => {
  * persist data
  * @param {array<string>} path - the path of keys to the value being set
  * @param {*} value - the data to save
+ * @returns {Promise} resolves when data has been saved
  */
 export const set = (path, value) => {
   if (!path.length) return undefined;
@@ -76,6 +77,20 @@ export const set = (path, value) => {
     });
   _queue.push(interaction);
   return interaction;
+};
+
+/**
+ * create a wrapper for accessing a partition of the storage
+ * @param {array<string>} namespace - the path of keys to prefix all storage requests with
+ * @param {Function} [get] - the storage get function to be wrapped
+ * @param {Function} [set] - the storage set function to be wrapped
+ * @returns {object} an object with the wrapped get/set functions
+ */
+export const db = (namespace, get = get, set = set) => {
+  return {
+    get: (path, fallback = undefined) => get([namespace, ...path], fallback),
+    set: (path, value) => set([namespace, ...path], value),
+  };
 };
 
 /**

@@ -11,321 +11,231 @@
  * @module notion-enhancer/api/registry
  */
 
-import * as regex from './regex.mjs';
+import * as env from './env.mjs';
+import { getJSON } from './fs.mjs';
+import * as storage from './storage.mjs';
+import { is } from './validation.mjs';
+
+const _cache = [],
+  _errors = [];
 
 /** mod ids whitelisted as part of the enhancer's core, permanently enabled */
-export const CORE = [
+export const core = [
   'a6621988-551d-495a-97d8-3c568bca2e9e',
   '0f0bf8b6-eae6-4273-b307-8fc43f2ee082',
 ];
+
+/** all available configuration types */
+export const optionTypes = ['toggle', 'select', 'text', 'number', 'color', 'file'];
 
 /**
  * internally used to validate mod.json files and provide helpful errors
  * @private
  * @param {object} mod - a mod's mod.json in object form
- * @param {*} err - a callback to execute if a test fails
- * @param {*} check - a function to test a condition
- * @returns {array} the results of the validation
+ * @returns {boolean} whether or not the mod has passed validation
  */
-registry.validate = async (mod, err, check) => {
+async function validate(mod) {
+  const check = async (
+    key,
+    value,
+    type,
+    {
+      extension = '',
+      error = `invalid ${key} (${extension ? `${extension} ` : ''}${type}): ${JSON.stringify(
+        value
+      )}`,
+      optional = false,
+    } = {}
+  ) => {
+    const test = await is(type === 'file' ? `repo/${mod._dir}/${value}` : value, type, {
+      extension,
+    });
+    if (!test) {
+      if (optional && (await is(value, 'undefined'))) return true;
+      if (error) _errors.push({ source: mod._dir, message: error });
+      return false;
+    }
+    return true;
+  };
   let conditions = [
-    check('name', mod.name, typeof mod.name === 'string'),
-    check('id', mod.id, typeof mod.id === 'string').then((id) =>
-      id === env.ERROR ? env.ERROR : regex.uuid(id, err)
+    check('name', mod.name, 'string'),
+    check('id', mod.id, 'uuid'),
+    check('version', mod.version, 'semver'),
+    check('environments', mod.environments, 'array').then((passed) =>
+      passed ? mod.environments.map((tag) => check('environments.env', tag, 'env')) : 0
     ),
-    check('version', mod.version, typeof mod.version === 'string').then((version) =>
-      version === env.ERROR ? env.ERROR : regex.semver(version, err)
+    check('description', mod.description, 'string'),
+    // file doubles for url here
+    check('preview', mod.preview, 'file', { optional: true }),
+    check('tags', mod.tags, 'array').then((passed) =>
+      passed ? mod.tags.map((tag) => check('tags.tag', tag, 'string')) : 0
     ),
-    check('description', mod.description, typeof mod.description === 'string'),
-    check(
-      'preview',
-      mod.preview,
-      mod.preview === undefined || typeof mod.preview === 'string'
-    ).then((preview) =>
-      preview ? (preview === env.ERROR ? env.ERROR : regex.url(preview, err)) : undefined
-    ),
-    check('tags', mod.tags, Array.isArray(mod.tags)).then((tags) =>
-      tags === env.ERROR
-        ? env.ERROR
-        : tags.map((tag) => check('tag', tag, typeof tag === 'string'))
-    ),
-    check('authors', mod.authors, Array.isArray(mod.authors)).then((authors) =>
-      authors === env.ERROR
-        ? env.ERROR
-        : authors.map((author) => [
-            check('author.name', author.name, typeof author.name === 'string'),
-            check('author.email', author.email, typeof author.email === 'string').then(
-              (email) => (email === env.ERROR ? env.ERROR : regex.email(email, err))
-            ),
-            check('author.url', author.url, typeof author.url === 'string').then((url) =>
-              url === env.ERROR ? env.ERROR : regex.url(url, err)
-            ),
-            check('author.icon', author.icon, typeof author.icon === 'string').then((icon) =>
-              icon === env.ERROR ? env.ERROR : regex.url(icon, err)
-            ),
-          ])
-    ),
-    check(
-      'environments',
-      mod.environments,
-      !mod.environments || Array.isArray(mod.environments)
-    ).then((environments) =>
-      environments
-        ? environments === env.ERROR
-          ? env.ERROR
-          : environments.map((environment) =>
-              check('environment', environment, env.supported.includes(environment))
-            )
-        : undefined
-    ),
-    check(
-      'css',
-      mod.css,
-      mod.css && typeof mod.css === 'object' && !Array.isArray(mod.css)
-    ).then((css) =>
-      css
-        ? css === env.ERROR
-          ? env.ERROR
-          : ['frame', 'client', 'menu']
-              .filter((dest) => css[dest])
-              .map(async (dest) =>
-                check(`css.${dest}`, css[dest], Array.isArray(css[dest])).then((files) =>
-                  files === env.ERROR
-                    ? env.ERROR
-                    : files.map(async (file) =>
-                        check(
-                          `css.${dest} file`,
-                          file,
-                          await fs.isFile(`repo/${mod._dir}/${file}`, '.css')
-                        )
-                      )
-                )
-              )
-        : undefined
-    ),
-    check('js', mod.js, mod.js && typeof mod.js === 'object' && !Array.isArray(mod.js)).then(
-      async (js) => {
-        if (js === env.ERROR) return env.ERROR;
-        if (!js) return undefined;
-        return [
-          check('js.client', js.client, !js.client || Array.isArray(js.client)).then(
-            (client) => {
-              if (client === env.ERROR) return env.ERROR;
-              if (!client) return undefined;
-              return client.map(async (file) =>
-                check(
-                  'js.client file',
-                  file,
-                  await fs.isFile(`repo/${mod._dir}/${file}`, '.js')
-                )
-              );
-            }
-          ),
-          check('js.electron', js.electron, !js.electron || Array.isArray(js.electron)).then(
-            (electron) => {
-              if (electron === env.ERROR) return env.ERROR;
-              if (!electron) return undefined;
-              return electron.map((file) =>
-                check(
-                  'js.electron file',
-                  file,
-                  file && typeof file === 'object' && !Array.isArray(file)
-                ).then(async (file) =>
-                  file === env.ERROR
-                    ? env.ERROR
-                    : [
-                        check(
-                          'js.electron file source',
-                          file.source,
-                          await fs.isFile(`repo/${mod._dir}/${file.source}`, '.js')
-                        ),
-                        // referencing the file within the electron app
-                        // existence can't be validated, so only format is
-                        check(
-                          'js.electron file target',
-                          file.target,
-                          typeof file.target === 'string' && file.target.endsWith('.js')
-                        ),
-                      ]
-                )
-              );
-            }
-          ),
-        ];
+    check('authors', mod.authors, 'array').then((passed) => {
+      if (!passed) return false;
+      return mod.authors.map((author) => [
+        check('authors.author.name', author.name, 'string'),
+        check('authors.author.email', author.email, 'email'),
+        check('authors.author.homepage', author.homepage, 'url'),
+        check('authors.author.avatar', author.avatar, 'url'),
+      ]);
+    }),
+    check('css', mod.css, 'object').then((passed) => {
+      if (!passed) return false;
+      const tests = [];
+      for (let dest of ['frame', 'client', 'menu']) {
+        if (!mod.css[dest]) continue;
+        let test = check(`css.${dest}`, mod.css[dest], 'array');
+        test = test.then((passed) => {
+          if (!passed) return false;
+          return mod.css[dest].map((file) =>
+            check(`css.${dest}.file`, file, 'file', { extension: '.css' })
+          );
+        });
+        tests.push(test);
       }
-    ),
-    check('options', mod.options, Array.isArray(mod.options)).then((options) =>
-      options === env.ERROR
-        ? env.ERROR
-        : options.map((option) => {
-            const conditions = [];
-            switch (option.type) {
-              case 'toggle':
-                conditions.push(
-                  check('option.value', option.value, typeof option.value === 'boolean')
-                );
-                break;
-              case 'select':
-                conditions.push(
-                  check('option.values', option.values, Array.isArray(option.values)).then(
-                    (value) =>
-                      value === env.ERROR
-                        ? env.ERROR
-                        : value.map((option) =>
-                            check('option.values option', option, typeof option === 'string')
-                          )
-                  )
-                );
-                break;
-              case 'text':
-                conditions.push(
-                  check('option.value', option.value, typeof option.value === 'string')
-                );
-                break;
-              case 'number':
-                conditions.push(
-                  check('option.value', option.value, typeof option.value === 'number')
-                );
-                break;
-              case 'color':
-                conditions.push(
-                  check('option.value', option.value, typeof option.value === 'string').then(
-                    (color) => (color === env.ERROR ? env.ERROR : regex.color(color, err))
-                  )
-                );
-                break;
-              case 'file':
-                conditions.push(
-                  check(
-                    'option.extensions',
-                    option.extensions,
-                    !option.extensions || Array.isArray(option.extensions)
-                  ).then((extensions) =>
-                    extensions
-                      ? extensions === env.ERROR
-                        ? env.ERROR
-                        : extensions.map((ext) =>
-                            check('option.extension', ext, typeof ext === 'string')
-                          )
-                      : undefined
-                  )
-                );
-                break;
-              default:
-                return check('option.type', option.type, false);
-            }
-            return [
-              conditions,
-              check(
-                'option.key',
-                option.key,
-                typeof option.key === 'string' && !option.key.match(/\s/)
-              ),
-              check('option.label', option.label, typeof option.label === 'string'),
-              check(
-                'option.tooltip',
-                option.tooltip,
-                !option.tooltip || typeof option.tooltip === 'string'
-              ),
-              check(
-                'option.environments',
-                option.environments,
-                !option.environments || Array.isArray(option.environments)
-              ).then((environments) =>
-                environments
-                  ? environments === env.ERROR
-                    ? env.ERROR
-                    : environments.map((environment) =>
-                        check(
-                          'option.environment',
-                          environment,
-                          env.supported.includes(environment)
-                        )
-                      )
-                  : undefined
-              ),
-            ];
-          })
-    ),
+      return tests;
+    }),
+    check('js', mod.js, 'object').then((passed) => {
+      if (!passed) return false;
+      const tests = [];
+      if (mod.js.client) {
+        let test = check('js.client', mod.js.client, 'array');
+        test = test.then((passed) => {
+          if (!passed) return false;
+          return mod.js.client.map((file) =>
+            check('js.client.file', file, 'file', { extension: '.mjs' })
+          );
+        });
+        tests.push(test);
+      }
+      if (mod.js.electron) {
+        let test = check('js.electron', mod.js.electron, 'array');
+        test = test.then((passed) => {
+          if (!passed) return false;
+          return mod.js.electron.map((file) =>
+            check('js.electron.file', file, 'object').then((passed) => {
+              if (!passed) return false;
+              return [
+                check('js.electron.file.source', file.source, 'file', {
+                  extension: '.mjs',
+                }),
+                // referencing the file within the electron app
+                // existence can't be validated, so only format is
+                check('js.electron.file.target', file.target, 'string', {
+                  extension: '.js',
+                }),
+              ];
+            })
+          );
+        });
+        tests.push(test);
+      }
+      return tests;
+    }),
+    check('options', mod.options, 'array').then((passed) => {
+      if (!passed) return false;
+      return mod.options.map((option) =>
+        check('options.option.type', option.type, 'optionType').then((passed) => {
+          if (!passed) return false;
+          const tests = [
+            check('options.option.key', option.key, 'alphanumeric'),
+            check('options.option.label', option.label, 'string'),
+            check('options.option.tooltip', option.tooltip, 'string', {
+              optional: true,
+            }),
+            check('options.option.environments', option.environments, 'array', {
+              optional: true,
+            }).then((passed) => {
+              if (!passed) return false;
+              if (!option.environments) {
+                option.environments = env.supported;
+                return true;
+              }
+              return option.environments.map((env) =>
+                check('options.option.environments.env', env, 'env')
+              );
+            }),
+          ];
+          switch (option.type) {
+            case 'toggle':
+              tests.push(check('options.option.value', option.value, 'boolean'));
+              break;
+            case 'select':
+              tests.push(
+                check('options.option.values', option.values, 'array').then((passed) => {
+                  if (!passed) return false;
+                  return option.values.map((value) =>
+                    check('options.option.values.value', value, 'string')
+                  );
+                })
+              );
+              break;
+            case 'text':
+              tests.push(check('options.option.value', option.value, 'string'));
+              break;
+            case 'number':
+            case 'color':
+              tests.push(check('options.option.value', option.value, option.type));
+              break;
+            case 'file':
+              tests.push(
+                check('options.option.extensions', option.extensions, 'array').then(
+                  (passed) => {
+                    if (!passed) return false;
+                    return option.extensions.map((value) =>
+                      check('options.option.extensions.extension', value, 'string')
+                    );
+                  }
+                )
+              );
+          }
+          return tests;
+        })
+      );
+    }),
   ];
   do {
     conditions = await Promise.all(conditions.flat(Infinity));
   } while (conditions.some((condition) => Array.isArray(condition)));
-  return conditions;
-};
+  return conditions.every((passed) => passed);
+}
 
 /**
- * get the default values of a mod's options according to its mod.json
- * @param {string} id - the uuid of the mod
- * @returns {object} the mod's default values
+ * list all available mods in the repo
+ * @returns {array} a validated list of mod.json objects
  */
-export const defaults = async (id) => {
-  const mod = regex.uuid(id) ? (await registry.get()).find((mod) => mod.id === id) : undefined;
-  if (!mod || !mod.options) return {};
-  const defaults = {};
-  for (const opt of mod.options) {
-    switch (opt.type) {
-      case 'toggle':
-      case 'text':
-      case 'number':
-      case 'color':
-        defaults[opt.key] = opt.value;
-        break;
-      case 'select':
-        defaults[opt.key] = opt.values[0];
-        break;
-      case 'file':
-        defaults[opt.key] = undefined;
-        break;
-    }
-  }
-  return defaults;
-};
-
-/**
- * get all available mods in the repo
- * @param {function} filter - a function to filter out mods
- * @returns {array} the filtered and validated list of mod.json objects
- * @example
- * // will only get mods that are enabled in the current environment
- * await registry.get((mod) => registry.isEnabled(mod.id))
- */
-export const get = async (filter = (mod) => true) => {
-  if (!registry._errors) registry._errors = [];
-  if (!registry._list || !registry._list.length) {
-    registry._list = [];
-    for (const dir of await fs.getJSON('repo/registry.json')) {
-      const err = (message) => [registry._errors.push({ source: dir, message }), env.ERROR][1];
+export const list = async () => {
+  if (!_cache.length) {
+    for (const dir of await getJSON('repo/registry.json')) {
       try {
-        const mod = await fs.getJSON(`repo/${dir}/mod.json`);
+        const mod = await getJSON(`repo/${dir}/mod.json`);
         mod._dir = dir;
-        mod.tags = mod.tags ?? [];
-        mod.css = mod.css ?? {};
-        mod.js = mod.js ?? {};
-        mod.options = mod.options ?? [];
-        const check = (prop, value, condition) =>
-            Promise.resolve(
-              condition ? value : err(`invalid ${prop} ${JSON.stringify(value)}`)
-            ),
-          validation = await registry.validate(mod, err, check);
-        if (validation.every((condition) => condition !== env.ERROR)) registry._list.push(mod);
+        if (await validate(mod)) _cache.push(mod);
       } catch {
-        err('invalid mod.json');
+        _errors.push({ source: dir, message: 'invalid mod.json' });
       }
     }
   }
-  const list = [];
-  for (const mod of registry._list) if (await filter(mod)) list.push(mod);
-  return list;
+  return _cache;
 };
 
 /**
- * gets a list of errors encountered while validating the mod.json files
- * @returns {object} - {source: directory, message: string }
+ * list validation errors encountered when loading the repo
+ * @returns {array<object>} error objects with an error message and a source directory
  */
-registry.errors = async () => {
-  if (!registry._errors) await registry.get();
-  return registry._errors;
+export const errors = async () => {
+  if (!_errors.length) await list();
+  return _errors;
+};
+
+/**
+ * get a single mod from the repo
+ * @param {string} id - the uuid of the mod
+ * @returns {object} the mod's mod.json
+ */
+export const get = async (id) => {
+  if (!_cache.length) await list();
+  return _cache.find((mod) => mod.id === id);
 };
 
 /**
@@ -334,9 +244,34 @@ registry.errors = async () => {
  * @param {string} id - the uuid of the mod
  * @returns {boolean} whether or not the mod is enabled
  */
-registry.isEnabled = async (id) => {
-  const mod = (await registry.get()).find((mod) => mod.id === id);
-  if (mod.environments && !mod.environments.includes(env.name)) return false;
-  if (registry.CORE.includes(id)) return true;
-  return await storage.get('_mods', id, false);
+export const enabled = async (id) => {
+  const mod = await get(id);
+  if (!mod.environments.includes(env.name)) return false;
+  if (core.includes(id)) return true;
+  return await storage.get(
+    ['profiles', await storage.get(['currentprofile'], 'default'), '_mods', id],
+    false
+  );
+};
+
+/**
+ * get a default value of a mod's option according to its mod.json
+ * @param {string} id - the uuid of the mod
+ * @param {string} key - the key of the option
+ * @returns {string|number|boolean|undefined} the option's default value
+ */
+export const optionDefault = async (id, key) => {
+  const mod = await get(id),
+    opt = mod.options.find((opt) => opt.key === key);
+  switch (opt.type) {
+    case 'toggle':
+    case 'text':
+    case 'number':
+    case 'color':
+      return opt.value;
+    case 'select':
+      return opt.values[0];
+    case 'file':
+  }
+  return undefined;
 };

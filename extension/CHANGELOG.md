@@ -7,11 +7,18 @@ a complete rework of the enhancer including a port to the browser as a chrome ex
 - new: cross-environment and properly documented api to replace helpers.
 - new: cross-environment mod loader structure.
 - new: notifications sourced from an online endpoint for sending global user alerts.
-- improved: a redesigned menu with a better overview of all mods and separate pages for options and documentation.
+- new: simplify user installs by depending on the chrome web store and [notion-repackaged](https://github.com/notion-enhancer/notion-repackaged).
+- improved: split the core mod into the theming & menu mods.
 - improved: theming variables that are more specific, less laggy, and less complicated.
+- improved: merged bracketed-links into tweaks.
+- removed: integrated scrollbar tweak (notion now includes by default).
+- removed: js insert. css insert moved to tweaks mod.
+- removed: majority of layout and font size variables - better to leave former to notion and use `ctrl +` for latter.
+- bugfix: bypass csp restrictions.
 
-// todo
+#### todo
 
+- improved: a redesigned menu with a better overview of all mods.
 - new: separate menu profiles for mod configurations.
 
 **below this point the enhancer was desktop-only. in v0.11.0 it was been ported to also**
