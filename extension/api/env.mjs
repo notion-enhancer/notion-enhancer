@@ -38,3 +38,13 @@ export const focusNotion = () => chrome.runtime.sendMessage({ action: 'focusNoti
 
 /** reload all notion and enhancer menu tabs to apply changes */
 export const reloadTabs = () => chrome.runtime.sendMessage({ action: 'reloadTabs' });
+
+/** a notification displayed when the menu is opened for the first time */
+export const welcomeNotification = {
+  id: '84e2d49b-c3dc-44b4-a154-cf589676bfa0',
+  color: 'blue',
+  icon: 'message-circle',
+  message: 'Welcome! Come chat with us on Discord.',
+  link: 'https://discord.gg/sFWPXtA',
+  version,
+};

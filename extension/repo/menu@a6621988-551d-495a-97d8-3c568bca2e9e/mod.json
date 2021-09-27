@@ -14,7 +14,7 @@
   ],
   "css": {
     "client": ["client.css"],
-    "menu": ["menu.css", "markdown.css"]
+    "menu": ["menu.css"]
   },
   "js": {
     "client": ["client.mjs"]

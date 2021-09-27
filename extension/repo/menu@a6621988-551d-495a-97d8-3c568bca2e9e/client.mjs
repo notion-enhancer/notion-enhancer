@@ -17,25 +17,32 @@ export default async function (api, db) {
         <div><div>notion-enhancer</div></div>
       </div>
     </div>`;
+  $sidebarLink.addEventListener('click', env.openEnhancerMenu);
   web.addHotkeyListener(await db.get(['hotkey']), env.openEnhancerMenu);
 
-  const setTheme = () =>
+  const updateTheme = () =>
     db.set(['theme'], document.querySelector('.notion-dark-theme') ? 'dark' : 'light');
-  $sidebarLink.addEventListener('click', () => {
-    setTheme().then(env.openEnhancerMenu);
+  web.addDocumentObserver((mutation) => {
+    if (mutation.target === document.body) updateTheme();
   });
-  window.addEventListener('focus', setTheme);
-  window.addEventListener('blur', setTheme);
-  setTheme();
+  updateTheme();
 
-  const errors = await registry.errors(),
-    notifications = {
-      cache: await db.get(['notifications'], []),
-      provider: await fs.getJSON('https://notion-enhancer.github.io/notifications.json'),
-      count: errors.length,
-    };
+  const notifications = {
+    cache: await db.get(['notifications'], []),
+    provider: [
+      env.welcomeNotification,
+      ...(await fs.getJSON('https://notion-enhancer.github.io/notifications.json')),
+    ],
+    count: (await registry.errors()).length,
+  };
   for (const notification of notifications.provider) {
-    if (!notifications.cache.includes(notification.id)) notifications.count++;
+    if (
+      !notifications.cache.includes(notification.id) &&
+      notification.version === env.version &&
+      (!notification.environments || notification.environments.includes(env.name))
+    ) {
+      notifications.count++;
+    }
   }
   if (notifications.count) {
     $sidebarLink.dataset.hasNotifications = true;

@@ -148,9 +148,7 @@ export const loadStylesheet = (path) => {
 export const icon = (name, attrs = {}) => {
   if (!_$featherStylesheet) {
     _$featherStylesheet = html`<style data-enhancer-api-style="feather">
-      .enhancer-- {
-        width: 1.25em;
-        height: 1.25em;
+      .enhancer--feather {
         stroke: currentColor;
         stroke-width: 2;
         stroke-linecap: round;

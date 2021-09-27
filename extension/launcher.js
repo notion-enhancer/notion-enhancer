@@ -12,25 +12,14 @@ if (
   location.pathname.split(/[/-]/g).reverse()[0].length === 32
 ) {
   import(chrome.runtime.getURL('api/_.mjs')).then(async (api) => {
-    const { registry, storage, web } = api,
-      profile = await storage.get(['currentprofile'], 'default');
+    const { registry, web } = api;
     for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
-      const db = storage.db(
-        ['profiles', profile, mod.id],
-        async (path, fallback = undefined) => {
-          if (path.length === 4) {
-            // profiles -> profile -> mod -> option
-            fallback = (await registry.optionDefault(mod.id, path[3])) ?? fallback;
-          }
-          return storage.get(path, fallback);
-        }
-      );
       for (const sheet of mod.css?.client || []) {
         web.loadStylesheet(`repo/${mod._dir}/${sheet}`);
       }
       for (let script of mod.js?.client || []) {
         script = await import(chrome.runtime.getURL(`repo/${mod._dir}/${script}`));
-        script.default(api, db);
+        script.default(api, await registry.db(mod.id));
       }
     }
     const errors = await registry.errors();

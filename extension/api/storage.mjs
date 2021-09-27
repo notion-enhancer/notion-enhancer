@@ -54,7 +54,7 @@ export const set = (path, value) => {
       }
       const pathClone = [...path],
         namespace = path.shift();
-      chrome.storage.sync.get([], async (values) => {
+      chrome.storage.sync.get(async (values) => {
         const update = values[namespace] ?? {};
         let pointer = update,
           old;

@@ -50,9 +50,7 @@ async function validate(mod) {
     const test = await is(
       type === 'file' && value ? `repo/${mod._dir}/${value}` : value,
       type,
-      {
-        extension,
-      }
+      { extension }
     );
     if (!test) {
       if (optional && (await is(value, 'undefined'))) return true;
@@ -287,4 +285,22 @@ export const optionDefault = async (id, key) => {
     case 'file':
       return undefined;
   }
+};
+
+/**
+ * access the storage partition of a mod in the current profile
+ * @param {string} id - the uuid of the mod
+ * @returns {object} an object with the wrapped get/set functions
+ */
+export const db = async (id) => {
+  return storage.db(
+    ['profiles', await storage.get(['currentprofile'], 'default'), id],
+    async (path, fallback = undefined) => {
+      if (path.length === 4) {
+        // profiles -> profile -> mod -> option
+        fallback = (await optionDefault(id, path[3])) ?? fallback;
+      }
+      return storage.get(path, fallback);
+    }
+  );
 };

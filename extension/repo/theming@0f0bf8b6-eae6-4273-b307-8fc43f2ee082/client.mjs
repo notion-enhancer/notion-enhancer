@@ -9,11 +9,12 @@
 export default function (api, db) {
   const { web } = api;
 
-  const $root = document.querySelector(':root');
-  $root.classList[document.body.classList.contains('dark') ? 'add' : 'remove']('dark');
+  const updateTheme = () =>
+    document.documentElement.classList[
+      document.body.classList.contains('dark') ? 'add' : 'remove'
+    ]('dark');
+  updateTheme();
   web.addDocumentObserver((mutation) => {
-    if (mutation.target === document.body) {
-      $root.classList[document.body.classList.contains('dark') ? 'add' : 'remove']('dark');
-    }
+    if (mutation.target === document.body) updateTheme();
   });
 }

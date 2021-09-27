@@ -7,83 +7,9 @@
 'use strict';
 
 const _id = 'a6621988-551d-495a-97d8-3c568bca2e9e';
-import { env, storage, web, fmt, fs, registry } from '../../api/_.mjs';
-
-for (const mod of await registry.get((mod) => registry.isEnabled(mod.id))) {
-  for (const sheet of mod.css?.menu || []) {
-    web.loadStylesheet(`repo/${mod._dir}/${sheet}`);
-  }
-}
-async function loadTheme() {
-  document.documentElement.className = `notion-${
-    (await storage.get(_id, 'theme')) || 'dark'
-  }-theme`;
-}
-window.addEventListener('focus', loadTheme);
-loadTheme();
+import { env, storage, web, fmt, fs, registry, regexers } from '../../api/_.mjs';
 
 document.querySelector('img[data-notion]').addEventListener('click', env.focusNotion);
-web.addHotkeyListener(await storage.get(_id, 'hotkey.focustoggle'), env.focusNotion);
-web.addDocumentObserver(web.loadIcons);
-
-const notifications = {
-  $el: web.createElement(web.html`<footer class="notifications"></footer>`),
-  push({ heading, message, icon, color }, onDismiss = () => {}) {
-    const $notif = web.createElement(web.html`
-    <div role="alert" class="notification" style="
-      background: var(--theme--block_${web.escapeHtml(color)});
-      color: var(--theme--block_${web.escapeHtml(color)}-text);
-    ">
-      <div><i data-icon="${web.escapeHtml(icon)}"></i></div>
-      <div>
-        <h3>${web.escapeHtml(heading)}</h3>
-        <p>${fmt.md.renderInline(message)}</p>
-      </div>
-      <button class="notification--dismiss"><i data-icon="fa/solid/times"></i></button>
-    </div>`);
-    this.$el.append($notif);
-    setTimeout(() => {
-      $notif.style.opacity = 1;
-    }, 100);
-    $notif.querySelector('.notification--dismiss').addEventListener('click', (event) => {
-      $notif.style.opacity = 0;
-      $notif.style.transform = 'scaleY(0)';
-      $notif.style.marginTop = `-${
-        $notif.offsetHeight / parseFloat(getComputedStyle(document.documentElement).fontSize)
-      }rem`;
-      setTimeout(() => $notif.remove(), 400);
-      onDismiss();
-    });
-    return $notif;
-  },
-};
-document.body.append(notifications.$el);
-for (const error of await registry.errors()) {
-  notifications.push({
-    heading: `error: ${error.source}`,
-    message: error.message,
-    color: 'red',
-    icon: 'fa/solid/exclamation-triangle',
-  });
-}
-for (const notification of await (async () => {
-  const dismissed = await storage.get('_notifications', 'dismissed', []);
-  return (await fs.getJSON('https://notion-enhancer.github.io/notifications.json'))
-    .sort((a, b) => b.id - a.id)
-    .filter(({ id }) => !dismissed.includes(id));
-})()) {
-  if (
-    (!notification.versions || notification.versions.includes(env.version)) &&
-    (!notification.environments || notification.environments.includes(env.name))
-  ) {
-    notifications.push(notification, async () => {
-      const dismissed = await storage.get('_notifications', 'dismissed', []);
-      storage.set('_notifications', 'dismissed', [
-        ...new Set([...dismissed, notification.id]),
-      ]);
-    });
-  }
-}
 
 import * as router from './router.js';
 
