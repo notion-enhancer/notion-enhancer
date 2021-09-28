@@ -13,7 +13,7 @@
     }
   ],
   "js": {
-    "client": ["client.mjs?"]
+    "client": ["client.mjs"]
   },
   "css": {
     "client": ["client.css"]

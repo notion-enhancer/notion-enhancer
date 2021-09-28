@@ -51,6 +51,12 @@ export const whenReady = (selectors = []) => {
 };
 
 /**
+ * parse the current location search params into a usable form
+ * @returns {map<string,string>} a map of the url search params
+ */
+export const queryParams = () => new URLSearchParams(window.location.search);
+
+/**
  * replace special html characters with escaped versions
  * @param {string} str
  * @returns {string} escaped string

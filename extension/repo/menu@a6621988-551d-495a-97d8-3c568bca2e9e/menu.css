@@ -4,6 +4,10 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+::selection {
+  background: var(--theme--accent_blue-selection);
+}
+
 ::-webkit-scrollbar {
   width: 10px;
   height: 10px;

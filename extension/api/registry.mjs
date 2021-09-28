@@ -38,20 +38,25 @@ async function validate(mod) {
   const check = async (
     key,
     value,
-    type,
+    types,
     {
       extension = '',
-      error = `invalid ${key} (${extension ? `${extension} ` : ''}${type}): ${JSON.stringify(
+      error = `invalid ${key} (${extension ? `${extension} ` : ''}${types}): ${JSON.stringify(
         value
       )}`,
       optional = false,
     } = {}
   ) => {
-    const test = await is(
-      type === 'file' && value ? `repo/${mod._dir}/${value}` : value,
-      type,
-      { extension }
-    );
+    let test;
+    for (const type of types.split('|')) {
+      if (type === 'file') {
+        test =
+          value && !value.startsWith('http')
+            ? await is(`repo/${mod._dir}/${value}`, type, { extension })
+            : false;
+      } else test = await is(value, type, { extension });
+      if (test) break;
+    }
     if (!test) {
       if (optional && (await is(value, 'undefined'))) return true;
       if (error) _errors.push({ source: mod._dir, message: error });
@@ -72,11 +77,23 @@ async function validate(mod) {
       return mod.environments.map((tag) => check('environments.env', tag, 'env'));
     }),
     check('description', mod.description, 'string'),
-    // file doubles for url here
-    check('preview', mod.preview, 'file', { optional: true }),
-    check('tags', mod.tags, 'array').then((passed) =>
-      passed ? mod.tags.map((tag) => check('tags.tag', tag, 'string')) : 0
-    ),
+    check('preview', mod.preview, 'file|url', { optional: true }),
+    check('tags', mod.tags, 'array').then((passed) => {
+      if (!passed) return false;
+      const containsCategory = mod.tags.filter((tag) =>
+        ['core', 'extension', 'theme'].includes(tag)
+      ).length;
+      if (!containsCategory) {
+        _errors.push({
+          source: mod._dir,
+          message: `invalid tags (must contain at least one of 'core', 'extension', or 'theme'): ${JSON.stringify(
+            mod.tags
+          )}`,
+        });
+        return false;
+      }
+      return mod.tags.map((tag) => check('tags.tag', tag, 'string'));
+    }),
     check('authors', mod.authors, 'array').then((passed) => {
       if (!passed) return false;
       return mod.authors.map((author) => [
@@ -219,7 +236,8 @@ export const list = async (filter = (mod) => true) => {
         const mod = await getJSON(`repo/${dir}/mod.json`);
         mod._dir = dir;
         if (await validate(mod)) _cache.push(mod);
-      } catch {
+      } catch (e) {
+        console.log(e);
         _errors.push({ source: dir, message: 'invalid mod.json' });
       }
     }

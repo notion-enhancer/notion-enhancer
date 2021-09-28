@@ -8,8 +8,6 @@
 
 import { web } from '../../api/_.mjs';
 
-export const queryParams = () => new URLSearchParams(window.location.search);
-
 let _defaultView = '',
   $viewRoot;
 const _views = new Map();
@@ -26,7 +24,7 @@ function router(event) {
   const anchor = event.path.find((anchor) => anchor.nodeName === 'A');
   if (location.search !== anchor.getAttribute('href')) {
     window.history.pushState(null, null, anchor.href);
-    listen();
+    loadView();
   }
 }
 function navigator(event) {
@@ -38,33 +36,24 @@ function navigator(event) {
   history.replaceState({ search: location.search, hash }, null, `#${hash}`);
 }
 
-export async function listen(defaultView = null, $elem = null) {
+export async function loadView(defaultView = null) {
   if (defaultView) _defaultView = defaultView;
-  if ($elem) $viewRoot = $elem;
-  if (!$viewRoot) throw new Error('no view root set.');
   if (!_defaultView) throw new Error('no view root set.');
 
-  const query = queryParams(),
+  const query = web.queryParams(),
     fallbackView = () => {
       window.history.replaceState(null, null, `?view=${_defaultView}`);
-      return listen();
+      return loadView();
     };
   if (!query.get('view') || document.body.dataset.view !== query.get('view')) {
     if (_views.get(query.get('view'))) {
-      $viewRoot.style.opacity = 0;
-      const loadFunc = _views.get(query.get('view'))();
-      setTimeout(async () => {
-        await loadFunc;
-        requestAnimationFrame(() => {
-          $viewRoot.style.opacity = '';
-        });
-      }, 200);
+      await _views.get(query.get('view'))();
     } else return fallbackView();
   } else return fallbackView();
 }
 
 window.addEventListener('popstate', (event) => {
-  if (event.state) listen();
+  if (event.state) loadView();
   document.getElementById(location.hash.slice(1))?.scrollIntoView(true);
   document.documentElement.scrollTop = 0;
 });

@@ -4,68 +4,64 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-::selection {
-  background: var(--theme--selected);
-}
-
-.markdown table {
+.enhancer--markdown table {
   border-spacing: 0;
-  border: 1px solid var(--theme--divider);
+  border: 1px solid var(--theme--ui_divider);
 }
-.markdown table th {
+.enhancer--markdown table th {
   text-align: left;
 }
-.markdown table th,
-.markdown table td {
+.enhancer--markdown table th,
+.enhancer--markdown table td {
   padding: 5px 8px 6px;
-  border: 1px solid var(--theme--divider);
+  border: 1px solid var(--theme--ui_divider);
 }
-.markdown h1 {
-  font-size: var(--theme--font_heading1-size);
+.enhancer--markdown h1 {
+  font-size: 1.875rem;
   margin: 1rem 0 0.5rem 0;
 }
-.markdown h2 {
-  font-size: var(--theme--font_heading2-size);
+.enhancer--markdown h2 {
+  font-size: 1.5rem;
   margin: 1rem 0 0.5rem 0;
 }
-.markdown h3 {
-  font-size: var(--theme--font_heading3-size);
+.enhancer--markdown h3 {
+  font-size: 1.25rem;
   margin: 1rem 0 0.5rem 0;
 }
-.markdown ul,
-.markdown ol {
+.enhancer--markdown ul,
+.enhancer--markdown ol {
   padding-left: 1.25rem;
 }
-.markdown li {
+.enhancer--markdown li {
   margin: 0.4rem 0;
 }
-.markdown ol li {
+.enhancer--markdown ol li {
   padding-left: 0.25rem;
 }
-.markdown blockquote {
+.enhancer--markdown blockquote {
   border-left: 2px solid currentColor;
   padding-left: 0.75rem;
   margin: 0.5rem 0;
 }
-.markdown hr {
-  border: 0.5px solid var(--theme--divider);
+.enhancer--markdown hr {
+  border: 0.5px solid var(--theme--ui_divider);
 }
-.markdown a {
+.enhancer--markdown a {
   opacity: 0.7;
   text-decoration: none;
-  border-bottom: 0.05em solid currentColor;
+  border-bottom: 0.05em solid var(--theme--text_ui);
 }
-.markdown a:hover {
-  opacity: 1;
+.enhancer--markdown a:hover {
+  opacity: 0.9;
 }
 
-.markdown :not(pre) > code {
+.enhancer--markdown :not(pre) > code {
   padding: 0.2em 0.4em;
   border-radius: 3px;
   background: var(--theme--code_inline);
   color: var(--theme--code_inline-text);
 }
-.markdown pre {
+.enhancer--markdown pre {
   padding: 2em 1.25em;
   border-radius: 3px;
   tab-size: 2;
@@ -74,10 +70,10 @@
   background: var(--theme--code);
   color: var(--theme--code_plain);
 }
-.markdown pre,
-.markdown code {
+.enhancer--markdown pre,
+.enhancer--markdown code {
   font-family: var(--theme--font_code);
-  font-size: var(--theme--font_code-size);
+  font-size: 0.796875rem;
   text-align: left;
   word-spacing: normal;
   word-break: normal;
@@ -89,7 +85,7 @@
 /*
  * https://prismjs.com/plugins/inline-color/
  */
-.inline-color-wrapper {
+.enhancer--markdown .inline-color-wrapper {
   /*
 	 * base64 svg (https://stackoverflow.com/a/21626701/7595472 - prevents visual glitches)
 	 * <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2">
@@ -108,7 +104,7 @@
   border: 0.5px solid var(--theme--code_plain);
   overflow: hidden;
 }
-.inline-color {
+.enhancer--markdown .inline-color {
   display: block;
   height: 120%;
   width: 120%;
@@ -117,8 +113,8 @@
 /*
  * https://prismjs.com/plugins/match-braces/
  */
-.token.punctuation.brace-hover,
-.token.punctuation.brace-selected {
+.enhancer--markdown .token.punctuation.brace-hover,
+.enhancer--markdown .token.punctuation.brace-selected {
   outline: solid 1px;
 }
 
@@ -126,43 +122,43 @@
  * https://prismjs.com/plugins/show-language/
  * https://prismjs.com/plugins/copy-to-clipboard/
  */
-.code-toolbar {
+.enhancer--markdown .code-toolbar {
   position: relative;
 }
-.code-toolbar .toolbar-item {
+.enhancer--markdown .code-toolbar .toolbar-item {
   position: absolute;
   top: 0.35rem;
   display: inline-block;
   transition: opacity 200ms ease-in-out;
   opacity: 0;
 }
-.code-toolbar .toolbar-item:first-child {
+.enhancer--markdown .code-toolbar .toolbar-item:first-child {
   left: 0.8rem;
 }
-.code-toolbar .toolbar-item:last-child {
+.enhancer--markdown .code-toolbar .toolbar-item:last-child {
   right: 0.8rem;
 }
-.code-toolbar:hover .toolbar-item,
-.code-toolbar:focus-within .toolbar-item {
+.enhancer--markdown .code-toolbar:hover .toolbar-item,
+.enhancer--markdown .code-toolbar:focus-within .toolbar-item {
   opacity: 1;
 }
-.code-toolbar .toolbar-item > * {
+.enhancer--markdown .code-toolbar .toolbar-item > * {
   padding: 0.25rem 0.35rem;
-  color: var(--theme--text_property);
-  font-size: var(--theme--font_ui_small-size);
+  color: var(--theme--text_ui);
+  font-size: 11px;
   font-family: inherit;
 }
-.code-toolbar .toolbar-item .copy-to-clipboard-button {
+.enhancer--markdown .code-toolbar .toolbar-item .copy-to-clipboard-button {
   border: none;
   background: none;
   cursor: pointer;
   border-radius: 3px;
   transition: background 100ms ease-in-out;
 }
-.code-toolbar .toolbar-item .copy-to-clipboard-button:hover {
+.enhancer--markdown .code-toolbar .toolbar-item .copy-to-clipboard-button:hover {
   background: var(--theme--button-hover);
 }
-.code-toolbar .toolbar-item .copy-to-clipboard-button svg {
+.enhancer--markdown .code-toolbar .toolbar-item .copy-to-clipboard-button svg {
   width: 1em;
   margin-right: 0.5em;
 }
