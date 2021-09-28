@@ -24,7 +24,8 @@ const mapColorVariables = (color) => ({
 
 setup({
   preflight: {
-    body: apply`px-4 py-3 bg-notion-bg font-sans`,
+    html: apply`w-full h-full`,
+    body: apply`w-full h-full bg-notion-bg font-sans text-foreground`,
   },
   theme: {
     fontFamily: {
@@ -91,7 +92,7 @@ document.addEventListener('visibilitychange', loadTheme);
 loadTheme();
 
 const notifications = {
-  $container: web.html`<div class="${tw`absolute bottom-3 right-4 w-80`}"></div>`,
+  $container: web.html`<div class="${tw`absolute bottom-0 right-0 px-4 py-3 max-w-full w-96`}"></div>`,
   cache: await db.get(['notifications'], []),
   provider: [
     env.welcomeNotification,
@@ -99,7 +100,9 @@ const notifications = {
   ],
   add({ icon, message, id = undefined, color = undefined, link = undefined }) {
     const style = tw`p-2 ${
-        color ? `bg-${color}-tag text-${color}-tag-text` : 'bg-notion-popup text-foreground'
+        color
+          ? `bg-${color}-tag text-${color}-tag-text border border-${color}-text hover:bg-${color}-text`
+          : 'bg-notion-popup text-foreground hover:bg-interactive-hover border border-notion-divider'
       } flex items-center rounded-full mt-3 shadow-md cursor-pointer`,
       $notification = web.render(
         link
@@ -143,3 +146,57 @@ if (errors.length) {
     color: 'red',
   });
 }
+
+// mod config
+
+const $container = web.html`<div class="${tw`flex w-full h-full`}"></div>`,
+  $nav = web.html`<nav class="${tw`px-4 py-3 flex items-center border-b border-notion-divider space-x-4`}"></nav>`,
+  $main = web.html`<main class="${tw`transition px-4 py-3`}">abc</main>`,
+  $footer = web.html`<footer></footer>`,
+  $sidebar = web.html`<article class="${tw`h-full w-96 bg-notion-secondary border-l border-notion-divider`}"></article>`;
+
+const $notion = web.html`<h1 class="${tw`flex items-center font-semibold text-xl cursor-pointer select-none mr-4`}">
+    ${(await fs.getText('icon/colour.svg')).replace(
+      /width="\d+" height="\d+"/,
+      `class="${tw`h-6 w-6 mr-3`}"`
+    )}
+    <a href="https://notion-enhancer.github.io/" target="_blank">notion-enhancer</a>
+  </h1>`;
+$notion.children[0].addEventListener('click', env.focusNotion);
+
+const navItemStyle = tw`px-3 py-2 rounded-md text-sm font-medium bg-interactive hover:bg-interactive-hover`,
+  selectedNavItemStyle = tw`px-3 py-2 rounded-md text-sm font-medium ring-1 ring-notion-divider bg-notion-secondary`;
+
+const $extensionsNavItem = web.html`<a href="?view=extensions" class="${navItemStyle}">extensions</a>`,
+  $themesNavItem = web.html`<a href="?view=themes" class="${navItemStyle}">themes</a>`,
+  $supportNavItem = web.html`<a href="https://discord.gg/sFWPXtA" class="${navItemStyle}">support</a>`;
+
+web.render(
+  document.body,
+  web.render(
+    $container,
+    web.render(
+      web.html`<div class="${tw`h-full flex-auto`}"></div>`,
+      web.render($nav, $notion, $extensionsNavItem, $themesNavItem, $supportNavItem),
+      $main,
+      $footer
+    ),
+    $sidebar
+  )
+);
+
+import * as router from './router.mjs';
+
+router.addView('extensions', () => {
+  $themesNavItem.className = navItemStyle;
+  $extensionsNavItem.className = selectedNavItemStyle;
+  web.empty($main);
+  web.render($main, 123);
+});
+router.addView('themes', () => {
+  $extensionsNavItem.className = navItemStyle;
+  $themesNavItem.className = selectedNavItemStyle;
+  web.empty($main);
+  web.render($main, 456);
+});
+router.listen('extensions', $main);

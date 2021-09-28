@@ -9,8 +9,6 @@
 const _id = 'a6621988-551d-495a-97d8-3c568bca2e9e';
 import { env, storage, web, fmt, fs, registry, regexers } from '../../api/_.mjs';
 
-document.querySelector('img[data-notion]').addEventListener('click', env.focusNotion);
-
 import * as router from './router.js';
 
 const components = {};
