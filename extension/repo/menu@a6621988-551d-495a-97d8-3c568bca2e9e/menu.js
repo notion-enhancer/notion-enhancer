@@ -265,7 +265,7 @@ const actionButtons = {
         <span><i data-icon="fa/solid/redo"></i></span>
         <span>reload tabs to apply changes</span>
       </button>`);
-      $reload.addEventListener('click', env.reloadTabs);
+      $reload.addEventListener('click', env.reload);
       $fragment.querySelector('.action--buttons').append($reload);
       await new Promise((res, rej) => requestAnimationFrame(res));
       $reload.dataset.triggered = true;

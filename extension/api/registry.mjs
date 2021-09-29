@@ -28,6 +28,12 @@ export const core = [
 /** all available configuration types */
 export const optionTypes = ['toggle', 'select', 'text', 'number', 'color', 'file'];
 
+/** the root database for the current profile */
+export const profile = storage.db([
+  'profiles',
+  await storage.get(['currentprofile'], 'default'),
+]);
+
 /**
  * internally used to validate mod.json files and provide helpful errors
  * @private
@@ -276,10 +282,7 @@ export const enabled = async (id) => {
   const mod = await get(id);
   if (!mod.environments.includes(env.name)) return false;
   if (core.includes(id)) return true;
-  return await storage.get(
-    ['profiles', await storage.get(['currentprofile'], 'default'), '_mods', id],
-    false
-  );
+  return await profile.get(['_mods', id], false);
 };
 
 /**
@@ -312,13 +315,14 @@ export const optionDefault = async (id, key) => {
  */
 export const db = async (id) => {
   return storage.db(
-    ['profiles', await storage.get(['currentprofile'], 'default'), id],
+    [id],
     async (path, fallback = undefined) => {
-      if (path.length === 4) {
+      if (path.length === 2) {
         // profiles -> profile -> mod -> option
-        fallback = (await optionDefault(id, path[3])) ?? fallback;
+        fallback = (await optionDefault(id, path[1])) ?? fallback;
       }
-      return storage.get(path, fallback);
-    }
+      return profile.get(path, fallback);
+    },
+    profile.set
   );
 };

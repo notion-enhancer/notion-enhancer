@@ -30,7 +30,7 @@ function focusNotion() {
   );
 }
 
-function reloadTabs() {
+function reload() {
   chrome.tabs.query({ url: 'https://*.notion.so/*' }, (tabs) => {
     (tabs || []).forEach((tab) => chrome.tabs.reload(tab.id));
   });
@@ -51,8 +51,8 @@ chrome.runtime.onMessage.addListener((request, sender, sendResponse) => {
     case 'focusNotion':
       focusNotion();
       break;
-    case 'reloadTabs':
-      reloadTabs();
+    case 'reload':
+      reload();
       break;
   }
   return true;

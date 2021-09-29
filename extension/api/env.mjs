@@ -37,7 +37,7 @@ export const openEnhancerMenu = () =>
 export const focusNotion = () => chrome.runtime.sendMessage({ action: 'focusNotion' });
 
 /** reload all notion and enhancer menu tabs to apply changes */
-export const reloadTabs = () => chrome.runtime.sendMessage({ action: 'reloadTabs' });
+export const reload = () => chrome.runtime.sendMessage({ action: 'reload' });
 
 /** a notification displayed when the menu is opened for the first time */
 export const welcomeNotification = {

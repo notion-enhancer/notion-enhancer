@@ -75,8 +75,13 @@ setup({
       'red': mapColorVariables('red'),
     },
     extend: {
+      width: {
+        'full-96': 'calc(100% - 24rem)',
+      },
       maxHeight: {
         'full-16': 'calc(100% - 4rem)',
+        'full-32': 'calc(100% - 8rem)',
+        'full-48': 'calc(100% - 12rem)',
       },
     },
   },
@@ -87,8 +92,7 @@ setup({
 import * as api from '../../api/_.mjs';
 import { render } from '../../api/web.mjs';
 const { env, fmt, fs, registry, storage, web } = api,
-  db = await registry.db('a6621988-551d-495a-97d8-3c568bca2e9e'),
-  profile = await storage.get(['currentprofile'], 'default');
+  db = await registry.db('a6621988-551d-495a-97d8-3c568bca2e9e');
 
 web.addHotkeyListener(await db.get(['hotkey']), env.focusNotion);
 
@@ -141,6 +145,17 @@ const notifications = {
       if (['Enter', ' '].includes(event.key)) resolve();
     });
     web.render(notifications.$container, $notification);
+    return $notification;
+  },
+  _changes: false,
+  changes() {
+    if (this._changes) return;
+    this._changes = true;
+    const $notification = this.add({
+      icon: 'refresh-cw',
+      message: 'Reload to apply changes.',
+    });
+    $notification.addEventListener('click', env.reload);
   },
 };
 render(document.body, notifications.$container);
@@ -168,22 +183,24 @@ if (errors.length) {
 // mod config
 
 const $container = web.html`<div class="${tw`flex w-full h-full overflow-hidden`}"></div>`,
-  $nav = web.html`<nav class="${tw`px-4 py-3 flex items-center border-b border-notion-divider space-x-4 h-16`}"></nav>`,
-  $main = web.html`<main class="${tw`transition px-4 py-3 overflow-y-auto max-h-full-16`}">abc</main>`,
+  $nav = web.html`<nav class="${tw`px-4 py-3 flex flex-wrap items-center border-b border-notion-divider h-48 sm:h-32 lg:h-16`}"></nav>`,
+  $main = web.html`<main class="${tw`transition px-4 py-3 overflow-y-auto max-h-full-48 sm:max-h-full-32 lg:max-h-full-16`}">abc</main>`,
   // $footer = web.html`<footer></footer>`,
   $sidebar = web.html`<article class="${tw`h-full w-96 bg-notion-secondary border-l border-notion-divider`}"></article>`;
 
-const $notion = web.html`<h1 class="${tw`flex items-center font-semibold text-xl cursor-pointer select-none mr-4`}">
+const notionNavStyle = tw`flex items-center font-semibold text-xl cursor-pointer select-none mr-4
+  ml-4 sm:mb-4 md:w-full lg:(w-auto ml-0 mb-0)`,
+  $notion = web.html`<h1 class="${notionNavStyle}">
     ${(await fs.getText('icon/colour.svg')).replace(
       /width="\d+" height="\d+"/,
-      `class="${tw`h-6 w-6 mr-3`}"`
+      `class="${tw`h-12 w-12 mr-5 sm:(h-6 w-6 mr-3)`}"`
     )}
     <a href="https://notion-enhancer.github.io/" target="_blank">notion-enhancer</a>
   </h1>`;
 $notion.children[0].addEventListener('click', env.focusNotion);
 
-const navItemStyle = tw`px-3 py-2 rounded-md text-sm font-medium bg-interactive hover:bg-interactive-hover`,
-  selectedNavItemStyle = tw`px-3 py-2 rounded-md text-sm font-medium ring-1 ring-notion-divider bg-notion-secondary`;
+const navItemStyle = tw`ml-4 px-3 py-2 rounded-md text-sm font-medium bg-interactive hover:bg-interactive-hover`,
+  selectedNavItemStyle = tw`ml-4 px-3 py-2 rounded-md text-sm font-medium ring-1 ring-notion-divider bg-notion-secondary`;
 
 const $coreNavItem = web.html`<a href="?view=core" class="${navItemStyle}">core</a>`,
   $extensionsNavItem = web.html`<a href="?view=extensions" class="${navItemStyle}">extensions</a>`,
@@ -195,7 +212,7 @@ web.render(
   web.render(
     $container,
     web.render(
-      web.html`<div class="${tw`h-full flex-auto w-min`}"></div>`,
+      web.html`<div class="${tw`h-full w-full-96`}"></div>`,
       web.render(
         $nav,
         $notion,
@@ -285,12 +302,13 @@ components.mod = async (mod) => {
     customCheckStyle: 'ml-auto',
   });
   $toggle.addEventListener('change', (event) => {
-    storage.set(['profiles', profile, '_mods', mod.id], event.target.checked);
+    registry.profile.set(['_mods', mod.id], event.target.checked);
+    notifications.changes();
   });
   const style = tw`relative h-full w-full flex flex-col overflow-hidden rounded-lg shadow-lg
     bg-notion-secondary border border-notion-divider`;
   return web.render(
-    web.html`<article class="${tw`w-1/3 px-2.5 py-2.5 box-border`}"></article>`,
+    web.html`<article class="${tw`w-full md:w-1/2 lg:w-1/3 xl:w-1/4 2xl:w-1/5 px-2.5 py-2.5 box-border`}"></article>`,
     web.render(
       web.html`<div class="${style}"></div>`,
       mod.preview
