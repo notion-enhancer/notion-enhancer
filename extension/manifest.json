@@ -19,15 +19,15 @@
   "web_accessible_resources": [
     {
       "resources": ["api/*", "dep/*", "icon/*", "repo/*"],
-      "matches": ["https://*.notion.so/*"]
+      "matches": ["https://*.notion.so/*", "https://*.notion.site/*"]
     }
   ],
   "content_scripts": [
     {
-      "matches": ["https://*.notion.so/*"],
+      "matches": ["https://*.notion.so/*", "https://*.notion.site/*"],
       "js": ["launcher.js"]
     }
   ],
   "permissions": ["tabs", "storage", "unlimitedStorage"],
-  "host_permissions": ["https://*.notion.so/*", "<all_urls>"]
+  "host_permissions": ["https://*.notion.so/*", "https://*.notion.site/*", "<all_urls>"]
 }

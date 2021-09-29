@@ -242,8 +242,7 @@ export const list = async (filter = (mod) => true) => {
         const mod = await getJSON(`repo/${dir}/mod.json`);
         mod._dir = dir;
         if (await validate(mod)) _cache.push(mod);
-      } catch (e) {
-        console.log(e);
+      } catch {
         _errors.push({ source: dir, message: 'invalid mod.json' });
       }
     }

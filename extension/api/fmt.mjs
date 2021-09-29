@@ -11,6 +11,8 @@
  * @module notion-enhancer/api/fmt
  */
 
+import * as web from './web.mjs';
+
 import '../dep/prism.min.js';
 /** syntax highlighting using https://prismjs.com/ */
 export const prism = Prism;
@@ -19,7 +21,7 @@ Prism.hooks.add('complete', async (event) => {
   event.element.parentElement.removeAttribute('tabindex');
   event.element.parentElement.parentElement
     .querySelector('.copy-to-clipboard-button')
-    .prepend(web.createElement(await web.getIcon('fa/regular/copy')));
+    .prepend(web.html`${await web.icon('clipboard')}`);
 });
 
 import '../dep/markdown-it.min.js';
@@ -27,7 +29,7 @@ import '../dep/markdown-it.min.js';
 export const md = new markdownit({
   linkify: true,
   highlight: (str, lang) =>
-    web.html`<pre class="language-${lang || 'plaintext'} match-braces"><code>${web.escapeHtml(
+    web.html`<pre class="language-${lang || 'plaintext'} match-braces"><code>${web.escape(
       str
     )}</code></pre>`,
 });
@@ -36,7 +38,7 @@ md.renderer.rules.code_block = (tokens, idx, options, env, slf) => {
   if (attrIdx === -1) {
     tokens[idx].attrPush(['class', 'match-braces language-plaintext']);
   } else tokens[idx].attrs[attrIdx][1] = 'match-braces language-plaintext';
-  return web.html`<pre${slf.renderAttrs(tokens[idx])}><code>${web.escapeHtml(
+  return web.html`<pre${slf.renderAttrs(tokens[idx])}><code>${web.escape(
     tokens[idx].content
   )}</code></pre>\n`;
 };
@@ -47,7 +49,7 @@ md.core.ruler.push(
     state.tokens.forEach(function (token, i) {
       if (token.type === 'heading_open') {
         const text = md.renderer.render(state.tokens[i + 1].children, md.options),
-          slug = fmt.slugger(text, slugs);
+          slug = slugger(text, slugs);
         slugs.add(slug);
         const attrIdx = token.attrIndex('id');
         if (attrIdx === -1) {

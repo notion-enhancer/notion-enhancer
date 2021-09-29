@@ -30,8 +30,7 @@ export const supported = ['linux', 'win32', 'darwin', 'extension'];
 export const version = chrome.runtime.getManifest().version;
 
 /** open the enhancer's menu */
-export const openEnhancerMenu = () =>
-  chrome.runtime.sendMessage({ action: 'openEnhancerMenu' });
+export const focusMenu = () => chrome.runtime.sendMessage({ action: 'focusMenu' });
 
 /** focus an active notion tab */
 export const focusNotion = () => chrome.runtime.sendMessage({ action: 'focusNotion' });

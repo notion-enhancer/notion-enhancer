@@ -7,8 +7,18 @@
 'use strict';
 
 export default async function (api, db) {
-  const { env, fs, registry, web } = api,
-    sidebarSelector = '.notion-sidebar-container .notion-sidebar > div:nth-child(4)';
+  const { env, fs, registry, web } = api;
+
+  web.addHotkeyListener(await db.get(['hotkey']), env.focusMenu);
+
+  const updateTheme = () =>
+    db.set(['theme'], document.querySelector('.notion-dark-theme') ? 'dark' : 'light');
+  web.addDocumentObserver((mutation) => {
+    if (mutation.target === document.body) updateTheme();
+  });
+  updateTheme();
+
+  const sidebarSelector = '.notion-sidebar-container .notion-sidebar > div:nth-child(4)';
   await web.whenReady([sidebarSelector]);
 
   const $sidebarLink = web.html`<div class="enhancer--sidebarMenuLink" role="button" tabindex="0">
@@ -17,15 +27,7 @@ export default async function (api, db) {
         <div><div>notion-enhancer</div></div>
       </div>
     </div>`;
-  $sidebarLink.addEventListener('click', env.openEnhancerMenu);
-  web.addHotkeyListener(await db.get(['hotkey']), env.openEnhancerMenu);
-
-  const updateTheme = () =>
-    db.set(['theme'], document.querySelector('.notion-dark-theme') ? 'dark' : 'light');
-  web.addDocumentObserver((mutation) => {
-    if (mutation.target === document.body) updateTheme();
-  });
-  updateTheme();
+  $sidebarLink.addEventListener('click', env.focusMenu);
 
   const notifications = {
     cache: await db.get(['notifications'], []),

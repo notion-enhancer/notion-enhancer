@@ -18,7 +18,7 @@ const _hotkeyEventListeners = [],
   _documentObserverListeners = [],
   _documentObserverEvents = [];
 
-let _$featherStylesheet, _$tooltip, _$tooltipStylesheet, _hotkeyEvent, _documentObserver;
+let _$tooltip, _$tooltipStylesheet, _hotkeyEvent, _documentObserver;
 
 import '../dep/jscolor.min.js';
 /** color picker with alpha channel using https://jscolor.com/ */
@@ -152,22 +152,13 @@ export const loadStylesheet = (path) => {
  * @returns {string} an svg string
  */
 export const icon = (name, attrs = {}) => {
-  if (!_$featherStylesheet) {
-    _$featherStylesheet = html`<style data-enhancer-api-style="feather">
-      .enhancer--feather {
-        stroke: currentColor;
-        stroke-width: 2;
-        stroke-linecap: round;
-        stroke-linejoin: round;
-        fill: none;
-      }
-    </style>`;
-    render(document.head, _$featherStylesheet);
-  }
-  attrs.class = ((attrs.class || '') + ' enhancer--feather').trim();
-  return `<svg ${Object.entries(attrs).map(
-    ([key, val]) => `${escape(key)}="${escape(val)}"`
-  )}><use xlink:href="${localPath('dep/feather-sprite.svg')}#${name}" /></svg>`;
+  attrs.style = (
+    (attrs.style || '') +
+    ';stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none;'
+  ).trim();
+  return `<svg ${Object.entries(attrs)
+    .map(([key, val]) => `${escape(key)}="${escape(val)}"`)
+    .join(' ')}><use xlink:href="${localPath('dep/feather-sprite.svg')}#${name}" /></svg>`;
 };
 
 /**
@@ -177,9 +168,9 @@ export const icon = (name, attrs = {}) => {
  */
 export const tooltip = ($ref, text) => {
   if (!_$tooltip) {
-    _$tooltip = html`<div class="enhancer--tooltip"></div>`;
-    _$tooltipStylesheet = html`<style data-enhancer-api-style="tooltip">
-      .enhancer--tooltip {
+    _$tooltip = html`<div id="enhancer--tooltip"></div>`;
+    _$tooltipStylesheet = html`<style>
+      #enhancer--tooltip {
         position: absolute;
         background: var(--theme--ui_tooltip);
         font-size: 11.5px;
@@ -189,13 +180,13 @@ export const tooltip = ($ref, text) => {
         max-width: 20rem;
         display: none;
       }
-      .enhancer--tooltip p {
+      #enhancer--tooltip p {
         margin: 0.25rem 0;
       }
-      .enhancer--tooltip p:first-child {
+      #enhancer--tooltip p:first-child {
         color: var(--theme--ui_tooltip-title);
       }
-      .enhancer--tooltip p:not(:first-child) {
+      #enhancer--tooltip p:not(:first-child) {
         color: var(--theme--ui_tooltip-description);
       }
     </style>`;

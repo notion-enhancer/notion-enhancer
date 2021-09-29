@@ -6,93 +6,13 @@
 
 'use strict';
 
-// css-in-js for better component generation
-
-import { tw, apply, setup } from '../../dep/twind.mjs';
-import { content } from '../../dep/twind-content.mjs';
-const pseudoContent = content('""');
-
-const mapColorVariables = (color) => ({
-  'text': `var(--theme--text_${color})`,
-  'highlight': `var(--theme--highlight_${color})`,
-  'highlight-text': `var(--theme--highlight_${color}-text)`,
-  'block': `var(--theme--block_${color})`,
-  'block-text': `var(--theme--block_${color}-text)`,
-  'tag': `var(--theme--tag_${color})`,
-  'tag-text': `var(--theme--tag_${color}-text)`,
-  'callout': `var(--theme--callout_${color})`,
-  'callout-text': `var(--theme--callout_${color}-text)`,
-});
-
-setup({
-  preflight: {
-    html: apply`w-full h-full`,
-    body: apply`w-full h-full bg-notion-bg font-sans text-foreground`,
-  },
-  theme: {
-    fontFamily: {
-      sans: ['var(--theme--font_sans)'],
-      mono: ['var(--theme--font_mono)'],
-    },
-    colors: {
-      'notion': {
-        'bg': 'var(--theme--bg)',
-        'secondary': 'var(--theme--bg_secondary)',
-        'popup': 'var(--theme--bg_popup)',
-        'divider': 'var(--theme--ui_divider)',
-        'input': 'var(--theme--ui_input)',
-      },
-      'icon': 'var(--theme--icon)',
-      'icon-ui': 'var(--theme--icon_ui)',
-      'foreground': 'var(--theme--text)',
-      'foreground-ui': 'var(--theme--text_ui)',
-      'interactive': 'var(--theme--ui_interactive)',
-      'interactive-hover': 'var(--theme--ui_interactive-hover)',
-      'tag': 'var(--theme--tag_default)',
-      'tag-text': 'var(--theme--tag_default-text)',
-      'toggle': {
-        'on': 'var(--theme--ui_toggle-on)',
-        'off': 'var(--theme--ui_toggle-off)',
-        'feature': 'var(--theme--ui_toggle-feature)',
-      },
-      'accent': {
-        'blue': 'var(--theme--accent_blue)',
-        'blue-hover': 'var(--theme--accent_blue-hover)',
-        'blue-active': 'var(--theme--accent_blue-active)',
-        'blue-text': 'var(--theme--accent_blue-text)',
-        'red': 'var(--theme--accent_red)',
-        'red-hover': 'var(--theme--accent_red-hover)',
-        'red-text': 'var(--theme--accent_red-text)',
-      },
-      'grey': mapColorVariables('grey'),
-      'brown': mapColorVariables('brown'),
-      'orange': mapColorVariables('orange'),
-      'yellow': mapColorVariables('yellow'),
-      'green': mapColorVariables('green'),
-      'blue': mapColorVariables('blue'),
-      'purple': mapColorVariables('purple'),
-      'pink': mapColorVariables('pink'),
-      'red': mapColorVariables('red'),
-    },
-    extend: {
-      width: {
-        'full-96': 'calc(100% - 24rem)',
-      },
-      maxHeight: {
-        'full-16': 'calc(100% - 4rem)',
-        'full-32': 'calc(100% - 8rem)',
-        'full-48': 'calc(100% - 12rem)',
-      },
-    },
-  },
-});
-
 // initialisation and external interactions
 
 import * as api from '../../api/_.mjs';
-import { render } from '../../api/web.mjs';
-const { env, fmt, fs, registry, storage, web } = api,
+const { env, fmt, fs, registry, web } = api,
   db = await registry.db('a6621988-551d-495a-97d8-3c568bca2e9e');
+
+import { tw } from './styles.mjs';
 
 web.addHotkeyListener(await db.get(['hotkey']), env.focusNotion);
 
@@ -110,29 +30,25 @@ document.addEventListener('visibilitychange', loadTheme);
 loadTheme();
 
 const notifications = {
-  $container: web.html`<div class="${tw`absolute bottom-0 right-0 px-4 py-3 max-w-full w-96`}"></div>`,
+  $container: web.html`<div class="notifications-container"></div>`,
   cache: await db.get(['notifications'], []),
   provider: [
     env.welcomeNotification,
     ...(await fs.getJSON('https://notion-enhancer.github.io/notifications.json')),
   ],
   add({ icon, message, id = undefined, color = undefined, link = undefined }) {
-    const style = tw`p-2 ${
-        color
-          ? `bg-${color}-tag text-${color}-tag-text border border-${color}-text hover:bg-${color}-text`
-          : 'bg-tag text-tag-text hover:bg-interactive-hover border border-notion-divider'
-      } flex items-center rounded-full mt-3 shadow-md cursor-pointer`,
-      $notification = web.render(
-        link
-          ? web.html`<a href="${web.escape(
-              link
-            )}" class="${style}" role="alert" target="_blank"></a>`
-          : web.html`<p class="${style}" role="alert" tabindex="0"></p>`,
-        web.html`<span class="${tw`font-semibold mx-2 flex-auto`}">
-            ${message}
-          </span>`,
-        web.html`${web.icon(icon, { class: tw`fill-current opacity-75 h-4 w-4 mx-2` })}`
-      ),
+    const $notification = link
+        ? web.html`<a
+          href="${web.escape(link)}"
+          class="${tw`notification-${color || 'default'}`}"
+          role="alert"
+          target="_blank"
+        ></a>`
+        : web.html`<p
+          class="${tw`notification-${color || 'default'}`}"
+          role="alert"
+          tabindex="0"
+        ></p>`,
       resolve = async () => {
         if (id !== undefined) {
           notifications.cache.push(id);
@@ -144,7 +60,16 @@ const notifications = {
     $notification.addEventListener('keyup', (event) => {
       if (['Enter', ' '].includes(event.key)) resolve();
     });
-    web.render(notifications.$container, $notification);
+    web.render(
+      notifications.$container,
+      web.render(
+        $notification,
+        web.html`<span class="notification-text markdown-inline">
+          ${fmt.md.renderInline(message)}
+        </span>`,
+        web.html`${web.icon(icon, { class: 'notification-icon' })}`
+      )
+    );
     return $notification;
   },
   _changes: false,
@@ -158,7 +83,7 @@ const notifications = {
     $notification.addEventListener('click', env.reload);
   },
 };
-render(document.body, notifications.$container);
+web.render(document.body, notifications.$container);
 for (const notification of notifications.provider) {
   if (
     !notifications.cache.includes(notification.id) &&
@@ -182,135 +107,59 @@ if (errors.length) {
 
 // mod config
 
-const $container = web.html`<div class="${tw`flex w-full h-full overflow-hidden`}"></div>`,
-  $nav = web.html`<nav class="${tw`px-4 py-3 flex flex-wrap items-center border-b border-notion-divider h-48 sm:h-32 lg:h-16`}"></nav>`,
-  $main = web.html`<main class="${tw`transition px-4 py-3 overflow-y-auto max-h-full-48 sm:max-h-full-32 lg:max-h-full-16`}">abc</main>`,
-  // $footer = web.html`<footer></footer>`,
-  $sidebar = web.html`<article class="${tw`h-full w-96 bg-notion-secondary border-l border-notion-divider`}"></article>`;
-
-const notionNavStyle = tw`flex items-center font-semibold text-xl cursor-pointer select-none mr-4
-  ml-4 sm:mb-4 md:w-full lg:(w-auto ml-0 mb-0)`,
-  $notion = web.html`<h1 class="${notionNavStyle}">
-    ${(await fs.getText('icon/colour.svg')).replace(
-      /width="\d+" height="\d+"/,
-      `class="${tw`h-12 w-12 mr-5 sm:(h-6 w-6 mr-3)`}"`
-    )}
-    <a href="https://notion-enhancer.github.io/" target="_blank">notion-enhancer</a>
-  </h1>`;
-$notion.children[0].addEventListener('click', env.focusNotion);
-
-const navItemStyle = tw`ml-4 px-3 py-2 rounded-md text-sm font-medium bg-interactive hover:bg-interactive-hover`,
-  selectedNavItemStyle = tw`ml-4 px-3 py-2 rounded-md text-sm font-medium ring-1 ring-notion-divider bg-notion-secondary`;
-
-const $coreNavItem = web.html`<a href="?view=core" class="${navItemStyle}">core</a>`,
-  $extensionsNavItem = web.html`<a href="?view=extensions" class="${navItemStyle}">extensions</a>`,
-  $themesNavItem = web.html`<a href="?view=themes" class="${navItemStyle}">themes</a>`,
-  $supportNavItem = web.html`<a href="https://discord.gg/sFWPXtA" class="${navItemStyle}">support</a>`;
-
-web.render(
-  document.body,
-  web.render(
-    $container,
-    web.render(
-      web.html`<div class="${tw`h-full w-full-96`}"></div>`,
-      web.render(
-        $nav,
-        $notion,
-        $coreNavItem,
-        $extensionsNavItem,
-        $themesNavItem,
-        $supportNavItem
-      ),
-      $main
-      // $footer
-    ),
-    $sidebar
-  )
-);
-
 const components = {
   preview: (url) => web.html`<img
-    class="${tw`object-cover w-full h-32`}"
+    class="mod-preview"
     src="${web.escape(url)}"
     alt=""
   />`,
-  title: (title) => {
-    const style = tw`mb-2 text-xl font-semibold tracking-tight flex items-center`;
-    return web.html`<h4 class="${style}"><span>${web.escape(title)}</span></h4>`;
-  },
-  version: (version) => {
-    const style = tw`mt-px ml-3 p-1 font-normal text-xs leading-none bg-tag text-tag-text rounded`;
-    return web.html`<span class="${style}">v${web.escape(version)}</span>`;
-  },
+  title: (title) => web.html`<h4 class="mod-title"><span>${web.escape(title)}</span></h4>`,
+  version: (version) => web.html`<span class="mod-version">v${web.escape(version)}</span>`,
   tags: (tags) => {
     if (!tags.length) return '';
     return web.render(
-      web.html`<p class="${tw`text-foreground-ui mb-2 text-xs`}"></p>`,
+      web.html`<p class="mod-tags"></p>`,
       tags.map((tag) => `#${web.escape(tag)}`).join(' ')
     );
   },
-  description: (description) => {
-    return web.html`<p class="${tw`mb-2 text-sm`} enhancer--markdown">
-      ${fmt.md.renderInline(description)}
-    </p>`;
-  },
+  description: (description) => web.html`<p class="mod-description markdown-inline">
+    ${fmt.md.renderInline(description)}
+  </p>`,
   authors: (authors) => {
-    const author = (author) => web.html`<a class="${tw`flex items-center mb-2`}"
-      href="${web.escape(author.homepage)}"
-    >
-      <img class="${tw`inline object-cover w-5 h-5 rounded-full mr-2`}"
+    const author = (author) => web.html`<a class="mod-author" href="${web.escape(
+      author.homepage
+    )}">
+      <img class="mod-author-avatar"
         src="${web.escape(author.avatar)}" alt="${web.escape(author.name)}'s avatar"
       /> <span>${web.escape(author.name)}</span>
     </a>`;
-    return web.render(
-      web.html`<p class="${tw`text-sm font-medium`}"></p>`,
-      ...authors.map(author)
-    );
+    return web.render(web.html`<p class="mod-authors-container"></p>`, ...authors.map(author));
   },
-  toggle: (
-    checked,
-    {
-      customLabelStyle = '',
-      customCheckStyle = '',
-      customBoxStyle = '',
-      customFeatureStyle = '',
-    }
-  ) => {
-    const checkStyle = tw`appearance-none checked:sibling:(bg-toggle-on after::translate-x-4) ${customCheckStyle}`,
-      boxStyle = tw`w-9 h-5 p-0.5 flex items-center bg-toggle-off rounded-full duration-300 ease-in-out ${customBoxStyle}`,
-      featureStyle = tw`after::(${pseudoContent} w-4 h-4 bg-toggle-feature rounded-full duration-300) ${customFeatureStyle}`,
-      $label = web.html`<label tabindex="0" class="${tw`relative text-sm ${customLabelStyle}`}"></label>`,
-      $input = web.html`<input tabindex="-1" type="checkbox" class="${checkStyle}" ${
-        checked ? 'checked' : ''
-      }/>`;
+  toggle: (checked) => {
+    const $label = web.html`<label tabindex="0" class="toggle-label-full"></label>`,
+      $input = web.html`<input tabindex="-1" type="checkbox" class="toggle-check-right"
+        ${checked ? 'checked' : ''}/>`;
     $label.addEventListener('keyup', (event) => {
-      if (['Enter', ' '].includes(event.key)) {
-        $input.checked = !$input.checked;
-      }
+      if (['Enter', ' '].includes(event.key)) $input.checked = !$input.checked;
     });
     return web.render(
       $label,
       $input,
-      web.html`<span class="${boxStyle} ${featureStyle}"></span>`
+      web.html`<span class="toggle-box toggle-feature"></span>`
     );
   },
 };
 
 components.mod = async (mod) => {
-  const $toggle = components.toggle(await registry.enabled(mod.id), {
-    customLabelStyle: 'flex w-full mt-auto',
-    customCheckStyle: 'ml-auto',
-  });
+  const $toggle = components.toggle(await registry.enabled(mod.id));
   $toggle.addEventListener('change', (event) => {
     registry.profile.set(['_mods', mod.id], event.target.checked);
     notifications.changes();
   });
-  const style = tw`relative h-full w-full flex flex-col overflow-hidden rounded-lg shadow-lg
-    bg-notion-secondary border border-notion-divider`;
   return web.render(
-    web.html`<article class="${tw`w-full md:w-1/2 lg:w-1/3 xl:w-1/4 2xl:w-1/5 px-2.5 py-2.5 box-border`}"></article>`,
+    web.html`<article class="mod-container"></article>`,
     web.render(
-      web.html`<div class="${style}"></div>`,
+      web.html`<div class="mod"></div>`,
       mod.preview
         ? components.preview(
             mod.preview.startsWith('http')
@@ -319,7 +168,7 @@ components.mod = async (mod) => {
           )
         : '',
       web.render(
-        web.html`<div class="${tw`px-4 py-3 flex flex-col flex-auto`}"></div>`,
+        web.html`<div class="mod-body"></div>`,
         web.render(components.title(mod.name), components.version(mod.version)),
         components.tags(mod.tags),
         components.description(mod.description),
@@ -331,21 +180,18 @@ components.mod = async (mod) => {
 };
 
 components.modList = async (category) => {
-  const $search = web.html`<input type="search" class="${tw`transition block w-full px-3 py-2 text-sm rounded-md flex
-    bg-notion-input text-foreground
-    hover:(ring ring-accent-blue-hover) focus:(outline-none ring ring-accent-blue-active)`}"
+  const $search = web.html`<input type="search" class="search"
     placeholder="Search ('/' to focus)">`,
-    $list = web.html`<div class="${tw`flex flex-wrap`}"></div>`,
+    $list = web.html`<div class="mods-list"></div>`,
     mods = await registry.list(
       (mod) => mod.environments.includes(env.name) && mod.tags.includes(category)
     );
   web.addHotkeyListener(['/'], () => $search.focus());
   $search.addEventListener('input', (event) => {
-    const query = $search.value.toLowerCase(),
-      hiddenStyle = tw`hidden`;
+    const query = $search.value.toLowerCase();
     for (const $mod of $list.children) {
       const matches = !query || $mod.innerText.toLowerCase().includes(query);
-      $mod.classList[matches ? 'remove' : 'add'](hiddenStyle);
+      $mod.classList[matches ? 'remove' : 'add']('hidden');
     }
   });
   for (const mod of mods) {
@@ -355,34 +201,72 @@ components.modList = async (category) => {
   }
   return web.render(
     web.html`<div></div>`,
-    web.render(web.html`<div class="${tw`mx-2.5 my-2.5`}"></div>`, $search),
+    web.render(web.html`<div class="search-container"></div>`, $search),
     $list
   );
 };
 
+const $main = web.html`<main class="main"></main>`,
+  $sidebar = web.html`<article class="sidebar"></article>`;
+
+const $notionNavItem = web.html`<h1 class="nav-notion">
+    ${(await fs.getText('icon/colour.svg')).replace(
+      /width="\d+" height="\d+"/,
+      `class="nav-notion-icon"`
+    )}
+    <a href="https://notion-enhancer.github.io/" target="_blank">notion-enhancer</a>
+  </h1>`;
+$notionNavItem.children[0].addEventListener('click', env.focusNotion);
+
+const $coreNavItem = web.html`<a href="?view=core" class="nav-item">core</a>`,
+  $extensionsNavItem = web.html`<a href="?view=extensions" class="nav-item">extensions</a>`,
+  $themesNavItem = web.html`<a href="?view=themes" class="nav-item">themes</a>`,
+  $supportNavItem = web.html`<a href="https://discord.gg/sFWPXtA" class="nav-item">support</a>`;
+
+web.render(
+  document.body,
+  web.render(
+    web.html`<div class="body-container"></div>`,
+    web.render(
+      web.html`<div class="content-container"></div>`,
+      web.render(
+        web.html`<nav class="nav"></nav>`,
+        $notionNavItem,
+        $coreNavItem,
+        $extensionsNavItem,
+        $themesNavItem,
+        $supportNavItem
+      ),
+      $main
+    ),
+    $sidebar
+  )
+);
+
+function selectNavItem($item) {
+  for (const $selected of document.querySelectorAll('.nav-item-selected')) {
+    $selected.className = 'nav-item';
+  }
+  $item.className = 'nav-item-selected';
+}
+
 import * as router from './router.mjs';
 
 router.addView('core', async () => {
-  $extensionsNavItem.className = navItemStyle;
-  $themesNavItem.className = navItemStyle;
-  $coreNavItem.className = selectedNavItemStyle;
   web.empty($main);
+  selectNavItem($coreNavItem);
   return web.render($main, await components.modList('core'));
 });
 
 router.addView('extensions', async () => {
-  $coreNavItem.className = navItemStyle;
-  $themesNavItem.className = navItemStyle;
-  $extensionsNavItem.className = selectedNavItemStyle;
   web.empty($main);
+  selectNavItem($extensionsNavItem);
   return web.render($main, await components.modList('extension'));
 });
 
 router.addView('themes', async () => {
-  $coreNavItem.className = navItemStyle;
-  $extensionsNavItem.className = navItemStyle;
-  $themesNavItem.className = selectedNavItemStyle;
   web.empty($main);
+  selectNavItem($themesNavItem);
   return web.render($main, await components.modList('theme'));
 });
 

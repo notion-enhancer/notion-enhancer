@@ -6,11 +6,12 @@
 
 'use strict';
 
-// only load if user is logged into notion and viewing a page
-if (
-  localStorage['LRU:KeyValueStore2:current-user-id'] &&
-  location.pathname.split(/[/-]/g).reverse()[0].length === 32
-) {
+const site = location.host.endsWith('.notion.site'),
+  loggedIn = localStorage['LRU:KeyValueStore2:current-user-id'],
+  page = location.pathname.split(/[/-]/g).reverse()[0].length === 32,
+  home = location.pathname === '/';
+
+if (site || (loggedIn && (page || home))) {
   import(chrome.runtime.getURL('api/_.mjs')).then(async (api) => {
     const { registry, web } = api;
     for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
