@@ -28,7 +28,7 @@
   --theme--accent_blue: rgb(46, 170, 220);
   --theme--accent_blue-selection: rgb(46, 170, 220, 0.25);
   --theme--accent_blue-hover: rgb(6, 156, 205);
-  --theme--accent_blue-active: rgb(0, 141, 190);
+  --theme--accent_blue-focus: rgb(0, 141, 190);
   --theme--accent_blue-text: #fff;
   --theme--accent_red: #eb5757;
   --theme--accent_red-hover: rgba(235, 87, 87, 0.1);
@@ -47,7 +47,7 @@
   --theme--ui_shadow: rgba(15, 15, 15, 0.15);
   --theme--ui_divider: rgb(237, 237, 236);
   --theme--ui_interactive-hover: rgba(55, 53, 47, 0.08);
-  --theme--ui_interactive-active: rgba(55, 53, 47, 0.16);
+  --theme--ui_interactive-focus: rgba(55, 53, 47, 0.16);
   --theme--ui_toggle-on: var(--theme--accent_blue);
   --theme--ui_toggle-off: rgba(135, 131, 120, 0.3);
   --theme--ui_toggle-feature: #fff;
@@ -211,7 +211,7 @@
   --theme--ui_shadow: rgba(15, 15, 15, 0.15);
   --theme--ui_divider: rgb(255, 255, 255, 0.07);
   --theme--ui_interactive-hover: rgb(71, 76, 80);
-  --theme--ui_interactive-active: rgb(63, 68, 71);
+  --theme--ui_interactive-focus: rgb(63, 68, 71);
   --theme--ui_toggle-on: var(--theme--accent_blue);
   --theme--ui_toggle-off: rgba(202, 204, 206, 0.3);
   --theme--ui_toggle-feature: #fff;

@@ -9,10 +9,11 @@ a complete rework of the enhancer including a port to the browser as a chrome ex
 - new: notifications sourced from an online endpoint for sending global user alerts.
 - new: simplify user installs by depending on the chrome web store and [notion-repackaged](https://github.com/notion-enhancer/notion-repackaged).
 - new: separate menu profiles for mod configurations.
+- new: a hotkey option type that allows typing in/pressing a hotkey to enter it, instead of typing.
 - improved: split the core mod into separate mods for specific features.
 - improved: theming variables that are more specific, less laggy, and less complicated.
 - improved: merged bracketed-links into tweaks.
-- improved: a redesigned menu with separate categories for mods and a sidebar for configuring options.
+- improved: a redesigned menu with nicer ui, separate categories for mods and a sidebar for configuration.
 - removed: integrated scrollbar tweak (notion now includes by default).
 - removed: js insert. css insert moved to tweaks mod.
 - removed: majority of layout and font size variables - better to leave former to notion and use `ctrl +` for latter.

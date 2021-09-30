@@ -8,8 +8,7 @@
 
 import { web } from '../../api/_.mjs';
 
-let _defaultView = '',
-  $viewRoot;
+let _defaultView = '';
 const _views = new Map();
 
 export function addView(name, loadFunc) {

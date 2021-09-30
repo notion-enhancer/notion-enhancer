@@ -22,17 +22,16 @@ const _queue = [],
  */
 export const get = (path, fallback = undefined) => {
   if (!path.length) return fallback;
-  const namespace = path.shift();
   return new Promise((res, rej) =>
     chrome.storage.local.get(async (values) => {
-      let value = values[namespace];
-      do {
+      let value = values;
+      while (path.length) {
         if (value === undefined) {
           value = fallback;
           break;
         }
         value = value[path.shift()];
-      } while (path.length);
+      }
       res(value ?? fallback);
     })
   );
@@ -53,10 +52,9 @@ export const set = (path, value) => {
         _queue.shift();
       }
       const pathClone = [...path],
-        namespace = path.shift();
+        namespace = path[0];
       chrome.storage.local.get(async (values) => {
-        const update = values[namespace] ?? {};
-        let pointer = update,
+        let pointer = values,
           old;
         while (path.length) {
           const key = path.shift();
@@ -68,7 +66,7 @@ export const set = (path, value) => {
           pointer[key] = pointer[key] ?? {};
           pointer = pointer[key];
         }
-        chrome.storage.local.set({ [namespace]: update }, () => {
+        chrome.storage.local.set({ [namespace]: values[namespace] }, () => {
           _onChangeListeners.forEach((listener) =>
             listener({ type: 'set', path: pathClone, new: value, old })
           );
