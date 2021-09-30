@@ -21,11 +21,11 @@
   },
   "options": [
     {
-      "type": "text",
+      "type": "hotkey",
       "key": "hotkey",
-      "label": "toggle hotkey",
+      "label": "toggle focus hotkey",
       "value": "Ctrl+Alt+E",
-      "tooltip": "toggles focus between notion & the enhancer menu"
+      "tooltip": "switches between notion & the enhancer menu"
     }
   ]
 }

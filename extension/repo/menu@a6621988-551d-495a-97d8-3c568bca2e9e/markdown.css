@@ -49,7 +49,7 @@
 .markdown.markdown-inline a {
   opacity: 0.7;
   text-decoration: none;
-  border-bottom: 0.05em solid var(--theme--text_ui);
+  border-bottom: 0.05em solid var(--theme--text_secondary);
 }
 .markdown.markdown-inline a:hover {
   opacity: 0.9;
@@ -145,7 +145,7 @@
 }
 .markdown .code-toolbar .toolbar-item > * {
   padding: 0.25rem 0.35rem;
-  color: var(--theme--text_ui);
+  color: var(--theme--text_secondary);
   font-size: 11px;
   font-family: inherit;
 }

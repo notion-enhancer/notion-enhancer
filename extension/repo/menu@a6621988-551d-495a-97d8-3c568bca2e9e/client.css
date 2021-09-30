@@ -9,7 +9,7 @@
   -webkit-user-select: none;
   transition: background 20ms ease-in 0s;
   cursor: pointer;
-  color: var(--theme--text_ui);
+  color: var(--theme--text_secondary);
 }
 .enhancer--sidebarMenuLink:hover {
   background: var(--theme--ui_interactive-hover);

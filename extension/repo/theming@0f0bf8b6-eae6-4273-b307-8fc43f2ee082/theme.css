@@ -4,10 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-/* 
-grey vs text_ui in light mode (check change cover hover text)
-*/
-
 /** layout **/
 
 .notion-frame .notion-scroller [style*='env(safe-area-inset-'][style*=' width: 900px'],
@@ -466,7 +462,7 @@ body,
 }
 .DayPicker-Day--outside,
 .DayPicker-Weekday {
-  color: var(--theme--text_ui) !important;
+  color: var(--theme--text_secondary) !important;
 }
 .notion-timeline-view [style*='height: 100%; border-right: 1px solid rgb(211, 79, 67);'] {
   border-right: 1px solid var(--theme--accent_red) !important;
@@ -713,7 +709,7 @@ body,
 .notion-body:not(.dark) [style*='fill: rgb(55, 53, 47)'],
 .notion-body:not(.dark)
   [style*='fill: rgba(55, 53, 47, 0.']:not([style*='fill: rgba(55, 53, 47, 0.8)']) {
-  fill: var(--theme--icon_ui) !important;
+  fill: var(--theme--icon_secondary) !important;
 }
 .alarmClock {
   fill: currentColor !important;
@@ -750,13 +746,13 @@ body,
   .notion-focusable[role='button'][style*='font-size: 14px; border-radius: 3px; box-shadow:']:last-child
   svg
   + div {
-  color: var(--theme--text_ui) !important;
+  color: var(--theme--text_secondary) !important;
 }
 .notion-page-mention-token__title {
-  border-bottom: 0.05em solid var(--theme--text_ui) !important;
+  border-bottom: 0.05em solid var(--theme--text_secondary) !important;
 }
 .notion-to_do-block [placeholder='To-do'][style*='text-decoration: line-through'] {
-  text-decoration: line-through var(--theme--text_ui) !important;
+  text-decoration: line-through var(--theme--text_secondary) !important;
 }
 .notion-body.dark [style*=' color: rgba(255, 255, 255, 0.4)'],
 .notion-body.dark [style^='color: rgba(255, 255, 255, 0.4)'],
@@ -765,15 +761,15 @@ body,
 .notion-page-controls,
 .notion-page-details-controls,
 .notion-calendar-view-day {
-  color: var(--theme--text_ui) !important;
+  color: var(--theme--text_secondary) !important;
 }
 .notion-body.dark [style*='-webkit-text-fill-color: rgba(255, 255, 255, 0.4)'],
 .notion-body:not(.dark) [style*='-webkit-text-fill-color: rgba(55, 53, 47, 0.4)'] {
-  -webkit-text-fill-color: var(--theme--text_ui) !important;
+  -webkit-text-fill-color: var(--theme--text_secondary) !important;
 }
 .notion-body.dark [style*='border-color:rgba(255,255,255,0.4)'],
 .notion-body:not(.dark) [style*='border-color:rgba(55,53,47,0.4)'] {
-  border-color: var(--theme--text_ui) !important;
+  border-color: var(--theme--text_secondary) !important;
 }
 
 .notion-body.dark [style*='background: rgb(80, 85, 88)']:not([role='button']),

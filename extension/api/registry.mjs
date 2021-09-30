@@ -26,7 +26,7 @@ export const core = [
 ];
 
 /** all available configuration types */
-export const optionTypes = ['toggle', 'select', 'text', 'number', 'color', 'file'];
+export const optionTypes = ['toggle', 'select', 'text', 'number', 'color', 'file', 'hotkey'];
 
 /** the root database for the current profile */
 export const profile = storage.db([
@@ -201,6 +201,7 @@ async function validate(mod) {
               );
               break;
             case 'text':
+            case 'hotkey':
               tests.push(check('options.option.value', option.value, 'string'));
               break;
             case 'number':
@@ -299,6 +300,7 @@ export const optionDefault = async (id, key) => {
     case 'text':
     case 'number':
     case 'color':
+    case 'hotkey':
       return opt.value;
     case 'select':
       return opt.values[0];

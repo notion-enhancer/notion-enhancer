@@ -14,9 +14,10 @@ export default async function (api, db) {
   const updateTheme = () =>
     db.set(['theme'], document.querySelector('.notion-dark-theme') ? 'dark' : 'light');
   web.addDocumentObserver((mutation) => {
-    if (mutation.target === document.body) updateTheme();
+    if (mutation.target === document.body && document.hasFocus()) updateTheme();
   });
-  updateTheme();
+  if (document.hasFocus()) updateTheme();
+  document.addEventListener('visibilitychange', updateTheme);
 
   const sidebarSelector = '.notion-sidebar-container .notion-sidebar > div:nth-child(4)';
   await web.whenReady([sidebarSelector]);

@@ -24,7 +24,7 @@ export const get = (path, fallback = undefined) => {
   if (!path.length) return fallback;
   const namespace = path.shift();
   return new Promise((res, rej) =>
-    chrome.storage.sync.get(async (values) => {
+    chrome.storage.local.get(async (values) => {
       let value = values[namespace];
       do {
         if (value === undefined) {
@@ -54,7 +54,7 @@ export const set = (path, value) => {
       }
       const pathClone = [...path],
         namespace = path.shift();
-      chrome.storage.sync.get(async (values) => {
+      chrome.storage.local.get(async (values) => {
         const update = values[namespace] ?? {};
         let pointer = update,
           old;
@@ -68,7 +68,7 @@ export const set = (path, value) => {
           pointer[key] = pointer[key] ?? {};
           pointer = pointer[key];
         }
-        chrome.storage.sync.set({ [namespace]: update }, () => {
+        chrome.storage.local.set({ [namespace]: update }, () => {
           _onChangeListeners.forEach((listener) =>
             listener({ type: 'set', path: pathClone, new: value, old })
           );

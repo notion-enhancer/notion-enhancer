@@ -190,7 +190,8 @@ export const tooltip = ($ref, text) => {
         color: var(--theme--ui_tooltip-description);
       }
     </style>`;
-    render(document.head, _$tooltip, _$tooltipStylesheet);
+    render(document.head, _$tooltipStylesheet);
+    render(document.body, _$tooltip);
   }
   text = md.render(text);
   $ref.addEventListener('mouseover', (event) => {
@@ -199,8 +200,7 @@ export const tooltip = ($ref, text) => {
   });
   $ref.addEventListener('mousemove', (event) => {
     _$tooltip.style.top = event.clientY - _$tooltip.clientHeight + 'px';
-    _$tooltip.style.left =
-      event.clientX < window.innerWidth / 2 ? event.clientX + 20 + 'px' : '';
+    _$tooltip.style.left = event.clientX - _$tooltip.clientWidth + 'px';
   });
   $ref.addEventListener('mouseout', (event) => {
     _$tooltip.style.display = '';
@@ -218,20 +218,23 @@ export const addHotkeyListener = (keys, callback) => {
   if (typeof keys === 'string') keys = keys.split('+');
   if (!_hotkeyEvent) {
     _hotkeyEvent = document.addEventListener('keyup', (event) => {
+      if (document.activeElement.nodeName === 'INPUT') return;
       for (const hotkey of _hotkeyEventListeners) {
-        const matchesEvent = hotkey.keys.every((key) => {
+        const pressed = hotkey.keys.every((key) => {
+          key = key.toLowerCase();
           const modifiers = {
-            altKey: 'alt',
-            ctrlKey: 'ctrl',
-            metaKey: 'meta',
-            shiftKey: 'shift',
+            metaKey: ['meta', 'os', 'win', 'cmd', 'command'],
+            ctrlKey: ['ctrl', 'control'],
+            shiftKey: ['shift'],
+            altKey: ['alt'],
           };
           for (const modifier in modifiers) {
-            if (key.toLowerCase() === modifiers[modifier] && event[modifier]) return true;
+            const pressed = modifiers[modifier].includes(key) && event[modifier];
+            if (pressed) return true;
           }
-          if (key.toLowerCase() === event.key.toLowerCase()) return true;
+          if (key === event.key.toLowerCase()) return true;
         });
-        if (matchesEvent) hotkey.callback();
+        if (pressed) hotkey.callback();
       }
     });
   }

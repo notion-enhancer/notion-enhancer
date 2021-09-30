@@ -57,10 +57,10 @@
   --theme--ui_tooltip-description: rgba(206, 205, 202, 0.6);
 
   --theme--icon: rgba(55, 53, 47, 0.8);
-  --theme--icon_ui: rgba(55, 53, 47, 0.4);
+  --theme--icon_secondary: rgba(55, 53, 47, 0.4);
 
   --theme--text: rgb(55, 43, 47);
-  --theme--text_ui: rgba(55, 43, 47, 0.6);
+  --theme--text_secondary: rgba(55, 43, 47, 0.6);
   --theme--text_grey: rgb(155, 154, 151);
   --theme--text_brown: rgb(100, 71, 58);
   --theme--text_orange: rgb(217, 115, 13);
@@ -221,10 +221,10 @@
   --theme--ui_tooltip-description: rgba(47, 52, 55, 0.6);
 
   --theme--icon: rgba(202, 204, 206);
-  --theme--icon_ui: rgb(202, 204, 206, 0.6);
+  --theme--icon_secondary: rgb(202, 204, 206, 0.6);
 
   --theme--text: rgba(255, 255, 255, 0.9);
-  --theme--text_ui: rgba(255, 255, 255, 0.6);
+  --theme--text_secondary: rgba(255, 255, 255, 0.6);
   --theme--text_grey: rgba(151, 154, 155, 0.95);
   --theme--text_brown: rgb(147, 114, 100);
   --theme--text_orange: rgb(255, 163, 68);

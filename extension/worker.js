@@ -18,11 +18,11 @@ chrome.action.onClicked.addListener(focusMenu);
 
 async function focusNotion() {
   const tabs = await chrome.tabs.query({ windowId: chrome.windows.WINDOW_ID_CURRENT }),
-    notion = tabs.find(
-      (tab) =>
-        new URL(tab.url).host.endsWith('.notion.so') ||
-        new URL(tab.url).host.endsWith('.notion.site')
-    );
+    notion = tabs.find((tab) => {
+      const url = new URL(tab.url),
+        matches = url.host.endsWith('.notion.so') || url.host.endsWith('.notion.site');
+      return matches;
+    });
   if (notion) {
     chrome.tabs.highlight({ 'tabs': notion.index });
   } else chrome.tabs.create({ url: 'https://notion.so/' });

@@ -10,13 +10,13 @@
 
 /** environment-specific methods and constants */
 export * as env from './env.mjs';
+/** environment-specific filesystem reading */
+export * as fs from './fs.mjs';
 /** environment-specific data persistence */
 export * as storage from './storage.mjs';
 
 /** helpers for formatting or parsing text */
 export * as fmt from './fmt.mjs';
-/** environment-specific filesystem reading */
-export * as fs from './fs.mjs';
 /** interactions with the enhancer's repository of mods */
 export * as registry from './registry.mjs';
 /** pattern and type validators */
