@@ -20,7 +20,9 @@ export function removeView(name) {
 
 function router(event) {
   event.preventDefault();
-  const anchor = event.path.find((anchor) => anchor.nodeName === 'A');
+  const anchor = event.path
+    ? event.path.find((anchor) => anchor.nodeName === 'A')
+    : event.target;
   if (location.search !== anchor.getAttribute('href')) {
     window.history.pushState(null, null, anchor.href);
     loadView();
@@ -28,7 +30,9 @@ function router(event) {
 }
 function navigator(event) {
   event.preventDefault();
-  const anchor = event.path.find((anchor) => anchor.nodeName === 'A'),
+  const anchor = event.path
+      ? event.path.find((anchor) => anchor.nodeName === 'A')
+      : event.target,
     hash = anchor.getAttribute('href').slice(1);
   document.getElementById(hash).scrollIntoView(true);
   document.documentElement.scrollTop = 0;

@@ -15,13 +15,13 @@
  * the environment/platform name code is currently being executed in
  * @constant {string}
  */
-export const name = 'chrome';
+export const name = 'extension';
 
 /**
  * all environments/platforms currently supported by the enhancer
  * @constant {array<string>}
  */
-export const supported = ['linux', 'win32', 'darwin', 'chrome', 'firefox'];
+export const supported = ['linux', 'win32', 'darwin', 'extension'];
 
 /**
  * the current version of the enhancer

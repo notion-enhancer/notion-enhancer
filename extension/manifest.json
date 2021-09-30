@@ -1,5 +1,5 @@
 {
-  "manifest_version": 3,
+  "manifest_version": 2,
   "name": "notion-enhancer",
   "version": "0.11.0",
   "author": "dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)",
@@ -13,21 +13,25 @@
     "256": "icon/colour-x256.png",
     "512": "icon/colour-x512.png"
   },
-  "action": {},
-  "background": { "service_worker": "worker.js" },
-  "options_page": "repo/menu@a6621988-551d-495a-97d8-3c568bca2e9e/menu.html",
-  "web_accessible_resources": [
-    {
-      "resources": ["api/*", "dep/*", "icon/*", "repo/*"],
-      "matches": ["https://*.notion.so/*", "https://*.notion.site/*"]
-    }
-  ],
+  "browser_action": {},
+  "background": { "scripts": ["worker.js"] },
+  "options_ui": {
+    "page": "repo/menu@a6621988-551d-495a-97d8-3c568bca2e9e/menu.html",
+    "open_in_tab": true
+  },
+  "web_accessible_resources": ["api/*", "dep/*", "icon/*", "repo/*"],
   "content_scripts": [
     {
       "matches": ["https://*.notion.so/*", "https://*.notion.site/*"],
       "js": ["launcher.js"]
     }
   ],
-  "permissions": ["tabs", "storage", "unlimitedStorage"],
-  "host_permissions": ["https://*.notion.so/*", "https://*.notion.site/*", "<all_urls>"]
+  "permissions": [
+    "tabs",
+    "storage",
+    "unlimitedStorage",
+    "https://*.notion.so/*",
+    "https://*.notion.site/*",
+    "<all_urls>"
+  ]
 }
