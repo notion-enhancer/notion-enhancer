@@ -98,6 +98,19 @@ async function validate(mod) {
         });
         return false;
       }
+      if (
+        (mod.tags.includes('theme') &&
+          !(mod.tags.includes('light') || mod.tags.includes('dark'))) ||
+        (mod.tags.includes('light') && mod.tags.includes('dark'))
+      ) {
+        _errors.push({
+          source: mod._dir,
+          message: `invalid tags (themes must be either 'light' or 'dark', not neither or both): ${JSON.stringify(
+            mod.tags
+          )}`,
+        });
+        return false;
+      }
       return mod.tags.map((tag) => check('tags.tag', tag, 'string'));
     }),
     check('authors', mod.authors, 'array').then((passed) => {

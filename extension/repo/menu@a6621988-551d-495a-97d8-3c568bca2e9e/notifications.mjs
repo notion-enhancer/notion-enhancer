@@ -6,14 +6,14 @@
 
 'use strict';
 
-import { env, fs, fmt, registry, web } from '../../api/_.mjs';
+import { env, fs, storage, fmt, registry, web } from '../../api/_.mjs';
 const db = await registry.db('a6621988-551d-495a-97d8-3c568bca2e9e');
 
 import { tw } from './styles.mjs';
 
 export const notifications = {
   $container: web.html`<div class="notifications-container"></div>`,
-  cache: await db.get(['notifications'], []),
+  cache: await storage.get(['notifications'], []),
   provider: [
     env.welcomeNotification,
     ...(await fs.getJSON('https://notion-enhancer.github.io/notifications.json')),
@@ -34,7 +34,7 @@ export const notifications = {
       resolve = async () => {
         if (id !== undefined) {
           notifications.cache.push(id);
-          await db.set(['notifications'], notifications.cache);
+          await storage.set(['notifications'], notifications.cache);
         }
         $notification.remove();
       };

@@ -43,6 +43,7 @@ const customClasses = {
   'nav-item': apply`ml-4 px-3 py-2 rounded-md text-sm font-medium hover:bg-interactive-hover focus:bg-interactive-focus`,
   'nav-item-selected': apply`ml-4 px-3 py-2 rounded-md text-sm font-medium ring-1 ring-divider bg-notion-secondary`,
   'main': apply`transition px-4 py-3 overflow-y-auto max-h-full-48 sm:max-h-full-32 lg:max-h-full-16`,
+  'main-message': apply`mx-2.5 my-2.5 px-px text-sm text-foreground-secondary text-justify`,
   'mods-list': apply`flex flex-wrap`,
   'mod-container': apply`w-full md:w-1/2 lg:w-1/3 xl:w-1/4 2xl:w-1/5 px-2.5 py-2.5 box-border`,
   'mod': apply`relative h-full w-full flex flex-col overflow-hidden rounded-lg shadow-lg

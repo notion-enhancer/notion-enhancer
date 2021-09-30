@@ -7,7 +7,7 @@
 'use strict';
 
 export default async function (api, db) {
-  const { env, fs, registry, web } = api;
+  const { env, fs, storage, registry, web } = api;
 
   web.addHotkeyListener(await db.get(['hotkey']), env.focusMenu);
 
@@ -31,7 +31,7 @@ export default async function (api, db) {
   $sidebarLink.addEventListener('click', env.focusMenu);
 
   const notifications = {
-    cache: await db.get(['notifications'], []),
+    cache: await storage.get(['notifications'], []),
     provider: [
       env.welcomeNotification,
       ...(await fs.getJSON('https://notion-enhancer.github.io/notifications.json')),

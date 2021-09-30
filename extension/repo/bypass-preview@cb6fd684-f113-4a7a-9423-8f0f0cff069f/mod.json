@@ -3,7 +3,6 @@
   "id": "cb6fd684-f113-4a7a-9423-8f0f0cff069f",
   "version": "0.2.0",
   "description": "go straight to the normal full view when opening a page.",
-  "preview": "https://cdn.pixabay.com/photo/2021/09/17/15/17/fruit-6633086_960_720.jpg",
   "tags": ["extension", "automation"],
   "authors": [
     {
@@ -11,12 +10,6 @@
       "email": "thedragonring.bod@gmail.com",
       "homepage": "https://dragonwocky.me/",
       "avatar": "https://dragonwocky.me/avatar.jpg"
-    },
-    {
-      "name": "fake person",
-      "email": "thedragonring.bod@gmail.com",
-      "homepage": "https://dragonwocky.me/",
-      "avatar": "https://cdn.pixabay.com/photo/2015/04/20/13/28/lizard-731336_960_720.jpg"
     }
   ],
   "js": {
@@ -25,55 +18,5 @@
   "css": {
     "client": ["client.css"]
   },
-  "options": [
-    {
-      "type": "toggle",
-      "key": "toggle",
-      "label": "toggle",
-      "tooltip": "toggle",
-      "value": true
-    },
-    {
-      "type": "select",
-      "key": "select",
-      "label": "select",
-      "tooltip": "select",
-      "values": ["option A", "option B", "option C"]
-    },
-    {
-      "type": "text",
-      "key": "text",
-      "label": "text",
-      "tooltip": "text",
-      "value": "default"
-    },
-    {
-      "type": "hotkey",
-      "key": "hotkey",
-      "label": "hotkey",
-      "tooltip": "hotkey",
-      "value": "Ctrl+Shift+H"
-    },
-    {
-      "type": "number",
-      "key": "number",
-      "label": "number",
-      "tooltip": "number",
-      "value": 14
-    },
-    {
-      "type": "color",
-      "key": "color",
-      "label": "color",
-      "tooltip": "color",
-      "value": "rgba(125, 26, 250, 0.7)"
-    },
-    {
-      "type": "file",
-      "key": "file",
-      "label": "file",
-      "tooltip": "file",
-      "extensions": [".css"]
-    }
-  ]
+  "options": []
 }

@@ -159,9 +159,26 @@ const _$modListCache = {},
       return $fragment;
     },
     mod: async (mod) => {
-      const $mod = web.html`<div class="mod"></div>`,
+      const $mod = web.html`<div class="mod" data-id="${web.escape(mod.id)}"></div>`,
         $toggle = components.toggle('', await registry.enabled(mod.id));
-      $toggle.addEventListener('change', (event) => {
+      $toggle.addEventListener('change', async (event) => {
+        if (event.target.checked && mod.tags.includes('theme')) {
+          const mode = mod.tags.includes('light') ? 'light' : 'dark',
+            id = mod.id,
+            mods = await registry.list(
+              (mod) =>
+                mod.environments.includes(env.name) &&
+                mod.tags.includes('theme') &&
+                mod.tags.includes(mode) &&
+                mod.id !== id
+            );
+          for (const mod of mods) {
+            registry.profileDB.set(['_mods', mod.id], false);
+            document.querySelector(
+              `[data-id="${web.escape(mod.id)}"] .toggle-check`
+            ).checked = false;
+          }
+        }
         registry.profileDB.set(['_mods', mod.id], event.target.checked);
         notifications.onChange();
       });
@@ -202,7 +219,7 @@ const _$modListCache = {},
         )
       );
     },
-    modList: async (category) => {
+    modList: async (category, message = '') => {
       if (!_$modListCache[category]) {
         const $search = web.html`<input type="search" class="search"
           placeholder="Search ('/' to focus)">`,
@@ -230,6 +247,7 @@ const _$modListCache = {},
             $search,
             web.html`${web.icon('search', { class: 'input-icon' })}`
           ),
+          message ? web.html`<p class="main-message">${web.escape(message)}</p>` : '',
           $list
         );
       }
@@ -295,7 +313,15 @@ router.addView('extensions', async () => {
 router.addView('themes', async () => {
   web.empty($main);
   selectNavItem($themesNavItem);
-  return web.render($main, await generators.modList('theme'));
+  return web.render(
+    $main,
+    await generators.modList(
+      'theme',
+      `Dark themes will only work when Notion is in dark mode,
+      and light themes will only work when Notion is in light mode.
+      Only one theme of each mode can be enabled at a time.`
+    )
+  );
 });
 
 router.loadView('extensions', $main);
