@@ -9,17 +9,18 @@
 /** @module notion-enhancer/api */
 
 /** environment-specific methods and constants */
-export * as env from './env.mjs';
-/** environment-specific filesystem reading */
-export * as fs from './fs.mjs';
-/** environment-specific data persistence */
-export * as storage from './storage.mjs';
+import * as env from './env.mjs';
 
-/** helpers for formatting or parsing text */
-export * as fmt from './fmt.mjs';
+/** environment-specific filesystem reading */
+const fs = env.name === 'extension' ? await import('./extension-fs.mjs') : {};
+/** environment-specific data persistence */
+const storage = env.name === 'extension' ? await import('./extension-storage.mjs') : {};
+
+/** helpers for formatting, validating and parsing values */
+import * as fmt from './fmt.mjs';
 /** interactions with the enhancer's repository of mods */
-export * as registry from './registry.mjs';
-/** pattern and type validators */
-export * as validation from './validation.mjs';
+import * as registry from './registry.mjs';
 /** helpers for manipulation of a webpage */
-export * as web from './web.mjs';
+import * as web from './web.mjs';
+
+export { env, fs, storage, fmt, registry, web };

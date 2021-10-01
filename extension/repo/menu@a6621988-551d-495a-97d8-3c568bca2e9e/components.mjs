@@ -6,9 +6,9 @@
 
 'use strict';
 
-import { fmt, registry, web } from '../../api/_.mjs';
-
+import { fmt, web } from '../../api/_.mjs';
 import { notifications } from './notifications.mjs';
+import { profileDB } from './menu.mjs';
 
 export const components = {
   preview: (url) => web.html`<img
@@ -56,7 +56,7 @@ export const components = {
 
 export const options = {
   toggle: async (mod, opt) => {
-    const checked = await registry.profileDB.get([mod.id, opt.key], opt.value),
+    const checked = await profileDB.get([mod.id, opt.key], opt.value),
       $toggle = components.toggle(opt.label, checked),
       $tooltip = web.html`${web.icon('info', { class: 'input-tooltip' })}`,
       $label = $toggle.children[0],
@@ -66,13 +66,13 @@ export const options = {
       web.tooltip($tooltip, opt.tooltip);
     }
     $input.addEventListener('change', async (event) => {
-      await registry.profileDB.set([mod.id, opt.key], $input.checked);
+      await profileDB.set([mod.id, opt.key], $input.checked);
       notifications.onChange();
     });
     return $toggle;
   },
   select: async (mod, opt) => {
-    const value = await registry.profileDB.get([mod.id, opt.key], opt.values[0]),
+    const value = await profileDB.get([mod.id, opt.key], opt.values[0]),
       $tooltip = web.html`${web.icon('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,
@@ -91,13 +91,13 @@ export const options = {
       $icon = web.html`${web.icon('chevron-down', { class: 'input-icon' })}`;
     if (opt.tooltip) web.tooltip($tooltip, opt.tooltip);
     $select.addEventListener('change', async (event) => {
-      await registry.profileDB.set([mod.id, opt.key], $select.value);
+      await profileDB.set([mod.id, opt.key], $select.value);
       notifications.onChange();
     });
     return web.render($label, $select, $icon);
   },
   text: async (mod, opt) => {
-    const value = await registry.profileDB.get([mod.id, opt.key], opt.value),
+    const value = await profileDB.get([mod.id, opt.key], opt.value),
       $tooltip = web.html`${web.icon('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,
@@ -107,13 +107,13 @@ export const options = {
       $icon = web.html`${web.icon('type', { class: 'input-icon' })}`;
     if (opt.tooltip) web.tooltip($tooltip, opt.tooltip);
     $input.addEventListener('change', async (event) => {
-      await registry.profileDB.set([mod.id, opt.key], $input.value);
+      await profileDB.set([mod.id, opt.key], $input.value);
       notifications.onChange();
     });
     return web.render($label, $input, $icon);
   },
   number: async (mod, opt) => {
-    const value = await registry.profileDB.get([mod.id, opt.key], opt.value),
+    const value = await profileDB.get([mod.id, opt.key], opt.value),
       $tooltip = web.html`${web.icon('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,
@@ -123,13 +123,13 @@ export const options = {
       $icon = web.html`${web.icon('hash', { class: 'input-icon' })}`;
     if (opt.tooltip) web.tooltip($tooltip, opt.tooltip);
     $input.addEventListener('change', async (event) => {
-      await registry.profileDB.set([mod.id, opt.key], $input.value);
+      await profileDB.set([mod.id, opt.key], $input.value);
       notifications.onChange();
     });
     return web.render($label, $input, $icon);
   },
   color: async (mod, opt) => {
-    const value = await registry.profileDB.get([mod.id, opt.key], opt.value),
+    const value = await profileDB.get([mod.id, opt.key], opt.value),
       $tooltip = web.html`${web.icon('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,
@@ -155,14 +155,14 @@ export const options = {
       });
     if (opt.tooltip) web.tooltip($tooltip, opt.tooltip);
     $input.addEventListener('change', async (event) => {
-      await registry.profileDB.set([mod.id, opt.key], $input.value);
+      await profileDB.set([mod.id, opt.key], $input.value);
       notifications.onChange();
     });
     paint();
     return web.render($label, $input, $icon);
   },
   file: async (mod, opt) => {
-    const { filename } = (await registry.profileDB.get([mod.id, opt.key], {})) || {},
+    const { filename } = (await profileDB.get([mod.id, opt.key], {})) || {},
       $tooltip = web.html`${web.icon('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,
@@ -181,7 +181,7 @@ export const options = {
         reader = new FileReader();
       reader.onload = async (progress) => {
         $filename.innerText = file.name;
-        await registry.profileDB.set([mod.id, opt.key], {
+        await profileDB.set([mod.id, opt.key], {
           filename: file.name,
           content: progress.currentTarget.result,
         });
@@ -191,7 +191,7 @@ export const options = {
     });
     $latest.addEventListener('click', (event) => {
       $filename.innerText = 'none';
-      registry.profileDB.set([mod.id, opt.key], {});
+      profileDB.set([mod.id, opt.key], {});
     });
     return web.render(
       web.html`<div></div>`,
@@ -200,7 +200,7 @@ export const options = {
     );
   },
   hotkey: async (mod, opt) => {
-    const value = await registry.profileDB.get([mod.id, opt.key], opt.value),
+    const value = await profileDB.get([mod.id, opt.key], opt.value),
       $tooltip = web.html`${web.icon('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,
@@ -229,7 +229,7 @@ export const options = {
         pressed.push(key);
       }
       $input.value = pressed.join('+');
-      await registry.profileDB.set([mod.id, opt.key], $input.value);
+      await profileDB.set([mod.id, opt.key], $input.value);
       notifications.onChange();
     });
     return web.render($label, $input, $icon);

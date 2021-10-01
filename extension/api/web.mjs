@@ -11,8 +11,7 @@
  * @module notion-enhancer/api/web
  */
 
-import { localPath } from './fs.mjs';
-import { md } from './fmt.mjs';
+import { fs, fmt } from './_.mjs';
 
 const _hotkeyEventListeners = [],
   _documentObserverListeners = [],
@@ -139,7 +138,7 @@ export const loadStylesheet = (path) => {
     document.head,
     html`<link
       rel="stylesheet"
-      href="${path.startsWith('https://') ? path : localPath(path)}"
+      href="${path.startsWith('https://') ? path : fs.localPath(path)}"
     />`
   );
   return true;
@@ -158,7 +157,7 @@ export const icon = (name, attrs = {}) => {
   ).trim();
   return `<svg ${Object.entries(attrs)
     .map(([key, val]) => `${escape(key)}="${escape(val)}"`)
-    .join(' ')}><use xlink:href="${localPath('dep/feather-sprite.svg')}#${name}" /></svg>`;
+    .join(' ')}><use xlink:href="${fs.localPath('dep/feather-sprite.svg')}#${name}" /></svg>`;
 };
 
 /**
@@ -193,7 +192,7 @@ export const tooltip = ($ref, text) => {
     render(document.head, _$tooltipStylesheet);
     render(document.body, _$tooltip);
   }
-  text = md.render(text);
+  text = fmt.md.render(text);
   $ref.addEventListener('mouseover', (event) => {
     _$tooltip.innerHTML = text;
     _$tooltip.style.display = 'block';

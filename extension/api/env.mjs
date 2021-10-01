@@ -11,39 +11,36 @@
  * @module notion-enhancer/api/env
  */
 
-/**
- * the environment/platform name code is currently being executed in
- * @constant {string}
- */
-export const name = 'extension';
+import env from '../env.mjs';
 
 /**
- * all environments/platforms currently supported by the enhancer
- * @constant {array<string>}
+ * the environment/platform name code is currently being executed in
+ * @constant
+ * @type {string}
  */
-export const supported = ['linux', 'win32', 'darwin', 'extension'];
+export const name = env.name;
 
 /**
  * the current version of the enhancer
- * @constant {string}
+ * @constant
+ * @type {string}
  */
-export const version = chrome.runtime.getManifest().version;
+export const version = env.version;
 
-/** open the enhancer's menu */
-export const focusMenu = () => chrome.runtime.sendMessage({ action: 'focusMenu' });
+/**
+ * open the enhancer's menu
+ * @type {function}
+ */
+export const focusMenu = env.focusMenu;
 
-/** focus an active notion tab */
-export const focusNotion = () => chrome.runtime.sendMessage({ action: 'focusNotion' });
+/**
+ * focus an active notion tab
+ * @type {function}
+ */
+export const focusNotion = env.focusNotion;
 
-/** reload all notion and enhancer menu tabs to apply changes */
-export const reload = () => chrome.runtime.sendMessage({ action: 'reload' });
-
-/** a notification displayed when the menu is opened for the first time */
-export const welcomeNotification = {
-  id: '84e2d49b-c3dc-44b4-a154-cf589676bfa0',
-  color: 'purple',
-  icon: 'message-circle',
-  message: 'Welcome! Come chat with us on Discord.',
-  link: 'https://discord.gg/sFWPXtA',
-  version,
-};
+/**
+ * reload all notion and enhancer menu tabs to apply changes
+ * @type {function}
+ */
+export const reload = env.reload;

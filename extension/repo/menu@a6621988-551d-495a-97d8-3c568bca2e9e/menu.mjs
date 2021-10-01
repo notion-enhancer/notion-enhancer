@@ -7,7 +7,10 @@
 'use strict';
 
 import { env, fs, storage, registry, web } from '../../api/_.mjs';
-const db = await registry.db('a6621988-551d-495a-97d8-3c568bca2e9e');
+
+export const db = await registry.db('a6621988-551d-495a-97d8-3c568bca2e9e'),
+  profileName = await registry.profileName(),
+  profileDB = await registry.profileDB();
 
 import './styles.mjs';
 import { notifications } from './notifications.mjs';
@@ -35,12 +38,12 @@ window.addEventListener('beforeunload', (event) => {
 
 const $main = web.html`<main class="main"></main>`,
   $sidebar = web.html`<article class="sidebar"></article>`,
-  $profile = web.html`<button class="profile-trigger">
-    Profile: ${web.escape(registry.profileName)}
-  </button>`,
   $options = web.html`<div class="options-container">
     <p class="options-placeholder">Select a mod to view and configure its options.</p>
-  </div>`;
+  </div>`,
+  $profile = web.html`<button class="profile-trigger">
+    Profile: ${web.escape(profileName)}
+  </button>`;
 
 let _$profileConfig;
 $profile.addEventListener('click', async (event) => {
@@ -51,14 +54,14 @@ $profile.addEventListener('click', async (event) => {
     const profileNames = [
         ...new Set([
           ...Object.keys(await storage.get(['profiles'], { default: {} })),
-          registry.profileName,
+          profileName,
         ]),
       ],
       $options = profileNames.map(
         (profile) => web.raw`<option
           class="select-option"
           value="${web.escape(profile)}"
-          ${profile === registry.profileName ? 'selected' : ''}
+          ${profile === profileName ? 'selected' : ''}
         >${web.escape(profile)}</option>`
       ),
       $select = web.html`<select class="input">
@@ -68,7 +71,7 @@ $profile.addEventListener('click', async (event) => {
       $edit = web.html`<input
         type="text"
         class="input"
-        value="${web.escape(registry.profileName)}"
+        value="${web.escape(profileName)}"
         pattern="/^[A-Za-z0-9_-]+$/"
       >`,
       $export = web.html`<button class="profile-export">
@@ -214,13 +217,13 @@ const _$modListCache = {},
                 mod.id !== id
             );
           for (const mod of mods) {
-            registry.profileDB.set(['_mods', mod.id], false);
+            profileDB.set(['_mods', mod.id], false);
             document.querySelector(
               `[data-id="${web.escape(mod.id)}"] .toggle-check`
             ).checked = false;
           }
         }
-        registry.profileDB.set(['_mods', mod.id], event.target.checked);
+        profileDB.set(['_mods', mod.id], event.target.checked);
         notifications.onChange();
       });
       $mod.addEventListener('click', async (event) => {

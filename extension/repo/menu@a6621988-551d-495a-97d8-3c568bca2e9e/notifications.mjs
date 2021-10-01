@@ -15,7 +15,7 @@ export const notifications = {
   $container: web.html`<div class="notifications-container"></div>`,
   cache: await storage.get(['notifications'], []),
   provider: [
-    env.welcomeNotification,
+    registry.welcomeNotification,
     ...(await fs.getJSON('https://notion-enhancer.github.io/notifications.json')),
   ],
   add({ icon, message, id = undefined, color = undefined, link = undefined }) {

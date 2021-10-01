@@ -11,7 +11,7 @@
  * @module notion-enhancer/api/fmt
  */
 
-import * as web from './web.mjs';
+import { web, fs } from './_.mjs';
 
 import '../dep/prism.min.js';
 /** syntax highlighting using https://prismjs.com/ */
@@ -79,4 +79,54 @@ export const slugger = (heading, slugs = new Set()) => {
     slug = `${heading}-${i}`;
   }
   return slug;
+};
+
+const patterns = {
+  alphanumeric: /^[\w\.-]+$/,
+  uuid: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,
+  semver:
+    /^(0|[1-9]\d*)\.(0|[1-9]\d*)\.(0|[1-9]\d*)(?:-((?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+([0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$/i,
+  email:
+    /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/i,
+  url: /^[(http(s)?):\/\/(www\.)?a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)$/i,
+  color: /^(?:#|0x)(?:[a-f0-9]{3}|[a-f0-9]{6})\b|(?:rgb|hsl)a?\([^\)]*\)$/i,
+};
+function test(str, pattern) {
+  const match = str.match(pattern);
+  return !!(match && match.length);
+}
+
+/**
+ * test the type of a value. unifies builtin, regex, and environment/api checks
+ * @param {*} value - the value to check
+ * @param {string|array<values>} type - the type the value should be or a list of allowed values
+ * @returns {boolean} whether or not the value matches the type
+ */
+export const is = async (value, type, { extension = '' } = {}) => {
+  extension = !value || !value.endsWith || value.endsWith(extension);
+  if (Array.isArray(type)) {
+    return type.includes(value);
+  }
+  switch (type) {
+    case 'array':
+      return Array.isArray(value);
+    case 'object':
+      return value && typeof value === 'object' && !Array.isArray(value);
+    case 'undefined':
+    case 'boolean':
+    case 'number':
+      return typeof value === type && extension;
+    case 'string':
+      return typeof value === type && value.length && extension;
+    case 'alphanumeric':
+    case 'uuid':
+    case 'semver':
+    case 'email':
+    case 'url':
+    case 'color':
+      return typeof value === 'string' && test(value, patterns[type]) && extension;
+    case 'file':
+      return typeof value === 'string' && value && (await fs.isFile(value)) && extension;
+  }
+  return false;
 };
