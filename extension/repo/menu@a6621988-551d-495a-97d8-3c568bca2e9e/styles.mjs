@@ -59,14 +59,18 @@ const customClasses = {
   'mod-author': apply`flex items-center mb-2`,
   'mod-author-avatar': apply`inline object-cover w-5 h-5 rounded-full mr-2`,
   'sidebar': apply`h-full w-96 px-4 pt-3 pb-32 flex flex-col bg-notion-secondary border-l border-divider`,
-  'profile-button': apply`block px-4 py-3 mb-2 rounded-md text-sm text-left font-semibold shadow-inner
+  'profile-trigger': apply`block px-4 py-3 mb-2 rounded-md text-sm text-left font-semibold shadow-inner
     bg-accent-red-hover border border-accent-red text-accent-red focus:(outline-none ring ring-inset ring-accent-red)`,
-  'profile-save': apply`text-sm px-3 py-2 font-medium mt-2 bg-accent-blue text-accent-blue-text rounded-md
-    hover:bg-accent-blue-hover focus:(bg-accent-blue-focus outline-none)`,
-  'profile-delete': apply`text-sm px-3 py-2 font-medium ml-3 mt-3 bg-red-tag text-red-tag-text rounded-md
-    border border-red-text hover:bg-red-text focus:(outline-none bg-red-text)`,
+  'profile-actions': apply`flex`,
+  'profile-save': apply`text-sm px-3 py-2 font-medium mt-2 bg-accent-blue text-accent-blue-text rounded-md flex-grow
+    hover:bg-accent-blue-hover focus:(bg-accent-blue-focus outline-none) text-center`,
+  'profile-delete': apply`text-sm px-3 py-2 font-medium ml-3 mt-2 bg-red-tag text-red-tag-text rounded-md flex-grow
+    border border-red-text hover:bg-red-text focus:(outline-none bg-red-text) text-center`,
+  'profile-export': apply`profile-save mr-2`,
+  'profile-import': apply`profile-save mr-2`,
   'profile-error': apply`text-xs mt-2 text-red-text`,
-  'button-icon': apply`w-4 h-4 -mt-1 inline-block mr-1`,
+  'profile-icon-action': apply`w-4 h-4 -mt-1 inline-block`,
+  'profile-icon-text': apply`w-4 h-4 -mt-1 inline-block mr-1`,
   'options-container': apply`px-4 py-3 shadow-inner rounded-lg bg-notion border border-divider space-y-3`,
   'options-placeholder': apply`text-sm text-foreground-secondary`,
   'toggle-box': apply`w-9 h-5 p-0.5 flex items-center bg-toggle-off rounded-full duration-300 ease-in-out cursor-pointer`,

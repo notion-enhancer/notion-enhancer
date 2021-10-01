@@ -35,7 +35,7 @@ window.addEventListener('beforeunload', (event) => {
 
 const $main = web.html`<main class="main"></main>`,
   $sidebar = web.html`<article class="sidebar"></article>`,
-  $profile = web.html`<button class="profile-button">
+  $profile = web.html`<button class="profile-trigger">
     Profile: ${web.escape(registry.profileName)}
   </button>`,
   $options = web.html`<div class="options-container">
@@ -71,13 +71,50 @@ $profile.addEventListener('click', async (event) => {
         value="${web.escape(registry.profileName)}"
         pattern="/^[A-Za-z0-9_-]+$/"
       >`,
+      $export = web.html`<button class="profile-export">
+        ${web.icon('download', { class: 'profile-icon-action' })}
+      </button>`,
+      $import = web.html`<label class="profile-import">
+        <input type="file" class="hidden" accept="application/json">
+        ${web.icon('upload', { class: 'profile-icon-action' })}
+      </label>`,
       $save = web.html`<button class="profile-save">
-        ${web.icon('save', { class: 'button-icon' })} Save
+        ${web.icon('save', { class: 'profile-icon-text' })} Save
       </button>`,
       $delete = web.html`<button class="profile-delete">
-        ${web.icon('trash-2', { class: 'button-icon' })} Delete
+        ${web.icon('trash-2', { class: 'profile-icon-text' })} Delete
       </button>`,
       $error = web.html`<p class="profile-error"></p>`;
+    $export.addEventListener('click', async (event) => {
+      const now = new Date(),
+        $a = web.html`<a
+          class="hidden"
+          download="notion-enhancer_${web.escape($select.value)}_${now.getFullYear()}-${
+          now.getMonth() + 1
+        }-${now.getDate()}.json"
+          href="data:text/plain;charset=utf-8,${encodeURIComponent(
+            JSON.stringify(await storage.get(['profiles', $select.value], {}), null, 2)
+          )}"
+        ></a>`;
+      web.render(document.body, $a);
+      $a.click();
+      $a.remove();
+    });
+    $import.addEventListener('change', (event) => {
+      const file = event.target.files[0],
+        reader = new FileReader();
+      reader.onload = async (progress) => {
+        try {
+          const profileUpload = JSON.parse(progress.currentTarget.result);
+          if (!profileUpload) throw Error;
+          await storage.set(['profiles', $select.value], profileUpload);
+          location.reload();
+        } catch {
+          web.render(web.empty($error), 'Invalid JSON uploaded.');
+        }
+      };
+      reader.readAsText(file);
+    });
     $select.addEventListener('change', async (event) => {
       if ($select.value === '--') {
         $edit.value = '';
@@ -89,6 +126,10 @@ $profile.addEventListener('click', async (event) => {
           web.empty($error),
           `The profile "${web.escape($edit.value)}" already exists.`
         );
+        return false;
+      }
+      if (!$edit.value) {
+        web.render(web.empty($error), 'Profile names cannot be empty.');
         return false;
       }
       if (!$edit.value.match(/^[A-Za-z0-9_-]+$/)) {
@@ -139,7 +180,7 @@ $profile.addEventListener('click', async (event) => {
         $edit,
         web.html`${web.icon('type', { class: 'input-icon' })}`
       ),
-      web.render(web.html`<p></p>`, $save, $delete),
+      web.render(web.html`<p class="profile-actions"></p>`, $export, $import, $save, $delete),
       $error
     );
   }
