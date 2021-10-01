@@ -8,14 +8,8 @@
 
 import { fmt, registry } from './_.mjs';
 
-/**
- * internally used to validate mod.json files and provide helpful errors
- * @private
- * @param {object} mod - a mod's mod.json in object form
- * @returns {boolean} whether or not the mod has passed validation
- */
-export async function validate(mod) {
-  const check = async (
+const check = async (
+    mod,
     key,
     value,
     types,
@@ -43,24 +37,23 @@ export async function validate(mod) {
       return false;
     }
     return true;
-  };
-  let conditions = [
-    check('name', mod.name, 'string'),
-    check('id', mod.id, 'uuid'),
-    check('version', mod.version, 'semver'),
-    check('environments', mod.environments, 'array', { optional: true }).then((passed) => {
-      if (!passed) return false;
-      if (!mod.environments) {
-        mod.environments = registry.supportedEnvs;
-        return true;
+  },
+  validateEnvironments = (mod) => {
+    return check(mod, 'environments', mod.environments, 'array', { optional: true }).then(
+      (passed) => {
+        if (!passed) return false;
+        if (!mod.environments) {
+          mod.environments = registry.supportedEnvs;
+          return true;
+        }
+        return mod.environments.map((tag) =>
+          check(mod, 'environments.env', tag, registry.supportedEnvs)
+        );
       }
-      return mod.environments.map((tag) =>
-        check('environments.env', tag, registry.supportedEnvs)
-      );
-    }),
-    check('description', mod.description, 'string'),
-    check('preview', mod.preview, 'file|url', { optional: true }),
-    check('tags', mod.tags, 'array').then((passed) => {
+    );
+  },
+  validateTags = (mod) => {
+    return check(mod, 'tags', mod.tags, 'array').then((passed) => {
       if (!passed) return false;
       const containsCategory = mod.tags.filter((tag) =>
         ['core', 'extension', 'theme'].includes(tag)
@@ -87,60 +80,66 @@ export async function validate(mod) {
         });
         return false;
       }
-      return mod.tags.map((tag) => check('tags.tag', tag, 'string'));
-    }),
-    check('authors', mod.authors, 'array').then((passed) => {
+      return mod.tags.map((tag) => check(mod, 'tags.tag', tag, 'string'));
+    });
+  },
+  validateAuthors = (mod) => {
+    return check(mod, 'authors', mod.authors, 'array').then((passed) => {
       if (!passed) return false;
       return mod.authors.map((author) => [
-        check('authors.author.name', author.name, 'string'),
-        check('authors.author.email', author.email, 'email'),
-        check('authors.author.homepage', author.homepage, 'url'),
-        check('authors.author.avatar', author.avatar, 'url'),
+        check(mod, 'authors.author.name', author.name, 'string'),
+        check(mod, 'authors.author.email', author.email, 'email'),
+        check(mod, 'authors.author.homepage', author.homepage, 'url'),
+        check(mod, 'authors.author.avatar', author.avatar, 'url'),
       ]);
-    }),
-    check('css', mod.css, 'object').then((passed) => {
+    });
+  },
+  validateCSS = (mod) => {
+    return check(mod, 'css', mod.css, 'object').then((passed) => {
       if (!passed) return false;
       const tests = [];
       for (let dest of ['frame', 'client', 'menu']) {
         if (!mod.css[dest]) continue;
-        let test = check(`css.${dest}`, mod.css[dest], 'array');
+        let test = check(mod, `css.${dest}`, mod.css[dest], 'array');
         test = test.then((passed) => {
           if (!passed) return false;
           return mod.css[dest].map((file) =>
-            check(`css.${dest}.file`, file, 'file', { extension: '.css' })
+            check(mod, `css.${dest}.file`, file, 'file', { extension: '.css' })
           );
         });
         tests.push(test);
       }
       return tests;
-    }),
-    check('js', mod.js, 'object').then((passed) => {
+    });
+  },
+  validateJS = (mod) => {
+    return check(mod, 'js', mod.js, 'object').then((passed) => {
       if (!passed) return false;
       const tests = [];
       if (mod.js.client) {
-        let test = check('js.client', mod.js.client, 'array');
+        let test = check(mod, 'js.client', mod.js.client, 'array');
         test = test.then((passed) => {
           if (!passed) return false;
           return mod.js.client.map((file) =>
-            check('js.client.file', file, 'file', { extension: '.mjs' })
+            check(mod, 'js.client.file', file, 'file', { extension: '.mjs' })
           );
         });
         tests.push(test);
       }
       if (mod.js.electron) {
-        let test = check('js.electron', mod.js.electron, 'array');
+        let test = check(mod, 'js.electron', mod.js.electron, 'array');
         test = test.then((passed) => {
           if (!passed) return false;
           return mod.js.electron.map((file) =>
-            check('js.electron.file', file, 'object').then((passed) => {
+            check(mod, 'js.electron.file', file, 'object').then((passed) => {
               if (!passed) return false;
               return [
-                check('js.electron.file.source', file.source, 'file', {
+                check(mod, 'js.electron.file.source', file.source, 'file', {
                   extension: '.mjs',
                 }),
                 // referencing the file within the electron app
                 // existence can't be validated, so only format is
-                check('js.electron.file.target', file.target, 'string', {
+                check(mod, 'js.electron.file.target', file.target, 'string', {
                   extension: '.js',
                 }),
               ];
@@ -150,19 +149,21 @@ export async function validate(mod) {
         tests.push(test);
       }
       return tests;
-    }),
-    check('options', mod.options, 'array').then((passed) => {
+    });
+  },
+  validateOptions = (mod) => {
+    return check(mod, 'options', mod.options, 'array').then((passed) => {
       if (!passed) return false;
       return mod.options.map((option) =>
-        check('options.option.type', option.type, registry.optionTypes).then((passed) => {
+        check(mod, 'options.option.type', option.type, registry.optionTypes).then((passed) => {
           if (!passed) return false;
           const tests = [
-            check('options.option.key', option.key, 'alphanumeric'),
-            check('options.option.label', option.label, 'string'),
-            check('options.option.tooltip', option.tooltip, 'string', {
+            check(mod, 'options.option.key', option.key, 'alphanumeric'),
+            check(mod, 'options.option.label', option.label, 'string'),
+            check(mod, 'options.option.tooltip', option.tooltip, 'string', {
               optional: true,
             }),
-            check('options.option.environments', option.environments, 'array', {
+            check(mod, 'options.option.environments', option.environments, 'array', {
               optional: true,
             }).then((passed) => {
               if (!passed) return false;
@@ -171,39 +172,44 @@ export async function validate(mod) {
                 return true;
               }
               return option.environments.map((environment) =>
-                check('options.option.environments.env', environment, registry.supportedEnvs)
+                check(
+                  mod,
+                  'options.option.environments.env',
+                  environment,
+                  registry.supportedEnvs
+                )
               );
             }),
           ];
           switch (option.type) {
             case 'toggle':
-              tests.push(check('options.option.value', option.value, 'boolean'));
+              tests.push(check(mod, 'options.option.value', option.value, 'boolean'));
               break;
             case 'select':
               tests.push(
-                check('options.option.values', option.values, 'array').then((passed) => {
+                check(mod, 'options.option.values', option.values, 'array').then((passed) => {
                   if (!passed) return false;
                   return option.values.map((value) =>
-                    check('options.option.values.value', value, 'string')
+                    check(mod, 'options.option.values.value', value, 'string')
                   );
                 })
               );
               break;
             case 'text':
             case 'hotkey':
-              tests.push(check('options.option.value', option.value, 'string'));
+              tests.push(check(mod, 'options.option.value', option.value, 'string'));
               break;
             case 'number':
             case 'color':
-              tests.push(check('options.option.value', option.value, option.type));
+              tests.push(check(mod, 'options.option.value', option.value, option.type));
               break;
             case 'file':
               tests.push(
-                check('options.option.extensions', option.extensions, 'array').then(
+                check(mod, 'options.option.extensions', option.extensions, 'array').then(
                   (passed) => {
                     if (!passed) return false;
                     return option.extensions.map((value) =>
-                      check('options.option.extensions.extension', value, 'string')
+                      check(mod, 'options.option.extensions.extension', value, 'string')
                     );
                   }
                 )
@@ -212,7 +218,28 @@ export async function validate(mod) {
           return tests;
         })
       );
-    }),
+    });
+  };
+
+/**
+ * internally used to validate mod.json files and provide helpful errors
+ * @private
+ * @param {object} mod - a mod's mod.json in object form
+ * @returns {boolean} whether or not the mod has passed validation
+ */
+export async function validate(mod) {
+  let conditions = [
+    check(mod, 'name', mod.name, 'string'),
+    check(mod, 'id', mod.id, 'uuid'),
+    check(mod, 'version', mod.version, 'semver'),
+    validateEnvironments(mod),
+    check(mod, 'description', mod.description, 'string'),
+    check(mod, 'preview', mod.preview, 'file|url', { optional: true }),
+    validateTags(mod),
+    validateAuthors(mod),
+    validateCSS(mod),
+    validateJS(mod),
+    validateOptions(mod),
   ];
   do {
     conditions = await Promise.all(conditions.flat(Infinity));
