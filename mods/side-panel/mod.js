@@ -16,11 +16,11 @@ module.exports = {
   tags: ['extension', 'panel'],
   name: 'side panel',
   desc: 'adds a side panel to notion.',
-  version: '1.1.0',
+  version: '1.2.1',
   author: 'CloudHill',
   hacks: {
     'renderer/preload.js'(store, __exports) {
-      // Load icons
+      // load icons
       let icons = {};
       (async () => {
         icons.doubleChevron = await fs.readFile( path.resolve(__dirname, 'icons/double-chevron.svg') );
@@ -28,47 +28,53 @@ module.exports = {
         icons.reload = await fs.readFile( path.resolve(__dirname, 'icons/reload.svg') );
       })();
 
-      // Load panel mods
+      // load panel mods
       let panelMods = 
         getEnhancements().loaded.filter(
           mod => (mod.panel && (store('mods')[mod.id] || {}).enabled)
         );
+      // initialize panel values
       panelMods.forEach(mod => initMod(mod));
+      
+      // panelMods is an array containing objects with info about each panel
 
       document.addEventListener('readystatechange', (event) => {
         if (document.readyState !== 'complete') return false;
+        // if no panel mods activated 
         if (panelMods.length < 1) return;
         
         const attempt_interval = setInterval(enhance, 500);
         function enhance() {
+          // default panel width
           if (!store().width) store().width = 220;
           let curPanel = {};
-
-          const frame = document.querySelector('.notion-frame');
-          if (!frame) return;
+          
+          if (!document.querySelector('.notion-sidebar')) return;
           clearInterval(attempt_interval);
+          
+          // notion elements to manipulate
+          const frame = document.querySelector('.notion-frame');
+          const notionSidebarContainer = document
+            .querySelector(".notion-cursor-listener > div[style*=\"flex-end\"]");
 
-          // Initialize panel
+
+          // INITIALIZE PANEL
+
           const container = createElement(
             '<div class="enhancer-panel--container"></div>'
           );
           const panel = createElement(
             `<div id="enhancer-panel"></div>`
           );
-          
-          frame.after(container);
           container.appendChild(panel);
           
-          // Panel contents
+          // panel contents
           const header = createElement(`
             <div class="enhancer-panel--header">
               <div class="enhancer-panel--icon"></div>
               <div class="enhancer-panel--title"></div>
             </div>
           `);
-          const toggle = createElement(
-            `<div class="enhancer-panel--toggle">${icons.doubleChevron}</div>`
-          );
           const content = createElement(
             '<div id="enhancer-panel--content"></div>'
           );
@@ -77,31 +83,37 @@ module.exports = {
               <div style="cursor: col-resize;"></div>
             </div>
           `);
-
           panel.append(header, content, resize);
 
-          // Add switcher if there is more than one panel mods
+          // add switcher if there is more than one panel mods
           if (panelMods.length > 1) {
-            header.addEventListener('click', renderSwitcher);
             const switcherIcon = createElement(
               `<div class="enhancer-panel--switcher-icon">${icons.switcher}</div>`
             )
             header.appendChild(switcherIcon);
+            header.addEventListener('click', renderSwitcher);
           } else {
             header.addEventListener('click', togglePanel);
           } 
 
+          // add panel lock toggle
+          const toggle = createElement(
+            `<div class="enhancer-panel--toggle">${icons.doubleChevron}</div>`
+          );
           header.appendChild(toggle);
           toggle.addEventListener('click', togglePanel);
 
-          // Keybind
+          // render panel
+          notionSidebarContainer.after(container);
+
+          // toggle panel keybind
           document.addEventListener('keyup', e => {
             const hotkey = {
               code: 'Backslash',
               ctrlKey: true,
-              shiftKey: true,
+              shiftKey: false,
               metaKey: false,
-              altKey: false,
+              altKey: true,
             };
             for (let prop in hotkey)
               if (hotkey[prop] !== e[prop]) return;
@@ -114,26 +126,34 @@ module.exports = {
           
           enableResize();
 
-          // Attempt to load last opened mod
+          // attempt to load last opened mod
           let loaded = false;
           if (store().last_open) {
             panelMods.forEach(mod => {
               if (mod.id === store().last_open) {
-                loadContent(mod);
+                loadPanelMod(mod);
                 loaded = true;
               }
             });
           }
-          if (!loaded) loadContent(panelMods[0]);
+          if (!loaded) loadPanelMod(panelMods[0]);
 
-          function loadContent(mod) {
-            if (curPanel.js && curPanel.js.onSwitch) curPanel.js.onSwitch();
+
+          // loads a panel mod
+          function loadPanelMod(mod) {
+            // call previous panel's onSwitch function
+            if (curPanel.js?.onSwitch) curPanel.js.onSwitch();
+            
+            // set current panel
             curPanel = mod.panel;
-
             store().last_open = mod.id;
-            panel.querySelector('.enhancer-panel--title').innerHTML = mod.panel.name || mod.name;
 
-            // Reload button
+            setPanelTitle(mod.panel.name);
+            setPanelIcon(mod.panel.icon);
+            setPanelContent(mod.panel.html);
+            panel.dataset.fullHeight = mod.panel.fullHeight || false;
+
+            // reload button
             let reloadButton = panel.querySelector('.enhancer-panel--reload-button');
             if (reloadButton) reloadButton.remove();
             if (mod.panel.reload) {
@@ -142,102 +162,168 @@ module.exports = {
               )
               reloadButton.addEventListener('click', e => { 
                 e.stopPropagation();
-                loadContent(mod);
+                loadPanelMod(mod);
               })
               panel.querySelector('.enhancer-panel--title').after(reloadButton);
             }
 
-            panel.querySelector('.enhancer-panel--icon').innerHTML = mod.panel.icon;
-            document.getElementById('enhancer-panel--content').innerHTML = mod.panel.html;
-            panel.dataset.fullHeight = mod.panel.fullHeight || false;
-
-            if (curPanel.js && curPanel.js.onLoad)
-              curPanel.js.onLoad();
+            // execute panel's onLoad function
+            if (curPanel.js?.onLoad) curPanel.js.onLoad();
           }
 
+          function setPanelTitle(title) {
+            panel.querySelector('.enhancer-panel--title').innerHTML = title;
+          }
+
+          function setPanelIcon(icon) {
+            panel.querySelector('.enhancer-panel--icon').innerHTML = icon;
+          }
+
+          function setPanelContent(content) {
+            document.getElementById('enhancer-panel--content').innerHTML = content;
+          }
+
+          function setPanelWidth(width) {
+            // update width
+            store().width = width;
+            panel.style.width = width + 'px';
+
+            if (isLocked()) {
+              // panel container width
+              container.style.width = width + 'px';
+              // adjust notion elements to make space on the right
+              frame.style.paddingRight =  width + 'px';
+              notionSidebarContainer.style.right =  width + 'px';
+            } else {
+              // hide panel to the right of window
+              panel.style.right = width + 'px';
+            }
+          }
+
+          // LOCK/OPEN
+
+          function lockPanel() {
+            panel.dataset.locked = 'true';
+            setPanelWidth(store().width);
+
+            // anchor panel to right of window
+            panel.style.right = 0;
+
+            // remove handle
+            const handle = panel.nextElementSibling;
+            handle?.remove();
+
+            // reset animation styles
+            panel.style.opacity = '';
+            panel.style.transform = '';
+  
+            // hover event listeners
+            disableHideListener();
+
+            // call panel's onLock function
+            if (curPanel.js?.onLock) curPanel.js.onLock();
+          }
+  
           function unlockPanel(animate) {
             panel.dataset.locked = 'false';
             setPanelWidth(store().width);
+            
+            // hide panel container
+            container.style.width = 0;
+            // reset notion elements to full page
+            frame.style.paddingRight = 0;
+            notionSidebarContainer.style.right = 0;
 
+            // add handle
+            const handle = createElement(
+              '<div class="enhancer-panel--hover-handle"></div>'
+            )
+            panel.after(handle);
+
+            const addListeners = () => {
+              // show panel when handle is hovered
+              handle.addEventListener('mouseover', showPanel);
+              handle.addEventListener('mousemove', showPanel);
+
+              // hide panel when mouse leaves panel or handle
+              enableHideListener();
+              handle.addEventListener('mouseleave', e => {
+                // don't hide if mouseover scrollbar or panel
+                if (e.relatedTarget?.closest(".enhancer-panel--container") ||
+                    e.relatedTarget?.classList.contains("notion-scroller")) return;
+                hidePanel(e);
+              });
+            }
+
+            // unlock animation
             if (animate) {
               panel.animate(
                 [
                   { opacity: 1, transform: 'none' },
                   { opacity: 1, transform: 'translateY(60px)', offset: 0.4},
-                  { opacity: 0, transform: `translateX(${store().width - 30}px) translateY(60px)`},
+                  { opacity: 0, transform: `translateX(${store().width}px) translateY(60px)`},
                 ], 
                 { duration: 600, easing: 'ease-out' }
-              ).onfinish = () => {
-                panel.addEventListener('mouseover', showPanel);
-                panel.addEventListener('mouseleave', hidePanel);
-              }
-            } else {
-              panel.addEventListener('mouseover', showPanel);
-              panel.addEventListener('mouseleave', hidePanel);
-            }
+              ).onfinish = () => addListeners();
+            } else addListeners();
             
             hidePanel();
 
-            if (curPanel.js && curPanel.js.onUnlock) {
-              curPanel.js.onUnlock();
-            }
-          }
-  
-          function lockPanel() {
-            panel.dataset.locked = 'true';
-            setPanelWidth(store().width);
-
-            // Reset animation styles
-            panel.style.opacity = '';
-            panel.style.transform = '';
-  
-            // Hover event listeners
-            panel.removeEventListener('mouseover', showPanel);
-            panel.removeEventListener('mouseleave', hidePanel);
-
-            if (curPanel.js && curPanel.js.onLock) {
-              curPanel.js.onLock();
-            }
+            // call panel's onUnlock function
+            if (curPanel.js?.onUnlock) curPanel.js.onUnlock();
           }
   
           function togglePanel(e) {
             if (e) e.stopPropagation();
-            if (isLocked()) unlockPanel(true);
-            else lockPanel();
+
+            isLocked() ? unlockPanel(true) : lockPanel();
+            
             store().locked = panel.dataset.locked;
           }
   
-          function showPanel() {
-            if (!isLocked()) {
-              panel.style.opacity = 1;
-              panel.style.transform = 'translateY(60px)';
+          function isLocked() {
+            return panel.dataset.locked === 'true';
+          }
+
+          // WHEN UNLOCKED
+
+          function showPanel(e) {
+            if (isLocked()) return;
+            if (e.shiftKey) {
+              hidePanel();
+              return;
             }
+
+            panel.style.opacity = 1;
+            panel.style.transform = 'translateY(60px)';
           }
   
-          function hidePanel() {
-            if (!isLocked()) {
-              panel.style.opacity = 0;
-              panel.style.transform = `translateX(${store().width - 30}px) translateY(60px)`;
-            }
+          function hidePanel(e) {
+            if (isLocked()) return;
+            if (e?.type === 'mousemove' && !e.shiftKey) return;
+
+            panel.style.opacity = 0;
+            panel.style.transform = `translateX(${store().width}px) translateY(60px)`;
           }
 
-          function renderSwitcherItem(mod) {
-            if (mod.panel) {
-              const item = createElement(
-                `<div class="enhancer-panel--switcher-item" tabindex="0">
-                  <div class="enhancer-panel--icon">${mod.panel.icon}</div>
-                  <div class="enhancer-panel--title">${mod.panel.name || mod.name}</div>                
-                </div>`
-              );
-              item.addEventListener('click', () => loadContent(mod));
-              return item;
-            }
+          // panel hides when leaving panel body
+          // mousemove listeners to hide when holding shift
+          function enableHideListener() {
+            panel.addEventListener('mousemove', hidePanel);
+            panel.addEventListener('mouseleave', hidePanel);
           }
+          function disableHideListener() {
+            panel.addEventListener('mousemove', hidePanel);
+            panel.removeEventListener('mouseleave', hidePanel);
+          }
+
+          // SWITCHER
 
           function renderSwitcher() {
+            // switcher already rendered
             if (document.querySelector('.enhancer-panel--overlay-container')) return;
 
-            // Layer to close switcher
+            // overlay to close switcher
             const overlayContainer = createElement(
               '<div class="enhancer-panel--overlay-container"></div>'
             );
@@ -246,7 +332,7 @@ module.exports = {
               .querySelector('.notion-app-inner')
               .appendChild(overlayContainer);
 
-            // Position switcher below header
+            // position switcher below header
             const rect = panel.querySelector('.enhancer-panel--header').getBoundingClientRect();
             const div = createElement(`
               <div style="position: fixed; top: ${rect.top}px; left: ${rect.left}px; width: ${rect.width}px; height: ${rect.height}px ">
@@ -254,7 +340,7 @@ module.exports = {
               </div>
             `);
             
-            // Render switcher
+            // initialize switcher
             const switcher = createElement(
               '<div class="enhancer-panel--switcher"></div>'
             );
@@ -262,161 +348,173 @@ module.exports = {
               switcher.append(renderSwitcherItem(mod))
             );
             
-            overlayContainer.appendChild(div);
             div.firstElementChild.appendChild(switcher);
+            overlayContainer.appendChild(div);
 
+            // focus on first element
             switcher.firstElementChild.focus();
 
-            // Fade in
+            // fade in
             switcher.animate(
               [ {opacity: 0}, {opacity: 1} ],
               { duration: 200 }
             );
 
-            // Prevent panel from closing if unlocked
-            panel.removeEventListener('mouseleave', hidePanel);
+            // prevent panel from closing if unlocked
+            disableHideListener();
 
-            // Escape key listener
+            // keyboard shortcuts
             document.addEventListener('keydown', switcherKeyEvent);
           }
 
           function hideSwitcher() {
-            const overlayContainer = document.querySelector('.enhancer-panel--overlay-container');
+            const overlayContainer = document
+              .querySelector('.enhancer-panel--overlay-container');
             overlayContainer.removeEventListener('click', hideSwitcher);
             document.removeEventListener('keydown', switcherKeyEvent);
           
-            // Fade out
+            // fade out
             document.querySelector('.enhancer-panel--switcher').animate(
               [ {opacity: 1}, {opacity: 0} ],
               { duration: 200 }
             ).onfinish = () => overlayContainer.remove();
             
-            if (!isLocked()) panel.addEventListener('mouseleave', hidePanel);
+            if (!isLocked()) enableHideListener();
           }
 
-          function setPanelWidth(width) {
-            store().width = width;
-            panel.style.width = width + 'px';
+          function renderSwitcherItem(mod) {
+            if (mod.panel) {
+              const item = createElement(
+                `<div class="enhancer-panel--switcher-item" tabindex="0">
+                  <div class="enhancer-panel--icon">${mod.panel.icon}</div>
+                  <div class="enhancer-panel--title">${mod.panel.name}</div>                
+                </div>`
+              );
+              item.addEventListener('click', () => loadPanelMod(mod));
+              return item;
+            }
+          }
 
-            if (isLocked()) {
-              container.style.width = width + 'px';
-              frame.style.paddingRight =  width + 'px';
-              panel.style.right = 0;
-            } else {
-              container.style.width = 0;
-              frame.style.paddingRight = 0;
-              panel.style.right = width + 'px';
+          // handle switcher hotkeys
+          function switcherKeyEvent(e) {
+            e.stopPropagation();
+
+            // esc -> hide switcher
+            if (e.key === 'Escape') return hideSwitcher();
+            
+            // space/enter -> select panel
+            const currentFocus = document.activeElement;
+            if ([' ', 'Enter'].includes(e.key)) return currentFocus.click();
+            
+            // up/down/tab -> change focus
+            if (e.key === 'ArrowUp') focusPrevious();
+            else if (e.key === 'ArrowDown') focusNext();
+            else if (e.key === 'Tab') {
+              e.shiftKey ? focusPrevious() : focusNext();
+              e.preventDefault();
+            }
+            
+            function focusNext() {
+              const nextEl = currentFocus.nextElementSibling;
+              (nextEl || currentFocus.parentElement.firstElementChild).focus();
+            }
+            function focusPrevious() {
+              const prevEl = currentFocus.previousElementSibling;
+              (prevEl || currentFocus.parentElement.lastElementChild).focus();
             }
           }
 
           function enableResize() {
-            const handle = panel.querySelector('.enhancer-panel--resize div');
-            handle.addEventListener('mousedown', initDrag);
+            const resizeHandle = panel.querySelector('.enhancer-panel--resize div');
+            resizeHandle.addEventListener('mousedown', initDrag);
 
             let startX, startWidth;
-            const div = createElement(
+
+            const overlay = createElement(
               '<div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; z-index: 99;"></div>'
             );
 
+            // mousedown
             function initDrag(e) {
+              // initialize start position
               startX = e.clientX;
               startWidth = store().width;
 
-              panel.appendChild(div);
+              panel.appendChild(overlay);
 
-              // Set transitions
+              // set transitions
               container.style.transition = 'width 50ms ease-in';
               panel.style.transition = 'width 50ms ease-in, right 50ms ease-in';
               frame.style.transition = 'padding-right 50ms ease-in';
+              notionSidebarContainer.style.transition = 'padding-right 50ms ease-in';
 
-              handle.style.cursor = '';
-              // Prevent panel from closing if unlocked
-              panel.removeEventListener('mouseleave', hidePanel);
+              resizeHandle.style.cursor = '';
 
               document.body.addEventListener('mousemove', drag);
               document.body.addEventListener('mouseup', stopDrag);
             }
             
+            // mousemove
             function drag(e) {
               e.preventDefault();
+
               let width = startWidth + (startX - e.clientX);
+              // minmax
               if (width < 190) width = 190;
               if (width > 480) width = 480;
+
               setPanelWidth(width);
-              
-              if (curPanel.js && curPanel.js.onResize) {
-                curPanel.js.onResize();
-              }
+
+              // prevent panel from closing if unlocked
+              disableHideListener();
+
+              // call panel's onResize function
+              if (curPanel.js?.onResize) curPanel.js.onResize();
             }
             
+            // mouseup
             function stopDrag() {
-              handle.style.cursor = 'col-resize';
-              panel.removeChild(div);
+              resizeHandle.style.cursor = 'col-resize';
+              panel.removeChild(overlay);
 
-              // Reset transitions
+              // reset transitions
               container.style.transition = 
-                panel.style.transition = 
-                frame.style.transition = '';
+                panel.style.transition =
+                frame.style.transition =
+                notionSidebarContainer.style.transition = '';
               
-              if (!isLocked()) panel.addEventListener('mouseleave', hidePanel);
-              
+
+              if (!isLocked()) enableHideListener();
+
               document.body.removeEventListener('mousemove', drag);
               document.body.removeEventListener('mouseup', stopDrag);
-            }
-          }
-
-          function isLocked() {
-            if (panel.dataset.locked === 'true') return true;
-            else return false;
-          }
-
-          function switcherKeyEvent(e) {
-            e.stopPropagation();
-
-            if (e.key === 'Escape') return hideSwitcher();
-            
-            const currentFocus = document.activeElement;
-            if ([' ', 'Enter'].includes(e.key)) return currentFocus.click();
-            
-            const focusNext = () => {
-              const nextEl = currentFocus.nextElementSibling;
-              if (nextEl) nextEl.focus();
-              else currentFocus.parentElement.firstElementChild.focus();
-            }
-            const focusPrevious = () => {
-              const prevEl = currentFocus.previousElementSibling;
-              if (prevEl) prevEl.focus();
-              else currentFocus.parentElement.lastElementChild.focus();
-            }
-            
-            if (e.key === 'ArrowUp') focusPrevious();
-            else if (e.key === 'ArrowDown') focusNext();
-            else if (e.key === 'Tab') {
-              if (e.shiftKey) focusPrevious();
-              else focusNext();
-
-              e.preventDefault();
             }
           }
         }
       });
 
+
       // INITIALIZATION FUNCTIONS
 
+      // set values for panel
       async function initMod(mod) {
         // load panel sites
         if (mod.id === '0d541743-eb2c-4d77-83a8-3b2f5e8e5dff') {
           panelMods = panelMods.filter(panelMod => panelMod !== mod);
           return panelMods.push(...initPanelSites(mod));
         }
+        
         try {
           if (typeof mod.panel === 'object') {
-            // html
+
+            // html -> relative path to html file
             mod.panel.html = await fs.readFile(
               path.resolve(__dirname, `../${mod.dir}/${mod.panel.html}`)
             );
+
             // name
-            if (!mod.panel.name) mod.panel.name = mod.name;
+            mod.panel.name = mod.panel.name || mod.name;
+
             // icon
             if (mod.panel.icon) {
               const iconPath = path.resolve(__dirname, `../${mod.dir}/${mod.panel.icon}`);
@@ -425,25 +523,33 @@ module.exports = {
             } else {
               mod.panel.icon = mod.panel.name[0];
             }
-            // js
+
+            // js -> relative path to js file
             if (mod.panel.js) {
               const jsPath = `../${mod.dir}/${mod.panel.js}`;
               if (await fs.pathExists(path.resolve(__dirname, jsPath))) {
+                // execute js file
                 mod.panel.js = require(jsPath)(loadStore(mod), __exports);
               }
             }
           } else if (typeof mod.panel === 'string') {
+
+            // icon
             mod.panel.icon = mod.name[0];
+
+            // mod.panel -> rel path to html file 
             mod.panel.html = await fs.readFile(
               path.resolve(__dirname, `../${mod.dir}/${mod.panel}`)
             );
           } else throw Error;
         } catch (err) {
+          // remove mod from panel list
           console.log('invalid panel mod: ' + mod.name);
           panelMods = panelMods.filter(panelMod => panelMod !== mod);
         }
       }
 
+      // returns an array of panels
       function initPanelSites(mod) {
         let panelSites = [];
         const sitesPath = store(mod.id).sites;
@@ -451,21 +557,24 @@ module.exports = {
           try {
             const sites = require(sitesPath);
             const invalid = false;
+            // execute panel-sites/panel.js
             const sitePanelJs = require('../panel-sites/panel.js')(loadStore(mod), __exports);
 
-            const frameUrl = function(url, mobile) {
-              if (!/(^https?:\/\/)/.test(url)) url = 'https://' + url;
+            // returns site's iframe
+            const frameUrl = (url, mobile) => {
+              if (!/(^https?:\/\/)/i.test(url)) url = 'https://' + url;
               return `<iframe src=${url} class="panel-site" ${mobile ? 'mobile-user-agent' : ''}></iframe>`;
             }
 
             sites.forEach(site => {
               if (site.url && site.name) {
                 
-                // get url and icon
+                // get iframe and icon
                 const iframe = frameUrl(site.url, site.mobile);
                 const icon = `<img style="width: 100%; height: 100%;" 
                     src="${site.icon || `https://www.google.com/s2/favicons?domain=${site.url}`}" />`;
 
+                // add panel object to array
                 const panelMod = {
                   id: `${mod.id}-${site.url}`,
                   panel: { 
@@ -478,7 +587,7 @@ module.exports = {
                   },
                 }
                 panelSites.push(panelMod);
-              } else invalid = true;
+              } else invalid = true; // continue initializing next sites
             });
             if (invalid) throw Error;
           }
@@ -490,7 +599,7 @@ module.exports = {
       }
 
       function loadStore(mod) {
-          return (...args) => {
+        return (...args) => {
           if (!args.length) return store(mod.id, mod.defaults);
           if (args.length === 1 && typeof args[0] === 'object')
             return store(mod.id, { ...mod.defaults, ...args[0] });

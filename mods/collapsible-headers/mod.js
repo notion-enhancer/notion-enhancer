@@ -14,7 +14,7 @@ module.exports = {
   tags: ['extension'],
   name: 'collapsible headers',
   desc: 'adds toggles to collapse header sections.',
-  version: '1.0.0',
+  version: '1.0.1',
   author: 'CloudHill',
   options: [
     {
@@ -92,15 +92,18 @@ module.exports = {
             for (let { addedNodes } of list) {
               if (
                 addedNodes[0] &&
-                addedNodes[0].className === 'notion-page-content'
+                addedNodes[0].className === 'notion-presence-container'
               ) {
                 showSelectedHeader();
                 initHeaderToggles();
                 contentObserver.disconnect();
-                contentObserver.observe(addedNodes[0], {
-                  childList: true,
-                  subtree: true,
-                });
+                contentObserver.observe(
+                  document.querySelector('.notion-page-content'), 
+                  {
+                    childList: true,
+                    subtree: true,
+                  }
+                );
               }
             }
           }

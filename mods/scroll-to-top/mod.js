@@ -17,7 +17,7 @@ module.exports = {
   name: 'scroll to top',
   desc:
     'add an arrow above the help button to scroll back to the top of a page.',
-  version: '1.0.0',
+  version: '1.1.0',
   author: 'CloudHill',
   options: [
     {
@@ -97,7 +97,7 @@ module.exports = {
             for (let { addedNodes } of list) {
               if (
                 addedNodes[0] &&
-                (addedNodes[0].className === 'notion-page-content' ||
+                (addedNodes[0].className === 'notion-presence-container' ||
                   addedNodes[0].className === 'notion-scroller') &&
                 top > 0
               ) {

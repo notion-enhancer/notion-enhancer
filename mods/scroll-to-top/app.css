@@ -36,7 +36,7 @@
   font-size: 20px;
 
   background: var(--theme--interactive_hover);
-  box-shadow: 0 0 0 0.5px var(--theme--interactive_hover-border);
+  box-shadow: var(--theme--box-shadow);
 }
 
 .notion-scroll-button {
@@ -55,6 +55,6 @@
 }
 
 .notion-scroll-button > svg {
-  width: 18px;
-  height: 18px;
+  width: 16px;
+  height: 16px;
 }
