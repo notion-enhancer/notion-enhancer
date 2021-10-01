@@ -1,0 +1,38 @@
+{
+  "name": "components",
+  "id": "36a2ffc9-27ff-480e-84a7-c7700a7d232d",
+  "version": "0.2.0",
+  "description": "notion-style elements reuseable by other mods, inc. tooltips and the side panel.",
+  "tags": ["core"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    },
+    {
+      "name": "CloudHill",
+      "email": "rh.cloudhill@gmail.com",
+      "homepage": "https://github.com/CloudHill",
+      "avatar": "https://avatars.githubusercontent.com/u/54142180"
+    }
+  ],
+  "js": {
+    "hook": "hook.mjs"
+  },
+  "css": {
+    "client": ["tooltip.css", "sidebar.css"],
+    "menu": ["tooltip.css"],
+    "frame": ["tooltip.css"]
+  },
+  "options": [
+    {
+      "type": "hotkey",
+      "key": "side-panel-hotkey",
+      "label": "toggle side panel hotkey",
+      "value": "Ctrl+Alt+\\",
+      "tooltip": "opens the side panel in notion - will only work if a mod is making use of it."
+    }
+  ]
+}

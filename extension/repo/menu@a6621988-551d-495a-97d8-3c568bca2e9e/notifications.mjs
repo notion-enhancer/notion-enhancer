@@ -6,10 +6,9 @@
 
 'use strict';
 
-import { env, fs, storage, fmt, registry, web } from '../../api/_.mjs';
-const db = await registry.db('a6621988-551d-495a-97d8-3c568bca2e9e');
-
+import { api } from './loader.mjs';
 import { tw } from './styles.mjs';
+const { env, fs, storage, fmt, registry, web } = api;
 
 export const notifications = {
   $container: web.html`<div class="notifications-container"></div>`,

@@ -19,7 +19,7 @@
     "page": "repo/menu@a6621988-551d-495a-97d8-3c568bca2e9e/menu.html",
     "open_in_tab": true
   },
-  "web_accessible_resources": ["api/*", "dep/*", "icon/*", "repo/*"],
+  "web_accessible_resources": ["env.mjs", "api/*", "dep/*", "icon/*", "repo/*"],
   "content_scripts": [
     {
       "matches": ["https://*.notion.so/*", "https://*.notion.site/*"],

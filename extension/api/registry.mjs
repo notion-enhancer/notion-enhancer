@@ -25,6 +25,7 @@ export const _cache = [],
 export const core = [
   'a6621988-551d-495a-97d8-3c568bca2e9e',
   '0f0bf8b6-eae6-4273-b307-8fc43f2ee082',
+  '36a2ffc9-27ff-480e-84a7-c7700a7d232d',
 ];
 
 /**

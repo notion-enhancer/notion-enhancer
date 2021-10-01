@@ -17,7 +17,7 @@ const _hotkeyEventListeners = [],
   _documentObserverListeners = [],
   _documentObserverEvents = [];
 
-let _$tooltip, _$tooltipStylesheet, _hotkeyEvent, _documentObserver;
+let _hotkeyEvent, _documentObserver;
 
 import '../dep/jscolor.min.js';
 /** color picker with alpha channel using https://jscolor.com/ */
@@ -158,52 +158,6 @@ export const icon = (name, attrs = {}) => {
   return `<svg ${Object.entries(attrs)
     .map(([key, val]) => `${escape(key)}="${escape(val)}"`)
     .join(' ')}><use xlink:href="${fs.localPath('dep/feather-sprite.svg')}#${name}" /></svg>`;
-};
-
-/**
- * add a tooltip to show extra information on hover
- * @param {HTMLElement} $ref - the element that will trigger the tooltip when hovered
- * @param {string} text - the markdown content of the tooltip
- */
-export const tooltip = ($ref, text) => {
-  if (!_$tooltip) {
-    _$tooltip = html`<div id="enhancer--tooltip"></div>`;
-    _$tooltipStylesheet = html`<style>
-      #enhancer--tooltip {
-        position: absolute;
-        background: var(--theme--ui_tooltip);
-        font-size: 11.5px;
-        padding: 0.15rem 0.4rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
-        border-radius: 3px;
-        max-width: 20rem;
-        display: none;
-      }
-      #enhancer--tooltip p {
-        margin: 0.25rem 0;
-      }
-      #enhancer--tooltip p:first-child {
-        color: var(--theme--ui_tooltip-title);
-      }
-      #enhancer--tooltip p:not(:first-child) {
-        color: var(--theme--ui_tooltip-description);
-      }
-    </style>`;
-    render(document.head, _$tooltipStylesheet);
-    render(document.body, _$tooltip);
-  }
-  text = fmt.md.render(text);
-  $ref.addEventListener('mouseover', (event) => {
-    _$tooltip.innerHTML = text;
-    _$tooltip.style.display = 'block';
-  });
-  $ref.addEventListener('mousemove', (event) => {
-    _$tooltip.style.top = event.clientY - _$tooltip.clientHeight + 'px';
-    _$tooltip.style.left = event.clientX - _$tooltip.clientWidth + 'px';
-  });
-  $ref.addEventListener('mouseout', (event) => {
-    _$tooltip.style.display = '';
-  });
 };
 
 /**

@@ -6,11 +6,11 @@
 
 'use strict';
 
-import { fmt, web } from '../../api/_.mjs';
+import { api, profileDB } from './loader.mjs';
 import { notifications } from './notifications.mjs';
-import { profileDB } from './menu.mjs';
+const { fmt, web, components } = api;
 
-export const components = {
+export const blocks = {
   preview: (url) => web.html`<img
     class="mod-preview"
     src="${web.escape(url)}"
@@ -57,13 +57,13 @@ export const components = {
 export const options = {
   toggle: async (mod, opt) => {
     const checked = await profileDB.get([mod.id, opt.key], opt.value),
-      $toggle = components.toggle(opt.label, checked),
+      $toggle = blocks.toggle(opt.label, checked),
       $tooltip = web.html`${web.icon('info', { class: 'input-tooltip' })}`,
       $label = $toggle.children[0],
       $input = $toggle.children[1];
     if (opt.tooltip) {
       $label.prepend($tooltip);
-      web.tooltip($tooltip, opt.tooltip);
+      components.tooltip($tooltip, opt.tooltip);
     }
     $input.addEventListener('change', async (event) => {
       await profileDB.set([mod.id, opt.key], $input.checked);
@@ -89,7 +89,7 @@ export const options = {
         ${$options.join('')}
       </select>`,
       $icon = web.html`${web.icon('chevron-down', { class: 'input-icon' })}`;
-    if (opt.tooltip) web.tooltip($tooltip, opt.tooltip);
+    if (opt.tooltip) components.tooltip($tooltip, opt.tooltip);
     $select.addEventListener('change', async (event) => {
       await profileDB.set([mod.id, opt.key], $select.value);
       notifications.onChange();
@@ -105,7 +105,7 @@ export const options = {
       ),
       $input = web.html`<input type="text" class="input" value="${web.escape(value)}">`,
       $icon = web.html`${web.icon('type', { class: 'input-icon' })}`;
-    if (opt.tooltip) web.tooltip($tooltip, opt.tooltip);
+    if (opt.tooltip) components.tooltip($tooltip, opt.tooltip);
     $input.addEventListener('change', async (event) => {
       await profileDB.set([mod.id, opt.key], $input.value);
       notifications.onChange();
@@ -121,7 +121,7 @@ export const options = {
       ),
       $input = web.html`<input type="number" class="input" value="${value}">`,
       $icon = web.html`${web.icon('hash', { class: 'input-icon' })}`;
-    if (opt.tooltip) web.tooltip($tooltip, opt.tooltip);
+    if (opt.tooltip) components.tooltip($tooltip, opt.tooltip);
     $input.addEventListener('change', async (event) => {
       await profileDB.set([mod.id, opt.key], $input.value);
       notifications.onChange();
@@ -153,7 +153,7 @@ export const options = {
         onInput: paint,
         onChange: paint,
       });
-    if (opt.tooltip) web.tooltip($tooltip, opt.tooltip);
+    if (opt.tooltip) components.tooltip($tooltip, opt.tooltip);
     $input.addEventListener('change', async (event) => {
       await profileDB.set([mod.id, opt.key], $input.value);
       notifications.onChange();
@@ -175,7 +175,7 @@ export const options = {
       $icon = web.html`${web.icon('file', { class: 'input-icon' })}`,
       $filename = web.html`<span>${web.escape(filename || 'none')}</span>`,
       $latest = web.render(web.html`<button class="file-latest">Latest: </button>`, $filename);
-    if (opt.tooltip) web.tooltip($tooltip, opt.tooltip);
+    if (opt.tooltip) components.tooltip($tooltip, opt.tooltip);
     $input.addEventListener('change', (event) => {
       const file = event.target.files[0],
         reader = new FileReader();
@@ -208,7 +208,7 @@ export const options = {
       ),
       $input = web.html`<input type="text" class="input" value="${web.escape(value)}">`,
       $icon = web.html`${web.icon('command', { class: 'input-icon' })}`;
-    if (opt.tooltip) web.tooltip($tooltip, opt.tooltip);
+    if (opt.tooltip) components.tooltip($tooltip, opt.tooltip);
     $input.addEventListener('keydown', async (event) => {
       event.preventDefault();
       const pressed = [],

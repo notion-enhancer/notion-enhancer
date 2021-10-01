@@ -148,6 +148,22 @@ const check = async (
         });
         tests.push(test);
       }
+      if (mod.js.hook) {
+        if (mod.tags.includes('core')) {
+          const test = check(mod, 'js.hook', mod.js.hook, 'file', {
+            extension: '.mjs',
+          });
+          tests.push(test);
+        } else {
+          registry._errors.push({
+            source: mod._dir,
+            message: `js.hook (only core mods can register hooks): ${JSON.stringify(
+              mod.tags
+            )}`,
+          });
+          tests.push(false);
+        }
+      }
       return tests;
     });
   },

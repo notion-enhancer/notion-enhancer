@@ -6,23 +6,13 @@
 
 'use strict';
 
-import { env, fs, storage, registry, web } from '../../api/_.mjs';
-
-export const db = await registry.db('a6621988-551d-495a-97d8-3c568bca2e9e'),
-  profileName = await registry.profileName(),
-  profileDB = await registry.profileDB();
-
+import { api, db, profileName, profileDB } from './loader.mjs';
 import './styles.mjs';
 import { notifications } from './notifications.mjs';
-import { components, options } from './components.mjs';
+import { blocks, options } from './blocks.mjs';
+const { env, fs, storage, registry, web } = api;
 
 web.addHotkeyListener(await db.get(['hotkey']), env.focusNotion);
-
-for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
-  for (const sheet of mod.css?.menu || []) {
-    web.loadStylesheet(`repo/${mod._dir}/${sheet}`);
-  }
-}
 
 const loadTheme = async () => {
   document.documentElement.className =
@@ -204,7 +194,7 @@ const _$modListCache = {},
     },
     mod: async (mod) => {
       const $mod = web.html`<div class="mod" data-id="${web.escape(mod.id)}"></div>`,
-        $toggle = components.toggle('', await registry.enabled(mod.id));
+        $toggle = blocks.toggle('', await registry.enabled(mod.id));
       $toggle.addEventListener('change', async (event) => {
         if (event.target.checked && mod.tags.includes('theme')) {
           const mode = mod.tags.includes('light') ? 'light' : 'dark',
@@ -233,8 +223,8 @@ const _$modListCache = {},
         }
         $mod.className = 'mod-selected';
         const fragment = [
-          web.render(components.title(mod.name), components.version(mod.version)),
-          components.tags(mod.tags),
+          web.render(blocks.title(mod.name), blocks.version(mod.version)),
+          blocks.tags(mod.tags),
           await generators.options(mod),
         ];
         web.render(web.empty($options), ...fragment);
@@ -244,7 +234,7 @@ const _$modListCache = {},
         web.render(
           $mod,
           mod.preview
-            ? components.preview(
+            ? blocks.preview(
                 mod.preview.startsWith('http')
                   ? mod.preview
                   : fs.localPath(`repo/${mod._dir}/${mod.preview}`)
@@ -252,10 +242,10 @@ const _$modListCache = {},
             : '',
           web.render(
             web.html`<div class="mod-body"></div>`,
-            web.render(components.title(mod.name), components.version(mod.version)),
-            components.tags(mod.tags),
-            components.description(mod.description),
-            components.authors(mod.authors),
+            web.render(blocks.title(mod.name), blocks.version(mod.version)),
+            blocks.tags(mod.tags),
+            blocks.description(mod.description),
+            blocks.authors(mod.authors),
             mod.environments.includes(env.name) && !registry.core.includes(mod.id)
               ? $toggle
               : ''
