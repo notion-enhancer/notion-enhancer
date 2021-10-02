@@ -9,18 +9,17 @@
 /** @module notion-enhancer/api */
 
 /** environment-specific methods and constants */
-import * as env from './env.mjs';
-
+export * as env from './env.mjs';
 /** environment-specific filesystem reading */
-const fs = env.name === 'extension' ? await import('./extension-fs.mjs') : {};
+export * as fs from './fs.mjs';
 /** environment-specific data persistence */
-const storage = env.name === 'extension' ? await import('./extension-storage.mjs') : {};
+export * as storage from './storage.mjs';
 
 /** helpers for formatting, validating and parsing values */
-import * as fmt from './fmt.mjs';
+export * as fmt from './fmt.mjs';
 /** interactions with the enhancer's repository of mods */
-import * as registry from './registry.mjs';
+export * as registry from './registry.mjs';
 /** helpers for manipulation of a webpage */
-import * as web from './web.mjs';
-
-export { env, fs, storage, fmt, registry, web };
+export * as web from './web.mjs';
+/** notion-style elements inc. the sidebar */
+export * as components from './components/_.mjs';

@@ -6,9 +6,9 @@
 
 'use strict';
 
-import { api, profileDB } from './loader.mjs';
+import { fmt, web, registry, components } from '../../api/_.mjs';
 import { notifications } from './notifications.mjs';
-const { fmt, web, components } = api;
+const profileDB = await registry.profileDB();
 
 export const blocks = {
   preview: (url) => web.html`<img

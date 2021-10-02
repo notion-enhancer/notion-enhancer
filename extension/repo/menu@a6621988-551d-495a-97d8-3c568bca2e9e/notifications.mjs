@@ -6,9 +6,8 @@
 
 'use strict';
 
-import { api } from './loader.mjs';
+import { env, fs, storage, fmt, registry, web } from '../../api/_.mjs';
 import { tw } from './styles.mjs';
-const { env, fs, storage, fmt, registry, web } = api;
 
 export const notifications = {
   $container: web.html`<div class="notifications-container"></div>`,

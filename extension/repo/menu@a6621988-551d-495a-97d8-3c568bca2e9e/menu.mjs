@@ -6,11 +6,20 @@
 
 'use strict';
 
-import { api, db, profileName, profileDB } from './loader.mjs';
-import './styles.mjs';
+import { env, fs, storage, registry, web } from '../../api/_.mjs';
 import { notifications } from './notifications.mjs';
 import { blocks, options } from './blocks.mjs';
-const { env, fs, storage, registry, web } = api;
+import './styles.mjs';
+
+const db = await registry.db('a6621988-551d-495a-97d8-3c568bca2e9e'),
+  profileName = await registry.profileName(),
+  profileDB = await registry.profileDB();
+
+for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
+  for (const sheet of mod.css?.menu || []) {
+    web.loadStylesheet(`repo/${mod._dir}/${sheet}`);
+  }
+}
 
 web.addHotkeyListener(await db.get(['hotkey']), env.focusNotion);
 

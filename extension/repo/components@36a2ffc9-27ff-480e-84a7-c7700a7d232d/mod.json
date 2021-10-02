@@ -1,8 +1,9 @@
 {
+  "__comment": "pseudo-mod to allow configuration of API-provided components",
   "name": "components",
   "id": "36a2ffc9-27ff-480e-84a7-c7700a7d232d",
   "version": "0.2.0",
-  "description": "notion-style elements reuseable by other mods, inc. tooltips and the side panel.",
+  "description": "notion-style elements reused by other mods, inc. the sidebar.",
   "tags": ["core"],
   "authors": [
     {
@@ -18,21 +19,15 @@
       "avatar": "https://avatars.githubusercontent.com/u/54142180"
     }
   ],
-  "js": {
-    "hook": "hook.mjs"
-  },
-  "css": {
-    "client": ["tooltip.css", "sidebar.css"],
-    "menu": ["tooltip.css"],
-    "frame": ["tooltip.css"]
-  },
+  "js": {},
+  "css": {},
   "options": [
     {
       "type": "hotkey",
       "key": "side-panel-hotkey",
-      "label": "toggle side panel hotkey",
+      "label": "toggle enhancer sidebar hotkey",
       "value": "Ctrl+Alt+\\",
-      "tooltip": "opens the side panel in notion - will only work if a mod is making use of it."
+      "tooltip": "opens/closes the extra sidebar in notion - will only work if a mod is making use of it."
     }
   ]
 }

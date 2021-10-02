@@ -6,8 +6,7 @@
 
 'use strict';
 
-import { api } from './loader.mjs';
-const { web } = api;
+import { web } from '../../api/_.mjs';
 
 let _defaultView = '';
 const _views = new Map();

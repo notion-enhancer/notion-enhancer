@@ -11,36 +11,34 @@
  * @module notion-enhancer/api/env
  */
 
-import * as env from '../env/env.mjs';
-
 /**
  * the environment/platform name code is currently being executed in
  * @constant
  * @type {string}
  */
-export const name = env.name;
+export const name = 'extension';
 
 /**
  * the current version of the enhancer
  * @constant
  * @type {string}
  */
-export const version = env.version;
+export const version = chrome.runtime.getManifest().version;
 
 /**
  * open the enhancer's menu
  * @type {function}
  */
-export const focusMenu = env.focusMenu;
+export const focusMenu = () => chrome.runtime.sendMessage({ action: 'focusMenu' });
 
 /**
  * focus an active notion tab
  * @type {function}
  */
-export const focusNotion = env.focusNotion;
+export const focusNotion = () => chrome.runtime.sendMessage({ action: 'focusNotion' });
 
 /**
  * reload all notion and enhancer menu tabs to apply changes
  * @type {function}
  */
-export const reload = env.reload;
+export const reload = () => chrome.runtime.sendMessage({ action: 'reload' });
