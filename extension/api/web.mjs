@@ -11,7 +11,12 @@
  * @module notion-enhancer/api/web
  */
 
-import { fs, fmt } from './_.mjs';
+import { fs } from './_.mjs';
+
+let _hotkeyEventListeners = [],
+  _documentObserver,
+  _documentObserverListeners = [],
+  _documentObserverEvents = [];
 
 import '../dep/jscolor.min.js';
 /** color picker with alpha channel using https://jscolor.com/ */
@@ -138,27 +143,26 @@ export const loadStylesheet = (path) => {
   return true;
 };
 
-const _hotkeyEvent = document.addEventListener('keyup', (event) => {
-    if (document.activeElement.nodeName === 'INPUT') return;
-    for (const hotkey of _hotkeyEventListeners) {
-      const pressed = hotkey.keys.every((key) => {
-        key = key.toLowerCase();
-        const modifiers = {
-          metaKey: ['meta', 'os', 'win', 'cmd', 'command'],
-          ctrlKey: ['ctrl', 'control'],
-          shiftKey: ['shift'],
-          altKey: ['alt'],
-        };
-        for (const modifier in modifiers) {
-          const pressed = modifiers[modifier].includes(key) && event[modifier];
-          if (pressed) return true;
-        }
-        if (key === event.key.toLowerCase()) return true;
-      });
-      if (pressed) hotkey.callback();
-    }
-  }),
-  _hotkeyEventListeners = [];
+document.addEventListener('keyup', (event) => {
+  if (document.activeElement.nodeName === 'INPUT') return;
+  for (const hotkey of _hotkeyEventListeners) {
+    const pressed = hotkey.keys.every((key) => {
+      key = key.toLowerCase();
+      const modifiers = {
+        metaKey: ['meta', 'os', 'win', 'cmd', 'command'],
+        ctrlKey: ['ctrl', 'control'],
+        shiftKey: ['shift'],
+        altKey: ['alt'],
+      };
+      for (const modifier in modifiers) {
+        const pressed = modifiers[modifier].includes(key) && event[modifier];
+        if (pressed) return true;
+      }
+      if (key === event.key.toLowerCase()) return true;
+    });
+    if (pressed) hotkey.callback(event);
+  }
+});
 
 /**
  * register a hotkey listener to the page
@@ -181,39 +185,40 @@ export const removeHotkeyListener = (callback) => {
   );
 };
 
-const _documentObserver = new MutationObserver((list, observer) => {
-    if (!_documentObserverEvents.length)
-      requestIdleCallback(() => (queue) => {
-        while (queue.length) {
-          const event = queue.shift();
-          for (const listener of _documentObserverListeners) {
-            if (
-              !listener.selectors.length ||
-              listener.selectors.some(
-                (selector) =>
-                  event.target.matches(selector) || event.target.matches(`${selector} *`)
-              )
-            ) {
-              listener.callback(event);
-            }
-          }
-        }
-      });
-    _documentObserverEvents.push(...list);
-  }),
-  _documentObserverListeners = [],
-  _documentObserverEvents = [];
-_documentObserver.observe(document.body, {
-  childList: true,
-  subtree: true,
-  attributes: true,
-});
 /**
  * add a listener to watch for changes to the dom
  * @param {onDocumentObservedCallback} callback
  * @param {array<string>} [selectors]
  */
 export const addDocumentObserver = (callback, selectors = []) => {
+  if (!_documentObserver) {
+    const handle = (queue) => {
+      while (queue.length) {
+        const event = queue.shift();
+        for (const listener of _documentObserverListeners) {
+          if (
+            !listener.selectors.length ||
+            listener.selectors.some(
+              (selector) =>
+                event.target.matches(selector) || event.target.matches(`${selector} *`)
+            )
+          ) {
+            listener.callback(event);
+          }
+        }
+      }
+    };
+    _documentObserver = new MutationObserver((list, observer) => {
+      if (!_documentObserverEvents.length)
+        requestIdleCallback(() => handle(_documentObserverEvents));
+      _documentObserverEvents.push(...list);
+    });
+    _documentObserver.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+    });
+  }
   _documentObserverListeners.push({ callback, selectors });
 };
 

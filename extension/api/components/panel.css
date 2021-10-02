@@ -72,61 +72,81 @@
   transform: translateX(calc(-1 * var(--component--panel-width)));
 }
 
-#enhancer--panel-header {
-  font-size: 1.35rem;
-  font-weight: bold;
-  display: flex;
-  padding: 0.75rem 1rem;
-  align-items: center;
-}
-#enhancer--panel-content {
-  font-size: 1rem;
-  padding: 0.75rem 1rem;
-}
-#enhancer--panel-header-title {
-  padding-left: 0.5em;
-  padding-bottom: 0.1em;
-}
-#enhancer--panel-header-title > p {
+.enhancer--panel-view-title {
   margin: 0;
   height: 1em;
   display: flex;
   align-items: center;
+  font-size: 1.1rem;
+  font-weight: 600;
 }
-#enhancer--panel-header-title > p svg,
-#enhancer--panel-header-title > p img {
+.enhancer--panel-view-title svg,
+.enhancer--panel-view-title img {
   height: 1em;
   width: 1em;
 }
-#enhancer--panel-header-title > p span {
+.enhancer--panel-view-title span {
   font-size: 0.9em;
   margin-left: 0.5em;
 }
+
+#enhancer--panel-header {
+  font-size: 1.2rem;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+#enhancer--panel-header .enhancer--panel-view-title {
+  font-size: 1.2rem;
+}
+#enhancer--panel-content {
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+}
+#enhancer--panel-header-title {
+  padding: 0 0.5em 0.1em 1rem;
+}
+#enhancer--panel-header-switcher {
+  padding: 4px;
+  margin: 0.75rem 0;
+}
 #enhancer--panel-header-toggle {
   margin-left: auto;
+  padding-right: 1rem;
+  height: 100%;
+  width: 2.5em;
+  opacity: 0;
+  display: flex;
 }
-#enhancer--panel-header-toggle,
-#enhancer--panel-header-switcher {
+#enhancer--panel-header-toggle > div {
+  margin: auto 0 auto auto;
+}
+#enhancer--panel-header-switcher,
+#enhancer--panel-header-toggle > div {
+  color: var(--theme--icon_secondary);
   height: 1em;
   width: 1em;
   cursor: pointer;
-  opacity: 0;
-  transition: 300ms ease-in-out;
   display: flex;
   flex-direction: column;
+  border-radius: 3px;
+  transition: 300ms ease-in-out;
 }
-#enhancer--panel-header-switcher svg {
-  width: 0.5em;
-  height: 0.5em;
-  display: block;
-  margin: auto;
+#enhancer--panel-header-switcher:hover,
+#enhancer--panel-header-switcher:focus,
+#enhancer--panel-header-toggle > div:hover,
+#enhancer--panel-header-toggle > div:focus {
+  background: var(--theme--ui_interactive-hover);
 }
-
-#enhancer--panel:not([data-enhancer-panel-pinned]) #enhancer--panel-header-toggle {
+#enhancer--panel #enhancer--panel-header-toggle svg {
+  transition: 300ms ease-in-out;
+}
+#enhancer--panel:not([data-enhancer-panel-pinned]) #enhancer--panel-header-toggle svg {
   transform: rotateZ(-180deg);
 }
-#enhancer--panel:hover #enhancer--panel-header-toggle,
-#enhancer--panel:hover #enhancer--panel-header-switcher {
+#enhancer--panel:hover #enhancer--panel-header-toggle {
   opacity: 1;
 }
 
@@ -148,4 +168,40 @@
 }
 #enhancer--panel[data-enhancer-panel-pinned] #enhancer--panel-resize:hover div {
   background: var(--theme--ui_divider);
+}
+
+#enhancer--panel-switcher-overlay-container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  overflow: hidden;
+}
+#enhancer--panel-switcher {
+  max-width: 320px;
+  position: relative;
+  right: 14px;
+  border-radius: 3px;
+  padding: 8px 0;
+  background: var(--theme--bg_popup);
+  box-shadow: var(--theme--ui_shadow, rgba(15, 15, 15, 0.05)) 0px 0px 0px 1px,
+    var(--theme--ui_shadow, rgba(15, 15, 15, 0.1)) 0px 3px 6px,
+    var(--theme--ui_shadow, rgba(15, 15, 15, 0.2)) 0px 9px 24px !important;
+  overflow: hidden;
+}
+.enhancer--panel-switcher-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 8px 14px;
+  user-select: none;
+  cursor: pointer;
+  overflow: hidden;
+  transition: background 300ms ease;
+}
+.enhancer--panel-switcher-item:hover,
+.enhancer--panel-switcher-item:focus {
+  background: var(--theme--ui_interactive-hover);
 }
