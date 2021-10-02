@@ -6,7 +6,7 @@
 
 'use strict';
 
-import { env, fs, storage, fmt, registry, web } from '../../api/_.mjs';
+import { env, fs, storage, fmt, registry, web, components } from '../../api/_.mjs';
 import { tw } from './styles.mjs';
 
 export const notifications = {
@@ -16,7 +16,7 @@ export const notifications = {
     registry.welcomeNotification,
     ...(await fs.getJSON('https://notion-enhancer.github.io/notifications.json')),
   ],
-  add({ icon, message, id = undefined, color = undefined, link = undefined }) {
+  async add({ icon, message, id = undefined, color = undefined, link = undefined }) {
     const $notification = link
         ? web.html`<a
           href="${web.escape(link)}"
@@ -47,16 +47,16 @@ export const notifications = {
         web.html`<span class="notification-text markdown-inline">
           ${fmt.md.renderInline(message)}
         </span>`,
-        web.html`${web.icon(icon, { class: 'notification-icon' })}`
+        web.html`${await components.feather(icon, { class: 'notification-icon' })}`
       )
     );
     return $notification;
   },
   _onChange: false,
-  onChange() {
+  async onChange() {
     if (this._onChange) return;
     this._onChange = true;
-    const $notification = this.add({
+    const $notification = await this.add({
       icon: 'refresh-cw',
       message: 'Reload to apply changes.',
     });

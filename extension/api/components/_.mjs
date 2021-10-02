@@ -7,7 +7,7 @@
 'use strict';
 
 /**
- * notion-style elements inc. the sidebar
+ * shared notion-style elements
  * @module notion-enhancer/api/components
  */
 
@@ -18,4 +18,12 @@
  */
 export { tooltip } from './tooltip.mjs';
 
-export { side } from './tooltip.mjs';
+/**
+ * generate an icon from the feather icons set
+ * @param {string} name - the name/id of the icon
+ * @param {object} attrs - an object of attributes to apply to the icon e.g. classes
+ * @returns {string} an svg string
+ */
+export { feather } from './feather.mjs';
+
+export { panel } from './panel.mjs';

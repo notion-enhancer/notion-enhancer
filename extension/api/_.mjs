@@ -21,5 +21,5 @@ export * as fmt from './fmt.mjs';
 export * as registry from './registry.mjs';
 /** helpers for manipulation of a webpage */
 export * as web from './web.mjs';
-/** notion-style elements inc. the sidebar */
+/** shared notion-style elements */
 export * as components from './components/_.mjs';

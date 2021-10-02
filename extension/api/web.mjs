@@ -13,12 +13,6 @@
 
 import { fs, fmt } from './_.mjs';
 
-const _hotkeyEventListeners = [],
-  _documentObserverListeners = [],
-  _documentObserverEvents = [];
-
-let _hotkeyEvent, _documentObserver;
-
 import '../dep/jscolor.min.js';
 /** color picker with alpha channel using https://jscolor.com/ */
 export const jscolor = JSColor;
@@ -144,21 +138,27 @@ export const loadStylesheet = (path) => {
   return true;
 };
 
-/**
- * generate an icon from the feather icons set
- * @param {string} name - the name/id of the icon
- * @param {object} attrs - an object of attributes to apply to the icon e.g. classes
- * @returns {string} an svg string
- */
-export const icon = (name, attrs = {}) => {
-  attrs.style = (
-    (attrs.style || '') +
-    ';stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none;'
-  ).trim();
-  return `<svg ${Object.entries(attrs)
-    .map(([key, val]) => `${escape(key)}="${escape(val)}"`)
-    .join(' ')}><use xlink:href="${fs.localPath('dep/feather-sprite.svg')}#${name}" /></svg>`;
-};
+const _hotkeyEvent = document.addEventListener('keyup', (event) => {
+    if (document.activeElement.nodeName === 'INPUT') return;
+    for (const hotkey of _hotkeyEventListeners) {
+      const pressed = hotkey.keys.every((key) => {
+        key = key.toLowerCase();
+        const modifiers = {
+          metaKey: ['meta', 'os', 'win', 'cmd', 'command'],
+          ctrlKey: ['ctrl', 'control'],
+          shiftKey: ['shift'],
+          altKey: ['alt'],
+        };
+        for (const modifier in modifiers) {
+          const pressed = modifiers[modifier].includes(key) && event[modifier];
+          if (pressed) return true;
+        }
+        if (key === event.key.toLowerCase()) return true;
+      });
+      if (pressed) hotkey.callback();
+    }
+  }),
+  _hotkeyEventListeners = [];
 
 /**
  * register a hotkey listener to the page
@@ -169,28 +169,6 @@ export const icon = (name, attrs = {}) => {
  */
 export const addHotkeyListener = (keys, callback) => {
   if (typeof keys === 'string') keys = keys.split('+');
-  if (!_hotkeyEvent) {
-    _hotkeyEvent = document.addEventListener('keyup', (event) => {
-      if (document.activeElement.nodeName === 'INPUT') return;
-      for (const hotkey of _hotkeyEventListeners) {
-        const pressed = hotkey.keys.every((key) => {
-          key = key.toLowerCase();
-          const modifiers = {
-            metaKey: ['meta', 'os', 'win', 'cmd', 'command'],
-            ctrlKey: ['ctrl', 'control'],
-            shiftKey: ['shift'],
-            altKey: ['alt'],
-          };
-          for (const modifier in modifiers) {
-            const pressed = modifiers[modifier].includes(key) && event[modifier];
-            if (pressed) return true;
-          }
-          if (key === event.key.toLowerCase()) return true;
-        });
-        if (pressed) hotkey.callback();
-      }
-    });
-  }
   _hotkeyEventListeners.push({ keys, callback });
 };
 /**
@@ -203,40 +181,39 @@ export const removeHotkeyListener = (callback) => {
   );
 };
 
+const _documentObserver = new MutationObserver((list, observer) => {
+    if (!_documentObserverEvents.length)
+      requestIdleCallback(() => (queue) => {
+        while (queue.length) {
+          const event = queue.shift();
+          for (const listener of _documentObserverListeners) {
+            if (
+              !listener.selectors.length ||
+              listener.selectors.some(
+                (selector) =>
+                  event.target.matches(selector) || event.target.matches(`${selector} *`)
+              )
+            ) {
+              listener.callback(event);
+            }
+          }
+        }
+      });
+    _documentObserverEvents.push(...list);
+  }),
+  _documentObserverListeners = [],
+  _documentObserverEvents = [];
+_documentObserver.observe(document.body, {
+  childList: true,
+  subtree: true,
+  attributes: true,
+});
 /**
  * add a listener to watch for changes to the dom
  * @param {onDocumentObservedCallback} callback
  * @param {array<string>} [selectors]
  */
 export const addDocumentObserver = (callback, selectors = []) => {
-  if (!_documentObserver) {
-    const handle = (queue) => {
-      while (queue.length) {
-        const event = queue.shift();
-        for (const listener of _documentObserverListeners) {
-          if (
-            !listener.selectors.length ||
-            listener.selectors.some(
-              (selector) =>
-                event.target.matches(selector) || event.target.matches(`${selector} *`)
-            )
-          ) {
-            listener.callback(event);
-          }
-        }
-      }
-    };
-    _documentObserver = new MutationObserver((list, observer) => {
-      if (!_documentObserverEvents.length)
-        requestIdleCallback(() => handle(_documentObserverEvents));
-      _documentObserverEvents.push(...list);
-    });
-    _documentObserver.observe(document.body, {
-      childList: true,
-      subtree: true,
-      attributes: true,
-    });
-  }
   _documentObserverListeners.push({ callback, selectors });
 };
 

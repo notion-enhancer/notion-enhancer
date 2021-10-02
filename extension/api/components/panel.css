@@ -1,0 +1,151 @@
+/*
+ * notion-enhancer core: components
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2021 CloudHill <rl.cloudhill@gmail.com> (https://github.com/CloudHill)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+:root {
+  --component--panel-width: 260px;
+}
+
+#enhancer--panel-hover-trigger {
+  height: 100vh;
+  width: 2.5rem;
+  max-height: 100%;
+  z-index: 999;
+  position: absolute;
+  top: 0;
+  right: 0;
+  flex-grow: 0;
+  flex-shrink: 0;
+  transition: width 300ms ease-in-out;
+}
+#enhancer--panel-hover-trigger[data-enhancer-panel-pinned] {
+  /* taking up the physical space of the panel to move topbar buttons */
+  position: relative;
+  width: var(--component--panel-width);
+}
+
+.notion-cursor-listener > div[style*='flex-end'] {
+  transition: margin-right 300ms ease-in-out;
+}
+.notion-cursor-listener > div[style*='flex-end'][data-enhancer-panel-pinned] {
+  margin-right: var(--component--panel-width);
+}
+.notion-frame {
+  transition: padding-right 300ms ease-in-out;
+}
+.notion-frame[data-enhancer-panel-pinned] {
+  padding-right: var(--component--panel-width);
+}
+
+#enhancer--panel {
+  z-index: 999;
+  position: absolute;
+  background: var(--theme--bg_secondary);
+  width: var(--component--panel-width);
+  right: calc(-1 * var(--component--panel-width));
+  opacity: 0;
+  height: 100vh;
+  flex-grow: 0;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  transition: 300ms ease-in;
+
+  margin-top: 5rem;
+  max-height: calc(100vh - 10rem);
+}
+#enhancer--panel-hover-trigger:hover + #enhancer--panel:not([data-enhancer-panel-pinned]),
+#enhancer--panel:not([data-enhancer-panel-pinned]):hover {
+  opacity: 1;
+  transform: translateX(calc(-1 * var(--component--panel-width)));
+  box-shadow: var(--theme--ui_shadow, rgba(15, 15, 15, 0.05)) 0px 0px 0px 1px,
+    var(--theme--ui_shadow, rgba(15, 15, 15, 0.1)) 0px 3px 6px,
+    var(--theme--ui_shadow, rgba(15, 15, 15, 0.2)) 0px 9px 24px !important;
+}
+#enhancer--panel[data-enhancer-panel-pinned] {
+  opacity: 1;
+  max-height: 100%;
+  margin-top: 0;
+  transform: translateX(calc(-1 * var(--component--panel-width)));
+}
+
+#enhancer--panel-header {
+  font-size: 1.35rem;
+  font-weight: bold;
+  display: flex;
+  padding: 0.75rem 1rem;
+  align-items: center;
+}
+#enhancer--panel-content {
+  font-size: 1rem;
+  padding: 0.75rem 1rem;
+}
+#enhancer--panel-header-title {
+  padding-left: 0.5em;
+  padding-bottom: 0.1em;
+}
+#enhancer--panel-header-title > p {
+  margin: 0;
+  height: 1em;
+  display: flex;
+  align-items: center;
+}
+#enhancer--panel-header-title > p svg,
+#enhancer--panel-header-title > p img {
+  height: 1em;
+  width: 1em;
+}
+#enhancer--panel-header-title > p span {
+  font-size: 0.9em;
+  margin-left: 0.5em;
+}
+#enhancer--panel-header-toggle {
+  margin-left: auto;
+}
+#enhancer--panel-header-toggle,
+#enhancer--panel-header-switcher {
+  height: 1em;
+  width: 1em;
+  cursor: pointer;
+  opacity: 0;
+  transition: 300ms ease-in-out;
+  display: flex;
+  flex-direction: column;
+}
+#enhancer--panel-header-switcher svg {
+  width: 0.5em;
+  height: 0.5em;
+  display: block;
+  margin: auto;
+}
+
+#enhancer--panel:not([data-enhancer-panel-pinned]) #enhancer--panel-header-toggle {
+  transform: rotateZ(-180deg);
+}
+#enhancer--panel:hover #enhancer--panel-header-toggle,
+#enhancer--panel:hover #enhancer--panel-header-switcher {
+  opacity: 1;
+}
+
+#enhancer--panel-resize {
+  position: absolute;
+  left: -5px;
+  height: 100%;
+  width: 10px;
+}
+#enhancer--panel[data-enhancer-panel-pinned] #enhancer--panel-resize {
+  cursor: col-resize;
+}
+#enhancer--panel-resize div {
+  transition: background 150ms ease-in-out;
+  background: transparent;
+  width: 2px;
+  margin-left: 4px;
+  height: 100%;
+}
+#enhancer--panel[data-enhancer-panel-pinned] #enhancer--panel-resize:hover div {
+  background: var(--theme--ui_divider);
+}

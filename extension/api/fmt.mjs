@@ -11,7 +11,7 @@
  * @module notion-enhancer/api/fmt
  */
 
-import { web, fs } from './_.mjs';
+import { web, fs, components } from './_.mjs';
 
 import '../dep/prism.min.js';
 /** syntax highlighting using https://prismjs.com/ */
@@ -21,7 +21,7 @@ Prism.hooks.add('complete', async (event) => {
   event.element.parentElement.removeAttribute('tabindex');
   event.element.parentElement.parentElement
     .querySelector('.copy-to-clipboard-button')
-    .prepend(web.html`${await web.icon('clipboard')}`);
+    .prepend(web.html`${await components.feather('clipboard')}`);
 });
 
 import '../dep/markdown-it.min.js';

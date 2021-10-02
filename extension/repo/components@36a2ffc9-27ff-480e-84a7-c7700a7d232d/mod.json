@@ -3,7 +3,7 @@
   "name": "components",
   "id": "36a2ffc9-27ff-480e-84a7-c7700a7d232d",
   "version": "0.2.0",
-  "description": "notion-style elements reused by other mods, inc. the sidebar.",
+  "description": "shared notion-style elements.",
   "tags": ["core"],
   "authors": [
     {
@@ -24,10 +24,10 @@
   "options": [
     {
       "type": "hotkey",
-      "key": "side-panel-hotkey",
-      "label": "toggle enhancer sidebar hotkey",
+      "key": "panel.hotkey",
+      "label": "toggle panel hotkey",
       "value": "Ctrl+Alt+\\",
-      "tooltip": "opens/closes the extra sidebar in notion - will only work if a mod is making use of it."
+      "tooltip": "opens/closes the side panel in notion - will only work if a mod is making use of it."
     }
   ]
 }

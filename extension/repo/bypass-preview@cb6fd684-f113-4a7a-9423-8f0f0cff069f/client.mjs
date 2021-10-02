@@ -7,7 +7,7 @@
 'use strict';
 
 export default async function (api, db) {
-  const { web } = api;
+  const { web, components } = api;
   await web.whenReady();
 
   let _lastPage = {};
@@ -29,5 +29,9 @@ export default async function (api, db) {
       }
       _lastPage = getCurrentPage();
     }
+  });
+
+  components.panel(await components.feather('sidebar'), 'Test Panel', ($panel) => {
+    return web.html`<p>test</p>`;
   });
 }

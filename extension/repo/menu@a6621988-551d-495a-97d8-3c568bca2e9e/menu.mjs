@@ -6,7 +6,7 @@
 
 'use strict';
 
-import { env, fs, storage, registry, web } from '../../api/_.mjs';
+import { env, fs, storage, registry, web, components } from '../../api/_.mjs';
 import { notifications } from './notifications.mjs';
 import { blocks, options } from './blocks.mjs';
 import './styles.mjs';
@@ -74,17 +74,17 @@ $profile.addEventListener('click', async (event) => {
         pattern="/^[A-Za-z0-9_-]+$/"
       >`,
       $export = web.html`<button class="profile-export">
-        ${web.icon('download', { class: 'profile-icon-action' })}
+        ${await components.feather('download', { class: 'profile-icon-action' })}
       </button>`,
       $import = web.html`<label class="profile-import">
         <input type="file" class="hidden" accept="application/json">
-        ${web.icon('upload', { class: 'profile-icon-action' })}
+        ${await components.feather('upload', { class: 'profile-icon-action' })}
       </label>`,
       $save = web.html`<button class="profile-save">
-        ${web.icon('save', { class: 'profile-icon-text' })} Save
+        ${await components.feather('save', { class: 'profile-icon-text' })} Save
       </button>`,
       $delete = web.html`<button class="profile-delete">
-        ${web.icon('trash-2', { class: 'profile-icon-text' })} Delete
+        ${await components.feather('trash-2', { class: 'profile-icon-text' })} Delete
       </button>`,
       $error = web.html`<p class="profile-error"></p>`;
     $export.addEventListener('click', async (event) => {
@@ -175,12 +175,12 @@ $profile.addEventListener('click', async (event) => {
       web.render(
         web.html`<label class="input-label"></label>`,
         $select,
-        web.html`${web.icon('chevron-down', { class: 'input-icon' })}`
+        web.html`${await components.feather('chevron-down', { class: 'input-icon' })}`
       ),
       web.render(
         web.html`<label class="input-label"></label>`,
         $edit,
-        web.html`${web.icon('type', { class: 'input-icon' })}`
+        web.html`${await components.feather('type', { class: 'input-icon' })}`
       ),
       web.render(web.html`<p class="profile-actions"></p>`, $export, $import, $save, $delete),
       $error
@@ -288,7 +288,7 @@ const _$modListCache = {},
           web.render(
             web.html`<label class="search-container"></label>`,
             $search,
-            web.html`${web.icon('search', { class: 'input-icon' })}`
+            web.html`${await components.feather('search', { class: 'input-icon' })}`
           ),
           message ? web.html`<p class="main-message">${web.escape(message)}</p>` : '',
           $list
@@ -303,14 +303,13 @@ const $notionNavItem = web.html`<h1 class="nav-notion">
       /width="\d+" height="\d+"/,
       `class="nav-notion-icon"`
     )}
-    <a href="https://notion-enhancer.github.io/" target="_blank">notion-enhancer</a>
+    <span>notion-enhancer</span>
   </h1>`;
-$notionNavItem.children[0].addEventListener('click', env.focusNotion);
+$notionNavItem.addEventListener('click', env.focusNotion);
 
 const $coreNavItem = web.html`<a href="?view=core" class="nav-item">core</a>`,
   $extensionsNavItem = web.html`<a href="?view=extensions" class="nav-item">extensions</a>`,
-  $themesNavItem = web.html`<a href="?view=themes" class="nav-item">themes</a>`,
-  $communityNavItem = web.html`<a href="https://discord.gg/sFWPXtA" class="nav-item">community</a>`;
+  $themesNavItem = web.html`<a href="?view=themes" class="nav-item">themes</a>`;
 
 web.render(
   document.body,
@@ -324,7 +323,8 @@ web.render(
         $coreNavItem,
         $extensionsNavItem,
         $themesNavItem,
-        $communityNavItem
+        web.html`<a href="https://notion-enhancer.github.io" class="nav-item">docs</a>`,
+        web.html`<a href="https://discord.gg/sFWPXtA" class="nav-item">community</a>`
       ),
       $main
     ),

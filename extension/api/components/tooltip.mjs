@@ -7,7 +7,7 @@
 'use strict';
 
 /**
- * notion-style elements inc. the sidebar
+ * shared notion-style elements
  * @module notion-enhancer/api/components/tooltip
  */
 
@@ -22,8 +22,8 @@ let _$tooltip;
  */
 export const tooltip = ($ref, text) => {
   if (!_$tooltip) {
-    web.loadStylesheet('api/components/tooltip.css');
     _$tooltip = web.html`<div id="enhancer--tooltip"></div>`;
+    web.loadStylesheet('api/components/tooltip.css');
     web.render(document.body, _$tooltip);
   }
   text = fmt.md.render(text);
