@@ -25,6 +25,7 @@ export const localPath = fs.localPath;
  * fetch and parse a json file's contents
  * @type {function}
  * @param {string} path - a url or within-the-enhancer filepath
+ * @param {object} [opts] - the second argument of a fetch() request
  * @returns {object} the json value of the requested file as a js object
  */
 export const getJSON = fs.getJSON;
@@ -33,6 +34,7 @@ export const getJSON = fs.getJSON;
  * fetch a text file's contents
  * @type {function}
  * @param {string} path - a url or within-the-enhancer filepath
+ * @param {object} [opts] - the second argument of a fetch() request
  * @returns {string} the text content of the requested file
  */
 export const getText = fs.getText;

@@ -12,7 +12,7 @@ export default async function (api, db) {
   web.addHotkeyListener(await db.get(['hotkey']), env.focusMenu);
 
   const updateTheme = () =>
-    db.set(['theme'], document.querySelector('.notion-dark-theme') ? 'dark' : 'light');
+    storage.set(['theme'], document.querySelector('.notion-dark-theme') ? 'dark' : 'light');
   web.addDocumentObserver((mutation) => {
     if (mutation.target === document.body && document.hasFocus()) updateTheme();
   });

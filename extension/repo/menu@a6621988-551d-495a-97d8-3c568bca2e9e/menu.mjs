@@ -25,7 +25,7 @@ web.addHotkeyListener(await db.get(['hotkey']), env.focusNotion);
 
 const loadTheme = async () => {
   document.documentElement.className =
-    (await db.get(['theme'], 'light')) === 'dark' ? 'dark' : '';
+    (await storage.get(['theme'], 'light')) === 'dark' ? 'dark' : '';
 };
 document.addEventListener('visibilitychange', loadTheme);
 loadTheme();
@@ -110,7 +110,7 @@ $profile.addEventListener('click', async (event) => {
           const profileUpload = JSON.parse(progress.currentTarget.result);
           if (!profileUpload) throw Error;
           await storage.set(['profiles', $select.value], profileUpload);
-          location.reload();
+          env.reload();
         } catch {
           web.render(web.empty($error), 'Invalid JSON uploaded.');
         }
@@ -151,7 +151,7 @@ $profile.addEventListener('click', async (event) => {
         );
         await storage.set(['profiles', $select.value], undefined);
       }
-      location.reload();
+      env.reload();
     });
     $delete.addEventListener('click', async (event) => {
       await storage.set(['profiles', $select.value], undefined);
@@ -159,7 +159,7 @@ $profile.addEventListener('click', async (event) => {
         ['currentprofile'],
         profileNames.find((profile) => profile !== $select.value) || 'default'
       );
-      location.reload();
+      env.reload();
     });
 
     _$profileConfig = web.render(

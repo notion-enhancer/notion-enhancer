@@ -21,18 +21,20 @@ export const localPath = chrome.runtime.getURL;
 /**
  * fetch and parse a json file's contents
  * @param {string} path - a url or within-the-enhancer filepath
+ * @param {object} [opts] - the second argument of a fetch() request
  * @returns {object} the json value of the requested file as a js object
  */
-export const getJSON = (path) =>
-  fetch(path.startsWith('http') ? path : localPath(path)).then((res) => res.json());
+export const getJSON = (path, opts = {}) =>
+  fetch(path.startsWith('http') ? path : localPath(path), opts).then((res) => res.json());
 
 /**
  * fetch a text file's contents
  * @param {string} path - a url or within-the-enhancer filepath
+ * @param {object} [opts] - the second argument of a fetch() request
  * @returns {string} the text content of the requested file
  */
-export const getText = (path) =>
-  fetch(path.startsWith('http') ? path : localPath(path)).then((res) => res.text());
+export const getText = (path, opts = {}) =>
+  fetch(path.startsWith('http') ? path : localPath(path), opts).then((res) => res.text());
 
 /**
  * check if a file exists
