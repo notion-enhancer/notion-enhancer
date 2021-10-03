@@ -6,12 +6,12 @@
   "description": "an enhancer/customiser for the all-in-one productivity workspace notion.so",
   "homepage_url": "https://notion-enhancer.github.io",
   "icons": {
-    "16": "icon/colour-x16.png",
-    "32": "icon/colour-x32.png",
-    "48": "icon/colour-x48.png",
-    "128": "icon/colour-x128.png",
-    "256": "icon/colour-x256.png",
-    "512": "icon/colour-x512.png"
+    "16": "media/colour-x16.png",
+    "32": "media/colour-x32.png",
+    "48": "media/colour-x48.png",
+    "128": "media/colour-x128.png",
+    "256": "media/colour-x256.png",
+    "512": "media/colour-x512.png"
   },
   "browser_action": {},
   "background": { "scripts": ["worker.js"] },
@@ -19,7 +19,7 @@
     "page": "repo/menu@a6621988-551d-495a-97d8-3c568bca2e9e/menu.html",
     "open_in_tab": true
   },
-  "web_accessible_resources": ["env/*", "api/*", "dep/*", "icon/*", "repo/*"],
+  "web_accessible_resources": ["env/*", "api/*", "dep/*", "media/*", "repo/*"],
   "content_scripts": [
     {
       "matches": ["https://*.notion.so/*", "https://*.notion.site/*"],

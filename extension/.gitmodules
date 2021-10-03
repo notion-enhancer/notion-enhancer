@@ -4,3 +4,6 @@
 [submodule "repo"]
 	path = repo
 	url = git@github.com:notion-enhancer/repo.git
+[submodule "media"]
+	path = media
+	url = git@github.com:notion-enhancer/media.git
