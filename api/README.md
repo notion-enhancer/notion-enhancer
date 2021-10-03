@@ -1,2 +1,3 @@
 # api
-the standard api available to and depending on by the enhancer's mods and core
+
+the standard api used by the enhancer's mods and core
