@@ -1,2 +1,3 @@
 # dep
-libraries the enhancer's mods and api dependent on
+
+libraries depended on by the enhancer's mods and api
