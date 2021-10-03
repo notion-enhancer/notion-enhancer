@@ -1,0 +1,24 @@
+{
+  "name": "theming",
+  "id": "0f0bf8b6-eae6-4273-b307-8fc43f2ee082",
+  "version": "0.11.0",
+  "description": "the default theme variables, required by other themes & extensions.",
+  "tags": ["core"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "css": {
+    "frame": ["variables.css"],
+    "client": ["variables.css", "prism.css", "theme.css"],
+    "menu": ["variables.css", "prism.css"]
+  },
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "options": []
+}

@@ -1,0 +1,84 @@
+{
+  "name": "tweaks",
+  "id": "5174a483-c88d-4bf8-a95f-35cd330b76e2",
+  "version": "0.2.0",
+  "description": "common style/layout changes and custom CSS insertion.",
+  "tags": ["extension", "customisation"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "css": {
+    "client": ["client.css"]
+  },
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "options": [
+    {
+      "type": "file",
+      "key": "insert.css",
+      "label": "css insert",
+      "extensions": [".css"]
+    },
+    {
+      "key": "tweak.dragarea_height",
+      "label": "height of frameless dragarea:",
+      "tooltip": "the rectangle added at the top of a window in 'integrated titlebar' mode, used to drag/move the window.",
+      "type": "number",
+      "value": 15,
+      "environments": ["linux", "win32"]
+    },
+    {
+      "key": "tweak.responsive_breakpoint",
+      "label": "responsive columns breakpoint (px)",
+      "tooltip": "the width in pixels below which in-page columns are resized to appear full-width so content isn't squished.",
+      "type": "number",
+      "value": 600
+    },
+    {
+      "key": "tweak.snappy_transitions",
+      "label": "snappy transitions",
+      "tooltip": "set animation time for all css-driven animations to 0s. may not affect element motion e.g. the sidebar popping out.",
+      "type": "toggle",
+      "value": false
+    },
+    {
+      "key": "tweak.hide_help",
+      "label": "hide help button",
+      "type": "toggle",
+      "value": false
+    },
+    {
+      "key": "tweak.thicker_bold",
+      "label": "thicker bold text",
+      "type": "toggle",
+      "value": true
+    },
+    {
+      "key": "tweak.spaced_lines",
+      "label": "readable line spacing",
+      "tooltip": "greater line spacing between text blocks.",
+      "type": "toggle",
+      "value": false
+    },
+    {
+      "key": "tweak.condensed_bullets",
+      "label": "condense bullet points",
+      "tooltip": "tighter line spacing between bullet point blocks.",
+      "type": "toggle",
+      "value": false
+    },
+    {
+      "key": "tweak.bracketed_links",
+      "label": "bracketed links",
+      "tooltip": "render links surrounded with [[brackets]] instead of __underlined__.",
+      "type": "toggle",
+      "value": false
+    }
+  ]
+}

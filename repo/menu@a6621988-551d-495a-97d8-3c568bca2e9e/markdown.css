@@ -1,0 +1,165 @@
+/*
+ * notion-enhancer core: menu
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+.markdown table {
+  border-spacing: 0;
+  border: 1px solid var(--theme--ui_divider);
+}
+.markdown table th {
+  text-align: left;
+}
+.markdown table th,
+.markdown table td {
+  padding: 5px 8px 6px;
+  border: 1px solid var(--theme--ui_divider);
+}
+.markdown h1 {
+  font-size: 1.875rem;
+  margin: 1rem 0 0.5rem 0;
+}
+.markdown h2 {
+  font-size: 1.5rem;
+  margin: 1rem 0 0.5rem 0;
+}
+.markdown h3 {
+  font-size: 1.25rem;
+  margin: 1rem 0 0.5rem 0;
+}
+.markdown ul,
+.markdown ol {
+  padding-left: 1.25rem;
+}
+.markdown li {
+  margin: 0.4rem 0;
+}
+.markdown ol li {
+  padding-left: 0.25rem;
+}
+.markdown blockquote {
+  border-left: 2px solid currentColor;
+  padding-left: 0.75rem;
+  margin: 0.5rem 0;
+}
+.markdown hr {
+  border: 0.5px solid var(--theme--ui_divider);
+}
+.markdown.markdown-inline a {
+  opacity: 0.7;
+  text-decoration: none;
+  border-bottom: 0.05em solid var(--theme--text_secondary);
+}
+.markdown.markdown-inline a:hover {
+  opacity: 0.9;
+}
+
+.markdown :not(pre) > code,
+.markdown-inline code {
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  background: var(--theme--code_inline);
+  color: var(--theme--code_inline-text);
+}
+.markdown pre {
+  padding: 2em 1.25em;
+  border-radius: 3px;
+  tab-size: 2;
+  white-space: pre;
+  overflow-x: auto;
+  background: var(--theme--code);
+  color: var(--theme--code_plain);
+}
+.markdown pre,
+.markdown.markdown-inline code {
+  font-family: var(--theme--font_code);
+  font-size: 0.796875rem;
+  text-align: left;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  hyphens: none;
+  line-height: 1.5;
+}
+
+/*
+ * https://prismjs.com/plugins/inline-color/
+ */
+.markdown .inline-color-wrapper {
+  /*
+	 * base64 svg (https://stackoverflow.com/a/21626701/7595472 - prevents visual glitches)
+	 * <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 2 2">
+	 *   <path fill="gray" d="M0 0h2v2H0z"/>
+	 *   <path fill="white" d="M0 0h1v1H0zM1 1h1v1H1z"/>
+	 * </svg>
+	 */
+  background: url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyIDIiPjxwYXRoIGZpbGw9ImdyYXkiIGQ9Ik0wIDBoMnYySDB6Ii8+PHBhdGggZmlsbD0id2hpdGUiIGQ9Ik0wIDBoMXYxSDB6TTEgMWgxdjFIMXoiLz48L3N2Zz4=');
+  background-position: center;
+  background-size: 110%;
+  display: inline-block;
+  height: 1.333ch;
+  width: 1.333ch;
+  margin: 0 0.333ch;
+  box-sizing: border-box;
+  border: 0.5px solid var(--theme--code_plain);
+  overflow: hidden;
+}
+.markdown .inline-color {
+  display: block;
+  height: 120%;
+  width: 120%;
+}
+
+/*
+ * https://prismjs.com/plugins/match-braces/
+ */
+.markdown .token.punctuation.brace-hover,
+.markdown .token.punctuation.brace-selected {
+  outline: solid 1px;
+}
+
+/*
+ * https://prismjs.com/plugins/show-language/
+ * https://prismjs.com/plugins/copy-to-clipboard/
+ */
+.markdown .code-toolbar {
+  position: relative;
+}
+.markdown .code-toolbar .toolbar-item {
+  position: absolute;
+  top: 0.35rem;
+  display: inline-block;
+  transition: opacity 200ms ease-in-out;
+  opacity: 0;
+}
+.markdown .code-toolbar .toolbar-item:first-child {
+  left: 0.8rem;
+}
+.markdown .code-toolbar .toolbar-item:last-child {
+  right: 0.8rem;
+}
+.markdown .code-toolbar:hover .toolbar-item,
+.markdown .code-toolbar:focus-within .toolbar-item {
+  opacity: 1;
+}
+.markdown .code-toolbar .toolbar-item > * {
+  padding: 0.25rem 0.35rem;
+  color: var(--theme--text_secondary);
+  font-size: 11px;
+  font-family: inherit;
+}
+.markdown .code-toolbar .toolbar-item .copy-to-clipboard-button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: background 100ms ease-in-out;
+}
+.markdown .code-toolbar .toolbar-item .copy-to-clipboard-button:hover {
+  background: var(--theme--button-hover);
+}
+.markdown .code-toolbar .toolbar-item .copy-to-clipboard-button svg {
+  width: 1em;
+  margin-right: 0.5em;
+}
