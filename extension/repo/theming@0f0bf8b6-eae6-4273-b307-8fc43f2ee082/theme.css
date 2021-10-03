@@ -349,7 +349,7 @@ body,
   .notion-default-overlay-container
   [style*='grid-template-columns: [boolean-start] 60px [boolean-end property-start] 120px [property-end opererator-start] 110px [operator-end value-start] auto [value-end menu-start] 32px [menu-end];']
   .notion-focusable[style*='background: rgb(223, 223, 222);'] {
-  background: var(--theme--ui_interactive-focus) !important;
+  background: var(--theme--ui_interactive-active) !important;
 }
 
 .notion-focusable-within,

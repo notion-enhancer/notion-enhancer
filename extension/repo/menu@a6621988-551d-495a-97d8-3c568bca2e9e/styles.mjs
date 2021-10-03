@@ -40,7 +40,7 @@ const customClasses = {
   'nav-notion': apply`flex items-center font-semibold text-xl cursor-pointer select-none mr-4
       ml-4 sm:mb-4 md:w-full lg:(w-auto ml-0 mb-0)`,
   'nav-notion-icon': apply`h-12 w-12 mr-5 sm:(h-6 w-6 mr-3)`,
-  'nav-item': apply`ml-4 px-3 py-2 rounded-md text-sm font-medium hover:bg-interactive-hover focus:bg-interactive-focus`,
+  'nav-item': apply`ml-4 px-3 py-2 rounded-md text-sm font-medium hover:bg-interactive-hover focus:bg-interactive-active`,
   'nav-item-selected': apply`ml-4 px-3 py-2 rounded-md text-sm font-medium ring-1 ring-divider bg-notion-secondary`,
   'main': apply`transition px-4 py-3 overflow-y-auto max-h-full-64 sm:max-h-full-48 md:max-h-full-32 lg:max-h-full-16`,
   'main-message': apply`mx-2.5 my-2.5 px-px text-sm text-foreground-secondary text-justify`,
@@ -110,7 +110,7 @@ setup({
       'foreground': 'var(--theme--text)',
       'foreground-secondary': 'var(--theme--text_secondary)',
       'interactive-hover': 'var(--theme--ui_interactive-hover)',
-      'interactive-focus': 'var(--theme--ui_interactive-focus)',
+      'interactive-active': 'var(--theme--ui_interactive-active)',
       'tag': 'var(--theme--tag_default)',
       'tag-text': 'var(--theme--tag_default-text)',
       'toggle': {

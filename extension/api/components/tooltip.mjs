@@ -13,7 +13,8 @@
 
 import { fmt, web } from '../_.mjs';
 
-let _$tooltip;
+const _$tooltip = web.html`<div id="enhancer--tooltip"></div>`;
+web.loadStylesheet('api/components/tooltip.css');
 
 /**
  * add a tooltip to show extra information on hover
@@ -21,11 +22,7 @@ let _$tooltip;
  * @param {string} text - the markdown content of the tooltip
  */
 export const tooltip = ($ref, text) => {
-  if (!_$tooltip) {
-    _$tooltip = web.html`<div id="enhancer--tooltip"></div>`;
-    web.loadStylesheet('api/components/tooltip.css');
-    web.render(document.body, _$tooltip);
-  }
+  web.render(document.body, _$tooltip);
   text = fmt.md.render(text);
   $ref.addEventListener('mouseover', (event) => {
     _$tooltip.innerHTML = text;

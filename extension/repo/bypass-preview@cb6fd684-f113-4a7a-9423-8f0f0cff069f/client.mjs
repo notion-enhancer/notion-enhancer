@@ -30,11 +30,4 @@ export default async function (api, db) {
       _lastPage = getCurrentPage();
     }
   });
-
-  components.panel(await components.feather('sidebar'), 'Test Panel', ($panel) => {
-    return web.html`<p>test</p>`;
-  });
-  components.panel(await components.feather('users'), 'Other Panel', ($panel) => {
-    return web.html`<p>yay</p>`;
-  });
 }
