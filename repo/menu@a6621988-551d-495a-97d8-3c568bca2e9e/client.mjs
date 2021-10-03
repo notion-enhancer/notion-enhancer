@@ -24,7 +24,7 @@ export default async function (api, db) {
 
   const $sidebarLink = web.html`<div class="enhancer--sidebarMenuLink" role="button" tabindex="0">
       <div>
-        <div>${await fs.getText('icon/colour.svg')}</div>
+        <div>${await fs.getText('media/colour.svg')}</div>
         <div><div>notion-enhancer</div></div>
       </div>
     </div>`;

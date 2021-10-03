@@ -299,7 +299,7 @@ const _$modListCache = {},
   };
 
 const $notionNavItem = web.html`<h1 class="nav-notion">
-    ${(await fs.getText('icon/colour.svg')).replace(
+    ${(await fs.getText('media/colour.svg')).replace(
       /width="\d+" height="\d+"/,
       `class="nav-notion-icon"`
     )}
