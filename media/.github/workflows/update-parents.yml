@@ -3,19 +3,22 @@ name: 'update parent repositories'
 on:
   push:
     branches:
-      - dev
+      - main
 
 jobs:
   sync:
-    name: 'update extension'
+    name: update parent
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        repo: ['notion-enhancer/extension']
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.CI_TOKEN }}
           submodules: true
-          repository: notion-enhancer/extension
+          repository: ${{ matrix.repo }}
       - name: pull updates
         run: |
           git pull --recurse-submodules
