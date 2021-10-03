@@ -7,3 +7,6 @@
 [submodule "media"]
 	path = media
 	url = git@github.com:notion-enhancer/media.git
+[submodule "dep"]
+	path = dep
+	url = git@github.com:notion-enhancer/dep.git
