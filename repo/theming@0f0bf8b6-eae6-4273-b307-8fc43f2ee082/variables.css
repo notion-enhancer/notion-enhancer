@@ -22,8 +22,6 @@
     Batang, serif;
   --theme--font_mono: iawriter-mono, Nitti, Menlo, Courier, monospace;
   --theme--font_code: SFMono-Regular, Consolas, 'Liberation Mono', Menlo, Courier, monospace;
-  --theme--font_quote: var(--theme--font_sans);
-  --theme--font_headings: var(--theme--font_sans);
 
   --theme--accent_blue: rgb(46, 170, 220);
   --theme--accent_blue-selection: rgb(46, 170, 220, 0.25);

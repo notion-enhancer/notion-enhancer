@@ -285,14 +285,6 @@ body,
 [style*='SFMono-Regular'] {
   font-family: var(--theme--font_code) !important;
 }
-.notion-selectable.notion-quote-block div[spellcheck='true'] {
-  font-family: var(--theme--font_quote) !important;
-}
-[placeholder='Heading 1'],
-[placeholder='Heading 2'],
-[placeholder='Heading 3'] {
-  font-family: var(--theme--font_headings) !important;
-}
 
 /** ui **/
 
