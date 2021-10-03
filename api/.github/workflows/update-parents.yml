@@ -1,0 +1,26 @@
+name: 'update parent repositories'
+
+on:
+  push:
+    branches:
+      - dev
+
+jobs:
+  sync:
+    name: 'update extension'
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.CI_TOKEN }}
+          submodules: true
+          repository: notion-enhancer/extension
+      - name: pull updates
+        run: |
+          git pull --recurse-submodules
+          git submodule update --remote --recursive
+      - name: commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'update submodule: ${{ github.event.repository.name }}'
