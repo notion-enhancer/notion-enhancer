@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - dev
-  workflow_dispatch:
 
 jobs:
   sync:
@@ -24,4 +23,4 @@ jobs:
       - name: commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: 'update submodule: repo'
+          commit_message: 'update submodule: ${{ github.event.repository.name }}'
