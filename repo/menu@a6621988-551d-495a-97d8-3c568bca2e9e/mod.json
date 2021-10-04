@@ -25,7 +25,7 @@
       "key": "hotkey",
       "label": "toggle focus hotkey",
       "value": "Ctrl+Alt+E",
-      "tooltip": "switches between notion & the enhancer menu"
+      "tooltip": "**switches between notion & the enhancer menu**"
     }
   ]
 }

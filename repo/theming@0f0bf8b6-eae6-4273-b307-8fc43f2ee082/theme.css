@@ -602,7 +602,6 @@ body,
   .notion-collection_view-block
   > [style*='box-shadow: white -3px 0px 0px;'] {
   box-shadow: transparent -3px 0px 0px !important;
-  margin-left: 20px;
 }
 .notion-focusable[role='button'][style*='box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px;'] {
   box-shadow: var(--theme--ui_divider) 0px 0px 0px 1px !important;

@@ -27,7 +27,7 @@
       "key": "panel.hotkey",
       "label": "toggle panel hotkey",
       "value": "Ctrl+Alt+\\",
-      "tooltip": "opens/closes the side panel in notion - will only work if a mod is making use of it."
+      "tooltip": "**opens/closes the side panel in notion** if a mod that uses it has been enabled"
     }
   ]
 }

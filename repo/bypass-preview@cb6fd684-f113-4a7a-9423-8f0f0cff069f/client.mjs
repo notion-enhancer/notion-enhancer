@@ -8,7 +8,6 @@
 
 export default async function (api, db) {
   const { web, notion } = api;
-  await web.whenReady();
 
   let _openPage = {};
   function getCurrentPage() {

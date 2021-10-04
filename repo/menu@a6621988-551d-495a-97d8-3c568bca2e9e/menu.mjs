@@ -194,6 +194,7 @@ const _$modListCache = {},
     options: async (mod) => {
       const $fragment = document.createDocumentFragment();
       for (const opt of mod.options) {
+        if (!opt.environments.includes(env.name)) continue;
         web.render($fragment, await options[opt.type](mod, opt));
       }
       if (!mod.options.length) {

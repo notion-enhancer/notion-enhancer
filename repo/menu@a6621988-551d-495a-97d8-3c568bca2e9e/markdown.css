@@ -46,12 +46,14 @@
 .markdown hr {
   border: 0.5px solid var(--theme--ui_divider);
 }
-.markdown.markdown-inline a {
+.markdown-inline a,
+.markdown a {
   opacity: 0.7;
   text-decoration: none;
   border-bottom: 0.05em solid var(--theme--text_secondary);
 }
-.markdown.markdown-inline a:hover {
+.markdown-inline a:hover,
+.markdown a:hover {
   opacity: 0.9;
 }
 
@@ -72,7 +74,8 @@
   color: var(--theme--code_plain);
 }
 .markdown pre,
-.markdown.markdown-inline code {
+.markdown code,
+.markdown-inline code {
   font-family: var(--theme--font_code);
   font-size: 0.796875rem;
   text-align: left;

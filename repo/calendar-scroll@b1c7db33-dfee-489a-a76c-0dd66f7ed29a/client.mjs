@@ -1,5 +1,5 @@
 /*
- * notion-enhancer core: bypass-preview
+ * notion-enhancer: calendar-scroll
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
@@ -60,6 +60,6 @@ export default async function (api, db) {
     const toolbar = document.querySelector(toolbarSelector);
     if (toolbar) toolbar.insertBefore($scrollButton, toolbar.children[2]);
   };
-  web.addDocumentObserver(insertButton, [toolbarSelector]);
+  web.addDocumentObserver(insertButton, ['.notion-calendar-view']);
   insertButton();
 }

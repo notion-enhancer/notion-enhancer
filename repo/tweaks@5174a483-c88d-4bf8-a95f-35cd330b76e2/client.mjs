@@ -6,44 +6,37 @@
 
 'use strict';
 
-const _id = '5174a483-c88d-4bf8-a95f-35cd330b76e2';
-import { env, storage, web } from '../../api/_.mjs';
+export default async function (api, db) {
+  const { web } = api;
 
-web.whenReady().then(async () => {
-  const cssInsert = await storage.get(_id, '_file.insert.css');
-  if (cssInsert) {
-    document.body.append(
-      web.createElement(
-        web.html`
-        <style id="${await storage.get(_id, 'insert.css')}@${_id}">${cssInsert}</style>`
-      )
-    );
-  }
+  const cssInsert = await db.get(['insert.css']);
+  document.head.append(
+    web.html`<style id="enhancer--tweak-${cssInsert.filename}">${cssInsert.content}</style>`
+  );
 
-  if (['linux', 'win32'].includes(env.name)) {
-    // dragarea_height
-  }
-
-  for (const tweak of [
-    'snappy_transitions',
-    'thicker_bold',
-    'spaced_lines',
-    'hide_help',
-    'condensed_bullets',
-    'bracketed_links',
-  ]) {
-    if (await storage.get(_id, `tweak.${tweak}`)) {
-      document.body.classList.add(`tweak--${tweak}`);
-    }
-  }
-
-  const responsiveBreakpoint = await storage.get(_id, 'tweak.responsive_breakpoint'),
+  const responsiveBreakpoint = await db.get(['tweak.responsive_breakpoint']),
     addResponsiveBreakpoint = () => {
-      document.body.classList.remove('tweak--responsive_breakpoint');
+      document.body.classList.remove('enhancer--tweak-responsive_breakpoint');
       if (window.innerWidth <= responsiveBreakpoint) {
-        document.body.classList.add('tweak--responsive_breakpoint');
+        document.body.classList.add('enhancer--tweak-responsive_breakpoint');
       }
     };
   window.addEventListener('resize', addResponsiveBreakpoint);
   addResponsiveBreakpoint();
-});
+
+  const tweaks = [
+    'normalise_table_scroll',
+    'hide_help',
+    'hide_slash_for_commands',
+    'snappy_transitions',
+    'thicker_bold',
+    'spaced_lines',
+    'condensed_bullets',
+    'bracketed_links',
+  ];
+  for (const tweak of tweaks) {
+    if (await db.get([`tweak.${tweak}`])) {
+      document.body.classList.add(`enhancer--tweak-${tweak}`);
+    }
+  }
+}
