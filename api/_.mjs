@@ -15,6 +15,8 @@ export * as fs from './fs.mjs';
 /** environment-specific data persistence */
 export * as storage from './storage.mjs';
 
+/** a basic wrapper around notion's unofficial api */
+export * as notion from './notion.mjs';
 /** helpers for formatting, validating and parsing values */
 export * as fmt from './fmt.mjs';
 /** interactions with the enhancer's repository of mods */

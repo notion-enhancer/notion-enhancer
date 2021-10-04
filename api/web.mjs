@@ -24,7 +24,7 @@ export const jscolor = JSColor;
 
 /**
  * wait until a page is loaded and ready for modification
- * @param {array} [selectors=[]] - wait for the existence of elements that match these css selectors
+ * @param {array} [selectors] - wait for the existence of elements that match these css selectors
  * @returns {Promise} a promise that will resolve when the page is ready
  */
 export const whenReady = (selectors = []) => {
