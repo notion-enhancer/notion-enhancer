@@ -5,21 +5,24 @@
  */
 
 #enhancer--tooltip {
-  position: absolute;
   background: var(--theme--ui_tooltip);
-  font-size: 11.5px;
-  padding: 0.15rem 0.4rem;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06) !important;
   border-radius: 3px;
-  max-width: 20rem;
+  box-shadow: var(--theme--ui_shadow) 0px 1px 4px;
+  color: var(--theme--ui_tooltip-description);
   display: none;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  max-width: 20rem;
+  overflow: hidden;
+  padding: 4px 8px;
+  position: absolute;
 }
 #enhancer--tooltip p {
   margin: 0.25rem 0;
 }
-#enhancer--tooltip p:first-child {
+#enhancer--tooltip b,
+#enhancer--tooltip strong {
+  font-weight: 500;
   color: var(--theme--ui_tooltip-title);
-}
-#enhancer--tooltip p:not(:first-child) {
-  color: var(--theme--ui_tooltip-description);
 }

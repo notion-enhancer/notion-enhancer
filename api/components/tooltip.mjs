@@ -23,9 +23,9 @@ web.loadStylesheet('api/components/tooltip.css');
  */
 export const tooltip = ($ref, text) => {
   web.render(document.body, _$tooltip);
-  text = fmt.md.render(text);
+  text = web.html`${fmt.md.render(text)}`;
   $ref.addEventListener('mouseover', (event) => {
-    _$tooltip.innerHTML = text;
+    web.render(web.empty(_$tooltip), text);
     _$tooltip.style.display = 'block';
   });
   $ref.addEventListener('mousemove', (event) => {

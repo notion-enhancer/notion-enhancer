@@ -153,6 +153,7 @@ export const db = async (id) => {
   return storage.db(
     [id],
     async (path, fallback = undefined) => {
+      if (typeof path === 'string') path = [path];
       if (path.length === 2) {
         // profiles -> profile -> mod -> option
         fallback = (await optionDefault(id, path[1])) ?? fallback;
