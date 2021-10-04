@@ -6,19 +6,17 @@
 
 'use strict';
 
-import { web } from '../../api/_.mjs';
+export default async function (api, db) {
+  const { web } = api;
 
-const $button = web.createElement(
-  web.html`<button id="calendar-scroll-to-week">Scroll</button>`
-);
-$button.addEventListener('click', async (event) => {
-  let $day = document.querySelector('.notion-calendar-view-day[style*="background:"]');
-  while (!$day) {
-    const $toolbar = document.querySelector(
-        '.notion-calendar-view > :first-child > :first-child > :first-child'
-      ),
-      year = +$toolbar.children[0].innerText.split(' ')[1],
-      month = {
+  const toolbarSelector = '.notion-calendar-view > :first-child > :first-child > :first-child',
+    $scrollButton = web.html`<button id="calendar-scroll-to-week">Scroll</button>`;
+  $scrollButton.addEventListener('click', async (event) => {
+    const $toolbar = document.querySelector(toolbarSelector),
+      now = new Date(),
+      thisYear = now.getFullYear(),
+      thisMonth = now.getMonth(),
+      allMonths = {
         'January': 0,
         'February': 1,
         'March': 2,
@@ -31,34 +29,37 @@ $button.addEventListener('click', async (event) => {
         'October': 9,
         'November': 10,
         'December': 11,
-      }[$toolbar.children[0].innerText.split(' ')[0]],
-      now = new Date();
-    switch (true) {
-      case now.getFullYear() < year:
-      case now.getFullYear() === year && now.getMonth() < month:
-        $toolbar.children[3].click();
-        break;
-      case now.getFullYear() > year:
-      case now.getFullYear() === year && now.getMonth() > month:
-        $toolbar.children[5].click();
-        break;
-      default:
-        await new Promise((res, rej) => requestAnimationFrame(res));
-        $day = document.querySelector('.notion-calendar-view-day[style*="background:"]');
+      };
+    let $today;
+    while (!$today) {
+      const visibleYear = +$toolbar.children[0].innerText.split(' ')[1],
+        visibleMonth = allMonths[$toolbar.children[0].innerText.split(' ')[0]];
+      switch (true) {
+        case thisYear < visibleYear:
+        case thisYear === visibleYear && thisMonth < visibleMonth:
+          $toolbar.children[3].click();
+          break;
+        case thisYear > visibleYear:
+        case thisYear === visibleYear && thisMonth > visibleMonth:
+          $toolbar.children[5].click();
+          break;
+        default:
+          $today = document.querySelector('.notion-calendar-view-day[style*="background:"]');
+      }
+      await new Promise((res, rej) => requestAnimationFrame(res));
     }
-    await new Promise((res, rej) => requestAnimationFrame(res));
-  }
-  const $scroller = document.querySelector('.notion-frame .notion-scroller');
-  $scroller.scroll({
-    top: $day.offsetParent.offsetParent.offsetTop + 70,
-    behavior: 'auto',
+    const $scroller = document.querySelector('.notion-frame .notion-scroller');
+    $scroller.scroll({
+      top: $today.offsetParent.offsetParent.offsetTop + 70,
+      behavior: 'auto',
+    });
   });
-});
 
-web.addDocumentObserver((event) => {
-  if (document.contains($button)) return;
-  const toolbar = document.querySelector(
-    '.notion-calendar-view > :first-child > :first-child > :first-child'
-  );
-  if (toolbar) toolbar.insertBefore($button, toolbar.children[2]);
-});
+  const insertButton = () => {
+    if (document.contains($scrollButton)) return;
+    const toolbar = document.querySelector(toolbarSelector);
+    if (toolbar) toolbar.insertBefore($scrollButton, toolbar.children[2]);
+  };
+  web.addDocumentObserver(insertButton, [toolbarSelector]);
+  insertButton();
+}

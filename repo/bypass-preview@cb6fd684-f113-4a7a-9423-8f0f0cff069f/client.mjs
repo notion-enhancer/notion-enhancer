@@ -7,27 +7,32 @@
 'use strict';
 
 export default async function (api, db) {
-  const { web, components } = api;
+  const { web, notion } = api;
   await web.whenReady();
 
-  let _lastPage = {};
+  let _openPage = {};
   function getCurrentPage() {
-    if (web.queryParams().get('p')) return { type: 'preview', id: web.queryParams().get('p') };
-    return { type: 'page', id: location.pathname.split(/(-|\/)/g).reverse()[0] };
+    return {
+      type: web.queryParams().get('p') ? 'preview' : 'page',
+      id: notion.getPageID(),
+    };
   }
 
-  web.addDocumentObserver((event) => {
-    const currentPage = getCurrentPage();
-    if (currentPage.id !== _lastPage.id || currentPage.type !== _lastPage.type) {
-      const openAsPage = document.querySelector(
-        '.notion-peek-renderer [style*="height: 45px;"] a'
-      );
-      if (openAsPage) {
-        if (currentPage.id === _lastPage.id && currentPage.type === 'preview') {
-          history.back();
-        } else openAsPage.click();
+  web.addDocumentObserver(
+    (event) => {
+      const currentPage = getCurrentPage();
+      if (currentPage.id !== _openPage.id || currentPage.type !== _openPage.type) {
+        const openAsPage = document.querySelector(
+          '.notion-peek-renderer [style*="height: 45px;"] a'
+        );
+        if (openAsPage) {
+          if (currentPage.id === _openPage.id && currentPage.type === 'preview') {
+            history.back();
+          } else openAsPage.click();
+        }
+        _openPage = getCurrentPage();
       }
-      _lastPage = getCurrentPage();
-    }
-  });
+    },
+    ['.notion-peek-renderer']
+  );
 }

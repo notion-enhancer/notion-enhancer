@@ -5,9 +5,9 @@
  */
 
 #calendar-scroll-to-week {
-  background: var(--theme--button_hover);
+  background: var(--theme--ui_interactive-hover);
   border: 1px solid transparent;
-  font-size: var(--theme--font_label-size);
+  font-size: 14px;
   color: var(--theme--text);
   height: 24px;
   border-radius: 3px;
@@ -15,7 +15,11 @@
   padding: 0 0.5em;
   margin-right: 5px;
 }
+#calendar-scroll-to-week:focus,
 #calendar-scroll-to-week:hover {
   background: transparent;
-  border: 1px solid var(--theme--button_hover);
+  border: 1px solid var(--theme--ui_interactive-hover);
+}
+#calendar-scroll-to-week:active {
+  background: var(--theme--ui_interactive-active);
 }
