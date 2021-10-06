@@ -9,10 +9,10 @@
 (async () => {
   const site = location.host.endsWith('.notion.site'),
     page = location.pathname.split(/[/-]/g).reverse()[0].length === 32,
-    root = location.pathname === '/',
+    whitelisted = ['/', '/onboarding'].includes(location.pathname),
     signedIn = localStorage['LRU:KeyValueStore2:current-user-id'];
 
-  if (site || page || (root && signedIn)) {
+  if (site || page || (whitelisted && signedIn)) {
     import(chrome.runtime.getURL('api/_.mjs')).then(async (api) => {
       const { fs, registry, web } = api;
       for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
