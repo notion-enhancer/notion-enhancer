@@ -233,7 +233,8 @@ body,
   > div
   > div
   > div
-  > div:nth-child(2)[style*='position: absolute; display: inline-flex; min-width: 100%; height: 32px; z-index: 1; background:'] {
+  > div:nth-child(2)[style*='position: absolute; display: inline-flex; min-width: 100%; height: 32px; z-index: 1; background:'],
+.notion-frame .notion-scroller[style*='background:'] {
   background: transparent !important;
 }
 
@@ -374,7 +375,20 @@ body,
   > div
   > div
   > div
-  > div:nth-child(1)[style*='display: flex; width: 100%; position: relative; z-index: 2; padding: 6px 10px; font-size: 14px; background:'] {
+  > div:nth-child(1)[style*='display: flex; width: 100%; position: relative; z-index: 2; padding: 6px 10px; font-size: 14px; background:'],
+#notion-app
+  > div
+  > div.notion-overlay-container.notion-default-overlay-container
+  > [data-overlay='true']
+  > div
+  > div:nth-child(2)
+  > div:nth-child(2)
+  > div
+  > div
+  > div
+  > div
+  > div:nth-child(1)
+  > div {
   background: var(--theme--ui_input) !important;
 }
 
@@ -616,6 +630,9 @@ body,
 [style*='background: rgb(46, 170, 220)'] {
   background: var(--theme--accent_blue) !important;
 }
+[style*='fill: rgb(46, 170, 220)'] {
+  fill: var(--theme--accent_blue) !important;
+}
 [style*=' color: rgb(46, 170, 220)'],
 [style^='color: rgb(46, 170, 220)'] {
   color: var(--theme--accent_blue) !important;
@@ -817,16 +834,16 @@ body,
   .notion-callout-block
   > div
   > [style*=' color: rgba(55, 53, 47, 0.6)'] {
-  color: var(--theme--text_grey) !important;
-  fill: var(--theme--text_grey) !important;
+  color: var(--theme--text_gray) !important;
+  fill: var(--theme--text_gray) !important;
 }
 .notion-body.dark [style*='fill: rgba(255, 255, 255, 0.6);'],
 .notion-body:not(.dark) [style*='fill: rgba(55, 53, 47, 0.6);'] {
-  fill: var(--theme--text_grey) !important;
+  fill: var(--theme--text_gray) !important;
 }
 .notion-body.dark [style*='background:rgb(69,75,78)'],
 .notion-body:not(.dark) [style*='background:rgb(235,236,237)'] {
-  background: var(--theme--highlight_grey) !important;
+  background: var(--theme--highlight_gray) !important;
 }
 .notion-body.dark [style*='color: inherit'] > div > div > [style*='background:rgb(69,75,78)'],
 .notion-body:not(.dark)
@@ -834,7 +851,7 @@ body,
   > div
   > div
   > [style*='background:rgb(235,236,237)'] {
-  color: var(--theme--highlight_grey-text) !important;
+  color: var(--theme--highlight_gray-text) !important;
 }
 .notion-body.dark [style*='color:rgba(151,154,155,0.95)'] [style*='background:rgb(69,75,78)'],
 .notion-body.dark
@@ -846,27 +863,27 @@ body,
 .notion-body:not(.dark)
   [style*='color: rgba(55, 53, 47, 0.6); fill: rgba(55, 53, 47, 0.6);']
   [style*='background:rgb(235,236,237)'] {
-  background: var(--theme--highlight_grey) !important;
-  color: var(--theme--text_grey) !important;
-  fill: var(--theme--text_grey) !important;
+  background: var(--theme--highlight_gray) !important;
+  color: var(--theme--text_gray) !important;
+  fill: var(--theme--text_gray) !important;
 }
 .notion-body.dark [style*='background: rgb(69, 75, 78)'],
 .notion-body:not(.dark) [style*='background: rgb(235, 236, 237)'] {
-  background: var(--theme--block_grey) !important;
-  color: var(--theme--block_grey-text) !important;
+  background: var(--theme--block_gray) !important;
+  color: var(--theme--block_gray-text) !important;
 }
 .notion-body.dark [style*='background: rgba(151, 154, 155, 0.5)'],
 .notion-body.dark [style*='background-color: rgba(151, 154, 155, 0.5)'],
 .notion-body:not(.dark) [style*='background: rgba(140, 46, 0, 0.2)'],
 .notion-body:not(.dark) [style*='background-color: rgba(140, 46, 0, 0.2)'],
 .notion-body:not(.dark) [style*='background: rgba(155, 154, 151, 0.4)'] {
-  background: var(--theme--tag_grey) !important;
-  color: var(--theme--tag_grey-text) !important;
+  background: var(--theme--tag_gray) !important;
+  color: var(--theme--tag_gray-text) !important;
 }
 .notion-body.dark [style*='background: rgba(69, 75, 78, 0.3)'],
 .notion-body:not(.dark) [style*='background: rgba(235, 236, 237, 0.3)'] {
-  background: var(--theme--callout_grey) !important;
-  color: var(--theme--callout_grey-text) !important;
+  background: var(--theme--callout_gray) !important;
+  color: var(--theme--callout_gray-text) !important;
 }
 
 .notion-body.dark [style*='color:rgb(147,114,100)'],

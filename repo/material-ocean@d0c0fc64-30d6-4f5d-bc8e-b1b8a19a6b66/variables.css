@@ -1,0 +1,122 @@
+/*
+ * material ocean
+ * (c) 2020 Abubakar Yagoub <i@blacksuan19.me> (https://blacksuan19.tk)
+ * under the MIT license
+ */
+
+:root.dark {
+  --ocean--main: #0f111a;
+  --ocean--sec: #00010a;
+  --ocean--tet: #000108;
+  --ocean--accent: #ff4151;
+  --ocean--gray: #e0e0e0;
+  --ocean--brown: #d8b6a6;
+  --ocean--orange: #fde3c0;
+  --ocean--yellow: #ebcb8b;
+  --ocean--green: #a3be8c;
+  --ocean--blue: #81a1c1;
+  --ocean--purple: #b48ead;
+  --ocean--pink: #ffc0cb;
+  --ocean--red: #bf616a;
+
+  --theme--accent_blue: var(--ocean--accent);
+  --theme--accent_blue-selection: rgba(255, 65, 81, 0.2);
+  --theme--accent_blue-hover: #fc3747;
+  --theme--accent_blue-focus: #ff4d5c;
+  --theme--accent_blue-text: #fff;
+  --theme--accent_red: var(--ocean--accent);
+  --theme--accent_red-hover: #ff41514b;
+  --theme--accent_red-text: #fff;
+
+  --theme--bg: var(--ocean--main);
+  --theme--bg_secondary: var(--ocean--sec);
+  --theme--bg_popup: var(--ocean--sec);
+
+  --theme--scrollbar_track: transparent;
+  --theme--scrollbar_thumb: var(--ocean--sec);
+  --theme--scrollbar_thumb-hover: var(--ocean--accent);
+
+  --theme--ui_divider: rgba(255, 255, 255, 0.1);
+  --theme--ui_interactive-hover: var(--ocean--tet);
+  --theme--ui_interactive-active: var(--ocean--tet);
+  --theme--ui_toggle-off: #30313c;
+
+  --theme--icon: var(--ocean--gray);
+  --theme--icon_secondary: var(--ocean--gray);
+
+  --theme--text: #fff;
+  --theme--text_secondary: var(--ocean--gray);
+  --theme--text_gray: var(--ocean--gray);
+  --theme--text_brown: var(--ocean--brown);
+  --theme--text_orange: var(--ocean--orange);
+  --theme--text_yellow: var(--ocean--yellow);
+  --theme--text_green: var(--ocean--green);
+  --theme--text_blue: var(--ocean--blue);
+  --theme--text_purple: var(--ocean--purple);
+  --theme--text_pink: var(--ocean--pink);
+  --theme--text_red: var(--ocean--red);
+
+  --theme--highlight-text: var(--ocean--main);
+  --theme--highlight_gray: var(--ocean--gray);
+  --theme--highlight_brown: var(--ocean--brown);
+  --theme--highlight_orange: var(--ocean--orange);
+  --theme--highlight_yellow: var(--ocean--yellow);
+  --theme--highlight_green: var(--ocean--green);
+  --theme--highlight_blue: var(--ocean--blue);
+  --theme--highlight_purple: var(--ocean--purple);
+  --theme--highlight_pink: var(--ocean--pink);
+  --theme--highlight_red: var(--ocean--red);
+
+  --theme--block-text: var(--ocean--main);
+  --theme--block_gray: #e0e0e089;
+  --theme--block_brown: #d8b6a692;
+  --theme--block_orange: #fde3c09f;
+  --theme--block_yellow: #ffe6a6ad;
+  --theme--block_green: #a3be8ca3;
+  --theme--block_blue: #81a1c1a3;
+  --theme--block_purple: #b48eada8;
+  --theme--block_pink: #ffc0cbb1;
+  --theme--block_red: #bf616a9e;
+
+  --theme--tag-text: var(--theme--highlight-text);
+  --theme--tag_default: var(--ocean--gray);
+  --theme--tag_gray: var(--theme--highlight_gray);
+  --theme--tag_brown: var(--theme--highlight_brown);
+  --theme--tag_orange: var(--theme--highlight_orange);
+  --theme--tag_yellow: var(--theme--highlight_yellow);
+  --theme--tag_green: var(--theme--highlight_green);
+  --theme--tag_blue: var(--theme--highlight_blue);
+  --theme--tag_purple: var(--theme--highlight_purple);
+  --theme--tag_pink: var(--theme--highlight_pink);
+  --theme--tag_red: var(--theme--highlight_red);
+
+  --theme--callout-text: var(--theme--block-text);
+  --theme--callout_gray: var(--theme--block_gray);
+  --theme--callout_brown: var(--theme--block_brown);
+  --theme--callout_orange: var(--theme--block_orange);
+  --theme--callout_yellow: var(--theme--block_yellow);
+  --theme--callout_green: var(--theme--block_green);
+  --theme--callout_blue: var(--theme--block_blue);
+  --theme--callout_purple: var(--theme--block_purple);
+  --theme--callout_pink: var(--theme--block_pink);
+  --theme--callout_red: var(--theme--block_red);
+
+  --theme--code_inline: var(--ocean--sec);
+  --theme--code_inline-text: #b3f5c8;
+
+  --theme--code: var(--ocean--sec);
+  --theme--code_function: var(--theme--text_blue);
+  --theme--code_keyword: var(--theme--text_pink);
+  --theme--code_tag: var(--theme--text_pink);
+  --theme--code_operator: var(--theme--text_yellow);
+  --theme--code_property: var(--theme--text_pink);
+  --theme--code_builtin: var(--theme--text_yellow);
+  --theme--code_attr-name: var(--theme--text_yellow);
+  --theme--code_comment: var(--theme--text_gray);
+  --theme--code_punctuation: var(--theme--text_gray);
+  --theme--code_doctype: var(--theme--text_gray);
+  --theme--code_number: var(--theme--text_purple);
+  --theme--code_selector: var(--theme--text_orange);
+  --theme--code_atrule: var(--theme--text_orange);
+  --theme--code_regex: var(--theme--text_yellow);
+}

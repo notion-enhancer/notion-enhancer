@@ -27,12 +27,12 @@ const mapColorVariables = (color) => ({
 const customClasses = {
   'notifications-container': apply`absolute bottom-0 right-0 px-4 py-3 max-w-full w-96`,
   'notification': ([color = 'default']) =>
-    apply`p-2 ${
+    apply`p-2 border group hover:(filter brightness-125) ${
       color === 'default'
-        ? 'bg-tag text-tag-text hover:bg-interactive-hover border border-divider'
-        : `bg-${color}-tag text-${color}-tag-text border border-${color}-text hover:bg-${color}-text`
+        ? 'bg-tag text-tag-text  border-divider'
+        : `bg-${color}-tag text-${color}-tag-text border-${color}-text`
     } flex items-center rounded-full mt-3 shadow-md cursor-pointer`,
-  'notification-text': apply`font-semibold text-xs mx-2 flex-auto`,
+  'notification-text': apply`text-xs mx-2 flex-auto font-semibold group-hover:(filter brightness-75)`,
   'notification-icon': apply`fill-current opacity-75 h-4 w-4 mx-2`,
   'body-container': apply`flex w-full h-full overflow-hidden`,
   'content-container': apply`h-full w-full-96`,
@@ -127,7 +127,7 @@ setup({
         'red-hover': 'var(--theme--accent_red-hover)',
         'red-text': 'var(--theme--accent_red-text)',
       },
-      'grey': mapColorVariables('grey'),
+      'gray': mapColorVariables('gray'),
       'brown': mapColorVariables('brown'),
       'orange': mapColorVariables('orange'),
       'yellow': mapColorVariables('yellow'),

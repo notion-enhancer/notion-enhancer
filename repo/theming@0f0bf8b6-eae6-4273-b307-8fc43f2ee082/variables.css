@@ -59,7 +59,7 @@
 
   --theme--text: rgb(55, 43, 47);
   --theme--text_secondary: rgba(55, 43, 47, 0.6);
-  --theme--text_grey: rgb(155, 154, 151);
+  --theme--text_gray: rgb(155, 154, 151);
   --theme--text_brown: rgb(100, 71, 58);
   --theme--text_orange: rgb(217, 115, 13);
   --theme--text_yellow: rgb(223, 171, 1);
@@ -70,8 +70,8 @@
   --theme--text_red: rgb(224, 62, 62);
 
   --theme--highlight-text: var(--theme--text);
-  --theme--highlight_grey: rgb(235, 236, 237);
-  --theme--highlight_grey-text: var(--theme--highlight-text);
+  --theme--highlight_gray: rgb(235, 236, 237);
+  --theme--highlight_gray-text: var(--theme--highlight-text);
   --theme--highlight_brown: rgb(233, 229, 227);
   --theme--highlight_brown-text: var(--theme--highlight-text);
   --theme--highlight_orange: rgb(250, 235, 221);
@@ -90,8 +90,8 @@
   --theme--highlight_red-text: var(--theme--highlight-text);
 
   --theme--block-text: var(--theme--text);
-  --theme--block_grey: rgb(235, 236, 237);
-  --theme--block_grey-text: var(--theme--block-text);
+  --theme--block_gray: rgb(235, 236, 237);
+  --theme--block_gray-text: var(--theme--block-text);
   --theme--block_brown: rgb(233, 229, 227);
   --theme--block_brown-text: var(--theme--block-text);
   --theme--block_orange: rgb(250, 235, 221);
@@ -112,8 +112,8 @@
   --theme--tag-text: var(--theme--text);
   --theme--tag_default: rgba(206, 205, 202, 0.5);
   --theme--tag_default-text: var(--theme--tag-text);
-  --theme--tag_grey: rgba(140, 46, 0, 0.2);
-  --theme--tag_grey-text: var(--theme--tag-text);
+  --theme--tag_gray: rgba(140, 46, 0, 0.2);
+  --theme--tag_gray-text: var(--theme--tag-text);
   --theme--tag_brown: rgba(140, 46, 0, 0.2);
   --theme--tag_brown-text: var(--theme--tag-text);
   --theme--tag_orange: rgba(245, 93, 0, 0.2);
@@ -132,8 +132,8 @@
   --theme--tag_red-text: var(--theme--tag-text);
 
   --theme--callout-text: var(--theme--text);
-  --theme--callout_grey: rgba(235, 236, 237, 0.3);
-  --theme--callout_grey-text: var(--theme--callout-text);
+  --theme--callout_gray: rgba(235, 236, 237, 0.3);
+  --theme--callout_gray-text: var(--theme--callout-text);
   --theme--callout_brown: rgba(233, 229, 227, 0.3);
   --theme--callout_brown-text: var(--theme--callout-text);
   --theme--callout_orange: rgba(250, 235, 221, 0.3);
@@ -173,7 +173,7 @@
   --theme--code_entity: var(--theme--code_operator);
   --theme--code_url: var(--theme--code_operator);
   --theme--code_variable: var(--theme--code_regex);
-  --theme--code_comment: slategrey;
+  --theme--code_comment: slategray;
   --theme--code_cdata: var(--theme--code_comment);
   --theme--code_prolog: var(--theme--code_comment);
   --theme--code_doctype: var(--theme--code_comment);
@@ -223,7 +223,7 @@
 
   --theme--text: rgba(255, 255, 255, 0.9);
   --theme--text_secondary: rgba(255, 255, 255, 0.6);
-  --theme--text_grey: rgba(151, 154, 155, 0.95);
+  --theme--text_gray: rgba(151, 154, 155, 0.95);
   --theme--text_brown: rgb(147, 114, 100);
   --theme--text_orange: rgb(255, 163, 68);
   --theme--text_yellow: rgb(255, 220, 73);
@@ -234,8 +234,8 @@
   --theme--text_red: rgb(255, 115, 105);
 
   --theme--highlight-text: var(--theme--text);
-  --theme--highlight_grey: rgb(69, 75, 78);
-  --theme--highlight_grey-text: var(--theme--highlight-text);
+  --theme--highlight_gray: rgb(69, 75, 78);
+  --theme--highlight_gray-text: var(--theme--highlight-text);
   --theme--highlight_brown: rgb(67, 64, 64);
   --theme--highlight_brown-text: var(--theme--highlight-text);
   --theme--highlight_orange: rgb(89, 74, 58);
@@ -254,8 +254,8 @@
   --theme--highlight_red-text: var(--theme--highlight-text);
 
   --theme--block-text: var(--theme--text);
-  --theme--block_grey: rgb(69, 75, 78);
-  --theme--block_grey-text: var(--theme--block-text);
+  --theme--block_gray: rgb(69, 75, 78);
+  --theme--block_gray-text: var(--theme--block-text);
   --theme--block_brown: rgb(67, 64, 64);
   --theme--block_brown-text: var(--theme--block-text);
   --theme--block_orange: rgb(89, 74, 58);
@@ -276,8 +276,8 @@
   --theme--tag-text: var(--theme--text);
   --theme--tag_default: rgb(80, 85, 88);
   --theme--tag_default-text: var(--theme--tag-text);
-  --theme--tag_grey: rgba(151, 154, 155, 0.5);
-  --theme--tag_grey-text: var(--theme--tag-text);
+  --theme--tag_gray: rgba(151, 154, 155, 0.5);
+  --theme--tag_gray-text: var(--theme--tag-text);
   --theme--tag_brown: rgba(147, 114, 100, 0.5);
   --theme--tag_brown-text: var(--theme--tag-text);
   --theme--tag_orange: rgba(255, 163, 68, 0.5);
@@ -296,8 +296,8 @@
   --theme--tag_red-text: var(--theme--tag-text);
 
   --theme--callout-text: var(--theme--text);
-  --theme--callout_grey: rgba(69, 75, 78, 0.3);
-  --theme--callout_grey-text: var(--theme--callout-text);
+  --theme--callout_gray: rgba(69, 75, 78, 0.3);
+  --theme--callout_gray-text: var(--theme--callout-text);
   --theme--callout_brown: rgba(67, 64, 64, 0.3);
   --theme--callout_brown-text: var(--theme--callout-text);
   --theme--callout_orange: rgba(89, 74, 58, 0.3);
