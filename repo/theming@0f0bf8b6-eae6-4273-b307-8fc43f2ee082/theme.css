@@ -146,7 +146,31 @@ body,
   > div
   > [style*='background: rgb(247, 247, 247); border-radius: 11px;'],
 .notion-page-template-modal > :last-child,
-.notion-page-template-modal > :last-child > div > :last-child {
+.notion-page-template-modal > :last-child > div > :last-child,
+.notion-embed-block .pseudoSelection,
+.notion-video-block .pseudoSelection,
+.notion-image-block .pseudoSelection,
+.notion-file-block .pseudoSelection,
+.notion-pdf-block .pseudoSelection,
+.notion-bookmark-block .pseudoSelection,
+.notion-miro-block .pseudoSelection,
+.notion-codepen-block .pseudoSelection,
+.notion-framer-block .pseudoSelection,
+.notion-figma-block .pseudoSelection,
+.notion-drive-block .pseudoSelection,
+.notion-gist-block .pseudoSelection,
+.notion-tweet-block .pseudoSelection,
+.notion-maps-block .pseudoSelection,
+.notion-replit-block .pseudoSelection,
+.notion-typeform-block .pseudoSelection,
+.notion-abstract-block .pseudoSelection,
+.notion-invision-block .pseudoSelection,
+.notion-loom-block .pseudoSelection,
+.notion-excalidraw-block .pseudoSelection,
+.notion-sketch-block .pseudoSelection,
+.notion-whimsical-block .pseudoSelection,
+.notion-equation-block > div > div,
+.notion-factory-block > div > div > div > div > [style*='background'][style*='margin-top'] {
   background: var(--theme--bg_secondary) !important;
 }
 
