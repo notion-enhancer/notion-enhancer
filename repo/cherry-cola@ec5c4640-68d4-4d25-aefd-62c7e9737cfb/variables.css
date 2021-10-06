@@ -42,7 +42,7 @@
   --theme--ui_interactive-active: var(--cola--tet);
   --theme--ui_toggle-off: rgba(73, 35, 65, 0.7);
 
-  --theme--icon: var(--cola--gray);
+  --theme--icon: #fff;
   --theme--icon_secondary: var(--cola--info);
 
   --theme--text: #fff;
