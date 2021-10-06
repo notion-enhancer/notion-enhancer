@@ -48,7 +48,6 @@ export default async function (api, db) {
     }
   }
   if (notifications.count) {
-    $sidebarLink.dataset.hasNotifications = true;
     web.render(
       $sidebarLink.children[0],
       web.html`<div class="enhancer--notificationBubble"><div><span>${notifications.count}</span></div></div>`

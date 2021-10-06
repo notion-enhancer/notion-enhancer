@@ -1,5 +1,5 @@
 {
-  "name": "calendar-scroll",
+  "name": "calendar scroll",
   "id": "b1c7db33-dfee-489a-a76c-0dd66f7ed29a",
   "version": "0.2.0",
   "description": "add a button to jump down to the current week in fullpage/infinite-scroll calendars.",

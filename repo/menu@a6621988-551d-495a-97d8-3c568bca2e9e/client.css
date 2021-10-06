@@ -45,7 +45,7 @@
   text-overflow: ellipsis;
 }
 
-.enhancer--sidebarMenuLink[data-has-notifications] {
+.enhancer--sidebarMenuLink:active {
   color: var(--theme--text);
 }
 .enhancer--sidebarMenuLink > div > .enhancer--notificationBubble {
