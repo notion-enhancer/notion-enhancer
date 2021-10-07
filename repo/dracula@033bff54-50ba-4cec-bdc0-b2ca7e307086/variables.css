@@ -1,0 +1,164 @@
+/*
+ * notion-enhancer: dracula
+ * (c) 2016 Dracula Theme
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+:root.dark {
+  --dracula--bg: #282a36;
+  --dracula--bg_lighter: #424450;
+  --dracula--bg_light: #343746;
+  --dracula--bg_dark: #21222c;
+  --dracula--bg_darker: #191a21;
+
+  --dracula--fg: #f8f8f2;
+  --dracula--fg_dark: #babbba;
+
+  --dracula--comment: #6272a4;
+  --dracula--selection: #44475a;
+  --dracula--block_highlight: #44475a75;
+
+  --dracula--gray: var(--dracula--fg_dark);
+  --dracula--brown: #6272a4;
+  --dracula--orange: #ffb86c;
+  --dracula--yellow: #f1fa8c;
+  --dracula--green: #50fa7b;
+  --dracula--blue: #8be9fd;
+  --dracula--purple: #bd93f9;
+  --dracula--pink: #ff79c6;
+  --dracula--red: #ff5555;
+
+  --dracula--bg_gray: var(--dracula--bg_light);
+  --dracula--bg_brown: #465079;
+  --dracula--bg_orange: #8a6345;
+  --dracula--bg_yellow: #8e9656;
+  --dracula--bg_green: #3f945f;
+  --dracula--bg_blue: #498096;
+  --dracula--bg_purple: #6a549b;
+  --dracula--bg_pink: #8d4a7c;
+  --dracula--bg_red: #943844;
+
+  --theme--accent_blue: var(--dracula--purple);
+  --theme--accent_blue-selection: #bb8dfd3d;
+  --theme--accent_blue-hover: #b179ff;
+  --theme--accent_blue-focus: #9f5ff8;
+  --theme--accent_red: var(--dracula--comment);
+  --theme--accent_red-hover: #6273a439;
+
+  --theme--danger_text: var(--dracula--red);
+  --theme--danger_border: var(--dracula--bg_red);
+
+  --theme--bg: var(--dracula--bg);
+  --theme--bg_secondary: var(--dracula--bg_dark);
+  --theme--bg_popup: var(--dracula--bg_light);
+
+  --theme--scrollbar_track: transparent;
+  --theme--scrollbar_thumb: var(--dracula--selection);
+  --theme--scrollbar_thumb-hover: var(--dracula--comment);
+
+  --theme--ui_divider: var(--dracula--bg_lighter);
+  --theme--ui_interactive-hover: var(--dracula--block_highlight);
+  --theme--ui_interactive-active: var(--dracula--bg_lighter);
+  --theme--ui_toggle-off: var(--dracula--block_highlight);
+
+  --theme--icon: var(--dracula--comment);
+  --theme--icon_secondary: var(--dracula--comment);
+
+  --theme--text: var(--dracula--fg);
+  --theme--text_secondary: var(--dracula--fg_dark);
+  --theme--text_gray: var(--dracula--gray);
+  --theme--text_brown: var(--dracula--brown);
+  --theme--text_orange: var(--dracula--orange);
+  --theme--text_yellow: var(--dracula--yellow);
+  --theme--text_green: var(--dracula--green);
+  --theme--text_blue: var(--dracula--blue);
+  --theme--text_purple: var(--dracula--purple);
+  --theme--text_pink: var(--dracula--pink);
+  --theme--text_red: var(--dracula--red);
+
+  --theme--highlight-text: var(--dracula--bg);
+  --theme--highlight_gray: var(--dracula--gray);
+  --theme--highlight_brown: var(--dracula--brown);
+  --theme--highlight_brown-text: var(--dracula--fg);
+  --theme--highlight_orange: var(--dracula--orange);
+  --theme--highlight_yellow: var(--dracula--yellow);
+  --theme--highlight_green: var(--dracula--green);
+  --theme--highlight_blue: var(--dracula--blue);
+  --theme--highlight_purple: var(--dracula--purple);
+  --theme--highlight_pink: var(--dracula--pink);
+  --theme--highlight_red: var(--dracula--red);
+  --theme--highlight_red-text: var(--dracula--fg);
+
+  --theme--block-text: var(--dracula--fg);
+  --theme--block_gray: var(--dracula--bg_gray);
+  --theme--block_brown: var(--dracula--bg_brown);
+  --theme--block_orange: var(--dracula--bg_orange);
+  --theme--block_yellow: var(--dracula--bg_yellow);
+  --theme--block_green: var(--dracula--bg_green);
+  --theme--block_blue: var(--dracula--bg_blue);
+  --theme--block_purple: var(--dracula--bg_purple);
+  --theme--block_pink: var(--dracula--bg_pink);
+  --theme--block_red: var(--dracula--bg_red);
+
+  --theme--tag-text: var(--dracula--bg);
+  --theme--tag_default: var(--dracula--comment);
+  --theme--tag_default-text: var(--dracula--fg);
+  --theme--tag_gray: var(--dracula--gray);
+  --theme--tag_brown: var(--dracula--brown);
+  --theme--tag_brown-text: var(--dracula--fg);
+  --theme--tag_orange: var(--dracula--orange);
+  --theme--tag_yellow: var(--dracula--yellow);
+  --theme--tag_green: var(--dracula--green);
+  --theme--tag_blue: var(--dracula--blue);
+  --theme--tag_purple: var(--dracula--purple);
+  --theme--tag_pink: var(--dracula--pink);
+  --theme--tag_red: var(--dracula--red);
+  --theme--tag_red-text: var(--dracula--fg);
+
+  --theme--callout-text: var(--dracula--fg);
+  --theme--callout_gray: var(--dracula--bg_gray);
+  --theme--callout_brown: var(--dracula--bg_brown);
+  --theme--callout_orange: var(--dracula--bg_orange);
+  --theme--callout_yellow: var(--dracula--bg_yellow);
+  --theme--callout_green: var(--dracula--bg_green);
+  --theme--callout_blue: var(--dracula--bg_blue);
+  --theme--callout_purple: var(--dracula--bg_purple);
+  --theme--callout_pink: var(--dracula--bg_pink);
+  --theme--callout_red: var(--dracula--bg_red);
+
+  --theme--code_inline: var(--dracula--bg_light);
+  --theme--code_inline-text: var(--dracula--green);
+
+  --theme--code: var(--dracula--bg_light);
+  --theme--code_plain: var(--dracula--fg);
+  --theme--code_function: var(--dracula--green);
+  --theme--code_parameter: var(--dracula--orange);
+  --theme--code_keyword: var(--dracula--pink);
+  --theme--code_constant: var(--dracula--purple);
+  --theme--code_tag: var(--dracula--pink);
+  --theme--code_operator: var(--dracula--pink);
+  --theme--code_important: var(--dracula--pink);
+  --theme--code_regex: var(--dracula--red);
+  --theme--code_property: var(--dracula--blue);
+  --theme--code_builtin: var(--dracula--blue);
+  --theme--code_class-name: var(--dracula--blue);
+  --theme--code_attr-name: var(--dracula--green);
+  --theme--code_attr-value: var(--dracula--yellow);
+  --theme--code_selector: var(--dracula--pink);
+  --theme--code_id: var(--dracula--green);
+  --theme--code_class: var(--dracula--green);
+  --theme--code_pseudo-element: var(--dracula--green);
+  --theme--code_pseudo-class: var(--dracula--green);
+  --theme--code_attribute: var(--dracula--green);
+  --theme--code_value: var(--dracula--yellow);
+  --theme--code_unit: var(--dracula--pink);
+  --theme--code_comment: var(--dracula--comment);
+  --theme--code_punctuation: var(--dracula--text);
+  --theme--code_annotation: var(--theme--code_punctuation);
+  --theme--code_decorator: var(--dracula--green);
+  --theme--code_doctype: var(--dracula--fg_dark);
+  --theme--code_number: var(--dracula--purple);
+  --theme--code_string: var(--dracula--yellow);
+  --theme--code_boolean: var(--dracula--purple);
+}

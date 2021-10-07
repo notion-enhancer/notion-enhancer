@@ -20,56 +20,70 @@
 }
 
 .enhancer--tweak-normalise_table_scroll
+  .notion-frame
   .notion-page-content
-  .notion-collection_view-block[style*=' width'],
+  .notion-collection_view-block,
+.enhancer--tweak-normalise_table_scroll .notion-peek-renderer .notion-collection_view-block,
 .enhancer--tweak-normalise_table_scroll
-  .notion-page-content
-  .notion-collection_view-block[style^='width'] {
+  .notion-page-template-modal
+  .notion-collection_view-block {
   width: 100% !important;
 }
 .enhancer--tweak-normalise_table_scroll
+  .notion-frame
   .notion-page-content
   .notion-collection_view-block
-  [style*='padding-left: 50px'],
+  [style*='padding-left: 126px'],
 .enhancer--tweak-normalise_table_scroll
+  .notion-frame
   .notion-page-content
   .notion-collection_view-block
   [style*='padding-left: 96px'],
 .enhancer--tweak-normalise_table_scroll
-  .notion-page-content
+  .notion-peek-renderer
   .notion-collection_view-block
-  [style*='padding-left: 126px'] {
+  [style*='padding-left: 126px'],
+.enhancer--tweak-normalise_table_scroll
+  .notion-peek-renderer
+  .notion-collection_view-block
+  [style*='padding-left: 96px'],
+.enhancer--tweak-normalise_table_scroll
+  .notion-page-template-modal
+  .notion-collection_view-block
+  [style*='padding-left: 126px'],
+.enhancer--tweak-normalise_table_scroll
+  .notion-page-template-modal
+  .notion-collection_view-block
+  [style*='padding-left: 96px'] {
   padding-left: 0 !important;
 }
 .enhancer--tweak-normalise_table_scroll
+  .notion-frame
   .notion-page-content
   .notion-collection_view-block
-  [style*='padding-right: 50px'],
+  [style*='padding-right: 126px'],
 .enhancer--tweak-normalise_table_scroll
+  .notion-frame
   .notion-page-content
   .notion-collection_view-block
   [style*='padding-right: 96px'],
 .enhancer--tweak-normalise_table_scroll
-  .notion-page-content
+  .notion-peek-renderer
   .notion-collection_view-block
-  [style*='padding-right: 126px'] {
+  [style*='padding-right: 126px'],
+.enhancer--tweak-normalise_table_scroll
+  .notion-peek-renderer
+  .notion-collection_view-block
+  [style*='padding-right: 96px'],
+.enhancer--tweak-normalise_table_scroll
+  .notion-page-template-modal
+  .notion-collection_view-block
+  [style*='padding-right: 126px'],
+.enhancer--tweak-normalise_table_scroll
+  .notion-page-template-modal
+  .notion-collection_view-block
+  [style*='padding-right: 96px'] {
   padding-right: 0 !important;
-}
-.enhancer--tweak-normalise_table_scroll
-  .notion-page-content
-  .notion-collection_view-block
-  [style*='min-width: calc(100% - 192px);'],
-.enhancer--tweak-normalise_table_scroll
-  .notion-page-content
-  .notion-collection_view-block
-  [style*='min-width: 708px;'] {
-  min-width: 100% !important;
-}
-.enhancer--tweak-normalise_table_scroll
-  .notion-page-content
-  .notion-collection_view-block
-  > div {
-  padding: 0 1px;
 }
 
 .enhancer--tweak-snappy_transitions * {

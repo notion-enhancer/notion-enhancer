@@ -10,9 +10,11 @@ export default async function (api, db) {
   const { web } = api;
 
   const cssInsert = await db.get(['insert.css']);
-  document.head.append(
-    web.html`<style id="enhancer--tweak-${cssInsert.filename}">${cssInsert.content}</style>`
-  );
+  if (cssInsert?.filename) {
+    document.head.append(
+      web.html`<style id="enhancer--tweak-${cssInsert.filename}">${cssInsert.content}</style>`
+    );
+  }
 
   const responsiveBreakpoint = await db.get(['tweak.responsive_breakpoint']),
     addResponsiveBreakpoint = () => {

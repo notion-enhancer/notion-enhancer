@@ -1,0 +1,22 @@
+{
+  "name": "dracula",
+  "id": "033bff54-50ba-4cec-bdc0-b2ca7e307086",
+  "version": "0.3.0",
+  "description": "a theme based on the popular dracula color palette originally by zeno rocha and friends.",
+  "tags": ["theme", "dark"],
+  "authors": [
+    {
+      "name": "dracula",
+      "email": "zno.rocha@gmail.com",
+      "homepage": "https://draculatheme.com/",
+      "avatar": "https://draculatheme.com/static/icons/pack-1/045-dracula.svg"
+    }
+  ],
+  "css": {
+    "frame": ["variables.css"],
+    "client": ["variables.css", "app.css"],
+    "menu": ["variables.css"]
+  },
+  "js": {},
+  "options": []
+}
