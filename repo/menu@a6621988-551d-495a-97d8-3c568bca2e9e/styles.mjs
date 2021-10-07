@@ -48,7 +48,7 @@ const customClasses = {
   'mod-container': apply`w-full md:w-1/2 lg:w-1/3 xl:w-1/4 2xl:w-1/5 px-2.5 py-2.5 box-border`,
   'mod': apply`relative h-full w-full flex flex-col overflow-hidden rounded-lg shadow-lg
     bg-notion-secondary border border-divider cursor-pointer`,
-  'mod-selected': apply`mod ring ring-accent-blue-focus`,
+  'mod-selected': apply`mod ring ring-accent-blue-active`,
   'mod-body': apply`px-4 py-3 flex flex-col flex-auto children:cursor-pointer`,
   'mod-preview': apply`object-cover w-full h-32`,
   'mod-title': apply`mb-2 text-xl font-semibold tracking-tight flex items-center`,
@@ -63,7 +63,7 @@ const customClasses = {
     bg-accent-red-hover border border-accent-red text-accent-red focus:(outline-none ring ring-inset ring-accent-red)`,
   'profile-actions': apply`flex`,
   'profile-save': apply`text-sm px-3 py-2 font-medium mt-2 bg-accent-blue text-accent-blue-text rounded-md flex-grow
-    hover:bg-accent-blue-hover focus:(bg-accent-blue-focus outline-none) text-center`,
+    hover:bg-accent-blue-hover focus:(bg-accent-blue-active outline-none) text-center`,
   'profile-delete': apply`text-sm px-3 py-2 font-medium ml-3 mt-2 bg-red-tag text-red-tag-text rounded-md flex-grow
     border border-red-text hover:bg-red-text focus:(outline-none bg-red-text) text-center`,
   'profile-export': apply`profile-save mr-2`,
@@ -79,7 +79,7 @@ const customClasses = {
   'toggle-feature': apply`after::(${pseudoContent} w-4 h-4 bg-toggle-feature rounded-full duration-300) cursor-pointer`,
   'input-label': apply`block text-sm mt-2 relative`,
   'input': apply`transition block w-full mt-2 pl-3 pr-14 py-2 text-sm rounded-md flex bg-input text-foreground
-    appearance-none placeholder-foreground-secondary ring-1 ring-divider focus:(outline-none ring ring-accent-blue-focus)`,
+    appearance-none placeholder-foreground-secondary ring-1 ring-divider focus:(outline-none ring ring-accent-blue-active)`,
   'input-tooltip': apply`h-4 w-4 -mt-1 inline-block mr-2`,
   'input-icon': apply`absolute w-11 h-9 right-0 bottom-0 py-2 px-3 bg-notion-secondary rounded-r-md text-icon`,
   'input-placeholder': apply`text-foreground-secondary`,
@@ -121,7 +121,7 @@ setup({
       'accent': {
         'blue': 'var(--theme--accent_blue)',
         'blue-hover': 'var(--theme--accent_blue-hover)',
-        'blue-focus': 'var(--theme--accent_blue-focus)',
+        'blue-active': 'var(--theme--accent_blue-active)',
         'blue-text': 'var(--theme--accent_blue-text)',
         'red': 'var(--theme--accent_red)',
         'red-hover': 'var(--theme--accent_red-hover)',

@@ -23,7 +23,7 @@
   --theme--accent_blue: var(--cola--accent);
   --theme--accent_blue-selection: rgba(78, 32, 69, 0.5);
   --theme--accent_blue-hover: #bd6992;
-  --theme--accent_blue-focus: #cc86a8;
+  --theme--accent_blue-active: #cc86a8;
   --theme--accent_blue-text: #fff;
   --theme--accent_red: var(--cola--accent);
   --theme--accent_red-hover: #bf799b63;

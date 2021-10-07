@@ -26,7 +26,7 @@
   --theme--accent_blue: rgb(46, 170, 220);
   --theme--accent_blue-selection: rgb(46, 170, 220, 0.25);
   --theme--accent_blue-hover: rgb(6, 156, 205);
-  --theme--accent_blue-focus: rgb(0, 141, 190);
+  --theme--accent_blue-active: rgb(0, 141, 190);
   --theme--accent_blue-text: #fff;
   --theme--accent_red: #eb5757;
   --theme--accent_red-hover: rgba(235, 87, 87, 0.1);

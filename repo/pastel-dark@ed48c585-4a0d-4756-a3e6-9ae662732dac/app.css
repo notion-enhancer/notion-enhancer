@@ -1,10 +1,8 @@
 /*
- * notion-enhancer: dracula
- * (c) 2016 Dracula Theme
- * (c) 2020 CloudHill
- * (c) 2020 mimishahzad
+ * notion-enhancer: pastel dark
+ * (c) 2020 u/zenith_illinois
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
- * (https://notion-enhancer.github.io/) under the MIT license
+ * under the MIT license
  */
 
 .notion-dark-theme img[src*='/images/onboarding/use-case-note.png'],
@@ -27,7 +25,7 @@
   filter: brightness(1.2);
 }
 
-.notion-dark-theme [style*='font-family: Fira Code, Menlo, Courier, monospace;'] {
+.notion-dark-theme [style*='font-family: iawriter-mono, Nitti, Menlo, Courier, monospace;'] {
   filter: hue-rotate(170deg) !important;
 }
 
@@ -40,7 +38,7 @@
 .notion-dark-theme .notion-to_do-block > div > div > div[style*='background:'],
 .notion-dark-theme div[role='button'],
 [style*='height: 4px;'] > .notion-selectable.notion-collection_view_page-block > *,
-.notion-dark-theme .notion-calendar-view-day[style*='background: #282a36;'],
+.notion-dark-theme .notion-calendar-view-day[style*='background: rgb(235, 87, 87);'],
 .DayPicker-Day--today,
 .notion-dark-theme
   .DayPicker:not(.DayPicker--interactionDisabled)
@@ -54,7 +52,7 @@
   transition: color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease !important;
 }
 
-.notion-dark-theme [style*='background: #282a36;'],
+.notion-dark-theme [style*='background: rgb(63, 68, 71);'],
 .notion-dark-theme
   [style*='background: rgb(80, 85, 88);'][style*='color: rgba(255, 255, 255, 0.7)'],
 .notion-dark-theme
@@ -71,25 +69,4 @@
 .notion-dark-theme [style*='background: rgba(226, 85, 161, 0.5)'],
 .notion-dark-theme [style*='background: rgba(255, 115, 105, 0.5)'] {
   box-shadow: 0 2px 4px rgb(0 0 0 / 66%) !important;
-}
-
-.notion-dark-theme .notion-code-block .token.parameter,
-.notion-dark-theme .notion-code-block .token.decorator,
-.notion-dark-theme .notion-code-block .token.id,
-.notion-dark-theme .notion-code-block .token.class,
-.notion-dark-theme .notion-code-block .token.pseudo-element,
-.notion-dark-theme .notion-code-block .token.pseudo-class,
-.notion-dark-theme .notion-code-block .token.attribute {
-  font-style: italic;
-}
-
-.notion-dark-theme .notion-code-block .token.punctuation {
-  opacity: 1;
-}
-
-.notion-dark-theme
-  [class^='notion-outliner']
-  [style*='background: rgb(71, 76, 80);']
-  .triangle[fill] {
-  fill: var(--theme--text);
 }

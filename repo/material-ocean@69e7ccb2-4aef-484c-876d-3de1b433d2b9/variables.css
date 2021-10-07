@@ -22,7 +22,7 @@
   --theme--accent_blue: var(--ocean--accent);
   --theme--accent_blue-selection: rgba(255, 65, 81, 0.2);
   --theme--accent_blue-hover: #fc3747;
-  --theme--accent_blue-focus: #ff4d5c;
+  --theme--accent_blue-active: #ff4d5c;
   --theme--accent_blue-text: #fff;
   --theme--accent_red: var(--ocean--accent);
   --theme--accent_red-hover: #ff41514b;

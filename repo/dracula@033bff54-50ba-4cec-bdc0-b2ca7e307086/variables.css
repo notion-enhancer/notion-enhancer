@@ -1,6 +1,7 @@
 /*
  * notion-enhancer: dracula
  * (c) 2016 Dracula Theme
+ * (c) 2020 mimishahzad
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
@@ -42,7 +43,7 @@
   --theme--accent_blue: var(--dracula--purple);
   --theme--accent_blue-selection: #bb8dfd3d;
   --theme--accent_blue-hover: #b179ff;
-  --theme--accent_blue-focus: #9f5ff8;
+  --theme--accent_blue-active: #9f5ff8;
   --theme--accent_red: var(--dracula--comment);
   --theme--accent_red-hover: #6273a439;
 

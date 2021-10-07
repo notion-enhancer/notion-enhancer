@@ -1,0 +1,108 @@
+/*
+ * notion-enhancer: pastel dark
+ * (c) 2020 u/zenith_illinois
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * under the MIT license
+ */
+
+:root.dark {
+  --theme--bg: #0b0b0b;
+  --theme--bg_secondary: #0f0f0f;
+  --theme--bg_popup: #0f0f0f;
+
+  --theme--scrollbar_track: transparent;
+  --theme--scrollbar_thumb: #141414;
+  --theme--scrollbar_thumb-hover: #1b1b1b;
+
+  --theme--accent_blue: #b887f7;
+  --theme--accent_blue-selection: rgba(184, 135, 247, 0.3);
+  --theme--accent_blue-hover: #08d7c2;
+  --theme--accent_blue-active: #b887f7;
+  --theme--accent_red: #08d7c2;
+  --theme--accent_red-hover: #08d7c226;
+
+  --theme--ui_divider: rgba(255, 255, 255, 0.1);
+  --theme--ui_interactive-hover: #1e1e1e5c;
+  --theme--ui_interactive-active: #1e1e1ea5;
+  --theme--ui_toggle-off: #b1aeab;
+
+  --theme--icon: #ffffff;
+  --theme--icon_secondary: #909090;
+
+  --theme--text: #ffffff;
+  --theme--text_secondary: #909090;
+  --theme--text_gray: #b1aeab;
+  --theme--text_brown: #d8b6a6;
+  --theme--text_orange: #fde3c0;
+  --theme--text_yellow: #fcde93;
+  --theme--text_green: #b3f5c8;
+  --theme--text_blue: #bfe0fd;
+  --theme--text_purple: #dac7fa;
+  --theme--text_pink: #f7b8dc;
+  --theme--text_red: #f8acb4;
+
+  --theme--highlight-text: rgb(55, 53, 47);
+  --theme--highlight_gray: #b1aeab;
+  --theme--highlight_brown: #d8b6a6;
+  --theme--highlight_orange: #fde3c0;
+  --theme--highlight_yellow: #fcde93;
+  --theme--highlight_green: #b3f5c8;
+  --theme--highlight_blue: #bfe0fd;
+  --theme--highlight_purple: #dac7fa;
+  --theme--highlight_pink: #f7b8dc;
+  --theme--highlight_red: #f8acb4;
+
+  --theme--block-text: rgb(34, 34, 34);
+  --theme--block_gray: #c2c1c089;
+  --theme--block_brown: #dacec992;
+  --theme--block_orange: #fff0dc9f;
+  --theme--block_yellow: #ffe6a6ad;
+  --theme--block_green: #c8fdd9a3;
+  --theme--block_blue: #d1e9ffa3;
+  --theme--block_purple: #e3d3ffa8;
+  --theme--block_pink: #fdcce8b1;
+  --theme--block_red: #ffc8ce9e;
+
+  --theme--tag-text: var(--theme--highlight-text);
+  --theme--tag_default: var(--theme--highlight_gray);
+  --theme--tag_gray: var(--theme--highlight_gray);
+  --theme--tag_brown: var(--theme--highlight_brown);
+  --theme--tag_orange: var(--theme--highlight_orange);
+  --theme--tag_yellow: var(--theme--highlight_yellow);
+  --theme--tag_green: var(--theme--highlight_green);
+  --theme--tag_blue: var(--theme--highlight_blue);
+  --theme--tag_purple: var(--theme--highlight_purple);
+  --theme--tag_pink: var(--theme--highlight_pink);
+  --theme--tag_red: var(--theme--highlight_red);
+
+  --theme--callout-text: var(--theme--block-text);
+  --theme--callout_gray: var(--theme--block_gray);
+  --theme--callout_brown: var(--theme--block_brown);
+  --theme--callout_orange: var(--theme--block_orange);
+  --theme--callout_yellow: var(--theme--block_yellow);
+  --theme--callout_green: var(--theme--block_green);
+  --theme--callout_blue: var(--theme--block_blue);
+  --theme--callout_purple: var(--theme--block_purple);
+  --theme--callout_pink: var(--theme--block_pink);
+  --theme--callout_red: var(--theme--block_red);
+
+  --theme--code_inline: rgb(8, 8, 8);
+  --theme--code_inline-text: #b3f5c8;
+
+  --theme--code: #0f0f0f;
+  --theme--code_plain: var(--theme--text);
+  --theme--code_function: var(--theme--text_blue);
+  --theme--code_keyword: var(--theme--text_pink);
+  --theme--code_tag: var(--theme--text_pink);
+  --theme--code_operator: var(--theme--text_yellow);
+  --theme--code_important: var(--theme--text_yellow);
+  --theme--code_property: var(--theme--text_pink);
+  --theme--code_builtin: var(--theme--text_yellow);
+  --theme--code_attr-name: var(--theme--text_yellow);
+  --theme--code_comment: var(--theme--text_gray);
+  --theme--code_punctuation: var(--theme--text_gray);
+  --theme--code_doctype: var(--theme--text_gray);
+  --theme--code_number: var(--theme--text_purple);
+  --theme--code_string: var(--theme--text_orange);
+  --theme--code_attr-value: var(--theme--text_orange);
+}

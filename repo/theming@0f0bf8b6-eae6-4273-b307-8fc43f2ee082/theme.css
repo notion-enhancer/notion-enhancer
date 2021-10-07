@@ -701,8 +701,8 @@ body,
 }
 .notion-focusable-within:focus-within,
 .notion-focusable:focus-visible {
-  box-shadow: var(--theme--accent_blue-focus, rgba(26, 170, 220, 0.7)) 0px 0px 0px 1px inset,
-    var(--theme--accent_blue-focus, rgba(26, 170, 220, 0.4)) 0px 0px 0px 2px !important;
+  box-shadow: var(--theme--accent_blue-active, rgba(26, 170, 220, 0.7)) 0px 0px 0px 1px inset,
+    var(--theme--accent_blue-active, rgba(26, 170, 220, 0.4)) 0px 0px 0px 2px !important;
 }
 .notion-onboarding-plan-type-team[style*='box-shadow: rgb(46, 170, 220)'],
 .notion-onboarding-plan-type-personal[style*='box-shadow: rgb(46, 170, 220)'] {
@@ -725,7 +725,7 @@ body,
   background: var(--theme--accent_blue-hover) !important;
 }
 [style*='background: rgb(0, 141, 190);'] {
-  background: var(--theme--accent_blue-focus) !important;
+  background: var(--theme--accent_blue-active) !important;
 }
 
 [style*='background-color: rgb(235, 87, 87); height: 28px; width: 28px;'],
