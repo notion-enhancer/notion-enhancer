@@ -88,7 +88,7 @@ const check = async (
       if (!passed) return false;
       return mod.authors.map((author) => [
         check(mod, 'authors.author.name', author.name, 'string'),
-        check(mod, 'authors.author.email', author.email, 'email'),
+        check(mod, 'authors.author.email', author.email, 'email', { optional: true }),
         check(mod, 'authors.author.homepage', author.homepage, 'url'),
         check(mod, 'authors.author.avatar', author.avatar, 'url'),
       ]);
