@@ -57,7 +57,7 @@
 
   --theme--bg: var(--dracula--bg);
   --theme--bg_secondary: var(--dracula--bg_dark);
-  --theme--bg_popup: var(--dracula--bg_light);
+  --theme--bg_card: var(--dracula--bg_light);
 
   --theme--scrollbar_track: transparent;
   --theme--scrollbar_thumb: var(--dracula--selection);

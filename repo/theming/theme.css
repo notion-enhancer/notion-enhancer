@@ -214,7 +214,7 @@ body,
 .notion-workspace-create
   [style*='font-size: 12px;']
   + .notion-focusable[role='button']:not(:hover) {
-  background: var(--theme--bg_popup) !important;
+  background: var(--theme--bg_card) !important;
   box-shadow: var(--theme--ui_shadow, rgba(15, 15, 15, 0.05)) 0px 0px 0px 1px,
     var(--theme--ui_shadow, rgba(15, 15, 15, 0.1)) 0px 3px 6px,
     var(--theme--ui_shadow, rgba(15, 15, 15, 0.2)) 0px 9px 24px !important;
@@ -231,7 +231,7 @@ body,
   [style*='grid-template-columns: [boolean-start] 60px [boolean-end property-start] 120px [property-end opererator-start] 110px [operator-end value-start] auto [value-end menu-start] 32px [menu-end];']
   .notion-focusable[style*='background: white;'],
 .notion-timeline-item {
-  background: var(--theme--bg_popup) !important;
+  background: var(--theme--bg_card) !important;
 }
 
 .notion-discussion-input > div > div[style*='background'],

@@ -36,7 +36,7 @@
 :root {
   --theme--bg: #fff;
   --theme--bg_secondary: rgb(247, 246, 243);
-  --theme--bg_popup: #fff;
+  --theme--bg_card: #fff;
 
   --theme--scrollbar_track: #edece9;
   --theme--scrollbar_thumb: #d3d1cb;
@@ -200,7 +200,7 @@
 :root.dark {
   --theme--bg: rgb(47, 52, 55);
   --theme--bg_secondary: rgb(55, 60, 63);
-  --theme--bg_popup: rgb(63, 68, 71);
+  --theme--bg_card: rgb(63, 68, 71);
 
   --theme--scrollbar_track: rgba(202, 204, 206, 0.04);
   --theme--scrollbar_thumb: #474c50;

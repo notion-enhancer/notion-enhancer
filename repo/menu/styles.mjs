@@ -60,7 +60,7 @@ const customClasses = {
   'mod-author-avatar': apply`inline object-cover w-5 h-5 rounded-full mr-2`,
   'sidebar': apply`h-full w-96 px-4 pt-3 pb-32 flex flex-col bg-notion-secondary border-l border-divider`,
   'profile-trigger': apply`block px-4 py-3 mb-2 rounded-md text-sm text-left font-semibold shadow-inner
-    bg-accent-red-hover border border-accent-red text-accent-red focus:(outline-none ring ring-inset ring-accent-red)`,
+    hover:bg-accent-red-hover border border-accent-red text-accent-red focus:(outline-none ring ring-inset ring-accent-red)`,
   'profile-actions': apply`flex`,
   'profile-save': apply`text-sm px-3 py-2 font-medium mt-2 bg-accent-blue text-accent-blue-text rounded-md flex-grow
     hover:bg-accent-blue-hover focus:(bg-accent-blue-active outline-none) text-center`,
@@ -102,7 +102,7 @@ setup({
     colors: {
       'notion': 'var(--theme--bg)',
       'notion-secondary': 'var(--theme--bg_secondary)',
-      'notion-popup': 'var(--theme--bg_popup)',
+      'notion-popup': 'var(--theme--bg_card)',
       'divider': 'var(--theme--ui_divider)',
       'input': 'var(--theme--ui_input)',
       'icon': 'var(--theme--icon)',

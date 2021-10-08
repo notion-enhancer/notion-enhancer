@@ -40,7 +40,7 @@
 
   --theme--bg: var(--nord--dark1);
   --theme--bg_secondary: var(--nord--dark2);
-  --theme--bg_popup: var(--nord--dark2);
+  --theme--bg_card: var(--nord--dark2);
 
   --theme--scrollbar_track: transparent;
   --theme--scrollbar_thumb: var(--nord--dark3);
@@ -111,7 +111,7 @@
   --theme--code_inline: rgba(135, 131, 120, 0.15);
   --theme--code_inline-text: var(--nord--red);
 
-  --theme--code: var(--theme--bg_popup);
+  --theme--code: var(--theme--bg_card);
   --theme--code_function: var(--theme--text_blue);
   --theme--code_keyword: var(--theme--text_pink);
   --theme--code_tag: var(--theme--text_pink);

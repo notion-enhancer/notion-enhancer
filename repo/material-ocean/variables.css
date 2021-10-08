@@ -30,7 +30,7 @@
 
   --theme--bg: var(--ocean--main);
   --theme--bg_secondary: var(--ocean--sec);
-  --theme--bg_popup: var(--ocean--sec);
+  --theme--bg_card: var(--ocean--sec);
 
   --theme--scrollbar_track: transparent;
   --theme--scrollbar_thumb: var(--ocean--sec);
