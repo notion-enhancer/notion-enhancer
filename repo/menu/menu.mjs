@@ -349,9 +349,9 @@ router.addView('core', async () => {
     $main,
     await generators.modList(
       'core',
-      `The enhancer's core mods provide the basics
-      required for all other extensions and themes to work.
-      Core mods can't be disabled, but they can be configured
+      `Core mods provide the basics required for
+      all other extensions and themes to work. They
+      can't be disabled, but they can be configured
       - just click on a mod to access its options.`
     )
   );
@@ -364,10 +364,10 @@ router.addView('extensions', async () => {
     $main,
     await generators.modList(
       'extension',
-      `Extensions modify and extend the
-      functionality of the Notion client.
-      They don't extend Notion's data structures,
-      so you can safely enable or disable them at any time.`
+      `Extensions modify and extend the functionality
+      or layout of the Notion client. They don't interfere
+      with Notion's data structures, so they can be safely
+      enabled or disabled at any time.`
     )
   );
 });

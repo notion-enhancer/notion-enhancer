@@ -1,0 +1,148 @@
+/*
+ * notion-enhancer: gruvbox light
+ * (c) 2015-2020 morhetz <morhetz@gmail.com>
+ * (c) 2021 jordanrobinson <me@jordanrobinson.co.uk> (https://jordanrobinson.co.uk/)
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * under the MIT license
+ */
+
+:root {
+  /*
+   * variables are named for consistency with gruvbox dark,
+   * but the _light variants are actually darker here
+   */
+  --gruvbox_light--bg: #fbf1c7;
+  --gruvbox_light--gray_dark: #928374;
+  --gruvbox_light--red_dark: #cc241d;
+  --gruvbox_light--red_light: #9d0006;
+  --gruvbox_light--green_dark: #98971a;
+  --gruvbox_light--green_light: #79740e;
+  --gruvbox_light--yellow_dark: #d79921;
+  --gruvbox_light--yellow_light: #b57614;
+  --gruvbox_light--blue_dark: #458588;
+  --gruvbox_light--blue_light: #076678;
+  --gruvbox_light--purple_dark: #b16286;
+  --gruvbox_light--purple_light: #b16286;
+  --gruvbox_light--aqua_dark: #689d6a;
+  --gruvbox_light--aqua_light: #427b58;
+  --gruvbox_light--gray_light: #7c6f64;
+  --gruvbox_light--orange_dark: #d65d0e;
+  --gruvbox_light--orange_light: #af3a03;
+  --gruvbox_light--fg: #3c3836;
+  --gruvbox_light--bg0_h: #f9f5d7;
+  --gruvbox_light--bg0: #fbf1c7;
+  --gruvbox_light--bg1: #ebdbb2;
+  --gruvbox_light--bg2: #d5c4a1;
+  --gruvbox_light--bg3: #bdae93;
+  --gruvbox_light--bg4: #a89984;
+  --gruvbox_light--bg0_s: #f2e5bc;
+  --gruvbox_light--fg4: #7c6f64;
+  --gruvbox_light--fg3: #665c54;
+  --gruvbox_light--fg2: #504945;
+  --gruvbox_light--fg1: #3c3836;
+  --gruvbox_light--fg0: #282828;
+
+  --theme--accent_blue: var(--gruvbox_light--bg3);
+  --theme--accent_blue-selection: rgba(189, 175, 147, 0.5);
+  --theme--accent_blue-hover: var(--gruvbox_light--fg3);
+  --theme--accent_blue-active: var(--gruvbox_light--fg3);
+  --theme--accent_red: var(--gruvbox_light--blue_light);
+  --theme--accent_red-button: var(--gruvbox_light--blue_dark);
+
+  --theme--bg: var(--gruvbox_light--bg0);
+  --theme--bg_secondary: var(--gruvbox_light--bg1);
+  --theme--bg_card: var(--gruvbox_light--bg2);
+
+  --theme--scrollbar_track: transparent;
+  --theme--scrollbar_thumb: var(--gruvbox_light--bg0_s);
+  --theme--scrollbar_thumb-hover: var(--gruvbox_light--bg3);
+
+  --theme--ui_divider: var(--gruvbox_light--gray_light);
+  --theme--ui_interactive-hover: rgba(124, 111, 100, 0.3);
+  --theme--ui_interactive-active: rgba(124, 111, 100, 0.4);
+  --theme--ui_input: var(--gruvbox_light--bg3);
+  --theme--ui_toggle-off: var(--gruvbox_light--bg4);
+  --theme--ui_toggle-feature: var(--gruvbox_light--bg);
+
+  --theme--icon: var(--gruvbox_light--fg0);
+  --theme--icon_secondary: var(--gruvbox_light--fg3);
+
+  --theme--text: var(--gruvbox_light--fg0);
+  --theme--text_secondary: var(--gruvbox_light--fg3);
+  --theme--text_gray: var(--gruvbox_light--gray_dark);
+  --theme--text_brown: var(--gruvbox_light--bg4);
+  --theme--text_orange: var(--gruvbox_light--orange_dark);
+  --theme--text_yellow: var(--gruvbox_light--yellow_dark);
+  --theme--text_green: var(--gruvbox_light--green_dark);
+  --theme--text_blue: var(--gruvbox_light--blue_dark);
+  --theme--text_purple: var(--gruvbox_light--purple_dark);
+  --theme--text_pink: var(--gruvbox_light--purple_light);
+  --theme--text_red: var(--gruvbox_light--red_dark);
+
+  --theme--highlight-text: var(--gruvbox_light--bg0);
+  --theme--highlight_gray: var(--gruvbox_light--gray_dark);
+  --theme--highlight_brown: var(--theme--tag_brown);
+  --theme--highlight_orange: var(--gruvbox_light--orange_dark);
+  --theme--highlight_yellow: var(--gruvbox_light--yellow_dark);
+  --theme--highlight_green: var(--gruvbox_light--green_dark);
+  --theme--highlight_blue: var(--gruvbox_light--blue_dark);
+  --theme--highlight_purple: var(--gruvbox_light--purple_dark);
+  --theme--highlight_pink: var(--theme--tag_pink);
+  --theme--highlight_red: var(--gruvbox_light--red_dark);
+
+  --theme--block-text: var(--gruvbox_light--bg0);
+  --theme--block_gray: var(--theme--text_gray);
+  --theme--block_brown: var(--theme--text_brown);
+  --theme--block_orange: var(--theme--text_orange);
+  --theme--block_yellow: var(--theme--text_yellow);
+  --theme--block_green: var(--theme--text_green);
+  --theme--block_blue: var(--theme--text_blue);
+  --theme--block_purple: var(--theme--text_purple);
+  --theme--block_pink: var(--theme--text_pink);
+  --theme--block_red: var(--theme--text_red);
+
+  --theme--tag-text: var(--gruvbox_light--bg0);
+  --theme--tag_default: var(--gruvbox_light--gray_dark);
+  --theme--tag_default-text: var(--gruvbox_light--bg2);
+  --theme--tag_gray: var(--gruvbox_light--gray_dark);
+  --theme--tag_gray-text: var(--gruvbox_light--bg2);
+  --theme--tag_brown: var(--gruvbox_light--fg3);
+  --theme--tag_brown-text: var(--gruvbox_light--bg2);
+  --theme--tag_orange: var(--gruvbox_light--orange_dark);
+  --theme--tag_yellow: var(--gruvbox_light--yellow_dark);
+  --theme--tag_green: var(--gruvbox_light--green_dark);
+  --theme--tag_blue: var(--gruvbox_light--blue_dark);
+  --theme--tag_purple: var(--gruvbox_light--purple_dark);
+  --theme--tag_pink: var(--gruvbox_light--purple_light);
+  --theme--tag_red: var(--gruvbox_light--red_dark);
+
+  --theme--callout-text: var(--gruvbox_light--bg0);
+  --theme--callout_gray: var(--theme--block_gray);
+  --theme--callout_brown: var(--theme--block_brown);
+  --theme--callout_orange: var(--theme--block_orange);
+  --theme--callout_yellow: var(--theme--block_yellow);
+  --theme--callout_green: var(--theme--block_green);
+  --theme--callout_blue: var(--theme--block_blue);
+  --theme--callout_purple: var(--theme--block_purple);
+  --theme--callout_pink: var(--theme--block_pink);
+  --theme--callout_red: var(--theme--block_red);
+
+  --theme--code_inline: var(--gruvbox_light--bg1);
+  --theme--code_inline-text: var(--gruvbox_light--blue_light);
+
+  --theme--code: var(--gruvbox_light--bg1);
+  --theme--code_function: var(--theme--text_blue);
+  --theme--code_keyword: var(--theme--text_pink);
+  --theme--code_tag: var(--theme--text_pink);
+  --theme--code_operator: var(--theme--text_yellow);
+  --theme--code_important: var(--theme--text_yellow);
+  --theme--code_property: var(--theme--text_pink);
+  --theme--code_builtin: var(--theme--text_yellow);
+  --theme--code_attr-name: var(--theme--text_yellow);
+  --theme--code_comment: var(--theme--text_ui);
+  --theme--code_punctuation: var(--gruvbox_light--aqua_light);
+  --theme--code_doctype: var(--gruvbox_light--aqua_light);
+  --theme--code_number: var(--theme--text_purple);
+  --theme--code_string: var(--theme--text_orange);
+  --theme--code_attr-value: var(--theme--text_orange);
+}

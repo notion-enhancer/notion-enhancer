@@ -26,4 +26,4 @@ jobs:
       - name: commit changes
         uses: stefanzweifel/git-auto-commit-action@v4
         with:
-          commit_message: '${{ github.event.repository.name }} submodule: ${{ github.event.head_commit.message }}'
+          commit_message: '[${{ github.event.repository.name }}] ${{ github.event.head_commit.message }}'

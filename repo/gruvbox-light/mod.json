@@ -1,9 +1,9 @@
 {
-  "name": "gruvbox dark",
-  "id": "ad0f5c5c-8b62-4b20-8a54-929e663ea368",
+  "name": "gruvbox light",
+  "id": "54f01911-60fc-4c9d-85b5-5c5ca3dd6b81",
   "version": "0.3.0",
-  "description": "a gray, 'retro groove' palette based on the vim theme of the same name.",
-  "tags": ["theme", "dark"],
+  "description": "a sepia, 'retro groove' palette based on the vim theme of the same name.",
+  "tags": ["theme", "light"],
   "authors": [
     {
       "name": "morhetz",
