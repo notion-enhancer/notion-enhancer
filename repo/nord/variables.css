@@ -1,0 +1,129 @@
+/*
+ * notion-enhancer: dracula
+ * (c) 2016 Artic Ice Studio
+ * (c) 2020 MANNNNEN
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+@import 'https://rsms.me/inter/inter.css';
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
+
+:root.dark {
+  --nord--dark1: #2e3440;
+  --nord--dark2: #3b4252;
+  --nord--dark3: #434c5e;
+  --nord--dark4: #4c566a;
+  --nord--light1: #d8dee9;
+  --nord--light2: #e5e9f0;
+  --nord--light3: #eceff4;
+  --nord--frost1: #8fbcbb;
+  --nord--frost2: #88c0d0;
+  --nord--frost3: #81a1c1;
+  --nord--frost4: #5e81ac;
+  --nord--red: #bf616a;
+  --nord--orange: #d08770;
+  --nord--yellow: #ebcb8b;
+  --nord--green: #a3be8c;
+  --nord--purple: #b48ead;
+
+  --theme--font_sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
+    'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --theme--font_code: 'Fira Code', monospace;
+
+  --theme--accent_blue: var(--nord--frost2);
+  --theme--accent_blue-selection: rgb(136 192 208 / 50%);
+  --theme--accent_blue-hover: var(--nord--frost1);
+  --theme--accent_blue-active: var(--nord--frost2);
+  --theme--accent_red: var(--nord--red);
+  --theme--accent_red-button: rgba(235, 87, 87, 0.2);
+
+  --theme--bg: var(--nord--dark1);
+  --theme--bg_secondary: var(--nord--dark2);
+  --theme--bg_popup: var(--nord--dark2);
+
+  --theme--scrollbar_track: transparent;
+  --theme--scrollbar_thumb: var(--nord--dark3);
+  --theme--scrollbar_thumb-hover: var(--nord--dark4);
+
+  --theme--ui_divider: rgba(255, 255, 255, 0.1);
+  --theme--ui_interactive-hover: var(--nord--dark4);
+  --theme--ui_interactive-active: #4c566ade;
+  --theme--ui_toggle-off: var(--nord--dark4);
+  --theme--ui_toggle-feature: var(--nord--light1);
+
+  --theme--icon: var(--nord--light1);
+  --theme--icon_secondary: var(--nord--light1);
+
+  --theme--text: var(--nord--light1);
+  --theme--text_secondary: var(--nord--light1);
+  --theme--text_gray: rgba(151, 154, 155, 0.95);
+  --theme--text_brown: rgb(147, 114, 100);
+  --theme--text_orange: var(--nord--orange);
+  --theme--text_yellow: var(--nord--yellow);
+  --theme--text_green: var(--nord--green);
+  --theme--text_blue: var(--nord--frost3);
+  --theme--text_purple: var(--nord--purple);
+  --theme--text_pink: rgb(193 106 153);
+  --theme--text_red: var(--nord--red);
+
+  --theme--highlight_gray: rgb(69, 75, 78);
+  --theme--highlight_brown: rgb(67, 64, 64);
+  --theme--highlight_orange: var(--nord--orange);
+  --theme--highlight_yellow: var(--nord--yellow);
+  --theme--highlight_green: var(--nord--green);
+  --theme--highlight_blue: var(--nord--frost3);
+  --theme--highlight_purple: var(--nord--purple);
+  --theme--highlight_pink: rgb(193 106 153);
+  --theme--highlight_red: var(--nord--red);
+
+  --theme--block_gray: rgb(69, 75, 78);
+  --theme--block_brown: rgb(67, 64, 64);
+  --theme--block_orange: var(--nord--orange);
+  --theme--block_yellow: var(--nord--yellow);
+  --theme--block_green: var(--nord--green);
+  --theme--block_blue: var(--nord--frost3);
+  --theme--block_purple: var(--nord--purple);
+  --theme--block_pink: rgb(193 106 153);
+  --theme--block_red: var(--nord--red);
+
+  --theme--tag_default: rgba(151, 154, 155, 0.5);
+  --theme--tag_gray: rgba(151, 154, 155, 0.5);
+  --theme--tag_brown: rgba(147, 114, 100, 0.5);
+  --theme--tag_orange: rgba(255, 163, 68, 0.5);
+  --theme--tag_yellow: rgba(255, 220, 73, 0.5);
+  --theme--tag_green: rgba(77, 171, 154, 0.5);
+  --theme--tag_blue: rgba(82, 156, 202, 0.5);
+  --theme--tag_purple: rgba(154, 109, 215, 0.5);
+  --theme--tag_pink: rgba(226, 85, 161, 0.5);
+  --theme--tag_red: rgba(255, 115, 105, 0.5);
+
+  --theme--callout_gray: rgba(69, 75, 78, 0.3);
+  --theme--callout_brown: rgba(67, 64, 64, 0.3);
+  --theme--callout_orange: rgba(89, 74, 58, 0.3);
+  --theme--callout_yellow: rgba(89, 86, 59, 0.3);
+  --theme--callout_green: rgba(53, 76, 75, 0.3);
+  --theme--callout_blue: rgba(54, 73, 84, 0.3);
+  --theme--callout_purple: rgba(68, 63, 87, 0.3);
+  --theme--callout_pink: rgba(83, 59, 76, 0.3);
+  --theme--callout_red: rgba(89, 65, 65, 0.3);
+
+  --theme--code_inline: rgba(135, 131, 120, 0.15);
+  --theme--code_inline-text: var(--nord--red);
+
+  --theme--code: var(--theme--bg_popup);
+  --theme--code_function: var(--theme--text_blue);
+  --theme--code_keyword: var(--theme--text_pink);
+  --theme--code_tag: var(--theme--text_pink);
+  --theme--code_operator: var(--theme--text_yellow);
+  --theme--code_important: var(--theme--text_yellow);
+  --theme--code_property: var(--theme--text_pink);
+  --theme--code_builtin: var(--theme--text_yellow);
+  --theme--code_attr-name: var(--theme--text_yellow);
+  --theme--code_comment: var(--theme--text_gray);
+  --theme--code_punctuation: var(--theme--text_gray);
+  --theme--code_doctype: var(--theme--text_gray);
+  --theme--code_number: var(--theme--text_purple);
+  --theme--code_string: var(--theme--text_orange);
+  --theme--code_attr-value: var(--theme--text_orange);
+}

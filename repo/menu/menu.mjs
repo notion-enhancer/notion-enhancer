@@ -345,13 +345,31 @@ import * as router from './router.mjs';
 router.addView('core', async () => {
   web.empty($main);
   selectNavItem($coreNavItem);
-  return web.render($main, await generators.modList('core'));
+  return web.render(
+    $main,
+    await generators.modList(
+      'core',
+      `The enhancer's core mods provide the basics
+      required for all other extensions and themes to work.
+      Core mods can't be disabled, but they can be configured
+      - just click on a mod to access its options.`
+    )
+  );
 });
 
 router.addView('extensions', async () => {
   web.empty($main);
   selectNavItem($extensionsNavItem);
-  return web.render($main, await generators.modList('extension'));
+  return web.render(
+    $main,
+    await generators.modList(
+      'extension',
+      `Extensions modify and extend the
+      functionality of the Notion client.
+      They don't extend Notion's data structures,
+      so you can safely enable or disable them at any time.`
+    )
+  );
 });
 
 router.addView('themes', async () => {
@@ -361,7 +379,8 @@ router.addView('themes', async () => {
     $main,
     await generators.modList(
       'theme',
-      `Dark themes will only work when Notion is in dark mode,
+      `Themes change Notion's colour scheme.
+      Dark themes will only work when Notion is in dark mode,
       and light themes will only work when Notion is in light mode.
       Only one theme of each mode can be enabled at a time.`
     )

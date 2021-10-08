@@ -30,8 +30,8 @@
   --theme--scrollbar_thumb: #232425;
   --theme--scrollbar_thumb-hover: #373838;
 
-  --theme--ui_divider: rgba(78, 78, 78, 0.7);
   --theme--ui_shadow: rgba(15, 15, 15, 0.5);
+  --theme--ui_divider: rgba(78, 78, 78, 0.7);
   --theme--ui_interactive-hover: rgb(29, 29, 29);
   --theme--ui_interactive-active: rgba(29, 29, 29, 0.7);
   --theme--ui_input: #1d1d1d;

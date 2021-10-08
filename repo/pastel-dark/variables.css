@@ -5,14 +5,11 @@
  * under the MIT license
  */
 
-:root.dark {
-  --theme--bg: #0b0b0b;
-  --theme--bg_secondary: #0f0f0f;
-  --theme--bg_popup: #0f0f0f;
+@import 'https://rsms.me/inter/inter.css';
 
-  --theme--scrollbar_track: transparent;
-  --theme--scrollbar_thumb: #141414;
-  --theme--scrollbar_thumb-hover: #1b1b1b;
+:root.dark {
+  --theme--font_sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
+    'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol';
 
   --theme--accent_blue: #b887f7;
   --theme--accent_blue-selection: rgba(184, 135, 247, 0.3);
@@ -20,6 +17,14 @@
   --theme--accent_blue-active: #b887f7;
   --theme--accent_red: #08d7c2;
   --theme--accent_red-button: #08d7c226;
+
+  --theme--bg: #0b0b0b;
+  --theme--bg_secondary: #0f0f0f;
+  --theme--bg_popup: #0f0f0f;
+
+  --theme--scrollbar_track: transparent;
+  --theme--scrollbar_thumb: #141414;
+  --theme--scrollbar_thumb-hover: #1b1b1b;
 
   --theme--ui_divider: rgba(255, 255, 255, 0.1);
   --theme--ui_interactive-hover: #1e1e1e5c;
