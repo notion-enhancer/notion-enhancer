@@ -1,0 +1,114 @@
+/*
+ * notion-enhancer: neutral
+ * (c) 2020 Arecsu
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * under the MIT license
+ */
+
+@import 'https://rsms.me/inter/inter.css';
+@import 'https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@400&display=swap';
+
+:root.dark {
+  --theme--font_sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
+    'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol';
+  --theme--font_mono: 'Roboto Mono', iawriter-mono, Nitti, Menlo, Courier, monospace;
+  --theme--font_code: 'Roboto Mono', SFMono-Regular, Consolas, 'Liberation Mono', Menlo,
+    Courier, monospace;
+
+  --theme--accent_blue: #404040;
+  --theme--accent_blue-selection: #52525244;
+  --theme--accent_blue-hover: #6d6d6d;
+  --theme--accent_blue-active: #cacaca;
+  --theme--accent_red: #ce535f;
+  --theme--accent_red-button: #8c3d3dad;
+
+  --theme--bg: #131313;
+  --theme--bg_secondary: #161616;
+  --theme--bg_popup: #181818;
+
+  --theme--scrollbar_track: transparent;
+  --theme--scrollbar_thumb: #232425;
+  --theme--scrollbar_thumb-hover: #373838;
+
+  --theme--ui_divider: rgba(78, 78, 78, 0.7);
+  --theme--ui_shadow: rgba(15, 15, 15, 0.5);
+  --theme--ui_interactive-hover: rgb(29, 29, 29);
+  --theme--ui_interactive-active: rgba(29, 29, 29, 0.7);
+  --theme--ui_input: #1d1d1d;
+
+  --theme--icon: #dadada;
+  --theme--icon_secondary: #dadadac0;
+
+  --theme--text: #dadada;
+  --theme--text_secondary: #dadadac0;
+  --theme--text_gray: #858585;
+  --theme--text_brown: #484848;
+  --theme--text_orange: #ec9873;
+  --theme--text_yellow: #e2c06f;
+  --theme--text_green: #92b178;
+  --theme--text_blue: #719cca;
+  --theme--text_purple: #ab82bb;
+  --theme--text_pink: #d285aa;
+  --theme--text_red: #ce535f;
+
+  --theme--highlight_gray: #585858;
+  --theme--highlight_brown: #333333;
+  --theme--highlight_orange: #9a5a3f;
+  --theme--highlight_yellow: #b58a46;
+  --theme--highlight_green: #657953;
+  --theme--highlight_blue: #355475;
+  --theme--highlight_purple: #775186;
+  --theme--highlight_pink: #8e4b63;
+  --theme--highlight_red: #8c3d3d;
+
+  --theme--block_gray: #585858;
+  --theme--block_brown: #333333;
+  --theme--block_orange: #9a5a3f;
+  --theme--block_yellow: #b58a46;
+  --theme--block_green: #657953;
+  --theme--block_blue: #355475;
+  --theme--block_purple: #775186;
+  --theme--block_pink: #8e4b63;
+  --theme--block_red: #8c3d3d;
+
+  --theme--tag_default: var(--theme--highlight_gray);
+  --theme--tag_gray: var(--theme--highlight_gray);
+  --theme--tag_brown: var(--theme--highlight_brown);
+  --theme--tag_orange: var(--theme--highlight_orange);
+  --theme--tag_yellow: var(--theme--highlight_yellow);
+  --theme--tag_green: var(--theme--highlight_green);
+  --theme--tag_blue: var(--theme--highlight_blue);
+  --theme--tag_purple: var(--theme--highlight_purple);
+  --theme--tag_pink: var(--theme--highlight_pink);
+  --theme--tag_red: var(--theme--highlight_red);
+
+  --theme--callout_gray: rgba(88, 88, 88, 0.175);
+  --theme--callout_brown: rgb(51, 51, 51, 0.175);
+  --theme--callout_orange: rgb(154, 90, 63, 0.175);
+  --theme--callout_yellow: rgb(181, 138, 70, 0.175);
+  --theme--callout_green: rgb(101, 121, 83, 0.175);
+  --theme--callout_blue: rgb(53, 84, 117, 0.175);
+  --theme--callout_purple: rgb(119, 81, 134, 0.175);
+  --theme--callout_pink: rgb(142, 75, 99, 0.175);
+  --theme--callout_red: rgb(140, 61, 61, 0.175);
+
+  --theme--code_inline: #333333;
+  --theme--code_inline-text: var(--theme--text);
+
+  --theme--code: #0e0e0e;
+  --theme--code_plain: var(--theme--text);
+  --theme--code_function: var(--theme--text_blue);
+  --theme--code_keyword: var(--theme--text_pink);
+  --theme--code_tag: var(--theme--text_pink);
+  --theme--code_operator: var(--theme--text_yellow);
+  --theme--code_important: var(--theme--text_yellow);
+  --theme--code_property: var(--theme--text_pink);
+  --theme--code_builtin: var(--theme--text_yellow);
+  --theme--code_attr-name: var(--theme--text_yellow);
+  --theme--code_comment: var(--theme--text_gray);
+  --theme--code_punctuation: var(--theme--text_gray);
+  --theme--code_doctype: var(--theme--text_gray);
+  --theme--code_number: var(--theme--text_purple);
+  --theme--code_string: var(--theme--text_orange);
+  --theme--code_attr-value: var(--theme--text_orange);
+}

@@ -25,7 +25,7 @@
   --theme--accent_blue-active: #ff4d5c;
   --theme--accent_blue-text: #fff;
   --theme--accent_red: var(--ocean--accent);
-  --theme--accent_red-hover: #ff41514b;
+  --theme--accent_red-button: #ff41514b;
   --theme--accent_red-text: #fff;
 
   --theme--bg: var(--ocean--main);

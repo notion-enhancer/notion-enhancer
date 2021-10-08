@@ -124,7 +124,7 @@ setup({
         'blue-active': 'var(--theme--accent_blue-active)',
         'blue-text': 'var(--theme--accent_blue-text)',
         'red': 'var(--theme--accent_red)',
-        'red-hover': 'var(--theme--accent_red-hover)',
+        'red-hover': 'var(--theme--accent_red-button)',
         'red-text': 'var(--theme--accent_red-text)',
       },
       'gray': mapColorVariables('gray'),

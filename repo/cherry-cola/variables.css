@@ -26,7 +26,7 @@
   --theme--accent_blue-active: #cc86a8;
   --theme--accent_blue-text: #fff;
   --theme--accent_red: var(--cola--accent);
-  --theme--accent_red-hover: #bf799b63;
+  --theme--accent_red-button: #bf799b63;
   --theme--accent_red-text: #fff;
 
   --theme--bg: var(--cola--main);

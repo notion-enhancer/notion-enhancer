@@ -1,13 +1,16 @@
 [
-  "menu@a6621988-551d-495a-97d8-3c568bca2e9e",
-  "theming@0f0bf8b6-eae6-4273-b307-8fc43f2ee082",
-  "components@36a2ffc9-27ff-480e-84a7-c7700a7d232d",
-  "tweaks@5174a483-c88d-4bf8-a95f-35cd330b76e2",
-  "bypass-preview@cb6fd684-f113-4a7a-9423-8f0f0cff069f",
-  "calendar-scroll@b1c7db33-dfee-489a-a76c-0dd66f7ed29a",
-  "material-ocean@69e7ccb2-4aef-484c-876d-3de1b433d2b9",
-  "cherry-cola@ec5c4640-68d4-4d25-aefd-62c7e9737cfb",
-  "dark+@c86cfe98-e645-4822-aa6b-e2de1e08bafa",
-  "dracula@033bff54-50ba-4cec-bdc0-b2ca7e307086",
-  "pastel-dark@ed48c585-4a0d-4756-a3e6-9ae662732dac"
+  "menu",
+  "theming",
+  "components",
+  "tweaks",
+
+  "material-ocean",
+  "cherry-cola",
+  "dark+",
+  "dracula",
+  "pastel-dark",
+  "neutral",
+
+  "bypass-preview",
+  "calendar-scroll"
 ]

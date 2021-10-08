@@ -1,0 +1,22 @@
+{
+  "name": "neutral",
+  "id": "c4435543-4705-4d68-8cf7-d11c342f8089",
+  "version": "0.2.0",
+  "description": "smoother colours and fonts, designed to be more pleasing to the eye.",
+  "tags": ["theme", "dark"],
+  "authors": [
+    {
+      "name": "arecsu",
+      "email": "alejandro9r@gmail.com",
+      "homepage": "https://github.com/Arecsu",
+      "avatar": "https://avatars.githubusercontent.com/u/12679098"
+    }
+  ],
+  "css": {
+    "frame": ["variables.css"],
+    "client": ["variables.css", "app.css"],
+    "menu": ["variables.css"]
+  },
+  "js": {},
+  "options": []
+}

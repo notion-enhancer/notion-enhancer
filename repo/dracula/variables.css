@@ -45,7 +45,7 @@
   --theme--accent_blue-hover: #b179ff;
   --theme--accent_blue-active: #9f5ff8;
   --theme--accent_red: var(--dracula--comment);
-  --theme--accent_red-hover: #6273a439;
+  --theme--accent_red-button: #6273a439;
 
   --theme--danger_text: var(--dracula--red);
   --theme--danger_border: var(--dracula--bg_red);

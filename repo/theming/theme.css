@@ -273,7 +273,18 @@ body,
   > div:nth-child(2)[style*='position: absolute; display: inline-flex; min-width: 100%; height: 32px; z-index: 1; background:'],
 .notion-frame .notion-scroller[style*='background:'],
 .notion-page-template-modal .notion-scroller[style*='background:'],
-.notion-peek-renderer .notion-scroller[style*='background:'] {
+.notion-peek-renderer .notion-scroller[style*='background:'],
+.notion-frame > div > div > div[style*='max-width: 100%'][style*='background-color'],
+.notion-peek-renderer
+  > div
+  > .notion-scroller
+  > div
+  > div[style*='max-width: 100%'][style*='background-color'],
+.notion-page-template-modal
+  > div
+  > .notion-scroller
+  > div
+  > div[style*='max-width: 100%'][style*='background-color'] {
   background: transparent !important;
 }
 
@@ -751,7 +762,7 @@ body,
   fill: var(--theme--accent_red) !important;
 }
 .notion-focusable[style*='border-radius: 3px;'][style*='background: rgba(235, 87, 87, 0.1);'][role='button']:hover {
-  background: var(--theme--accent_red-hover) !important;
+  background: var(--theme--accent_red-button) !important;
 }
 
 .notion-transclusion_container-block > div > div > div[style*='border: 2px'],

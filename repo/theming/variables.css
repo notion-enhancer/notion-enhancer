@@ -29,7 +29,7 @@
   --theme--accent_blue-active: rgb(0, 141, 190);
   --theme--accent_blue-text: #fff;
   --theme--accent_red: #eb5757;
-  --theme--accent_red-hover: rgba(235, 87, 87, 0.1);
+  --theme--accent_red-button: rgba(235, 87, 87, 0.1);
   --theme--accent_red-text: #fff;
 }
 

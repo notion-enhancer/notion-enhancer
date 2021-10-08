@@ -86,10 +86,3 @@
 .notion-dark-theme .notion-code-block .token.punctuation {
   opacity: 1;
 }
-
-.notion-dark-theme
-  [class^='notion-outliner']
-  [style*='background: rgb(71, 76, 80);']
-  .triangle[fill] {
-  fill: var(--theme--text);
-}
