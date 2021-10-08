@@ -135,7 +135,7 @@
   right: 14px;
   border-radius: 3px;
   padding: 8px 0;
-  background: var(--theme--bg_popup);
+  background: var(--theme--bg_card);
   box-shadow: var(--theme--ui_shadow, rgba(15, 15, 15, 0.05)) 0px 0px 0px 1px,
     var(--theme--ui_shadow, rgba(15, 15, 15, 0.1)) 0px 3px 6px,
     var(--theme--ui_shadow, rgba(15, 15, 15, 0.2)) 0px 9px 24px !important;
@@ -150,7 +150,7 @@
   cursor: pointer;
   overflow: hidden;
   position: relative;
-  --scoped--bg: var(--theme--bg_popup);
+  --scoped--bg: var(--theme--bg_card);
   background: var(--scoped--bg);
 }
 #enhancer--panel-header:hover,
