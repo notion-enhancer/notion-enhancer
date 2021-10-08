@@ -16,7 +16,7 @@
   "browser_action": {},
   "background": { "scripts": ["worker.js"] },
   "options_ui": {
-    "page": "repo/menu@a6621988-551d-495a-97d8-3c568bca2e9e/menu.html",
+    "page": "repo/menu/menu.html",
     "open_in_tab": true
   },
   "web_accessible_resources": ["env/*", "api/*", "dep/*", "media/*", "repo/*"],

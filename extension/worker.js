@@ -8,9 +8,7 @@
 
 async function focusMenu() {
   chrome.tabs.query({ windowId: chrome.windows.WINDOW_ID_CURRENT }, (tabs) => {
-    const url = chrome.runtime.getURL(
-        'repo/menu@a6621988-551d-495a-97d8-3c568bca2e9e/menu.html'
-      ),
+    const url = chrome.runtime.getURL('repo/menu/menu.html'),
       menu = tabs.find((tab) => tab.url.startsWith(url));
     if (menu) {
       chrome.tabs.highlight({ 'tabs': menu.index });
@@ -34,9 +32,7 @@ async function focusNotion() {
 
 async function reload() {
   chrome.tabs.query({ windowId: chrome.windows.WINDOW_ID_CURRENT }, (tabs) => {
-    const menu = chrome.runtime.getURL(
-      'repo/menu@a6621988-551d-495a-97d8-3c568bca2e9e/menu.html'
-    );
+    const menu = chrome.runtime.getURL('repo/menu/menu.html');
     tabs.forEach((tab) => {
       const url = new URL(tab.url),
         matches =
