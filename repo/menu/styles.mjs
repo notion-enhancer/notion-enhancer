@@ -97,7 +97,7 @@ setup({
   theme: {
     fontFamily: {
       sans: ['var(--theme--font_sans)'],
-      mono: ['var(--theme--font_mono)'],
+      mono: ['var(--theme--font_code)'],
     },
     colors: {
       'notion': 'var(--theme--bg)',

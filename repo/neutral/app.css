@@ -17,8 +17,8 @@
 }
 
 /* 1.3 supreme ratio. https://www.modularscale.com/ */
-.notion-frame .notion-page-block div[placeholder='Untitled'],
-.notion-overlay-container .notion-page-block div[placeholder='Untitled'] {
+.notion-frame .notion-page-block > div[placeholder='Untitled'],
+.notion-overlay-container .notion-page-block > div[placeholder='Untitled'] {
   font-size: 33px !important;
 }
 [placeholder='Heading 1'] {

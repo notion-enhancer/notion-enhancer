@@ -6,9 +6,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-@import 'https://rsms.me/inter/inter.css';
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code&display=swap');
-
 :root.dark {
   --nord--dark1: #2e3440;
   --nord--dark2: #3b4252;
@@ -26,10 +23,6 @@
   --nord--yellow: #ebcb8b;
   --nord--green: #a3be8c;
   --nord--purple: #b48ead;
-
-  --theme--font_sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica,
-    'Apple Color Emoji', Arial, sans-serif, 'Segoe UI Emoji', 'Segoe UI Symbol';
-  --theme--font_code: 'Fira Code', monospace;
 
   --theme--accent_blue: var(--nord--frost2);
   --theme--accent_blue-selection: rgb(136 192 208 / 50%);
