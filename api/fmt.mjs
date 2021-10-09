@@ -93,6 +93,47 @@ export const uuidv4 = () => {
   );
 };
 
+/**
+ * log-based shading of an rgb color, from
+ * https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
+ * @param {number} p - a decimal amount to shade the color.
+ * 1 = white, 0 = the original color, -1 = black
+ * @param {string} c - the rgb color
+ * @returns {string} the shaded color
+ */
+export const rgbLogShade = (p, c) => {
+  var i = parseInt,
+    r = Math.round,
+    [a, b, c, d] = c.split(','),
+    P = p < 0,
+    t = P ? 0 : p * 255 ** 2,
+    P = P ? 1 + p : 1 - p;
+  return (
+    'rgb' +
+    (d ? 'a(' : '(') +
+    r((P * i(a[3] == 'a' ? a.slice(5) : a.slice(4)) ** 2 + t) ** 0.5) +
+    ',' +
+    r((P * i(b) ** 2 + t) ** 0.5) +
+    ',' +
+    r((P * i(c) ** 2 + t) ** 0.5) +
+    (d ? ',' + d : ')')
+  );
+};
+
+/**
+ * pick a contrasting color e.g. for text on a variable color background
+ * using the hsp (perceived brightness) constants from http://alienryderflex.com/hsp.html
+ * @param {number} r - red (0-255)
+ * @param {number} g - green (0-255)
+ * @param {number} b - blue (0-255)
+ * @returns {string} the contrasting rgb color, white or black
+ */
+export const rgbContrast = (r, g, b) => {
+  return Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b)) > 127.5
+    ? 'rgb(0,0,0)'
+    : 'rgb(255,255,255)';
+};
+
 const patterns = {
   alphanumeric: /^[\w\.-]+$/,
   uuid: /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i,

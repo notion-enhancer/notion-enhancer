@@ -61,6 +61,9 @@ export const welcomeNotification = {
   version: env.version,
 };
 
+/** the url of a json file online containing notifications pushed out to users */
+export const notificationsURL = 'https://notion-enhancer.github.io/notifications.json';
+
 let _list,
   _errors = [];
 /**
