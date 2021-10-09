@@ -14,9 +14,6 @@
 import { env, fs, storage } from './_.mjs';
 import { validate } from './registry-validation.mjs';
 
-export const _cache = [],
-  _errors = [];
-
 /**
  * mod ids whitelisted as part of the enhancer's core, permanently enabled
  * @constant
@@ -64,27 +61,35 @@ export const welcomeNotification = {
   version: env.version,
 };
 
+let _list,
+  _errors = [];
 /**
  * list all available mods in the repo
  * @param {function} filter - a function to filter out mods
  * @returns {array} a validated list of mod.json objects
  */
 export const list = async (filter = (mod) => true) => {
-  if (!_cache.length) {
-    for (const dir of await fs.getJSON('repo/registry.json')) {
-      try {
-        const mod = await fs.getJSON(`repo/${dir}/mod.json`);
-        mod._dir = dir;
-        if (await validate(mod)) _cache.push(mod);
-      } catch (e) {
-        console.log(e);
-        _errors.push({ source: dir, message: 'invalid mod.json' });
+  if (!_list) {
+    _list = new Promise(async (res, rej) => {
+      const passed = [];
+      for (const dir of await fs.getJSON('repo/registry.json')) {
+        try {
+          const mod = {
+            ...(await fs.getJSON(`repo/${dir}/mod.json`)),
+            _dir: dir,
+            _err: (message) => _errors.push({ source: dir, message }),
+          };
+          if (await validate(mod)) passed.push(mod);
+        } catch {
+          _errors.push({ source: dir, message: 'invalid mod.json' });
+        }
       }
-    }
+      res(passed);
+    });
   }
-  const list = [];
-  for (const mod of _cache) if (await filter(mod)) list.push(mod);
-  return list;
+  const filtered = [];
+  for (const mod of await _list) if (await filter(mod)) filtered.push(mod);
+  return filtered;
 };
 
 /**
@@ -92,7 +97,7 @@ export const list = async (filter = (mod) => true) => {
  * @returns {array<object>} error objects with an error message and a source directory
  */
 export const errors = async () => {
-  if (!_errors.length) await list();
+  await list();
   return _errors;
 };
 
@@ -102,8 +107,7 @@ export const errors = async () => {
  * @returns {object} the mod's mod.json
  */
 export const get = async (id) => {
-  if (!_cache.length) await list();
-  return _cache.find((mod) => mod.id === id);
+  return (await list((mod) => mod.id === id))[0];
 };
 
 /**

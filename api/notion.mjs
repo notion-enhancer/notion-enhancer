@@ -258,34 +258,6 @@ export const create = async (
   } else {
     path.push('content');
   }
-  console.log(
-    {
-      pointer: {
-        table: parentTable,
-        id: parentID,
-        spaceId: spaceID,
-      },
-      path,
-      command: prepend ? 'listBefore' : 'listAfter',
-      args: {
-        ...(siblingID ? { after: siblingID } : {}),
-        id: recordID,
-      },
-    },
-    {
-      pointer: {
-        table: recordTable,
-        id: recordID,
-        spaceId: spaceID,
-      },
-      path: [],
-      command: 'set',
-      args: {
-        ...args,
-        ...recordValue,
-      },
-    }
-  );
   const json = await fs.getJSON('https://www.notion.so/api/v3/saveTransactions', {
     headers: {
       'Content-Type': 'application/json',

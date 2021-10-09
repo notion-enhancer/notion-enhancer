@@ -9,216 +9,192 @@
 import { fmt, registry } from './_.mjs';
 
 const check = async (
-    mod,
-    key,
-    value,
-    types,
-    {
-      extension = '',
-      error = `invalid ${key} (${extension ? `${extension} ` : ''}${types}): ${JSON.stringify(
-        value
-      )}`,
-      optional = false,
-    } = {}
-  ) => {
-    let test;
-    for (const type of Array.isArray(types) ? [types] : types.split('|')) {
-      if (type === 'file') {
-        test =
-          value && !value.startsWith('http')
-            ? await fmt.is(`repo/${mod._dir}/${value}`, type, { extension })
-            : false;
-      } else test = await fmt.is(value, type, { extension });
-      if (test) break;
-    }
-    if (!test) {
-      if (optional && (await fmt.is(value, 'undefined'))) return true;
-      if (error) registry._errors.push({ source: mod._dir, message: error });
-      return false;
-    }
-    return true;
-  },
-  validateEnvironments = (mod) => {
-    return check(mod, 'environments', mod.environments, 'array', { optional: true }).then(
-      (passed) => {
-        if (!passed) return false;
-        if (!mod.environments) {
-          mod.environments = registry.supportedEnvs;
-          return true;
-        }
-        return mod.environments.map((tag) =>
-          check(mod, 'environments.env', tag, registry.supportedEnvs)
-        );
-      }
+  mod,
+  key,
+  value,
+  types,
+  {
+    extension = '',
+    error = `invalid ${key} (${extension ? `${extension} ` : ''}${types}): ${JSON.stringify(
+      value
+    )}`,
+    optional = false,
+  } = {}
+) => {
+  let test;
+  for (const type of Array.isArray(types) ? [types] : types.split('|')) {
+    if (type === 'file') {
+      test =
+        value && !value.startsWith('http')
+          ? await fmt.is(`repo/${mod._dir}/${value}`, type, { extension })
+          : false;
+    } else test = await fmt.is(value, type, { extension });
+    if (test) break;
+  }
+  if (!test) {
+    if (optional && (await fmt.is(value, 'undefined'))) return true;
+    if (error) mod._err(error);
+    return false;
+  }
+  return true;
+};
+
+const validateEnvironments = async (mod) => {
+    mod.environments = mod.environments ?? registry.supportedEnvs;
+    const isArray = await check(mod, 'environments', mod.environments, 'array');
+    if (!isArray) return false;
+    return mod.environments.map((tag) =>
+      check(mod, 'environments.env', tag, registry.supportedEnvs)
     );
   },
-  validateTags = (mod) => {
-    return check(mod, 'tags', mod.tags, 'array').then((passed) => {
-      if (!passed) return false;
-      const containsCategory = mod.tags.filter((tag) =>
-        ['core', 'extension', 'theme'].includes(tag)
-      ).length;
-      if (!containsCategory) {
-        registry._errors.push({
-          source: mod._dir,
-          message: `invalid tags (must contain at least one of 'core', 'extension', or 'theme'): ${JSON.stringify(
-            mod.tags
-          )}`,
-        });
-        return false;
-      }
-      if (
-        (mod.tags.includes('theme') &&
-          !(mod.tags.includes('light') || mod.tags.includes('dark'))) ||
-        (mod.tags.includes('light') && mod.tags.includes('dark'))
-      ) {
-        registry._errors.push({
-          source: mod._dir,
-          message: `invalid tags (themes must be either 'light' or 'dark', not neither or both): ${JSON.stringify(
-            mod.tags
-          )}`,
-        });
-        return false;
-      }
-      return mod.tags.map((tag) => check(mod, 'tags.tag', tag, 'string'));
-    });
-  },
-  validateAuthors = (mod) => {
-    return check(mod, 'authors', mod.authors, 'array').then((passed) => {
-      if (!passed) return false;
-      return mod.authors.map((author) => [
-        check(mod, 'authors.author.name', author.name, 'string'),
-        check(mod, 'authors.author.email', author.email, 'email', { optional: true }),
-        check(mod, 'authors.author.homepage', author.homepage, 'url'),
-        check(mod, 'authors.author.avatar', author.avatar, 'url'),
-      ]);
-    });
-  },
-  validateCSS = (mod) => {
-    return check(mod, 'css', mod.css, 'object').then((passed) => {
-      if (!passed) return false;
-      const tests = [];
-      for (let dest of ['frame', 'client', 'menu']) {
-        if (!mod.css[dest]) continue;
-        let test = check(mod, `css.${dest}`, mod.css[dest], 'array');
-        test = test.then((passed) => {
-          if (!passed) return false;
-          return mod.css[dest].map((file) =>
-            check(mod, `css.${dest}.file`, file, 'file', { extension: '.css' })
-          );
-        });
-        tests.push(test);
-      }
-      return tests;
-    });
-  },
-  validateJS = (mod) => {
-    return check(mod, 'js', mod.js, 'object').then((passed) => {
-      if (!passed) return false;
-      const tests = [];
-      if (mod.js.client) {
-        let test = check(mod, 'js.client', mod.js.client, 'array');
-        test = test.then((passed) => {
-          if (!passed) return false;
-          return mod.js.client.map((file) =>
-            check(mod, 'js.client.file', file, 'file', { extension: '.mjs' })
-          );
-        });
-        tests.push(test);
-      }
-      if (mod.js.electron) {
-        let test = check(mod, 'js.electron', mod.js.electron, 'array');
-        test = test.then((passed) => {
-          if (!passed) return false;
-          return mod.js.electron.map((file) =>
-            check(mod, 'js.electron.file', file, 'object').then((passed) => {
-              if (!passed) return false;
-              return [
-                check(mod, 'js.electron.file.source', file.source, 'file', {
-                  extension: '.mjs',
-                }),
-                // referencing the file within the electron app
-                // existence can't be validated, so only format is
-                check(mod, 'js.electron.file.target', file.target, 'string', {
-                  extension: '.js',
-                }),
-              ];
-            })
-          );
-        });
-        tests.push(test);
-      }
-      return tests;
-    });
-  },
-  validateOptions = (mod) => {
-    return check(mod, 'options', mod.options, 'array').then((passed) => {
-      if (!passed) return false;
-      return mod.options.map((option) =>
-        check(mod, 'options.option.type', option.type, registry.optionTypes).then((passed) => {
-          if (!passed) return false;
-          const tests = [
-            check(mod, 'options.option.key', option.key, 'alphanumeric'),
-            check(mod, 'options.option.label', option.label, 'string'),
-            check(mod, 'options.option.tooltip', option.tooltip, 'string', {
-              optional: true,
-            }),
-            check(mod, 'options.option.environments', option.environments, 'array', {
-              optional: true,
-            }).then((passed) => {
-              if (!passed) return false;
-              if (!option.environments) {
-                option.environments = registry.supportedEnvs;
-                return true;
-              }
-              return option.environments.map((environment) =>
-                check(
-                  mod,
-                  'options.option.environments.env',
-                  environment,
-                  registry.supportedEnvs
-                )
-              );
-            }),
-          ];
-          switch (option.type) {
-            case 'toggle':
-              tests.push(check(mod, 'options.option.value', option.value, 'boolean'));
-              break;
-            case 'select':
-              tests.push(
-                check(mod, 'options.option.values', option.values, 'array').then((passed) => {
-                  if (!passed) return false;
-                  return option.values.map((value) =>
-                    check(mod, 'options.option.values.value', value, 'string')
-                  );
-                })
-              );
-              break;
-            case 'text':
-            case 'hotkey':
-              tests.push(check(mod, 'options.option.value', option.value, 'string'));
-              break;
-            case 'number':
-            case 'color':
-              tests.push(check(mod, 'options.option.value', option.value, option.type));
-              break;
-            case 'file':
-              tests.push(
-                check(mod, 'options.option.extensions', option.extensions, 'array').then(
-                  (passed) => {
-                    if (!passed) return false;
-                    return option.extensions.map((value) =>
-                      check(mod, 'options.option.extensions.extension', value, 'string')
-                    );
-                  }
-                )
-              );
-          }
-          return tests;
-        })
+  validateTags = async (mod) => {
+    const isArray = await check(mod, 'tags', mod.tags, 'array');
+    if (!isArray) return false;
+    const categoryTags = ['core', 'extension', 'theme'],
+      containsCategory = mod.tags.filter((tag) => categoryTags.includes(tag)).length;
+    if (!containsCategory) {
+      mod._err(
+        `invalid tags (must contain at least one of 'core', 'extension', or 'theme'):
+        ${JSON.stringify(mod.tags)}`
       );
-    });
+      return false;
+    }
+    const isTheme = mod.tags.includes('theme'),
+      hasThemeMode = mod.tags.includes('light') || mod.tags.includes('dark'),
+      isBothThemeModes = mod.tags.includes('light') && mod.tags.includes('dark');
+    if (isTheme && (!hasThemeMode || isBothThemeModes)) {
+      mod._err(
+        `invalid tags (themes must be either 'light' or 'dark', not neither or both):
+        ${JSON.stringify(mod.tags)}`
+      );
+      return false;
+    }
+    return mod.tags.map((tag) => check(mod, 'tags.tag', tag, 'string'));
+  },
+  validateAuthors = async (mod) => {
+    const isArray = await check(mod, 'authors', mod.authors, 'array');
+    if (!isArray) return false;
+    return mod.authors.map((author) => [
+      check(mod, 'authors.author.name', author.name, 'string'),
+      check(mod, 'authors.author.email', author.email, 'email', { optional: true }),
+      check(mod, 'authors.author.homepage', author.homepage, 'url'),
+      check(mod, 'authors.author.avatar', author.avatar, 'url'),
+    ]);
+  },
+  validateCSS = async (mod) => {
+    const isArray = await check(mod, 'css', mod.css, 'object');
+    if (!isArray) return false;
+    const tests = [];
+    for (let dest of ['frame', 'client', 'menu']) {
+      if (!mod.css[dest]) continue;
+      let test = await check(mod, `css.${dest}`, mod.css[dest], 'array');
+      if (test) {
+        test = mod.css[dest].map((file) =>
+          check(mod, `css.${dest}.file`, file, 'file', { extension: '.css' })
+        );
+      }
+      tests.push(test);
+    }
+    return tests;
+  },
+  validateJS = async (mod) => {
+    const isArray = await check(mod, 'js', mod.js, 'object');
+    if (!isArray) return false;
+    const tests = [];
+    for (let dest of ['frame', 'client', 'menu']) {
+      if (!mod.js[dest]) continue;
+      let test = await check(mod, `js.${dest}`, mod.js[dest], 'array');
+      if (test) {
+        test = mod.js[dest].map((file) =>
+          check(mod, `js.${dest}.file`, file, 'file', { extension: '.mjs' })
+        );
+      }
+      tests.push(test);
+    }
+    if (mod.js.electron) {
+      const isArray = await check(mod, 'js.electron', mod.js.electron, 'array');
+      if (isArray) {
+        for (const file of mod.js.electron) {
+          const isObject = await check(mod, 'js.electron.file', file, 'object');
+          if (!isObject) {
+            tests.push(false);
+            continue;
+          }
+          tests.push([
+            check(mod, 'js.electron.file.source', file.source, 'file', {
+              extension: '.mjs',
+            }),
+            // referencing the file within the electron app
+            // existence can't be validated, so only format is
+            check(mod, 'js.electron.file.target', file.target, 'string', {
+              extension: '.js',
+            }),
+          ]);
+        }
+      } else tests.push(false);
+    }
+    return tests;
+  },
+  validateOptions = async (mod) => {
+    const isArray = await check(mod, 'options', mod.options, 'array');
+    if (!isArray) return false;
+    const tests = [];
+    for (const option of mod.options) {
+      const key = 'options.option',
+        optTypeValid = await check(mod, `${key}.type`, option.type, registry.optionTypes);
+      if (!optTypeValid) {
+        tests.push(false);
+        continue;
+      }
+      option.environments = option.environments ?? registry.supportedEnvs;
+      tests.push([
+        check(mod, `${key}.key`, option.key, 'alphanumeric'),
+        check(mod, `${key}.label`, option.label, 'string'),
+        check(mod, `${key}.tooltip`, option.tooltip, 'string', {
+          optional: true,
+        }),
+        check(mod, `${key}.environments`, option.environments, 'array').then((isArray) => {
+          if (!isArray) return false;
+          return option.environments.map((environment) =>
+            check(mod, `${key}.environments.env`, environment, registry.supportedEnvs)
+          );
+        }),
+      ]);
+      switch (option.type) {
+        case 'toggle':
+          tests.push(check(mod, `${key}.value`, option.value, 'boolean'));
+          break;
+        case 'select': {
+          let test = await check(mod, `${key}.values`, option.values, 'array');
+          if (test) {
+            test = option.values.map((value) =>
+              check(mod, `${key}.values.value`, value, 'string')
+            );
+          }
+          tests.push(test);
+          break;
+        }
+        case 'text':
+        case 'hotkey':
+          tests.push(check(mod, `${key}.value`, option.value, 'string'));
+          break;
+        case 'number':
+        case 'color':
+          tests.push(check(mod, `${key}.value`, option.value, option.type));
+          break;
+        case 'file': {
+          let test = await check(mod, `${key}.extensions`, option.extensions, 'array');
+          if (test) {
+            test = option.extensions.map((ext) =>
+              check(mod, `${key}.extensions.extension`, ext, 'string')
+            );
+          }
+          tests.push(test);
+          break;
+        }
+      }
+    }
+    return tests;
   };
 
 /**
