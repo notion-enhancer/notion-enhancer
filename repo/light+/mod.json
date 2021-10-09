@@ -16,6 +16,25 @@
     "client": ["variables.css"],
     "menu": ["variables.css"]
   },
-  "js": {},
-  "options": []
+  "js": {
+    "frame": ["theme.mjs"],
+    "client": ["theme.mjs"],
+    "menu": ["theme.mjs"]
+  },
+  "options": [
+    {
+      "type": "color",
+      "key": "primary",
+      "label": "primary accent color",
+      "tooltip": "**replaces notion's blue accent**",
+      "value": "rgba(46,170,220,1)"
+    },
+    {
+      "type": "color",
+      "key": "secondary",
+      "label": "secondary accent color",
+      "tooltip": "**replaces notion's red accent**",
+      "value": "rgba(235,87,87,1)"
+    }
+  ]
 }

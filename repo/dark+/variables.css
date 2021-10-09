@@ -5,12 +5,14 @@
  */
 
 :root.dark {
-  --theme--accent_blue: rgb(213, 36, 36);
-  --theme--accent_blue-selection: rgba(177, 24, 24, 0.245);
-  --theme--accent_blue-hover: rgb(211, 57, 57);
-  --theme--accent_blue-active: rgb(199, 59, 59);
-  --theme--accent_red: rgb(213, 36, 36);
-  --theme--accent_red-button: rgb(177, 24, 24, 0.1);
+  --theme--accent_blue: var(--dark_plus--accent_blue);
+  --theme--accent_blue-selection: var(--dark_plus--accent_blue-selection);
+  --theme--accent_blue-hover: var(--dark_plus--accent_blue-hover);
+  --theme--accent_blue-active: var(--dark_plus--accent_blue-active);
+  --theme--accent_blue-text: var(--dark_plus--accent_blue-text);
+  --theme--accent_red: var(--dark_plus--accent_red);
+  --theme--accent_red-button: var(--dark_plus--accent_red-button);
+  --theme--accent_red-text: var(--dark_plus--accent_red-text);
 
   --theme--bg: rgb(14, 14, 14);
   --theme--bg_secondary: rgb(0, 0, 0);

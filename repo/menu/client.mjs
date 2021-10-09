@@ -32,10 +32,7 @@ export default async function (api, db) {
 
   const notifications = {
     cache: await storage.get(['notifications'], []),
-    provider: [
-      registry.welcomeNotification,
-      ...(await fs.getJSON('https://notion-enhancer.github.io/notifications.json')),
-    ],
+    provider: [registry.welcomeNotification, ...(await fs.getJSON(registry.notificationsURL))],
     count: (await registry.errors()).length,
   };
   for (const notification of notifications.provider) {

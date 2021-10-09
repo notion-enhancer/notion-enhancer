@@ -6,20 +6,16 @@
 
 'use strict';
 
-import { env, fs, storage, registry, web, components } from '../../api/_.mjs';
-import { notifications } from './notifications.mjs';
-import { blocks, options } from './blocks.mjs';
+import './launcher.mjs';
 import './styles.mjs';
+
+import { env, fs, storage, registry, web, components } from '../../api/_.mjs';
+import { notifications } from './launcher.mjs';
+import { cards, options } from './components.mjs';
 
 const db = await registry.db('a6621988-551d-495a-97d8-3c568bca2e9e'),
   profileName = await registry.profileName(),
   profileDB = await registry.profileDB();
-
-for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
-  for (const sheet of mod.css?.menu || []) {
-    web.loadStylesheet(`repo/${mod._dir}/${sheet}`);
-  }
-}
 
 web.addHotkeyListener(await db.get(['hotkey']), env.focusNotion);
 
@@ -204,7 +200,7 @@ const _$modListCache = {},
     },
     mod: async (mod) => {
       const $mod = web.html`<div class="mod" data-id="${web.escape(mod.id)}"></div>`,
-        $toggle = blocks.toggle('', await registry.enabled(mod.id));
+        $toggle = cards.toggle('', await registry.enabled(mod.id));
       $toggle.addEventListener('change', async (event) => {
         if (event.target.checked && mod.tags.includes('theme')) {
           const mode = mod.tags.includes('light') ? 'light' : 'dark',
@@ -233,8 +229,8 @@ const _$modListCache = {},
         }
         $mod.className = 'mod-selected';
         const fragment = [
-          web.render(blocks.title(mod.name), blocks.version(mod.version)),
-          blocks.tags(mod.tags),
+          web.render(cards.title(mod.name), cards.version(mod.version)),
+          cards.tags(mod.tags),
           await generators.options(mod),
         ];
         web.render(web.empty($options), ...fragment);
@@ -244,7 +240,7 @@ const _$modListCache = {},
         web.render(
           $mod,
           mod.preview
-            ? blocks.preview(
+            ? cards.preview(
                 mod.preview.startsWith('http')
                   ? mod.preview
                   : fs.localPath(`repo/${mod._dir}/${mod.preview}`)
@@ -252,10 +248,10 @@ const _$modListCache = {},
             : '',
           web.render(
             web.html`<div class="mod-body"></div>`,
-            web.render(blocks.title(mod.name), blocks.version(mod.version)),
-            blocks.tags(mod.tags),
-            blocks.description(mod.description),
-            blocks.authors(mod.authors),
+            web.render(cards.title(mod.name), cards.version(mod.version)),
+            cards.tags(mod.tags),
+            cards.description(mod.description),
+            cards.authors(mod.authors),
             mod.environments.includes(env.name) && !registry.core.includes(mod.id)
               ? $toggle
               : ''

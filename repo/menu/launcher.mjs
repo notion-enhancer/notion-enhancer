@@ -4,18 +4,29 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-'use strict';
-
-import { env, fs, storage, fmt, registry, web, components } from '../../api/_.mjs';
+import * as api from '../../api/_.mjs';
+const { env, fs, storage, fmt, registry, web, components } = api;
 import { tw } from './styles.mjs';
+
+for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
+  for (const sheet of mod.css?.menu || []) {
+    web.loadStylesheet(`repo/${mod._dir}/${sheet}`);
+  }
+  for (let script of mod.js?.menu || []) {
+    script = await import(fs.localPath(`repo/${mod._dir}/${script}`));
+    script.default(api, await registry.db(mod.id));
+  }
+}
+const errors = await registry.errors();
+if (errors.length) {
+  console.log('[notion-enhancer] registry errors:');
+  console.table(errors);
+}
 
 export const notifications = {
   $container: web.html`<div class="notifications-container"></div>`,
   cache: await storage.get(['notifications'], []),
-  provider: [
-    registry.welcomeNotification,
-    ...(await fs.getJSON('https://notion-enhancer.github.io/notifications.json')),
-  ],
+  provider: [registry.welcomeNotification, ...(await fs.getJSON(registry.notificationsURL))],
   async add({ icon, message, id = undefined, color = undefined, link = undefined }) {
     const $notification = link
         ? web.html`<a
@@ -65,19 +76,12 @@ export const notifications = {
 };
 web.render(document.body, notifications.$container);
 for (const notification of notifications.provider) {
-  if (
-    !notifications.cache.includes(notification.id) &&
-    notification.version === env.version &&
-    (!notification.environments || notification.environments.includes(env.name))
-  ) {
-    notifications.add(notification);
-  }
+  const cached = notifications.cache.includes(notification.id),
+    versionMatches = notification.version === env.version,
+    envMatches = !notification.environments || notification.environments.includes(env.name);
+  if (!cached && versionMatches && envMatches) notifications.add(notification);
 }
-
-const errors = await registry.errors();
 if (errors.length) {
-  console.log('[notion-enhancer] registry errors:');
-  console.table(errors);
   notifications.add({
     icon: 'alert-circle',
     message: 'Failed to load mods (check console).',

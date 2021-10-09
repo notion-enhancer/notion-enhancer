@@ -693,6 +693,20 @@ body,
 
 [style*='background: rgb(46, 170, 220)'] {
   background: var(--theme--accent_blue) !important;
+  color: var(--theme--accent_blue-text) !important;
+}
+[style*='background: rgb(6, 156, 205);'] {
+  background: var(--theme--accent_blue-hover) !important;
+  color: var(--theme--accent_blue-text) !important;
+}
+[style*='background: rgb(0, 141, 190);'] {
+  background: var(--theme--accent_blue-active) !important;
+  color: var(--theme--accent_blue-text) !important;
+}
+[style*='background: rgb(46, 170, 220)'] .chevronDown,
+[style*='background: rgb(6, 156, 205);'] .chevronDown,
+[style*='background: rgb(0, 141, 190);'] .chevronDown {
+  fill: var(--theme--accent_blue-text) !important;
 }
 [style*='fill: rgb(46, 170, 220)'] {
   fill: var(--theme--accent_blue) !important;
@@ -732,13 +746,6 @@ body,
   100% {
     border-color: var(--theme--accent_blue) !important;
   }
-}
-
-[style*='background: rgb(6, 156, 205);'] {
-  background: var(--theme--accent_blue-hover) !important;
-}
-[style*='background: rgb(0, 141, 190);'] {
-  background: var(--theme--accent_blue-active) !important;
 }
 
 [style*='background-color: rgb(235, 87, 87); height: 28px; width: 28px;'],

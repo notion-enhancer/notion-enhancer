@@ -7,10 +7,10 @@
 'use strict';
 
 import { fmt, web, registry, components } from '../../api/_.mjs';
-import { notifications } from './notifications.mjs';
+import { notifications } from './launcher.mjs';
 const profileDB = await registry.profileDB();
 
-export const blocks = {
+export const cards = {
   preview: (url) => web.html`<img
     class="mod-preview"
     src="${web.escape(url)}"

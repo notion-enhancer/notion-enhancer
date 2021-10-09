@@ -6,8 +6,14 @@
  */
 
 :root {
-  --theme--accent_red: crimson;
-  --theme--accent_red-button: rgba(220, 20, 60, 0.2);
+  --theme--accent_blue: var(--light_plus--accent_blue);
+  --theme--accent_blue-selection: var(--light_plus--accent_blue-selection);
+  --theme--accent_blue-hover: var(--light_plus--accent_blue-hover);
+  --theme--accent_blue-active: var(--light_plus--accent_blue-active);
+  --theme--accent_blue-text: var(--light_plus--accent_blue-text);
+  --theme--accent_red: var(--light_plus--accent_red);
+  --theme--accent_red-button: var(--light_plus--accent_red-button);
+  --theme--accent_red-text: var(--light_plus--accent_red-text);
 
   --theme--text_gray: rgba(151, 154, 155, 0.95);
   --theme--text_brown: rgb(167, 126, 100);
