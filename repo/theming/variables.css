@@ -42,7 +42,7 @@
   --theme--scrollbar_thumb: #d3d1cb;
   --theme--scrollbar_thumb-hover: #aeaca6;
 
-  --theme--ui_shadow: rgba(15, 15, 15, 0.15);
+  --theme--ui_shadow: rgba(15, 15, 15, 0.05);
   --theme--ui_divider: rgb(237, 237, 236);
   --theme--ui_interactive-hover: rgba(55, 53, 47, 0.08);
   --theme--ui_interactive-active: rgba(55, 53, 47, 0.16);

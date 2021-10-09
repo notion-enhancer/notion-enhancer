@@ -30,6 +30,7 @@
 [style^='position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 30vh;']
   img {
   height: var(--theme--page_banner-height) !important;
+  background: transparent !important;
 }
 
 .notion-peek-renderer > :nth-child(2) {
@@ -70,6 +71,7 @@
   [style*='position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 20vh;']
   img {
   height: var(--theme--page_preview_banner-height) !important;
+  background: transparent !important;
 }
 
 /* backgrounds */
@@ -362,7 +364,6 @@ body,
 .notion-focusable
   > [style*='width: 16px; height: 16px;'][style*='background: rgb(46, 170, 220);']
   .check,
-.notion-to_do-block .checkboxSquare[style*='fill: inherit'],
 .notion-to_do-block .check {
   fill: var(--theme--ui_toggle-feature) !important;
 }
@@ -700,6 +701,7 @@ body,
 [style^='color: rgb(46, 170, 220)'] {
   color: var(--theme--accent_blue) !important;
 }
+[style*='background: rgba(46, 170, 220, 0.'],
 [style*='background-color: rgba(46, 170, 220, 0.'] {
   background-color: var(--theme--accent_blue-selection) !important;
 }
@@ -791,7 +793,8 @@ body,
   [style*='fill: rgba(55, 53, 47, 0.']:not([style*='fill: rgba(55, 53, 47, 0.8)']) {
   fill: var(--theme--icon_secondary) !important;
 }
-.alarmClock {
+.alarmClock,
+.notion-to_do-block .checkboxSquare[style*='fill: inherit'] {
   fill: currentColor !important;
 }
 

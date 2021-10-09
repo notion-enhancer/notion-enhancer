@@ -1,0 +1,127 @@
+/*
+ * notion-enhancer: pinky boom
+ * (c) 2020 mugiwarafx
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * under the MIT license
+ */
+
+:root {
+  --pinky_boom--brown: #a52a2a80;
+  --pinky_boom--orange: #ffa60080;
+  --pinky_boom--yellow: #ffff0080;
+  --pinky_boom--green: #00ff0080;
+  --pinky_boom--blue: #00ffff80;
+  --pinky_boom--purple: #9b00ff80;
+  --pinky_boom--pink: #ff149180;
+  --pinky_boom--red: #ff000080;
+  --pinky_boom--black: black;
+  --pinky_boom--white: white;
+
+  --theme--accent_blue: deeppink;
+  --theme--accent_blue-selection: rgba(255, 20, 145, 0.2);
+  --theme--accent_blue-hover: rgb(255, 57, 163);
+  --theme--accent_blue-active: rgb(255, 48, 158);
+  --theme--accent_red: deeppink;
+  --theme--accent_red-button: rgba(255, 20, 145, 0.2);
+
+  --theme--bg: #fdf0f4;
+  --theme--bg_secondary: #fce4ec;
+  --theme--bg_card: #ffd5e4;
+
+  --theme--scrollbar_track: transparent;
+  --theme--scrollbar_thumb: #f8bbd0;
+  --theme--scrollbar_thumb-hover: #f48fb1;
+
+  --theme--ui_shadow: #ff89c842;
+  --theme--ui_divider: #ffbbdf;
+  --theme--ui_interactive-hover: #fcb9d0;
+  --theme--ui_interactive-active: #ffccdc;
+  --theme--ui_toggle-off: #ffc9e6;
+
+  --theme--icon: #56002e;
+  --theme--icon_secondary: rgba(255, 20, 145, 0.75);
+
+  --theme--text: #56002e;
+  --theme--text_secondary: rgba(255, 20, 145, 0.75);
+
+  --theme--text_gray: rgb(155, 154, 151);
+  --theme--text_brown: rgb(100, 71, 58);
+  --theme--text_orange: rgb(217, 115, 13);
+  --theme--text_yellow: rgb(223, 171, 1);
+  --theme--text_green: rgb(15, 123, 108);
+  --theme--text_blue: rgb(11, 110, 153);
+  --theme--text_purple: var(--pinky_boom--purple);
+  --theme--text_pink: var(--pinky_boom--deep-pink);
+  --theme--text_red: rgb(224, 62, 62);
+
+  --theme--highlight_gray: rgba(128, 128, 128, 0.25);
+  --theme--highlight_brown: var(--pinky_boom--brown);
+  --theme--highlight_orange: var(--pinky_boom--orange);
+  --theme--highlight_orange-text: var(--pinky_boom--black);
+  --theme--highlight_yellow: var(--pinky_boom--yellow);
+  --theme--highlight_yellow-text: var(--pinky_boom--black);
+  --theme--highlight_green: var(--pinky_boom--green);
+  --theme--highlight_green-text: var(--pinky_boom--black);
+  --theme--highlight_blue: var(--pinky_boom--blue);
+  --theme--highlight_blue-text: var(--pinky_boom--black);
+  --theme--highlight_purple: var(--pinky_boom--purple);
+  --theme--highlight_purple-text: var(--pinky_boom--white);
+  --theme--highlight_pink: var(--pinky_boom--pink);
+  --theme--highlight_pink-text: var(--pinky_boom--white);
+  --theme--highlight_red: var(--pinky_boom--red);
+
+  --theme--block_gray: rgba(128, 128, 128, 0.5);
+  --theme--block_brown: var(--pinky_boom--brown);
+  --theme--block_orange: var(--pinky_boom--orange);
+  --theme--block_yellow: var(--pinky_boom--yellow);
+  --theme--block_green: var(--pinky_boom--green);
+  --theme--block_blue: var(--pinky_boom--blue);
+  --theme--block_purple: var(--pinky_boom--purple);
+  --theme--block_pink: var(--pinky_boom--pink);
+  --theme--block_red: var(--pinky_boom--red);
+
+  --theme--tag_default: #ffc9e6;
+  --theme--tag_gray: rgba(128, 128, 128, 0.25);
+  --theme--tag_gray-text: var(--pinky_boom--white);
+  --theme--tag_brown: var(--pinky_boom--brown);
+  --theme--tag_brown-text: var(--pinky_boom--white);
+  --theme--tag_orange: var(--pinky_boom--orange);
+  --theme--tag_orange-text: var(--pinky_boom--black);
+  --theme--tag_yellow: var(--pinky_boom--yellow);
+  --theme--tag_yellow-text: var(--pinky_boom--black);
+  --theme--tag_green: var(--pinky_boom--green);
+  --theme--tag_green-text: var(--pinky_boom--black);
+  --theme--tag_blue: var(--pinky_boom--blue);
+  --theme--tag_blue-text: var(--pinky_boom--black);
+  --theme--tag_purple: var(--pinky_boom--purple);
+  --theme--tag_purple-text: var(--pinky_boom--white);
+  --theme--tag_pink: var(--pinky_boom--pink);
+  --theme--tag_pink-text: var(--pinky_boom--white);
+  --theme--tag_red: var(--pinky_boom--red);
+  --theme--tag_red-text: var(--pinky_boom--white);
+
+  --theme--callout_gray: rgba(128, 128, 128, 0.25);
+  --theme--callout_gray-text: var(--pinky_boom--black);
+  --theme--callout_brown: var(--pinky_boom--brown);
+  --theme--callout_brown-text: var(--pinky_boom--white);
+  --theme--callout_orange: var(--pinky_boom--orange);
+  --theme--callout_orange-text: var(--pinky_boom--black);
+  --theme--callout_yellow: var(--pinky_boom--yellow);
+  --theme--callout_yellow-text: var(--pinky_boom--black);
+  --theme--callout_green: var(--pinky_boom--green);
+  --theme--callout_green-text: var(--pinky_boom--black);
+  --theme--callout_blue: var(--pinky_boom--blue);
+  --theme--callout_blue-text: var(--pinky_boom--black);
+  --theme--callout_purple: var(--pinky_boom--purple);
+  --theme--callout_purple-text: var(--pinky_boom--white);
+  --theme--callout_pink: var(--pinky_boom--pink);
+  --theme--callout_pink-text: var(--pinky_boom--white);
+  --theme--callout_red: var(--pinky_boom--red);
+  --theme--callout_red-text: var(--pinky_boom--white);
+
+  --theme--code_inline: var(--theme--code);
+  --theme--code_inline-text: var(--theme--text);
+
+  --theme--code: var(--theme--bg_secondary);
+  --theme--code_punctuation: var(--pinky_boom--black);
+}

@@ -1,0 +1,26 @@
+{
+  "name": "playful purple",
+  "id": "ae7862a9-5dbe-4f2c-9931-940f3ba5015d",
+  "version": "0.2.0",
+  "description": "a purple-shaded theme with bright highlights.",
+  "tags": ["theme", "dark"],
+  "authors": [
+    {
+      "name": "Lizishan",
+      "homepage": "https://www.reddit.com/user/Lizishan",
+      "avatar": "https://styles.redditmedia.com/t5_110nz4/styles/profileIcon_h1m3b16exoi51.jpg"
+    },
+    {
+      "name": "LVL100ShrekCultist",
+      "homepage": "https://www.reddit.com/user/LVL100ShrekCultist/",
+      "avatar": "https://styles.redditmedia.com/t5_2js69j/styles/profileIcon_jvnzmo30fyq41.jpg"
+    }
+  ],
+  "css": {
+    "frame": ["variables.css"],
+    "client": ["variables.css"],
+    "menu": ["variables.css"]
+  },
+  "js": {},
+  "options": []
+}

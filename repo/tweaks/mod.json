@@ -85,6 +85,13 @@
       "label": "bracketed links",
       "tooltip": "**render links surrounded with [[brackets]] instead of __underlined__**",
       "value": false
+    },
+    {
+      "type": "toggle",
+      "key": "tweak.quotation_marks",
+      "label": "quote block quotation marks",
+      "tooltip": "**wrap quote block content in large, decorative serif quotation marks**",
+      "value": false
     }
   ]
 }

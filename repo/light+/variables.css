@@ -1,0 +1,101 @@
+/*
+ * notion-enhancer: light+
+ * (c) 2020 Lizishan
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * under the MIT license
+ */
+
+:root {
+  --theme--accent_red: crimson;
+  --theme--accent_red-button: rgba(220, 20, 60, 0.2);
+
+  --theme--text_gray: rgba(151, 154, 155, 0.95);
+  --theme--text_brown: rgb(167, 126, 100);
+  --theme--text_orange: rgb(255, 134, 0);
+  --theme--text_yellow: rgb(255, 195, 0);
+  --theme--text_green: rgb(0, 171, 0);
+  --theme--text_blue: rgb(0, 121, 255);
+  --theme--text_purple: rgb(126, 0, 255);
+  --theme--text_pink: rgb(255, 0, 208);
+  --theme--text_red: rgb(255, 0, 0);
+
+  --theme--highlight_gray: rgb(234, 234, 234);
+  --theme--highlight_gray-text: rgb(17, 17, 17);
+  --theme--highlight_brown: rgb(206, 206, 206);
+  --theme--highlight_brown-text: rgb(85, 35, 1);
+  --theme--highlight_orange: rgb(254, 214, 155);
+  --theme--highlight_orange-text: rgb(199, 110, 0);
+  --theme--highlight_yellow: #fcffd8;
+  --theme--highlight_yellow-text: #ff8c22;
+  --theme--highlight_green: #d5fded;
+  --theme--highlight_green-text: #006a00;
+  --theme--highlight_blue: #e2f5ff;
+  --theme--highlight_blue-text: #00b2ff;
+  --theme--highlight_purple: #efe6ff;
+  --theme--highlight_purple-text: #8334ff;
+  --theme--highlight_pink: #ffe9f1;
+  --theme--highlight_pink-text: rgb(255, 0, 127);
+  --theme--highlight_red: rgb(248, 215, 218);
+  --theme--highlight_red-text: rgb(138, 0, 10);
+
+  --theme--block_gray: #e2e3e5;
+  --theme--block_gray-text: #383d41;
+  --theme--block_brown: rgb(130, 118, 111);
+  --theme--block_brown-text: rgb(85, 35, 1);
+  --theme--block_orange: rgb(254, 214, 155);
+  --theme--block_orange-text: rgb(255, 140, 0);
+  --theme--block_yellow: #fcffd8;
+  --theme--block_yellow-text: #c76e00;
+  --theme--block_green: #d4edda;
+  --theme--block_green-text: #155724;
+  --theme--block_blue: #cce5ff;
+  --theme--block_blue-text: #004085;
+  --theme--block_purple: rgb(199, 178, 230);
+  --theme--block_purple-text: rgb(90, 49, 148);
+  --theme--block_pink: rgb(255, 206, 228);
+  --theme--block_pink-text: rgb(255, 0, 127);
+  --theme--block_red: #f8d7da;
+  --theme--block_red-text: #721c24;
+
+  --theme--tag_default: rgb(234, 234, 234);
+  --theme--tag_gray: rgb(234, 234, 234);
+  --theme--tag_gray-text: rgb(17, 17, 17);
+  --theme--tag_brown: rgb(206, 206, 206);
+  --theme--tag_brown-text: rgb(85, 35, 1);
+  --theme--tag_orange: rgb(254, 214, 155);
+  --theme--tag_orange-text: rgb(199, 110, 0);
+  --theme--tag_yellow: #fcffd8;
+  --theme--tag_yellow-text: #ff8c22;
+  --theme--tag_green: #d5fded;
+  --theme--tag_green-text: #006a00;
+  --theme--tag_blue: #e2f5ff;
+  --theme--tag_blue-text: #00b2ff;
+  --theme--tag_purple: #efe6ff;
+  --theme--tag_purple-text: #8334ff;
+  --theme--tag_pink: #ffe9f1;
+  --theme--tag_pink-text: rgb(255, 0, 127);
+  --theme--tag_red: rgb(248, 215, 218);
+  --theme--tag_red-text: rgb(138, 0, 10);
+
+  --theme--callout_gray: #e2e3e5;
+  --theme--callout_gray-text: #383d41;
+  --theme--callout_brown: rgb(130, 118, 111);
+  --theme--callout_brown-text: rgb(85, 35, 1);
+  --theme--callout_orange: rgb(254, 214, 155);
+  --theme--callout_orange-text: rgb(255, 140, 0);
+  --theme--callout_yellow: #fcffd8;
+  --theme--callout_yellow-text: #c76e00;
+  --theme--callout_green: #d4edda;
+  --theme--callout_green-text: #155724;
+  --theme--callout_blue: #cce5ff;
+  --theme--callout_blue-text: #004085;
+  --theme--callout_purple: rgb(199, 178, 230);
+  --theme--callout_purple-text: rgb(90, 49, 148);
+  --theme--callout_pink: rgb(255, 206, 228);
+  --theme--callout_pink-text: rgb(255, 0, 127);
+  --theme--callout_red: #f8d7da;
+  --theme--callout_red-text: #721c24;
+
+  --theme--code_inline: rgb(179, 39, 39);
+  --theme--code_inline-text: #e0dfe2;
+}

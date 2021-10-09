@@ -27,7 +27,9 @@
 .enhancer--tweak-normalise_table_scroll
   .notion-page-template-modal
   .notion-collection_view-block {
-  width: 100% !important;
+  width: calc(100% + 8px) !important;
+  padding-left: 4px;
+  padding-right: 4px;
 }
 .enhancer--tweak-normalise_table_scroll
   .notion-frame
@@ -132,4 +134,29 @@
 .enhancer--tweak-bracketed_links .notion-link-token:hover::before,
 .enhancer--tweak-bracketed_links .notion-link-token:hover::after {
   opacity: 1;
+}
+
+.enhancer--tweak-quotation_marks
+  .notion-quote-block
+  [style*='border-left: 3px solid currentcolor;'] {
+  position: relative;
+  padding-left: 24px !important;
+  padding-right: 18px !important;
+}
+.enhancer--tweak-quotation_marks .notion-quote-block [placeholder='Empty quote']::before,
+.enhancer--tweak-quotation_marks .notion-quote-block [placeholder='Empty quote']::after {
+  font-family: Georgia, serif;
+  font-size: 24px;
+  font-weight: bold;
+  position: absolute;
+}
+.enhancer--tweak-quotation_marks .notion-quote-block [placeholder='Empty quote']::before {
+  content: '\201C';
+  left: 8px;
+  top: -2px;
+}
+.enhancer--tweak-quotation_marks .notion-quote-block [placeholder='Empty quote']::after {
+  content: '\201D';
+  right: 2px;
+  bottom: -2px;
 }
