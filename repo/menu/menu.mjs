@@ -11,7 +11,7 @@ import './styles.mjs';
 
 import { env, fs, storage, registry, web, components } from '../../api/_.mjs';
 import { notifications } from './launcher.mjs';
-import { cards, options } from './components.mjs';
+import { modComponents, options } from './components.mjs';
 
 const db = await registry.db('a6621988-551d-495a-97d8-3c568bca2e9e'),
   profileName = await registry.profileName(),
@@ -200,7 +200,7 @@ const _$modListCache = {},
     },
     mod: async (mod) => {
       const $mod = web.html`<div class="mod" data-id="${web.escape(mod.id)}"></div>`,
-        $toggle = cards.toggle('', await registry.enabled(mod.id));
+        $toggle = modComponents.toggle('', await registry.enabled(mod.id));
       $toggle.addEventListener('change', async (event) => {
         if (event.target.checked && mod.tags.includes('theme')) {
           const mode = mod.tags.includes('light') ? 'light' : 'dark',
@@ -229,8 +229,8 @@ const _$modListCache = {},
         }
         $mod.className = 'mod-selected';
         const fragment = [
-          web.render(cards.title(mod.name), cards.version(mod.version)),
-          cards.tags(mod.tags),
+          web.render(modComponents.title(mod.name), modComponents.version(mod.version)),
+          modComponents.tags(mod.tags),
           await generators.options(mod),
         ];
         web.render(web.empty($options), ...fragment);
@@ -240,7 +240,7 @@ const _$modListCache = {},
         web.render(
           $mod,
           mod.preview
-            ? cards.preview(
+            ? modComponents.preview(
                 mod.preview.startsWith('http')
                   ? mod.preview
                   : fs.localPath(`repo/${mod._dir}/${mod.preview}`)
@@ -248,10 +248,10 @@ const _$modListCache = {},
             : '',
           web.render(
             web.html`<div class="mod-body"></div>`,
-            web.render(cards.title(mod.name), cards.version(mod.version)),
-            cards.tags(mod.tags),
-            cards.description(mod.description),
-            cards.authors(mod.authors),
+            web.render(modComponents.title(mod.name), modComponents.version(mod.version)),
+            modComponents.tags(mod.tags),
+            modComponents.description(mod.description),
+            modComponents.authors(mod.authors),
             mod.environments.includes(env.name) && !registry.core.includes(mod.id)
               ? $toggle
               : ''

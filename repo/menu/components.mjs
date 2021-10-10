@@ -10,7 +10,7 @@ import { fmt, web, registry, components } from '../../api/_.mjs';
 import { notifications } from './launcher.mjs';
 const profileDB = await registry.profileDB();
 
-export const cards = {
+export const modComponents = {
   preview: (url) => web.html`<img
     class="mod-preview"
     src="${web.escape(url)}"
@@ -57,7 +57,7 @@ export const cards = {
 export const options = {
   toggle: async (mod, opt) => {
     const checked = await profileDB.get([mod.id, opt.key], opt.value),
-      $toggle = blocks.toggle(opt.label, checked),
+      $toggle = modComponents.toggle(opt.label, checked),
       $tooltip = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
       $label = $toggle.children[0],
       $input = $toggle.children[1];

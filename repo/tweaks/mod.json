@@ -28,10 +28,17 @@
     },
     {
       "type": "number",
-      "key": "tweak.responsive_breakpoint",
+      "key": "tweak.responsive_breakpoint_px",
       "label": "responsive columns breakpoint (px)",
       "tooltip": "the **width in pixels below which in-page columns are resized** to appear full-width to reduce content squishing",
       "value": 600
+    },
+    {
+      "type": "number",
+      "key": "tweak.responsive_breakpoint_percent",
+      "label": "responsive columns breakpoint (%)",
+      "tooltip": "the **percentage of the screen below which in-page columns are resized to appear full-width** to reduce content squishing",
+      "value": 30
     },
     {
       "type": "toggle",

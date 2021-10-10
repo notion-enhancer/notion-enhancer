@@ -16,10 +16,16 @@ export default async function (api, db) {
     );
   }
 
-  const responsiveBreakpoint = await db.get(['tweak.responsive_breakpoint']),
+  const responsiveBreakpointPx = await db.get(['tweak.responsive_breakpoint_px']),
+    responsiveBreakpointPercent =
+      screen.width * 0.01 * (await db.get(['tweak.responsive_breakpoint_percent'])),
     addResponsiveBreakpoint = () => {
       document.body.classList.remove('enhancer--tweak-responsive_breakpoint');
-      if (window.innerWidth <= responsiveBreakpoint) {
+      console.log(responsiveBreakpointPercent, window.innerWidth);
+      if (
+        window.innerWidth <= responsiveBreakpointPx ||
+        window.innerWidth <= responsiveBreakpointPercent
+      ) {
         document.body.classList.add('enhancer--tweak-responsive_breakpoint');
       }
     };
