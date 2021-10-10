@@ -95,6 +95,13 @@
     },
     {
       "type": "toggle",
+      "key": "tweak.accented_links",
+      "label": "accented links",
+      "tooltip": "**links are shown by default with notion's blue colour or a theme's equivalent**",
+      "value": false
+    },
+    {
+      "type": "toggle",
       "key": "tweak.quotation_marks",
       "label": "quote block quotation marks",
       "tooltip": "**wrap quote block content in large, decorative serif quotation marks**",

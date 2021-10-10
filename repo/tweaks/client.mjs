@@ -41,6 +41,7 @@ export default async function (api, db) {
     'spaced_lines',
     'condensed_bullets',
     'bracketed_links',
+    'accented_links',
     'quotation_marks',
   ];
   for (const tweak of tweaks) {

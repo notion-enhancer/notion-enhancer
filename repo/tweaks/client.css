@@ -136,6 +136,14 @@
   opacity: 1;
 }
 
+.enhancer--tweak-accented_links .notion-link-token {
+  color: var(--theme--accent_blue) !important;
+}
+.enhancer--tweak-accented_links .notion-link-token span[style*='border-bottom:0.05em'] {
+  opacity: 1 !important;
+  border-color: var(--theme--accent_blue) !important;
+}
+
 .enhancer--tweak-quotation_marks
   .notion-quote-block
   [style*='border-left: 3px solid currentcolor;'] {
