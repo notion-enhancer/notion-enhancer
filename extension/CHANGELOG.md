@@ -11,13 +11,29 @@ a complete rework of the enhancer including a port to the browser as a chrome ex
 - new: separate menu profiles for mod configurations.
 - new: a hotkey option type that allows typing in/pressing a hotkey to enter it, instead of typing.
 - improved: split the core mod into separate mods for specific features.
-- improved: theming variables that are more specific, less laggy, and less complicated.
+- improved: theming variables that are applied more specifically, less laggy, and less complicated.
 - improved: merged bracketed-links into tweaks.
 - improved: a redesigned menu with nicer ui, separate categories for mods and a sidebar for configuration.
+- improved: simplified and smoothened the side panel + moved it to the core so any mod can hook into it.
 - removed: integrated scrollbar tweak (notion now includes by default).
 - removed: js insert. css insert moved to tweaks mod.
 - removed: majority of layout and font size variables - better to leave former to notion and use `ctrl +` for latter.
 - bugfix: bypass csp restrictions.
+- theme: "nord" = an arctic, north-bluish color palette.
+- theme: "gruvbox light" = a sepia, 'retro groove' palette based on the vim theme of the same name.
+- theme: "gruvbox dark" = a gray, 'retro groove' palette based on the vim theme of the same name.
+- theme: "light+" = a simple white theme that brightens coloured text and blocks,
+  with configurable accents (formerly littlepig light).
+- theme: "playful purple" = a purple-shaded theme with bright highlights (formerly littlepig dark and gameish).
+- theme: "pinky boom" = pinkify your life.
+- extension: "calendar scroll" = add a button to jump down to the current week in fullpage/infinite-scroll calendars.
+- tweak: wrap tables to page width.
+- tweak: hide "Type '/' for commands".
+- tweak: quote block quotation marks.
+- tweak: responsive columns breakpoint (%).
+- tweak: accented links.
+- tweak: full width pages.
+- bugfixes: many. like many many. all the bugfixes. (mostly a side effect of completely rewriting everything.)
 
 **below this point the enhancer was desktop-only. in v0.11.0 it was been ported to also**
 **run as a chrome extension. changes made to both are indicated above.**
