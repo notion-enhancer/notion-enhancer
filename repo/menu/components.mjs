@@ -144,7 +144,6 @@ export const options = {
           .slice(5, -1)
           .split(',')
           .map((i) => parseInt(i));
-        console.log(r, g, b, fmt.rgbContrast(r, g, b));
         $input.style.color = fmt.rgbContrast(r, g, b);
         $input.style.padding = '';
       },

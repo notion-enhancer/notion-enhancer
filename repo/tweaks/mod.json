@@ -42,6 +42,13 @@
     },
     {
       "type": "toggle",
+      "key": "tweak.full_width_pages",
+      "label": "full width pages",
+      "tooltip": "**decreases padding so every page appears full width**",
+      "value": false
+    },
+    {
+      "type": "toggle",
       "key": "tweak.normalise_table_scroll",
       "label": "wrap tables to page width",
       "tooltip": "**force horizontally scrollable tables to respect the width and padding of a page when they overflow**",

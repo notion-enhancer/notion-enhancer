@@ -14,7 +14,8 @@
 .enhancer--tweak-responsive_breakpoint .notion-column_list-block [style='display: flex;'] {
   flex-direction: column !important;
 }
-.enhancer--tweak-responsive_breakpoint .notion-app-inner {
+.enhancer--tweak-responsive_breakpoint .notion-app-inner,
+.enhancer--tweak-full_width_pages .notion-app-inner {
   --theme--page-width: 100%;
   --theme--page-padding: calc(48px + env(safe-area-inset-left));
 }
@@ -32,59 +33,23 @@
   padding-right: 4px;
 }
 .enhancer--tweak-normalise_table_scroll
-  .notion-frame
-  .notion-page-content
   .notion-collection_view-block
-  [style*='padding-left: 126px'],
+  > [contenteditable]
+  > .notion-scroller
+  > [class$='view'][style*='padding-left'],
 .enhancer--tweak-normalise_table_scroll
-  .notion-frame
-  .notion-page-content
   .notion-collection_view-block
-  [style*='padding-left: 96px'],
-.enhancer--tweak-normalise_table_scroll
-  .notion-peek-renderer
-  .notion-collection_view-block
-  [style*='padding-left: 126px'],
-.enhancer--tweak-normalise_table_scroll
-  .notion-peek-renderer
-  .notion-collection_view-block
-  [style*='padding-left: 96px'],
-.enhancer--tweak-normalise_table_scroll
-  .notion-page-template-modal
-  .notion-collection_view-block
-  [style*='padding-left: 126px'],
-.enhancer--tweak-normalise_table_scroll
-  .notion-page-template-modal
-  .notion-collection_view-block
-  [style*='padding-left: 96px'] {
+  > :first-child[style*='padding-left'] {
   padding-left: 0 !important;
 }
 .enhancer--tweak-normalise_table_scroll
-  .notion-frame
-  .notion-page-content
   .notion-collection_view-block
-  [style*='padding-right: 126px'],
+  > [contenteditable]
+  > .notion-scroller
+  > [class$='view'][style*='padding-right'],
 .enhancer--tweak-normalise_table_scroll
-  .notion-frame
-  .notion-page-content
   .notion-collection_view-block
-  [style*='padding-right: 96px'],
-.enhancer--tweak-normalise_table_scroll
-  .notion-peek-renderer
-  .notion-collection_view-block
-  [style*='padding-right: 126px'],
-.enhancer--tweak-normalise_table_scroll
-  .notion-peek-renderer
-  .notion-collection_view-block
-  [style*='padding-right: 96px'],
-.enhancer--tweak-normalise_table_scroll
-  .notion-page-template-modal
-  .notion-collection_view-block
-  [style*='padding-right: 126px'],
-.enhancer--tweak-normalise_table_scroll
-  .notion-page-template-modal
-  .notion-collection_view-block
-  [style*='padding-right: 96px'] {
+  > :first-child[style*='padding-right'] {
   padding-right: 0 !important;
 }
 

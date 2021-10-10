@@ -21,7 +21,6 @@ export default async function (api, db) {
       screen.width * 0.01 * (await db.get(['tweak.responsive_breakpoint_percent'])),
     addResponsiveBreakpoint = () => {
       document.body.classList.remove('enhancer--tweak-responsive_breakpoint');
-      console.log(responsiveBreakpointPercent, window.innerWidth);
       if (
         window.innerWidth <= responsiveBreakpointPx ||
         window.innerWidth <= responsiveBreakpointPercent
@@ -33,6 +32,7 @@ export default async function (api, db) {
   addResponsiveBreakpoint();
 
   const tweaks = [
+    'full_width_pages',
     'normalise_table_scroll',
     'hide_help',
     'hide_slash_for_commands',

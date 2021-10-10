@@ -224,8 +224,10 @@ const _$modListCache = {},
       });
       $mod.addEventListener('click', async (event) => {
         if ($mod.className === 'mod-selected') return;
-        for (const $selected of document.querySelectorAll('.mod-selected')) {
-          $selected.className = 'mod';
+        for (const $list of Object.values(_$modListCache)) {
+          for (const $selected of $list.querySelectorAll('.mod-selected')) {
+            $selected.className = 'mod';
+          }
         }
         $mod.className = 'mod-selected';
         const fragment = [
