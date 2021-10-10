@@ -3,6 +3,7 @@
   "id": "54f01911-60fc-4c9d-85b5-5c5ca3dd6b81",
   "version": "0.3.0",
   "description": "a sepia, 'retro groove' palette based on the vim theme of the same name.",
+  "preview": "preview.png",
   "tags": ["theme", "light"],
   "authors": [
     {

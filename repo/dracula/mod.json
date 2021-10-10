@@ -3,6 +3,7 @@
   "id": "033bff54-50ba-4cec-bdc0-b2ca7e307086",
   "version": "0.3.0",
   "description": "a theme based on the popular dracula color palette originally by zeno rocha and friends.",
+  "preview": "preview.png",
   "tags": ["theme", "dark"],
   "authors": [
     {

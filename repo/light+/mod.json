@@ -2,7 +2,8 @@
   "name": "light+",
   "id": "336cbc54-67b9-4b00-b4a2-9cc86eef763b",
   "version": "0.2.0",
-  "description": "a simple white theme that brightens coloured text and blocks, with a configurable accent.",
+  "description": "a simple white theme that brightens coloured text and blocks, with configurable accents.",
+  "preview": "preview.png",
   "tags": ["theme", "light"],
   "authors": [
     {

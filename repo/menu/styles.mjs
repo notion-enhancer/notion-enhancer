@@ -60,12 +60,11 @@ const customClasses = {
   'mod-author-avatar': apply`inline object-cover w-5 h-5 rounded-full mr-2`,
   'sidebar': apply`h-full w-96 px-4 pt-3 pb-32 flex flex-col bg-notion-secondary border-l border-divider`,
   'profile-trigger': apply`block px-4 py-3 mb-2 rounded-md text-sm text-left font-semibold shadow-inner
-    hover:bg-accent-red-hover border border-accent-red text-accent-red focus:(outline-none ring ring-inset ring-accent-red)`,
+    hover:bg-accent-red-button border border-accent-red text-accent-red focus:(outline-none bg-accent-red-button)`,
   'profile-actions': apply`flex`,
   'profile-save': apply`text-sm px-3 py-2 font-medium mt-2 bg-accent-blue text-accent-blue-text rounded-md flex-grow
     hover:bg-accent-blue-hover focus:(bg-accent-blue-active outline-none) text-center`,
-  'profile-delete': apply`text-sm px-3 py-2 font-medium ml-3 mt-2 bg-red-tag text-red-tag-text rounded-md flex-grow
-    border border-red-text hover:bg-red-text focus:(outline-none bg-red-text) text-center`,
+  'profile-delete': apply`profile-trigger px-3 py-2 mb-0 ml-2 mt-2 text-center font-medium`,
   'profile-export': apply`profile-save mr-2`,
   'profile-import': apply`profile-save mr-2`,
   'profile-error': apply`text-xs mt-2 text-red-text`,
@@ -124,7 +123,7 @@ setup({
         'blue-active': 'var(--theme--accent_blue-active)',
         'blue-text': 'var(--theme--accent_blue-text)',
         'red': 'var(--theme--accent_red)',
-        'red-hover': 'var(--theme--accent_red-button)',
+        'red-button': 'var(--theme--accent_red-button)',
         'red-text': 'var(--theme--accent_red-text)',
       },
       'gray': mapColorVariables('gray'),
