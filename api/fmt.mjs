@@ -129,7 +129,7 @@ export const rgbLogShade = (p, c) => {
  * @returns {string} the contrasting rgb color, white or black
  */
 export const rgbContrast = (r, g, b) => {
-  return Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b)) > 127.5
+  return Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b)) > 165.75
     ? 'rgb(0,0,0)'
     : 'rgb(255,255,255)';
 };
