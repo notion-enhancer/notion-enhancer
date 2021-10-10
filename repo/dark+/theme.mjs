@@ -9,10 +9,10 @@
 export default async function ({ fmt }, db) {
   {
     const primary = await db.get(['primary']),
-      [r, g, b, a] = primary
+      [r, g, b] = primary
         .slice(5, -1)
         .split(',')
-        .map((i) => parseFloat(i));
+        .map((i) => parseInt(i));
     if (!(r === 46 && g === 170 && b === 220)) {
       document.documentElement.style.setProperty('--dark_plus--accent_blue', primary);
       document.documentElement.style.setProperty(
@@ -36,7 +36,10 @@ export default async function ({ fmt }, db) {
 
   {
     const secondary = await db.get(['secondary']),
-      [r, g, b, a] = secondary.slice(5, -1).split(',');
+      [r, g, b] = secondary
+        .slice(5, -1)
+        .split(',')
+        .map((i) => parseInt(i));
     if (!(r === 235 && g === 87 && b === 87)) {
       document.documentElement.style.setProperty('--dark_plus--accent_red', secondary);
       document.documentElement.style.setProperty(

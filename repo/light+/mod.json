@@ -35,6 +35,13 @@
       "label": "secondary accent color",
       "tooltip": "**replaces notion's red accent**",
       "value": "rgba(235,87,87,1)"
+    },
+    {
+      "type": "color",
+      "key": "highlight",
+      "label": "highlight accent color",
+      "tooltip": "**affects dividers, text, icons and hovered scrollbars. set this to rgba(0,0,0,0) to disable it**",
+      "value": "rgba(0,0,0,0)"
     }
   ]
 }

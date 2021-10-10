@@ -5,14 +5,17 @@
  */
 
 :root.dark {
-  --theme--accent_blue: var(--dark_plus--accent_blue);
-  --theme--accent_blue-selection: var(--dark_plus--accent_blue-selection);
-  --theme--accent_blue-hover: var(--dark_plus--accent_blue-hover);
-  --theme--accent_blue-active: var(--dark_plus--accent_blue-active);
-  --theme--accent_blue-text: var(--dark_plus--accent_blue-text);
-  --theme--accent_red: var(--dark_plus--accent_red);
-  --theme--accent_red-button: var(--dark_plus--accent_red-button);
-  --theme--accent_red-text: var(--dark_plus--accent_red-text);
+  --theme--accent_blue: var(--dark_plus--accent_blue, rgb(46, 170, 220));
+  --theme--accent_blue-selection: var(
+    --dark_plus--accent_blue-selection,
+    rgb(46, 170, 220, 0.25)
+  );
+  --theme--accent_blue-hover: var(--dark_plus--accent_blue-hover, rgb(6, 156, 205));
+  --theme--accent_blue-active: var(--dark_plus--accent_blue-active, rgb(0, 141, 190));
+  --theme--accent_blue-text: var(--dark_plus--accent_blue-text, #fff);
+  --theme--accent_red: var(--dark_plus--accent_red, #eb5757);
+  --theme--accent_red-button: var(--dark_plus--accent_red-button, rgba(235, 87, 87, 0.1));
+  --theme--accent_red-text: var(--dark_plus--accent_red-text, #fff);
 
   --theme--bg: rgb(14, 14, 14);
   --theme--bg_secondary: rgb(0, 0, 0);

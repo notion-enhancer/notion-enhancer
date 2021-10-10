@@ -139,7 +139,13 @@ export const options = {
       $icon = web.html`${await components.feather('droplet', { class: 'input-icon' })}`,
       paint = () => {
         $input.style.background = $picker.toBackground();
-        $input.style.color = $picker.isLight() ? '#000' : '#fff';
+        const [r, g, b, a] = $picker
+          .toRGBAString()
+          .slice(5, -1)
+          .split(',')
+          .map((i) => parseInt(i));
+        console.log(r, g, b, fmt.rgbContrast(r, g, b));
+        $input.style.color = fmt.rgbContrast(r, g, b);
         $input.style.padding = '';
       },
       $picker = new web.jscolor($input, {
