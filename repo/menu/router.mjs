@@ -60,13 +60,28 @@ window.addEventListener('popstate', (event) => {
   document.getElementById(location.hash.slice(1))?.scrollIntoView(true);
   document.documentElement.scrollTop = 0;
 });
-web.addDocumentObserver((mutation) => {
-  mutation.target.querySelectorAll('a[href^="?"]').forEach((a) => {
-    a.removeEventListener('click', router);
-    a.addEventListener('click', router);
+
+const documentObserverEvents = [],
+  handleDocumentMutations = (queue) => {
+    while (queue.length) {
+      const mutation = queue.shift();
+      mutation.target.querySelectorAll('a[href^="?"]').forEach((a) => {
+        a.removeEventListener('click', router);
+        a.addEventListener('click', router);
+      });
+      mutation.target.querySelectorAll('a[href^="#"]').forEach((a) => {
+        a.removeEventListener('click', navigator);
+        a.addEventListener('click', navigator);
+      });
+    }
+  },
+  documentObserver = new MutationObserver((list, observer) => {
+    if (!documentObserverEvents.length)
+      requestIdleCallback(() => handleDocumentMutations(documentObserverEvents));
+    documentObserverEvents.push(...list);
   });
-  mutation.target.querySelectorAll('a[href^="#"]').forEach((a) => {
-    a.removeEventListener('click', navigator);
-    a.addEventListener('click', navigator);
-  });
+documentObserver.observe(document.body, {
+  childList: true,
+  subtree: true,
+  attributes: true,
 });

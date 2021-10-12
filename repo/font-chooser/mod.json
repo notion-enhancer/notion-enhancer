@@ -1,0 +1,68 @@
+{
+  "name": "font chooser",
+  "id": "e0d8d148-45e7-4d79-8313-e7b2ad8abe16",
+  "version": "0.4.0",
+  "description": "set custom fonts.",
+  "tags": ["extension", "customisation"],
+  "authors": [
+    {
+      "name": "TorchAtlas",
+      "homepage": "https://torchatlas.netlify.app/",
+      "avatar": "https://avatars.githubusercontent.com/u/12666855"
+    }
+  ],
+  "js": {
+    "client": ["fonts.mjs"],
+    "menu": ["fonts.mjs"],
+    "frame": ["fonts.mjs"]
+  },
+  "css": {
+    "client": ["fonts.css"],
+    "menu": ["fonts.css"],
+    "frame": ["fonts.css"]
+  },
+  "options": [
+    {
+      "type": "text",
+      "key": "sans",
+      "label": "sans-serif (inc. ui)",
+      "tooltip": "**this font needs to be installed on your device** - leave the option blank to use notion's default font",
+      "value": ""
+    },
+    {
+      "type": "text",
+      "key": "serif",
+      "label": "serif",
+      "tooltip": "**this font needs to be installed on your device** - leave the option blank to use notion's default font",
+      "value": ""
+    },
+    {
+      "type": "text",
+      "key": "mono",
+      "label": "monospace",
+      "tooltip": "**this font needs to be installed on your device** - leave the option blank to use notion's default font",
+      "value": ""
+    },
+    {
+      "type": "text",
+      "key": "code",
+      "label": "code",
+      "tooltip": "**this font needs to be installed on your device** - leave the option blank to use notion's default font",
+      "value": ""
+    },
+    {
+      "type": "text",
+      "key": "quotes",
+      "label": "quotes",
+      "tooltip": "**this font needs to be installed on your device** - leave the option blank to use notion's default font",
+      "value": ""
+    },
+    {
+      "type": "text",
+      "key": "headings",
+      "label": "headings",
+      "tooltip": "**this font needs to be installed on your device** - leave the option blank to use notion's default font",
+      "value": ""
+    }
+  ]
+}

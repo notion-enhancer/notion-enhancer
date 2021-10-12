@@ -1,0 +1,25 @@
+/*
+ * notion-enhancer: font chooser
+ * (c) 2021 TorchAtlas (https://torchatlas.netlify.app/)
+ * (c) 2021 admiraldus (https://github.com/admiraldus
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+:root {
+  --theme--font_sans: var(--font_chooser--sans);
+  --theme--font_serif: var(--font_chooser--serif);
+  --theme--font_mono: var(--font_chooser--mono);
+  --theme--font_code: var(--font_chooser--code);
+}
+
+.notion-quote-block {
+  font-family: var(--font_chooser--quotes, inherit) !important;
+}
+
+[placeholder='Untitled'],
+[placeholder='Heading 1'],
+[placeholder='Heading 2'],
+[placeholder='Heading 3'] {
+  font-family: var(--font_chooser--headings, inherit) !important;
+}

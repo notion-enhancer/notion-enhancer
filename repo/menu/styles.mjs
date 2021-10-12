@@ -25,7 +25,7 @@ const mapColorVariables = (color) => ({
 });
 
 const customClasses = {
-  'notifications-container': apply`absolute bottom-0 right-0 px-4 py-3 max-w-full w-96`,
+  'notifications-container': apply`absolute bottom-0 right-0 px-4 py-3 max-w-full w-96 z-10`,
   'notification': ([color = 'default']) =>
     apply`p-2 border group hover:(filter brightness-125) ${
       color === 'default'
@@ -58,7 +58,7 @@ const customClasses = {
   'mod-authors-container': apply`text-sm font-medium`,
   'mod-author': apply`flex items-center mb-2`,
   'mod-author-avatar': apply`inline object-cover w-5 h-5 rounded-full mr-2`,
-  'sidebar': apply`h-full w-96 px-4 pt-3 pb-32 flex flex-col bg-notion-secondary border-l border-divider`,
+  'sidebar': apply`h-full w-96 px-4 pt-3 pb-16 overflow-y-auto flex flex-col bg-notion-secondary border-l border-divider`,
   'profile-trigger': apply`block px-4 py-3 mb-2 rounded-md text-sm text-left font-semibold shadow-inner
     hover:bg-accent-red-button border border-accent-red text-accent-red focus:(outline-none bg-accent-red-button)`,
   'profile-actions': apply`flex`,
