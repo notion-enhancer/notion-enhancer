@@ -170,7 +170,7 @@ export const is = async (value, type, { extension = '' } = {}) => {
     case 'number':
       return typeof value === type && extension;
     case 'string':
-      return typeof value === type && value.length && extension;
+      return typeof value === type && extension;
     case 'alphanumeric':
     case 'uuid':
     case 'semver':
