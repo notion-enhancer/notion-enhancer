@@ -52,16 +52,17 @@
   --theme--highlight_pink: #8e4b63;
   --theme--highlight_red: #8c3d3d;
 
-  --theme--block_gray: #585858;
-  --theme--block_brown: #333333;
-  --theme--block_orange: #9a5a3f;
-  --theme--block_yellow: #b58a46;
-  --theme--block_green: #657953;
-  --theme--block_blue: #355475;
-  --theme--block_purple: #775186;
-  --theme--block_pink: #8e4b63;
-  --theme--block_red: #8c3d3d;
+  --theme--paragraph_gray: #585858;
+  --theme--paragraph_brown: #333333;
+  --theme--paragraph_orange: #9a5a3f;
+  --theme--paragraph_yellow: #b58a46;
+  --theme--paragraph_green: #657953;
+  --theme--paragraph_blue: #355475;
+  --theme--paragraph_purple: #775186;
+  --theme--paragraph_pink: #8e4b63;
+  --theme--paragraph_red: #8c3d3d;
 
+  --theme--tag-text: var(--theme--text);
   --theme--tag_default: var(--theme--highlight_gray);
   --theme--tag_gray: var(--theme--highlight_gray);
   --theme--tag_brown: var(--theme--highlight_brown);
@@ -73,15 +74,15 @@
   --theme--tag_pink: var(--theme--highlight_pink);
   --theme--tag_red: var(--theme--highlight_red);
 
-  --theme--callout_gray: rgba(88, 88, 88, 0.175);
-  --theme--callout_brown: rgb(51, 51, 51, 0.175);
-  --theme--callout_orange: rgb(154, 90, 63, 0.175);
-  --theme--callout_yellow: rgb(181, 138, 70, 0.175);
-  --theme--callout_green: rgb(101, 121, 83, 0.175);
-  --theme--callout_blue: rgb(53, 84, 117, 0.175);
-  --theme--callout_purple: rgb(119, 81, 134, 0.175);
-  --theme--callout_pink: rgb(142, 75, 99, 0.175);
-  --theme--callout_red: rgb(140, 61, 61, 0.175);
+  --theme--block_gray: rgba(88, 88, 88, 0.175);
+  --theme--block_brown: rgb(51, 51, 51, 0.175);
+  --theme--block_orange: rgb(154, 90, 63, 0.175);
+  --theme--block_yellow: rgb(181, 138, 70, 0.175);
+  --theme--block_green: rgb(101, 121, 83, 0.175);
+  --theme--block_blue: rgb(53, 84, 117, 0.175);
+  --theme--block_purple: rgb(119, 81, 134, 0.175);
+  --theme--block_pink: rgb(142, 75, 99, 0.175);
+  --theme--block_red: rgb(140, 61, 61, 0.175);
 
   --theme--code_inline: #333333;
   --theme--code_inline-text: var(--theme--text);

@@ -16,12 +16,12 @@ const mapColorVariables = (color) => ({
   'text': `var(--theme--text_${color})`,
   'highlight': `var(--theme--highlight_${color})`,
   'highlight-text': `var(--theme--highlight_${color}-text)`,
-  'block': `var(--theme--block_${color})`,
-  'block-text': `var(--theme--block_${color}-text)`,
+  'paragraph': `var(--theme--paragraph_${color})`,
+  'paragraph-text': `var(--theme--paragraph_${color}-text)`,
   'tag': `var(--theme--tag_${color})`,
   'tag-text': `var(--theme--tag_${color}-text)`,
-  'callout': `var(--theme--callout_${color})`,
-  'callout-text': `var(--theme--callout_${color}-text)`,
+  'block': `var(--theme--block_${color})`,
+  'block-text': `var(--theme--block_${color}-text)`,
 });
 
 const customClasses = {
@@ -29,7 +29,7 @@ const customClasses = {
   'notification': ([color = 'default']) =>
     apply`p-2 border group hover:(filter brightness-125) ${
       color === 'default'
-        ? 'bg-tag text-tag-text  border-divider'
+        ? 'bg-tag text-tag-text border-divider'
         : `bg-${color}-tag text-${color}-tag-text border-${color}-text`
     } flex items-center rounded-full mt-3 shadow-md cursor-pointer`,
   'notification-text': apply`text-xs mx-2 flex-auto font-semibold group-hover:(filter brightness-75)`,

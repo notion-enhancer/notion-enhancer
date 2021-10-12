@@ -68,16 +68,16 @@
   --theme--highlight_pink: var(--theme--tag_pink);
   --theme--highlight_red: var(--theme--tag_red);
 
-  --theme--block-text: var(--cola--main);
-  --theme--block_gray: var(--cola--gray);
-  --theme--block_brown: var(--cola--brown);
-  --theme--block_orange: var(--cola--orange);
-  --theme--block_yellow: var(--cola--yellow);
-  --theme--block_green: var(--cola--green);
-  --theme--block_blue: var(--cola--blue);
-  --theme--block_purple: var(--cola--purple);
-  --theme--block_pink: var(--cola--pink);
-  --theme--block_red: var(--cola--red);
+  --theme--paragraph-text: var(--cola--main);
+  --theme--paragraph_gray: var(--cola--gray);
+  --theme--paragraph_brown: var(--cola--brown);
+  --theme--paragraph_orange: var(--cola--orange);
+  --theme--paragraph_yellow: var(--cola--yellow);
+  --theme--paragraph_green: var(--cola--green);
+  --theme--paragraph_blue: var(--cola--blue);
+  --theme--paragraph_purple: var(--cola--purple);
+  --theme--paragraph_pink: var(--cola--pink);
+  --theme--paragraph_red: var(--cola--red);
 
   --theme--tag-text: var(--cola--main);
   --theme--tag_gray: var(--cola--gray);
@@ -93,16 +93,16 @@
   --theme--tag_red: var(--cola--red);
   --theme--tag_red-text: #ffffff;
 
-  --theme--callout-text: var(--theme--block-text);
-  --theme--callout_gray: var(--theme--block_gray);
-  --theme--callout_brown: var(--theme--block_brown);
-  --theme--callout_orange: var(--theme--block_orange);
-  --theme--callout_yellow: var(--theme--block_yellow);
-  --theme--callout_green: var(--theme--block_green);
-  --theme--callout_blue: var(--theme--block_blue);
-  --theme--callout_purple: var(--theme--block_purple);
-  --theme--callout_pink: var(--theme--block_pink);
-  --theme--callout_red: var(--theme--block_red);
+  --theme--block-text: var(--theme--paragraph-text);
+  --theme--block_gray: var(--theme--paragraph_gray);
+  --theme--block_brown: var(--theme--paragraph_brown);
+  --theme--block_orange: var(--theme--paragraph_orange);
+  --theme--block_yellow: var(--theme--paragraph_yellow);
+  --theme--block_green: var(--theme--paragraph_green);
+  --theme--block_blue: var(--theme--paragraph_blue);
+  --theme--block_purple: var(--theme--paragraph_purple);
+  --theme--block_pink: var(--theme--paragraph_pink);
+  --theme--block_red: var(--theme--paragraph_red);
 
   --theme--code_inline: var(--cola--main);
   --theme--code_inline-text: var(--cola--accent);

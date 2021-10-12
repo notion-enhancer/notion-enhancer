@@ -70,16 +70,17 @@
   --theme--highlight_pink: rgb(193 106 153);
   --theme--highlight_red: var(--nord--red);
 
-  --theme--block_gray: rgb(69, 75, 78);
-  --theme--block_brown: rgb(67, 64, 64);
-  --theme--block_orange: var(--nord--orange);
-  --theme--block_yellow: var(--nord--yellow);
-  --theme--block_green: var(--nord--green);
-  --theme--block_blue: var(--nord--frost3);
-  --theme--block_purple: var(--nord--purple);
-  --theme--block_pink: rgb(193 106 153);
-  --theme--block_red: var(--nord--red);
+  --theme--paragraph_gray: rgb(69, 75, 78);
+  --theme--paragraph_brown: rgb(67, 64, 64);
+  --theme--paragraph_orange: var(--nord--orange);
+  --theme--paragraph_yellow: var(--nord--yellow);
+  --theme--paragraph_green: var(--nord--green);
+  --theme--paragraph_blue: var(--nord--frost3);
+  --theme--paragraph_purple: var(--nord--purple);
+  --theme--paragraph_pink: rgb(193 106 153);
+  --theme--paragraph_red: var(--nord--red);
 
+  --theme--tag-text: var(--theme--text);
   --theme--tag_default: rgba(151, 154, 155, 0.5);
   --theme--tag_gray: rgba(151, 154, 155, 0.5);
   --theme--tag_brown: rgba(147, 114, 100, 0.5);
@@ -91,15 +92,15 @@
   --theme--tag_pink: rgba(226, 85, 161, 0.5);
   --theme--tag_red: rgba(255, 115, 105, 0.5);
 
-  --theme--callout_gray: rgba(69, 75, 78, 0.3);
-  --theme--callout_brown: rgba(67, 64, 64, 0.3);
-  --theme--callout_orange: rgba(89, 74, 58, 0.3);
-  --theme--callout_yellow: rgba(89, 86, 59, 0.3);
-  --theme--callout_green: rgba(53, 76, 75, 0.3);
-  --theme--callout_blue: rgba(54, 73, 84, 0.3);
-  --theme--callout_purple: rgba(68, 63, 87, 0.3);
-  --theme--callout_pink: rgba(83, 59, 76, 0.3);
-  --theme--callout_red: rgba(89, 65, 65, 0.3);
+  --theme--block_gray: rgba(69, 75, 78, 0.3);
+  --theme--block_brown: rgba(67, 64, 64, 0.3);
+  --theme--block_orange: rgba(89, 74, 58, 0.3);
+  --theme--block_yellow: rgba(89, 86, 59, 0.3);
+  --theme--block_green: rgba(53, 76, 75, 0.3);
+  --theme--block_blue: rgba(54, 73, 84, 0.3);
+  --theme--block_purple: rgba(68, 63, 87, 0.3);
+  --theme--block_pink: rgba(83, 59, 76, 0.3);
+  --theme--block_red: rgba(89, 65, 65, 0.3);
 
   --theme--code_inline: rgba(135, 131, 120, 0.15);
   --theme--code_inline-text: var(--nord--red);

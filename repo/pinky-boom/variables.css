@@ -70,15 +70,15 @@
   --theme--highlight_pink-text: var(--pinky_boom--white);
   --theme--highlight_red: var(--pinky_boom--red);
 
-  --theme--block_gray: rgba(128, 128, 128, 0.5);
-  --theme--block_brown: var(--pinky_boom--brown);
-  --theme--block_orange: var(--pinky_boom--orange);
-  --theme--block_yellow: var(--pinky_boom--yellow);
-  --theme--block_green: var(--pinky_boom--green);
-  --theme--block_blue: var(--pinky_boom--blue);
-  --theme--block_purple: var(--pinky_boom--purple);
-  --theme--block_pink: var(--pinky_boom--pink);
-  --theme--block_red: var(--pinky_boom--red);
+  --theme--paragraph_gray: rgba(128, 128, 128, 0.5);
+  --theme--paragraph_brown: var(--pinky_boom--brown);
+  --theme--paragraph_orange: var(--pinky_boom--orange);
+  --theme--paragraph_yellow: var(--pinky_boom--yellow);
+  --theme--paragraph_green: var(--pinky_boom--green);
+  --theme--paragraph_blue: var(--pinky_boom--blue);
+  --theme--paragraph_purple: var(--pinky_boom--purple);
+  --theme--paragraph_pink: var(--pinky_boom--pink);
+  --theme--paragraph_red: var(--pinky_boom--red);
 
   --theme--tag_default: #ffc9e6;
   --theme--tag_gray: rgba(128, 128, 128, 0.25);
@@ -100,24 +100,24 @@
   --theme--tag_red: var(--pinky_boom--red);
   --theme--tag_red-text: var(--pinky_boom--white);
 
-  --theme--callout_gray: rgba(128, 128, 128, 0.25);
-  --theme--callout_gray-text: var(--pinky_boom--black);
-  --theme--callout_brown: var(--pinky_boom--brown);
-  --theme--callout_brown-text: var(--pinky_boom--white);
-  --theme--callout_orange: var(--pinky_boom--orange);
-  --theme--callout_orange-text: var(--pinky_boom--black);
-  --theme--callout_yellow: var(--pinky_boom--yellow);
-  --theme--callout_yellow-text: var(--pinky_boom--black);
-  --theme--callout_green: var(--pinky_boom--green);
-  --theme--callout_green-text: var(--pinky_boom--black);
-  --theme--callout_blue: var(--pinky_boom--blue);
-  --theme--callout_blue-text: var(--pinky_boom--black);
-  --theme--callout_purple: var(--pinky_boom--purple);
-  --theme--callout_purple-text: var(--pinky_boom--white);
-  --theme--callout_pink: var(--pinky_boom--pink);
-  --theme--callout_pink-text: var(--pinky_boom--white);
-  --theme--callout_red: var(--pinky_boom--red);
-  --theme--callout_red-text: var(--pinky_boom--white);
+  --theme--block_gray: rgba(128, 128, 128, 0.25);
+  --theme--block_gray-text: var(--pinky_boom--black);
+  --theme--block_brown: var(--pinky_boom--brown);
+  --theme--block_brown-text: var(--pinky_boom--white);
+  --theme--block_orange: var(--pinky_boom--orange);
+  --theme--block_orange-text: var(--pinky_boom--black);
+  --theme--block_yellow: var(--pinky_boom--yellow);
+  --theme--block_yellow-text: var(--pinky_boom--black);
+  --theme--block_green: var(--pinky_boom--green);
+  --theme--block_green-text: var(--pinky_boom--black);
+  --theme--block_blue: var(--pinky_boom--blue);
+  --theme--block_blue-text: var(--pinky_boom--black);
+  --theme--block_purple: var(--pinky_boom--purple);
+  --theme--block_purple-text: var(--pinky_boom--white);
+  --theme--block_pink: var(--pinky_boom--pink);
+  --theme--block_pink-text: var(--pinky_boom--white);
+  --theme--block_red: var(--pinky_boom--red);
+  --theme--block_red-text: var(--pinky_boom--white);
 
   --theme--code_inline: var(--theme--code);
   --theme--code_inline-text: var(--theme--text);

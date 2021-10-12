@@ -85,16 +85,17 @@
   --theme--highlight_pink: var(--theme--tag_pink);
   --theme--highlight_red: var(--gruvbox_dark--red_dark);
 
-  --theme--block_gray: var(--theme--text_gray);
-  --theme--block_brown: var(--theme--text_brown);
-  --theme--block_orange: var(--theme--text_orange);
-  --theme--block_yellow: var(--theme--text_yellow);
-  --theme--block_green: var(--theme--text_green);
-  --theme--block_blue: var(--theme--text_blue);
-  --theme--block_purple: var(--theme--text_purple);
-  --theme--block_pink: var(--theme--text_pink);
-  --theme--block_red: var(--theme--text_red);
+  --theme--paragraph_gray: var(--theme--text_gray);
+  --theme--paragraph_brown: var(--theme--text_brown);
+  --theme--paragraph_orange: var(--theme--text_orange);
+  --theme--paragraph_yellow: var(--theme--text_yellow);
+  --theme--paragraph_green: var(--theme--text_green);
+  --theme--paragraph_blue: var(--theme--text_blue);
+  --theme--paragraph_purple: var(--theme--text_purple);
+  --theme--paragraph_pink: var(--theme--text_pink);
+  --theme--paragraph_red: var(--theme--text_red);
 
+  --theme--tag-text: var(--theme--text);
   --theme--tag_default: var(--gruvbox_dark--gray_dark);
   --theme--tag_default-text: var(--gruvbox_dark--bg2);
   --theme--tag_gray: var(--gruvbox_dark--gray_dark);
@@ -110,15 +111,15 @@
   --theme--tag_red: var(--gruvbox_dark--red_dark);
   --theme--tag_red-text: var(--gruvbox_dark--fg2);
 
-  --theme--callout_gray: var(--theme--block_gray);
-  --theme--callout_brown: var(--theme--block_brown);
-  --theme--callout_orange: var(--theme--block_orange);
-  --theme--callout_yellow: var(--theme--block_yellow);
-  --theme--callout_green: var(--theme--block_green);
-  --theme--callout_blue: var(--theme--block_blue);
-  --theme--callout_purple: var(--theme--block_purple);
-  --theme--callout_pink: var(--theme--block_pink);
-  --theme--callout_red: var(--theme--block_red);
+  --theme--block_gray: var(--theme--paragraph_gray);
+  --theme--block_brown: var(--theme--paragraph_brown);
+  --theme--block_orange: var(--theme--paragraph_orange);
+  --theme--block_yellow: var(--theme--paragraph_yellow);
+  --theme--block_green: var(--theme--paragraph_green);
+  --theme--block_blue: var(--theme--paragraph_blue);
+  --theme--block_purple: var(--theme--paragraph_purple);
+  --theme--block_pink: var(--theme--paragraph_pink);
+  --theme--block_red: var(--theme--paragraph_red);
 
   --theme--code_inline: var(--gruvbox_dark--bg1);
   --theme--code_inline-text: var(--gruvbox_dark--blue_light);

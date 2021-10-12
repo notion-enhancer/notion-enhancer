@@ -91,16 +91,16 @@
   --theme--highlight_red: var(--dracula--red);
   --theme--highlight_red-text: var(--dracula--fg);
 
-  --theme--block-text: var(--dracula--fg);
-  --theme--block_gray: var(--dracula--bg_gray);
-  --theme--block_brown: var(--dracula--bg_brown);
-  --theme--block_orange: var(--dracula--bg_orange);
-  --theme--block_yellow: var(--dracula--bg_yellow);
-  --theme--block_green: var(--dracula--bg_green);
-  --theme--block_blue: var(--dracula--bg_blue);
-  --theme--block_purple: var(--dracula--bg_purple);
-  --theme--block_pink: var(--dracula--bg_pink);
-  --theme--block_red: var(--dracula--bg_red);
+  --theme--paragraph-text: var(--dracula--fg);
+  --theme--paragraph_gray: var(--dracula--bg_gray);
+  --theme--paragraph_brown: var(--dracula--bg_brown);
+  --theme--paragraph_orange: var(--dracula--bg_orange);
+  --theme--paragraph_yellow: var(--dracula--bg_yellow);
+  --theme--paragraph_green: var(--dracula--bg_green);
+  --theme--paragraph_blue: var(--dracula--bg_blue);
+  --theme--paragraph_purple: var(--dracula--bg_purple);
+  --theme--paragraph_pink: var(--dracula--bg_pink);
+  --theme--paragraph_red: var(--dracula--bg_red);
 
   --theme--tag-text: var(--dracula--bg);
   --theme--tag_default: var(--dracula--comment);
@@ -117,16 +117,16 @@
   --theme--tag_red: var(--dracula--red);
   --theme--tag_red-text: var(--dracula--fg);
 
-  --theme--callout-text: var(--dracula--fg);
-  --theme--callout_gray: var(--dracula--bg_gray);
-  --theme--callout_brown: var(--dracula--bg_brown);
-  --theme--callout_orange: var(--dracula--bg_orange);
-  --theme--callout_yellow: var(--dracula--bg_yellow);
-  --theme--callout_green: var(--dracula--bg_green);
-  --theme--callout_blue: var(--dracula--bg_blue);
-  --theme--callout_purple: var(--dracula--bg_purple);
-  --theme--callout_pink: var(--dracula--bg_pink);
-  --theme--callout_red: var(--dracula--bg_red);
+  --theme--block-text: var(--dracula--fg);
+  --theme--block_gray: var(--dracula--bg_gray);
+  --theme--block_brown: var(--dracula--bg_brown);
+  --theme--block_orange: var(--dracula--bg_orange);
+  --theme--block_yellow: var(--dracula--bg_yellow);
+  --theme--block_green: var(--dracula--bg_green);
+  --theme--block_blue: var(--dracula--bg_blue);
+  --theme--block_purple: var(--dracula--bg_purple);
+  --theme--block_pink: var(--dracula--bg_pink);
+  --theme--block_red: var(--dracula--bg_red);
 
   --theme--code_inline: var(--dracula--bg_light);
   --theme--code_inline-text: var(--dracula--green);

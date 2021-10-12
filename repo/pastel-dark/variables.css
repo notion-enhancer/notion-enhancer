@@ -52,16 +52,16 @@
   --theme--highlight_pink: #f7b8dc;
   --theme--highlight_red: #f8acb4;
 
-  --theme--block-text: rgb(34, 34, 34);
-  --theme--block_gray: #c2c1c089;
-  --theme--block_brown: #dacec992;
-  --theme--block_orange: #fff0dc9f;
-  --theme--block_yellow: #ffe6a6ad;
-  --theme--block_green: #c8fdd9a3;
-  --theme--block_blue: #d1e9ffa3;
-  --theme--block_purple: #e3d3ffa8;
-  --theme--block_pink: #fdcce8b1;
-  --theme--block_red: #ffc8ce9e;
+  --theme--paragraph-text: rgb(34, 34, 34);
+  --theme--paragraph_gray: #c2c1c089;
+  --theme--paragraph_brown: #dacec992;
+  --theme--paragraph_orange: #fff0dc9f;
+  --theme--paragraph_yellow: #ffe6a6ad;
+  --theme--paragraph_green: #c8fdd9a3;
+  --theme--paragraph_blue: #d1e9ffa3;
+  --theme--paragraph_purple: #e3d3ffa8;
+  --theme--paragraph_pink: #fdcce8b1;
+  --theme--paragraph_red: #ffc8ce9e;
 
   --theme--tag-text: var(--theme--highlight-text);
   --theme--tag_default: var(--theme--highlight_gray);
@@ -75,16 +75,16 @@
   --theme--tag_pink: var(--theme--highlight_pink);
   --theme--tag_red: var(--theme--highlight_red);
 
-  --theme--callout-text: var(--theme--block-text);
-  --theme--callout_gray: var(--theme--block_gray);
-  --theme--callout_brown: var(--theme--block_brown);
-  --theme--callout_orange: var(--theme--block_orange);
-  --theme--callout_yellow: var(--theme--block_yellow);
-  --theme--callout_green: var(--theme--block_green);
-  --theme--callout_blue: var(--theme--block_blue);
-  --theme--callout_purple: var(--theme--block_purple);
-  --theme--callout_pink: var(--theme--block_pink);
-  --theme--callout_red: var(--theme--block_red);
+  --theme--block-text: var(--theme--paragraph-text);
+  --theme--block_gray: var(--theme--paragraph_gray);
+  --theme--block_brown: var(--theme--paragraph_brown);
+  --theme--block_orange: var(--theme--paragraph_orange);
+  --theme--block_yellow: var(--theme--paragraph_yellow);
+  --theme--block_green: var(--theme--paragraph_green);
+  --theme--block_blue: var(--theme--paragraph_blue);
+  --theme--block_purple: var(--theme--paragraph_purple);
+  --theme--block_pink: var(--theme--paragraph_pink);
+  --theme--block_red: var(--theme--paragraph_red);
 
   --theme--code_inline: rgb(8, 8, 8);
   --theme--code_inline-text: #b3f5c8;
