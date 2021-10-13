@@ -10,7 +10,7 @@ export default async function (api, db) {
   const { web } = api;
 
   const toolbarSelector = '.notion-calendar-view > :first-child > :first-child > :first-child',
-    $scrollButton = web.html`<button id="calendar-scroll-to-week">Scroll</button>`;
+    $scrollButton = web.html`<button id="enhancer--calendar-scroll">Scroll</button>`;
   $scrollButton.addEventListener('click', async (event) => {
     const $toolbar = document.querySelector(toolbarSelector),
       now = new Date(),
@@ -57,8 +57,8 @@ export default async function (api, db) {
 
   const insertButton = () => {
     if (document.contains($scrollButton)) return;
-    const toolbar = document.querySelector(toolbarSelector);
-    if (toolbar) toolbar.insertBefore($scrollButton, toolbar.children[2]);
+    const $toolbar = document.querySelector(toolbarSelector);
+    if ($toolbar) $toolbar.insertBefore($scrollButton, $toolbar.children[2]);
   };
   web.addDocumentObserver(insertButton, ['.notion-calendar-view']);
   insertButton();

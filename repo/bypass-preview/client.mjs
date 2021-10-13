@@ -10,28 +10,24 @@ export default async function (api, db) {
   const { web, notion } = api;
 
   let _openPage = {};
-  function getCurrentPage() {
-    return {
-      type: web.queryParams().get('p') ? 'preview' : 'page',
-      id: notion.getPageID(),
-    };
-  }
+  const getCurrentPage = () => ({
+    type: web.queryParams().get('p') ? 'preview' : 'page',
+    id: notion.getPageID(),
+  });
 
-  web.addDocumentObserver(
-    (event) => {
-      const currentPage = getCurrentPage();
-      if (currentPage.id !== _openPage.id || currentPage.type !== _openPage.type) {
-        const openAsPage = document.querySelector(
-          '.notion-peek-renderer [style*="height: 45px;"] a'
-        );
-        if (openAsPage) {
-          if (currentPage.id === _openPage.id && currentPage.type === 'preview') {
-            history.back();
-          } else openAsPage.click();
-        }
-        _openPage = getCurrentPage();
+  const interceptPreview = () => {
+    const currentPage = getCurrentPage();
+    if (currentPage.id !== _openPage.id || currentPage.type !== _openPage.type) {
+      const $openAsPage = document.querySelector(
+        '.notion-peek-renderer [style*="height: 45px;"] a'
+      );
+      if ($openAsPage) {
+        if (currentPage.id === _openPage.id && currentPage.type === 'preview') {
+          history.back();
+        } else $openAsPage.click();
       }
-    },
-    ['.notion-peek-renderer']
-  );
+      _openPage = getCurrentPage();
+    }
+  };
+  web.addDocumentObserver(interceptPreview, ['.notion-peek-renderer']);
 }

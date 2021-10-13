@@ -4,7 +4,7 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-#calendar-scroll-to-week {
+#enhancer--calendar-scroll {
   background: var(--theme--ui_interactive-hover);
   border: 1px solid transparent;
   font-size: 14px;
@@ -15,11 +15,11 @@
   padding: 0 0.5em;
   margin-right: 5px;
 }
-#calendar-scroll-to-week:focus,
-#calendar-scroll-to-week:hover {
+#enhancer--calendar-scroll:focus,
+#enhancer--calendar-scroll:hover {
   background: transparent;
   border: 1px solid var(--theme--ui_interactive-hover);
 }
-#calendar-scroll-to-week:active {
+#enhancer--calendar-scroll:active {
   background: var(--theme--ui_interactive-active);
 }
