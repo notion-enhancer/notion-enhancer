@@ -15,15 +15,13 @@ for support, join the [discord server](https://discord.gg/sFWPXtA).
 ## Supported desktop clients
 
 - the pre-enhanced builds available at [notion-repackaged](https://github.com/notion-enhancer/notion-repackaged). Built for Windows, Linux and Mac (Intel and M1)
-- manually patching the [official windows/mac releases](https://notion.so/desktop)
-- the pre-enhanced packages for by [notion-linux](https://github.com/davidbailey00/notion-linux)
 - the pre-enhanced arch linux AUR package [notion-app-enhanced](https://aur.archlinux.org/packages/notion-app-enhanced/)
 
-outdated notion versions (< 2.0.10) probably won't work.
+it is possible to manually patch the [official windows/mac releases](https://notion.so/desktop), but currently it is not recommended as notion-repackaged contains extra bugfixes on top of the notion-enhancer release. 
 
 mobile clients are not supported and due to system limitations/restrictions cannot be.
 
-a chrome extension may be coming soon for web client support.
+a chrome extension is work in progress
 
 ## Installation
 
@@ -45,6 +43,8 @@ The builds are not signed, so your operating system might complain when installi
 For more information, please head over to [notion-repackaged's documentation](https://github.com/notion-enhancer/notion-repackaged)
 
 ### Patching manually
+
+YOU SHOULD NOT DO THIS. PLEASE USE NOTION-REPACKAGED UNTIL NOTION-ENHANCER IS UPDATED. NOTION HAS RECENTLY MADE MANY BREAKING CHANGES THAT WE ARE TRYING TO CATCH UP WITH.
 
 > **if you are updating from v0.7.0 or earlier,** things have changed, more information is available
 > in this [update guide](UPDATING.md). please read that before following these instructions.
