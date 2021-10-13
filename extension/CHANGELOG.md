@@ -15,6 +15,9 @@ a complete rework of the enhancer including a port to the browser as a chrome ex
 - improved: merged bracketed-links into tweaks.
 - improved: a redesigned menu with nicer ui, separate categories for mods and a sidebar for configuration.
 - improved: simplified and smoothened the side panel + moved it to the core so any mod can hook into it.
+- improved: font chooser option for heading fonts.
+- improved: renamed "property-layout" to "collapse properties", added per-page memory of collapse state.
+- improved: chevron icon instead of arrow for scroll to top.
 - removed: integrated scrollbar tweak (notion now includes by default).
 - removed: js insert. css insert moved to tweaks mod.
 - removed: majority of layout and font size variables - better to leave former to notion and use `ctrl +` for latter.
