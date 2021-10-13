@@ -1,5 +1,5 @@
 /*
- * notion-enhancer: api
+ * notion-enhancer core: api
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
@@ -16,7 +16,7 @@
  * @param {HTMLElement} $ref - the element that will trigger the tooltip when hovered
  * @param {string} text - the markdown content of the tooltip
  */
-export { tooltip } from './tooltip.mjs';
+export { setTooltip } from './tooltip.mjs';
 
 /**
  * generate an icon from the feather icons set
@@ -35,3 +35,11 @@ export { feather } from './feather.mjs';
  * @param {Element} panel.$content - an element containing the content of the view
  */
 export { addPanelView } from './panel.mjs';
+
+/**
+ * adds a button to notion's bottom right corner
+ * @param {string} icon - an svg string
+ * @param {function} listener - the function to call when the button is clicked
+ * @returns {Element} the appended corner action element
+ */
+export { addCornerAction } from './corner-action.mjs';

@@ -1,5 +1,5 @@
 /*
- * notion-enhancer: api
+ * notion-enhancer core: api
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
@@ -21,7 +21,7 @@ web.loadStylesheet('api/components/tooltip.css');
  * @param {HTMLElement} $ref - the element that will trigger the tooltip when hovered
  * @param {string} text - the markdown content of the tooltip
  */
-export const tooltip = ($ref, text) => {
+export const setTooltip = ($ref, text) => {
   web.render(document.body, _$tooltip);
   text = web.html`${fmt.md.render(text)}`;
   $ref.addEventListener('mouseover', (event) => {

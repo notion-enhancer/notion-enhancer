@@ -1,6 +1,7 @@
 /*
- * notion-enhancer: api
+ * notion-enhancer core: api
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2021 CloudHill <rl.cloudhill@gmail.com> (https://github.com/CloudHill)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
@@ -13,6 +14,8 @@
 
 import { web, components, registry } from '../_.mjs';
 const db = await registry.db('36a2ffc9-27ff-480e-84a7-c7700a7d232d');
+
+web.loadStylesheet('api/components/panel.css');
 
 const _views = [],
   svgExpand = web.raw`<svg viewBox="-1 -1 9 11">
@@ -217,8 +220,6 @@ async function createViews() {
   $switcherTrigger.addEventListener('click', openSwitcher);
   $switcherOverlayContainer.addEventListener('click', closeSwitcher);
 }
-
-web.loadStylesheet('api/components/panel.css');
 
 /**
  * adds a view to the enhancer's side panel
