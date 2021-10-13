@@ -6,9 +6,7 @@
 
 'use strict';
 
-export default async function (api, db) {
-  const { web, notion } = api;
-
+export default function ({ web, notion }, db) {
   let _openPage = {};
   const getCurrentPage = () => ({
     type: web.queryParams().get('p') ? 'preview' : 'page',

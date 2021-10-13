@@ -6,9 +6,7 @@
 
 'use strict';
 
-export default function (api, db) {
-  const { web, notion } = api;
-
+export default function ({ web, notion }, db) {
   const propertyListSelector =
       '.notion-scroller.vertical [style*="env(safe-area-inset-left)"] > [style="width: 100%; font-size: 14px;"]',
     $collapseButton = web.html`<button id="enhancer--collapse-properties">
@@ -28,7 +26,7 @@ export default function (api, db) {
     if (document.contains($collapseButton)) return;
     const $propertyList = document.querySelector(propertyListSelector);
     if ($propertyList) {
-      $collapseButton.dataset.collapsed = await db.get([notion.getPageID()], false);
+      $collapseButton.dataset.collapsed = await db.get([notion.getPageID()], true);
       $propertyList.before($collapseButton);
     }
   };

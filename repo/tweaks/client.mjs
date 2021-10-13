@@ -6,9 +6,7 @@
 
 'use strict';
 
-export default async function (api, db) {
-  const { web } = api;
-
+export default async function ({ web }, db) {
   const cssInsert = await db.get(['insert.css']);
   if (cssInsert?.filename) {
     document.head.append(
@@ -16,7 +14,7 @@ export default async function (api, db) {
     );
   }
 
-  const responsiveBreakpointPx = await db.get(['tweak.responsive_breakpoint_px']),
+  const responsiveBreakpointPx = +(await db.get(['tweak.responsive_breakpoint_px'])),
     responsiveBreakpointPercent =
       screen.width * 0.01 * (await db.get(['tweak.responsive_breakpoint_percent'])),
     addResponsiveBreakpoint = () => {

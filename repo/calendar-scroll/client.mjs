@@ -6,9 +6,7 @@
 
 'use strict';
 
-export default async function (api, db) {
-  const { web } = api;
-
+export default function ({ web }, db) {
   const toolbarSelector = '.notion-calendar-view > :first-child > :first-child > :first-child',
     $scrollButton = web.html`<button id="enhancer--calendar-scroll">Scroll</button>`;
   $scrollButton.addEventListener('click', async (event) => {

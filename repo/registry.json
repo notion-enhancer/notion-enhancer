@@ -20,5 +20,6 @@
   "bypass-preview",
   "calendar-scroll",
   "font-chooser",
-  "collapse-properties"
+  "collapse-properties",
+  "scroll-to-top"
 ]

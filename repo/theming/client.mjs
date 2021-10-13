@@ -6,9 +6,7 @@
 
 'use strict';
 
-export default function (api, db) {
-  const { web } = api;
-
+export default function ({ web }, db) {
   const updateTheme = () =>
     document.documentElement.classList[
       document.body.classList.contains('dark') ? 'add' : 'remove'

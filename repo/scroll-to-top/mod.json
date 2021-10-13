@@ -1,0 +1,41 @@
+{
+  "name": "scroll to top",
+  "id": "0a958f5a-17c5-48b5-8713-16190cae1959",
+  "version": "0.3.0",
+  "description": "add an arrow in the bottom right corner to scroll back to the top of a page.",
+  "tags": ["extension", "shortcut"],
+  "authors": [
+    {
+      "name": "CloudHill",
+      "email": "rh.cloudhill@gmail.com",
+      "homepage": "https://github.com/CloudHill",
+      "avatar": "https://avatars.githubusercontent.com/u/54142180"
+    }
+  ],
+  "css": {},
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "options": [
+    {
+      "type": "toggle",
+      "key": "smooth",
+      "label": "smooth scrolling",
+      "value": true
+    },
+    {
+      "type": "number",
+      "key": "top_distance_px",
+      "label": "distance scrolled until button shown (px)",
+      "tooltip": "**the distance in pixels that must be scrolled down before the button appears**",
+      "value": 5000
+    },
+    {
+      "type": "number",
+      "key": "top_distance_percent",
+      "label": "distance scrolled until button shown (%)",
+      "tooltip": "**the percentage of the page that must be scrolled down before the button appears**",
+      "value": 80
+    }
+  ]
+}

@@ -6,9 +6,7 @@
 
 'use strict';
 
-export default async function (api, db) {
-  const { env, fs, storage, registry, web } = api;
-
+export default async function ({ env, fs, storage, registry, web }, db) {
   web.addHotkeyListener(await db.get(['hotkey']), env.focusMenu);
 
   const updateTheme = () =>

@@ -1,5 +1,5 @@
 {
-  "__comment": "pseudo-mod to allow configuration of API-provided components",
+  "__comment": "pseudo-mod to allow configuration of api-provided components",
   "name": "components",
   "id": "36a2ffc9-27ff-480e-84a7-c7700a7d232d",
   "version": "0.2.0",
