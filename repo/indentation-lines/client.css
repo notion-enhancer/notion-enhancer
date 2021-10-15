@@ -1,0 +1,39 @@
+/*
+ * notion-enhancer: indentation lines
+ * (c) 2020 Alexa Baldon <alnbaldon@gmail.com> (https://github.com/runargs)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+.notion-page-content .notion-bulleted_list-block > div > div:last-child,
+.notion-page-content .notion-numbered_list-block > div > div:last-child,
+.notion-page-content .notion-to_do-block > div > div:last-child,
+.notion-page-content .notion-toggle-block > div > div:last-child,
+.notion-page-content .notion-table_of_contents-block > div > div > a > div > div {
+  position: relative;
+}
+
+.notion-page-content .notion-bulleted_list-block > div > div:last-child::before,
+.notion-page-content .notion-numbered_list-block > div > div:last-child::before,
+.notion-page-content .notion-to_do-block > div > div:last-child::before,
+.notion-page-content .notion-toggle-block > div > div:last-child::before {
+  content: '';
+  position: absolute;
+  height: calc(100% - 2em);
+  top: 2em;
+  left: -14.48px;
+}
+
+.notion-page-content
+  .notion-table_of_contents-block
+  > div
+  > div
+  > a
+  > div
+  > div:not([style*='margin-left: 0px'])
+  > div::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  top: 0;
+  left: -14.48px;
+}

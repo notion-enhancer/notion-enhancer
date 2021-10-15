@@ -23,7 +23,7 @@ export default async function ({ web, components }, db) {
   let $scroller;
   const topDistancePx = +(await db.get(['top_distance_px'])),
     topDistancePercent = 0.01 * (await db.get(['top_distance_percent'])),
-    adjustButtonVisibility = async (event) => {
+    adjustButtonVisibility = async () => {
       if (!$scroller) return;
       $scrollButton.classList.add('hidden');
       const scrolledDistance =
