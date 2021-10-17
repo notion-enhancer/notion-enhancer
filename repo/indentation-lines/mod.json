@@ -23,7 +23,7 @@
       "type": "select",
       "key": "style",
       "label": "style",
-      "values": ["solid", "dashed", "dotted", "soft"]
+      "values": ["solid", "dashed", "dotted", "soft", "rainbow"]
     },
     {
       "type": "toggle",
