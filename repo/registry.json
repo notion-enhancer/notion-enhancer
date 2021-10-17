@@ -22,5 +22,6 @@
   "font-chooser",
   "collapse-properties",
   "scroll-to-top",
-  "indentation-lines"
+  "indentation-lines",
+  "focus-mode"
 ]

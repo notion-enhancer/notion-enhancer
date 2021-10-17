@@ -6,7 +6,15 @@
 
 'use strict';
 
-export default function ({ web }, db) {
+export default async function ({ web, registry }, db) {
+  const enabledThemes = await registry.list(
+    async (m) => (await registry.enabled(m.id)) && m.tags.includes('theme')
+  );
+  if (enabledThemes.length) {
+    web.loadStylesheet('repo/theming/theme.css');
+    web.loadStylesheet('repo/theming/theme-colors.css');
+  }
+
   const updateTheme = () =>
     document.documentElement.classList[
       document.body.classList.contains('dark') ? 'add' : 'remove'

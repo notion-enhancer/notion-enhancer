@@ -1,0 +1,21 @@
+/*
+ * notion-enhancer: focus mode
+ * (c) 2020 Arecsu
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+.notion-sidebar-container[style*='width: 0px;'] ~ div .notion-topbar > :first-child {
+  opacity: 0 !important;
+  transition: opacity 200ms ease-in-out !important;
+}
+.notion-sidebar-container[style*='width: 0px;'] ~ div .notion-topbar > :first-child:hover {
+  opacity: 1 !important;
+}
+
+[data-focus-mode='padded']
+  .notion-sidebar-container[style*='width: 0px;']
+  ~ div
+  .notion-frame {
+  height: calc(100vh - 90px) !important;
+}
