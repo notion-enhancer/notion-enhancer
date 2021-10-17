@@ -1,0 +1,56 @@
+/*
+ * notion-enhancer core: theming
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+/* typography */
+
+[style*='Segoe UI'] {
+  font-family: var(--theme--font_sans) !important;
+}
+[style*='Georgia'] {
+  font-family: var(--theme--font_serif) !important;
+}
+[style*='iawriter-mono'] {
+  font-family: var(--theme--font_mono) !important;
+}
+[style*='SFMono-Regular'] {
+  font-family: var(--theme--font_code) !important;
+}
+
+/** remove white pixels in iframe corners **/
+
+.notion-page-content iframe {
+  border-radius: 0px !important;
+}
+
+/** consistent corner button styling **/
+
+.notion-overlay-container
+  [style*='border-radius: 3px;'][style*='position: relative; max-width: calc(100vw - 24px); box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px; overflow: hidden;'][style*='padding: 4px 8px; font-size: 12px; line-height: 1.4; font-weight: 500;'] {
+  background: var(--theme--ui_tooltip) !important;
+  box-shadow: var(--theme--ui_shadow) 0px 1px 4px !important;
+  color: var(--theme--ui_tooltip-title) !important;
+}
+.notion-overlay-container
+  [style*='border-radius: 3px;'][style*='position: relative; max-width: calc(100vw - 24px); box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px; overflow: hidden;'][style*='padding: 4px 8px; font-size: 12px; line-height: 1.4; font-weight: 500;']
+  [style*='color: '] {
+  color: var(--theme--ui_tooltip-description) !important;
+}
+.onboarding-checklist-button > .graduationCap + .notion-focusable {
+  background: var(--theme--ui_tooltip) !important;
+}
+.onboarding-checklist-button .closeSmall {
+  fill: var(--theme--ui_tooltip-title) !important;
+}
+.graduationCap {
+  fill: var(--theme--icon) !important;
+}
+.notion-help-button,
+.onboarding-checklist-button {
+  color: var(--theme--icon) !important;
+  background: var(--theme--tag_default) !important;
+  box-shadow: var(--theme--ui_shadow, rgba(15, 15, 15, 0.15)) 0px 0px 0px 1px,
+    var(--theme--ui_shadow, rgba(15, 15, 15, 0.15)) 0px 2px 4px !important;
+}

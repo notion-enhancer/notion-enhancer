@@ -14,7 +14,7 @@
   ],
   "css": {
     "frame": ["variables.css"],
-    "client": ["variables.css", "prism.css"],
+    "client": ["variables.css", "prism.css", "patches.css"],
     "menu": ["variables.css", "prism.css"]
   },
   "js": {

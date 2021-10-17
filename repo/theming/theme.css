@@ -344,21 +344,6 @@ body,
   background: var(--theme--scrollbar_thumb-hover) !important;
 }
 
-/** typography **/
-
-[style*='Segoe UI'] {
-  font-family: var(--theme--font_sans) !important;
-}
-[style*='Georgia'] {
-  font-family: var(--theme--font_serif) !important;
-}
-[style*='iawriter-mono'] {
-  font-family: var(--theme--font_mono) !important;
-}
-[style*='SFMono-Regular'] {
-  font-family: var(--theme--font_code) !important;
-}
-
 /** ui **/
 
 .notion-page-mention-token.notion-enable-hover:hover {
@@ -466,32 +451,6 @@ body,
   > div:nth-child(1)
   > div[style*='background'] {
   background: var(--theme--ui_input) !important;
-}
-
-.notion-overlay-container
-  [style*='border-radius: 3px;'][style*='position: relative; max-width: calc(100vw - 24px); box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px; overflow: hidden;'][style*='padding: 4px 8px; font-size: 12px; line-height: 1.4; font-weight: 500;'] {
-  background: var(--theme--ui_tooltip) !important;
-  box-shadow: var(--theme--ui_shadow) 0px 1px 4px !important;
-  color: var(--theme--ui_tooltip-title) !important;
-}
-.notion-overlay-container
-  [style*='border-radius: 3px;'][style*='position: relative; max-width: calc(100vw - 24px); box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px; overflow: hidden;'][style*='padding: 4px 8px; font-size: 12px; line-height: 1.4; font-weight: 500;']
-  [style*='color: '] {
-  color: var(--theme--ui_tooltip-description) !important;
-}
-.onboarding-checklist-button > .graduationCap + .notion-focusable {
-  background: var(--theme--ui_tooltip) !important;
-}
-.onboarding-checklist-button .closeSmall {
-  fill: var(--theme--ui_tooltip-title) !important;
-}
-
-.notion-help-button,
-.onboarding-checklist-button {
-  color: var(--theme--icon) !important;
-  background: var(--theme--tag_default) !important;
-  box-shadow: var(--theme--ui_shadow, rgba(15, 15, 15, 0.15)) 0px 0px 0px 1px,
-    var(--theme--ui_shadow, rgba(15, 15, 15, 0.15)) 0px 2px 4px !important;
 }
 
 .notion-body.dark
@@ -808,8 +767,7 @@ body,
 }
 
 .notion-body.dark [style*='fill: rgb(202, 204, 206)'],
-.notion-body:not(.dark) [style*='fill: rgba(55, 53, 47, 0.8)'],
-.graduationCap {
+.notion-body:not(.dark) [style*='fill: rgba(55, 53, 47, 0.8)'] {
   fill: var(--theme--icon) !important;
 }
 .notion-body.dark [style*='fill: rgba(202, 204, 206, 0.'],
@@ -906,10 +864,4 @@ body,
 }
 .notion-code-block > div {
   color: var(--theme--code_plain) !important;
-}
-
-/** remove white pixels in iframe corners **/
-
-.notion-page-content iframe {
-  border-radius: 0px !important;
 }
