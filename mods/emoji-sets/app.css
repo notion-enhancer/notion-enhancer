@@ -1,0 +1,11 @@
+/*
+ * emoji sets
+ * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) this css fix was provided by Arecsu from martyr⁠— (https://martyr.shop/)
+ * under the MIT license
+ */
+
+div.notion-record-icon [style*='Apple Color Emoji'] {
+  display: flex;
+  justify-content: center;
+}
