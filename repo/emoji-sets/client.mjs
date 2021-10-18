@@ -11,7 +11,7 @@ export default async function ({ web, env }, db) {
     imgEmojiSelector = '.notion-emoji:not([data-emoji-sets-unsupported])',
     imgEmojiOverlaySelector = `${imgEmojiSelector} + [src*="notion-emojis"]`;
 
-  await web.whenReady();
+  await Promise.any([web.whenReady([nativeEmojiSelector]), web.whenReady([imgEmojiSelector])]);
 
   const nativeEmojis = document.querySelectorAll(nativeEmojiSelector).length,
     imgEmojis = document.querySelectorAll(imgEmojiSelector).length;
