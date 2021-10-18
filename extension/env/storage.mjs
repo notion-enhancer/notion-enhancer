@@ -21,7 +21,6 @@ const _queue = [],
  * @returns {Promise} value ?? fallback
  */
 export const get = (path, fallback = undefined) => {
-  if (typeof path === 'string') path = [path];
   if (!path.length) return fallback;
   return new Promise((res, rej) =>
     chrome.storage.local.get(async (values) => {
@@ -45,7 +44,6 @@ export const get = (path, fallback = undefined) => {
  * @returns {Promise} resolves when data has been saved
  */
 export const set = (path, value) => {
-  if (typeof path === 'string') path = [path];
   if (!path.length) return undefined;
   const precursor = _queue[_queue.length - 1] || undefined,
     interaction = new Promise(async (res, rej) => {

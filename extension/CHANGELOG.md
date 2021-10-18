@@ -10,6 +10,7 @@ a complete rework of the enhancer including a port to the browser as a chrome ex
 - new: simplify user installs by depending on the chrome web store and [notion-repackaged](https://github.com/notion-enhancer/notion-repackaged).
 - new: separate menu profiles for mod configurations.
 - new: a hotkey option type that allows typing in/pressing a hotkey to enter it, instead of typing.
+- new: a rainbow indentation lines style.
 - improved: split the core mod into separate mods for specific features.
 - improved: theming variables that are applied more specifically, less laggy, and less complicated.
 - improved: merged bracketed-links into tweaks.
@@ -18,6 +19,8 @@ a complete rework of the enhancer including a port to the browser as a chrome ex
 - improved: font chooser option for heading fonts.
 - improved: renamed "property-layout" to "collapse properties", added per-page memory of collapse state.
 - improved: chevron icon instead of arrow for scroll to top.
+- improved: moved word counter to display in the side panel instead of within the page,
+  implemented a more accurate word counter method.
 - removed: integrated scrollbar tweak (notion now includes by default).
 - removed: js insert. css insert moved to tweaks mod.
 - removed: majority of layout and font size variables - better to leave former to notion and use `ctrl +` for latter.
@@ -36,7 +39,8 @@ a complete rework of the enhancer including a port to the browser as a chrome ex
 - tweak: responsive columns breakpoint (%).
 - tweak: accented links.
 - tweak: full width pages.
-- bugfixes: many. like many many. all the bugfixes. (mostly a side effect of completely rewriting everything.)
+- bugfixes: many. like many many. all the bugfixes. (mostly a side effect of completely rewriting everything,
+  but reported extension-specific bugs were all intentionally fixed.)
 
 **below this point the enhancer was desktop-only. in v0.11.0 it was been ported to also**
 **run as a chrome extension. changes made to both are indicated above.**
