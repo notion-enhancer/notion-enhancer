@@ -23,5 +23,6 @@
   "collapse-properties",
   "scroll-to-top",
   "indentation-lines",
-  "focus-mode"
+  "focus-mode",
+  "word-counter"
 ]

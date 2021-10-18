@@ -1,0 +1,39 @@
+/*
+ * notion-enhancer: word counter
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+#word-counter--notice {
+  color: var(--theme--text_secondary);
+  font-size: 14px;
+}
+
+.word-counter--stat {
+  display: block;
+  background: var(--theme--ui_interactive-hover);
+  color: var(--theme--text);
+  font-size: 14px;
+  line-height: 1.2;
+  border: 1px solid transparent;
+  border-radius: 3px;
+  padding: 6px 8px;
+  cursor: pointer;
+  user-select: none;
+}
+.word-counter--stat:focus,
+.word-counter--stat:hover {
+  background: transparent;
+  border: 1px solid var(--theme--ui_interactive-hover);
+}
+.word-counter--stat:active {
+  background: var(--theme--ui_interactive-active);
+}
+
+.word-counter--stat svg {
+  display: inline-block;
+  height: 1em;
+  width: 1em;
+  margin: 0 0.4em -2px 0;
+  color: var(--theme--icon_secondary);
+}

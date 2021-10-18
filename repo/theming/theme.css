@@ -4,97 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-/** layout **/
-
-.notion-frame
-  > .notion-scroller.vertical.horizontal
-  > .pseudoSelection
-  > div
-  > div:nth-child(3)[style*='width: 900px'],
-.notion-frame
-  > .notion-scroller.vertical.horizontal
-  > .pseudoSelection
-  + div
-  > :nth-child(1)[style*='width: 900px'],
-.notion-frame
-  > .notion-scroller.vertical.horizontal
-  > :nth-child(2)
-  > :nth-child(2)[style*='display: flex; width: 100%; justify-content: center;']
-  > :nth-child(1)[style*='width: 900px'] {
-  width: var(--theme--page-width) !important;
-}
-.notion-frame
-  > .notion-scroller.vertical.horizontal
-  > .pseudoSelection
-  > div
-  > div:nth-child(3):not([style*='width: 900px']),
-.notion-frame
-  > .notion-scroller.vertical.horizontal
-  > .pseudoSelection
-  + div
-  > :nth-child(1):not([style*='width: 900px']),
-.notion-frame
-  > .notion-scroller.vertical.horizontal
-  > :nth-child(2)
-  > :nth-child(2)[style*='display: flex; width: 100%; justify-content: center;']
-  > :nth-child(1):not([style*='width: 900px']) {
-  width: var(--theme--page-width_full) !important;
-}
-.notion-page-content [style*='width: 100%; max-width:'][style*='align-self: center;'] {
-  max-width: 100% !important;
-}
-.notion-frame [style*='padding-right: calc(96px + env(safe-area-inset-right));'] {
-  padding-right: var(--theme--page-padding) !important;
-}
-.notion-frame [style*='padding-left: calc(96px + env(safe-area-inset-left));'] {
-  padding-left: var(--theme--page-padding) !important;
-}
-[style^='position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 30vh;'],
-[style^='position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 30vh;']
-  img {
-  height: var(--theme--page_banner-height) !important;
-  background: transparent !important;
-}
-
-.notion-peek-renderer > :nth-child(2) {
-  max-width: var(--theme--page_preview-width) !important;
-}
-.notion-peek-renderer
-  .notion-scroller.vertical
-  [style*='padding-left: calc(126px + env(safe-area-inset-left));'] {
-  padding-left: var(--theme--page_preview-padding) !important;
-}
-.notion-peek-renderer
-  .notion-scroller.vertical
-  [style*='padding-right: calc(126px + env(safe-area-inset-right));'] {
-  padding-right: var(--theme--page_preview-padding) !important;
-}
-.notion-peek-renderer
-  .notion-scroller.vertical
-  [style*='margin-left: calc(126px + env(safe-area-inset-left));'] {
-  margin-left: var(--theme--page_preview-padding) !important;
-}
-.notion-peek-renderer
-  .notion-scroller.vertical
-  [style*='margin-right: calc(126px + env(safe-area-inset-right));'] {
-  margin-right: var(--theme--page_preview-padding) !important;
-}
-.notion-peek-renderer .notion-page-content {
-  padding-left: var(--theme--page_preview-padding) !important;
-  padding-right: var(--theme--page_preview-padding) !important;
-  width: 100%;
-}
-.notion-peek-renderer
-  .notion-scroller.vertical
-  [style*='position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 20vh;'],
-.notion-peek-renderer
-  .notion-scroller.vertical
-  [style*='position: relative; width: 100%; display: flex; flex-direction: column; align-items: center; height: 20vh;']
-  img {
-  height: var(--theme--page_preview_banner-height) !important;
-  background: transparent !important;
-}
-
 /* backgrounds */
 
 .OnboardingHighlight + div > [style*='background-color'] {
@@ -256,60 +165,6 @@ body,
   background: var(--theme--bg_card) !important;
 }
 
-.notion-discussion-input > div > div[style*='background'],
-.notion-body.dark
-  .notion-default-overlay-container
-  [style*='grid-template-columns: [boolean-start] 60px [boolean-end property-start] 120px [property-end opererator-start] 110px [operator-end value-start] auto [value-end menu-start] 32px [menu-end];']
-  [style*='grid-column: property-start / value-end; background: rgba(255, 255, 255, 0.02);'],
-.notion-body:not(.dark)
-  .notion-default-overlay-container
-  [style*='grid-template-columns: [boolean-start] 60px [boolean-end property-start] 120px [property-end opererator-start] 110px [operator-end value-start] auto [value-end menu-start] 32px [menu-end];']
-  [style*='grid-column: property-start / value-end; background: rgba(0, 0, 0, 0.02);'],
-.notion-board-view [style*='width: 20px; margin-left: -20px; margin-top: -8px;'],
-.notion-page-block > div > div > div[style*='background-color: white;'],
-.line-numbers.notion-code-block + div .notion-focusable:not(:hover),
-.notion-overlay-container
-  [style*='position: relative; max-width: calc(100vw - 24px); box-shadow:']
-  > [style*='display: flex; align-items: center; padding: 8px 10px; width: 100%; background:'],
-.notion-default-overlay-container
-  > div:nth-child(3)
-  > div
-  > div:nth-child(2)
-  > div:nth-child(2)
-  > div
-  > div
-  > div
-  > div
-  > div
-  > div:nth-child(2)[style*='position: absolute; display: inline-flex; min-width: 100%; height: 32px; z-index: 1; background:'],
-.notion-default-overlay-container
-  > div:nth-child(2)
-  > div
-  > div:nth-child(2)
-  > div:nth-child(2)
-  > div
-  > div
-  > div
-  > div
-  > div
-  > div:nth-child(2)[style*='position: absolute; display: inline-flex; min-width: 100%; height: 32px; z-index: 1; background:'],
-.notion-frame .notion-scroller[style*='background:'],
-.notion-page-template-modal .notion-scroller[style*='background:'],
-.notion-peek-renderer .notion-scroller[style*='background:'],
-.notion-frame > div > div > div[style*='max-width: 100%'][style*='background-color'],
-.notion-peek-renderer
-  > div
-  > .notion-scroller
-  > div
-  > div[style*='max-width: 100%'][style*='background-color'],
-.notion-page-template-modal
-  > div
-  > .notion-scroller
-  > div
-  > div[style*='max-width: 100%'][style*='background-color'] {
-  background: transparent !important;
-}
-
 .notion-timeline-view
   > div
   > div
@@ -329,19 +184,6 @@ body,
     var(--theme--bg) 20%,
     transparent 100%
   ) !important;
-}
-
-/** scrollbars **/
-
-::-webkit-scrollbar-track,
-::-webkit-scrollbar-corner {
-  background: var(--theme--scrollbar_track) !important;
-}
-::-webkit-scrollbar-thumb {
-  background: var(--theme--scrollbar_thumb) !important;
-}
-::-webkit-scrollbar-thumb:hover {
-  background: var(--theme--scrollbar_thumb-hover) !important;
 }
 
 /** ui **/

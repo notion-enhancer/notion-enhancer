@@ -1,0 +1,22 @@
+{
+  "name": "word counter",
+  "id": "b99deb52-6955-43d2-a53b-a31540cd19a5",
+  "version": "0.3.0",
+  "description": "view word/character/sentence/block count & speaking/reading times in the side panel.",
+  "tags": ["extension", "panel"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "css": {
+    "client": ["client.css"]
+  },
+  "options": []
+}
