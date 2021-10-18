@@ -15,12 +15,15 @@
   "js": {
     "client": ["client.mjs"]
   },
-  "css": {},
+  "css": {
+    "client": ["client.css"]
+  },
   "options": [
     {
       "type": "select",
       "key": "style",
       "label": "emoji style",
+      "tooltip": "**initial use may involve some lag and load-time for emojis until they have all been cached**",
       "values": [
         "twitter",
         "apple",

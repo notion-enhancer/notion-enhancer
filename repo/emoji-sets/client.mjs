@@ -7,8 +7,8 @@
 export default async function ({ web, env }, db) {
   const style = await db.get(['style']),
     // real emojis are used on macos instead of the twitter set
-    nativeEmojiSelector = `[style*='"Apple Color Emoji", "Segoe UI Emoji", NotoColorEmoji, "Noto Color Emoji", "Segoe UI Symbol", "Android Emoji", EmojiSymbols']:not(data-emoji-sets-unsupported)`,
-    imgEmojiSelector = '.notion-emoji:not(data-emoji-sets-unsupported)',
+    nativeEmojiSelector = `[aria-label][role="image"][style*="Apple Color Emoji"]:not([data-emoji-sets-unsupported])`,
+    imgEmojiSelector = '.notion-emoji:not([data-emoji-sets-unsupported])',
     imgEmojiOverlaySelector = `${imgEmojiSelector} + [src*="notion-emojis"]`;
 
   await web.whenReady();
@@ -44,7 +44,6 @@ export default async function ({ web, env }, db) {
           $emoji.style.height = '1em';
           $emoji.style.display = 'inline-block';
           $emoji.innerText = '';
-          await new Promise((res, rej) => requestAnimationFrame(res));
         } else {
           $emoji.dataset.emojiSetsUnsupported = true;
         }
