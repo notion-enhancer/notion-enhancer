@@ -12,7 +12,7 @@
  * @module notion-enhancer/api/components/side-panel
  */
 
-import { web, components, registry } from '../_.mjs';
+import { fmt, web, components, registry } from '../_.mjs';
 const db = await registry.db('36a2ffc9-27ff-480e-84a7-c7700a7d232d');
 
 web.loadStylesheet('api/components/panel.css');
@@ -47,7 +47,9 @@ const $panel = web.html`<div id="enhancer--panel"></div>`,
   panelPinnedAttr = 'data-enhancer-panel-pinned',
   isPinned = () => $panel.hasAttribute(panelPinnedAttr),
   togglePanel = () => {
-    const $elems = [$notionRightSidebar, $notionFrame, $hoverTrigger, $panel];
+    const $elems = [$notionFrame, $notionRightSidebar, $hoverTrigger, $panel].filter(
+      ($el) => $el
+    );
     if (isPinned()) {
       closeSwitcher();
       for (const $elem of $elems) $elem.removeAttribute(panelPinnedAttr);
@@ -180,10 +182,20 @@ const $panel = web.html`<div id="enhancer--panel"></div>`,
   };
 
 async function createPanel() {
-  const notionRightSidebarSelector = '.notion-cursor-listener > div[style*="flex-end"]';
-  await web.whenReady([notionRightSidebarSelector]);
   $notionFrame = document.querySelector('.notion-frame');
+
+  const notionRightSidebarSelector = '.notion-cursor-listener > div[style*="flex-end"]',
+    detectRightSidebar = () => {
+      if (!document.contains($notionRightSidebar)) {
+        $notionRightSidebar = document.querySelector(notionRightSidebarSelector);
+        if (isPinned() && $notionRightSidebar) {
+          $notionRightSidebar.setAttribute(panelPinnedAttr, 'true');
+        }
+      }
+    };
   $notionRightSidebar = document.querySelector(notionRightSidebarSelector);
+  web.addDocumentObserver(detectRightSidebar, [notionRightSidebarSelector]);
+
   if (await db.get(['panel.pinned'])) togglePanel();
   web.addHotkeyListener(await db.get(['panel.hotkey']), togglePanel);
   $pinnedToggle.addEventListener('click', (event) => {
@@ -200,7 +212,10 @@ async function createPanel() {
   await enablePanelResize();
   await createViews();
 
-  $notionRightSidebar.after($hoverTrigger, $panel);
+  const cursorListenerSelector =
+    '.notion-cursor-listener > :last-child[style^="position: absolute"]';
+  await web.whenReady([cursorListenerSelector]);
+  document.querySelector(cursorListenerSelector).before($hoverTrigger, $panel);
 }
 
 async function enablePanelResize() {
@@ -224,12 +239,12 @@ async function createViews() {
 /**
  * adds a view to the enhancer's side panel
  * @param {object} panel - information used to construct and render the panel
- * @param {string} panel.id - a uuid, used to restore the last open view on reload
+ * @param {string} [panel.id] - a uuid, used to restore the last open view on reload
  * @param {string} panel.icon - an svg string
  * @param {string} panel.title - the name of the view
  * @param {Element} panel.$content - an element containing the content of the view
  */
-export const addPanelView = async ({ id, icon, title, $content }) => {
+export const addPanelView = async ({ id = fmt.uuidv4(), icon, title, $content }) => {
   const view = {
     id,
     $icon: web.html`<span class="enhancer--panel-view-title-icon">

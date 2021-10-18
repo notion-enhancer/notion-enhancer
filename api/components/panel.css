@@ -15,7 +15,7 @@
   max-height: 100%;
   z-index: 999;
   position: absolute;
-  top: 0;
+  top: 45px;
   right: 0;
   flex-grow: 0;
   flex-shrink: 0;
@@ -23,21 +23,23 @@
 }
 #enhancer--panel-hover-trigger[data-enhancer-panel-pinned] {
   /* taking up the physical space of the panel to move topbar buttons */
+  top: 0;
   position: relative;
   width: var(--component--panel-width);
 }
 
-.notion-cursor-listener > div[style*='flex-end'] {
-  transition: margin-right 300ms ease-in-out;
-}
-.notion-cursor-listener > div[style*='flex-end'][data-enhancer-panel-pinned] {
-  margin-right: var(--component--panel-width);
-}
 .notion-frame {
   transition: padding-right 300ms ease-in-out;
 }
 .notion-frame[data-enhancer-panel-pinned] {
   padding-right: var(--component--panel-width);
+}
+.notion-cursor-listener > div[style*='flex-end'] {
+  transition: margin-right 300ms ease-in-out;
+}
+.notion-cursor-listener > div[style*='flex-end'][data-enhancer-panel-pinned],
+#enhancer--panel[data-enhancer-panel-pinned] + div[style*='flex-end'] {
+  margin-right: var(--component--panel-width);
 }
 
 #enhancer--panel {
@@ -84,6 +86,9 @@
 .enhancer--panel-view-title img {
   height: 1em;
   width: 1em;
+}
+.enhancer--panel-view-icon {
+  margin-bottom: -2px;
 }
 .enhancer--panel-view-title .enhancer--panel-view-title-text {
   font-size: 0.9em;

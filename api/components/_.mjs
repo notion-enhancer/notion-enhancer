@@ -29,7 +29,7 @@ export { feather } from './feather.mjs';
 /**
  * adds a view to the enhancer's side panel
  * @param {object} panel - information used to construct and render the panel
- * @param {string} panel.id - a uuid, used to restore the last open view on reload
+ * @param {string} [panel.id] - a uuid, used to restore the last open view on reload
  * @param {string} panel.icon - an svg string
  * @param {string} panel.title - the name of the view
  * @param {Element} panel.$content - an element containing the content of the view
