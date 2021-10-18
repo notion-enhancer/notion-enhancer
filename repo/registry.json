@@ -18,11 +18,12 @@
   "pinky-boom",
 
   "bypass-preview",
-  "calendar-scroll",
   "font-chooser",
-  "collapse-properties",
   "scroll-to-top",
+  "calendar-scroll",
+  "collapse-properties",
   "indentation-lines",
   "focus-mode",
-  "word-counter"
+  "word-counter",
+  "emoji-sets"
 ]
