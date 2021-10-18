@@ -10,48 +10,52 @@
 export default async function ({ web, components }, db) {
   await web.whenReady(['.notion-topbar-action-buttons']);
 
-  if ((await db.get(['share'])) === true) {
-    const $share = document.querySelector('.notion-topbar-share-menu');
-    $share.innerHTML = await components.feather('share-2', {
-      style: 'width:16px;height:16px;color:var(--theme--icon);',
-    });
-  }
-
-  const styleTextButton = ($btn) => {
-    $btn.style.width = 'auto';
-    $btn.style.fontSize = '14px';
-    $btn.style.lineHeight = '1.2';
-    $btn.style.paddingLeft = '8px';
-    $btn.style.paddingRight = '8px';
+  const observeButton = (selector, label = '') => {
+    const updateButton = () => {
+      const $btns = document.querySelectorAll(selector);
+      $btns.forEach(($btn) => {
+        $btn.style.width = 'auto';
+        $btn.style.fontSize = '14px';
+        $btn.style.lineHeight = '1.2';
+        $btn.style.paddingLeft = '8px';
+        $btn.style.paddingRight = '8px';
+        const innerHTML = label || $btn.ariaLabel;
+        if ($btn.innerHTML !== innerHTML) $btn.innerHTML = innerHTML;
+      });
+    };
+    web.addDocumentObserver(() => {
+      updateButton();
+    }, [selector]);
+    updateButton();
   };
 
+  if ((await db.get(['share'])) === true) {
+    const selector = '.notion-topbar-share-menu',
+      label = await components.feather('share-2', {
+        style: 'width:16px;height:16px;color:var(--theme--icon);',
+      });
+    observeButton(selector, label);
+  }
+
   if ((await db.get(['comments'])) === false) {
-    const $comments = document.querySelector('.notion-topbar-comments-button');
-    styleTextButton($comments);
-    $comments.innerHTML = 'Comments';
+    const selector = '.notion-topbar-comments-button';
+    observeButton(selector);
   }
 
   if ((await db.get(['updates'])) === false) {
-    const $updates = document.querySelector('.notion-topbar-updates-button');
-    styleTextButton($updates);
-    $updates.innerHTML = 'Updates';
+    const selector =
+      '.notion-topbar-updates-button, .notion-topbar-share-menu ~ [aria-label="Updates"]';
+    observeButton(selector);
   }
 
   if ((await db.get(['favorite'])) === false) {
-    const $favorite = document.querySelector(
-      '.notion-topbar-updates-button + [aria-label^="Fav"]'
-    );
-    styleTextButton($favorite);
-    $favorite.innerHTML = $favorite.ariaLabel;
-    $favorite.addEventListener('click', async () => {
-      await new Promise((res, rej) => requestAnimationFrame(res));
-      $favorite.innerHTML = $favorite.ariaLabel;
-    });
+    const selector = '.notion-topbar-share-menu ~ [aria-label^="Fav"]';
+    observeButton(selector);
   }
 
   if ((await db.get(['more'])) === false) {
-    const $more = document.querySelector('.notion-topbar-more-button');
-    styleTextButton($more);
-    $more.innerHTML = 'More';
+    const selector = '.notion-topbar-more-button',
+      label = 'More';
+    observeButton(selector, label);
   }
 }
