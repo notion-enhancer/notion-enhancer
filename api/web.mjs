@@ -200,7 +200,9 @@ export const addDocumentObserver = (callback, selectors = []) => {
             !listener.selectors.length ||
             listener.selectors.some(
               (selector) =>
-                event.target.matches(selector) || event.target.matches(`${selector} *`)
+                event.target.matches(selector) ||
+                event.target.matches(`${selector} *`) ||
+                event.target.querySelector(selector)
             )
           ) {
             listener.callback(event);
