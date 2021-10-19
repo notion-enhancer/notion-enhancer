@@ -21,6 +21,10 @@ a complete rework of the enhancer including a port to the browser as a chrome ex
 - improved: chevron icon instead of arrow for scroll to top.
 - improved: moved word counter to display in the side panel instead of within the page,
   implemented a more accurate word counter method.
+- improved: the topbar icons extension defaults to the notion default topbar icons for comment/updates/favorite/more,
+  but can revert them to text (it still adds a custom icon for the share button).
+- improved: relative indenting in outliner.
+- improved: rtl support for toggles, indentation lines, table of contents and databases + force inline math to ltr.
 - removed: integrated scrollbar tweak (notion now includes by default).
 - removed: js insert. css insert moved to tweaks mod.
 - removed: majority of layout and font size variables - better to leave former to notion and use `ctrl +` for latter.
