@@ -194,17 +194,18 @@ export const addDocumentObserver = (callback, selectors = []) => {
   if (!_documentObserver) {
     const handle = (queue) => {
       while (queue.length) {
-        const event = queue.shift();
+        const event = queue.shift(),
+          matchesAddedNode = ($node, selector) =>
+            $node instanceof Element &&
+            ($node.matches(selector) ||
+              $node.matches(`${selector} *`) ||
+              $node.querySelector(selector)),
+          matchesTarget = (selector) =>
+            event.target.matches(selector) ||
+            event.target.matches(`${selector} *`) ||
+            [...event.addedNodes].some(($node) => matchesAddedNode($node, selector));
         for (const listener of _documentObserverListeners) {
-          if (
-            !listener.selectors.length ||
-            listener.selectors.some(
-              (selector) =>
-                event.target.matches(selector) ||
-                event.target.matches(`${selector} *`) ||
-                event.target.querySelector(selector)
-            )
-          ) {
+          if (!listener.selectors.length || listener.selectors.some(matchesTarget)) {
             listener.callback(event);
           }
         }

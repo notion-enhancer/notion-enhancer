@@ -170,6 +170,7 @@ const $panel = web.html`<div id="enhancer--panel"></div>`,
     }
   },
   renderView = (view) => {
+    const prevView = _views.find(({ $content }) => document.contains($content));
     web.render(
       web.empty($panelTitle),
       web.render(
@@ -178,10 +179,13 @@ const $panel = web.html`<div id="enhancer--panel"></div>`,
         view.$title
       )
     );
+    view.onFocus();
     web.render(web.empty($panelContent), view.$content);
+    if (prevView) prevView.onBlur();
   };
 
 async function createPanel() {
+  await web.whenReady(['.notion-frame']);
   $notionFrame = document.querySelector('.notion-frame');
 
   const notionRightSidebarSelector = '.notion-cursor-listener > div[style*="flex-end"]',
@@ -239,22 +243,35 @@ async function createViews() {
 /**
  * adds a view to the enhancer's side panel
  * @param {object} panel - information used to construct and render the panel
- * @param {string} [panel.id] - a uuid, used to restore the last open view on reload
+ * @param {string} panel.id - a uuid, used to restore the last open view on reload
  * @param {string} panel.icon - an svg string
  * @param {string} panel.title - the name of the view
  * @param {Element} panel.$content - an element containing the content of the view
+ * @param {function} panel.onBlur - runs when the view is selected/focused
+ * @param {function} panel.onFocus - runs when the view is unfocused/closed
  */
-export const addPanelView = async ({ id = fmt.uuidv4(), icon, title, $content }) => {
+export const addPanelView = async ({
+  id,
+  icon,
+  title,
+  $content,
+  onFocus = () => {},
+  onBlur = () => {},
+}) => {
   const view = {
     id,
-    $icon: web.html`<span class="enhancer--panel-view-title-icon">
-      ${icon}
-    </span>`,
-    $title: web.html`<span class="enhancer--panel-view-title-text">
-      ${web.escape(title)}
-      <span class="enhancer--panel-view-title-fade-edge"> </span>
-    </span>`,
+    $icon: web.render(
+      web.html`<span class="enhancer--panel-view-title-icon"></span>`,
+      icon instanceof Element ? icon : web.html`${icon}`
+    ),
+    $title: web.render(
+      web.html`<span class="enhancer--panel-view-title-text"></span>`,
+      title,
+      web.html`<span class="enhancer--panel-view-title-fade-edge"></span>`
+    ),
     $content,
+    onFocus,
+    onBlur,
   };
   _views.push(view);
   if (_views.length === 1) await createPanel();
