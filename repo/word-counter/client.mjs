@@ -72,7 +72,8 @@ export default async function ({ web, components }, db) {
   components.setTooltip($readingTooltip, '**~ 275 wpm**');
   components.setTooltip($speakingTooltip, '**~ 180 wpm**');
 
-  let viewFocused = false;
+  let viewFocused = false,
+    $page;
   await components.addPanelView({
     id: 'b99deb52-6955-43d2-a53b-a31540cd19a5',
     icon: await components.feather('type'),
@@ -80,39 +81,39 @@ export default async function ({ web, components }, db) {
     $content: web.render(web.html`<div></div>`, $notice, $statList),
     onFocus: () => {
       viewFocused = true;
+      updateStats();
     },
     onBlur: () => {
       viewFocused = false;
     },
   });
 
-  let $page;
-  const updateStats = () => {
-      if (!$page) return;
-      const words = $page.innerText.split(/[^\w]+/).length;
-      $wordCount.innerText = words;
-      $characterCount.innerText = $page.innerText.length;
-      $sentenceCount.innerText = $page.innerText.split('.').length;
-      $blockCount.innerText = $page.querySelectorAll('[data-block-id]').length;
-      $readingTime.innerText = humanTime(words / 275);
-      $speakingTime.innerText = humanTime(words / 180);
-    },
-    pageObserver = () => {
-      if (!viewFocused) return;
-      if (document.contains($page)) {
+  function updateStats() {
+    if (!$page) return;
+    const words = $page.innerText.split(/[^\w]+/).length;
+    $wordCount.innerText = words;
+    $characterCount.innerText = $page.innerText.length;
+    $sentenceCount.innerText = $page.innerText.split('.').length;
+    $blockCount.innerText = $page.querySelectorAll('[data-block-id]').length;
+    $readingTime.innerText = humanTime(words / 275);
+    $speakingTime.innerText = humanTime(words / 180);
+  }
+  const pageObserver = () => {
+    if (!viewFocused) return;
+    if (document.contains($page)) {
+      updateStats();
+    } else {
+      $page = document.getElementsByClassName('notion-page-content')[0];
+      if ($page) {
+        $notice.innerText = pageNoticeText;
+        $statList.style.display = '';
         updateStats();
       } else {
-        $page = document.getElementsByClassName('notion-page-content')[0];
-        if ($page) {
-          $notice.innerText = pageNoticeText;
-          $statList.style.display = '';
-          updateStats();
-        } else {
-          $notice.innerText = dbNoticeText;
-          $statList.style.display = 'none';
-        }
+        $notice.innerText = dbNoticeText;
+        $statList.style.display = 'none';
       }
-    };
+    }
+  };
   web.addDocumentObserver(pageObserver, [
     '.notion-page-content',
     '.notion-collection_view_page-block',

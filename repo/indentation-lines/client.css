@@ -21,7 +21,7 @@
   position: absolute;
   height: calc(100% - 2em);
   top: 2em;
-  left: -14.48px;
+  margin-inline-start: -14.48px;
 }
 
 .notion-page-content
@@ -36,7 +36,7 @@
   position: absolute;
   height: 100%;
   top: 0;
-  left: -14.48px;
+  margin-inline-start: -14.48px;
 }
 
 /* add background to block dragger */

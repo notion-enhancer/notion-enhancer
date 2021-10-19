@@ -1,0 +1,26 @@
+/*
+ * notion-enhancer: right to left
+ * (c) 2021 obahareth <omar@omar.engineer> (https://omar.engineer)
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+.notion-page-content
+  .notion-table_of_contents-block
+  > div
+  > div
+  > a
+  > div
+  > div[style*='margin-left: 24px'] {
+  margin-inline-start: 24px;
+}
+
+.notion-page-content
+  .notion-table_of_contents-block
+  > div
+  > div
+  > a
+  > div
+  > div[style*='margin-left: 48px'] {
+  margin-inline-start: 48px;
+}

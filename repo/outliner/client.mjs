@@ -12,7 +12,8 @@ export default async function ({ web, components }, db) {
 
   const $headingList = web.html`<div></div>`;
 
-  let viewFocused = false;
+  let viewFocused = false,
+    $page;
   await components.addPanelView({
     id: '87e077cc-5402-451c-ac70-27cc4ae65546',
     icon: web.html`<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24">
@@ -27,6 +28,7 @@ export default async function ({ web, components }, db) {
     $content: web.render(web.html`<div></div>`, $notice, $headingList),
     onFocus: () => {
       viewFocused = true;
+      updateHeadings();
     },
     onBlur: () => {
       viewFocused = false;
@@ -34,53 +36,50 @@ export default async function ({ web, components }, db) {
   });
   await web.whenReady();
 
-  let $page;
-  const updateHeadings = () => {
-      if (!$page) return;
-      const $headerBlocks = $page.querySelectorAll(
-          '[class^="notion-"][class*="header-block"]'
-        ),
-        $fragment = web.html`<div></div>`;
-      let depth = 0,
-        indent = 0;
-      for (const $header of $headerBlocks) {
-        const id = $header.dataset.blockId.replace(/-/g, ''),
-          placeholder = $header.querySelector('[placeholder]').getAttribute('placeholder'),
-          headerDepth = +placeholder.at(-1);
-        if (depth && depth < headerDepth) {
-          indent += 18;
-        } else if (depth > headerDepth) {
-          indent = Math.max(indent - 18, 0);
-        }
-        depth = headerDepth;
-        const $outlineHeader = web.render(
-          web.html`<a href="#${id}" class="outliner--header"
+  function updateHeadings() {
+    if (!$page) return;
+    const $headerBlocks = $page.querySelectorAll('[class^="notion-"][class*="header-block"]'),
+      $fragment = web.html`<div></div>`;
+    let depth = 0,
+      indent = 0;
+    for (const $header of $headerBlocks) {
+      const id = $header.dataset.blockId.replace(/-/g, ''),
+        placeholder = $header.querySelector('[placeholder]').getAttribute('placeholder'),
+        headerDepth = +placeholder.at(-1);
+      if (depth && depth < headerDepth) {
+        indent += 18;
+      } else if (depth > headerDepth) {
+        indent = Math.max(indent - 18, 0);
+      }
+      depth = headerDepth;
+      const $outlineHeader = web.render(
+        web.html`<a href="#${id}" class="outliner--header"
               placeholder="${web.escape(placeholder)}"
               style="--outliner--indent:${indent}px;"></a>`,
-          $header.innerText
-        );
-        $fragment.append($outlineHeader);
-      }
-      if ($fragment.innerHTML !== $headingList.innerHTML) {
-        web.render(web.empty($headingList), ...$fragment.children);
-      }
-    },
-    pageObserver = () => {
-      if (!viewFocused) return;
-      if (document.contains($page)) {
+        $header.innerText
+      );
+      $fragment.append($outlineHeader);
+    }
+    if ($fragment.innerHTML !== $headingList.innerHTML) {
+      web.render(web.empty($headingList), ...$fragment.children);
+    }
+  }
+  const pageObserver = () => {
+    if (!viewFocused) return;
+    if (document.contains($page)) {
+      updateHeadings();
+    } else {
+      $page = document.getElementsByClassName('notion-page-content')[0];
+      if ($page) {
+        $notice.innerText = pageNoticeText;
+        $headingList.style.display = '';
         updateHeadings();
       } else {
-        $page = document.getElementsByClassName('notion-page-content')[0];
-        if ($page) {
-          $notice.innerText = pageNoticeText;
-          $headingList.style.display = '';
-          updateHeadings();
-        } else {
-          $notice.innerText = dbNoticeText;
-          $headingList.style.display = 'none';
-        }
+        $notice.innerText = dbNoticeText;
+        $headingList.style.display = 'none';
       }
-    };
+    }
+  };
   web.addDocumentObserver(pageObserver, [
     '.notion-header-block',
     '.notion-sub_header-block',
