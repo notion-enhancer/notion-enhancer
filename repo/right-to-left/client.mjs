@@ -9,14 +9,14 @@
 
 export default async function ({ web }, db) {
   const pageContentSelector = `
-    .notion-page-content >
-      div[data-block-id]:not([dir]):not(.notion-column_list-block):not(.notion-collection_view_page-block),
-    [placeholder="Untitled"]:not([dir]),
-    .notion-column-block > div[data-block-id]:not([dir]),
-    .notion-collection_view-block:not([dir]),
-    .notion-table-view:not([dir]),
-    .notion-board-view:not([dir]),
-    .notion-gallery-view:not([dir])`,
+      .notion-page-content >
+        div[data-block-id]:not([dir]):not(.notion-column_list-block):not(.notion-collection_view_page-block),
+      [placeholder="Untitled"]:not([dir]),
+      .notion-column-block > div[data-block-id]:not([dir]),
+      .notion-collection_view-block:not([dir]),
+      .notion-table-view:not([dir]),
+      .notion-board-view:not([dir]),
+      .notion-gallery-view:not([dir])`,
     listItemSelector = `
       div[placeholder="List"]:not([style*="text-align: start"]),
       div[placeholder="To-do"]:not([style*="text-align: start"]),
