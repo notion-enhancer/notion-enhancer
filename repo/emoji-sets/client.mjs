@@ -19,6 +19,7 @@ export default async function ({ web, env }, db) {
   const unsupportedEmojis = [],
     emojiReqs = new Map(),
     getEmoji = async (emoji) => {
+      emoji = encodeURIComponent(emoji);
       if (unsupportedEmojis.includes(emoji)) return undefined;
       try {
         if (!emojiReqs.get(emoji)) {
@@ -37,16 +38,14 @@ export default async function ({ web, env }, db) {
     const updateEmojis = async () => {
       const $emojis = document.querySelectorAll(nativeEmojiSelector);
       for (const $emoji of $emojis) {
-        const emojiBg = await getEmoji($emoji.ariaLabel);
-        if (emojiBg) {
-          $emoji.style.background = emojiBg;
+        const emojiSrc = await getEmoji($emoji.ariaLabel);
+        if (emojiSrc) {
+          $emoji.style.background = emojiSrc;
           $emoji.style.width = '1em';
           $emoji.style.height = '1em';
           $emoji.style.display = 'inline-block';
           $emoji.innerText = '';
-        } else {
-          $emoji.dataset.emojiSetsUnsupported = true;
-        }
+        } else $emoji.dataset.emojiSetsUnsupported = true;
       }
     };
     web.addDocumentObserver(updateEmojis, [nativeEmojiSelector]);
@@ -56,16 +55,14 @@ export default async function ({ web, env }, db) {
     const updateEmojis = async () => {
       const $emojis = document.querySelectorAll(imgEmojiSelector);
       for (const $emoji of $emojis) {
-        const emojiBg = await getEmoji($emoji.ariaLabel);
-        if (emojiBg) {
-          $emoji.style.background = emojiBg;
+        const emojiSrc = await getEmoji($emoji.ariaLabel);
+        if (emojiSrc) {
+          $emoji.style.background = emojiSrc;
           $emoji.style.opacity = 1;
           if ($emoji.nextElementSibling?.matches?.(imgEmojiOverlaySelector)) {
             $emoji.nextElementSibling.style.opacity = 0;
           }
-        } else {
-          $emoji.dataset.emojiSetsUnsupported = true;
-        }
+        } else $emoji.dataset.emojiSetsUnsupported = true;
       }
     };
     updateEmojis();

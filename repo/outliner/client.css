@@ -1,0 +1,47 @@
+/*
+ * notion-enhancer: outliner
+ * (c) 2020 CloudHill <rl.cloudhill@gmail.com> (https://github.com/CloudHill)
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+#outliner--notice {
+  color: var(--theme--text_secondary);
+  font-size: 14px;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.outliner--header {
+  position: relative;
+  margin: 0 -1rem;
+  padding: 0 1rem;
+  display: block;
+  font-size: 14px;
+  line-height: 2.2;
+  white-space: nowrap;
+  overflow: hidden;
+  user-select: none;
+  text-overflow: ellipsis;
+  text-decoration: none;
+  text-indent: var(--outliner--indent);
+  color: inherit;
+  cursor: pointer !important;
+  transition: background 20ms ease-in;
+}
+.outliner--header:hover {
+  background: var(--theme--ui_interactive-hover);
+}
+
+.outliner--header:empty::after {
+  color: var(--theme--text_secondary);
+  content: attr(placeholder);
+}
+
+/* indentation lines */
+.outliner--header:not([style='--outliner--indent:0px;'])::before {
+  content: '';
+  height: 100%;
+  position: absolute;
+  left: calc((1rem + var(--outliner--indent)) - 11px);
+}

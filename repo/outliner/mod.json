@@ -1,0 +1,22 @@
+{
+  "name": "outliner",
+  "id": "87e077cc-5402-451c-ac70-27cc4ae65546",
+  "version": "0.4.0",
+  "description": "adds a table of contents to the side panel.",
+  "tags": ["extension", "panel"],
+  "authors": [
+    {
+      "name": "CloudHill",
+      "email": "rh.cloudhill@gmail.com",
+      "homepage": "https://github.com/CloudHill",
+      "avatar": "https://avatars.githubusercontent.com/u/54142180"
+    }
+  ],
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "css": {
+    "client": ["client.css"]
+  },
+  "options": []
+}

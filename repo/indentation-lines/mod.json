@@ -54,6 +54,12 @@
       "key": "table_of_contents",
       "label": "tables of contents",
       "value": true
+    },
+    {
+      "type": "toggle",
+      "key": "outliner",
+      "label": "outliner (panel extension)",
+      "value": true
     }
   ]
 }

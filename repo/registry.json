@@ -17,14 +17,15 @@
   "playful-purple",
   "pinky-boom",
 
-  "bypass-preview",
   "font-chooser",
+  "outliner",
   "scroll-to-top",
+  "indentation-lines",
+  "emoji-sets",
+  "bypass-preview",
+  "topbar-icons",
+  "word-counter",
   "calendar-scroll",
   "collapse-properties",
-  "indentation-lines",
-  "focus-mode",
-  "word-counter",
-  "emoji-sets",
-  "topbar-icons"
+  "focus-mode"
 ]

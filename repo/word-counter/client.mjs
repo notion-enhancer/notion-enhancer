@@ -35,9 +35,9 @@ const copyToClipboard = async (str) => {
   };
 
 export default async function ({ web, components }, db) {
-  const dbNoticeText = 'Open a normal page to see word count.',
+  const dbNoticeText = 'Open a page to see its word count.',
     pageNoticeText = 'Click a stat to copy it.',
-    $notice = web.html`<span id="word-counter--notice">${dbNoticeText}</span>`;
+    $notice = web.html`<p id="word-counter--notice">${dbNoticeText}</p>`;
 
   const $wordCount = web.html`<b>12</b>`,
     $characterCount = web.html`<b>12</b>`,
@@ -47,7 +47,7 @@ export default async function ({ web, components }, db) {
     $readingTooltip = web.html`${await components.feather('info')}`,
     $speakingTime = web.html`<b>18 secs</b>`,
     $speakingTooltip = web.html`${await components.feather('info')}`,
-    $statContainer = web.render(
+    $statList = web.render(
       web.html`<div></div>`,
       web.render(web.html`<p class="word-counter--stat"></p>`, $wordCount, ' words'),
       web.render(web.html`<p class="word-counter--stat"></p>`, $characterCount, ' characters'),
@@ -66,15 +66,24 @@ export default async function ({ web, components }, db) {
         ' speaking time'
       )
     );
-  $statContainer.querySelectorAll('.word-counter--stat').forEach(($stat) => {
+  $statList.querySelectorAll('.word-counter--stat').forEach(($stat) => {
     $stat.addEventListener('click', () => copyToClipboard($stat.innerText));
   });
   components.setTooltip($readingTooltip, '**~ 275 wpm**');
   components.setTooltip($speakingTooltip, '**~ 180 wpm**');
+
+  let viewFocused = false;
   await components.addPanelView({
+    id: 'b99deb52-6955-43d2-a53b-a31540cd19a5',
     icon: await components.feather('type'),
     title: 'Word Counter',
-    $content: web.render(web.html`<div></div>`, $notice, $statContainer),
+    $content: web.render(web.html`<div></div>`, $notice, $statList),
+    onFocus: () => {
+      viewFocused = true;
+    },
+    onBlur: () => {
+      viewFocused = false;
+    },
   });
 
   let $page;
@@ -89,17 +98,18 @@ export default async function ({ web, components }, db) {
       $speakingTime.innerText = humanTime(words / 180);
     },
     pageObserver = () => {
+      if (!viewFocused) return;
       if (document.contains($page)) {
         updateStats();
       } else {
         $page = document.getElementsByClassName('notion-page-content')[0];
         if ($page) {
           $notice.innerText = pageNoticeText;
-          $statContainer.style.display = '';
+          $statList.style.display = '';
           updateStats();
         } else {
           $notice.innerText = dbNoticeText;
-          $statContainer.style.display = 'none';
+          $statList.style.display = 'none';
         }
       }
     };

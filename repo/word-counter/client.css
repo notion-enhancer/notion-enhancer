@@ -7,6 +7,7 @@
 #word-counter--notice {
   color: var(--theme--text_secondary);
   font-size: 14px;
+  margin-top: 0;
 }
 
 .word-counter--stat {
