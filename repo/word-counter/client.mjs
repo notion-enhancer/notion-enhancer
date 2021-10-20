@@ -4,35 +4,20 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-const copyToClipboard = async (str) => {
-    try {
-      await navigator.clipboard.writeText(str);
-    } catch {
-      const el = document.createElement('textarea');
-      el.value = str;
-      el.setAttribute('readonly', '');
-      el.style.position = 'absolute';
-      el.style.left = '-9999px';
-      document.body.appendChild(el);
-      el.select();
-      document.execCommand('copy');
-      document.body.removeChild(el);
-    }
-  },
-  humanTime = (mins) => {
-    let readable = '';
-    if (1 <= mins) {
-      readable += `${Math.floor(mins)} min`;
-      if (2 <= mins) readable += 's';
-    }
-    const secs = Math.round((mins % 1) * 60);
-    if (1 <= secs) {
-      if (1 <= mins) readable += ' ';
-      readable += `${secs} sec`;
-      if (2 <= secs) readable += 's';
-    }
-    return readable;
-  };
+const humanTime = (mins) => {
+  let readable = '';
+  if (1 <= mins) {
+    readable += `${Math.floor(mins)} min`;
+    if (2 <= mins) readable += 's';
+  }
+  const secs = Math.round((mins % 1) * 60);
+  if (1 <= secs) {
+    if (1 <= mins) readable += ' ';
+    readable += `${secs} sec`;
+    if (2 <= secs) readable += 's';
+  }
+  return readable;
+};
 
 export default async function ({ web, components }, db) {
   const dbNoticeText = 'Open a page to see its word count.',
@@ -67,7 +52,7 @@ export default async function ({ web, components }, db) {
       )
     );
   $statList.querySelectorAll('.word-counter--stat').forEach(($stat) => {
-    $stat.addEventListener('click', () => copyToClipboard($stat.innerText));
+    $stat.addEventListener('click', () => web.copyToClipboard($stat.innerText));
   });
   components.setTooltip($readingTooltip, '**~ 275 wpm**');
   components.setTooltip($speakingTooltip, '**~ 180 wpm**');

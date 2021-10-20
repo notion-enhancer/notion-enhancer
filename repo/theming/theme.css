@@ -219,7 +219,7 @@ body,
 }
 
 .notion-body.dark [style*='background: rgb(71, 76, 80);'],
-.notion-body:not(.dark) [style*='background: rgba(55, 53, 47, 0.08)'],
+.notion-body:not(.dark) [style*='background: rgba(255, 255, 255, 0.1)'],
 .notion-focusable[style*='z-index:'][style*='box-shadow: '][style*='font-size: 12px;'][style*='min-height: 24px; overflow: hidden; pointer-events:']:hover,
 :not(.notion-login)
   > .notion-focusable[role='button'][tabindex='0'][style*='box-shadow:'][style*='background:'][style*='transition: background 20ms ease-in 0s; cursor: pointer;']:not([style*='rgb(46, 170, 220);']):not([style*='rgb(6, 156, 205);']):not([style*='rgb(0, 141, 190);']):not([style*='flex: 1 1 0%; white-space: nowrap; height: 26px; border-radius: 3px 0px 0px 3px;']):not([style*='rgb(225, 98, 89)']):hover,

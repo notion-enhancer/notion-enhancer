@@ -23,9 +23,7 @@ export default async function ({ web, components }, db) {
         if ($btn.innerHTML !== innerHTML) $btn.innerHTML = innerHTML;
       });
     };
-    web.addDocumentObserver(() => {
-      updateButton();
-    }, [selector]);
+    web.addDocumentObserver(updateButton, [selector]);
     updateButton();
   };
 

@@ -1,0 +1,28 @@
+{
+  "name": "global block links",
+  "id": "74856af4-6970-455d-bd86-0a385a402dd1",
+  "version": "0.1.0",
+  "description": "easily copy the global link of a page or block.",
+  "tags": ["extension", "shortcut"],
+  "authors": [
+    {
+      "name": "admiraldus",
+      "homepage": "https://github.com/admiraldus",
+      "avatar": "https://raw.githubusercontent.com/admiraldus/admiraldus/main/module.gif"
+    }
+  ],
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "css": {
+    "client": ["client.css"]
+  },
+  "options": [
+    {
+      "key": "topbar_copy",
+      "label": "copy page links from the topbar",
+      "type": "toggle",
+      "value": true
+    }
+  ]
+}

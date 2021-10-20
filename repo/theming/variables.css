@@ -205,7 +205,7 @@
 
   --theme--ui_shadow: rgba(15, 15, 15, 0.15);
   --theme--ui_divider: rgb(255, 255, 255, 0.07);
-  --theme--ui_interactive-hover: rgb(71, 76, 80);
+  --theme--ui_interactive-hover: rgba(255, 255, 255, 0.1);
   --theme--ui_interactive-active: rgb(63, 68, 71);
   --theme--ui_toggle-on: var(--theme--accent_blue);
   --theme--ui_toggle-off: rgba(202, 204, 206, 0.3);
