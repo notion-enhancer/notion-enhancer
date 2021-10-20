@@ -29,6 +29,7 @@
   "permissions": [
     "tabs",
     "storage",
+    "clipboardRead",
     "clipboardWrite",
     "unlimitedStorage",
     "https://*.notion.so/*",

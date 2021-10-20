@@ -2,15 +2,17 @@
 
 ### v0.11.0 (dev)
 
-a complete rework of the enhancer including a port to the browser as a chrome extension.
+a complete rework of the enhancer, with new features and a port to the browser as a chrome extension.
 
 - new: cross-environment and properly documented api to replace helpers.
 - new: cross-environment mod loader structure.
+- new: "integrations", a category of mods that can access/use an unofficial notion api.
 - new: notifications sourced from an online endpoint for sending global user alerts.
 - new: simplify user installs by depending on the chrome web store and [notion-repackaged](https://github.com/notion-enhancer/notion-repackaged).
 - new: separate menu profiles for mod configurations.
 - new: a hotkey option type that allows typing in/pressing a hotkey to enter it, instead of typing.
 - new: a rainbow indentation lines style.
+- new: border & background style options for the code line numbers extension.
 - improved: split the core mod into separate mods for specific features.
 - improved: theming variables that are applied more specifically, less laggy, and less complicated.
 - improved: merged bracketed-links into tweaks.
@@ -25,6 +27,8 @@ a complete rework of the enhancer including a port to the browser as a chrome ex
   but can revert them to text (it still adds a custom icon for the share button).
 - improved: relative indenting in outliner.
 - improved: rtl support for toggles, indentation lines, table of contents and databases + force inline math to ltr.
+- improved: replaced the "truncated table titles" extension with a "truncated titles" extension
+  with an option to truncate timeline item titles.
 - removed: integrated scrollbar tweak (notion now includes by default).
 - removed: js insert. css insert moved to tweaks mod.
 - removed: majority of layout and font size variables - better to leave former to notion and use `ctrl +` for latter.
@@ -37,6 +41,7 @@ a complete rework of the enhancer including a port to the browser as a chrome ex
 - theme: "playful purple" = a purple-shaded theme with bright highlights (formerly littlepig dark and gameish).
 - theme: "pinky boom" = pinkify your life.
 - extension: "calendar scroll" = add a button to jump down to the current week in fullpage/infinite-scroll calendars.
+- extension: "global block links" = easily copy the global link of a page or block.
 - tweak: wrap tables to page width.
 - tweak: hide "Type '/' for commands".
 - tweak: quote block quotation marks.
