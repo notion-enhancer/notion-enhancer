@@ -14,7 +14,9 @@
 /**
  * add a tooltip to show extra information on hover
  * @param {HTMLElement} $ref - the element that will trigger the tooltip when hovered
- * @param {string} text - the markdown content of the tooltip
+ * @param {string|HTMLElement} $text - the markdown content of the tooltip
+ * @param {number} [delay] - the amount of time the element needs to be hovered over
+ * for the tooltip to be shown
  */
 export { setTooltip } from './tooltip.mjs';
 

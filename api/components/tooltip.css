@@ -19,6 +19,7 @@
   padding: 2px 8px 4px 8px;
   position: absolute;
   z-index: 999999999999999999;
+  pointer-events: none;
 }
 #enhancer--tooltip p {
   margin: 0.25rem 0;
