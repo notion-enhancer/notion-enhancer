@@ -143,6 +143,35 @@ export const loadStylesheet = (path) => {
   return true;
 };
 
+/**
+ * copy text to the clipboard
+ * @param {string} str - the string to copy
+ * @returns {Promise<void>}
+ */
+export const copyToClipboard = async (str) => {
+  try {
+    await navigator.clipboard.writeText(str);
+  } catch {
+    const $el = document.createElement('textarea');
+    $el.value = str;
+    $el.setAttribute('readonly', '');
+    $el.style.position = 'absolute';
+    $el.style.left = '-9999px';
+    document.body.appendChild($el);
+    $el.select();
+    document.execCommand('copy');
+    document.body.removeChild($el);
+  }
+};
+
+/**
+ * read text from the clipboard
+ * @returns {Promise<string>}
+ */
+export const readFromClipboard = () => {
+  return navigator.clipboard.readText();
+};
+
 document.addEventListener('keyup', (event) => {
   if (document.activeElement.nodeName === 'INPUT') return;
   for (const hotkey of _hotkeyEventListeners) {
