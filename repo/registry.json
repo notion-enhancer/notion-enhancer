@@ -28,8 +28,9 @@
   "word-counter",
   "code-line-numbers",
   "calendar-scroll",
+  "collapsible-headers",
+  "collapsible-properties",
   "weekly-view",
-  "collapse-properties",
   "truncated-titles",
   "focus-mode",
   "global-block-links"

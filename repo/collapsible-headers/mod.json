@@ -1,0 +1,48 @@
+{
+  "name": "collapsible headers",
+  "id": "548fe2d7-174a-44dd-88d8-35c7f9a093a7",
+  "version": "0.2.0",
+  "description": "adds toggles to collapse header sections of pages.",
+  "tags": ["extension", "layout"],
+  "authors": [
+    {
+      "name": "CloudHill",
+      "email": "rh.cloudhill@gmail.com",
+      "homepage": "https://github.com/CloudHill",
+      "avatar": "https://avatars.githubusercontent.com/u/54142180"
+    }
+  ],
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "css": {
+    "client": ["client.css"]
+  },
+  "options": [
+    {
+      "type": "select",
+      "key": "position",
+      "label": "toggle icon position",
+      "values": ["left", "right", "inline"]
+    },
+    {
+      "type": "toggle",
+      "key": "animate",
+      "label": "animate opening/closing",
+      "value": false
+    },
+    {
+      "type": "toggle",
+      "key": "dividers",
+      "label": "use divider blocks to break header sections",
+      "value": false
+    },
+    {
+      "type": "hotkey",
+      "key": "hotkey",
+      "label": "toggle header collapse hotkey",
+      "tooltip": "**opens/closes the currently focused header section**",
+      "value": "ctrl+enter"
+    }
+  ]
+}

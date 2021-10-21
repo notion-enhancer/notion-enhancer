@@ -58,6 +58,9 @@ export default async function ({ web, components }, db) {
               style="--outliner--indent:${indent}px;"></a>`,
         $header.innerText
       );
+      $outlineHeader.addEventListener('click', (event) => {
+        location.hash = '';
+      });
       $fragment.append($outlineHeader);
     }
     if ($fragment.innerHTML !== $headingList.innerHTML) {

@@ -1,0 +1,81 @@
+/*
+ * notion-enhancer: collapsible headerrs
+ * (c) 2020 CloudHill <rl.cloudhill@gmail.com> (https://github.com/CloudHill)
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+.collapsible_headers--toggle {
+  flex-grow: 0;
+  flex-shrink: 0;
+  align-self: center;
+  width: 24px;
+  height: 24px;
+  padding: 6px;
+  margin: 0 6px;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1;
+  cursor: pointer;
+  transition: 200ms ease-in;
+}
+.collapsible_headers--toggle:hover {
+  background: var(--theme--ui_interactive-hover);
+}
+
+.collapsible_headers--toggle svg {
+  width: 100%;
+  height: 100%;
+  transition: transform 200ms ease-out 0s;
+}
+[data-section-collapsed='false'] .collapsible_headers--toggle svg {
+  transform: rotateZ(180deg);
+}
+
+/* position = left */
+[data-section-collapsed='true'] .collapsible_headers--toggle:first-child svg {
+  transform: rotateZ(90deg);
+}
+.collapsible_headers--toggle:first-child {
+  margin-left: 2px;
+}
+
+/* position = right / inline */
+[data-section-collapsed='true'] .collapsible_headers--toggle:last-child svg {
+  transform: rotateZ(270deg);
+}
+.collapsible_headers--toggle:last-child {
+  opacity: 0;
+}
+[data-section-collapsed='true'] .collapsible_headers--toggle:last-child,
+[data-section-collapsed]:hover .collapsible_headers--toggle:last-child,
+[data-section-collapsed] :focus + .collapsible_headers--toggle:last-child {
+  opacity: 1;
+}
+
+/* position = inline */
+.collapsible_headers--inline {
+  position: relative;
+  overflow: hidden;
+}
+.collapsible_headers--inline [placeholder] {
+  width: auto !important;
+}
+.collapsible_headers--inline [placeholder]::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  cursor: text;
+}
+
+.notion-page-content .notion-selectable[data-collapsed] {
+  margin: 0px !important;
+  pointer-events: none;
+  max-height: 0px;
+  overflow: hidden;
+  opacity: 0;
+}
