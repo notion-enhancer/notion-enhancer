@@ -106,8 +106,7 @@
   cursor: pointer;
   user-select: none;
   padding: 0.75rem 0 0.75rem 1rem;
-  --scoped--bg: var(--theme--bg_secondary);
-  background: var(--scoped--bg);
+  background: var(--theme--bg_secondary);
 }
 #enhancer--panel-header-title {
   max-width: calc(100% - 4.25rem);
@@ -118,11 +117,6 @@
 #enhancer--panel-header-title .enhancer--panel-view-title-text {
   max-width: calc(100% - 1.75em);
   position: relative;
-}
-.enhancer--panel-view-title-fade-edge {
-  display: inline-block;
-  width: 0.75rem;
-  height: 1em;
 }
 
 #enhancer--panel-switcher-overlay-container {
@@ -155,32 +149,17 @@
   cursor: pointer;
   overflow: hidden;
   position: relative;
-  --scoped--bg: var(--theme--bg_card);
-  background: var(--scoped--bg);
+  background: var(--theme--bg_card);
 }
 #enhancer--panel-header:hover,
 #enhancer--panel-header:focus-within,
 .enhancer--panel-switcher-item:hover,
 .enhancer--panel-switcher-item:focus {
-  --scoped--bg: var(--theme--ui_interactive-hover);
+  background: var(--theme--ui_interactive-hover);
 }
 #enhancer--panel-header:active,
 .enhancer--panel-switcher-item:active {
   background: var(--theme--ui_interactive-active);
-}
-.enhancer--panel-view-title-fade-edge:after {
-  content: '';
-  height: 100%;
-  position: absolute;
-  right: 0;
-  top: 0;
-  width: 0.75rem;
-  background: linear-gradient(
-    to right,
-    transparent 0%,
-    var(--scoped--bg) 50%,
-    var(--scoped--bg) 100%
-  );
 }
 
 #enhancer--panel-content {

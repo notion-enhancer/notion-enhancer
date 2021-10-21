@@ -195,9 +195,10 @@ document.addEventListener('keyup', (event) => {
 
 /**
  * register a hotkey listener to the page
- * @param {array} keys - the combination of keys that will trigger the hotkey.
+ * @param {array|string} keys - the combination of keys that will trigger the hotkey.
  * key codes can be tested at http://keycode.info/ and are case-insensitive.
  * available modifiers are 'alt', 'ctrl', 'meta', and 'shift'.
+ * can be provided as a + separated string.
  * @param {function} callback - called whenever the keys are pressed
  */
 export const addHotkeyListener = (keys, callback) => {

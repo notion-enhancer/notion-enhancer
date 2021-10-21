@@ -73,13 +73,13 @@ const $panel = web.html`<div id="enhancer--panel"></div>`,
     $panel.style.width = panelWidth + 'px';
     $hoverTrigger.style.width = panelWidth + 'px';
     $notionFrame.style.paddingRight = panelWidth + 'px';
-    $notionRightSidebar.style.right = panelWidth + 'px';
+    if ($notionRightSidebar) $notionRightSidebar.style.right = panelWidth + 'px';
   },
   resizeEnd = (event) => {
     $panel.style.width = '';
     $hoverTrigger.style.width = '';
     $notionFrame.style.paddingRight = '';
-    $notionRightSidebar.style.right = '';
+    if ($notionRightSidebar) $notionRightSidebar.style.right = '';
     updateWidth();
     $resizeHandle.style.cursor = '';
     document.body.removeEventListener('mousemove', resizeDrag);
@@ -264,11 +264,7 @@ export const addPanelView = async ({
       web.html`<span class="enhancer--panel-view-title-icon"></span>`,
       icon instanceof Element ? icon : web.html`${icon}`
     ),
-    $title: web.render(
-      web.html`<span class="enhancer--panel-view-title-text"></span>`,
-      title,
-      web.html`<span class="enhancer--panel-view-title-fade-edge"></span>`
-    ),
+    $title: web.render(web.html`<span class="enhancer--panel-view-title-text"></span>`, title),
     $content,
     onFocus,
     onBlur,
