@@ -26,7 +26,7 @@ export default async function ({ web }, db) {
         lineNumbers += `${i}\n`;
         if (wordWrap && lines[i - 1]) {
           $temp.innerText = lines[i - 1];
-          $codeBlock.lastElementChild.append($temp);
+          web.render($codeBlock.lastElementChild, $temp);
           const height = parseFloat($temp.getBoundingClientRect().height);
           $temp.remove();
           for (let j = 1; j < height / 20.4; j++) lineNumbers += '\n';

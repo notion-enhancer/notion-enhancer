@@ -61,7 +61,7 @@ export default async function ({ web, components }, db) {
       $outlineHeader.addEventListener('click', (event) => {
         location.hash = '';
       });
-      $fragment.append($outlineHeader);
+      web.render($fragment, $outlineHeader);
     }
     if ($fragment.innerHTML !== $headingList.innerHTML) {
       web.render(web.empty($headingList), ...$fragment.children);

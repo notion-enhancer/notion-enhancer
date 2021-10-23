@@ -87,5 +87,5 @@ export default async function ({ web }, db) {
     }
   }
 
-  document.head.append(web.html`<style>${css}</style>`);
+  web.render(document.head, web.html`<style>${css}</style>`);
 }

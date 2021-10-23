@@ -28,9 +28,9 @@
 .enhancer--tweak-normalise_table_scroll
   .notion-page-template-modal
   .notion-collection_view-block {
-  width: calc(100% + 8px) !important;
-  padding-left: 4px;
-  padding-right: 4px;
+  width: 100% !important;
+  padding-left: 0;
+  padding-right: 0;
 }
 .enhancer--tweak-normalise_table_scroll
   .notion-collection_view-block

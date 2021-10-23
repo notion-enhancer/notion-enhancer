@@ -7,6 +7,7 @@
 
 export default async function ({ web }, db) {
   const headerSelector = '.notion-page-content [class*="header-block"]',
+    pageScroller = '.notion-frame > .notion-scroller.vertical.horizontal',
     haloClass = 'notion-selectable-halo',
     blockSelector = '.notion-selectable[data-block-id]',
     dividerClass = 'notion-divider-block',
@@ -30,7 +31,7 @@ export default async function ({ web }, db) {
       overflow: 'hidden',
     };
 
-  const collapseParentsCache = new Map(),
+  let collapseParentsCache = new Map(),
     collapsedBlocksCache = new Map();
 
   const getHeaderLevel = ($block) => {
@@ -81,7 +82,7 @@ export default async function ({ web }, db) {
               [
                 animationCollapsed,
                 {
-                  height: $block.scrollHeight + 'px',
+                  maxHeight: '100%',
                   opacity: 1,
                   marginTop: $block.style.marginTop,
                   marginBottom: $block.style.marginBottom,
@@ -181,6 +182,12 @@ export default async function ({ web }, db) {
     };
 
   const insertToggles = async (event) => {
+    if ([...event.addedNodes].some(($node) => $node?.matches(pageScroller))) {
+      collapseParentsCache = new Map();
+      collapsedBlocksCache = new Map();
+      return;
+    }
+
     const childNodeEvent =
       event.target.matches(blockSelector) && !event.target.matches(headerSelector);
     if (childNodeEvent) return;
@@ -241,7 +248,7 @@ export default async function ({ web }, db) {
         `;
       if (togglePosition === 'left') {
         $header.firstChild.prepend($toggle);
-      } else $header.firstChild.append($toggle);
+      } else web.render($header.firstChild, $toggle);
       if (togglePosition === 'inline') $header.firstChild.classList.add(inlineToggleClass);
 
       $toggle.header = $header;
@@ -266,7 +273,7 @@ export default async function ({ web }, db) {
       expandHeaderSection($header, animateToggle);
     }
   };
-  web.addDocumentObserver(insertToggles, [headerSelector]);
+  web.addDocumentObserver(insertToggles, ['.notion-page-content', headerSelector]);
 
   web.addHotkeyListener(toggleHotkey, (event) => {
     const $header = document.activeElement.closest(headerSelector);

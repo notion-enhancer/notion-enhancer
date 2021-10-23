@@ -1,0 +1,22 @@
+{
+  "name": "simpler databases",
+  "id": "752933b5-1258-44e3-b49a-61b4885f8bda",
+  "version": "0.2.0",
+  "description": "adds a menu to inline databases to toggle ui elements.",
+  "tags": ["extension", "layout"],
+  "authors": [
+    {
+      "name": "CloudHill",
+      "email": "rh.cloudhill@gmail.com",
+      "homepage": "https://github.com/CloudHill",
+      "avatar": "https://avatars.githubusercontent.com/u/54142180"
+    }
+  ],
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "css": {
+    "client": ["client.css"]
+  },
+  "options": []
+}
