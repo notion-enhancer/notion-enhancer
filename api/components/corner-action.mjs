@@ -30,14 +30,14 @@ export const addCornerAction = async (icon, listener) => {
     $onboardingButton = document.querySelector('.onboarding-checklist-button');
   if ($onboardingButton) $cornerButtonsContainer.prepend($onboardingButton);
   $cornerButtonsContainer.prepend($helpButton);
-  document
-    .querySelector('.notion-app-inner > .notion-cursor-listener')
-    .append($cornerButtonsContainer);
+  web.render(
+    document.querySelector('.notion-app-inner > .notion-cursor-listener'),
+    $cornerButtonsContainer
+  );
 
   const $actionButton = web.html`<div class="enhancer--corner-action-button">${icon}</div>`;
   $actionButton.addEventListener('click', listener);
-
-  $cornerButtonsContainer.append($actionButton);
+  web.render($cornerButtonsContainer, $actionButton);
 
   return $actionButton;
 };

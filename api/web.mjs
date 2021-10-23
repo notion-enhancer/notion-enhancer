@@ -172,24 +172,33 @@ export const readFromClipboard = () => {
   return navigator.clipboard.readText();
 };
 
+const triggerHotkeyListener = (event, hotkey) => {
+  const inInput = document.activeElement.nodeName === 'INPUT' && !hotkey.listenInInput;
+  if (inInput) return;
+  const pressed = hotkey.keys.every((key) => {
+    key = key.toLowerCase();
+    const modifiers = {
+      metaKey: ['meta', 'os', 'win', 'cmd', 'command'],
+      ctrlKey: ['ctrl', 'control'],
+      shiftKey: ['shift'],
+      altKey: ['alt'],
+    };
+    for (const modifier in modifiers) {
+      const pressed = modifiers[modifier].includes(key) && event[modifier];
+      if (pressed) return true;
+    }
+    if (key === event.key.toLowerCase()) return true;
+  });
+  if (pressed) hotkey.callback(event);
+};
 document.addEventListener('keyup', (event) => {
-  if (document.activeElement.nodeName === 'INPUT') return;
-  for (const hotkey of _hotkeyEventListeners) {
-    const pressed = hotkey.keys.every((key) => {
-      key = key.toLowerCase();
-      const modifiers = {
-        metaKey: ['meta', 'os', 'win', 'cmd', 'command'],
-        ctrlKey: ['ctrl', 'control'],
-        shiftKey: ['shift'],
-        altKey: ['alt'],
-      };
-      for (const modifier in modifiers) {
-        const pressed = modifiers[modifier].includes(key) && event[modifier];
-        if (pressed) return true;
-      }
-      if (key === event.key.toLowerCase()) return true;
-    });
-    if (pressed) hotkey.callback(event);
+  for (const hotkey of _hotkeyEventListeners.filter(({ keydown }) => !keydown)) {
+    triggerHotkeyListener(event, hotkey);
+  }
+});
+document.addEventListener('keydown', (event) => {
+  for (const hotkey of _hotkeyEventListeners.filter(({ keydown }) => keydown)) {
+    triggerHotkeyListener(event, hotkey);
   }
 });
 
@@ -200,10 +209,19 @@ document.addEventListener('keyup', (event) => {
  * available modifiers are 'alt', 'ctrl', 'meta', and 'shift'.
  * can be provided as a + separated string.
  * @param {function} callback - called whenever the keys are pressed
+ * @param {object} [opts] - fine-tuned control over when the hotkey should be triggered
+ * @param {boolean} [opts.listenInInput] - whether the hotkey callback should be triggered
+ * when an input is focused
+ * @param {boolean} [opts.keydown] - whether to listen for the hotkey on keydown.
+ * by default, hotkeys are triggered by the keyup event.
  */
-export const addHotkeyListener = (keys, callback) => {
+export const addHotkeyListener = (
+  keys,
+  callback,
+  { listenInInput = false, keydown = false } = {}
+) => {
   if (typeof keys === 'string') keys = keys.split('+');
-  _hotkeyEventListeners.push({ keys, callback });
+  _hotkeyEventListeners.push({ keys, callback, listenInInput, keydown });
 };
 /**
  * remove a listener added with web.addHotkeyListener
