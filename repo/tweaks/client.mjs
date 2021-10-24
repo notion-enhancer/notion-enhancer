@@ -47,4 +47,9 @@ export default async function ({ web }, db) {
       document.body.classList.add(`enhancer--tweak-${tweak}`);
     }
   }
+
+  const imgAlignment = await db.get(['tweak.img_alignment']);
+  if (imgAlignment !== 'center') {
+    document.body.classList.add(`enhancer--tweak-img_alignment-${imgAlignment}`);
+  }
 }

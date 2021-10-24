@@ -113,6 +113,12 @@
       "label": "quote block quotation marks",
       "tooltip": "**wrap quote block content in large, decorative serif quotation marks**",
       "value": false
+    },
+    {
+      "type": "select",
+      "key": "tweak.img_alignment",
+      "label": "image alignment",
+      "values": ["center", "left", "right"]
     }
   ]
 }

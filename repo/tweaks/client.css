@@ -133,3 +133,10 @@
   right: 2px;
   bottom: -2px;
 }
+
+.enhancer--tweak-img_alignment-left .notion-image-block {
+  align-self: start !important;
+}
+.enhancer--tweak-img_alignment-right .notion-image-block {
+  align-self: end !important;
+}
