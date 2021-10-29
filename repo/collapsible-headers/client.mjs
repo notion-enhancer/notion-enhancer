@@ -1,5 +1,5 @@
 /*
- * notion-enhancer: collapsible headerrs
+ * notion-enhancer: collapsible headers
  * (c) 2020 CloudHill <rl.cloudhill@gmail.com> (https://github.com/CloudHill)
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license

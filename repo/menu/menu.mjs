@@ -12,6 +12,7 @@ import './styles.mjs';
 import { env, fs, storage, registry, web, components } from '../../api/_.mjs';
 import { notifications } from './launcher.mjs';
 import { modComponents, options } from './components.mjs';
+import * as router from './router.mjs';
 
 const db = await registry.db('a6621988-551d-495a-97d8-3c568bca2e9e'),
   profileName = await registry.profileName(),
@@ -40,11 +41,10 @@ const $main = web.html`<main class="main"></main>`,
     Profile: ${web.escape(profileName)}
   </button>`;
 
+// profile
+
 let _$profileConfig;
-$profile.addEventListener('click', async (event) => {
-  for (const $selected of document.querySelectorAll('.mod-selected')) {
-    $selected.className = 'mod';
-  }
+const openProfileMenu = async () => {
   if (!_$profileConfig) {
     const profileNames = [
         ...new Set([
@@ -83,6 +83,7 @@ $profile.addEventListener('click', async (event) => {
         ${await components.feather('trash-2', { class: 'profile-icon-text' })} Delete
       </button>`,
       $error = web.html`<p class="profile-error"></p>`;
+
     $export.addEventListener('click', async (event) => {
       const now = new Date(),
         $a = web.html`<a
@@ -98,6 +99,7 @@ $profile.addEventListener('click', async (event) => {
       $a.click();
       $a.remove();
     });
+
     $import.addEventListener('change', (event) => {
       const file = event.target.files[0],
         reader = new FileReader();
@@ -113,11 +115,13 @@ $profile.addEventListener('click', async (event) => {
       };
       reader.readAsText(file);
     });
+
     $select.addEventListener('change', async (event) => {
       if ($select.value === '--') {
         $edit.value = '';
       } else $edit.value = $select.value;
     });
+
     $save.addEventListener('click', async (event) => {
       if (profileNames.includes($edit.value) && $select.value !== $edit.value) {
         web.render(
@@ -149,6 +153,7 @@ $profile.addEventListener('click', async (event) => {
       }
       env.reload();
     });
+
     $delete.addEventListener('click', async (event) => {
       await storage.set(['profiles', $select.value], undefined);
       await storage.set(
@@ -183,9 +188,12 @@ $profile.addEventListener('click', async (event) => {
     );
   }
   web.render(web.empty($options), _$profileConfig);
-});
+};
+$profile.addEventListener('click', () => openSidebarMenu('profile'));
 
-const _$modListCache = {},
+// mods
+
+const $modLists = {},
   generators = {
     options: async (mod) => {
       const $fragment = document.createDocumentFragment();
@@ -222,21 +230,7 @@ const _$modListCache = {},
         profileDB.set(['_mods', mod.id], event.target.checked);
         notifications.onChange();
       });
-      $mod.addEventListener('click', async (event) => {
-        if ($mod.className === 'mod-selected') return;
-        for (const $list of Object.values(_$modListCache)) {
-          for (const $selected of $list.querySelectorAll('.mod-selected')) {
-            $selected.className = 'mod';
-          }
-        }
-        $mod.className = 'mod-selected';
-        const fragment = [
-          web.render(modComponents.title(mod.name), modComponents.version(mod.version)),
-          modComponents.tags(mod.tags),
-          await generators.options(mod),
-        ];
-        web.render(web.empty($options), ...fragment);
-      });
+      $mod.addEventListener('click', () => openSidebarMenu(mod.id));
       return web.render(
         web.html`<article class="mod-container"></article>`,
         web.render(
@@ -262,7 +256,7 @@ const _$modListCache = {},
       );
     },
     modList: async (category, message = '') => {
-      if (!_$modListCache[category]) {
+      if (!$modLists[category]) {
         const $search = web.html`<input type="search" class="search"
           placeholder="Search ('/' to focus)">`,
           $list = web.html`<div class="mods-list"></div>`,
@@ -282,7 +276,7 @@ const _$modListCache = {},
           web.render($list, await generators.mod(mod));
           mod.tags.unshift(category);
         }
-        _$modListCache[category] = web.render(
+        $modLists[category] = web.render(
           web.html`<div></div>`,
           web.render(
             web.html`<label class="search-container"></label>`,
@@ -293,9 +287,29 @@ const _$modListCache = {},
           $list
         );
       }
-      return _$modListCache[category];
+      return $modLists[category];
     },
   };
+
+async function openModMenu(id) {
+  let $mod;
+  for (const $list of Object.values($modLists)) {
+    $mod = $list.querySelector(`[data-id="${web.escape(id)}"]`);
+    if ($mod) break;
+  }
+  const mod = await registry.get(id);
+  if (!$mod || !mod || $mod.className === 'mod-selected') return;
+
+  $mod.className = 'mod-selected';
+  const fragment = [
+    web.render(modComponents.title(mod.name), modComponents.version(mod.version)),
+    modComponents.tags(mod.tags),
+    await generators.options(mod),
+  ];
+  web.render(web.empty($options), ...fragment);
+}
+
+// views
 
 const $notionNavItem = web.html`<h1 class="nav-notion">
     ${(await fs.getText('media/colour.svg')).replace(
@@ -338,51 +352,61 @@ function selectNavItem($item) {
   $item.className = 'nav-item-selected';
 }
 
-import * as router from './router.mjs';
-
+await generators.modList(
+  'core',
+  `Core mods provide the basics required for
+   all other extensions and themes to work. They
+   can't be disabled, but they can be configured
+   - just click on a mod to access its options.`
+);
 router.addView('core', async () => {
   web.empty($main);
   selectNavItem($coreNavItem);
-  return web.render(
-    $main,
-    await generators.modList(
-      'core',
-      `Core mods provide the basics required for
-      all other extensions and themes to work. They
-      can't be disabled, but they can be configured
-      - just click on a mod to access its options.`
-    )
-  );
+  return web.render($main, await generators.modList('core'));
 });
 
+await generators.modList(
+  'extension',
+  `Extensions modify and extend the functionality
+   or layout of the Notion client. They don't interfere
+   with Notion's data structures, so they can be safely
+   enabled or disabled at any time.`
+);
 router.addView('extensions', async () => {
   web.empty($main);
   selectNavItem($extensionsNavItem);
-  return web.render(
-    $main,
-    await generators.modList(
-      'extension',
-      `Extensions modify and extend the functionality
-      or layout of the Notion client. They don't interfere
-      with Notion's data structures, so they can be safely
-      enabled or disabled at any time.`
-    )
-  );
+  return web.render($main, await generators.modList('extension'));
 });
 
+await generators.modList(
+  'theme',
+  `Themes change Notion's colour scheme.
+   Dark themes will only work when Notion is in dark mode,
+   and light themes will only work when Notion is in light mode.
+   Only one theme of each mode can be enabled at a time.`
+);
 router.addView('themes', async () => {
   web.empty($main);
   selectNavItem($themesNavItem);
-  return web.render(
-    $main,
-    await generators.modList(
-      'theme',
-      `Themes change Notion's colour scheme.
-      Dark themes will only work when Notion is in dark mode,
-      and light themes will only work when Notion is in light mode.
-      Only one theme of each mode can be enabled at a time.`
-    )
-  );
+  return web.render($main, await generators.modList('theme'));
 });
 
-router.loadView('extensions', $main);
+router.setDefaultView('extensions');
+
+router.addQueryListener('id', openSidebarMenu);
+async function openSidebarMenu(id) {
+  if (!id) return;
+  id = web.escape(id);
+
+  const deselectedMods = `.mod-selected:not([data-id="${id}"])`;
+  for (const $list of Object.values($modLists)) {
+    for (const $selected of $list.querySelectorAll(deselectedMods)) {
+      $selected.className = 'mod';
+    }
+  }
+  router.updateQuery(`?id=${id}`);
+
+  if (id === 'profile') {
+    openProfileMenu();
+  } else openModMenu(id);
+}

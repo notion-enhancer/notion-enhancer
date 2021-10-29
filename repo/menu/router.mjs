@@ -8,80 +8,82 @@
 
 import { web } from '../../api/_.mjs';
 
-let _defaultView = '';
-const _views = new Map();
+const _queryListeners = new Set();
 
 export function addView(name, loadFunc) {
-  _views.set(name, loadFunc);
+  const handlerFunc = (newView) => {
+    if (newView === name) return loadFunc();
+    return false;
+  };
+  _queryListeners.add({ param: 'view', viewName: name, handlerFunc });
+  handlerFunc(web.queryParams().get('view'), null);
 }
 export function removeView(name) {
-  _views.delete(name);
+  const view = [..._queryListeners].find((view) => view.viewName === name);
+  if (view) _queryListeners.delete(view);
 }
+export async function setDefaultView(viewName) {
+  const viewList = [..._queryListeners].filter((q) => q.viewName).map((v) => v.viewName);
+  if (!viewList.includes(web.queryParams().get('view'))) {
+    updateQuery(`?view=${viewName}`, true);
+  }
+}
+
+export function addQueryListener(param, handlerFunc) {
+  _queryListeners.add({ param: param, handlerFunc });
+  handlerFunc(web.queryParams().get(param), null);
+}
+export function removeQueryListener(handlerFunc) {
+  const listener = [..._queryListeners].find((view) => view.handlerFunc === handlerFunc);
+  if (listener) _queryListeners.delete(listener);
+}
+
+export const updateQuery = (search, replace = false) => {
+  let query = web.queryParams();
+  for (const [key, val] of new URLSearchParams(search)) {
+    query.set(key, val);
+  }
+  query = `?${query.toString()}`;
+  if (location.search !== query) {
+    if (replace) {
+      window.history.replaceState(null, null, query);
+    } else {
+      window.history.pushState(null, null, query);
+    }
+    triggerQueryListeners();
+  }
+};
 
 function router(event) {
   event.preventDefault();
   const anchor = event.path
     ? event.path.find((anchor) => anchor.nodeName === 'A')
     : event.target;
-  if (location.search !== anchor.getAttribute('href')) {
-    window.history.pushState(null, null, anchor.href);
-    loadView();
+  updateQuery(anchor.getAttribute('href'));
+}
+
+let queryCache = '';
+async function triggerQueryListeners() {
+  if (location.search === queryCache) return;
+  const newQuery = web.queryParams(),
+    oldQuery = new URLSearchParams(queryCache);
+  console.log(location.search, queryCache);
+  queryCache = location.search;
+  for (const listener of _queryListeners) {
+    const newParam = newQuery.get(listener.param),
+      oldParam = oldQuery.get(listener.param);
+    if (newParam !== oldParam) listener.handlerFunc(newParam, oldParam);
   }
 }
-function navigator(event) {
-  event.preventDefault();
-  const anchor = event.path
-      ? event.path.find((anchor) => anchor.nodeName === 'A')
-      : event.target,
-    hash = anchor.getAttribute('href').slice(1);
-  document.getElementById(hash).scrollIntoView(true);
-  document.documentElement.scrollTop = 0;
-  history.replaceState({ search: location.search, hash }, null, `#${hash}`);
-}
 
-export async function loadView(defaultView = null) {
-  if (defaultView) _defaultView = defaultView;
-  if (!_defaultView) throw new Error('no view root set.');
+window.addEventListener('popstate', triggerQueryListeners);
 
-  const query = web.queryParams(),
-    fallbackView = () => {
-      window.history.replaceState(null, null, `?view=${_defaultView}`);
-      return loadView();
-    };
-  if (!query.get('view') || document.body.dataset.view !== query.get('view')) {
-    if (_views.get(query.get('view'))) {
-      await _views.get(query.get('view'))();
-    } else return fallbackView();
-  } else return fallbackView();
-}
-
-window.addEventListener('popstate', (event) => {
-  if (event.state) loadView();
-  document.getElementById(location.hash.slice(1))?.scrollIntoView(true);
-  document.documentElement.scrollTop = 0;
-});
-
-const documentObserverEvents = [],
-  handleDocumentMutations = (queue) => {
-    while (queue.length) {
-      const mutation = queue.shift();
-      mutation.target.querySelectorAll('a[href^="?"]').forEach((a) => {
-        a.removeEventListener('click', router);
-        a.addEventListener('click', router);
-      });
-      mutation.target.querySelectorAll('a[href^="#"]').forEach((a) => {
-        a.removeEventListener('click', navigator);
-        a.addEventListener('click', navigator);
-      });
-    }
+web.addDocumentObserver(
+  (mutation) => {
+    mutation.target.querySelectorAll('a[href^="?"]').forEach((a) => {
+      a.removeEventListener('click', router);
+      a.addEventListener('click', router);
+    });
   },
-  documentObserver = new MutationObserver((list, observer) => {
-    if (!documentObserverEvents.length)
-      requestIdleCallback(() => handleDocumentMutations(documentObserverEvents));
-    documentObserverEvents.push(...list);
-  });
-documentObserver.observe(document.body, {
-  childList: true,
-  subtree: true,
-  attributes: true,
-});
+  ['a[href^="?"]']
+);
