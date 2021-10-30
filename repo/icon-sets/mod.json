@@ -1,0 +1,35 @@
+{
+  "name": "icon sets",
+  "id": "2d1f4809-9581-40dd-9bf3-4239db406483",
+  "version": "0.4.0",
+  "description": "upload, save and reuse custom icons directly from the icon picker.",
+  "tags": ["integration", "customisation"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "css": {
+    "client": ["client.css"]
+  },
+  "options": [
+    {
+      "type": "toggle",
+      "key": "default_sets",
+      "label": "load default icon sets from github",
+      "value": true
+    },
+    {
+      "type": "file",
+      "key": "json",
+      "label": "custom icon sets (.json)",
+      "extensions": ["json"]
+    }
+  ]
+}

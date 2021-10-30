@@ -86,6 +86,7 @@ const customClasses = {
   'file-latest': apply`block w-full text-left text-foreground-secondary text-xs mt-2 hover:line-through cursor-pointer`,
   'search-container': apply`block mx-2.5 my-2.5 relative`,
   'search': apply`input pr-12`,
+  'danger': apply`bg-red-paragraph text-red-paragraph-text`,
 };
 
 setup({

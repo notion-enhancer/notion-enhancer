@@ -1,0 +1,179 @@
+/*
+ * notion-enhancer: icon sets
+ * (c) 2019 jayhxmo (https://jaymo.io/)
+ * (c) 2020 CloudHill <rl.cloudhill@gmail.com> (https://github.com/CloudHill)
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+.icon_sets--tab_button {
+  position: relative;
+  padding-top: 6px;
+  padding-bottom: 6px;
+  flex-shrink: 0;
+}
+.icon_sets--tab_button > .notion-focusable {
+  user-select: none;
+  transition: background 20ms ease-in 0s;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  height: 28px;
+  border-radius: 3px;
+  font-size: 14px;
+  line-height: 1.2;
+  padding-left: 8px;
+  padding-right: 8px;
+  color: var(--theme--text);
+}
+.icon_sets--tab_button:hover > .notion-focusable {
+  background: var(--theme--ui_interactive-hover);
+}
+.icon_sets--tab_button:active > .notion-focusable {
+  background: var(--theme--ui_interactive-active);
+}
+
+.icon_sets--scroller {
+  padding: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  z-index: 1;
+}
+.icon_sets--actions {
+  display: flex;
+  padding: 10px 14px;
+}
+
+.icon_sets--link_input {
+  flex-grow: 1;
+  font-size: 14px;
+  line-height: 20px;
+  padding: 4px 6px;
+  border-top-left-radius: 3px;
+  border-bottom-left-radius: 3px;
+  box-shadow: var(--theme--ui_shadow) 0px 0px 0px 1px inset;
+  background: var(--theme--ui_input);
+  cursor: text;
+  height: 28px;
+}
+.icon_sets--link_input > input {
+  font-size: inherit;
+  line-height: inherit;
+  border: none;
+  background: none;
+  width: 100%;
+  display: block;
+  resize: none;
+  padding: 0px;
+}
+
+.icon_sets--link_submit {
+  border-top-left-radius: 0;
+  border-bottom-left-radius: 0;
+  border-top-right-radius: 3px;
+  border-bottom-right-radius: 3px;
+}
+
+.icon_sets--upload,
+.icon_sets--link_submit {
+  user-select: none;
+  transition: background 20ms ease-in 0s;
+  cursor: pointer;
+  border: none;
+  background: var(--theme--accent_blue);
+  color: var(--theme--accent_blue-text);
+  line-height: 1.2;
+  padding: 6px 8px;
+  height: 28px;
+  font-size: 14px;
+  font-weight: 500;
+}
+.icon_sets--upload:hover,
+.icon_sets--link_submit:hover {
+  background: var(--theme--accent_blue-hover);
+}
+.icon_sets--upload:active,
+.icon_sets--link_submit:active {
+  background: var(--theme--accent_blue-active);
+}
+
+.icon_sets--upload {
+  margin-left: 0.5em;
+  border-radius: 3px;
+}
+
+.icon_sets--list {
+  height: 100%;
+  word-break: break-all;
+  overflow: hidden auto;
+  padding: 0 14px 10px 14px;
+}
+
+.icon_sets--title {
+  margin: 6px 0 8px 0;
+  color: var(--theme--text_secondary);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.2;
+  user-select: none;
+  text-transform: uppercase;
+  cursor: pointer;
+  border-radius: 2px;
+  padding: 0.25em;
+  display: flex;
+  align-items: center;
+}
+.icon_sets--title:hover {
+  background: var(--theme--ui_interactive-hover);
+}
+.icon_sets--title:active {
+  background: var(--theme--ui_interactive-active);
+}
+.icon_sets--title .info {
+  height: 1em;
+  margin-left: 0.5em;
+}
+.icon_sets--title .triangle {
+  height: 1em;
+  width: 0.9em;
+  margin: 0 0.5em 0 0.25em;
+  transition: transform 200ms ease-out 0s;
+  transform: rotateZ(180deg);
+}
+.icon_sets--title[data-collapsed='true'] .triangle {
+  transform: rotateZ(90deg);
+}
+.icon_sets--title[data-collapsed='true'] + .icon_sets--set {
+  height: 0 !important;
+}
+
+.icon_sets--set {
+  display: flex;
+  flex-wrap: wrap;
+  overflow: hidden;
+  transition: height 200ms ease-out 0s;
+}
+.icon_sets--icon {
+  user-select: none;
+  transition: background 20ms ease-in 0s;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  width: 32px;
+  height: 32px;
+  font-size: 24px;
+}
+.icon_sets--icon:hover {
+  background: var(--theme--ui_interactive-hover);
+}
+.icon_sets--icon:active {
+  background: var(--theme--ui_interactive-active);
+}
+.icon_sets--icon > img {
+  max-width: 24px;
+  max-height: 24px;
+}

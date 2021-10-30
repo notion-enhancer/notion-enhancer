@@ -283,7 +283,7 @@ const $modLists = {},
             $search,
             web.html`${await components.feather('search', { class: 'input-icon' })}`
           ),
-          message ? web.html`<p class="main-message">${web.escape(message)}</p>` : '',
+          message ? web.render(web.html`<p class="main-message"></p>`, message) : '',
           $list
         );
       }
@@ -322,7 +322,8 @@ $notionNavItem.addEventListener('click', env.focusNotion);
 
 const $coreNavItem = web.html`<a href="?view=core" class="nav-item">core</a>`,
   $extensionsNavItem = web.html`<a href="?view=extensions" class="nav-item">extensions</a>`,
-  $themesNavItem = web.html`<a href="?view=themes" class="nav-item">themes</a>`;
+  $themesNavItem = web.html`<a href="?view=themes" class="nav-item">themes</a>`,
+  $integrationsNavItem = web.html`<a href="?view=integrations" class="nav-item">integrations</a>`;
 
 web.render(
   document.body,
@@ -336,6 +337,7 @@ web.render(
         $coreNavItem,
         $extensionsNavItem,
         $themesNavItem,
+        $integrationsNavItem,
         web.html`<a href="https://notion-enhancer.github.io" class="nav-item">docs</a>`,
         web.html`<a href="https://discord.gg/sFWPXtA" class="nav-item">community</a>`
       ),
@@ -367,10 +369,9 @@ router.addView('core', async () => {
 
 await generators.modList(
   'extension',
-  `Extensions modify and extend the functionality
-   or layout of the Notion client. They don't interfere
-   with Notion's data structures, so they can be safely
-   enabled or disabled at any time.`
+  `Extensions build on the functionality and layout of
+   the Notion client, modifying and interacting with
+   existing interfaces.`
 );
 router.addView('extensions', async () => {
   web.empty($main);
@@ -389,6 +390,18 @@ router.addView('themes', async () => {
   web.empty($main);
   selectNavItem($themesNavItem);
   return web.render($main, await generators.modList('theme'));
+});
+
+await generators.modList(
+  'integration',
+  web.html`<span class="danger">Integrations are extensions that use an unofficial API
+   to access and modify content. They are used just like
+   normal extensions, but may be more dangerous to use.</span>`
+);
+router.addView('integrations', async () => {
+  web.empty($main);
+  selectNavItem($integrationsNavItem);
+  return web.render($main, await generators.modList('integration'));
 });
 
 router.setDefaultView('extensions');
