@@ -6,11 +6,25 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-export default async function ({ web, components, notion }, db) {
+export default async function ({ web, fs, components, notion }, db) {
   const recentUploads = await db.get(['recent_uploads'], []),
     $triangleSvg = web.html`<svg viewBox="0 0 100 100" class="triangle">
       <polygon points="5.9,88.2 50,11.8 94.1,88.2" />
     </svg>`;
+
+  const customIconSets = [],
+    customIconsFile = await db.get(['json']);
+  if (customIconsFile?.content) {
+    const iconsData = JSON.parse(customIconsFile.content);
+    customIconSets.push(...(iconsData.icons || iconsData));
+  }
+
+  const enhancerIconSets = [],
+    enhancerIconsUrl = 'https://raw.githubusercontent.com/notion-enhancer/icons/main/';
+  if (await db.get(['default_sets'])) {
+    const iconsData = await fs.getJSON(`${enhancerIconsUrl}/icons.json`);
+    enhancerIconSets.push(...(iconsData.icons || iconsData));
+  }
 
   const mediaMenuSelector = '.notion-media-menu',
     mediaScrollerSelector = '.notion-media-menu > .notion-scroller',
@@ -19,25 +33,35 @@ export default async function ({ web, components, notion }, db) {
     tabBtnSelector = (n) =>
       `.notion-media-menu > :first-child > :first-child > :nth-child(${n})`;
 
-  const renderSetTitle = async (id, title, $tooltip = undefined) => {
-    const isCollapsed = await db.get(['collapsed', id], false),
+  const renderSetTitle = async (title, loadPromises = [], $tooltip = undefined) => {
+    const isCollapsed = await db.get(['collapsed', title], false),
       $title = web.html`<p class="icon_sets--title"
-            ${isCollapsed ? 'data-collapsed="true"' : ''}></p>`;
+            ${isCollapsed ? 'data-collapsed="true"' : ''}></p>`,
+      $spinner = web.html`<span class="icon_sets--spinner">
+        <img src="/images/loading-spinner.4dc19970.svg" />
+      </span>`;
     web.render(
       $title,
       $triangleSvg.cloneNode(true),
-      web.html`<span>${web.escape(title)}</span>`
+      web.html`<span>${title}</span>`,
+      $spinner
     );
     $title.addEventListener('click', () => {
       const newState = $title.dataset.collapsed !== 'true';
-      db.set(['collapsed', id], newState);
+      db.set(['collapsed', title], newState);
       $title.dataset.collapsed = newState;
     });
-    if ($tooltip) {
-      const $infoSvg = web.html`${await components.feather('info', { class: 'info' })}`;
-      components.setTooltip($infoSvg, $tooltip);
-      web.render($title, $infoSvg);
-    }
+    // hide spinner after all icons finish loading
+    // doesn't need to be waited on by renderers
+    (async () => {
+      await Promise.all(loadPromises);
+      $spinner.remove();
+      if ($tooltip) {
+        const $infoSvg = web.html`${await components.feather('info', { class: 'info' })}`;
+        components.setTooltip($infoSvg, $tooltip);
+        web.render($title, $infoSvg);
+      }
+    })();
     return $title;
   };
 
@@ -57,26 +81,23 @@ export default async function ({ web, components, notion }, db) {
     ),
     // sets
     $setsList = web.html`<div class="icon_sets--list"></div>`,
-    $recentUploadsTitle = await renderSetTitle(
-      'recent_uploads',
-      'Recent',
-      web.html`<p><b>Click</b> to reuse an icon <br><b>Shift-click</b> to remove it</p>`
-    ),
-    $recentUploads = web.html`<div class="icon_sets--set"></div>`,
     // container
-    $iconsScroller = web.render(
-      web.html`<div class="icon_sets--scroller" style="display:none"></div>`,
+    $iconsView = web.render(
+      web.html`<div class="icon_sets--view" style="display:none"></div>`,
       web.render(
         web.html`<div class="icon_sets--actions"></div>`,
-        $iconsLinkInput,
-        $iconsLinkSubmit,
+        web.render(
+          web.html`<div class="notion-focusable-within" style="display:flex;border-radius:3px;"></div>`,
+          $iconsLinkInput,
+          $iconsLinkSubmit
+        ),
         $iconsUploadSubmit
       ),
-      web.render($setsList, $recentUploadsTitle, $recentUploads)
+      web.render($setsList)
     );
 
   let $mediaMenu, $activeTabUnderline;
-  const insertIconsTab = async (event) => {
+  const insertIconsTab = async () => {
     if (document.contains($mediaMenu)) return;
 
     // prevent injection into file upload menus
@@ -94,10 +115,11 @@ export default async function ({ web, components, notion }, db) {
     $activeTabUnderline =
       $emojiTab.children[1] || $uploadTab.children[1] || $linkTab.children[1];
     $emojiTab.after($iconsTab);
-    $emojiScroller.after($iconsScroller);
+    $emojiScroller.after($iconsView);
 
-    const renderRecentUploads = () => {
-        web.empty($recentUploads);
+    const renderRecentUploads = async () => {
+        const $recentUploads = web.html`<div class="icon_sets--set"></div>`,
+          loadPromises = [];
         for (let i = recentUploads.length - 1; i >= 0; i--) {
           const { signed, url } = recentUploads[i],
             $icon = web.html`<span class="icon_sets--icon">
@@ -111,23 +133,117 @@ export default async function ({ web, components, notion }, db) {
               $icon.remove();
             } else setIcon(url);
           });
+          loadPromises.push(
+            new Promise((res, rej) => {
+              $icon.firstElementChild.onload = res;
+              $icon.firstElementChild.onerror = res;
+            })
+          );
         }
-        $recentUploads.style.height = `${$recentUploads.scrollHeight}px`;
-      },
-      renderSets = async () => {};
 
-    const displayIconsTab = (force = false) => {
+        const $recentUploadsTitle = await renderSetTitle(
+          'Recent',
+          loadPromises,
+          web.html`<p><b>Click</b> to reuse an icon <br><b>Shift-click</b> to remove it</p>`
+        );
+        web.render($setsList, $recentUploadsTitle, $recentUploads);
+      },
+      renderIconSet = async (iconData, enhancerSet = false) => {
+        try {
+          const $set = web.html`<div class="icon_sets--set"></div>`;
+          if (iconData.sourceUrl?.endsWith?.('/')) {
+            iconData.sourceUrl = iconData.sourceUrl.slice(0, -1);
+          }
+
+          const loadPromises = [];
+          for (let i = 0; i < (iconData.count || iconData.source.length); i++) {
+            const iconUrl = iconData.sourceUrl
+                ? Array.isArray(iconData.source)
+                  ? `${iconData.sourceUrl}/${iconData.source[i]}.${iconData.extension}`
+                  : `${iconData.sourceUrl}/${iconData.source}_${i}.${iconData.extension}`
+                : iconData.source[i],
+              sprite = enhancerSet
+                ? `style="
+                    background-image: url(${enhancerIconsUrl}${iconData.source}/sprite.png);
+                    background-position: 0 -${i * 24}px;
+                  "`
+                : '',
+              $img = sprite
+                ? web.html`<div class="icon_sets--sprite" ${sprite}></div>`
+                : web.html`<img src="${web.escape(iconUrl)}">`,
+              $icon = web.render(web.html`<span class="icon_sets--icon"></span>`, $img);
+            web.render($set, $icon);
+            $icon.addEventListener('click', (event) => {
+              if (!event.shiftKey) setIcon(iconUrl);
+            });
+            if (!sprite) {
+              loadPromises.push(
+                new Promise((res, rej) => {
+                  $img.onload = res;
+                  $img.onerror = res;
+                })
+              );
+            }
+          }
+
+          const author = iconData.author
+              ? iconData.authorUrl
+                ? web.raw`by <a target="_blank" href="${web.escape(iconData.authorUrl)}">
+                  ${iconData.author}
+                </a>`
+                : web.raw`by ${web.escape(iconData.author)}`
+              : '',
+            $title = await renderSetTitle(
+              `${web.escape(iconData.name)} ${author}`,
+              loadPromises
+            );
+          web.render($setsList, $title, $set);
+        } catch (err) {
+          console.log(err);
+          web.render(
+            $setsList,
+            web.html`<div class="icon_sets--error">
+              Invalid set: ${web.escape(iconData?.name || 'Unknown')}
+            </div>`
+          );
+        }
+      },
+      renderCustomIconSets = async () => {
+        if (customIconSets.length) {
+          web.render($setsList, web.html`<div class="icon_sets--divider"></div>`);
+        }
+        await Promise.all(customIconSets.map((set) => renderIconSet(set)));
+      },
+      renderEnhancerIconSets = async () => {
+        if (enhancerIconSets.length) {
+          web.render($setsList, web.html`<div class="icon_sets--divider"></div>`);
+        }
+        await Promise.all(
+          enhancerIconSets.map((set) => {
+            set.sourceUrl = set.sourceUrl || enhancerIconsUrl + set.source;
+            return renderIconSet(set, true);
+          })
+        );
+      };
+
+    const displayIconsTab = async (force = false) => {
         if ($iconsTab.contains($activeTabUnderline) && !force) return;
         web.render($iconsTab, $activeTabUnderline);
-        $iconsScroller.style.display = '';
+        $iconsView.style.display = '';
         $emojiScroller.style.display = 'none';
         $emojiFilter.style.display = 'none';
-        renderRecentUploads();
+        web.empty($setsList);
+        await renderRecentUploads();
+        await renderCustomIconSets();
+        await renderEnhancerIconSets();
+        $iconsView.querySelectorAll('.icon_sets--set').forEach(($set) => {
+          $set.style.height = `${$set.scrollHeight}px`;
+        });
       },
       displayEmojiTab = (force = false) => {
         if ($emojiTab.contains($activeTabUnderline) && !force) return;
         web.render($emojiTab, $activeTabUnderline);
-        $iconsScroller.style.display = 'none';
+        $iconsView.style.display = 'none';
         $emojiScroller.style.display = '';
         $emojiFilter.style.display = '';
       };
