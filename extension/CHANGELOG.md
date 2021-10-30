@@ -19,7 +19,7 @@ a complete rework of the enhancer, with new features and a port to the browser a
 - improved: a redesigned menu with nicer ui, separate categories for mods and a sidebar for configuration.
 - improved: simplified and smoothened the side panel + moved it to the core so any mod can hook into it.
 - improved: font chooser option for heading fonts.
-- improved: renamed "property-layout" to "collapse properties", added per-page memory of collapse state.
+- improved: renamed "property-layout" to "collapsible properties", added per-page memory of collapse state.
 - improved: chevron icon instead of arrow for scroll to top.
 - improved: moved word counter to display in the side panel instead of within the page,
   implemented a more accurate word counter method.
@@ -29,9 +29,12 @@ a complete rework of the enhancer, with new features and a port to the browser a
 - improved: rtl support for toggles, indentation lines, table of contents and databases + force inline math to ltr.
 - improved: replaced the "truncated table titles" extension with a "truncated titles" extension
   with an option to truncate timeline item titles.
+- improved: renamed "notion-icons" to "icon sets" with new support for uploading/reusing custom icons
+  directly within the icon picker.
 - removed: integrated scrollbar tweak (notion now includes by default).
 - removed: js insert. css insert moved to tweaks mod.
-- removed: majority of layout and font size variables - better to leave former to notion and use `ctrl +` for latter.
+- removed: majority of layout and font size variables - better to leave former to notion and use `ctrl +`/`ctrl -` for latter.
+- removed: the "panel sites" extension, due to it's limited/buggy functionality and incompatibility with reimplementation.
 - bugfix: bypass csp restrictions.
 - theme: "nord" = an arctic, north-bluish color palette.
 - theme: "gruvbox light" = a sepia, 'retro groove' palette based on the vim theme of the same name.
@@ -42,12 +45,15 @@ a complete rework of the enhancer, with new features and a port to the browser a
 - theme: "pinky boom" = pinkify your life.
 - extension: "calendar scroll" = add a button to jump down to the current week in fullpage/infinite-scroll calendars.
 - extension: "global block links" = easily copy the global link of a page or block.
+- extension: "collapsible headers" = adds toggles to collapse header sections of pages.
+- extension: "simpler databases" = adds a menu to inline databases to toggle ui elements.
 - tweak: wrap tables to page width.
 - tweak: hide "Type '/' for commands".
 - tweak: quote block quotation marks.
 - tweak: responsive columns breakpoint (%).
 - tweak: accented links.
 - tweak: full width pages.
+- tweak: image alignment (center/left/right).
 - bugfixes: many. like many many. all the bugfixes. (mostly a side effect of completely rewriting everything,
   but reported extension-specific bugs were all intentionally fixed.)
 
