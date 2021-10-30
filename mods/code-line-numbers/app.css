@@ -5,7 +5,7 @@
  * under the MIT license
  */
 
-.notion-code-block.line-numbers > div {
+.notion-code-block.line-numbers {
   position: relative;
 }
 
@@ -24,4 +24,7 @@
   padding-right: 18px;
   overflow: hidden;
   pointer-events: none;
+}
+#code-line-numbers:empty {
+  display: none;
 }

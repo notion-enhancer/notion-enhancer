@@ -14,7 +14,7 @@ module.exports = {
   tags: ['extension'],
   name: 'code line numbers',
   desc: 'adds line numbers to code blocks.',
-  version: '1.1.1',
+  version: '1.2.0',
   author: 'CloudHill',
   options: [
     {
@@ -44,23 +44,18 @@ module.exports = {
 
         function handle(list) {
           queue = [];
-          for (let { addedNodes } of list) {
-            if (
-              addedNodes[0] &&
+          for (let { addedNodes, target } of list) {
+            const block = target.querySelector('.line-numbers.notion-code-block') ||
               (
-                addedNodes[0].className === 'notion-page-content' ||
-                (
-                  addedNodes[0].querySelector &&
-                  addedNodes[0].querySelector('.notion-code-block.line-numbers')
-                )
-              )
-            ) {
-              resizeObserver.disconnect();
-              const codeBlocks = document.querySelectorAll('.notion-code-block.line-numbers');
-              codeBlocks.forEach(block => {
-                number(block);
-                resizeObserver.observe(block);
-              });
+                addedNodes[0]?.classList?.contains('.notion-code-block') &&
+                addedNodes[0].querySelector('.line-numbers.notion-code-block')
+              );
+
+            if (block) {
+              if (block.dataset.numbered) return;
+              number(block);
+              block.dataset.numbered = true;
+              resizeObserver.observe(block);
             }
           }
         }
@@ -74,12 +69,14 @@ module.exports = {
               '<span id="code-line-numbers"></span>'
             );
             
+            // set size
             const blockStyle = window.getComputedStyle(block.children[0]);
             numbers.style.top = blockStyle.paddingTop;
             numbers.style.bottom = blockStyle.paddingBottom;
             
             block.append(numbers);
 
+            // get lineHeight
             const temp = createElement('<span>A</span>');
             block.firstChild.append(temp);
             block.lineHeight = temp.getBoundingClientRect().height;
@@ -109,7 +106,7 @@ module.exports = {
           
           if (store().single_lined || codeLineNumbers.length > 2) {
             block.firstChild.classList.add('code-numbered');
-            numbers.innerText = codeLineNumbers;
+            numbers.innerText = codeLineNumbers || 1;
           } else {
             block.firstChild.classList.remove('code-numbered');
             numbers.innerText = '';

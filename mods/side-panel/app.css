@@ -5,17 +5,14 @@
  * under the MIT license
  */
 
-.notion-frame {
+.notion-frame, .notion-cursor-listener > div[style*="flex-end"] {
   transition: padding-right 300ms ease-in-out;
 }
+
 .enhancer-panel--container {
   flex-grow: 0;
   flex-shrink: 0;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  z-index: 99;
+  z-index: 999;
   height: 100vh;
   background: var(--theme--sidebar);
   color: var(--theme--text_ui);
@@ -32,6 +29,7 @@
   background: var(--theme--sidebar);
   cursor: auto;
   max-height: 100%;
+  z-index: 1;
   transition: transform 300ms ease-in-out, 
     opacity 300ms ease-in-out,
     right 300ms ease-in-out;
@@ -64,6 +62,7 @@
 }
 .enhancer-panel--header:hover {
   background: var(--theme--interactive_hover);
+  box-shadow: 0 0 0 0.5px var(--theme--interactive_hover-border);
 }
 
 .enhancer-panel--icon {
@@ -179,6 +178,16 @@
   height: 100%;
   width: 6px;
 }
+
+.enhancer-panel--hover-handle {
+  position: absolute;
+  right: 8px;
+  top: 60px;
+  height: 100%;
+  width: 20px;
+}
+
+/* overlay */
 
 .enhancer-panel--overlay-container {
   position: fixed;

@@ -16,7 +16,7 @@ module.exports = (store, __exports) => {
   const pageObserver = new MutationObserver((list, observer) => {
     for ( let { addedNodes } of list) {
       if (addedNodes[0]) {
-        if (addedNodes[0].className === 'notion-page-content') {
+        if (addedNodes[0].className === 'notion-presence-container') {
           startContentObserver();
         }
         // Clear outline on database pages
@@ -147,7 +147,7 @@ module.exports = (store, __exports) => {
       // Find headers when switching panels
       if (document.querySelector('.notion-page-content')) {
         startContentObserver();
-      };    
+      }
       pageObserver.observe(document.body, {
         childList: true,
         subtree: true,

@@ -5,7 +5,7 @@
  * under the MIT license
  */
  
-.simpler-databases--config-button:hover {
+ .simpler-databases--config-button:hover {
   background: var(--theme--interactive_hover);
 }
   
@@ -170,13 +170,16 @@
   transform: rotateZ(90deg);
 }
 
-.notion-collection_view-block[data-tweaks*="[toggle]"] > .notion-scroller {
+.notion-collection_view-block[data-tweaks*="[toggle]"] > div > .notion-scroller {
   transition: height 200ms ease-in, opacity 200ms ease-in;
 }
-.notion-collection_view-block[data-tweaks*="[toggle]"][data-toggled-hidden="true"] > .notion-scroller {
+.notion-collection_view-block[data-tweaks*="[toggle]"][data-toggled-hidden="true"] > div > .notion-scroller {
   opacity: 0;
   height: 0 !important;
 }
+
+.notion-collection_view-block[data-tweaks*="[toggle]"][data-toggled-hidden="true"]
+  [data-hide-items] [class$="view"] > .notion-collection_view-block,
 .notion-collection_view-block[data-tweaks*="[toggle]"][data-toggled-hidden="true"]
   [data-hide-items] .notion-collection-item {
   display: none !important;
@@ -237,7 +240,7 @@
 .notion-collection_view-block[data-tweaks]:not([data-tweaks*="[new_item]"])
   .notion-list-view > .notion-collection_view-block > [role="button"]:not(.notion-collection-item),
 .notion-collection_view-block[data-tweaks]:not([data-tweaks*="[new_item]"])
-  .notion-gallery-view > .notion-collection_view-block > [role="button"]:not(.notion-collection-item) {
+  .notion-gallery-view > .notion-collection_view-block [style*="grid"] > [role="button"] {
   display: none !important;
 }
 .notion-collection_view-block[data-tweaks]:not([data-tweaks*="[new_item]"])

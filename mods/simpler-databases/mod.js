@@ -14,7 +14,7 @@ module.exports = {
   tags: ['extension'],
   name: 'simpler databases',
   desc: 'adds a menu to inline databases to toggle ui elements.',
-  version: '1.0.0',
+  version: '1.0.2',
   author: 'CloudHill',
   hacks: {
     'renderer/preload.js'(store, __exports) {
@@ -157,7 +157,7 @@ module.exports = {
           for (let { addedNodes } of list) {
             if (
               addedNodes[0] &&
-              addedNodes[0].className === 'notion-page-content'
+              addedNodes[0].className === 'notion-presence-container'
             ) {
               findInlineCollections();
               contentObserver.disconnect();
