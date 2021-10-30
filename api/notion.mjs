@@ -305,6 +305,48 @@ export const create = async (
 };
 
 /**
+ * unofficial content api: upload a file to notion's aws servers
+ * (requires user to be signed in or content to be public).
+ * TEST THIS THOROUGHLY. misuse can corrupt a record, leading the notion client
+ * to be unable to parse and render content properly and throw errors.
+ * why not use the official api?
+ * 1. cors blocking prevents use on the client
+ * 2. the majority of blocks are still 'unsupported'
+ * @param {File} file - the file to upload
+ * @param {object} [pointer] - where the file should be accessible from
+ * @param {string} [pointer.pageID] - uuidv4 page id
+ * @param {string} [pointer.spaceID] - uuidv4 space id
+ * @returns {string|object} error object or the url of the uploaded file
+ */
+export const upload = async (file, { pageID = getPageID(), spaceID = getSpaceID() } = {}) => {
+  spaceID = standardiseUUID(await spaceID);
+  pageID = standardiseUUID(pageID);
+  const json = await fs.getJSON('https://www.notion.so/api/v3/getUploadFileUrl', {
+    method: 'POST',
+    headers: {
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({
+      bucket: 'secure',
+      name: file.name,
+      contentType: file.type,
+      record: {
+        table: 'block',
+        id: pageID,
+        spaceId: spaceID,
+      },
+    }),
+  });
+  if (json.errorId) return json;
+  fetch(json.signedPutUrl, {
+    method: 'PUT',
+    headers: { 'content-type': file.type },
+    body: file,
+  });
+  return json.url;
+};
+
+/**
  * redirect through notion to a resource's signed aws url for display outside of notion
  * (requires user to be signed in or content to be public)
  * @param src source url for file

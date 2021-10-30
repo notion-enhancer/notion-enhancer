@@ -50,11 +50,11 @@ const validateEnvironments = async (mod) => {
   validateTags = async (mod) => {
     const isArray = await check(mod, 'tags', mod.tags, 'array');
     if (!isArray) return false;
-    const categoryTags = ['core', 'extension', 'theme'],
+    const categoryTags = ['core', 'extension', 'theme', 'integration'],
       containsCategory = mod.tags.filter((tag) => categoryTags.includes(tag)).length;
     if (!containsCategory) {
       mod._err(
-        `invalid tags (must contain at least one of 'core', 'extension', or 'theme'):
+        `invalid tags (must contain at least one of 'core', 'extension', 'theme' or 'integration'):
         ${JSON.stringify(mod.tags)}`
       );
       return false;
