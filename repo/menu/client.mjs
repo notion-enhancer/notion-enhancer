@@ -44,6 +44,7 @@ export default async function ({ env, fs, storage, registry, web }, db) {
       notifications.count++;
     }
   }
+  if ((await storage.get(['last_read_changelog'])) !== env.version) notifications.count++;
   if (notifications.count) {
     web.render(
       $sidebarLink.children[0],

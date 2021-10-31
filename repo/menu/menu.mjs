@@ -7,7 +7,7 @@
 'use strict';
 
 import * as api from '../../api/_.mjs';
-import { notifications, $welcomeModal } from './notifications.mjs';
+import { notifications, $changelogModal } from './notifications.mjs';
 const { env, fs, storage, registry, web, components } = api;
 
 for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
@@ -348,8 +348,8 @@ const $coreNavItem = web.html`<a href="?view=core" class="nav-item">core</a>`,
     ${await components.feather('clock', { class: 'nav-changelog-icon' })}
   </button>`;
 $changelogNavItem.addEventListener('click', () => {
-  $welcomeModal.scrollTop = 0;
-  $welcomeModal.classList.add('modal-visible');
+  $changelogModal.scrollTop = 0;
+  $changelogModal.classList.add('modal-visible');
 });
 
 web.render(

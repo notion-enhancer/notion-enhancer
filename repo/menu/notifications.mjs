@@ -67,10 +67,11 @@ for (const notification of notifications.provider) {
   if (!cached && versionMatches && envMatches) notifications.add(notification);
 }
 
-const $welcomeModalButton = web.html`<button type="button" class="modal-button">
+const lastReadChangelog = await storage.get(['last_read_changelog']),
+  $changelogModalButton = web.html`<button type="button" class="modal-button">
     Accept & Continue
   </button>`;
-export const $welcomeModal = web.render(
+export const $changelogModal = web.render(
   web.html`<div class="modal" role="dialog" aria-modal="true">
     <div class="modal-overlay" aria-hidden="true"></div>
   </div>`,
@@ -94,16 +95,16 @@ export const $welcomeModal = web.render(
         <div class="modal-content">
           <h3 class="modal-content-heading">welcome</h3>
           <p>
-            hi! i'm dragonwocky, the creator of the notion-enhancer. if you're seeing this,
-            you've either installed the enhancer for the first time or just updated to a
-            new version. you should check out the
+            hi! i'm dragonwocky, the creator of the notion-enhancer.
+            if you're seeing this, you've just installed or updated to a new
+            version of the enhancer. you should check out the
             <a href="https://notion-enhancer.github.io/getting-started" class="link" target="_blank">getting started</a>
-            guide for a quick overview of how to use the enhancer. for extra support
+            guide for a quick overview of how to use it. for extra support
             or to chat with others who use the enhancer, you can join our
             <a href="https://discord.com/invite/sFWPXtA" class="link" target="_blank">discord server</a>.
           </p>
           <p class="mt-1">
-            maintaining and updating the enhancer takes a lot of time and work.
+            p.s. maintaining and updating the enhancer takes a lot of time and work.
             if you would like to support future development of the enhancer, please consider
             <a href="https://buy.stripe.com/00gdR93R6csIgDKeUV" class="link" target="_blank">making a donation</a>.
           </p>
@@ -135,16 +136,14 @@ export const $welcomeModal = web.render(
           </div>
         </div>
       </div>`,
-    web.render(web.html`<div class="modal-actions"></div>`, $welcomeModalButton)
+    web.render(web.html`<div class="modal-actions"></div>`, $changelogModalButton)
   )
 );
-web.render(document.body, $welcomeModal);
-
-const lastAcceptedWelcome = await storage.get(['last_accepted_welcome']);
-if (lastAcceptedWelcome !== env.version) {
-  $welcomeModal.classList.add('modal-visible');
+web.render(document.body, $changelogModal);
+if (lastReadChangelog !== env.version) {
+  $changelogModal.classList.add('modal-visible');
 }
-$welcomeModalButton.addEventListener('click', async () => {
-  $welcomeModal.classList.remove('modal-visible');
-  await storage.set(['last_accepted_welcome'], env.version);
+$changelogModalButton.addEventListener('click', async () => {
+  $changelogModal.classList.remove('modal-visible');
+  await storage.set(['last_read_changelog'], env.version);
 });
