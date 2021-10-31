@@ -38,12 +38,16 @@ const customClasses = {
   'sidebar': apply`h-full w-96 max-w-3/7 flex-shrink-0 px-4 pt-3 pb-16 overflow-y-auto flex flex-col
     bg-notion-secondary border-l border-divider`,
   'content-container': apply`h-full flex flex-col`,
-  'nav': apply`px-4 py-3 flex flex-wrap items-center border-b border-divider`,
+  'nav': apply`pr-4 pl-2 py-3 flex flex-wrap items-center border-b border-divider`,
   'nav-notion': apply`flex items-center font-semibold text-xl cursor-pointer select-none mr-4
-      ml-4 sm:mb-4 md:w-full lg:(w-auto ml-0 mb-0)`,
-  'nav-notion-icon': apply`h-12 w-12 mr-5 sm:(h-6 w-6 mr-3)`,
-  'nav-item': apply`ml-4 px-3 py-2 rounded-md text-sm font-medium hover:bg-interactive-hover focus:bg-interactive-active`,
-  'nav-item-selected': apply`ml-4 px-3 py-2 rounded-md text-sm font-medium ring-1 ring-divider bg-notion-secondary`,
+      ml-4 my-4 w-full lg:w-auto`,
+  'nav-notion-icon': apply`h-6 w-6 mr-3`,
+  'nav-item': apply`ml-4 px-3 py-2 rounded-md text-sm font-medium hover:bg-interactive-hover focus:bg-interactive-active
+    mb-2 lg:mb-0`,
+  'nav-item-selected': apply`ml-4 px-3 py-2 rounded-md text-sm font-medium ring-1 ring-divider bg-notion-secondary
+    mb-2 lg:mb-0`,
+  'nav-changelog': apply`lg:ml-auto focus:outline-none`,
+  'nav-changelog-icon': apply`w-4 h-4`,
   'main': apply`transition px-4 py-3 overflow-y-auto flex-grow`,
   'main-message': apply`mx-2.5 my-2.5 px-px text-sm text-foreground-secondary text-justify`,
   'mods-list': apply`flex flex-wrap`,
@@ -88,6 +92,34 @@ const customClasses = {
   'search-container': apply`block mx-2.5 my-2.5 relative`,
   'search': apply`input pr-12`,
   'danger': apply`bg-red-paragraph text-red-paragraph-text`,
+  'link': apply`no-underline border-b border-foreground-secondary opacity-70 hover:opacity-90`,
+  'modal': apply`fixed z-10 inset-0 overflow-y-auto min-h-screen text-center
+    ease-out duration-300 transition-opacity opacity-0 pointer-events-none`,
+  'modal-visible': {
+    '@apply': apply`ease-in duration-200 opacity-100 pointer-events-auto`,
+    '& .modal-box': apply`ease-out duration-300 opacity-100 scale-100`,
+  },
+  'modal-overlay': apply`fixed inset-0 bg-black bg-opacity-50 transition-opacity`,
+  'modal-box': apply`inline-block rounded-lg text-left overflow-hidden shadow-xl
+    transform transition-all m-8 align-middle
+    ease-in duration-200 opacity-0 scale-95`,
+  'modal-body': apply`bg-notion-secondary p-6 pt-4 max-w-xl w-full`,
+  'modal-actions': apply`bg-notion py-3 px-6 flex flex-row-reverse`,
+  'modal-title': apply`flex`,
+  'modal-title-icon': apply`w-20 mr-6`,
+  'modal-title-heading': apply`text-xl leading-6 font-medium`,
+  'modal-title-description': apply`mt-2 text-sm text-foreground-secondary`,
+  'modal-content': {
+    '@apply': apply`mt-4 text-sm`,
+    '& .markdown h4': apply`px-2 py-1 inline-block rounded-md bg-tag text-tag-text`,
+  },
+  'modal-content-heading': apply`mt-2 text-lg font-bold`,
+  'modal-content-list': {
+    '@apply': apply`list-disc pl-5`,
+    '& li': apply`my-px`,
+  },
+  'modal-button': apply`w-full inline-flex justify-center rounded-md text-base font-medium shadow-sm px-4 py-2
+    not-focus:hover:bg-interactive-hover focus:bg-interactive-active focus:outline-none`,
 };
 
 setup({
@@ -101,9 +133,10 @@ setup({
       mono: ['var(--theme--font_code)'],
     },
     colors: {
+      'black': 'rgba(0,0,0,var(--tw-bg-opacity));',
       'notion': 'var(--theme--bg)',
       'notion-secondary': 'var(--theme--bg_secondary)',
-      'notion-popup': 'var(--theme--bg_card)',
+      'notion-card': 'var(--theme--bg_card)',
       'divider': 'var(--theme--ui_divider)',
       'input': 'var(--theme--ui_input)',
       'icon': 'var(--theme--icon)',

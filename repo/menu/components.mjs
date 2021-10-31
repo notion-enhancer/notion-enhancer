@@ -7,7 +7,7 @@
 'use strict';
 
 import { fmt, web, registry, components } from '../../api/_.mjs';
-import { notifications } from './launcher.mjs';
+import { notifications } from './notifications.mjs';
 const profileDB = await registry.profileDB();
 
 export const modComponents = {

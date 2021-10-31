@@ -6,6 +6,8 @@
 
 'use strict';
 
+const notificationsURL = 'https://notion-enhancer.github.io/notifications.json';
+
 export default async function ({ env, fs, storage, registry, web }, db) {
   web.addHotkeyListener(await db.get(['hotkey']), env.focusMenu);
 
@@ -30,7 +32,7 @@ export default async function ({ env, fs, storage, registry, web }, db) {
 
   const notifications = {
     cache: await storage.get(['notifications'], []),
-    provider: [registry.welcomeNotification, ...(await fs.getJSON(registry.notificationsURL))],
+    provider: await fs.getJSON(notificationsURL),
     count: (await registry.errors()).length,
   };
   for (const notification of notifications.provider) {

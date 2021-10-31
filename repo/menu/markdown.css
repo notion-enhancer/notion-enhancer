@@ -28,12 +28,22 @@
   font-size: 1.25rem;
   margin: 1rem 0 0.5rem 0;
 }
+.markdown h4 {
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
 .markdown ul,
 .markdown ol {
   padding-left: 1.25rem;
 }
+.markdown ul {
+  list-style: disc;
+}
+.markdown ol {
+  list-style: decimal;
+}
 .markdown li {
-  margin: 0.4rem 0;
+  margin: 1px 0;
 }
 .markdown ol li {
   padding-left: 0.25rem;

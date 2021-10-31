@@ -6,13 +6,33 @@
 
 'use strict';
 
-import './launcher.mjs';
-import './styles.mjs';
+import * as api from '../../api/_.mjs';
+import { notifications, $welcomeModal } from './notifications.mjs';
+const { env, fs, storage, registry, web, components } = api;
 
-import { env, fs, storage, registry, web, components } from '../../api/_.mjs';
-import { notifications } from './launcher.mjs';
+for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
+  for (const sheet of mod.css?.menu || []) {
+    web.loadStylesheet(`repo/${mod._dir}/${sheet}`);
+  }
+  for (let script of mod.js?.menu || []) {
+    script = await import(fs.localPath(`repo/${mod._dir}/${script}`));
+    script.default(api, await registry.db(mod.id));
+  }
+}
+const errors = await registry.errors();
+if (errors.length) {
+  console.log('[notion-enhancer] registry errors:');
+  console.table(errors);
+  notifications.add({
+    icon: 'alert-circle',
+    message: 'Failed to load mods (check console).',
+    color: 'red',
+  });
+}
+
 import { modComponents, options } from './components.mjs';
 import * as router from './router.mjs';
+import './styles.mjs';
 
 const db = await registry.db('a6621988-551d-495a-97d8-3c568bca2e9e'),
   profileName = await registry.profileName(),
@@ -323,7 +343,14 @@ $notionNavItem.addEventListener('click', env.focusNotion);
 const $coreNavItem = web.html`<a href="?view=core" class="nav-item">core</a>`,
   $extensionsNavItem = web.html`<a href="?view=extensions" class="nav-item">extensions</a>`,
   $themesNavItem = web.html`<a href="?view=themes" class="nav-item">themes</a>`,
-  $integrationsNavItem = web.html`<a href="?view=integrations" class="nav-item">integrations</a>`;
+  $integrationsNavItem = web.html`<a href="?view=integrations" class="nav-item">integrations</a>`,
+  $changelogNavItem = web.html`<button class="nav-item nav-changelog">
+    ${await components.feather('clock', { class: 'nav-changelog-icon' })}
+  </button>`;
+$changelogNavItem.addEventListener('click', () => {
+  $welcomeModal.scrollTop = 0;
+  $welcomeModal.classList.add('modal-visible');
+});
 
 web.render(
   document.body,
@@ -339,7 +366,8 @@ web.render(
         $themesNavItem,
         $integrationsNavItem,
         web.html`<a href="https://notion-enhancer.github.io" target="_blank" class="nav-item">docs</a>`,
-        web.html`<a href="https://discord.gg/sFWPXtA" target="_blank" class="nav-item">community</a>`
+        web.html`<a href="https://discord.gg/sFWPXtA" target="_blank" class="nav-item">community</a>`,
+        $changelogNavItem
       ),
       $main
     ),
