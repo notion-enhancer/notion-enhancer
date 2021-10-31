@@ -51,19 +51,6 @@ export const profileName = async () => storage.get(['currentprofile'], 'default'
  */
 export const profileDB = async () => storage.db(['profiles', await profileName()]);
 
-/** a notification displayed when the menu is opened for the first time */
-export const welcomeNotification = {
-  id: '84e2d49b-c3dc-44b4-a154-cf589676bfa0',
-  color: 'purple',
-  icon: 'message-circle',
-  message: 'Welcome! Come chat with us on Discord.',
-  link: 'https://discord.gg/sFWPXtA',
-  version: env.version,
-};
-
-/** the url of a json file online containing notifications pushed out to users */
-export const notificationsURL = 'https://notion-enhancer.github.io/notifications.json';
-
 let _list,
   _errors = [];
 /**
