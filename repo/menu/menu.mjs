@@ -338,8 +338,8 @@ web.render(
         $extensionsNavItem,
         $themesNavItem,
         $integrationsNavItem,
-        web.html`<a href="https://notion-enhancer.github.io" class="nav-item">docs</a>`,
-        web.html`<a href="https://discord.gg/sFWPXtA" class="nav-item">community</a>`
+        web.html`<a href="https://notion-enhancer.github.io" target="_blank" class="nav-item">docs</a>`,
+        web.html`<a href="https://discord.gg/sFWPXtA" target="_blank" class="nav-item">community</a>`
       ),
       $main
     ),

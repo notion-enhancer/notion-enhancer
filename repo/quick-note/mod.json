@@ -1,0 +1,34 @@
+{
+  "name": "quick note",
+  "id": "5d7c1677-6f6d-4fb5-8d6f-5067bcd0e24c",
+  "version": "0.1.0",
+  "description": "adds a hotkey & a button in the bottom right corner to jump to a new page in a notes database (target database id must be set).",
+  "tags": ["integration", "shortcut"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "css": {},
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "options": [
+    {
+      "type": "text",
+      "key": "target_db",
+      "label": "target database id",
+      "tooltip": "**the uuid of the database in which pages should be created** (the bit after the '/' in the database url, e.g. edbafbd8bb7045cab1408aadaf4edf9d)",
+      "value": ""
+    },
+    {
+      "type": "hotkey",
+      "key": "hotkey",
+      "label": "hotkey",
+      "value": "Ctrl+Alt+="
+    }
+  ]
+}

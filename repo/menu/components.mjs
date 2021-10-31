@@ -230,6 +230,7 @@ export const options = {
       if (!empty && !pressed.includes(event.key)) {
         let key = event.key;
         if (key === ' ') key = 'Space';
+        if (key === '+') key = 'Plus';
         if (key.length === 1) key = event.key.toUpperCase();
         pressed.push(key);
       }

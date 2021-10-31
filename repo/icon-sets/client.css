@@ -231,3 +231,6 @@
   margin: 1em 0;
   border-bottom: 1px solid var(--theme--ui_divider);
 }
+.icon_sets--title[data-collapsed='true'] + .icon_sets--set + .icon_sets--divider {
+  margin-top: 0.5em;
+}

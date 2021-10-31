@@ -24,7 +24,6 @@
   "right-to-left",
   "simpler-databases",
   "emoji-sets",
-  "icon-sets",
   "bypass-preview",
   "topbar-icons",
   "word-counter",
@@ -35,5 +34,8 @@
   "weekly-view",
   "truncated-titles",
   "focus-mode",
-  "global-block-links"
+  "global-block-links",
+
+  "icon-sets",
+  "quick-note"
 ]

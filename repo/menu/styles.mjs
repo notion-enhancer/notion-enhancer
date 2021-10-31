@@ -35,14 +35,16 @@ const customClasses = {
   'notification-text': apply`text-xs mx-2 flex-auto font-semibold group-hover:(filter brightness-75)`,
   'notification-icon': apply`fill-current opacity-75 h-4 w-4 mx-2`,
   'body-container': apply`flex w-full h-full overflow-hidden`,
-  'content-container': apply`h-full w-full-96`,
-  'nav': apply`px-4 py-3 flex flex-wrap items-center border-b border-divider h-64 sm:h-48 md:h-32 lg:h-16`,
+  'sidebar': apply`h-full w-96 max-w-3/7 flex-shrink-0 px-4 pt-3 pb-16 overflow-y-auto flex flex-col
+    bg-notion-secondary border-l border-divider`,
+  'content-container': apply`h-full flex flex-col`,
+  'nav': apply`px-4 py-3 flex flex-wrap items-center border-b border-divider`,
   'nav-notion': apply`flex items-center font-semibold text-xl cursor-pointer select-none mr-4
       ml-4 sm:mb-4 md:w-full lg:(w-auto ml-0 mb-0)`,
   'nav-notion-icon': apply`h-12 w-12 mr-5 sm:(h-6 w-6 mr-3)`,
   'nav-item': apply`ml-4 px-3 py-2 rounded-md text-sm font-medium hover:bg-interactive-hover focus:bg-interactive-active`,
   'nav-item-selected': apply`ml-4 px-3 py-2 rounded-md text-sm font-medium ring-1 ring-divider bg-notion-secondary`,
-  'main': apply`transition px-4 py-3 overflow-y-auto max-h-full-64 sm:max-h-full-48 md:max-h-full-32 lg:max-h-full-16`,
+  'main': apply`transition px-4 py-3 overflow-y-auto flex-grow`,
   'main-message': apply`mx-2.5 my-2.5 px-px text-sm text-foreground-secondary text-justify`,
   'mods-list': apply`flex flex-wrap`,
   'mod-container': apply`w-full md:w-1/2 lg:w-1/3 xl:w-1/4 2xl:w-1/5 px-2.5 py-2.5 box-border`,
@@ -58,7 +60,6 @@ const customClasses = {
   'mod-authors-container': apply`text-sm font-medium`,
   'mod-author': apply`flex items-center mb-2`,
   'mod-author-avatar': apply`inline object-cover w-5 h-5 rounded-full mr-2`,
-  'sidebar': apply`h-full w-96 px-4 pt-3 pb-16 overflow-y-auto flex flex-col bg-notion-secondary border-l border-divider`,
   'profile-trigger': apply`block px-4 py-3 mb-2 rounded-md text-sm text-left font-semibold shadow-inner
     hover:bg-accent-red-button border border-accent-red text-accent-red focus:(outline-none bg-accent-red-button)`,
   'profile-actions': apply`flex`,
@@ -138,15 +139,7 @@ setup({
       'red': mapColorVariables('red'),
     },
     extend: {
-      width: {
-        'full-96': 'calc(100% - 24rem)',
-      },
-      maxHeight: {
-        'full-16': 'calc(100% - 4rem)',
-        'full-32': 'calc(100% - 8rem)',
-        'full-48': 'calc(100% - 12rem)',
-        'full-64': 'calc(100% - 16rem)',
-      },
+      maxWidth: { '3/7': 'calc((3 / 7) * 100%);' },
     },
   },
   plugins: customClasses,

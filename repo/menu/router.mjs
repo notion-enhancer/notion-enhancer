@@ -67,7 +67,6 @@ async function triggerQueryListeners() {
   if (location.search === queryCache) return;
   const newQuery = web.queryParams(),
     oldQuery = new URLSearchParams(queryCache);
-  console.log(location.search, queryCache);
   queryCache = location.search;
   for (const listener of _queryListeners) {
     const newParam = newQuery.get(listener.param),

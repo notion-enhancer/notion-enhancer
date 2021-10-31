@@ -2,7 +2,7 @@
   "name": "icon sets",
   "id": "2d1f4809-9581-40dd-9bf3-4239db406483",
   "version": "0.4.0",
-  "description": "upload, save and reuse custom icons directly from the icon picker.",
+  "description": "upload, save and reuse custom icons directly from the icon picker. check out the [icons page](https://notion-enhancer.github.io/mods/icon-sets) for instructions on loading entire sets.",
   "tags": ["integration", "customisation"],
   "authors": [
     {
