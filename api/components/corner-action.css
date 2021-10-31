@@ -28,7 +28,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--theme--bg_card);
+  background: var(--theme--tag_default) !important;
   box-shadow: var(--theme--ui_shadow, rgba(15, 15, 15, 0.15)) 0px 0px 0px 1px,
     var(--theme--ui_shadow, rgba(15, 15, 15, 0.15)) 0px 2px 4px !important;
 

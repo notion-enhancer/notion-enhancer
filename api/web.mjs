@@ -187,6 +187,8 @@ const triggerHotkeyListener = (event, hotkey) => {
       const pressed = modifiers[modifier].includes(key) && event[modifier];
       if (pressed) return true;
     }
+    if (key === 'space') key = ' ';
+    if (key === 'plus') key = '+';
     if (key === event.key.toLowerCase()) return true;
   });
   if (pressed) hotkey.callback(event);
