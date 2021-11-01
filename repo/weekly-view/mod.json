@@ -3,6 +3,7 @@
   "id": "4c7acaea-6596-4590-85e5-8ac5a1455e8f",
   "version": "0.6.0",
   "description": "calendar views named \"weekly\" will show only the current week.",
+  "preview": "weekly-view.jpg",
   "tags": ["extension", "layout"],
   "authors": [
     {

@@ -3,6 +3,7 @@
   "id": "d61dc8a7-b195-465b-935f-53eea9efe74e",
   "version": "0.4.0",
   "description": "adds line numbers to code blocks.",
+  "preview": "code-line-numbers.png",
   "tags": ["extension", "usability"],
   "authors": [
     {

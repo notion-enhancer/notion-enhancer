@@ -275,6 +275,7 @@ export default async function ({ web, fs, components, notion }, db) {
 
     const submitLinkIcon = () => {
       const url = $iconsLinkInput.firstElementChild.value;
+      if (!url) return;
       setIcon(url);
       recentUploads.push({ signed: notion.sign(url, notion.getPageID()), url: url });
       db.set(['recent_uploads'], recentUploads);
@@ -285,7 +286,7 @@ export default async function ({ web, fs, components, notion }, db) {
     $iconsLinkSubmit.onclick = submitLinkIcon;
 
     // upload file to aws, then submit link
-    $iconsUploadSubmit.onclick = $iconsUploadFile.click;
+    $iconsUploadSubmit.onclick = () => $iconsUploadFile.click();
     $iconsUploadFile.onchange = async (event) => {
       const file = event.target.files[0],
         url = await notion.upload(file);

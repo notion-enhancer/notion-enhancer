@@ -3,6 +3,7 @@
   "id": "548fe2d7-174a-44dd-88d8-35c7f9a093a7",
   "version": "0.2.0",
   "description": "adds toggles to collapse header sections of pages.",
+  "preview": "collapsible-headers.gif",
   "tags": ["extension", "layout"],
   "authors": [
     {

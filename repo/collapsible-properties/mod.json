@@ -3,6 +3,7 @@
   "id": "4034a578-7dd3-4633-80c6-f47ac5b7b160",
   "version": "0.3.0",
   "description": "adds a button to quickly collapse/expand page properties that usually push down page content.",
+  "preview": "collapsible-properties.jpg",
   "tags": ["extension", "layout"],
   "authors": [
     {

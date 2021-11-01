@@ -3,6 +3,7 @@
   "id": "0a958f5a-17c5-48b5-8713-16190cae1959",
   "version": "0.3.0",
   "description": "adds an arrow in the bottom right corner to scroll back to the top of a page.",
+  "preview": "scroll-to-top.png",
   "tags": ["extension", "shortcut"],
   "authors": [
     {

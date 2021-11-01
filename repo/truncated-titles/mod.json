@@ -3,6 +3,7 @@
   "id": "1794c0bd-7b96-46ad-aa0b-fc4bd76fc7fb",
   "version": "0.2.0",
   "description": "see the full text of a truncated title on hover.",
+  "preview": "truncated-titles.jpg",
   "tags": ["extension", "layout"],
   "authors": [
     {

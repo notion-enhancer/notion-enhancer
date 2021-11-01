@@ -3,7 +3,7 @@
   "id": "ad0f5c5c-8b62-4b20-8a54-929e663ea368",
   "version": "0.3.0",
   "description": "a gray, 'retro groove' palette based on the vim theme of the same name.",
-  "preview": "preview.png",
+  "preview": "gruvbox-dark.png",
   "tags": ["theme", "dark"],
   "authors": [
     {

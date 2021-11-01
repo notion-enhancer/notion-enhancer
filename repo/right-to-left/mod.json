@@ -3,6 +3,7 @@
   "id": "b28ee2b9-4d34-4e36-be8a-ab5be3d79f51",
   "version": "1.5.0",
   "description": "enables auto rtl/ltr text direction detection.",
+  "preview": "right-to-left.jpg",
   "tags": ["extension", "usability"],
   "authors": [
     {

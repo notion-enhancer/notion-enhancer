@@ -3,6 +3,7 @@
   "id": "74856af4-6970-455d-bd86-0a385a402dd1",
   "version": "0.1.0",
   "description": "easily copy the global link of a page or block.",
+  "preview": "global-block-links.jpg",
   "tags": ["extension", "shortcut"],
   "authors": [
     {

@@ -3,6 +3,7 @@
   "id": "35815b3b-3916-4dc6-8769-c9c2448f8b57",
   "version": "0.2.0",
   "description": "adds vertical relationship lines to make list trees easier to follow.",
+  "preview": "indentation-lines.jpg",
   "tags": ["extension", "usability"],
   "authors": [
     {

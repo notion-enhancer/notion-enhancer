@@ -3,6 +3,7 @@
   "id": "a2401ee1-93ba-4b8c-9781-7f570bf5d71e",
   "version": "0.4.0",
   "description": "pick from a variety of emoji styles to use.",
+  "preview": "emoji-sets.jpg",
   "tags": ["extension", "customisation"],
   "authors": [
     {

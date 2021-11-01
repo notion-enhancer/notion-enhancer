@@ -3,6 +3,7 @@
   "id": "5d7c1677-6f6d-4fb5-8d6f-5067bcd0e24c",
   "version": "0.1.0",
   "description": "adds a hotkey & a button in the bottom right corner to jump to a new page in a notes database (target database id must be set).",
+  "preview": "quick-note.png",
   "tags": ["integration", "shortcut"],
   "authors": [
     {

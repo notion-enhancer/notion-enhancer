@@ -3,6 +3,7 @@
   "id": "e0700ce3-a9ae-45f5-92e5-610ded0e348d",
   "version": "0.3.0",
   "description": "choose between text or icons for the topbar buttons.",
+  "preview": "topbar-icons.jpg",
   "tags": ["extension", "customisation"],
   "authors": [
     {

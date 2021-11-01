@@ -3,6 +3,7 @@
   "id": "87e077cc-5402-451c-ac70-27cc4ae65546",
   "version": "0.4.0",
   "description": "adds a table of contents to the side panel.",
+  "preview": "outliner.png",
   "tags": ["extension", "panel"],
   "authors": [
     {
