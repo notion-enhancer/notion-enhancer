@@ -14,8 +14,6 @@
   --pinky_boom--purple: #9b00ff80;
   --pinky_boom--pink: #ff149180;
   --pinky_boom--red: #ff000080;
-  --pinky_boom--black: black;
-  --pinky_boom--white: white;
 
   --theme--accent_blue: deeppink;
   --theme--accent_blue-selection: rgba(255, 20, 145, 0.2);
@@ -57,17 +55,17 @@
   --theme--highlight_gray: rgba(128, 128, 128, 0.25);
   --theme--highlight_brown: var(--pinky_boom--brown);
   --theme--highlight_orange: var(--pinky_boom--orange);
-  --theme--highlight_orange-text: var(--pinky_boom--black);
+  --theme--highlight_orange-text: black;
   --theme--highlight_yellow: var(--pinky_boom--yellow);
-  --theme--highlight_yellow-text: var(--pinky_boom--black);
+  --theme--highlight_yellow-text: black;
   --theme--highlight_green: var(--pinky_boom--green);
-  --theme--highlight_green-text: var(--pinky_boom--black);
+  --theme--highlight_green-text: black;
   --theme--highlight_blue: var(--pinky_boom--blue);
-  --theme--highlight_blue-text: var(--pinky_boom--black);
+  --theme--highlight_blue-text: black;
   --theme--highlight_purple: var(--pinky_boom--purple);
-  --theme--highlight_purple-text: var(--pinky_boom--white);
+  --theme--highlight_purple-text: white;
   --theme--highlight_pink: var(--pinky_boom--pink);
-  --theme--highlight_pink-text: var(--pinky_boom--white);
+  --theme--highlight_pink-text: white;
   --theme--highlight_red: var(--pinky_boom--red);
 
   --theme--paragraph_gray: rgba(128, 128, 128, 0.5);
@@ -82,46 +80,46 @@
 
   --theme--tag_default: #ffc9e6;
   --theme--tag_gray: rgba(128, 128, 128, 0.25);
-  --theme--tag_gray-text: var(--pinky_boom--white);
+  --theme--tag_gray-text: white;
   --theme--tag_brown: var(--pinky_boom--brown);
-  --theme--tag_brown-text: var(--pinky_boom--white);
+  --theme--tag_brown-text: white;
   --theme--tag_orange: var(--pinky_boom--orange);
-  --theme--tag_orange-text: var(--pinky_boom--black);
+  --theme--tag_orange-text: black;
   --theme--tag_yellow: var(--pinky_boom--yellow);
-  --theme--tag_yellow-text: var(--pinky_boom--black);
+  --theme--tag_yellow-text: black;
   --theme--tag_green: var(--pinky_boom--green);
-  --theme--tag_green-text: var(--pinky_boom--black);
+  --theme--tag_green-text: black;
   --theme--tag_blue: var(--pinky_boom--blue);
-  --theme--tag_blue-text: var(--pinky_boom--black);
+  --theme--tag_blue-text: black;
   --theme--tag_purple: var(--pinky_boom--purple);
-  --theme--tag_purple-text: var(--pinky_boom--white);
+  --theme--tag_purple-text: white;
   --theme--tag_pink: var(--pinky_boom--pink);
-  --theme--tag_pink-text: var(--pinky_boom--white);
+  --theme--tag_pink-text: white;
   --theme--tag_red: var(--pinky_boom--red);
-  --theme--tag_red-text: var(--pinky_boom--white);
+  --theme--tag_red-text: white;
 
   --theme--block_gray: rgba(128, 128, 128, 0.25);
-  --theme--block_gray-text: var(--pinky_boom--black);
+  --theme--block_gray-text: black;
   --theme--block_brown: var(--pinky_boom--brown);
-  --theme--block_brown-text: var(--pinky_boom--white);
+  --theme--block_brown-text: white;
   --theme--block_orange: var(--pinky_boom--orange);
-  --theme--block_orange-text: var(--pinky_boom--black);
+  --theme--block_orange-text: black;
   --theme--block_yellow: var(--pinky_boom--yellow);
-  --theme--block_yellow-text: var(--pinky_boom--black);
+  --theme--block_yellow-text: black;
   --theme--block_green: var(--pinky_boom--green);
-  --theme--block_green-text: var(--pinky_boom--black);
+  --theme--block_green-text: black;
   --theme--block_blue: var(--pinky_boom--blue);
-  --theme--block_blue-text: var(--pinky_boom--black);
+  --theme--block_blue-text: black;
   --theme--block_purple: var(--pinky_boom--purple);
-  --theme--block_purple-text: var(--pinky_boom--white);
+  --theme--block_purple-text: white;
   --theme--block_pink: var(--pinky_boom--pink);
-  --theme--block_pink-text: var(--pinky_boom--white);
+  --theme--block_pink-text: white;
   --theme--block_red: var(--pinky_boom--red);
-  --theme--block_red-text: var(--pinky_boom--white);
+  --theme--block_red-text: white;
 
   --theme--code_inline: var(--theme--code);
   --theme--code_inline-text: var(--theme--text);
 
   --theme--code: var(--theme--bg_secondary);
-  --theme--code_punctuation: var(--pinky_boom--black);
+  --theme--code_punctuation: #ff46a8;
 }

@@ -161,6 +161,11 @@
 
 /* backgrounds */
 
+.notion-board-view .notion-focusable[role='button'][style*='height: 33px; width: 35px'],
+.notion-board-view
+  > :first-child
+  > :first-child
+  > :last-child[style*='background'][style*='margin-left: 20px'],
 .notion-discussion-input > div > div[style*='background'],
 .notion-body.dark
   .notion-default-overlay-container
@@ -211,6 +216,11 @@
   > div
   > .notion-scroller
   > div
-  > div[style*='max-width: 100%'][style*='background-color'] {
+  > div[style*='max-width: 100%'][style*='background-color'],
+.notion-selectable.notion-collection_view-block
+  .notion-board-view
+  > .notion-selectable.notion-collection_view-block
+  > :first-child
+  > [style*='width: 20px'] {
   background: transparent !important;
 }

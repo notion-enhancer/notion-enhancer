@@ -20,5 +20,13 @@
   "js": {
     "client": ["client.mjs"]
   },
-  "options": []
+  "options": [
+    {
+      "type": "toggle",
+      "key": "force_load",
+      "label": "force load overrides",
+      "tooltip": "**override notion's colours even if no themes are enabled**",
+      "value": false
+    }
+  ]
 }

@@ -130,6 +130,17 @@ export const $changelogModal = web.render(
               continued updates or support
             </li>
           </ul>
+          <h3 class="modal-content-heading">privacy</h3>
+          <p>
+            by using the enhancer you agree to give the enhancer
+            access to your data to:
+          </p>
+          <ul class="modal-content-list">
+            <li>observe content for reactive enhancements</li>
+            <li>use content for adaptive enhancements</li>
+            <li>locally store content for persistent enhancements and user configuration</li>
+            <li>update content with integrations</li>
+          </ul>
           <h3 class="modal-content-heading">what's new</h3>
           <div class="markdown">
             ${fmt.md.render(await fs.getText('repo/menu/whats-new.md'))}

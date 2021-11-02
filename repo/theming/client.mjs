@@ -10,9 +10,10 @@ export default async function ({ web, registry }, db) {
   const enabledThemes = await registry.list(
     async (m) => (await registry.enabled(m.id)) && m.tags.includes('theme')
   );
-  if (enabledThemes.length) {
+  if (enabledThemes.length || (await db.get(['force_load']))) {
+    // only override colors if theme is enable for perf
     web.loadStylesheet('repo/theming/theme.css');
-    web.loadStylesheet('repo/theming/theme-colors.css');
+    web.loadStylesheet('repo/theming/colors.css');
   }
 
   const updateTheme = () =>

@@ -18,6 +18,8 @@ body,
 .notion-onboarding-popup,
 .notion-workspace-create,
 .notion-workspace-invite,
+.notion-scroller.vertical
+  > [style*='display: flex; justify-content: center; z-index: 3; flex-shrink: 0;'][style*='background: '],
 .notion-cursor-listener > div > :first-child[style*='z-index: 100;'],
 .notion-space-settings > div > div > div:nth-child(2) > div[style*='background'],
 .notion-body.dark .notion-collection_view_page-block > [style*='background: rgb(47, 52, 55)'],
@@ -112,6 +114,9 @@ body,
   background: var(--theme--ui_shadow) !important;
 }
 
+.notion-calendar-view
+  .notion-selectable.notion-page-block.notion-collection-item
+  > [style*='background:'],
 .notion-overlay-container.notion-default-overlay-container
   [style*='display: flex']
   > [style*='position: relative; max-width:'][style*='overflow: hidden']:not([style*='border-radius: 3px;'][style*='position: relative; max-width: calc(100vw - 24px); box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px; overflow: hidden;'][style*='padding: 4px 8px; font-size: 12px; line-height: 1.4; font-weight: 500;']),
@@ -218,8 +223,8 @@ body,
   background: var(--theme--ui_toggle-feature) !important;
 }
 
-.notion-body.dark [style*='background: rgb(71, 76, 80);'],
-.notion-body:not(.dark) [style*='background: rgba(255, 255, 255, 0.1)'],
+.notion-body.dark [style*='background: rgba(255, 255, 255, 0.1)'],
+.notion-body:not(.dark) [style*='background: rgba(55, 53, 47, 0.08)'],
 .notion-focusable[style*='z-index:'][style*='box-shadow: '][style*='font-size: 12px;'][style*='min-height: 24px; overflow: hidden; pointer-events:']:hover,
 :not(.notion-login)
   > .notion-focusable[role='button'][tabindex='0'][style*='box-shadow:'][style*='background:'][style*='transition: background 20ms ease-in 0s; cursor: pointer;']:not([style*='rgb(46, 170, 220);']):not([style*='rgb(6, 156, 205);']):not([style*='rgb(0, 141, 190);']):not([style*='flex: 1 1 0%; white-space: nowrap; height: 26px; border-radius: 3px 0px 0px 3px;']):not([style*='rgb(225, 98, 89)']):hover,
@@ -234,6 +239,11 @@ body,
   color: var(--theme--text) !important;
   fill: var(--theme--text) !important;
 }
+.notion-body.dark
+  :not(.notion-text-action-menu)
+  > div
+  > [style*='background: rgb(63, 68, 71)'],
+.notion-body:not(.dark) [style*='background: rgba(55, 53, 47, 0.16)'],
 .notion-body.dark .notion-focusable[role='button'][style*='background: rgb(63, 68, 71);'],
 .notion-body:not(.dark)
   .notion-focusable[role='button'][style*='background: rgba(55, 53, 47, 0.16)'],
@@ -242,7 +252,7 @@ body,
 .notion-body:not(.dark)
   .notion-default-overlay-container
   [style*='grid-template-columns: [boolean-start] 60px [boolean-end property-start] 120px [property-end opererator-start] 110px [operator-end value-start] auto [value-end menu-start] 32px [menu-end];']
-  .notion-focusable[style*='background: rgb(223, 223, 222);'] {
+  .notion-focusable[style*='background: rgb(233, 233, 231);'] {
   background: var(--theme--ui_interactive-active) !important;
   color: var(--theme--text) !important;
   fill: var(--theme--text) !important;
@@ -385,60 +395,78 @@ body,
 
 .notion-body.dark [style*='border-top: 1px solid rgb(77, 81, 83)'],
 .notion-body.dark [style*='border-top: 1px solid rgb(63, 66, 69)'],
+.notion-body.dark [style*='border-top: 1px solid rgb(63, 66, 67)'],
+.notion-body.dark [style*='border-top: 1px solid rgb(60, 63, 67)'],
 .notion-body.dark [style*='border-top: 1px solid rgba(255, 255, 255, 0.14);'],
 .notion-body.dark [style*='border-top: 1px solid rgba(255, 255, 255, 0.07)'],
-.notion-body:not(.dark) [style*='border-top: 1px solid rgb(223, 223, 222)'],
+.notion-body:not(.dark) [style*='border-top: 1px solid rgb(233, 233, 231)'],
 .notion-body:not(.dark) [style*='border-top: 1px solid rgb(237, 237, 236)'],
+.notion-body:not(.dark) [style*='border-top: 1px solid rgb(238, 238, 237)'],
 .notion-body:not(.dark) [style*='border-top: 1px solid rgba(55, 53, 47, 0.09)'],
 .notion-body:not(.dark) [style*='border-top: 1px solid rgba(55, 53, 47, 0.16)'] {
   border-top: 1px solid var(--theme--ui_divider) !important;
 }
 .notion-body.dark [style*='border-bottom: 1px solid rgb(77, 81, 83)'],
 .notion-body.dark [style*='border-bottom: 1px solid rgb(63, 66, 69)'],
+.notion-body.dark [style*='border-bottom: 1px solid rgb(63, 66, 67)'],
+.notion-body.dark [style*='border-bottom: 1px solid rgb(60, 63, 67)'],
 .notion-body.dark [style*='border-bottom: 1px solid rgba(255, 255, 255, 0.14);'],
 .notion-body.dark [style*='border-bottom: 1px solid rgba(255, 255, 255, 0.07)'],
-.notion-body:not(.dark) [style*='border-bottom: 1px solid rgb(223, 223, 222)'],
+.notion-body:not(.dark) [style*='border-bottom: 1px solid rgb(233, 233, 231)'],
 .notion-body:not(.dark) [style*='border-bottom: 1px solid rgb(237, 237, 236)'],
+.notion-body:not(.dark) [style*='border-bottom: 1px solid rgb(238, 238, 237)'],
 .notion-body:not(.dark) [style*='border-bottom: 1px solid rgba(55, 53, 47, 0.09)'],
 .notion-body:not(.dark) [style*='border-bottom: 1px solid rgba(55, 53, 47, 0.16)'] {
   border-bottom: 1px solid var(--theme--ui_divider) !important;
 }
 .notion-body.dark [style*='border-right: 1px solid rgb(77, 81, 83)'],
 .notion-body.dark [style*='border-right: 1px solid rgb(63, 66, 69)'],
+.notion-body.dark [style*='border-right: 1px solid rgb(63, 66, 67)'],
+.notion-body.dark [style*='border-right: 1px solid rgb(60, 63, 67)'],
 .notion-body.dark [style*='border-right: 1px solid rgba(255, 255, 255, 0.14);'],
 .notion-body.dark [style*='border-right: 1px solid rgba(255, 255, 255, 0.07)'],
-.notion-body:not(.dark) [style*='border-right: 1px solid rgb(223, 223, 222)'],
+.notion-body:not(.dark) [style*='border-right: 1px solid rgb(233, 233, 231)'],
 .notion-body:not(.dark) [style*='border-right: 1px solid rgb(237, 237, 236)'],
+.notion-body:not(.dark) [style*='border-right: 1px solid rgb(238, 238, 237)'],
 .notion-body:not(.dark) [style*='border-right: 1px solid rgba(55, 53, 47, 0.09)'],
 .notion-body:not(.dark) [style*='border-right: 1px solid rgba(55, 53, 47, 0.16)'] {
   border-right: 1px solid var(--theme--ui_divider) !important;
 }
 .notion-body.dark [style*='border-left: 1px solid rgb(77, 81, 83)'],
 .notion-body.dark [style*='border-left: 1px solid rgb(63, 66, 69)'],
+.notion-body.dark [style*='border-left: 1px solid rgb(63, 66, 67)'],
+.notion-body.dark [style*='border-left: 1px solid rgb(60, 63, 67)'],
 .notion-body.dark [style*='border-left: 1px solid rgba(255, 255, 255, 0.14);'],
 .notion-body.dark [style*='border-left: 1px solid rgba(255, 255, 255, 0.07)'],
-.notion-body:not(.dark) [style*='border-left: 1px solid rgb(223, 223, 222)'],
+.notion-body:not(.dark) [style*='border-left: 1px solid rgb(233, 233, 231)'],
 .notion-body:not(.dark) [style*='border-left: 1px solid rgb(237, 237, 236)'],
+.notion-body:not(.dark) [style*='border-left: 1px solid rgb(238, 238, 237)'],
 .notion-body:not(.dark) [style*='border-left: 1px solid rgba(55, 53, 47, 0.09)'],
 .notion-body:not(.dark) [style*='border-left: 1px solid rgba(55, 53, 47, 0.16)'] {
   border-left: 1px solid var(--theme--ui_divider) !important;
 }
 .notion-body.dark [style*='border: 1px solid rgb(77, 81, 83)'],
 .notion-body.dark [style*='border: 1px solid rgb(63, 66, 69)'],
+.notion-body.dark [style*='border: 1px solid rgb(63, 66, 67)'],
+.notion-body.dark [style*='border: 1px solid rgb(60, 63, 67)'],
 .notion-body.dark [style*='border: 1px solid rgba(255, 255, 255, 0.14);'],
 .notion-body.dark [style*='border: 1px solid rgba(255, 255, 255, 0.07)'],
-.notion-body:not(.dark) [style*='border: 1px solid rgb(223, 223, 222)'],
+.notion-body:not(.dark) [style*='border: 1px solid rgb(233, 233, 231)'],
 .notion-body:not(.dark) [style*='border: 1px solid rgb(237, 237, 236)'],
+.notion-body:not(.dark) [style*='border: 1px solid rgb(238, 238, 237)'],
 .notion-body:not(.dark) [style*='border: 1px solid rgba(55, 53, 47, 0.09)'],
 .notion-body:not(.dark) [style*='border: 1px solid rgba(55, 53, 47, 0.16)'] {
   border: 1px solid var(--theme--ui_divider) !important;
 }
 .notion-body.dark [style*='border-color: 1px solid rgb(77, 81, 83)'],
 .notion-body.dark [style*='border-color: 1px solid rgb(63, 66, 69)'],
+.notion-body.dark [style*='border-color: 1px solid rgb(63, 66, 67)'],
+.notion-body.dark [style*='border-color: 1px solid rgb(60, 63, 67)'],
 .notion-body.dark [style*='border-color: 1px solid rgba(255, 255, 255, 0.14);'],
 .notion-body.dark [style*='border-color: 1px solid rgba(255, 255, 255, 0.07)'],
-.notion-body:not(.dark) [style*='border-color: 1px solid rgb(223, 223, 222)'],
+.notion-body:not(.dark) [style*='border-color: 1px solid rgb(233, 233, 231)'],
 .notion-body:not(.dark) [style*='border-color: 1px solid rgb(237, 237, 236)'],
+.notion-body:not(.dark) [style*='border-color: 1px solid rgb(238, 238, 237)'],
 .notion-body:not(.dark) [style*='border-color: 1px solid rgba(55, 53, 47, 0.09)'],
 .notion-body:not(.dark) [style*='border-color: 1px solid rgba(55, 53, 47, 0.16)'],
 .notion-callout-block > div > :not([style*='border-color: transparent']) {
@@ -447,7 +475,7 @@ body,
 
 .notion-body.dark [style*='box-shadow: rgb(77, 81, 83) -1px 0px 0px'],
 .notion-body.dark [style*='box-shadow: rgba(255, 255, 255, 0.07) -1px 0px 0px'],
-.notion-body:not(.dark) [style*='box-shadow: rgb(223, 223, 222) -1px 0px 0px'],
+.notion-body:not(.dark) [style*='box-shadow: rgb(233, 233, 231) -1px 0px 0px'],
 .notion-body:not(.dark) [style*='box-shadow: rgba(55, 53, 47, 0.09) -1px 0px 0px'],
 .notion-body.dark [style*='box-shadow: rgb(63, 66, 69) -1px 0px 0px'],
 .notion-body:not(.dark) [style*='box-shadow: rgb(237, 237, 236) -1px 0px 0px'] {
@@ -455,7 +483,7 @@ body,
 }
 .notion-body.dark [style*='box-shadow: rgb(77, 81, 83) 1px 0px 0px'],
 .notion-body.dark [style*='box-shadow: rgba(255, 255, 255, 0.07) 1px 0px 0px'],
-.notion-body:not(.dark) [style*='box-shadow: rgb(223, 223, 222) 1px 0px 0px'],
+.notion-body:not(.dark) [style*='box-shadow: rgb(233, 233, 231) 1px 0px 0px'],
 .notion-body:not(.dark) [style*='box-shadow: rgba(55, 53, 47, 0.09) 1px 0px 0px'],
 .notion-body.dark [style*='box-shadow: rgb(63, 66, 69) 1px 0px 0px'],
 .notion-body:not(.dark) [style*='box-shadow: rgb(237, 237, 236) 1px 0px 0px'] {
@@ -463,7 +491,7 @@ body,
 }
 .notion-body.dark [style*='box-shadow: rgb(77, 81, 83) 0px -1px 0px'],
 .notion-body.dark [style*='box-shadow: rgba(255, 255, 255, 0.07) 0px -1px 0px'],
-.notion-body:not(.dark) [style*='box-shadow: rgb(223, 223, 222) 0px -1px 0px'],
+.notion-body:not(.dark) [style*='box-shadow: rgb(233, 233, 231) 0px -1px 0px'],
 .notion-body:not(.dark) [style*='box-shadow: rgba(55, 53, 47, 0.09) 0px -1px 0px'],
 .notion-body.dark [style*='box-shadow: rgb(63, 66, 69) 0px -1px 0px'],
 .notion-body:not(.dark) [style*='box-shadow: rgb(237, 237, 236) 0px -1px 0px'] {
@@ -471,7 +499,7 @@ body,
 }
 .notion-body.dark [style*='box-shadow: rgb(77, 81, 83) 0px 1px 0px'],
 .notion-body.dark [style*='box-shadow: rgba(255, 255, 255, 0.07) 0px 1px 0px'],
-.notion-body:not(.dark) [style*='box-shadow: rgb(223, 223, 222) 0px 1px 0px'],
+.notion-body:not(.dark) [style*='box-shadow: rgb(233, 233, 231) 0px 1px 0px'],
 .notion-body:not(.dark) [style*='box-shadow: rgba(55, 53, 47, 0.09) 0px 1px 0px'],
 .notion-body.dark [style*='box-shadow: rgb(63, 66, 69) 0px 1px 0px'],
 .notion-body:not(.dark) [style*='box-shadow: rgb(237, 237, 236) 0px 1px 0px'] {
@@ -483,9 +511,9 @@ body,
   background: var(--theme--ui_divider) !important;
 }
 .notion-body.dark
-  [style*='box-shadow: rgb(47, 52, 55) -3px 0px 0px, rgb(77, 81, 83) 0px 1px 0px;'],
+  [style*='box-shadow: rgb(47, 52, 55) -3px 0px 0px, rgb(63, 66, 69) 0px 1px 0px;'],
 .notion-body:not(.dark)
-  [style*='box-shadow: white -3px 0px 0px, rgb(223, 223, 222) 0px 1px 0px;'] {
+  [style*='box-shadow: white -3px 0px 0px, rgb(233, 233, 231) 0px 1px 0px;'] {
   box-shadow: var(--theme--ui_divider) 0px 1px 0px !important;
 }
 .notion-body.dark
