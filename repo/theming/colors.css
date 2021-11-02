@@ -54,14 +54,15 @@
   color: var(--theme--tag_gray-text) !important;
 }
 
-.notion-body:not(.dark) .notion-board-group[style*='background-color: rgb(51, 55, 59)'],
+.notion-body:not(.dark)
+  .notion-board-group[style*='background-color: rgba(247, 247, 245, 0.7)'],
 .notion-body.dark .notion-board-group[style*='background-color: rgb(51, 55, 59)'],
 .notion-body:not(.dark)
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(51, 55, 59)'],
+  > [style*='background-color: rgba(247, 247, 245, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
@@ -71,7 +72,7 @@
   background: var(--theme--board_gray) !important;
 }
 .notion-body:not(.dark)
-  .notion-board-group[style*='background-color: rgb(51, 55, 59)']
+  .notion-board-group[style*='background-color: rgba(247, 247, 245, 0.7)']
   > [data-block-id]
   > [rel='noopener noreferrer'],
 .notion-body.dark
@@ -80,9 +81,9 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_gray-card) !important;
 }
-.notion-body:not(.dark) .notion-board-view [style*='color: rgb(107, 112, 116)'],
+.notion-body:not(.dark) .notion-board-view [style*='color: rgb(145, 145, 142)'],
 .notion-body.dark .notion-board-view [style*='color: rgb(107, 112, 116)'],
-.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(107, 112, 116)'],
+.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(145, 145, 142)'],
 .notion-body.dark .notion-board-view [style*='fill: rgb(107, 112, 116)'] {
   color: var(--theme--board_gray-text) !important;
   fill: var(--theme--board_gray-text) !important;
@@ -138,14 +139,15 @@
   color: var(--theme--tag_brown-text) !important;
 }
 
-.notion-body:not(.dark) .notion-board-group[style*='background-color: rgb(59, 54, 51)'],
+.notion-body:not(.dark)
+  .notion-board-group[style*='background-color: rgba(250, 246, 245, 0.7)'],
 .notion-body.dark .notion-board-group[style*='background-color: rgb(59, 54, 51)'],
 .notion-body:not(.dark)
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(59, 54, 51)'],
+  > [style*='background-color: rgba(250, 246, 245, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
@@ -155,7 +157,7 @@
   background: var(--theme--board_brown) !important;
 }
 .notion-body:not(.dark)
-  .notion-board-group[style*='background-color: rgb(59, 54, 51)']
+  .notion-board-group[style*='background-color: rgba(250, 246, 245, 0.7)']
   > [data-block-id]
   > [rel='noopener noreferrer'],
 .notion-body.dark
@@ -164,9 +166,9 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_brown-card) !important;
 }
-.notion-body:not(.dark) .notion-board-view [style*='color: rgb(155, 98, 69)'],
+.notion-body:not(.dark) .notion-board-view [style*='color: rgb(187, 132, 108)'],
 .notion-body.dark .notion-board-view [style*='color: rgb(155, 98, 69)'],
-.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(155, 98, 69)'],
+.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(187, 132, 108)'],
 .notion-body.dark .notion-board-view [style*='fill: rgb(155, 98, 69)'] {
   color: var(--theme--board_brown-text) !important;
   fill: var(--theme--board_brown-text) !important;
@@ -222,14 +224,15 @@
   color: var(--theme--tag_orange-text) !important;
 }
 
-.notion-body:not(.dark) .notion-board-group[style*='background-color: rgb(61, 54, 49)'],
+.notion-body:not(.dark)
+  .notion-board-group[style*='background-color: rgba(252, 245, 242, 0.7)'],
 .notion-body.dark .notion-board-group[style*='background-color: rgb(61, 54, 49)'],
 .notion-body:not(.dark)
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(61, 54, 49)'],
+  > [style*='background-color: rgba(252, 245, 242, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
@@ -239,7 +242,7 @@
   background: var(--theme--board_orange) !important;
 }
 .notion-body:not(.dark)
-  .notion-board-group[style*='background-color: rgb(61, 54, 49)']
+  .notion-board-group[style*='background-color: rgba(252, 245, 242, 0.7)']
   > [data-block-id]
   > [rel='noopener noreferrer'],
 .notion-body.dark
@@ -248,9 +251,9 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_orange-card) !important;
 }
-.notion-body:not(.dark) .notion-board-view [style*='color: rgb(168, 92, 30)'],
+.notion-body:not(.dark) .notion-board-view [style*='color: rgb(215, 129, 58)'],
 .notion-body.dark .notion-board-view [style*='color: rgb(168, 92, 30)'],
-.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(168, 92, 30)'],
+.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(215, 129, 58)'],
 .notion-body.dark .notion-board-view [style*='fill: rgb(168, 92, 30)'] {
   color: var(--theme--board_orange-text) !important;
   fill: var(--theme--board_orange-text) !important;
@@ -306,14 +309,15 @@
   color: var(--theme--tag_yellow-text) !important;
 }
 
-.notion-body:not(.dark) .notion-board-group[style*='background-color: rgb(56, 55, 49)'],
+.notion-body:not(.dark)
+  .notion-board-group[style*='background-color: rgba(250, 247, 237, 0.7)'],
 .notion-body.dark .notion-board-group[style*='background-color: rgb(56, 55, 49)'],
 .notion-body:not(.dark)
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(56, 55, 49)'],
+  > [style*='background-color: rgba(250, 247, 237, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
@@ -323,7 +327,7 @@
   background: var(--theme--board_yellow) !important;
 }
 .notion-body:not(.dark)
-  .notion-board-group[style*='background-color: rgb(56, 55, 49)']
+  .notion-board-group[style*='background-color: rgba(250, 247, 237, 0.7)']
   > [data-block-id]
   > [rel='noopener noreferrer'],
 .notion-body.dark
@@ -332,9 +336,9 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_yellow-card) !important;
 }
-.notion-body:not(.dark) .notion-board-view [style*='color: rgb(137, 107, 42)'],
+.notion-body:not(.dark) .notion-board-view [style*='color: rgb(203, 148, 51)'],
 .notion-body.dark .notion-board-view [style*='color: rgb(137, 107, 42)'],
-.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(137, 107, 42)'],
+.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(203, 148, 51)'],
 .notion-body.dark .notion-board-view [style*='fill: rgb(137, 107, 42)'] {
   color: var(--theme--board_yellow-text) !important;
   fill: var(--theme--board_yellow-text) !important;
@@ -390,14 +394,15 @@
   color: var(--theme--tag_green-text) !important;
 }
 
-.notion-body:not(.dark) .notion-board-group[style*='background-color: rgb(49, 57, 53)'],
+.notion-body:not(.dark)
+  .notion-board-group[style*='background-color: rgba(244, 248, 243, 0.7)'],
 .notion-body.dark .notion-board-group[style*='background-color: rgb(49, 57, 53)'],
 .notion-body:not(.dark)
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(49, 57, 53)'],
+  > [style*='background-color: rgba(244, 248, 243, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
@@ -407,7 +412,7 @@
   background: var(--theme--board_green) !important;
 }
 .notion-body:not(.dark)
-  .notion-board-group[style*='background-color: rgb(49, 57, 53)']
+  .notion-board-group[style*='background-color: rgba(244, 248, 243, 0.7)']
   > [data-block-id]
   > [rel='noopener noreferrer'],
 .notion-body.dark
@@ -416,9 +421,9 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_green-card) !important;
 }
-.notion-body:not(.dark) .notion-board-view [style*='color: rgb(61, 124, 86)'],
+.notion-body:not(.dark) .notion-board-view [style*='color: rgb(108, 155, 125)'],
 .notion-body.dark .notion-board-view [style*='color: rgb(61, 124, 86)'],
-.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(61, 124, 86)'],
+.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(108, 155, 125)'],
 .notion-body.dark .notion-board-view [style*='fill: rgb(61, 124, 86)'] {
   color: var(--theme--board_green-text) !important;
   fill: var(--theme--board_green-text) !important;
@@ -474,14 +479,15 @@
   color: var(--theme--tag_blue-text) !important;
 }
 
-.notion-body:not(.dark) .notion-board-group[style*='background-color: rgb(49, 56, 64)'],
+.notion-body:not(.dark)
+  .notion-board-group[style*='background-color: rgba(241, 248, 251, 0.7)'],
 .notion-body.dark .notion-board-group[style*='background-color: rgb(49, 56, 64)'],
 .notion-body:not(.dark)
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(49, 56, 64)'],
+  > [style*='background-color: rgba(241, 248, 251, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
@@ -491,7 +497,7 @@
   background: var(--theme--board_blue) !important;
 }
 .notion-body:not(.dark)
-  .notion-board-group[style*='background-color: rgb(49, 56, 64)']
+  .notion-board-group[style*='background-color: rgba(241, 248, 251, 0.7)']
   > [data-block-id]
   > [rel='noopener noreferrer'],
 .notion-body.dark
@@ -500,9 +506,9 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_blue-card) !important;
 }
-.notion-body:not(.dark) .notion-board-view [style*='color: rgb(46, 117, 164)'],
+.notion-body:not(.dark) .notion-board-view [style*='color: rgb(91, 151, 189)'],
 .notion-body.dark .notion-board-view [style*='color: rgb(46, 117, 164)'],
-.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(46, 117, 164)'],
+.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(91, 151, 189)'],
 .notion-body.dark .notion-board-view [style*='fill: rgb(46, 117, 164)'] {
   color: var(--theme--board_blue-text) !important;
   fill: var(--theme--board_blue-text) !important;
@@ -558,14 +564,15 @@
   color: var(--theme--tag_purple-text) !important;
 }
 
-.notion-body:not(.dark) .notion-board-group[style*='background-color: rgb(57, 53, 65)'],
+.notion-body:not(.dark)
+  .notion-board-group[style*='background-color: rgba(249, 246, 252, 0.7)'],
 .notion-body.dark .notion-board-group[style*='background-color: rgb(57, 53, 65)'],
 .notion-body:not(.dark)
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(57, 53, 65)'],
+  > [style*='background-color: rgba(249, 246, 252, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
@@ -575,7 +582,7 @@
   background: var(--theme--board_purple) !important;
 }
 .notion-body:not(.dark)
-  .notion-board-group[style*='background-color: rgb(57, 53, 65)']
+  .notion-board-group[style*='background-color: rgba(249, 246, 252, 0.7)']
   > [data-block-id]
   > [rel='noopener noreferrer'],
 .notion-body.dark
@@ -584,9 +591,9 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_purple-card) !important;
 }
-.notion-body:not(.dark) .notion-board-view [style*='color: rgb(123, 96, 180)'],
+.notion-body:not(.dark) .notion-board-view [style*='color: rgb(167, 130, 195)'],
 .notion-body.dark .notion-board-view [style*='color: rgb(123, 96, 180)'],
-.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(123, 96, 180)'],
+.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(167, 130, 195)'],
 .notion-body.dark .notion-board-view [style*='fill: rgb(123, 96, 180)'] {
   color: var(--theme--board_purple-text) !important;
   fill: var(--theme--board_purple-text) !important;
@@ -642,14 +649,15 @@
   color: var(--theme--tag_pink-text) !important;
 }
 
-.notion-body:not(.dark) .notion-board-group[style*='background-color: rgb(60, 53, 58)'],
+.notion-body:not(.dark)
+  .notion-board-group[style*='background-color: rgba(251, 245, 251, 0.7)'],
 .notion-body.dark .notion-board-group[style*='background-color: rgb(60, 53, 58)'],
 .notion-body:not(.dark)
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(60, 53, 58)'],
+  > [style*='background-color: rgba(251, 245, 251, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
@@ -659,7 +667,7 @@
   background: var(--theme--board_pink) !important;
 }
 .notion-body:not(.dark)
-  .notion-board-group[style*='background-color: rgb(60, 53, 58)']
+  .notion-board-group[style*='background-color: rgba(251, 245, 251, 0.7)']
   > [data-block-id]
   > [rel='noopener noreferrer'],
 .notion-body.dark
@@ -668,9 +676,9 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_pink-card) !important;
 }
-.notion-body:not(.dark) .notion-board-view [style*='color: rgb(169, 76, 157)'],
+.notion-body:not(.dark) .notion-board-view [style*='color: rgb(205, 116, 159)'],
 .notion-body.dark .notion-board-view [style*='color: rgb(169, 76, 157)'],
-.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(169, 76, 157)'],
+.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(205, 116, 159)'],
 .notion-body.dark .notion-board-view [style*='fill: rgb(169, 76, 157)'] {
   color: var(--theme--board_pink-text) !important;
   fill: var(--theme--board_pink-text) !important;
@@ -726,14 +734,15 @@
   color: var(--theme--tag_red-text) !important;
 }
 
-.notion-body:not(.dark) .notion-board-group[style*='background-color: rgb(66, 51, 51)'],
+.notion-body:not(.dark)
+  .notion-board-group[style*='background-color: rgba(253, 245, 243, 0.7)'],
 .notion-body.dark .notion-board-group[style*='background-color: rgb(66, 51, 51)'],
 .notion-body:not(.dark)
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(66, 51, 51)'],
+  > [style*='background-color: rgba(253, 245, 243, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
@@ -743,7 +752,7 @@
   background: var(--theme--board_red) !important;
 }
 .notion-body:not(.dark)
-  .notion-board-group[style*='background-color: rgb(66, 51, 51)']
+  .notion-board-group[style*='background-color: rgba(253, 245, 243, 0.7)']
   > [data-block-id]
   > [rel='noopener noreferrer'],
 .notion-body.dark
@@ -752,9 +761,9 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_red-card) !important;
 }
-.notion-body:not(.dark) .notion-board-view [style*='color: rgb(194, 65, 82)'],
+.notion-body:not(.dark) .notion-board-view [style*='color: rgb(225, 111, 100)'],
 .notion-body.dark .notion-board-view [style*='color: rgb(194, 65, 82)'],
-.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(194, 65, 82)'],
+.notion-body:not(.dark) .notion-board-view [style*='fill: rgb(225, 111, 100)'],
 .notion-body.dark .notion-board-view [style*='fill: rgb(194, 65, 82)'] {
   color: var(--theme--board_red-text) !important;
   fill: var(--theme--board_red-text) !important;
