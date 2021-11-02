@@ -56,17 +56,16 @@
   --theme--highlight_pink: var(--theme--tag_pink);
   --theme--highlight_red: var(--theme--tag_red);
 
-  --theme--paragraph_gray: rgba(126, 128, 129, 0.301);
-  --theme--paragraph_brown: #50331fad;
-  --theme--paragraph_orange: rgba(255, 153, 0, 0.315);
-  --theme--paragraph_yellow: rgba(183, 156, 0, 0.445);
-  --theme--paragraph_green: rgba(50, 129, 47, 0.39);
-  --theme--paragraph_blue: rgba(0, 90, 146, 0.521);
-  --theme--paragraph_purple: rgba(90, 49, 148, 0.349);
-  --theme--paragraph_pink: rgba(243, 61, 158, 0.301);
-  --theme--paragraph_red: rgba(122, 20, 20, 0.623);
+  --theme--callout_gray: rgba(126, 128, 129, 0.301);
+  --theme--callout_brown: #50331fad;
+  --theme--callout_orange: rgba(255, 153, 0, 0.315);
+  --theme--callout_yellow: rgba(183, 156, 0, 0.445);
+  --theme--callout_green: rgba(50, 129, 47, 0.39);
+  --theme--callout_blue: rgba(0, 90, 146, 0.521);
+  --theme--callout_purple: rgba(90, 49, 148, 0.349);
+  --theme--callout_pink: rgba(243, 61, 158, 0.301);
+  --theme--callout_red: rgba(122, 20, 20, 0.623);
 
-  --theme--tag-text: var(--theme--text);
   --theme--tag_gray: rgba(126, 128, 129, 0.5);
   --theme--tag_brown: #50331f;
   --theme--tag_orange: rgba(255, 155, 0, 0.58);
@@ -77,15 +76,32 @@
   --theme--tag_pink: rgba(243, 61, 159, 0.5);
   --theme--tag_red: rgb(122, 20, 20);
 
-  --theme--block_gray: rgba(126, 128, 129, 0.089);
-  --theme--block_brown: #50331f59;
-  --theme--block_orange: rgba(255, 153, 0, 0.164);
-  --theme--block_yellow: rgba(183, 156, 0, 0.274);
-  --theme--block_green: rgba(50, 129, 47, 0.191);
-  --theme--block_blue: rgba(0, 90, 146, 0.294);
-  --theme--block_purple: rgba(90, 49, 148, 0.219);
-  --theme--block_pink: rgba(243, 61, 158, 0.191);
-  --theme--block_red: rgba(122, 20, 20, 0.376);
+  --theme--board_gray: rgba(126, 128, 129, 0.089);
+  --theme--board_gray-card: var(--theme--tag_gray);
+  --theme--board_gray-card_text: var(--theme--tag_gray-text);
+  --theme--board_brown: #50331f59;
+  --theme--board_brown-card: var(--theme--tag_brown);
+  --theme--board_brown-card_text: var(--theme--tag_brown-text);
+  --theme--board_orange: rgba(255, 153, 0, 0.164);
+  --theme--board_orange-card: var(--theme--tag_orange);
+  --theme--board_orange-card_text: var(--theme--tag_orange-text);
+  --theme--board_yellow: rgba(183, 156, 0, 0.274);
+  --theme--board_yellow-card: var(--theme--tag_yellow);
+  --theme--board_yellow-card_text: var(--theme--tag_yellow-text);
+  --theme--board_green: rgba(50, 129, 47, 0.191);
+  --theme--board_green-card: var(--theme--tag_green);
+  --theme--board_green-card_text: var(--theme--tag_green-text);
+  --theme--board_blue: rgba(0, 90, 146, 0.294);
+  --theme--board_blue-card: var(--theme--tag_blue);
+  --theme--board_purple: rgba(90, 49, 148, 0.219);
+  --theme--board_purple-card: var(--theme--tag_purple);
+  --theme--board_purple-card_text: var(--theme--tag_purple-text);
+  --theme--board_pink: rgba(243, 61, 158, 0.191);
+  --theme--board_pink-card: var(--theme--tag_pink);
+  --theme--board_pink-card_text: var(--theme--tag_pink-text);
+  --theme--board_red: rgba(122, 20, 20, 0.376);
+  --theme--board_red-card: var(--theme--tag_red);
+  --theme--board_red-card_text: var(--theme--tag_red-text);
 
   --theme--code_inline-text: #7dc582;
   --theme--code_inline-background: rgb(0, 0, 0);

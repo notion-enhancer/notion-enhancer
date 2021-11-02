@@ -42,7 +42,11 @@ body,
 .notion-peek-renderer > div[style*='background'],
 .notion-peek-renderer > div[style*='background'] > :first-child,
 .notion-peek-renderer > div[style*='background'] > :first-child > div > :nth-child(3),
-.notion-page-template-modal {
+.notion-page-template-modal,
+.notion-update-sidebar-tab-updates-header,
+.notion-update-sidebar-tab-updates-header + .notion-scroller,
+.notion-update-sidebar-tab-comments-header,
+.notion-update-sidebar-tab-comments-header + div {
   background: var(--theme--bg) !important;
 }
 .notion-timeline-item-row + div > div > div,

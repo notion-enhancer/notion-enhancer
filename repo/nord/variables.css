@@ -50,6 +50,7 @@
 
   --theme--text: var(--nord--light1);
   --theme--text_secondary: var(--nord--light1);
+
   --theme--text_gray: rgba(151, 154, 155, 0.95);
   --theme--text_brown: rgb(147, 114, 100);
   --theme--text_orange: var(--nord--orange);
@@ -64,23 +65,24 @@
   --theme--highlight_brown: rgb(67, 64, 64);
   --theme--highlight_orange: var(--nord--orange);
   --theme--highlight_yellow: var(--nord--yellow);
+  --theme--highlight_yellow-text: var(--nord--dark1);
   --theme--highlight_green: var(--nord--green);
   --theme--highlight_blue: var(--nord--frost3);
   --theme--highlight_purple: var(--nord--purple);
   --theme--highlight_pink: rgb(193 106 153);
   --theme--highlight_red: var(--nord--red);
 
-  --theme--paragraph_gray: rgb(69, 75, 78);
-  --theme--paragraph_brown: rgb(67, 64, 64);
-  --theme--paragraph_orange: var(--nord--orange);
-  --theme--paragraph_yellow: var(--nord--yellow);
-  --theme--paragraph_green: var(--nord--green);
-  --theme--paragraph_blue: var(--nord--frost3);
-  --theme--paragraph_purple: var(--nord--purple);
-  --theme--paragraph_pink: rgb(193 106 153);
-  --theme--paragraph_red: var(--nord--red);
+  --theme--callout_gray: rgb(69, 75, 78);
+  --theme--callout_brown: rgb(67, 64, 64);
+  --theme--callout_orange: var(--nord--orange);
+  --theme--callout_yellow: var(--nord--yellow);
+  --theme--callout_yellow-text: var(--nord--dark1);
+  --theme--callout_green: var(--nord--green);
+  --theme--callout_blue: var(--nord--frost3);
+  --theme--callout_purple: var(--nord--purple);
+  --theme--callout_pink: rgb(193 106 153);
+  --theme--callout_red: var(--nord--red);
 
-  --theme--tag-text: var(--theme--text);
   --theme--tag_default: rgba(151, 154, 155, 0.5);
   --theme--tag_gray: rgba(151, 154, 155, 0.5);
   --theme--tag_brown: rgba(147, 114, 100, 0.5);
@@ -92,15 +94,42 @@
   --theme--tag_pink: rgba(226, 85, 161, 0.5);
   --theme--tag_red: rgba(255, 115, 105, 0.5);
 
-  --theme--block_gray: rgba(69, 75, 78, 0.3);
-  --theme--block_brown: rgba(67, 64, 64, 0.3);
-  --theme--block_orange: rgba(89, 74, 58, 0.3);
-  --theme--block_yellow: rgba(89, 86, 59, 0.3);
-  --theme--block_green: rgba(53, 76, 75, 0.3);
-  --theme--block_blue: rgba(54, 73, 84, 0.3);
-  --theme--block_purple: rgba(68, 63, 87, 0.3);
-  --theme--block_pink: rgba(83, 59, 76, 0.3);
-  --theme--block_red: rgba(89, 65, 65, 0.3);
+  --theme--board_gray: rgba(69, 75, 78, 0.3);
+  --theme--board_gray-card: var(--theme--tag_gray);
+  --theme--board_gray-card_text: var(--theme--tag_gray-text);
+  --theme--board_gray-text: var(--theme--text_gray);
+  --theme--board_brown: rgba(67, 64, 64, 0.3);
+  --theme--board_brown-card: var(--theme--tag_brown);
+  --theme--board_brown-card_text: var(--theme--tag_brown-text);
+  --theme--board_brown-text: var(--theme--text_brown);
+  --theme--board_orange: rgba(89, 74, 58, 0.3);
+  --theme--board_orange-card: var(--theme--tag_orange);
+  --theme--board_orange-card_text: var(--theme--tag_orange-text);
+  --theme--board_orange-text: var(--theme--text_orange);
+  --theme--board_yellow: rgba(89, 86, 59, 0.3);
+  --theme--board_yellow-card: var(--theme--tag_yellow);
+  --theme--board_yellow-card_text: var(--theme--tag_yellow-text);
+  --theme--board_yellow-text: var(--theme--text_yellow);
+  --theme--board_green: rgba(53, 76, 75, 0.3);
+  --theme--board_green-card: var(--theme--tag_green);
+  --theme--board_green-card_text: var(--theme--tag_green-text);
+  --theme--board_green-text: var(--theme--text_green);
+  --theme--board_blue: rgba(54, 73, 84, 0.3);
+  --theme--board_blue-card: var(--theme--tag_blue);
+  --theme--board_blue-card_text: var(--theme--tag_blue-text);
+  --theme--board_blue-text: var(--theme--text_blue);
+  --theme--board_purple: rgba(68, 63, 87, 0.3);
+  --theme--board_purple-card: var(--theme--tag_purple);
+  --theme--board_purple-card_text: var(--theme--tag_purple-text);
+  --theme--board_purple-text: var(--theme--text_purple);
+  --theme--board_pink: rgba(83, 59, 76, 0.3);
+  --theme--board_pink-card: var(--theme--tag_pink);
+  --theme--board_pink-card_text: var(--theme--tag_pink-text);
+  --theme--board_pink-text: var(--theme--text_pink);
+  --theme--board_red: rgba(89, 65, 65, 0.3);
+  --theme--board_red-card: var(--theme--tag_red);
+  --theme--board_red-card_text: var(--theme--tag_red-text);
+  --theme--board_red-text: var(--theme--text_red);
 
   --theme--code_inline: rgba(135, 131, 120, 0.15);
   --theme--code_inline-text: var(--nord--red);
