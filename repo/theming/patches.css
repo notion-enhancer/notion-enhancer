@@ -153,7 +153,8 @@
 }
 .notion-help-button,
 .onboarding-checklist-button {
-  color: var(--theme--icon) !important;
+  color: var(--theme--tag_default-text);
+  fill: var(--theme--tag_default-text);
   background: var(--theme--tag_default) !important;
   box-shadow: var(--theme--ui_shadow, rgba(15, 15, 15, 0.15)) 0px 0px 0px 1px,
     var(--theme--ui_shadow, rgba(15, 15, 15, 0.15)) 0px 2px 4px !important;
