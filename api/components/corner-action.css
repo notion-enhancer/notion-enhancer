@@ -48,6 +48,6 @@
 #enhancer--corner-actions > div > svg {
   width: 22px;
   height: 22px;
-  color: var(--theme--icon);
-  fill: var(--theme--icon);
+  color: var(--theme--tag_default-text);
+  fill: var(--theme--tag_default-text);
 }
