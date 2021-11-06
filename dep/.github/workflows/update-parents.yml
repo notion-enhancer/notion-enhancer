@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        repo: ['notion-enhancer/extension']
+        repo: ['notion-enhancer/extension', 'notion-enhancer/desktop']
     steps:
       - name: checkout repo
         uses: actions/checkout@v2
