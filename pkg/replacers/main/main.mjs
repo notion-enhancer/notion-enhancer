@@ -1,7 +1,7 @@
 /*
  * notion-enhancer
- * (c) 2020 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
- * (https://dragonwocky.me/notion-enhancer) under the MIT license
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
  */
 
 'use strict';
