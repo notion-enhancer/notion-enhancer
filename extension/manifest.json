@@ -23,7 +23,7 @@
   "content_scripts": [
     {
       "matches": ["https://*.notion.so/*", "https://*.notion.site/*"],
-      "js": ["launcher.js"]
+      "js": ["init.js"]
     }
   ],
   "permissions": [
