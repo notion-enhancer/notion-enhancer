@@ -105,8 +105,10 @@ export const $changelogModal = web.render(
           </p>
           <p class="mt-1">
             p.s. maintaining and updating the enhancer takes a lot of time and work.
-            if you would like to support future development of the enhancer, please consider
-            <a href="https://buy.stripe.com/00gdR93R6csIgDKeUV" class="link" target="_blank">making a donation</a>.
+            if you would like to support future development of the enhancer,
+            <a href="https://buy.stripe.com/00gdR93R6csIgDKeUV" class="important-link" target="_blank">
+              please consider making a donation
+            </a></span>.
           </p>
           <h3 class="modal-content-heading">license</h3>
           <p>

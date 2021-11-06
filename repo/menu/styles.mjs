@@ -16,12 +16,14 @@ const mapColorVariables = (color) => ({
   'text': `var(--theme--text_${color})`,
   'highlight': `var(--theme--highlight_${color})`,
   'highlight-text': `var(--theme--highlight_${color}-text)`,
-  'paragraph': `var(--theme--paragraph_${color})`,
-  'paragraph-text': `var(--theme--paragraph_${color}-text)`,
+  'callout': `var(--theme--callout_${color})`,
+  'callout-text': `var(--theme--callout_${color}-text)`,
   'tag': `var(--theme--tag_${color})`,
   'tag-text': `var(--theme--tag_${color}-text)`,
-  'block': `var(--theme--block_${color})`,
-  'block-text': `var(--theme--block_${color}-text)`,
+  'board': `var(--theme--board_${color})`,
+  'board-text': `var(--theme--board_${color}-text)`,
+  'board-card': `var(--theme--board_${color}-card)`,
+  'board-card_text': `var(--theme--board_${color}-card_text)`,
 });
 
 const customClasses = {
@@ -91,7 +93,8 @@ const customClasses = {
   'file-latest': apply`block w-full text-left text-foreground-secondary text-xs mt-2 hover:line-through cursor-pointer`,
   'search-container': apply`block mx-2.5 my-2.5 relative`,
   'search': apply`input pr-12`,
-  'danger': apply`bg-red-paragraph text-red-paragraph-text`,
+  'important-link': apply`text-accent-red border-b border-accent-red opacity-80 hover:opacity-100`,
+  'danger': apply`text-red-text`,
   'link': apply`no-underline border-b border-foreground-secondary opacity-70 hover:opacity-90`,
   'modal': apply`fixed z-10 inset-0 overflow-y-auto min-h-screen text-center
     ease-out duration-300 transition-opacity opacity-0 pointer-events-none`,
