@@ -8,12 +8,12 @@
 
 import fsp from 'fs/promises';
 
-export default async function (file) {
+export default async function (filepath) {
   // https://github.com/notion-enhancer/notion-enhancer/issues/160
   // enable the notion:// url scheme/protocol on linux
-  const contents = await fsp.readFile(file, 'utf8');
+  const contents = await fsp.readFile(filepath, 'utf8');
   await fsp.writeFile(
-    file,
+    filepath,
     contents.replace(
       /process.platform === "win32"/g,
       'process.platform === "win32" || process.platform === "linux"'

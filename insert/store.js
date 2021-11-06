@@ -41,3 +41,7 @@ module.exports = (file, namespace = '', defaults = {}) => {
     },
   };
 };
+
+function notionRequire(path) {
+  return require(`../../${path}`);
+}

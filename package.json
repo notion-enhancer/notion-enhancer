@@ -1,42 +1,46 @@
 {
   "name": "notion-enhancer",
-  "version": "0.11.0-wip",
+  "version": "0.11.0-dev",
+  "author": "dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)",
   "description": "an enhancer/customiser for the all-in-one productivity workspace notion.so",
+  "homepage": "https://github.com/notion-enhancer/notion-enhancer",
+  "license": "MIT",
   "bin": {
-    "notion-enhancer": "bin.js"
+    "notion-enhancer": "bin.mjs"
   },
   "type": "module",
   "engines": {
-    "node": ">=12.20.0"
+    "node": ">=16.x.x"
   },
   "scripts": {
     "test": "echo \"no test specified\"",
-    "postinstall": "node bin.js apply -y",
     "preuninstall": "node bin.js remove -n"
   },
   "dependencies": {
-    "asar": "^3.0.3",
-    "chalk": "^4.1.0"
+    "asar": "^3.1.0",
+    "chalk": "^4.1.2"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/notion-enhancer/notion-enhancer.git"
+    "url": "git+https://github.com/notion-enhancer/desktop.git"
   },
   "keywords": [
-    "notion",
-    "productivity",
-    "mod",
-    "loader",
-    "enhancer",
-    "hack",
-    "macOS",
     "windows",
-    "linux"
+    "macos",
+    "linux",
+    "productivity",
+    "hack",
+    "extensions",
+    "themes",
+    "integrations",
+    "mod",
+    "mods",
+    "mod-loader",
+    "enhancer",
+    "notion",
+    "notion-enhancer"
   ],
-  "author": "dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)",
-  "license": "MIT",
   "bugs": {
-    "url": "https://github.com/notion-enhancer/notion-enhancer/issues"
-  },
-  "homepage": "https://github.com/notion-enhancer/notion-enhancer"
+    "url": "https://github.com/notion-enhancer/desktop/issues"
+  }
 }
