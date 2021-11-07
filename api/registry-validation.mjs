@@ -122,7 +122,7 @@ const validateEnvironments = async (mod) => {
           }
           tests.push([
             check(mod, 'js.electron.file.source', file.source, 'file', {
-              extension: '.mjs',
+              extension: '.cjs',
             }),
             // referencing the file within the electron app
             // existence can't be validated, so only format is

@@ -12,8 +12,6 @@ module.exports = {};
  * @module notion-enhancer/api/fmt
  */
 
-const fs = require('notion-enhancer/api/fs.cjs');
-
 /**
  * transform a heading into a slug (a lowercase alphanumeric string separated by dashes),
  * e.g. for use as an anchor id
@@ -132,8 +130,10 @@ module.exports.is = async (value, type, { extension = '' } = {}) => {
     case 'url':
     case 'color':
       return typeof value === 'string' && test(value, patterns[type]) && extension;
-    case 'file':
-      return typeof value === 'string' && value && (await fs.isFile(value)) && extension;
+    case 'file': {
+      const { isFile } = require('notion-enhancer/api/fs.cjs');
+      return typeof value === 'string' && value && (await isFile(value)) && extension;
+    }
   }
   return false;
 };

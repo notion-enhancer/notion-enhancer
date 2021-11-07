@@ -11,9 +11,6 @@
  * @module notion-enhancer/api/registry
  */
 
-const { env, fs, storage } = require('notion-enhancer/api/_.cjs'),
-  { validate } = require('notion-enhancer/api/registry-validation.cjs');
-
 /**
  * mod ids whitelisted as part of the enhancer's core, permanently enabled
  * @constant
@@ -43,13 +40,19 @@ module.exports.optionTypes = ['toggle', 'select', 'text', 'number', 'color', 'fi
  * the name of the active configuration profile
  * @returns {string}
  */
-module.exports.profileName = async () => storage.get(['currentprofile'], 'default');
+module.exports.profileName = async () => {
+  const storage = require('notion-enhancer/api/storage.cjs');
+  return storage.get(['currentprofile'], 'default');
+};
 
 /**
  * the root database for the current profile
  * @returns {object} the get/set functions for the profile's storage
  */
-module.exports.profileDB = async () => storage.db(['profiles', await profileName()]);
+module.exports.profileDB = async () => {
+  const storage = require('notion-enhancer/api/storage.cjs');
+  return storage.db(['profiles', await module.exports.profileName()]);
+};
 
 let _list,
   _errors = [];
@@ -60,12 +63,14 @@ let _list,
  */
 module.exports.list = async (filter = (mod) => true) => {
   if (!_list) {
+    const { validate } = require('notion-enhancer/api/registry-validation.cjs'),
+      { getJSON } = require('notion-enhancer/api/fs.cjs');
     _list = new Promise(async (res, rej) => {
       const passed = [];
-      for (const dir of await fs.getJSON('repo/registry.json')) {
+      for (const dir of await getJSON('repo/registry.json')) {
         try {
           const mod = {
-            ...(await fs.getJSON(`repo/${dir}/mod.json`)),
+            ...(await getJSON(`repo/${dir}/mod.json`)),
             _dir: dir,
             _err: (message) => _errors.push({ source: dir, message }),
           };
@@ -87,7 +92,7 @@ module.exports.list = async (filter = (mod) => true) => {
  * @returns {array<object>} error objects with an error message and a source directory
  */
 module.exports.errors = async () => {
-  await list();
+  await module.exports.list();
   return _errors;
 };
 
@@ -97,7 +102,7 @@ module.exports.errors = async () => {
  * @returns {object} the mod's mod.json
  */
 module.exports.get = async (id) => {
-  return (await list((mod) => mod.id === id))[0];
+  return (await module.exports.list((mod) => mod.id === id))[0];
 };
 
 /**
@@ -107,10 +112,11 @@ module.exports.get = async (id) => {
  * @returns {boolean} whether or not the mod is enabled
  */
 module.exports.enabled = async (id) => {
-  const mod = await get(id);
+  const env = require('notion-enhancer/api/env.cjs'),
+    mod = await module.exports.get(id);
   if (!mod.environments.includes(env.name)) return false;
-  if (core.includes(id)) return true;
-  return (await profileDB()).get(['_mods', id], false);
+  if (module.exports.core.includes(id)) return true;
+  return (await module.exports.profileDB()).get(['_mods', id], false);
 };
 
 /**
@@ -143,14 +149,15 @@ module.exports.optionDefault = async (id, key) => {
  * @returns {object} an object with the wrapped get/set functions
  */
 module.exports.db = async (id) => {
-  const db = await profileDB();
+  const storage = require('notion-enhancer/api/storage.cjs'),
+    db = await module.exports.profileDB();
   return storage.db(
     [id],
     async (path, fallback = undefined) => {
       if (typeof path === 'string') path = [path];
       if (path.length === 2) {
         // profiles -> profile -> mod -> option
-        fallback = (await optionDefault(id, path[1])) ?? fallback;
+        fallback = (await module.exports.optionDefault(id, path[1])) ?? fallback;
       }
       return db.get(path, fallback);
     },
