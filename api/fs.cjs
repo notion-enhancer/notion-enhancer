@@ -11,7 +11,8 @@
  * @module notion-enhancer/api/fs
  */
 
-import * as fs from '../env/fs.mjs';
+const fs = require('../env/fs.cjs');
+module.exports = {};
 
 /**
  * transform a path relative to the enhancer root directory into an absolute path
@@ -19,7 +20,7 @@ import * as fs from '../env/fs.mjs';
  * @param {string} path - a url or within-the-enhancer filepath
  * @returns {string} an absolute filepath
  */
-export const localPath = fs.localPath;
+module.exports.localPath = fs.localPath;
 
 /**
  * fetch and parse a json file's contents
@@ -28,7 +29,7 @@ export const localPath = fs.localPath;
  * @param {object} [opts] - the second argument of a fetch() request
  * @returns {object} the json value of the requested file as a js object
  */
-export const getJSON = fs.getJSON;
+module.exports.getJSON = fs.getJSON;
 
 /**
  * fetch a text file's contents
@@ -37,7 +38,7 @@ export const getJSON = fs.getJSON;
  * @param {object} [opts] - the second argument of a fetch() request
  * @returns {string} the text content of the requested file
  */
-export const getText = fs.getText;
+module.exports.getText = fs.getText;
 
 /**
  * check if a file exists
@@ -45,4 +46,4 @@ export const getText = fs.getText;
  * @param {string} path - a url or within-the-enhancer filepath
  * @returns {boolean} whether or not the file exists
  */
-export const isFile = fs.isFile;
+module.exports.isFile = fs.isFile;

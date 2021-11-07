@@ -13,7 +13,6 @@
  */
 
 import { fmt, web, components, registry } from '../_.mjs';
-const db = await registry.db('36a2ffc9-27ff-480e-84a7-c7700a7d232d');
 
 web.loadStylesheet('api/components/panel.css');
 
@@ -27,8 +26,9 @@ const _views = [],
     5.43056L 3.01191 8.43056L 3.98809 9.56944Z"></path>
 </svg>`;
 
-// open + close
-let $notionFrame,
+let db,
+  // open + close
+  $notionFrame,
   $notionRightSidebar,
   // resize
   dragStartX,
@@ -36,13 +36,11 @@ let $notionFrame,
   dragEventsFired,
   panelWidth,
   // render content
-  $notionApp;
+  $notionApp,
+  $pinnedToggle;
 
 // open + close
 const $panel = web.html`<div id="enhancer--panel"></div>`,
-  $pinnedToggle = web.html`<div id="enhancer--panel-header-toggle" tabindex="0"><div>
-    ${await components.feather('chevrons-right')}
-  </div></div>`,
   $hoverTrigger = web.html`<div id="enhancer--panel-hover-trigger"></div>`,
   panelPinnedAttr = 'data-enhancer-panel-pinned',
   isPinned = () => $panel.hasAttribute(panelPinnedAttr),
@@ -258,6 +256,13 @@ export const addPanelView = async ({
   onFocus = () => {},
   onBlur = () => {},
 }) => {
+  if (!db) db = await registry.db('36a2ffc9-27ff-480e-84a7-c7700a7d232d');
+  if (!$pinnedToggle) {
+    $pinnedToggle = web.html`<div id="enhancer--panel-header-toggle" tabindex="0"><div>
+      ${await components.feather('chevrons-right')}
+    </div></div>`;
+  }
+
   const view = {
     id,
     $icon: web.render(

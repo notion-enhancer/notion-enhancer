@@ -10,7 +10,7 @@
 
 /** environment-specific methods and constants */
 export * as env from './env.mjs';
-/** environment-specific filesystem reading */
+/** environment-specific file reading */
 export * as fs from './fs.mjs';
 /** environment-specific data persistence */
 export * as storage from './storage.mjs';
