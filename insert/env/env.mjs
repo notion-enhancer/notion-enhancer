@@ -29,18 +29,16 @@ export const version = window.__enhancerElectronApi.version;
  * open the enhancer's menu
  * @type {function}
  */
-export const focusMenu = () =>
-  window.__enhancerElectronApi.sendMessage({ action: 'focusMenu' });
+export const focusMenu = () => window.__enhancerElectronApi.sendMessage('focusMenu');
 
 /**
  * focus an active notion tab
  * @type {function}
  */
-export const focusNotion = () =>
-  window.__enhancerElectronApi.sendMessage({ action: 'focusNotion' });
+export const focusNotion = () => window.__enhancerElectronApi.sendMessage('focusNotion');
 
 /**
  * reload all notion and enhancer menu tabs to apply changes
  * @type {function}
  */
-export const reload = () => window.__enhancerElectronApi.sendMessage({ action: 'reload' });
+export const reload = () => window.__enhancerElectronApi.sendMessage('reload');

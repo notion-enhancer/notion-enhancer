@@ -13,6 +13,8 @@
 
 module.exports = {};
 
+const { focusMenu, focusNotion, reload } = require('notion-enhancer/worker.cjs');
+
 /**
  * the environment/platform name code is currently being executed in
  * @constant
@@ -31,18 +33,22 @@ module.exports.version = require('notion-enhancer/package.json').version;
  * open the enhancer's menu
  * @type {function}
  */
-module.exports.focusMenu = () => console.log(1);
-//  window.__enhancerElectronApi.sendMessage({ action: 'focusMenu' });
+module.exports.focusMenu = focusMenu;
 
 /**
  * focus an active notion tab
  * @type {function}
  */
-module.exports.focusNotion = () => console.log(1);
-//  window.__enhancerElectronApi.sendMessage({ action: 'focusNotion' });
+module.exports.focusNotion = focusNotion;
 
 /**
  * reload all notion and enhancer menu tabs to apply changes
  * @type {function}
  */
-module.exports.reload = () => console.log(1); // window.__enhancerElectronApi.sendMessage({ action: 'reload' });
+module.exports.reload = reload;
+
+/**
+ * require() notion app files
+ * @param {string} path - notion/resources/app/ e.g. main/createWindow.js
+ */
+module.exports.notionRequire = (path) => require(`../../../${path}`);

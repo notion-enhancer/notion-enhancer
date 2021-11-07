@@ -5,13 +5,12 @@
  */
 
 'use strict';
+module.exports = {};
 
 /**
  * environment-specific data persistence
  * @module notion-enhancer/api/storage
  */
-
-module.exports = {};
 
 const _queue = [],
   _onChangeListeners = [];

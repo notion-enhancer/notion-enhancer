@@ -5,13 +5,12 @@
  */
 
 'use strict';
+module.exports = {};
 
 /**
  * environment-specific file reading
  * @module notion-enhancer/api/fs
  */
-
-module.exports = {};
 
 /**
  * transform a path relative to the enhancer root directory into an absolute path
