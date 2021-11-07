@@ -3,11 +3,12 @@
   "version": "0.11.0-dev",
   "author": "dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)",
   "description": "an enhancer/customiser for the all-in-one productivity workspace notion.so",
-  "homepage": "https://github.com/notion-enhancer/notion-enhancer",
+  "homepage": "https://github.com/notion-enhancer/desktop",
   "license": "MIT",
   "bin": {
     "notion-enhancer": "bin.mjs"
   },
+  "private": true,
   "type": "module",
   "engines": {
     "node": ">=16.x.x"

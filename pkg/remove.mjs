@@ -43,4 +43,6 @@ export default async function (notionFolder = findNotion(), { delCache = undefin
       s.stop();
     }
   } else log`  {grey * enhancer cache not found: skipping}`;
+
+  return true;
 }

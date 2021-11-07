@@ -9,7 +9,7 @@
 import fsp from 'fs/promises';
 
 export default async function (filepath) {
-  // https://github.com/notion-enhancer/notion-enhancer/issues/160
+  // https://github.com/notion-enhancer/desktop/issues/160
   // enable the notion:// url scheme/protocol on linux
   const contents = await fsp.readFile(filepath, 'utf8');
   await fsp.writeFile(

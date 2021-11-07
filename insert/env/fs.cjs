@@ -11,12 +11,14 @@
  * @module notion-enhancer/api/fs
  */
 
+module.exports = {};
+
 /**
  * transform a path relative to the enhancer root directory into an absolute path
  * @param {string} path - a url or within-the-enhancer filepath
  * @returns {string} an absolute filepath
  */
-export const localPath = (path) => `notion://www.notion.so/__notion-enhancer/${path}`;
+module.exports.localPath = (path) => `notion://www.notion.so/__notion-enhancer/${path}`;
 
 /**
  * fetch and parse a json file's contents
@@ -24,7 +26,7 @@ export const localPath = (path) => `notion://www.notion.so/__notion-enhancer/${p
  * @param {object} [opts] - the second argument of a fetch() request
  * @returns {object} the json value of the requested file as a js object
  */
-export const getJSON = (path, opts = {}) =>
+module.exports.getJSON = (path, opts = {}) =>
   fetch(path.startsWith('http') ? path : localPath(path), opts).then((res) => res.json());
 
 /**
@@ -33,7 +35,7 @@ export const getJSON = (path, opts = {}) =>
  * @param {object} [opts] - the second argument of a fetch() request
  * @returns {string} the text content of the requested file
  */
-export const getText = (path, opts = {}) =>
+module.exports.getText = (path, opts = {}) =>
   fetch(path.startsWith('http') ? path : localPath(path), opts).then((res) => res.text());
 
 /**
@@ -41,7 +43,7 @@ export const getText = (path, opts = {}) =>
  * @param {string} path - a url or within-the-enhancer filepath
  * @returns {boolean} whether or not the file exists
  */
-export const isFile = async (path) => {
+module.exports.isFile = async (path) => {
   try {
     await fetch(path.startsWith('http') ? path : localPath(path));
     return true;

@@ -11,36 +11,38 @@
  * @module notion-enhancer/api/env
  */
 
+module.exports = {};
+
 /**
  * the environment/platform name code is currently being executed in
  * @constant
  * @type {string}
  */
-export const name = window.__enhancerElectronApi.platform;
+module.exports.name = process.platform;
 
 /**
  * the current version of the enhancer
  * @constant
  * @type {string}
  */
-export const version = window.__enhancerElectronApi.version;
+module.exports.version = require('notion-enhancer/package.json').version;
 
 /**
  * open the enhancer's menu
  * @type {function}
  */
-export const focusMenu = () =>
-  window.__enhancerElectronApi.sendMessage({ action: 'focusMenu' });
+module.exports.focusMenu = () => console.log(1);
+//  window.__enhancerElectronApi.sendMessage({ action: 'focusMenu' });
 
 /**
  * focus an active notion tab
  * @type {function}
  */
-export const focusNotion = () =>
-  window.__enhancerElectronApi.sendMessage({ action: 'focusNotion' });
+module.exports.focusNotion = () => console.log(1);
+//  window.__enhancerElectronApi.sendMessage({ action: 'focusNotion' });
 
 /**
  * reload all notion and enhancer menu tabs to apply changes
  * @type {function}
  */
-export const reload = () => window.__enhancerElectronApi.sendMessage({ action: 'reload' });
+module.exports.reload = () => console.log(1); // window.__enhancerElectronApi.sendMessage({ action: 'reload' });

@@ -104,6 +104,7 @@ try {
       const res = await apply(notionPath, {
         overwritePrevious: promptRes,
         takeBackup: opts.get('no-backup') ? false : true,
+        applyDevPatch: opts.get('dev-patch') ? true : false,
       });
       if (res) {
         log`{bold.rgb(245,245,245) SUCCESS} {green ✔}`;

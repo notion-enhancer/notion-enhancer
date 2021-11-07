@@ -17,7 +17,7 @@ import remove from './remove.mjs';
 
 export default async function (
   notionFolder = findNotion(),
-  { overwritePrevious = undefined, takeBackup = true } = {}
+  { overwritePrevious = undefined, takeBackup = true, applyDevPatch = false } = {}
 ) {
   let status = check(notionFolder);
   switch (status.code) {
@@ -26,8 +26,11 @@ export default async function (
     case 1: // corrupted
       throw Error(status.message);
     case 2: // same version already applied
-      log`  {grey * notion-enhancer v${status.version} already applied}`;
-      return true;
+      if (!applyDevPatch) {
+        log`  {grey * notion-enhancer v${status.version} already applied}`;
+        return true;
+      }
+      break;
     case 3: // diff version already applied
       log`  * ${status.message}`;
       const prompt = ['Y', 'y', 'N', 'n', ''],
@@ -60,31 +63,33 @@ export default async function (
   }
 
   s = spinner('  * inserting enhancements').loop();
-  const notionFiles = (await readDirDeep(status.executable))
-    .map((file) => file.path)
-    .filter((file) => file.endsWith('.js') && !file.includes('node_modules'));
-  for (const file of notionFiles) {
-    const target = file.slice(status.executable.length + 1, -3),
-      replacer = path.resolve(`${__dirname(import.meta)}/replacers/${target}.mjs`);
-    if (fs.existsSync(replacer)) {
-      await (await import(`./replacers/${target}.mjs`)).default(file);
+  if (!(status.code === 2 && applyDevPatch)) {
+    const notionFiles = (await readDirDeep(status.executable))
+      .map((file) => file.path)
+      .filter((file) => file.endsWith('.js') && !file.includes('node_modules'));
+    for (const file of notionFiles) {
+      const target = file.slice(status.executable.length + 1, -3),
+        replacer = path.resolve(`${__dirname(import.meta)}/replacers/${target}.mjs`);
+      if (fs.existsSync(replacer)) {
+        await (await import(`./replacers/${target}.mjs`)).default(file);
+      }
+      await fsp.appendFile(
+        file,
+        `\n\n//notion-enhancer\nrequire('notion-enhancer')('${target}', exports))`
+      );
     }
-    await fsp.appendFile(
-      file,
-      `\n\n//notion-enhancer\nrequire('notion-enhancer')('${target}', exports);`
-    );
   }
+  const node_modules = path.resolve(`${status.executable}/node_modules/notion-enhancer`);
+  await copyDir(`${__dirname(import.meta)}/../insert`, node_modules);
   s.stop();
 
   s = spinner('  * recording version').loop();
-  const node_modules = path.resolve(`${status.executable}/node_modules/notion-enhancer`);
-  await copyDir(`${__dirname(import.meta)}/../insert`, node_modules);
   await fsp.writeFile(
     path.resolve(`${node_modules}/package.json`),
     `{
       "name": "notion-enhancer",
       "version": "${pkg().version}",
-      "main": "launcher.js"
+      "main": "init.cjs"
     }`
   );
   s.stop();

@@ -11,9 +11,6 @@
  * @module notion-enhancer/api/storage
  */
 
-const _queue = [],
-  _onChangeListeners = [];
-
 /**
  * get persisted data
  * @param {array<string>} path - the path of keys to the value being fetched
@@ -21,20 +18,7 @@ const _queue = [],
  * @returns {Promise} value ?? fallback
  */
 export const get = (path, fallback = undefined) => {
-  if (!path.length) return fallback;
-  return new Promise((res, rej) =>
-    chrome.storage.local.get(async (values) => {
-      let value = values;
-      while (path.length) {
-        if (value === undefined) {
-          value = fallback;
-          break;
-        }
-        value = value[path.shift()];
-      }
-      res(value ?? fallback);
-    })
-  );
+  return window.__enhancerElectronApi.db.get(path, fallback);
 };
 
 /**
@@ -44,38 +28,7 @@ export const get = (path, fallback = undefined) => {
  * @returns {Promise} resolves when data has been saved
  */
 export const set = (path, value) => {
-  if (!path.length) return undefined;
-  const precursor = _queue[_queue.length - 1] || undefined,
-    interaction = new Promise(async (res, rej) => {
-      if (precursor !== undefined) {
-        await precursor;
-        _queue.shift();
-      }
-      const pathClone = [...path],
-        namespace = path[0];
-      chrome.storage.local.get(async (values) => {
-        let pointer = values,
-          old;
-        while (path.length) {
-          const key = path.shift();
-          if (!path.length) {
-            old = pointer[key];
-            pointer[key] = value;
-            break;
-          }
-          pointer[key] = pointer[key] ?? {};
-          pointer = pointer[key];
-        }
-        chrome.storage.local.set({ [namespace]: values[namespace] }, () => {
-          _onChangeListeners.forEach((listener) =>
-            listener({ type: 'set', path: pathClone, new: value, old })
-          );
-          res(value);
-        });
-      });
-    });
-  _queue.push(interaction);
-  return interaction;
+  return window.__enhancerElectronApi.db.set(path, value);
 };
 
 /**
@@ -99,7 +52,7 @@ export const db = (namespace, getFunc = get, setFunc = set) => {
  * storage is initiated from the current process
  */
 export const addChangeListener = (callback) => {
-  _onChangeListeners.push(callback);
+  return window.__enhancerElectronApi.db.addChangeListener(callback);
 };
 
 /**
@@ -107,7 +60,7 @@ export const addChangeListener = (callback) => {
  * @param {onStorageChangeCallback} callback
  */
 export const removeChangeListener = (callback) => {
-  _onChangeListeners = _onChangeListeners.filter((listener) => listener !== callback);
+  return window.__enhancerElectronApi.db.removeChangeListener(callback);
 };
 
 /**
