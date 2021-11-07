@@ -5,6 +5,7 @@
  */
 
 'use strict';
+module.exports = {};
 
 /**
  * helpers for formatting or parsing text
@@ -12,7 +13,6 @@
  */
 
 const fs = require('notion-enhancer/api/fs.cjs');
-module.exports = {};
 
 /**
  * transform a heading into a slug (a lowercase alphanumeric string separated by dashes),

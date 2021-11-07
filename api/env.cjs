@@ -5,6 +5,7 @@
  */
 
 'use strict';
+module.exports = {};
 
 /**
  * environment-specific methods and constants
@@ -12,7 +13,6 @@
  */
 
 const env = require('../env/env.cjs');
-module.exports = {};
 
 /**
  * the environment/platform name code is currently being executed in
@@ -45,3 +45,9 @@ module.exports.focusNotion = env.focusNotion;
  * @type {function}
  */
 module.exports.reload = env.reload;
+
+/**
+ * require() notion app files
+ * @param {string} path - path from the root of notion/resources/app/ e.g. main/createWindow.js
+ */
+module.exports.notionRequire = env.notionRequire;

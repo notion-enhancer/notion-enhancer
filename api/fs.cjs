@@ -5,6 +5,7 @@
  */
 
 'use strict';
+module.exports = {};
 
 /**
  * environment-specific file reading
@@ -12,7 +13,6 @@
  */
 
 const fs = require('../env/fs.cjs');
-module.exports = {};
 
 /**
  * transform a path relative to the enhancer root directory into an absolute path

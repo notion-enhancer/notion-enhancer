@@ -5,6 +5,7 @@
  */
 
 'use strict';
+module.exports = {};
 
 /**
  * environment-specific data persistence
@@ -12,7 +13,6 @@
  */
 
 const storage = require('../env/storage.cjs');
-module.exports = {};
 
 /**
  * get persisted data
