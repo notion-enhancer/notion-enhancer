@@ -21,17 +21,19 @@ export default async function (filepath) {
         // notion-enhancer
         const schemePrefix = 'notion://www.notion.so/__notion-enhancer/';
         if (req.url.startsWith(schemePrefix)) {
-          const resolvePath = (path) => require('path').resolve(\`\${__dirname}/\${path}\`),
-            fileExt = req.url.split('.').reverse()[0],
-            filePath = resolvePath(
-              \`../node_modules/notion-enhancer/\${req.url.slice(schemePrefix.length)}\`
-            ),
+          const { search, hash, pathname } = new URL(req.url),
+            resolvePath = (path) => require('path').resolve(\`\${__dirname}/\${path}\`),
+            fileExt = pathname.split('.').reverse()[0],
             mimeDB = Object.entries(require('notion-enhancer/dep/mime-db.json')),
             mimeType = mimeDB
               .filter(([mime, data]) => data.extensions)
               .find(([mime, data]) => data.extensions.includes(fileExt));
+          let filePath = '../node_modules/notion-enhancer/';
+          filePath += req.url.slice(schemePrefix.length);
+          if (search) filePath = filePath.slice(0, -search.length);
+          if (hash) filePath = filePath.slice(0, -hash.length);
           callback({
-            data: require('fs').createReadStream(filePath),
+            data: require('fs').createReadStream(resolvePath(filePath)),
             headers: { 'content-type': mimeType },
           });
         }

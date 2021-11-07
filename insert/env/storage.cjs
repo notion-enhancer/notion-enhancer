@@ -100,7 +100,11 @@ module.exports.set = (path, value) => {
  * @param {function} [set] - the storage set function to be wrapped
  * @returns {object} an object with the wrapped get/set functions
  */
-module.exports.db = (namespace, getFunc = get, setFunc = set) => {
+module.exports.db = (
+  namespace,
+  getFunc = module.exports.get,
+  setFunc = module.exports.set
+) => {
   if (typeof namespace === 'string') namespace = [namespace];
   return {
     get: (path = [], fallback = undefined) => getFunc([...namespace, ...path], fallback),

@@ -6,8 +6,6 @@
 
 'use strict';
 
-const api = require('notion-enhancer/api/_.cjs');
-
 module.exports = async function (target, __exports) {
   if (target === 'renderer/preload') {
     require('notion-enhancer/electronApi.cjs');
@@ -23,5 +21,15 @@ module.exports = async function (target, __exports) {
   if (target === 'main/main') {
     const { app } = require('electron');
     app.whenReady().then(require('notion-enhancer/worker.cjs').listen);
+  }
+
+  const api = require('notion-enhancer/api/_.cjs'),
+    { registry } = api;
+  for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
+    for (const { source, target: scriptTarget } of (mod.js ? mod.js.electron : []) || []) {
+      if (`${target}.js` !== scriptTarget) continue;
+      const script = require(`notion-enhancer/repo/${mod._dir}/${source}`);
+      script(api, await registry.db(mod.id), __exports);
+    }
   }
 };

@@ -12,6 +12,9 @@ module.exports = {};
  * @module notion-enhancer/api/fs
  */
 
+const fs = require('fs'),
+  { resolve: resolvePath } = require('path');
+
 /**
  * transform a path relative to the enhancer root directory into an absolute path
  * @param {string} path - a url or within-the-enhancer filepath
@@ -25,8 +28,10 @@ module.exports.localPath = (path) => `notion://www.notion.so/__notion-enhancer/$
  * @param {object} [opts] - the second argument of a fetch() request
  * @returns {object} the json value of the requested file as a js object
  */
-module.exports.getJSON = (path, opts = {}) =>
-  fetch(path.startsWith('http') ? path : localPath(path), opts).then((res) => res.json());
+module.exports.getJSON = (path, opts = {}) => {
+  if (path.startsWith('http')) return fetch(path, opts).then((res) => res.json());
+  return require(`notion-enhancer/${path}`);
+};
 
 /**
  * fetch a text file's contents
@@ -34,8 +39,10 @@ module.exports.getJSON = (path, opts = {}) =>
  * @param {object} [opts] - the second argument of a fetch() request
  * @returns {string} the text content of the requested file
  */
-module.exports.getText = (path, opts = {}) =>
-  fetch(path.startsWith('http') ? path : localPath(path), opts).then((res) => res.text());
+module.exports.getText = (path, opts = {}) => {
+  if (path.startsWith('http')) return fetch(path, opts).then((res) => res.text());
+  return fs.readFileSync(resolvePath(`${__dirname}/../../${path}`));
+};
 
 /**
  * check if a file exists
@@ -44,7 +51,9 @@ module.exports.getText = (path, opts = {}) =>
  */
 module.exports.isFile = async (path) => {
   try {
-    await fetch(path.startsWith('http') ? path : localPath(path));
+    if (path.startsWith('http')) {
+      await fetch(path);
+    } else fs.existsSync(resolvePath(`${__dirname}/../../${path}`));
     return true;
   } catch {
     return false;

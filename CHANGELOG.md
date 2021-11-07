@@ -36,6 +36,7 @@ a complete rework of the enhancer, with new features and a port to the browser a
   with an option to truncate timeline item titles.
 - renamed "notion icons" to "icon sets" with new support for uploading/reusing custom icons
   directly within the icon picker.
+- cli can now detect and apply to user-only installations on macOS.
 
 #### removed
 
