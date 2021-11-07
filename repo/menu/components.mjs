@@ -8,7 +8,6 @@
 
 import { fmt, web, registry, components } from '../../api/_.mjs';
 import { notifications } from './notifications.mjs';
-const profileDB = await registry.profileDB();
 
 export const modComponents = {
   preview: (url) => web.html`<img
@@ -56,7 +55,8 @@ export const modComponents = {
 
 export const options = {
   toggle: async (mod, opt) => {
-    const checked = await profileDB.get([mod.id, opt.key], opt.value),
+    const profileDB = await registry.profileDB(),
+      checked = await profileDB.get([mod.id, opt.key], opt.value),
       $toggle = modComponents.toggle(opt.label, checked),
       $tooltip = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
       $label = $toggle.children[0],
@@ -71,8 +71,10 @@ export const options = {
     });
     return $toggle;
   },
+
   select: async (mod, opt) => {
-    const value = await profileDB.get([mod.id, opt.key], opt.values[0]),
+    const profileDB = await registry.profileDB(),
+      value = await profileDB.get([mod.id, opt.key], opt.values[0]),
       $tooltip = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,
@@ -96,8 +98,10 @@ export const options = {
     });
     return web.render($label, $select, $icon);
   },
+
   text: async (mod, opt) => {
-    const value = await profileDB.get([mod.id, opt.key], opt.value),
+    const profileDB = await registry.profileDB(),
+      value = await profileDB.get([mod.id, opt.key], opt.value),
       $tooltip = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,
@@ -112,8 +116,10 @@ export const options = {
     });
     return web.render($label, $input, $icon);
   },
+
   number: async (mod, opt) => {
-    const value = await profileDB.get([mod.id, opt.key], opt.value),
+    const profileDB = await registry.profileDB(),
+      value = await profileDB.get([mod.id, opt.key], opt.value),
       $tooltip = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,
@@ -128,8 +134,10 @@ export const options = {
     });
     return web.render($label, $input, $icon);
   },
+
   color: async (mod, opt) => {
-    const value = await profileDB.get([mod.id, opt.key], opt.value),
+    const profileDB = await registry.profileDB(),
+      value = await profileDB.get([mod.id, opt.key], opt.value),
       $tooltip = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,
@@ -166,8 +174,10 @@ export const options = {
     paint();
     return web.render($label, $input, $icon);
   },
+
   file: async (mod, opt) => {
-    const { filename } = (await profileDB.get([mod.id, opt.key], {})) || {},
+    const profileDB = await registry.profileDB(),
+      { filename } = (await profileDB.get([mod.id, opt.key], {})) || {},
       $tooltip = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,
@@ -204,8 +214,10 @@ export const options = {
       $latest
     );
   },
+
   hotkey: async (mod, opt) => {
-    const value = await profileDB.get([mod.id, opt.key], opt.value),
+    const profileDB = await registry.profileDB(),
+      value = await profileDB.get([mod.id, opt.key], opt.value),
       $tooltip = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,

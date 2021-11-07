@@ -165,7 +165,7 @@ body,
 .notion-body.dark
   .notion-default-overlay-container
   [style*='grid-template-columns: [boolean-start] 60px [boolean-end property-start] 120px [property-end opererator-start] 110px [operator-end value-start] auto [value-end menu-start] 32px [menu-end];'],
-.notion-focusable[style*='background: rgb(80, 85, 88);'],
+.notion-focusable[style*='background: rgb(80, 85, 88);']:not(.notion-help-button):not(.onboarding-checklist-button),
 .notion-body:not(.dark)
   .notion-default-overlay-container
   [style*='grid-template-columns: [boolean-start] 60px [boolean-end property-start] 120px [property-end opererator-start] 110px [operator-end value-start] auto [value-end menu-start] 32px [menu-end];']

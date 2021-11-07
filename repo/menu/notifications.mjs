@@ -10,8 +10,6 @@ import { tw } from './styles.mjs';
 const notificationsURL = 'https://notion-enhancer.github.io/notifications.json';
 export const notifications = {
   $container: web.html`<div class="notifications-container"></div>`,
-  cache: await storage.get(['notifications'], []),
-  provider: await fs.getJSON(notificationsURL),
   async add({ icon, message, id = undefined, color = undefined, link = undefined }) {
     const $notification = link
         ? web.html`<a
@@ -59,25 +57,40 @@ export const notifications = {
     $notification.addEventListener('click', env.reload);
   },
 };
-web.render(document.body, notifications.$container);
-for (const notification of notifications.provider) {
-  const cached = notifications.cache.includes(notification.id),
-    versionMatches = notification.version === env.version,
-    envMatches = !notification.environments || notification.environments.includes(env.name);
-  if (!cached && versionMatches && envMatches) notifications.add(notification);
-}
 
-const lastReadChangelog = await storage.get(['last_read_changelog']),
-  $changelogModalButton = web.html`<button type="button" class="modal-button">
-    Accept & Continue
-  </button>`;
+(async () => {
+  notifications.cache = await storage.get(['notifications'], []);
+  notifications.provider = await fs.getJSON(notificationsURL);
+
+  web.render(document.body, notifications.$container);
+  for (const notification of notifications.provider) {
+    const cached = notifications.cache.includes(notification.id),
+      versionMatches = notification.version === env.version,
+      envMatches = !notification.environments || notification.environments.includes(env.name);
+    if (!cached && versionMatches && envMatches) notifications.add(notification);
+  }
+})();
+
 export const $changelogModal = web.render(
   web.html`<div class="modal" role="dialog" aria-modal="true">
     <div class="modal-overlay" aria-hidden="true"></div>
-  </div>`,
+  </div>`
+);
+
+(async () => {
+  const $changelogModalButton = web.html`<button type="button" class="modal-button">
+    Accept & Continue
+  </button>`;
+  $changelogModalButton.addEventListener('click', async () => {
+    $changelogModal.classList.remove('modal-visible');
+    await storage.set(['last_read_changelog'], env.version);
+  });
+
   web.render(
-    web.html`<div class="modal-box"></div>`,
-    web.html`<div class="modal-body">
+    $changelogModal,
+    web.render(
+      web.html`<div class="modal-box"></div>`,
+      web.html`<div class="modal-body">
         <div class="modal-title">
           ${(await fs.getText('media/colour.svg')).replace(
             /width="\d+" height="\d+"/,
@@ -149,14 +162,13 @@ export const $changelogModal = web.render(
           </div>
         </div>
       </div>`,
-    web.render(web.html`<div class="modal-actions"></div>`, $changelogModalButton)
-  )
-);
-web.render(document.body, $changelogModal);
-if (lastReadChangelog !== env.version) {
-  $changelogModal.classList.add('modal-visible');
-}
-$changelogModalButton.addEventListener('click', async () => {
-  $changelogModal.classList.remove('modal-visible');
-  await storage.set(['last_read_changelog'], env.version);
-});
+      web.render(web.html`<div class="modal-actions"></div>`, $changelogModalButton)
+    )
+  );
+
+  const lastReadChangelog = await storage.get(['last_read_changelog']);
+  web.render(document.body, $changelogModal);
+  if (lastReadChangelog !== env.version) {
+    $changelogModal.classList.add('modal-visible');
+  }
+})();
