@@ -28,6 +28,7 @@ export default async function ({ web, components }, db) {
     $content: web.render(web.html`<div></div>`, $notice, $headingList),
     onFocus: () => {
       viewFocused = true;
+      $page = document.getElementsByClassName('notion-page-content')[0];
       updateHeadings();
     },
     onBlur: () => {

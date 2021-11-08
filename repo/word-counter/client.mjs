@@ -66,6 +66,7 @@ export default async function ({ web, components }, db) {
     $content: web.render(web.html`<div></div>`, $notice, $statList),
     onFocus: () => {
       viewFocused = true;
+      $page = document.getElementsByClassName('notion-page-content')[0];
       updateStats();
     },
     onBlur: () => {

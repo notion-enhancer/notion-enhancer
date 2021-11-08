@@ -27,10 +27,6 @@
   filter: brightness(1.2);
 }
 
-.notion-dark-theme [style*='font-family: Fira Code, Menlo, Courier, monospace;'] {
-  filter: hue-rotate(170deg) !important;
-}
-
 .notion-dark-theme .notion-token-remove-button[role*='button'][tabindex*='0']:hover,
 .notion-dark-theme .notion-record-icon {
   background: transparent !important;

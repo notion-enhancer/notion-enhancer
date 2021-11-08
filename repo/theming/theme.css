@@ -121,9 +121,9 @@ body,
 .notion-calendar-view
   .notion-selectable.notion-page-block.notion-collection-item
   > [style*='background:'],
-.notion-overlay-container.notion-default-overlay-container
-  [style*='display: flex']
-  > [style*='position: relative; max-width:'][style*='overflow: hidden']:not([style*='border-radius: 3px;'][style*='position: relative; max-width: calc(100vw - 24px); box-shadow: rgba(0, 0, 0, 0.3) 0px 1px 4px; overflow: hidden;'][style*='padding: 4px 8px; font-size: 12px; line-height: 1.4; font-weight: 500;']),
+[data-overlay]
+  > div
+  > [style*='position: relative; z-index: 1; box-shadow:'][style*='border-radius: 3px;'][style*='margin-bottom: 0px; top: 90px; overflow: hidden; width: 75%; max-width: 600px; min-height: 50px; max-height: 80vh;']:nth-child(2),
 .notion-overlay-container.notion-default-overlay-container
   [style*='display: flex']
   > [style*='position: relative; max-width:'][style*='overflow: hidden']

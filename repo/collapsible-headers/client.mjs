@@ -182,7 +182,7 @@ export default async function ({ web }, db) {
     };
 
   const insertToggles = async (event) => {
-    if ([...event.addedNodes].some(($node) => $node?.matches(pageScroller))) {
+    if ([...event.addedNodes].some(($node) => $node?.matches?.(pageScroller))) {
       collapseParentsCache = new Map();
       collapsedBlocksCache = new Map();
       return;
