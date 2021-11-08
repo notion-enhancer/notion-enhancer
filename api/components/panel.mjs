@@ -215,7 +215,7 @@ async function createPanel() {
   await createViews();
 
   const cursorListenerSelector =
-    '.notion-cursor-listener > :last-child[style^="position: absolute"]';
+    '.notion-cursor-listener > .notion-sidebar-container ~ [style^="position: absolute"]';
   await web.whenReady([cursorListenerSelector]);
   document.querySelector(cursorListenerSelector).before($hoverTrigger, $panel);
 }
