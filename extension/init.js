@@ -13,7 +13,7 @@
     signedIn = localStorage['LRU:KeyValueStore2:current-user-id'];
 
   if (site || page || (whitelisted && signedIn)) {
-    const api = await import(chrome.runtime.getURL('api/_.mjs')),
+    const api = await import(chrome.runtime.getURL('api/index.mjs')),
       { fs, registry, web } = api;
 
     for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
