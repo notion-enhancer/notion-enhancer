@@ -14,7 +14,7 @@
 
 import { fmt, web, components, registry } from '../../index.mjs';
 
-web.loadStylesheet('api/components/panel.css');
+web.loadStylesheet('api/client/components/panel.css');
 
 const _views = [],
   svgExpand = web.raw`<svg viewBox="-1 -1 9 11">

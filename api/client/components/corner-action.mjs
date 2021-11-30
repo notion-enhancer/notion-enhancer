@@ -14,7 +14,7 @@
 
 import { web } from '../../index.mjs';
 
-web.loadStylesheet('api/components/corner-action.css');
+web.loadStylesheet('api/client/components/corner-action.css');
 
 const $cornerButtonsContainer = web.html`<div id="enhancer--corner-actions"></div>`;
 

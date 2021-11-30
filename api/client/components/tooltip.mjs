@@ -14,7 +14,7 @@
 import { fmt, web } from '../../index.mjs';
 
 const _$tooltip = web.html`<div id="enhancer--tooltip"></div>`;
-web.loadStylesheet('api/components/tooltip.css');
+web.loadStylesheet('api/client/components/tooltip.css');
 
 /**
  * add a tooltip to show extra information on hover
