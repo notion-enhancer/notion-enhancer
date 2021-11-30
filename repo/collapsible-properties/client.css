@@ -29,6 +29,9 @@
   text-align: left;
   color: var(--theme--text);
 }
+#enhancer--collapse-properties > span:before {
+  content: 'Properties';
+}
 #enhancer--collapse-properties > svg {
   fill: var(--theme--icon);
   height: 0.8em;
@@ -37,14 +40,8 @@
   transition: transform 200ms ease-out 0s;
 }
 
-#enhancer--collapse-properties[data-collapsed='false'] > span:before {
-  content: 'Collapse Properties';
-}
 #enhancer--collapse-properties[data-collapsed='false'] > svg {
   transform: rotateZ(180deg);
-}
-#enhancer--collapse-properties[data-collapsed='true'] > span:before {
-  content: 'Show Properties';
 }
 #enhancer--collapse-properties[data-collapsed='true'] > svg {
   transform: rotateZ(90deg);
