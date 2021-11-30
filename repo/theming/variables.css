@@ -51,6 +51,9 @@
   --theme--ui_tooltip: rgb(15, 15, 15);
   --theme--ui_tooltip-title: rgba(255, 255, 255, 0.9);
   --theme--ui_tooltip-description: rgba(206, 205, 202, 0.6);
+  --theme--ui_corner_action: white;
+  --theme--ui_corner_action-hover: rgb(239, 239, 238);
+  --theme--ui_corner_action-active: rgb(223, 223, 222);
 
   --theme--icon: rgba(55, 53, 47, 0.8);
   --theme--icon_secondary: rgba(55, 53, 47, 0.4);
@@ -230,6 +233,9 @@
   --theme--ui_tooltip: rgb(202, 204, 206);
   --theme--ui_tooltip-title: rgb(15, 15, 15);
   --theme--ui_tooltip-description: rgba(47, 52, 55, 0.6);
+  --theme--ui_corner_action: rgb(80, 85, 88);
+  --theme--ui_corner_action-hover: rgb(98, 102, 104);
+  --theme--ui_corner_action-active: rgb(120, 123, 123);
 
   --theme--icon: rgba(202, 204, 206);
   --theme--icon_secondary: rgb(202, 204, 206, 0.6);

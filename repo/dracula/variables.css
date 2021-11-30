@@ -62,6 +62,9 @@
   --theme--ui_interactive-hover: var(--dracula--block_highlight);
   --theme--ui_interactive-active: var(--dracula--bg_lighter);
   --theme--ui_toggle-off: var(--dracula--block_highlight);
+  --theme--ui_corner_action: var(--theme--bg_card);
+  --theme--ui_corner_action-hover: var(--theme--ui_interactive-hover);
+  --theme--ui_corner_action-active: var(--theme--ui_interactive-active);
 
   --theme--icon: var(--dracula--comment);
   --theme--icon_secondary: var(--dracula--comment);

@@ -19,9 +19,15 @@
   --theme--accent_red-text: var(--light_plus--accent_red-text, #fff);
 
   --theme--scrollbar_thumb-hover: var(--light_plus--accent_highlight, #aeaca6);
+
   --theme--ui_divider: var(--light_plus--accent_highlight, rgb(237, 237, 236));
+  --theme--ui_corner_action: var(--theme--bg_card);
+  --theme--ui_corner_action-hover: var(--theme--ui_interactive-hover);
+  --theme--ui_corner_action-active: var(--theme--ui_interactive-active);
+
   --theme--icon: var(--light_plus--accent_highlight, rgba(55, 53, 47, 0.8));
   --theme--icon_secondary: var(--light_plus--accent_highlight, rgba(55, 53, 47, 0.4));
+
   --theme--text: var(--light_plus--accent_highlight, rgb(55, 43, 47));
   --theme--text_secondary: var(--light_plus--accent_highlight-shaded, rgba(55, 43, 47, 0.6));
 

@@ -193,7 +193,7 @@ export default async function ({ web }, db) {
     if (childNodeEvent) return;
 
     const removeHeaderEvent = [...event.removedNodes].filter(($node) =>
-      $node?.className?.includes('header-blocks')
+      $node?.className?.includes?.('header-blocks')
     );
     if (removeHeaderEvent.length) {
       return removeHeaderEvent.forEach(($header) => expandHeaderSection($header, false));

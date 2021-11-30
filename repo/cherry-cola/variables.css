@@ -41,6 +41,9 @@
   --theme--ui_interactive-hover: var(--cola--tet);
   --theme--ui_interactive-active: var(--cola--tet);
   --theme--ui_toggle-off: rgba(73, 35, 65, 0.7);
+  --theme--ui_corner_action: var(--theme--bg_card);
+  --theme--ui_corner_action-hover: var(--theme--ui_interactive-hover);
+  --theme--ui_corner_action-active: var(--theme--ui_interactive-active);
 
   --theme--icon: #fff;
   --theme--icon_secondary: var(--cola--info);

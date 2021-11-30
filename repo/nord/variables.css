@@ -44,6 +44,9 @@
   --theme--ui_interactive-active: #4c566ade;
   --theme--ui_toggle-off: var(--nord--dark4);
   --theme--ui_toggle-feature: var(--nord--light1);
+  --theme--ui_corner_action: var(--theme--bg_card);
+  --theme--ui_corner_action-hover: var(--theme--ui_interactive-hover);
+  --theme--ui_corner_action-active: var(--theme--ui_interactive-active);
 
   --theme--icon: var(--nord--light1);
   --theme--icon_secondary: var(--nord--light1);

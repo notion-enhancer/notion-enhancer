@@ -154,11 +154,20 @@
 .notion-help-button,
 .onboarding-checklist-button {
   opacity: 1 !important;
-  color: var(--theme--tag_default-text);
-  fill: var(--theme--tag_default-text);
-  background: var(--theme--tag_default) !important;
+  color: var(--theme--icon);
+  fill: var(--theme--icon);
+  background: var(--theme--ui_corner_action) !important;
   box-shadow: var(--theme--ui_shadow, rgba(15, 15, 15, 0.15)) 0px 0px 0px 1px,
     var(--theme--ui_shadow, rgba(15, 15, 15, 0.15)) 0px 2px 4px !important;
+  cursor: pointer;
+}
+.notion-help-button:hover,
+.onboarding-checklist-button:hover {
+  background: var(--theme--ui_corner_action-hover) !important;
+}
+.notion-help-button:active,
+.onboarding-checklist-button:active {
+  background: var(--theme--ui_corner_action-active) !important;
 }
 
 /* backgrounds */
@@ -223,6 +232,14 @@
   .notion-board-view
   > .notion-selectable.notion-collection_view-block
   > :first-child
-  > [style*='width: 20px'] {
+  > [style*='width: 20px'],
+.notion-body.dark
+  [style*='background: linear-gradient(rgba(47, 52, 55, 0) 0px, rgb(47, 52, 55) 10px, rgb(47, 52, 55) 100%);'],
+.notion-body:not(.dark)
+  [style*='background: linear-gradient(rgba(255, 255, 255, 0) 0px, white 10px, white 100%);'],
+.notion-body.dark .notion-collection_view_page-block [style*='background: rgb(47, 52, 55);'],
+.notion-body:not(.dark)
+  .notion-collection_view_page-block
+  [style*='background: white;']:not([style*='box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 2px 4px;']) {
   background: transparent !important;
 }

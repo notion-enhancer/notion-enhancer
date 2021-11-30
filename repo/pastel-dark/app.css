@@ -48,7 +48,11 @@
   transition: color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease !important;
 }
 
-.notion-dark-theme [style*='background: rgb(63, 68, 71);'],
+.notion-dark-theme :not(.notion-code-block) > * > [style*='background: rgb(63, 68, 71);'],
+.notion-dark-theme
+  .notion-code-block
+  [style*='background: rgb(63, 68, 71);']
+  .notion-code-block,
 .notion-dark-theme
   [style*='background: rgb(80, 85, 88);'][style*='color: rgba(255, 255, 255, 0.7)'],
 .notion-dark-theme

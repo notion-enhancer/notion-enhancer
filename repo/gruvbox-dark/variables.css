@@ -58,6 +58,9 @@
   --theme--ui_interactive-active: rgba(80, 73, 69, 0.9);
   --theme--ui_toggle-off: var(--gruvbox_dark--bg4);
   --theme--ui_toggle-feature: var(--gruvbox_dark--fg);
+  --theme--ui_corner_action: var(--theme--bg_card);
+  --theme--ui_corner_action-hover: var(--theme--ui_interactive-hover);
+  --theme--ui_corner_action-active: var(--theme--ui_interactive-active);
 
   --theme--icon: var(--gruvbox_dark--fg0);
   --theme--icon_secondary: var(--gruvbox_dark--fg3);

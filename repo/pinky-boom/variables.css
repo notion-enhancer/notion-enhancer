@@ -35,6 +35,9 @@
   --theme--ui_interactive-hover: #fcb9d0;
   --theme--ui_interactive-active: #ffccdc;
   --theme--ui_toggle-off: #ffc9e6;
+  --theme--ui_corner_action: var(--theme--bg_card);
+  --theme--ui_corner_action-hover: var(--theme--ui_interactive-hover);
+  --theme--ui_corner_action-active: var(--theme--ui_interactive-active);
 
   --theme--icon: #56002e;
   --theme--icon_secondary: rgba(255, 20, 145, 0.75);
@@ -117,7 +120,7 @@
 
   --theme--tag_default: #ffc9e6;
   --theme--tag_gray: rgba(128, 128, 128, 0.25);
-  --theme--tag_gray-text: white;
+  --theme--tag_gray-text: black;
   --theme--tag_brown: var(--pinky_boom--brown);
   --theme--tag_brown-text: white;
   --theme--tag_orange: var(--pinky_boom--orange);
