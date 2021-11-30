@@ -39,6 +39,8 @@ export default async function ({ web, components }, db) {
 
   function updateHeadings() {
     if (!$page) return;
+    $notice.innerText = pageNoticeText;
+    $headingList.style.display = '';
     const $headerBlocks = $page.querySelectorAll('[class^="notion-"][class*="header-block"]'),
       $fragment = web.html`<div></div>`;
     let depth = 0,
@@ -73,21 +75,15 @@ export default async function ({ web, components }, db) {
     if (document.contains($page)) {
       updateHeadings();
     } else {
-      $page = document.getElementsByClassName('notion-page-content')[0];
-      if ($page) {
-        $notice.innerText = pageNoticeText;
-        $headingList.style.display = '';
-        updateHeadings();
-      } else {
+      $page = document.querySelector('.notion-page-content');
+      if (!$page) {
         $notice.innerText = dbNoticeText;
         $headingList.style.display = 'none';
-      }
+      } else updateHeadings();
     }
   };
   web.addDocumentObserver(pageObserver, [
-    '.notion-header-block',
-    '.notion-sub_header-block',
-    '.notion-sub_sub_header-block',
+    '.notion-page-content',
     '.notion-collection_view_page-block',
   ]);
   pageObserver();
