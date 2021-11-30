@@ -27,6 +27,13 @@
       "value": true
     },
     {
+      "type": "toggle",
+      "key": "prevent_quality_reduction",
+      "label": "prevent icon quality reduction",
+      "tooltip": "**this may break icons in widgets** - encodes and submits images as data urls to prevent notion from optimising them (reduces image quality by ~20%)",
+      "value": true
+    },
+    {
       "type": "file",
       "key": "json",
       "label": "custom icon sets (.json)",

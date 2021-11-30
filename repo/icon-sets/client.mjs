@@ -6,8 +6,17 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+const getImgData = (url) =>
+  new Promise(async (res, rej) => {
+    const blob = await fetch(url).then((res) => res.blob()),
+      reader = new FileReader();
+    reader.onload = (e) => res(e.target.result);
+    reader.readAsDataURL(blob);
+  });
+
 export default async function ({ web, fs, components, notion }, db) {
   const recentUploads = await db.get(['recent_uploads'], []),
+    preventQualityReduction = await db.get(['prevent_quality_reduction']),
     $triangleSvg = web.html`<svg viewBox="0 0 100 100" class="triangle">
       <polygon points="5.9,88.2 50,11.8 94.1,88.2" />
     </svg>`;
@@ -131,7 +140,7 @@ export default async function ({ web, fs, components, notion }, db) {
               recentUploads.splice(i, 1);
               db.set(['recent_uploads'], recentUploads);
               $icon.remove();
-            } else setIcon(url);
+            } else setIcon({ signed, url });
           });
           loadPromises.push(
             new Promise((res, rej) => {
@@ -174,7 +183,7 @@ export default async function ({ web, fs, components, notion }, db) {
               $icon = web.render(web.html`<span class="icon_sets--icon"></span>`, $img);
             web.render($set, $icon);
             $icon.addEventListener('click', (event) => {
-              if (!event.shiftKey) setIcon(iconUrl);
+              if (!event.shiftKey) setIcon({ signed: iconUrl, url: iconUrl });
             });
             if (!sprite) {
               loadPromises.push(
@@ -253,11 +262,14 @@ export default async function ({ web, fs, components, notion }, db) {
     // otherwise both may be visible on reopen
     displayEmojiTab(true);
 
-    async function setIcon(iconUrl) {
+    async function setIcon({ signed, url }) {
       // without this react gets upset
       displayEmojiTab();
       $linkTab.firstChild.click();
       await new Promise(requestAnimationFrame);
+
+      $mediaMenu.parentElement.style.opacity = '0';
+      const iconUrl = preventQualityReduction ? await getImgData(signed) : url;
 
       // call native setter, imitate human input
       const $notionLinkInput = $mediaMenu.querySelector(mediaLinkInputSelector),
@@ -276,8 +288,9 @@ export default async function ({ web, fs, components, notion }, db) {
     const submitLinkIcon = () => {
       const url = $iconsLinkInput.firstElementChild.value;
       if (!url) return;
-      setIcon(url);
-      recentUploads.push({ signed: notion.sign(url, notion.getPageID()), url: url });
+      const icon = { signed: notion.sign(url, notion.getPageID()), url: url };
+      setIcon(icon);
+      recentUploads.push(icon);
       db.set(['recent_uploads'], recentUploads);
     };
     $iconsLinkInput.onkeyup = (event) => {
@@ -289,9 +302,10 @@ export default async function ({ web, fs, components, notion }, db) {
     $iconsUploadSubmit.onclick = () => $iconsUploadFile.click();
     $iconsUploadFile.onchange = async (event) => {
       const file = event.target.files[0],
-        url = await notion.upload(file);
-      setIcon(url);
-      recentUploads.push({ signed: notion.sign(url, notion.getPageID()), url: url });
+        url = await notion.upload(file),
+        icon = { signed: notion.sign(url, notion.getPageID()), url: url };
+      setIcon(icon);
+      recentUploads.push(icon);
       db.set(['recent_uploads'], recentUploads);
     };
   };
