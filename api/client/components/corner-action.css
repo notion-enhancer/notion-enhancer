@@ -1,5 +1,5 @@
 /*
- * notion-enhancer core: api
+ * notion-enhancer core: components
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (c) 2021 CloudHill <rl.cloudhill@gmail.com> (https://github.com/CloudHill)
  * (https://notion-enhancer.github.io/) under the MIT license
@@ -28,7 +28,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--theme--tag_default) !important;
+  color: var(--theme--icon);
+  fill: var(--theme--icon);
+  background: var(--theme--ui_corner_action) !important;
   box-shadow: var(--theme--ui_shadow, rgba(15, 15, 15, 0.15)) 0px 0px 0px 1px,
     var(--theme--ui_shadow, rgba(15, 15, 15, 0.15)) 0px 2px 4px !important;
 
@@ -36,10 +38,10 @@
   cursor: pointer;
 }
 #enhancer--corner-actions > div:hover {
-  background: var(--theme--ui_interactive-hover);
+  background: var(--theme--ui_corner_action-hover) !important;
 }
 #enhancer--corner-actions > div:active {
-  background: var(--theme--ui_interactive-active);
+  background: var(--theme--ui_corner_action-active) !important;
 }
 #enhancer--corner-actions > div.hidden {
   display: none;
@@ -48,6 +50,6 @@
 #enhancer--corner-actions > div > svg {
   width: 22px;
   height: 22px;
-  color: var(--theme--tag_default-text);
-  fill: var(--theme--tag_default-text);
+  color: var(--theme--icon);
+  fill: var(--theme--icon);
 }
