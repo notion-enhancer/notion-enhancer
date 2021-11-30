@@ -84,9 +84,7 @@ module.exports.set = (path, value) => {
         pointer = pointer[key];
       }
       saveData(values);
-      _onChangeListeners.forEach((listener) =>
-        listener({ type: 'set', path: pathClone, new: value, old })
-      );
+      _onChangeListeners.forEach((listener) => listener({ path: pathClone, new: value, old }));
       res(value);
     });
   _queue.push(interaction);
@@ -132,9 +130,7 @@ module.exports.removeChangeListener = (callback) => {
 /**
  * @callback onStorageChangeCallback
  * @param {object} event
- * @param {string} event.type - 'set' or 'reset'
- * @param {string} event.namespace- the name of the store, e.g. a mod id
- * @param {string} [event.key] - the key associated with the changed value
+ * @param {string} event.path- the path of keys to the changed value
  * @param {string} [event.new] - the new value being persisted to the store
  * @param {string} [event.old] - the previous value associated with the key
  */

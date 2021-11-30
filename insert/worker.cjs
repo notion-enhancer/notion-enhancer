@@ -20,7 +20,7 @@ let enhancerMenu;
 module.exports.focusMenu = () => {
   if (enhancerMenu) return enhancerMenu.show();
 
-  const { fs } = require('notion-enhancer/api/_.cjs'),
+  const { fs } = require('notion-enhancer/api/index.cjs'),
     { session, BrowserWindow } = require('electron'),
     windowState = require('electron-window-state')({
       file: 'enhancer-menu-window-state.json',
@@ -52,7 +52,7 @@ module.exports.focusMenu = () => {
 };
 
 module.exports.focusNotion = () => {
-  const { env } = require('notion-enhancer/api/_.cjs'),
+  const { env } = require('notion-enhancer/api/index.cjs'),
     { BrowserWindow } = require('electron'),
     { createWindow } = env.notionRequire('main/createWindow.js');
   let window = BrowserWindow.getAllWindows().find((win) => win.id !== enhancerMenu.id);

@@ -6,7 +6,7 @@
 
 'use strict';
 
-const api = require('notion-enhancer/api/_.cjs');
+const api = require('notion-enhancer/api/index.cjs');
 
 window.__enhancerElectronApi = {
   platform: api.env.name,

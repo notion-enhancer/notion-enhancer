@@ -23,7 +23,7 @@ module.exports = async function (target, __exports) {
     app.whenReady().then(require('notion-enhancer/worker.cjs').listen);
   }
 
-  const api = require('notion-enhancer/api/_.cjs'),
+  const api = require('notion-enhancer/api/index.cjs'),
     { registry } = api;
   for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
     for (const { source, target: scriptTarget } of (mod.js ? mod.js.electron : []) || []) {

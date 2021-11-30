@@ -15,6 +15,7 @@ a complete rework of the enhancer, with new features and a port to the browser a
 - a hotkey option type that allows typing in/pressing a hotkey to enter it, instead of typing.
 - a rainbow indentation lines style.
 - border & background style options for the code line numbers extension.
+- an icon sets option to encode images to data urls to prevent quality reduction.
 
 #### improved
 
