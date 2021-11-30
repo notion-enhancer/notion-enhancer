@@ -9,19 +9,19 @@
 /** @module notion-enhancer/api */
 
 /** environment-specific methods and constants */
-export * as env from './env.mjs';
+export * as env from './client/env.mjs';
 /** environment-specific file reading */
-export * as fs from './fs.mjs';
+export * as fs from './client/fs.mjs';
 /** environment-specific data persistence */
-export * as storage from './storage.mjs';
+export * as storage from './client/storage.mjs';
 
 /** a basic wrapper around notion's unofficial api */
-export * as notion from './notion.mjs';
+export * as notion from './client/notion.mjs';
 /** helpers for formatting, validating and parsing values */
-export * as fmt from './fmt.mjs';
+export * as fmt from './client/fmt.mjs';
 /** interactions with the enhancer's repository of mods */
-export * as registry from './registry.mjs';
+export * as registry from './client/registry.mjs';
 /** helpers for manipulation of a webpage */
-export * as web from './web.mjs';
+export * as web from './client/web.mjs';
 /** shared notion-style elements */
-export * as components from './components/_.mjs';
+export * as components from './client/components/index.mjs';

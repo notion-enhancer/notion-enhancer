@@ -11,14 +11,14 @@
  * @module notion-enhancer/api/web
  */
 
-import { fs } from './_.mjs';
+import { fs } from '../index.mjs';
+import '../../dep/jscolor.min.js';
 
 let _hotkeyEventListeners = [],
   _documentObserver,
   _documentObserverListeners = [],
   _documentObserverEvents = [];
 
-import '../dep/jscolor.min.js';
 /** color picker with alpha channel using https://jscolor.com/ */
 export const jscolor = JSColor;
 

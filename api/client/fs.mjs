@@ -11,7 +11,7 @@
  * @module notion-enhancer/api/fs
  */
 
-import * as fs from '../env/fs.mjs';
+import * as fs from '../../env/fs.mjs';
 
 /**
  * transform a path relative to the enhancer root directory into an absolute path

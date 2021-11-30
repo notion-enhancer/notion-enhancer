@@ -12,7 +12,7 @@
  * @module notion-enhancer/api/components/corner-action
  */
 
-import { web } from '../_.mjs';
+import { web } from '../../index.mjs';
 
 web.loadStylesheet('api/components/corner-action.css');
 

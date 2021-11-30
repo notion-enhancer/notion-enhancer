@@ -12,7 +12,7 @@ module.exports = {};
  * @module notion-enhancer/api/env
  */
 
-const env = require('../env/env.cjs');
+const env = require('notion-enhancer/env/env.cjs');
 
 /**
  * the environment/platform name code is currently being executed in

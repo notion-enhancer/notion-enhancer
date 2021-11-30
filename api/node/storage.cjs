@@ -12,7 +12,7 @@ module.exports = {};
  * @module notion-enhancer/api/storage
  */
 
-const storage = require('../env/storage.cjs');
+const storage = require('notion-enhancer/env/storage.cjs');
 
 /**
  * get persisted data
@@ -60,9 +60,7 @@ module.exports.removeChangeListener = storage.removeChangeListener;
 /**
  * @callback onStorageChangeCallback
  * @param {object} event
- * @param {string} event.type - 'set' or 'reset'
- * @param {string} event.namespace- the name of the store, e.g. a mod id
- * @param {string} [event.key] - the key associated with the changed value
+ * @param {string} event.path- the path of keys to the changed value
  * @param {string} [event.new] - the new value being persisted to the store
  * @param {string} [event.old] - the previous value associated with the key
  */

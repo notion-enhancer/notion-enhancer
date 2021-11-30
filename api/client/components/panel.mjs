@@ -12,7 +12,7 @@
  * @module notion-enhancer/api/components/side-panel
  */
 
-import { fmt, web, components, registry } from '../_.mjs';
+import { fmt, web, components, registry } from '../../index.mjs';
 
 web.loadStylesheet('api/components/panel.css');
 

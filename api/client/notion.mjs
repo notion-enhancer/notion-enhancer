@@ -11,7 +11,7 @@
  * @module notion-enhancer/api/notion
  */
 
-import { web, fs, fmt } from './_.mjs';
+import { web, fs, fmt } from '../index.mjs';
 
 const standardiseUUID = (uuid) => {
   if (uuid?.length === 32 && !uuid.includes('-')) {

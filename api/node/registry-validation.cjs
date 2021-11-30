@@ -6,8 +6,6 @@
 
 'use strict';
 
-import { fmt, registry } from './_.mjs';
-
 const check = async (
   mod,
   key,
@@ -21,18 +19,19 @@ const check = async (
     optional = false,
   } = {}
 ) => {
+  const { is } = require('notion-enhancer/api/node/fmt.cjs');
   let test;
   for (const type of Array.isArray(types) ? [types] : types.split('|')) {
     if (type === 'file') {
       test =
         value && !value.startsWith('http')
-          ? await fmt.is(`repo/${mod._dir}/${value}`, type, { extension })
+          ? await is(`repo/${mod._dir}/${value}`, type, { extension })
           : false;
-    } else test = await fmt.is(value, type, { extension });
+    } else test = await is(value, type, { extension });
     if (test) break;
   }
   if (!test) {
-    if (optional && (await fmt.is(value, 'undefined'))) return true;
+    if (optional && (await is(value, 'undefined'))) return true;
     if (error) mod._err(error);
     return false;
   }
@@ -40,12 +39,11 @@ const check = async (
 };
 
 const validateEnvironments = async (mod) => {
-    mod.environments = mod.environments ?? registry.supportedEnvs;
+    const { supportedEnvs } = require('notion-enhancer/api/node/registry.cjs');
+    mod.environments = mod.environments ?? supportedEnvs;
     const isArray = await check(mod, 'environments', mod.environments, 'array');
     if (!isArray) return false;
-    return mod.environments.map((tag) =>
-      check(mod, 'environments.env', tag, registry.supportedEnvs)
-    );
+    return mod.environments.map((tag) => check(mod, 'environments.env', tag, supportedEnvs));
   },
   validateTags = async (mod) => {
     const isArray = await check(mod, 'tags', mod.tags, 'array');
@@ -136,17 +134,18 @@ const validateEnvironments = async (mod) => {
     return tests;
   },
   validateOptions = async (mod) => {
-    const isArray = await check(mod, 'options', mod.options, 'array');
+    const { supportedEnvs, optionTypes } = require('notion-enhancer/api/node/registry.cjs'),
+      isArray = await check(mod, 'options', mod.options, 'array');
     if (!isArray) return false;
     const tests = [];
     for (const option of mod.options) {
       const key = 'options.option',
-        optTypeValid = await check(mod, `${key}.type`, option.type, registry.optionTypes);
+        optTypeValid = await check(mod, `${key}.type`, option.type, optionTypes);
       if (!optTypeValid) {
         tests.push(false);
         continue;
       }
-      option.environments = option.environments ?? registry.supportedEnvs;
+      option.environments = option.environments ?? supportedEnvs;
       tests.push([
         check(mod, `${key}.key`, option.key, 'alphanumeric'),
         check(mod, `${key}.label`, option.label, 'string'),
@@ -156,7 +155,7 @@ const validateEnvironments = async (mod) => {
         check(mod, `${key}.environments`, option.environments, 'array').then((isArray) => {
           if (!isArray) return false;
           return option.environments.map((environment) =>
-            check(mod, `${key}.environments.env`, environment, registry.supportedEnvs)
+            check(mod, `${key}.environments.env`, environment, supportedEnvs)
           );
         }),
       ]);
@@ -203,7 +202,7 @@ const validateEnvironments = async (mod) => {
  * @param {object} mod - a mod's mod.json in object form
  * @returns {boolean} whether or not the mod has passed validation
  */
-export async function validate(mod) {
+module.exports.validate = async function (mod) {
   let conditions = [
     check(mod, 'name', mod.name, 'string'),
     check(mod, 'id', mod.id, 'uuid'),
@@ -221,4 +220,4 @@ export async function validate(mod) {
     conditions = await Promise.all(conditions.flat(Infinity));
   } while (conditions.some((condition) => Array.isArray(condition)));
   return conditions.every((passed) => passed);
-}
+};

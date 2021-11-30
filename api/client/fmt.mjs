@@ -11,9 +11,10 @@
  * @module notion-enhancer/api/fmt
  */
 
-import { web, fs, components } from './_.mjs';
+import { web, fs, components } from '../index.mjs';
+import '../../dep/prism.min.js';
+import '../../dep/markdown-it.min.js';
 
-import '../dep/prism.min.js';
 /** syntax highlighting using https://prismjs.com/ */
 export const prism = Prism;
 Prism.manual = true;
@@ -24,7 +25,6 @@ Prism.hooks.add('complete', async (event) => {
     .prepend(web.html`${await components.feather('clipboard')}`);
 });
 
-import '../dep/markdown-it.min.js';
 /** markdown -> html using https://github.com/markdown-it/markdown-it/ */
 export const md = new markdownit({
   linkify: true,

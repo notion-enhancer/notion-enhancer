@@ -131,7 +131,7 @@ module.exports.is = async (value, type, { extension = '' } = {}) => {
     case 'color':
       return typeof value === 'string' && test(value, patterns[type]) && extension;
     case 'file': {
-      const { isFile } = require('notion-enhancer/api/fs.cjs');
+      const { isFile } = require('notion-enhancer/api/node/fs.cjs');
       return typeof value === 'string' && value && (await isFile(value)) && extension;
     }
   }

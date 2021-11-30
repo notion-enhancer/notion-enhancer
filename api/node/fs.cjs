@@ -12,7 +12,7 @@ module.exports = {};
  * @module notion-enhancer/api/fs
  */
 
-const fs = require('../env/fs.cjs');
+const fs = require('notion-enhancer/env/fs.cjs');
 
 /**
  * transform a path relative to the enhancer root directory into an absolute path

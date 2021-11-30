@@ -11,7 +11,7 @@
  * @module notion-enhancer/api/env
  */
 
-import * as env from '../env/env.mjs';
+import * as env from '../../env/env.mjs';
 
 /**
  * the environment/platform name code is currently being executed in

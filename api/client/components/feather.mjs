@@ -11,7 +11,7 @@
  * @module notion-enhancer/api/components/feather
  */
 
-import { fs, web } from '../_.mjs';
+import { fs, web } from '../../index.mjs';
 
 let _$iconSheet;
 
