@@ -50,6 +50,7 @@
   [style*='position: absolute; top: 3px; left: -20px; width: 18px; height: 24px; pointer-events: auto; cursor: -webkit-grab;']
   [data-block-id] {
   background: var(--theme--bg) !important;
+  border-radius: 3px;
 }
 .notion-frame
   > [style*='position: absolute; top: 0px; left: 0px;']
@@ -90,5 +91,5 @@
   [style*='position: absolute; top: 3px; left: -20px; width: 18px; height: 24px; pointer-events: auto; cursor: -webkit-grab;']
   + .notion-focusable
   > .plus:hover {
-  background: rgba(255, 255, 255, 0.1) !important;
+  background: var(--theme--ui_interactive-hover) !important;
 }

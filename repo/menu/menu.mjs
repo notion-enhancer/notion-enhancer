@@ -6,7 +6,7 @@
 
 'use strict';
 
-import * as api from '../../api/_.mjs';
+import * as api from '../../api/index.mjs';
 import { notifications, $changelogModal } from './notifications.mjs';
 import { modComponents, options } from './components.mjs';
 import * as router from './router.mjs';

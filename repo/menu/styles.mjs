@@ -10,21 +10,21 @@
 
 import { tw, apply, setup } from '../../dep/twind.mjs';
 import { content } from '../../dep/twind-content.mjs';
-const pseudoContent = content('""');
 
-const mapColorVariables = (color) => ({
-  'text': `var(--theme--text_${color})`,
-  'highlight': `var(--theme--highlight_${color})`,
-  'highlight-text': `var(--theme--highlight_${color}-text)`,
-  'callout': `var(--theme--callout_${color})`,
-  'callout-text': `var(--theme--callout_${color}-text)`,
-  'tag': `var(--theme--tag_${color})`,
-  'tag-text': `var(--theme--tag_${color}-text)`,
-  'board': `var(--theme--board_${color})`,
-  'board-text': `var(--theme--board_${color}-text)`,
-  'board-card': `var(--theme--board_${color}-card)`,
-  'board-card_text': `var(--theme--board_${color}-card_text)`,
-});
+const pseudoContent = content('""'),
+  mapColorVariables = (color) => ({
+    'text': `var(--theme--text_${color})`,
+    'highlight': `var(--theme--highlight_${color})`,
+    'highlight-text': `var(--theme--highlight_${color}-text)`,
+    'callout': `var(--theme--callout_${color})`,
+    'callout-text': `var(--theme--callout_${color}-text)`,
+    'tag': `var(--theme--tag_${color})`,
+    'tag-text': `var(--theme--tag_${color}-text)`,
+    'board': `var(--theme--board_${color})`,
+    'board-text': `var(--theme--board_${color}-text)`,
+    'board-card': `var(--theme--board_${color}-card)`,
+    'board-card_text': `var(--theme--board_${color}-card_text)`,
+  });
 
 const customClasses = {
   'notifications-container': apply`absolute bottom-0 right-0 px-4 py-3 max-w-full w-96 z-10`,

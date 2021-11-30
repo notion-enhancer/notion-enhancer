@@ -4,7 +4,7 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { env, fs, storage, fmt, web, components } from '../../api/_.mjs';
+import { env, fs, storage, fmt, web, components } from '../../api/index.mjs';
 import { tw } from './styles.mjs';
 
 const notificationsURL = 'https://notion-enhancer.github.io/notifications.json';

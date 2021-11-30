@@ -6,7 +6,7 @@
 
 'use strict';
 
-import { fmt, web, registry, components } from '../../api/_.mjs';
+import { fmt, web, registry, components } from '../../api/index.mjs';
 import { notifications } from './notifications.mjs';
 
 export const modComponents = {

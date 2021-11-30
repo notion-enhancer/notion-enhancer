@@ -1,0 +1,34 @@
+{
+  "name": "integrated titlebar",
+  "id": "a5658d03-21c6-4088-bade-fa4780459133",
+  "environments": ["linux", "win32"],
+  "version": "0.11.0",
+  "description": "replaces the native window titlebar with buttons inset into the app.",
+  "tags": ["extension", "layout"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "css": {
+    "client": ["buttons.css"],
+    "menu": ["buttons.css"]
+  },
+  "js": {
+    "client": ["client.mjs"],
+    "menu": ["menu.mjs"],
+    "electron": [{ "source": "createWindow.cjs", "target": "main/createWindow.js" }]
+  },
+  "options": [
+    {
+      "type": "toggle",
+      "key": "tiling",
+      "label": "tiling window manager mode",
+      "tooltip": "**completely remove the close/minimise/maximise buttons** (only for advanced use, not recommended)",
+      "value": false
+    }
+  ]
+}

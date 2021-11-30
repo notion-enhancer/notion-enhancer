@@ -2,21 +2,9 @@
   "menu",
   "theming",
   "components",
+
+  "integrated-titlebar",
   "tweaks",
-
-  "material-ocean",
-  "cherry-cola",
-  "dark+",
-  "light+",
-  "dracula",
-  "pastel-dark",
-  "neutral",
-  "nord",
-  "gruvbox-dark",
-  "gruvbox-light",
-  "playful-purple",
-  "pinky-boom",
-
   "font-chooser",
   "outliner",
   "scroll-to-top",
@@ -37,5 +25,18 @@
   "global-block-links",
 
   "icon-sets",
-  "quick-note"
+  "quick-note",
+
+  "material-ocean",
+  "cherry-cola",
+  "dark+",
+  "light+",
+  "dracula",
+  "pastel-dark",
+  "neutral",
+  "nord",
+  "gruvbox-dark",
+  "gruvbox-light",
+  "playful-purple",
+  "pinky-boom"
 ]

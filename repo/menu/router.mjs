@@ -6,7 +6,7 @@
 
 'use strict';
 
-import { web } from '../../api/_.mjs';
+import { web } from '../../api/index.mjs';
 
 const _queryListeners = new Set();
 
