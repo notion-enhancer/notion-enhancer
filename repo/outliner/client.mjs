@@ -48,7 +48,7 @@ export default async function ({ web, components }, db) {
     for (const $header of $headerBlocks) {
       const id = $header.dataset.blockId.replace(/-/g, ''),
         placeholder = $header.querySelector('[placeholder]').getAttribute('placeholder'),
-        headerDepth = +placeholder.at(-1);
+        headerDepth = +[...placeholder].reverse()[0];
       if (depth && depth < headerDepth) {
         indent += 18;
       } else if (depth > headerDepth) {

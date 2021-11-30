@@ -19,7 +19,7 @@ export default async function ({ web }, db) {
 
       const lines = $codeBlock.lastElementChild.innerText.split(/\r\n|\r|\n/),
         wordWrap = $codeBlock.lastElementChild.style.wordBreak === 'break-all';
-      if (lines.at(-1) === '') lines.pop();
+      if (lines.reverse()[0] === '') lines.pop();
 
       let lineNumbers = '';
       for (let i = 1; i <= lines.length + 1; i++) {
