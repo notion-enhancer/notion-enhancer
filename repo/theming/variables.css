@@ -31,7 +31,7 @@
   --theme--accent_red-text: #fff;
 }
 
-:root {
+:root:not(.dark) {
   --theme--bg: #fff;
   --theme--bg_secondary: rgb(247, 246, 243);
   --theme--bg_card: #fff;

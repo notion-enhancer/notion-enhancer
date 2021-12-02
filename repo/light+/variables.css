@@ -5,7 +5,7 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-:root {
+:root:not(.dark) {
   --theme--accent_blue: var(--light_plus--accent_blue, rgb(46, 170, 220));
   --theme--accent_blue-selection: var(
     --light_plus--accent_blue-selection,

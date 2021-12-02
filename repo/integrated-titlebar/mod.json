@@ -20,7 +20,10 @@
   "js": {
     "client": ["client.mjs"],
     "menu": ["menu.mjs"],
-    "electron": [{ "source": "createWindow.cjs", "target": "main/createWindow.js" }]
+    "electron": [
+      { "source": "createWindow.cjs", "target": "main/createWindow.js" },
+      { "source": "rendererIndex.cjs", "target": "renderer/index.js" }
+    ]
   },
   "options": [
     {
@@ -29,6 +32,41 @@
       "label": "tiling window manager mode",
       "tooltip": "**completely remove the close/minimise/maximise buttons** (only for advanced use, not recommended)",
       "value": false
+    },
+    {
+      "type": "number",
+      "key": "dragarea_height",
+      "label": "dragarea height (px)",
+      "tooltip": "**the height of the rectangle added to the top of the window, used to drag/move the window around** (dragging is not possible in a frameless window without this bar)",
+      "value": 12
+    },
+    {
+      "type": "text",
+      "key": "minimize_icon",
+      "label": "minimize window icon",
+      "tooltip": "**may be an svg string or any unicode symbol e.g. an emoji** (the default icon will be used if this field is left empty)",
+      "value": ""
+    },
+    {
+      "type": "text",
+      "key": "maximize_icon",
+      "label": "maximize window icon",
+      "tooltip": "**may be an svg string or any unicode symbol e.g. an emoji** (the default icon will be used if this field is left empty)",
+      "value": ""
+    },
+    {
+      "type": "text",
+      "key": "unmaximize_icon",
+      "label": "unmaximize window icon",
+      "tooltip": "**may be an svg string or any unicode symbol e.g. an emoji** (the default icon will be used if this field is left empty)",
+      "value": ""
+    },
+    {
+      "type": "text",
+      "key": "close_icon",
+      "label": "close window icon",
+      "tooltip": "**may be an svg string or any unicode symbol e.g. an emoji** (the default icon will be used if this field is left empty)",
+      "value": ""
     }
   ]
 }
