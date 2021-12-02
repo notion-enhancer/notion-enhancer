@@ -53,6 +53,8 @@ module.exports.focusMenu = async () => {
   });
 };
 
+module.exports.isMenuOpen = () => !!enhancerMenu;
+
 module.exports.focusNotion = () => {
   const { env } = require('notion-enhancer/api/index.cjs'),
     { BrowserWindow } = require('electron'),
@@ -64,7 +66,7 @@ module.exports.focusNotion = () => {
 
 module.exports.reload = () => {
   const { app } = require('electron');
-  app.relaunch();
+  app.relaunch({ args: process.argv.slice(1).filter((arg) => arg !== '--startup') });
   app.exit(0);
 };
 
