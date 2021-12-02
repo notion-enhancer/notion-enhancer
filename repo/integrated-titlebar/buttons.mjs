@@ -11,7 +11,7 @@ export const createWindowButtons = async ({ web, components }, db) => {
     maximizeIcon = (await db.get(['maximize_icon'])) || (await components.feather('maximize')),
     unmaximizeIcon =
       (await db.get(['unmaximize_icon'])) || (await components.feather('minimize')),
-    closeIcon = await db.get(['close_icon'], await components.feather('x'));
+    closeIcon = (await db.get(['close_icon'])) || (await components.feather('x'));
   minimizeIcon = minimizeIcon.trim();
   maximizeIcon = maximizeIcon.trim();
   unmaximizeIcon = unmaximizeIcon.trim();

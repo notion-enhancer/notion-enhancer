@@ -43,7 +43,7 @@
       "key": "hotkey",
       "label": "toggle header collapse hotkey",
       "tooltip": "**opens/closes the currently focused header section**",
-      "value": "ctrl+enter"
+      "value": "Ctrl+Enter"
     }
   ]
 }

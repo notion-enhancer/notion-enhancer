@@ -595,6 +595,9 @@ body,
   box-shadow: var(--theme--accent_blue-active, rgba(26, 170, 220, 0.7)) 0px 0px 0px 1px inset,
     var(--theme--accent_blue-active, rgba(26, 170, 220, 0.4)) 0px 0px 0px 2px !important;
 }
+.notion-sidebar-switcher:focus-visible {
+  box-shadow: none !important;
+}
 .notion-onboarding-plan-type-team[style*='box-shadow: rgb(46, 170, 220)'],
 .notion-onboarding-plan-type-personal[style*='box-shadow: rgb(46, 170, 220)'] {
   box-shadow: var(--theme--accent_blue) 0px 0px 0px 2px !important;

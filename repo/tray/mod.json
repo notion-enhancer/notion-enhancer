@@ -1,0 +1,39 @@
+{
+  "name": "tray",
+  "id": "f96f4a73-21af-4e3f-a68f-ab4976b020da",
+  "environments": ["linux", "win32", "darwin"],
+  "version": "0.11.0",
+  "description": "adds an icon to the system tray/menubar for extra app/window management features (e.g. open on startup, a global hotkey).",
+  "tags": ["extension", "app"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "css": {},
+  "js": {
+    "client": ["client.mjs"],
+    "electron": [
+      { "source": "main.cjs", "target": "main/main.js" },
+      { "source": "createWindow.cjs", "target": "main/createWindow.js" }
+    ]
+  },
+  "options": [
+    {
+      "type": "toggle",
+      "key": "run_in_background",
+      "label": "run notion in the background",
+      "tooltip": "**pressing the close button or toggling window visibility will hide the app, running notion in the background** (instead of quitting or minimizing it)",
+      "value": true
+    },
+    {
+      "type": "hotkey",
+      "key": "hotkey",
+      "label": "toggle window visibility hotkey",
+      "value": "Ctrl+Shift+A"
+    }
+  ]
+}

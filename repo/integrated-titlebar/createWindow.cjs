@@ -16,11 +16,3 @@ module.exports = async function (api, db, __exports, __eval) {
     };
   `);
 };
-
-// hide on open
-// maybe only do once to hide first window?
-
-// exports.createWindow = (...args) => {
-//   warmWindowState.warmedWindow = true;
-//   createWindow(...args);
-// };
