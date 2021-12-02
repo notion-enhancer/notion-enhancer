@@ -17,7 +17,7 @@ const sendMessage = (id, data) => {
   };
 
 let enhancerMenu;
-module.exports.focusMenu = () => {
+module.exports.focusMenu = async () => {
   if (enhancerMenu) return enhancerMenu.show();
 
   const { fs } = require('notion-enhancer/api/index.cjs'),
@@ -26,11 +26,13 @@ module.exports.focusMenu = () => {
       file: 'enhancer-menu-window-state.json',
       defaultWidth: 1250,
       defaultHeight: 850,
-    });
+    }),
+    { registry } = require('notion-enhancer/api/index.cjs'),
+    integratedTitlebar = await registry.enabled('a5658d03-21c6-4088-bade-fa4780459133');
 
   enhancerMenu = new BrowserWindow({
     show: true,
-    // frame: !store().frameless,
+    frame: !integratedTitlebar,
     titleBarStyle: 'hiddenInset',
     x: windowState.x,
     y: windowState.y,

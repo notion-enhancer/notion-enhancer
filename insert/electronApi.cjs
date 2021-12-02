@@ -17,12 +17,17 @@ window.__enhancerElectronApi = {
     addChangeListener: api.storage.addChangeListener,
     removeChangeListener: api.storage.removeChangeListener,
   },
-  sendMessage: (id, data = undefined) => {
+  browser: require('electron').remote.getCurrentWindow(),
+  sendMessage: (channel, data = undefined) => {
     const { ipcRenderer } = require('electron');
-    ipcRenderer.send(`notion-enhancer:${id}`, data);
+    ipcRenderer.send(`notion-enhancer:${channel}`, data);
   },
-  onMessage: (id, callback) => {
+  sendMessageToHost: (channel, data = undefined) => {
     const { ipcRenderer } = require('electron');
-    ipcRenderer.on(`notion-enhancer:${id}`, callback);
+    ipcRenderer.sendToHost(`notion-enhancer:${channel}`, data);
+  },
+  onMessage: (channel, callback) => {
+    const { ipcRenderer } = require('electron');
+    ipcRenderer.on(`notion-enhancer:${channel}`, callback);
   },
 };

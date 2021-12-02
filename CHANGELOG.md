@@ -16,6 +16,7 @@ a complete rework of the enhancer, with new features and a port to the browser a
 - a rainbow indentation lines style.
 - border & background style options for the code line numbers extension.
 - an icon sets option to encode images to data urls to prevent quality reduction.
+- customisation of integrated titlebar window buttons
 
 #### improved
 
