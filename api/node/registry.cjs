@@ -126,7 +126,7 @@ module.exports.enabled = async (id) => {
  * @returns {string|number|boolean|undefined} the option's default value
  */
 module.exports.optionDefault = async (id, key) => {
-  const mod = await get(id),
+  const mod = await module.exports.get(id),
     opt = mod.options.find((opt) => opt.key === key);
   if (!opt) return undefined;
   switch (opt.type) {
