@@ -13,6 +13,7 @@ module.exports = async function ({ env, registry }, db, __exports, __eval) {
     path = require('path'),
     enhancerIcon = path.resolve(`${__dirname}/../../media/colour-x16.png`),
     hotkey = await db.get(['hotkey']),
+    openAtStartup = await db.get(['startup']),
     runInBackground = await db.get(['run_in_background']),
     menuHotkey = await (
       await registry.db('a6621988-551d-495a-97d8-3c568bca2e9e')
@@ -34,6 +35,8 @@ module.exports = async function ({ env, registry }, db, __exports, __eval) {
   };
 
   await electron.app.whenReady();
+  electron.app.setLoginItemSettings({ openAtLogin: openAtStartup, args: ['--startup'] });
+
   tray = new electron.Tray(enhancerIcon);
   tray.setToolTip('notion-enhancer');
   tray.on('click', () => toggleWindows(false));

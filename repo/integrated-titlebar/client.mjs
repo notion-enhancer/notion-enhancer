@@ -44,6 +44,7 @@ export default async function (api, db) {
   await web.whenReady([topbarSelector, topbarActionsSelector]);
   const $topbar = document.querySelector(topbarSelector),
     $dragarea = web.html`<div class="integrated_titlebar--dragarea" style="height:${dragareaHeight}px"></div>`;
+  $topbar.style.height = `${45 + dragareaHeight}px`;
   $topbar.prepend($dragarea);
 
   const $topbarActions = document.querySelector(topbarActionsSelector),

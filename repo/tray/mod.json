@@ -24,6 +24,13 @@
   "options": [
     {
       "type": "toggle",
+      "key": "startup",
+      "label": "open notion on startup",
+      "tooltip": "**if the 'run notion in the background' option is also enabled, the app will open in background on startup** (this option may require relaunching the app BEFORE restarting your system to properly take effect)",
+      "value": false
+    },
+    {
+      "type": "toggle",
       "key": "run_in_background",
       "label": "run notion in the background",
       "tooltip": "**pressing the close button or toggling window visibility will hide the app, running notion in the background** (instead of quitting or minimizing it)",
