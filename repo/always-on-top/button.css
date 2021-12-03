@@ -4,22 +4,15 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-.integrated_titlebar--dragarea {
-  width: 100%;
-  display: block;
-  -webkit-app-region: drag;
-  background: var(--theme--bg_secondary);
-}
-
-.integrated_titlebar--buttons {
+.always_on_top--button {
   display: flex;
   align-items: center;
 }
-.sidebar > .integrated_titlebar--buttons {
-  margin: -0.5rem 0 0.75rem auto;
+.sidebar > .always_on_top--button {
+  margin: 0 0 0.75rem auto;
 }
 
-.integrated_titlebar--buttons button {
+.always_on_top--button button {
   user-select: none;
   transition: background 20ms ease-in 0s;
   cursor: pointer;
@@ -37,22 +30,16 @@
   background: transparent;
   font-size: 18px;
 }
-.integrated_titlebar--buttons button svg {
+.always_on_top--button button svg {
   display: block;
   width: 20px;
   height: 20px;
 }
 
-.integrated_titlebar--buttons button:focus,
-.integrated_titlebar--buttons button:hover {
+.always_on_top--button button:focus,
+.always_on_top--button button:hover {
   background: var(--theme--ui_interactive-hover);
 }
-.integrated_titlebar--buttons button:active {
+.always_on_top--button button:active {
   background: var(--theme--ui_interactive-active);
-}
-#integrated_titlebar--close:focus,
-#integrated_titlebar--close:hover,
-#integrated_titlebar--close:active {
-  background: var(--theme--accent_red);
-  color: var(--theme--accent_red-text);
 }

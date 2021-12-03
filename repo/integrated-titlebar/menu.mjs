@@ -24,6 +24,5 @@ export default async function (api, db) {
 
   const $sidebar = document.querySelector(sidebarSelector),
     $windowButtons = await createWindowButtons(api, db);
-  $windowButtons.dataset.inEnhancerMenu = true;
   $sidebar.prepend($windowButtons);
 }
