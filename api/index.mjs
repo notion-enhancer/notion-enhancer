@@ -15,6 +15,9 @@ export * as fs from './client/fs.mjs';
 /** environment-specific data persistence */
 export * as storage from './client/storage.mjs';
 
+/** access to electron renderer apis */
+export * as electron from './client/electron.mjs';
+
 /** a basic wrapper around notion's unofficial api */
 export * as notion from './client/notion.mjs';
 /** helpers for formatting, validating and parsing values */
