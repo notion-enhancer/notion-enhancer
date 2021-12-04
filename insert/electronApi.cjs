@@ -18,6 +18,7 @@ window.__enhancerElectronApi = {
     removeChangeListener: api.storage.removeChangeListener,
   },
   browser: require('electron').remote.getCurrentWindow(),
+  webFrame: require('electron').webFrame,
   sendMessage: (channel, data = undefined) => {
     const { ipcRenderer } = require('electron');
     ipcRenderer.send(`notion-enhancer:${channel}`, data);

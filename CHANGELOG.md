@@ -2,7 +2,7 @@
 
 ### v0.11.0 (dev)
 
-a complete rework of the enhancer, with new features and a port to the browser as a chrome extension.
+a complete redesign & rewrite of the enhancer, with new features and a port to the browser as a chrome extension.
 
 #### new
 
@@ -16,7 +16,8 @@ a complete rework of the enhancer, with new features and a port to the browser a
 - a rainbow indentation lines style.
 - border & background style options for the code line numbers extension.
 - an icon sets option to encode images to data urls to prevent quality reduction.
-- customisation of integrated titlebar window buttons
+- customisation of integrated titlebar & always on top window buttons.
+- an open on startup option under the tray mod.
 
 #### improved
 
@@ -39,6 +40,8 @@ a complete rework of the enhancer, with new features and a port to the browser a
 - renamed "notion icons" to "icon sets" with new support for uploading/reusing custom icons
   directly within the icon picker.
 - cli can now detect and apply to user-only installations on macOS.
+- moved the tray to its own configurable and enable/disable-able mod, with window management enhancements
+  that follow more sensible defaults and work more reliably.
 
 #### removed
 
@@ -69,6 +72,7 @@ a complete rework of the enhancer, with new features and a port to the browser a
 - "global block links" = easily copy the global link of a page or block.
 - "collapsible headers" = adds toggles to collapse header sections of pages.
 - "simpler databases" = adds a menu to inline databases to toggle ui elements.
+- "view scale" = zoom in/out of the notion window with the mousewheel or a visual slider (`ctrl/cmd +/-` are available in-app by default).
 
 #### tweaks
 
