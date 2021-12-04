@@ -1,0 +1,46 @@
+{
+  "name": "view scale",
+  "id": "e71ce1e0-024c-435e-a25e-7dd50448d1df",
+  "version": "0.1.0",
+  "description": "zoom in/out of the notion window with the mousewheel or a visual slider (`ctrl/cmd +/-` are available in-app by default).",
+  "tags": ["extension", "shortcut"],
+  "authors": [
+    {
+      "name": "SP12893678",
+      "homepage": "https://sp12893678.tk/",
+      "avatar": "https://sp12893678.tk/img/avatar.jpg"
+    }
+  ],
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "css": {
+    "client": ["client.css"]
+  },
+  "options": [
+    {
+      "type": "number",
+      "key": "offset",
+      "label": "scale +/- offset (%)",
+      "value": 10
+    },
+    {
+      "type": "number",
+      "key": "default_zoom",
+      "label": "default scale (%)",
+      "value": 100
+    },
+    {
+      "type": "toggle",
+      "key": "ui",
+      "label": "visual slider",
+      "value": true
+    },
+    {
+      "type": "select",
+      "key": "mousewheel",
+      "label": "mousewheel scaling keyboard modifier",
+      "values": ["Control", "Alt", "Command", "Shift", "-- none --"]
+    }
+  ]
+}
