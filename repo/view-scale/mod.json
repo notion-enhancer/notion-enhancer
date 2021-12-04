@@ -1,9 +1,10 @@
 {
   "name": "view scale",
   "id": "e71ce1e0-024c-435e-a25e-7dd50448d1df",
+  "environments": ["linux", "win32", "darwin"],
   "version": "0.1.0",
   "description": "zoom in/out of the notion window with the mousewheel or a visual slider (`ctrl/cmd +/-` are available in-app by default).",
-  "tags": ["extension", "shortcut"],
+  "tags": ["extension", "app"],
   "authors": [
     {
       "name": "SP12893678",
