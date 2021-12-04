@@ -7,21 +7,17 @@
 'use strict';
 module.exports = {};
 
-const sendMessage = (id, data) => {
-    const { ipcMain } = require('electron');
-    ipcMain.send(`notion-enhancer:${id}`, data);
-  },
-  onMessage = (id, callback) => {
-    const { ipcMain } = require('electron');
-    ipcMain.on(`notion-enhancer:${id}`, callback);
-  };
+const onMessage = (id, callback) => {
+  const { ipcMain } = require('electron');
+  ipcMain.on(`notion-enhancer:${id}`, callback);
+};
 
 let enhancerMenu;
 module.exports.focusMenu = async () => {
   if (enhancerMenu) return enhancerMenu.show();
 
   const { fs } = require('notion-enhancer/api/index.cjs'),
-    { session, BrowserWindow } = require('electron'),
+    { app, session, BrowserWindow } = require('electron'),
     windowState = require('electron-window-state')({
       file: 'enhancer-menu-window-state.json',
       defaultWidth: 1250,
@@ -48,12 +44,23 @@ module.exports.focusMenu = async () => {
   enhancerMenu.loadURL(fs.localPath('repo/menu/menu.html'));
   windowState.manage(enhancerMenu);
 
+  let appQuit = false;
+  app.once('before-quit', () => {
+    appQuit = true;
+  });
+
+  const trayID = 'f96f4a73-21af-4e3f-a68f-ab4976b020da',
+    runInBackground =
+      (await registry.enabled(trayID)) &&
+      (await (await registry.db(trayID)).get(['run_in_background']));
   enhancerMenu.on('close', (e) => {
-    enhancerMenu = null;
+    const isLastWindow = BrowserWindow.getAllWindows().length === 1;
+    if (!appQuit && isLastWindow && runInBackground) {
+      enhancerMenu.hide();
+      e.preventDefault();
+    } else enhancerMenu = null;
   });
 };
-
-module.exports.isMenuOpen = () => !!enhancerMenu;
 
 module.exports.focusNotion = () => {
   const { env } = require('notion-enhancer/api/index.cjs'),
