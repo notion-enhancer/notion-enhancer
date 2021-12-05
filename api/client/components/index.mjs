@@ -14,11 +14,16 @@
 /**
  * add a tooltip to show extra information on hover
  * @param {HTMLElement} $ref - the element that will trigger the tooltip when hovered
- * @param {string|HTMLElement} $text - the markdown content of the tooltip
- * @param {number} [delay] - the amount of time the element needs to be hovered over
- * for the tooltip to be shown
+ * @param {string|HTMLElement} $content - markdown or element content of the tooltip
+ * @param {object=} [options] - configuration of how the tooltip should be displayed
+ * @param {number} [options.delay] - the amount of time in ms the element needs to be hovered over
+ * for the tooltip to be shown (default: 100)
+ * @param {string} [options.offsetDirection] - which side of the element the tooltip
+ * should be shown on: 'top', 'bottom', 'left' or 'right' (default: 'bottom')
+ * @param {number} [options.maxLines] - the max number of lines that the content may be wrapped
+ * to, used to position and size the tooltip correctly (default: 1)
  */
-export { setTooltip } from './tooltip.mjs';
+export { tooltip } from './tooltip.mjs';
 
 /**
  * generate an icon from the feather icons set

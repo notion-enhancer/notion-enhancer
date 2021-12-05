@@ -16,13 +16,14 @@
   line-height: 1.4;
   max-width: 20rem;
   overflow: hidden;
-  padding: 2px 8px 4px 8px;
+  padding: 4px 8px;
   position: absolute;
   z-index: 999999999999999999;
   pointer-events: none;
+  text-align: center;
 }
 #enhancer--tooltip p {
-  margin: 0.25rem 0;
+  margin: 0;
 }
 #enhancer--tooltip b,
 #enhancer--tooltip strong {

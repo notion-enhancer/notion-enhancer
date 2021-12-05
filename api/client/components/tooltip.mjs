@@ -15,38 +15,96 @@ import { fmt, web } from '../../index.mjs';
 
 const _$tooltip = web.html`<div id="enhancer--tooltip"></div>`;
 web.loadStylesheet('api/client/components/tooltip.css');
+web.render(document.body, _$tooltip);
+
+const countLines = ($el) =>
+    [...$el.getClientRects()].reduce(
+      (prev, val) => (prev.some((p) => p.y === val.y) ? prev : [...prev, val]),
+      []
+    ).length,
+  position = async ($ref, offsetDirection, maxLines) => {
+    _$tooltip.style.top = `0px`;
+    _$tooltip.style.left = `0px`;
+    const rect = $ref.getBoundingClientRect(),
+      { offsetWidth, offsetHeight } = _$tooltip,
+      pad = 6;
+    let x = rect.x,
+      y = Math.floor(rect.y);
+
+    if (['top', 'bottom'].includes(offsetDirection)) {
+      if (offsetDirection === 'top') y -= offsetHeight + pad;
+      if (offsetDirection === 'bottom') y += rect.height + pad;
+      x -= offsetWidth / 2 - rect.width / 2;
+      _$tooltip.style.left = `${x}px`;
+      _$tooltip.style.top = `${y}px`;
+      const testLines = () => countLines(_$tooltip.firstElementChild) > maxLines,
+        padEdgesX = testLines();
+      while (testLines()) {
+        _$tooltip.style.left = `${window.innerWidth - x > x ? x++ : x--}px`;
+      }
+      if (padEdgesX) {
+        x += window.innerWidth - x > x ? pad : -pad;
+        _$tooltip.style.left = `${x}px`;
+      }
+    }
+
+    if (['left', 'right'].includes(offsetDirection)) {
+      y -= offsetHeight / 2 - rect.height / 2;
+      if (offsetDirection === 'left') x -= offsetWidth + pad;
+      if (offsetDirection === 'right') x += rect.width + pad;
+      _$tooltip.style.left = `${x}px`;
+      _$tooltip.style.top = `${y}px`;
+    }
+
+    return true;
+  };
 
 /**
  * add a tooltip to show extra information on hover
  * @param {HTMLElement} $ref - the element that will trigger the tooltip when hovered
- * @param {string|HTMLElement} $text - the markdown content of the tooltip
- * @param {number} [delay] - the amount of time the element needs to be hovered over
- * for the tooltip to be shown
+ * @param {string|HTMLElement} $content - markdown or element content of the tooltip
+ * @param {object=} [options] - configuration of how the tooltip should be displayed
+ * @param {number} [options.delay] - the amount of time in ms the element needs to be hovered over
+ * for the tooltip to be shown (default: 100)
+ * @param {string} [options.offsetDirection] - which side of the element the tooltip
+ * should be shown on: 'top', 'bottom', 'left' or 'right' (default: 'bottom')
+ * @param {number} [options.maxLines] - the max number of lines that the content may be wrapped
+ * to, used to position and size the tooltip correctly (default: 1)
  */
-export const setTooltip = ($ref, $text, delay = 100) => {
-  web.render(document.body, _$tooltip);
-  if (!($text instanceof Element)) $text = web.html`${fmt.md.render($text)}`;
+export const tooltip = (
+  $ref,
+  $content,
+  { delay = 100, offsetDirection = 'bottom', maxLines = 1 } = {}
+) => {
+  if (!($content instanceof Element))
+    $content = web.html`<div style="display:inline">
+      ${$content
+        .split('\n')
+        .map((text) => fmt.md.renderInline(text))
+        .join('<br>')}
+    </div>`;
+
   let displayDelay;
-  $ref.addEventListener('mouseover', (event) => {
-    web.render(web.empty(_$tooltip), $text);
+  $ref.addEventListener('mouseover', async (event) => {
     if (!displayDelay) {
       displayDelay = setTimeout(async () => {
         if ($ref.matches(':hover')) {
-          _$tooltip.style.display = 'block';
-          _$tooltip.style.top = event.clientY - _$tooltip.clientHeight + 'px';
-          _$tooltip.style.left = event.clientX - _$tooltip.clientWidth + 'px';
-          await _$tooltip.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 65 }).finished;
+          if (_$tooltip.style.display !== 'block') {
+            _$tooltip.style.display = 'block';
+            web.render(web.empty(_$tooltip), $content);
+            position($ref, offsetDirection, maxLines);
+            await _$tooltip.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 65 })
+              .finished;
+          }
         }
         displayDelay = undefined;
       }, delay);
     }
   });
-  $ref.addEventListener('mousemove', (event) => {
-    _$tooltip.style.top = event.clientY - _$tooltip.clientHeight + 'px';
-    _$tooltip.style.left = event.clientX - _$tooltip.clientWidth + 'px';
-  });
+
   $ref.addEventListener('mouseout', async (event) => {
-    if (!$ref.matches(':hover')) {
+    displayDelay = undefined;
+    if (_$tooltip.style.display === 'block' && !$ref.matches(':hover')) {
       await _$tooltip.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 65 }).finished;
       _$tooltip.style.display = '';
     }
