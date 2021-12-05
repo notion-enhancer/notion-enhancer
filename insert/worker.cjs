@@ -49,6 +49,11 @@ module.exports.focusMenu = async () => {
     appQuit = true;
   });
 
+  enhancerMenu.webContents.on('new-window', (e, url) => {
+    e.preventDefault();
+    require('electron').shell.openExternal(url);
+  });
+
   const trayID = 'f96f4a73-21af-4e3f-a68f-ab4976b020da',
     runInBackground =
       (await registry.enabled(trayID)) &&
@@ -67,7 +72,7 @@ module.exports.focusNotion = () => {
     { BrowserWindow } = require('electron'),
     { createWindow } = env.notionRequire('main/createWindow.js');
   let window = BrowserWindow.getAllWindows().find((win) => win.id !== enhancerMenu.id);
-  if (!window) window = createWindow();
+  if (!window) window = createWindow('', null, true);
   window.show();
 };
 
