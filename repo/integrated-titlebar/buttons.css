@@ -9,6 +9,7 @@
   display: block;
   -webkit-app-region: drag;
   background: var(--theme--bg_secondary);
+  height: var(--integrated_titlebar--dragarea-height);
 }
 
 .integrated_titlebar--buttons {
@@ -55,4 +56,18 @@
 #integrated_titlebar--close:active {
   background: var(--theme--accent_red);
   color: var(--theme--accent_red-text);
+}
+
+.notion-update-sidebar [style*='margin-top: 45px;'] {
+  margin-top: calc(45px + var(--integrated_titlebar--dragarea-height, 0px)) !important;
+}
+.notion-topbar {
+  height: calc(45px + var(--integrated_titlebar--dragarea-height, 0px)) !important;
+}
+.notion-frame {
+  height: calc(100vh - 45px - var(--integrated_titlebar--dragarea-height, 0px)) !important;
+}
+
+body > .body-container {
+  height: calc(100% - var(--integrated_titlebar--dragarea-height, 0px)) !important;
 }

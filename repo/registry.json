@@ -3,13 +3,15 @@
   "theming",
   "components",
 
+  "tweaks",
+  "font-chooser",
+
   "integrated-titlebar",
   "tray",
+  "tabs",
   "always-on-top",
   "view-scale",
 
-  "tweaks",
-  "font-chooser",
   "outliner",
   "scroll-to-top",
   "indentation-lines",

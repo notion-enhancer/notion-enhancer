@@ -6,7 +6,7 @@
 
 'use strict';
 
-export const createWindowButtons = async ({ web, components }, db) => {
+export const createWindowButtons = async ({ electron, web, components }, db) => {
   let minimizeIcon = (await db.get(['minimize_icon'])) || (await components.feather('minus')),
     maximizeIcon = (await db.get(['maximize_icon'])) || (await components.feather('maximize')),
     unmaximizeIcon =
@@ -48,21 +48,21 @@ export const createWindowButtons = async ({ web, components }, db) => {
       ${closeIcon}
     </button>`;
 
-  $minimize.addEventListener('click', () => __enhancerElectronApi.browser.minimize());
-  $maximize.addEventListener('click', () => __enhancerElectronApi.browser.maximize());
-  $unmaximize.addEventListener('click', () => __enhancerElectronApi.browser.unmaximize());
-  $close.addEventListener('click', () => __enhancerElectronApi.browser.close());
-  __enhancerElectronApi.browser.on('maximize', () => {
+  $minimize.addEventListener('click', () => electron.browser.minimize());
+  $maximize.addEventListener('click', () => electron.browser.maximize());
+  $unmaximize.addEventListener('click', () => electron.browser.unmaximize());
+  $close.addEventListener('click', () => electron.browser.close());
+  electron.browser.on('maximize', () => {
     $maximize.replaceWith($unmaximize);
   });
-  __enhancerElectronApi.browser.on('unmaximize', () => {
+  electron.browser.on('unmaximize', () => {
     $unmaximize.replaceWith($maximize);
   });
 
   web.render(
     $windowButtons,
     $minimize,
-    __enhancerElectronApi.browser.isMaximized() ? $unmaximize : $maximize,
+    electron.browser.isMaximized() ? $unmaximize : $maximize,
     $close
   );
   return $windowButtons;

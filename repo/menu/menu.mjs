@@ -13,7 +13,7 @@ import * as router from './router.mjs';
 import './styles.mjs';
 
 (async () => {
-  const { env, fs, storage, registry, web, components } = api;
+  const { env, fs, storage, electron, registry, web, components } = api;
 
   for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
     for (const sheet of mod.css?.menu || []) {
@@ -28,11 +28,14 @@ import './styles.mjs';
   if (errors.length) {
     console.log('[notion-enhancer] registry errors:');
     console.table(errors);
-    notifications.add({
+    const $errNotification = await notifications.add({
       icon: 'alert-circle',
       message: 'Failed to load mods (check console).',
       color: 'red',
     });
+    if (['win32', 'linux', 'darwin'].includes(env.name)) {
+      $errNotification.addEventListener('click', () => electron.browser.openDevTools());
+    }
   }
 
   const db = await registry.db('a6621988-551d-495a-97d8-3c568bca2e9e'),

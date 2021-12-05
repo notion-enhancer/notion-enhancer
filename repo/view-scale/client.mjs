@@ -5,16 +5,16 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-export default async function ({ web, components }, db) {
+export default async function ({ electron, web, components }, db) {
   let zoomFactor = (await db.get(['default_zoom'])) / 100,
     updateScale = () => {};
-  __enhancerElectronApi.webFrame.setZoomFactor(zoomFactor);
+  electron.webFrame.setZoomFactor(zoomFactor);
 
   const zoomOffset = (await db.get(['offset'])) / 100,
     zoomMin = 0.5,
     zoomMax = 2,
-    getZoomFactor = () => __enhancerElectronApi.webFrame.getZoomFactor(),
-    setZoomFactor = (zoomFactor) => __enhancerElectronApi.webFrame.setZoomFactor(zoomFactor),
+    getZoomFactor = () => electron.webFrame.getZoomFactor(),
+    setZoomFactor = (zoomFactor) => electron.webFrame.setZoomFactor(zoomFactor),
     zoomPlus = (multiplier = 1) => {
       zoomFactor = Math.min(getZoomFactor() + zoomOffset * multiplier, zoomMax);
       setZoomFactor(zoomFactor);
@@ -42,7 +42,8 @@ export default async function ({ web, components }, db) {
 
   const showVisualSlider = await db.get(['ui']);
   if (showVisualSlider) {
-    const topbarActionsSelector = '.notion-topbar-action-buttons';
+    const topbarActionsSelector =
+      '.notion-topbar-action-buttons > div[style="display: flex;"]';
     await web.whenReady([topbarActionsSelector]);
 
     const $topbarActions = document.querySelector(topbarActionsSelector),

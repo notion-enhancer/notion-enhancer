@@ -9,7 +9,7 @@
 import { createWindowButtons } from './buttons.mjs';
 
 export default async function (api, db) {
-  const { web } = api,
+  const { web, electron } = api,
     tilingMode = await db.get(['tiling']),
     dragareaHeight = await db.get(['dragarea_height']),
     sidebarSelector = '.notion-sidebar',
@@ -32,20 +32,23 @@ export default async function (api, db) {
           : '0px';
     if (newSidebarWidth !== sidebarWidth) {
       sidebarWidth = newSidebarWidth;
-      __enhancerElectronApi.sendMessageToHost('sidebar-width', sidebarWidth);
+      electron.sendMessageToHost('sidebar-width', sidebarWidth);
     }
     if (newPanelWidth !== panelWidth) {
       panelWidth = newPanelWidth;
-      __enhancerElectronApi.sendMessageToHost('panel-width', panelWidth);
+      electron.sendMessageToHost('panel-width', panelWidth);
     }
   };
   web.addDocumentObserver(updateDragareaOffsets);
 
   await web.whenReady([topbarSelector, topbarActionsSelector]);
   const $topbar = document.querySelector(topbarSelector),
-    $dragarea = web.html`<div class="integrated_titlebar--dragarea" style="height:${dragareaHeight}px"></div>`;
-  $topbar.style.height = `${45 + dragareaHeight}px`;
+    $dragarea = web.html`<div class="integrated_titlebar--dragarea"></div>`;
   $topbar.prepend($dragarea);
+  document.documentElement.style.setProperty(
+    '--integrated_titlebar--dragarea-height',
+    dragareaHeight + 'px'
+  );
 
   const $topbarActions = document.querySelector(topbarActionsSelector),
     $windowButtons = await createWindowButtons(api, db);

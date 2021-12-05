@@ -95,6 +95,13 @@
   background: transparent !important;
 }
 
+.notion-topbar-action-buttons {
+  width: auto !important;
+}
+.notion-cursor-listener > [style*='z-index: 102'] {
+  z-index: 99 !important;
+}
+
 /* typography */
 
 [style*='Segoe UI'] {

@@ -105,11 +105,3 @@ module.exports = async function ({ env, registry }, db, __exports, __eval) {
   ]);
   tray.setContextMenu(contextMenu);
 };
-
-// hide on open
-// maybe only do once to hide first window?
-
-// exports.createWindow = (...args) => {
-//   warmWindowState.warmedWindow = true;
-//   createWindow(...args);
-// };

@@ -32,11 +32,11 @@ export const createButton = async ({ web, components }, db) => {
 
   $pin.addEventListener('click', () => {
     $pin.replaceWith($unpin);
-    __enhancerElectronApi.browser.setAlwaysOnTop(true);
+    electron.browser.setAlwaysOnTop(true);
   });
   $unpin.addEventListener('click', () => {
     $unpin.replaceWith($pin);
-    __enhancerElectronApi.browser.setAlwaysOnTop(false);
+    electron.browser.setAlwaysOnTop(false);
   });
 
   return $button;

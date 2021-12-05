@@ -12,15 +12,16 @@ export default async function (api, db) {
   const { web } = api,
     tilingMode = await db.get(['tiling']),
     dragareaHeight = await db.get(['dragarea_height']),
-    bodyContainerSelector = '.body-container',
     sidebarSelector = '.sidebar';
   if (tilingMode) return;
 
-  await web.whenReady([bodyContainerSelector, sidebarSelector]);
-  const $bodyContainer = document.querySelector(bodyContainerSelector),
-    $dragarea = web.html`<div class="integrated_titlebar--dragarea" style="height:${dragareaHeight}px"></div>`;
+  await web.whenReady([sidebarSelector]);
+  const $dragarea = web.html`<div class="integrated_titlebar--dragarea"></div>`;
   document.body.prepend($dragarea);
-  $bodyContainer.style.height = `calc(100% - ${dragareaHeight}px)`;
+  document.documentElement.style.setProperty(
+    '--integrated_titlebar--dragarea-height',
+    dragareaHeight + 'px'
+  );
 
   const $sidebar = document.querySelector(sidebarSelector),
     $windowButtons = await createWindowButtons(api, db);
