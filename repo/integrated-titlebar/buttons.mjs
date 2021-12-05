@@ -47,6 +47,10 @@ export const createWindowButtons = async ({ electron, web, components }, db) => 
     $close = web.html`<button id="integrated_titlebar--close">
       ${closeIcon}
     </button>`;
+  components.tooltip($minimize, '**Minimize window**');
+  components.tooltip($maximize, '**Maximize window**');
+  components.tooltip($unmaximize, '**Unmaximize window**');
+  components.tooltip($close, '**Close window**');
 
   $minimize.addEventListener('click', () => electron.browser.minimize());
   $maximize.addEventListener('click', () => electron.browser.maximize());

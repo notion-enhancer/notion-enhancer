@@ -39,16 +39,17 @@ const customClasses = {
   'body-container': apply`flex w-full h-full overflow-hidden`,
   'sidebar': apply`h-full w-96 max-w-3/7 flex-shrink-0 px-4 pt-3 pb-16 overflow-y-auto flex flex-col
     bg-notion-secondary border-l border-divider`,
-  'content-container': apply`h-full flex flex-col`,
-  'nav': apply`pr-4 pl-2 py-3 flex flex-wrap items-center border-b border-divider`,
-  'nav-notion': apply`flex items-center font-semibold text-xl cursor-pointer select-none mr-4
-      ml-4 my-4 w-full lg:w-auto`,
-  'nav-notion-icon': apply`h-6 w-6 mr-3`,
-  'nav-item': apply`ml-4 px-3 py-2 rounded-md text-sm font-medium hover:bg-interactive-hover focus:bg-interactive-active
-    mb-2 lg:mb-0`,
-  'nav-item-selected': apply`ml-4 px-3 py-2 rounded-md text-sm font-medium ring-1 ring-divider bg-notion-secondary
-    mb-2 lg:mb-0`,
-  'nav-changelog': apply`lg:ml-auto focus:outline-none`,
+  'content-container': apply`h-full w-full flex flex-col`,
+  'nav': apply`px-4 mx-2.5 py-1 flex flex-wrap items-center border-b border-divider
+    justify-center xl:justify-start`,
+  'nav-notion': apply`flex items-center font-semibold text-xl cursor-pointer select-none my-4
+    w-full justify-center xl:(mr-4 w-auto justify-start)`,
+  'nav-notion-icon': apply`h-6 w-6 mr-2.5`,
+  'nav-item': apply`mr-2 px-3 py-2 rounded-md text-sm font-medium
+    hover:bg-interactive-hover focus:bg-interactive-active mb-2 xl:(mt-1 mb-0)`,
+  'nav-item-selected': apply`nav-item ring-1 ring-divider bg-notion-secondary
+    hover:bg-notion-secondary focus:bg-notion-secondary`,
+  'nav-changelog': apply`xl:ml-auto focus:outline-none`,
   'nav-changelog-icon': apply`w-4 h-4`,
   'main': apply`transition px-4 py-3 overflow-y-auto flex-grow`,
   'main-message': apply`mx-2.5 my-2.5 px-px text-sm text-foreground-secondary text-justify`,

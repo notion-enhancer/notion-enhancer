@@ -22,14 +22,17 @@
 }
 .global_block_links--topbar_copy > svg {
   display: block;
-  margin-right: 6px;
   height: 16px;
   width: 16px;
   fill: var(--theme--icon_secondary);
 }
 .global_block_links--topbar_copy > span {
+  margin-left: 2px;
   opacity: 1;
   transition: opacity 0.4s ease;
+}
+.global_block_links--topbar_copy > svg + span {
+  margin-left: 6px;
 }
 
 .global_block_links--block_copy {

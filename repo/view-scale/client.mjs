@@ -56,6 +56,8 @@ export default async function ({ electron, web, components }, db) {
       $scaleMinus = web.html`<button class="view_scale--button">
         ${await components.feather('zoom-out')}
       </button>`;
+    components.tooltip($scalePlus, '**Zoom into the window**');
+    components.tooltip($scaleMinus, '**Zoom out of the window**');
     updateScale = () => {
       if (getZoomFactor() !== zoomFactor) zoomFactor = getZoomFactor();
       $scaleSlider.value = Math.round(zoomFactor * 100);

@@ -28,6 +28,8 @@ export const createButton = async ({ web, components }, db) => {
   const $button = web.html`<div class="always_on_top--button"></div>`,
     $pin = web.html`<button id="always_on_top--pin">${pinIcon}</button>`,
     $unpin = web.html`<button id="always_on_top--unpin">${unpinIcon}</button>`;
+  components.tooltip($pin, '**Pin window to top**');
+  components.tooltip($unpin, '**Unpin window from top**');
   web.render($button, $pin);
 
   $pin.addEventListener('click', () => {

@@ -20,8 +20,14 @@
   },
   "options": [
     {
-      "key": "topbar_copy",
-      "label": "copy page links from the topbar",
+      "key": "topbar_copy_icon",
+      "label": "copy page links from the topbar (icon)",
+      "type": "toggle",
+      "value": true
+    },
+    {
+      "key": "topbar_copy_text",
+      "label": "copy page links from the topbar (text)",
       "type": "toggle",
       "value": true
     }

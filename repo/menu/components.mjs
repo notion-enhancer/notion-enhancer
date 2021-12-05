@@ -24,9 +24,15 @@ export const modComponents = {
       tags.map((tag) => `#${web.escape(tag)}`).join(' ')
     );
   },
-  description: (description) => web.html`<p class="mod-description markdown-inline">
-    ${fmt.md.renderInline(description)}
-  </p>`,
+  description: (description) => {
+    const $description = web.html`<p class="mod-description markdown-inline">
+      ${fmt.md.renderInline(description)}
+    </p>`;
+    $description.querySelectorAll('a').forEach((a) => {
+      a.target = '_blank';
+    });
+    return $description;
+  },
   authors: (authors) => {
     const author = (author) => web.html`<a
       class="mod-author"
@@ -58,12 +64,12 @@ export const options = {
     const profileDB = await registry.profileDB(),
       checked = await profileDB.get([mod.id, opt.key], opt.value),
       $toggle = modComponents.toggle(opt.label, checked),
-      $tooltip = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
+      $tooltipIcon = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
       $label = $toggle.children[0],
       $input = $toggle.children[1];
     if (opt.tooltip) {
-      $label.prepend($tooltip);
-      components.setTooltip($tooltip, opt.tooltip);
+      $label.prepend($tooltipIcon);
+      components.tooltip($tooltipIcon, opt.tooltip, { offsetDirection: 'left', maxLines: 3 });
     }
     $input.addEventListener('change', async (event) => {
       await profileDB.set([mod.id, opt.key], $input.checked);
@@ -75,10 +81,10 @@ export const options = {
   select: async (mod, opt) => {
     const profileDB = await registry.profileDB(),
       value = await profileDB.get([mod.id, opt.key], opt.values[0]),
-      $tooltip = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
+      $tooltipIcon = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,
-        web.render(web.html`<p></p>`, opt.tooltip ? $tooltip : '', opt.label)
+        web.render(web.html`<p></p>`, opt.tooltip ? $tooltipIcon : '', opt.label)
       ),
       $options = opt.values.map(
         (option) => web.raw`<option
@@ -91,7 +97,8 @@ export const options = {
         ${$options.join('')}
       </select>`,
       $icon = web.html`${await components.feather('chevron-down', { class: 'input-icon' })}`;
-    if (opt.tooltip) components.setTooltip($tooltip, opt.tooltip);
+    if (opt.tooltip)
+      components.tooltip($tooltipIcon, opt.tooltip, { offsetDirection: 'left', maxLines: 3 });
     $select.addEventListener('change', async (event) => {
       await profileDB.set([mod.id, opt.key], $select.value);
       notifications.onChange();
@@ -102,14 +109,15 @@ export const options = {
   text: async (mod, opt) => {
     const profileDB = await registry.profileDB(),
       value = await profileDB.get([mod.id, opt.key], opt.value),
-      $tooltip = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
+      $tooltipIcon = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,
-        web.render(web.html`<p></p>`, opt.tooltip ? $tooltip : '', opt.label)
+        web.render(web.html`<p></p>`, opt.tooltip ? $tooltipIcon : '', opt.label)
       ),
       $input = web.html`<input type="text" class="input" value="${web.escape(value)}">`,
       $icon = web.html`${await components.feather('type', { class: 'input-icon' })}`;
-    if (opt.tooltip) components.setTooltip($tooltip, opt.tooltip);
+    if (opt.tooltip)
+      components.tooltip($tooltipIcon, opt.tooltip, { offsetDirection: 'left', maxLines: 3 });
     $input.addEventListener('change', async (event) => {
       await profileDB.set([mod.id, opt.key], $input.value);
       notifications.onChange();
@@ -120,14 +128,15 @@ export const options = {
   number: async (mod, opt) => {
     const profileDB = await registry.profileDB(),
       value = await profileDB.get([mod.id, opt.key], opt.value),
-      $tooltip = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
+      $tooltipIcon = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,
-        web.render(web.html`<p></p>`, opt.tooltip ? $tooltip : '', opt.label)
+        web.render(web.html`<p></p>`, opt.tooltip ? $tooltipIcon : '', opt.label)
       ),
       $input = web.html`<input type="number" class="input" value="${value}">`,
       $icon = web.html`${await components.feather('hash', { class: 'input-icon' })}`;
-    if (opt.tooltip) components.setTooltip($tooltip, opt.tooltip);
+    if (opt.tooltip)
+      components.tooltip($tooltipIcon, opt.tooltip, { offsetDirection: 'left', maxLines: 3 });
     $input.addEventListener('change', async (event) => {
       await profileDB.set([mod.id, opt.key], $input.value);
       notifications.onChange();
@@ -138,10 +147,10 @@ export const options = {
   color: async (mod, opt) => {
     const profileDB = await registry.profileDB(),
       value = await profileDB.get([mod.id, opt.key], opt.value),
-      $tooltip = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
+      $tooltipIcon = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,
-        web.render(web.html`<p></p>`, opt.tooltip ? $tooltip : '', opt.label)
+        web.render(web.html`<p></p>`, opt.tooltip ? $tooltipIcon : '', opt.label)
       ),
       $input = web.html`<input type="text" class="input">`,
       $icon = web.html`${await components.feather('droplet', { class: 'input-icon' })}`,
@@ -166,7 +175,8 @@ export const options = {
         onInput: paint,
         onChange: paint,
       });
-    if (opt.tooltip) components.setTooltip($tooltip, opt.tooltip);
+    if (opt.tooltip)
+      components.tooltip($tooltipIcon, opt.tooltip, { offsetDirection: 'left', maxLines: 3 });
     $input.addEventListener('change', async (event) => {
       await profileDB.set([mod.id, opt.key], $input.value);
       notifications.onChange();
@@ -178,10 +188,10 @@ export const options = {
   file: async (mod, opt) => {
     const profileDB = await registry.profileDB(),
       { filename } = (await profileDB.get([mod.id, opt.key], {})) || {},
-      $tooltip = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
+      $tooltipIcon = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,
-        web.render(web.html`<p></p>`, opt.tooltip ? $tooltip : '', opt.label)
+        web.render(web.html`<p></p>`, opt.tooltip ? $tooltipIcon : '', opt.label)
       ),
       $pseudo = web.html`<span class="input"><span class="input-placeholder">Upload file...</span></span>`,
       $input = web.html`<input type="file" class="hidden" accept=${web.escape(
@@ -190,7 +200,8 @@ export const options = {
       $icon = web.html`${await components.feather('file', { class: 'input-icon' })}`,
       $filename = web.html`<span>${web.escape(filename || 'none')}</span>`,
       $latest = web.render(web.html`<button class="file-latest">Latest: </button>`, $filename);
-    if (opt.tooltip) components.setTooltip($tooltip, opt.tooltip);
+    if (opt.tooltip)
+      components.tooltip($tooltipIcon, opt.tooltip, { offsetDirection: 'left', maxLines: 3 });
     $input.addEventListener('change', (event) => {
       const file = event.target.files[0],
         reader = new FileReader();
@@ -218,14 +229,15 @@ export const options = {
   hotkey: async (mod, opt) => {
     const profileDB = await registry.profileDB(),
       value = await profileDB.get([mod.id, opt.key], opt.value),
-      $tooltip = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
+      $tooltipIcon = web.html`${await components.feather('info', { class: 'input-tooltip' })}`,
       $label = web.render(
         web.html`<label class="input-label"></label>`,
-        web.render(web.html`<p></p>`, opt.tooltip ? $tooltip : '', opt.label)
+        web.render(web.html`<p></p>`, opt.tooltip ? $tooltipIcon : '', opt.label)
       ),
       $input = web.html`<input type="text" class="input" value="${web.escape(value)}">`,
       $icon = web.html`${await components.feather('command', { class: 'input-icon' })}`;
-    if (opt.tooltip) components.setTooltip($tooltip, opt.tooltip);
+    if (opt.tooltip)
+      components.tooltip($tooltipIcon, opt.tooltip, { offsetDirection: 'left', maxLines: 3 });
     $input.addEventListener('keydown', async (event) => {
       event.preventDefault();
       const pressed = [],

@@ -11,7 +11,6 @@ export default async function ({ web, components }, db) {
     tableCellSelector = '.notion-table-view-header-cell',
     tableTitleSelector = `${tableCellSelector} div[style*="text-overflow"]`,
     timelineItemSelector = '.notion-timeline-item',
-    svgIcon = await components.feather('eye'),
     $elements = [];
 
   const addTooltips = () => {
@@ -20,10 +19,9 @@ export default async function ({ web, components }, db) {
         if ($elements.includes($tableTitle)) return;
 
         if ($tableTitle.scrollWidth > $tableTitle.clientWidth) {
-          components.setTooltip(
+          components.tooltip(
             $tableTitle.parentElement.parentElement.parentElement,
-            web.html`<b class="truncated_titles--tooltip">${svgIcon}
-              <span>${web.escape($tableTitle.innerText)}</span></b>`,
+            web.html`<span>${web.escape($tableTitle.innerText)}</span>`,
             750
           );
           $elements.push($tableTitle);

@@ -67,7 +67,7 @@ export default async function ({ web, fs, components, notion }, db) {
       $spinner.remove();
       if ($tooltip) {
         const $infoSvg = web.html`${await components.feather('info', { class: 'info' })}`;
-        components.setTooltip($infoSvg, $tooltip);
+        components.tooltip($infoSvg, $tooltip, { offsetDirection: 'right' });
         web.render($title, $infoSvg);
       }
     })();

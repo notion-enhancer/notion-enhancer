@@ -54,8 +54,8 @@ export default async function ({ web, components }, db) {
   $statList.querySelectorAll('.word-counter--stat').forEach(($stat) => {
     $stat.addEventListener('click', () => web.copyToClipboard($stat.innerText));
   });
-  components.setTooltip($readingTooltip, '**~ 275 wpm**');
-  components.setTooltip($speakingTooltip, '**~ 180 wpm**');
+  components.tooltip($readingTooltip, '**~ 275 wpm**', { offsetDirection: 'left' });
+  components.tooltip($speakingTooltip, '**~ 180 wpm**', { offsetDirection: 'left' });
 
   let viewFocused = false,
     $page;

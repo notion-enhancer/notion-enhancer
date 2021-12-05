@@ -357,6 +357,7 @@ import './styles.mjs';
     $changelogNavItem = web.html`<button class="nav-item nav-changelog">
     ${await components.feather('clock', { class: 'nav-changelog-icon' })}
   </button>`;
+  components.tooltip($changelogNavItem, '**Update changelog & welcome message**');
   $changelogNavItem.addEventListener('click', () => {
     $changelogModal.scrollTop = 0;
     $changelogModal.classList.add('modal-visible');
