@@ -1,5 +1,5 @@
-/*
- * notion-enhancer core: api
+/**
+ * notion-enhancer: api
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
@@ -11,16 +11,13 @@
  * @module notion-enhancer/api/web
  */
 
-import { fs } from '../index.mjs';
-import '../../dep/jscolor.min.js';
+import { fs } from './index.mjs';
 
-let _hotkeyEventListeners = [],
+let _hotkeyListenersActivated = false,
+  _hotkeyEventListeners = [],
   _documentObserver,
   _documentObserverListeners = [],
   _documentObserverEvents = [];
-
-/** color picker with alpha channel using https://jscolor.com/ */
-export const jscolor = JSColor;
 
 /**
  * wait until a page is loaded and ready for modification
@@ -133,14 +130,12 @@ export const empty = ($container) => {
  * @param {string} path - a url or within-the-enhancer filepath
  */
 export const loadStylesheet = (path) => {
-  render(
-    document.head,
-    html`<link
-      rel="stylesheet"
-      href="${path.startsWith('https://') ? path : fs.localPath(path)}"
-    />`
-  );
-  return true;
+  const $stylesheet = html`<link
+    rel="stylesheet"
+    href="${path.startsWith('https://') ? path : fs.localPath(path)}"
+  />`;
+  render(document.head, $stylesheet);
+  return $stylesheet;
 };
 
 /**
@@ -193,16 +188,6 @@ const triggerHotkeyListener = (event, hotkey) => {
   });
   if (pressed) hotkey.callback(event);
 };
-document.addEventListener('keyup', (event) => {
-  for (const hotkey of _hotkeyEventListeners.filter(({ keydown }) => !keydown)) {
-    triggerHotkeyListener(event, hotkey);
-  }
-});
-document.addEventListener('keydown', (event) => {
-  for (const hotkey of _hotkeyEventListeners.filter(({ keydown }) => keydown)) {
-    triggerHotkeyListener(event, hotkey);
-  }
-});
 
 /**
  * register a hotkey listener to the page
@@ -224,6 +209,20 @@ export const addHotkeyListener = (
 ) => {
   if (typeof keys === 'string') keys = keys.split('+');
   _hotkeyEventListeners.push({ keys, callback, listenInInput, keydown });
+
+  if (!_hotkeyListenersActivated) {
+    _hotkeyListenersActivated = true;
+    document.addEventListener('keyup', (event) => {
+      for (const hotkey of _hotkeyEventListeners.filter(({ keydown }) => !keydown)) {
+        triggerHotkeyListener(event, hotkey);
+      }
+    });
+    document.addEventListener('keydown', (event) => {
+      for (const hotkey of _hotkeyEventListeners.filter(({ keydown }) => keydown)) {
+        triggerHotkeyListener(event, hotkey);
+      }
+    });
+  }
 };
 /**
  * remove a listener added with web.addHotkeyListener

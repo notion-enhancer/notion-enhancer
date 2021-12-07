@@ -1,5 +1,5 @@
-/*
- * notion-enhancer core: api
+/**
+ * notion-enhancer: api
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
@@ -11,7 +11,7 @@
  * @module notion-enhancer/api/notion
  */
 
-import { web, fs, fmt } from '../index.mjs';
+import { web, fs, fmt } from './index.mjs';
 
 const standardiseUUID = (uuid) => {
   if (uuid?.length === 32 && !uuid.includes('-')) {

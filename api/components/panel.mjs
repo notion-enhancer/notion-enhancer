@@ -1,5 +1,5 @@
-/*
- * notion-enhancer core: components
+/**
+ * notion-enhancer: components
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (c) 2021 CloudHill <rl.cloudhill@gmail.com> (https://github.com/CloudHill)
  * (https://notion-enhancer.github.io/) under the MIT license
@@ -12,37 +12,43 @@
  * @module notion-enhancer/api/components/side-panel
  */
 
-import { fmt, web, components, registry } from '../../index.mjs';
-
-web.loadStylesheet('api/client/components/panel.css');
+import { web, components, registry } from '../index.mjs';
 
 const _views = [],
   svgExpand = web.raw`<svg viewBox="-1 -1 9 11">
-  <path d="M 3.5 0L 3.98809 -0.569442L 3.5 -0.987808L 3.01191 -0.569442L 3.5 0ZM 3.5 9L 3.01191
-    9.56944L 3.5 9.98781L 3.98809 9.56944L 3.5 9ZM 0.488094 3.56944L 3.98809 0.569442L 3.01191
-    -0.569442L -0.488094 2.43056L 0.488094 3.56944ZM 3.01191 0.569442L 6.51191 3.56944L 7.48809
-    2.43056L 3.98809 -0.569442L 3.01191 0.569442ZM -0.488094 6.56944L 3.01191 9.56944L 3.98809
-    8.43056L 0.488094 5.43056L -0.488094 6.56944ZM 3.98809 9.56944L 7.48809 6.56944L 6.51191
-    5.43056L 3.01191 8.43056L 3.98809 9.56944Z"></path>
-</svg>`;
+    <path d="M 3.5 0L 3.98809 -0.569442L 3.5 -0.987808L 3.01191 -0.569442L 3.5 0ZM 3.5 9L 3.01191
+      9.56944L 3.5 9.98781L 3.98809 9.56944L 3.5 9ZM 0.488094 3.56944L 3.98809 0.569442L 3.01191
+      -0.569442L -0.488094 2.43056L 0.488094 3.56944ZM 3.01191 0.569442L 6.51191 3.56944L 7.48809
+      2.43056L 3.98809 -0.569442L 3.01191 0.569442ZM -0.488094 6.56944L 3.01191 9.56944L 3.98809
+      8.43056L 0.488094 5.43056L -0.488094 6.56944ZM 3.98809 9.56944L 7.48809 6.56944L 6.51191
+      5.43056L 3.01191 8.43056L 3.98809 9.56944Z"></path>
+  </svg>`;
 
-let db,
+let $stylesheet,
+  db,
   // open + close
   $notionFrame,
   $notionRightSidebar,
+  $panel,
+  $hoverTrigger,
   // resize
+  $resizeHandle,
   dragStartX,
   dragStartWidth,
   dragEventsFired,
   panelWidth,
   // render content
   $notionApp,
-  $pinnedToggle;
+  $pinnedToggle,
+  $panelTitle,
+  $header,
+  $panelContent,
+  $switcher,
+  $switcherTrigger,
+  $switcherOverlayContainer;
 
 // open + close
-const $panel = web.html`<div id="enhancer--panel"></div>`,
-  $hoverTrigger = web.html`<div id="enhancer--panel-hover-trigger"></div>`,
-  panelPinnedAttr = 'data-enhancer-panel-pinned',
+const panelPinnedAttr = 'data-enhancer-panel-pinned',
   isPinned = () => $panel.hasAttribute(panelPinnedAttr),
   togglePanel = () => {
     const $elems = [$notionFrame, $notionRightSidebar, $hoverTrigger, $panel].filter(
@@ -57,7 +63,6 @@ const $panel = web.html`<div id="enhancer--panel"></div>`,
     db.set(['panel.pinned'], isPinned());
   },
   // resize
-  $resizeHandle = web.html`<div id="enhancer--panel-resize"><div></div></div>`,
   updateWidth = async () => {
     document.documentElement.style.setProperty('--component--panel-width', panelWidth + 'px');
     db.set(['panel.width'], panelWidth);
@@ -91,14 +96,6 @@ const $panel = web.html`<div id="enhancer--panel"></div>`,
     document.body.addEventListener('mouseup', resizeEnd);
   },
   // render content
-  $panelTitle = web.html`<div id="enhancer--panel-header-title"></div>`,
-  $header = web.render(web.html`<div id="enhancer--panel-header"></div>`, $panelTitle),
-  $panelContent = web.html`<div id="enhancer--panel-content"></div>`,
-  $switcher = web.html`<div id="enhancer--panel-switcher"></div>`,
-  $switcherTrigger = web.html`<div id="enhancer--panel-header-switcher" tabindex="0">
-    ${svgExpand}
-  </div>`,
-  $switcherOverlayContainer = web.html`<div id="enhancer--panel-switcher-overlay-container"></div>`,
   isSwitcherOpen = () => document.body.contains($switcher),
   openSwitcher = () => {
     if (!isPinned()) return togglePanel();
@@ -186,6 +183,18 @@ async function createPanel() {
   await web.whenReady(['.notion-frame']);
   $notionFrame = document.querySelector('.notion-frame');
 
+  $panel = web.html`<div id="enhancer--panel"></div>`;
+  $hoverTrigger = web.html`<div id="enhancer--panel-hover-trigger"></div>`;
+  $resizeHandle = web.html`<div id="enhancer--panel-resize"><div></div></div>`;
+  $panelTitle = web.html`<div id="enhancer--panel-header-title"></div>`;
+  $header = web.render(web.html`<div id="enhancer--panel-header"></div>`, $panelTitle);
+  $panelContent = web.html`<div id="enhancer--panel-content"></div>`;
+  $switcher = web.html`<div id="enhancer--panel-switcher"></div>`;
+  $switcherTrigger = web.html`<div id="enhancer--panel-header-switcher" tabindex="0">
+    ${svgExpand}
+  </div>`;
+  $switcherOverlayContainer = web.html`<div id="enhancer--panel-switcher-overlay-container"></div>`;
+
   const notionRightSidebarSelector = '.notion-cursor-listener > div[style*="flex-end"]',
     detectRightSidebar = () => {
       if (!document.contains($notionRightSidebar)) {
@@ -256,6 +265,10 @@ export const addPanelView = async ({
   onFocus = () => {},
   onBlur = () => {},
 }) => {
+  if (!$stylesheet) {
+    $stylesheet = web.loadStylesheet('api/components/panel.css');
+  }
+
   if (!db) db = await registry.db('36a2ffc9-27ff-480e-84a7-c7700a7d232d');
   if (!$pinnedToggle) {
     $pinnedToggle = web.html`<div id="enhancer--panel-header-toggle" tabindex="0"><div>

@@ -1,5 +1,5 @@
-/*
- * notion-enhancer core: components
+/**
+ * notion-enhancer: components
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
@@ -11,11 +11,9 @@
  * @module notion-enhancer/api/components/tooltip
  */
 
-import { fmt, web } from '../../index.mjs';
+import { fs, web } from '../index.mjs';
 
-const _$tooltip = web.html`<div id="enhancer--tooltip"></div>`;
-web.loadStylesheet('api/client/components/tooltip.css');
-web.render(document.body, _$tooltip);
+let $stylesheet, _$tooltip;
 
 const countLines = ($el) =>
     [...$el.getClientRects()].reduce(
@@ -71,16 +69,25 @@ const countLines = ($el) =>
  * @param {number} [options.maxLines] - the max number of lines that the content may be wrapped
  * to, used to position and size the tooltip correctly (default: 1)
  */
-export const tooltip = (
+export const addTooltip = async (
   $ref,
   $content,
   { delay = 100, offsetDirection = 'bottom', maxLines = 1 } = {}
 ) => {
+  if (!$stylesheet) {
+    $stylesheet = web.loadStylesheet('api/components/tooltip.css');
+    _$tooltip = web.html`<div id="enhancer--tooltip"></div>`;
+    web.render(document.body, _$tooltip);
+  }
+
+  if (!globalThis.markdownit) await import(fs.localPath('dep/markdown-it.min.js'));
+  const md = markdownit({ linkify: true });
+
   if (!($content instanceof Element))
     $content = web.html`<div style="display:inline">
       ${$content
         .split('\n')
-        .map((text) => fmt.md.renderInline(text))
+        .map((text) => md.renderInline(text))
         .join('<br>')}
     </div>`;
 

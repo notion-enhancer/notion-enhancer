@@ -1,5 +1,5 @@
-/*
- * notion-enhancer core: components
+/**
+ * notion-enhancer: components
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
@@ -23,7 +23,7 @@
  * @param {number} [options.maxLines] - the max number of lines that the content may be wrapped
  * to, used to position and size the tooltip correctly (default: 1)
  */
-export { tooltip } from './tooltip.mjs';
+export { addTooltip } from './tooltip.mjs';
 
 /**
  * generate an icon from the feather icons set

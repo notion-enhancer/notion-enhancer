@@ -1,5 +1,5 @@
-/*
- * notion-enhancer core: components
+/**
+ * notion-enhancer: components
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
@@ -11,7 +11,7 @@
  * @module notion-enhancer/api/components/feather
  */
 
-import { fs, web } from '../../index.mjs';
+import { fs, web } from '../index.mjs';
 
 let _$iconSheet;
 

@@ -1,10 +1,12 @@
-/*
- * notion-enhancer core: api
+/**
+ * notion-enhancer: api
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
 'use strict';
+
+import { fmt, registry } from './index.mjs';
 
 const check = async (
   mod,
@@ -19,19 +21,18 @@ const check = async (
     optional = false,
   } = {}
 ) => {
-  const { is } = require('notion-enhancer/api/node/fmt.cjs');
   let test;
   for (const type of Array.isArray(types) ? [types] : types.split('|')) {
     if (type === 'file') {
       test =
         value && !value.startsWith('http')
-          ? await is(`repo/${mod._dir}/${value}`, type, { extension })
+          ? await fmt.is(`repo/${mod._dir}/${value}`, type, { extension })
           : false;
-    } else test = await is(value, type, { extension });
+    } else test = await fmt.is(value, type, { extension });
     if (test) break;
   }
   if (!test) {
-    if (optional && (await is(value, 'undefined'))) return true;
+    if (optional && (await fmt.is(value, 'undefined'))) return true;
     if (error) mod._err(error);
     return false;
   }
@@ -39,11 +40,12 @@ const check = async (
 };
 
 const validateEnvironments = async (mod) => {
-    const { supportedEnvs } = require('notion-enhancer/api/node/registry.cjs');
-    mod.environments = mod.environments ?? supportedEnvs;
+    mod.environments = mod.environments ?? registry.supportedEnvs;
     const isArray = await check(mod, 'environments', mod.environments, 'array');
     if (!isArray) return false;
-    return mod.environments.map((tag) => check(mod, 'environments.env', tag, supportedEnvs));
+    return mod.environments.map((tag) =>
+      check(mod, 'environments.env', tag, registry.supportedEnvs)
+    );
   },
   validateTags = async (mod) => {
     const isArray = await check(mod, 'tags', mod.tags, 'array');
@@ -134,18 +136,17 @@ const validateEnvironments = async (mod) => {
     return tests;
   },
   validateOptions = async (mod) => {
-    const { supportedEnvs, optionTypes } = require('notion-enhancer/api/node/registry.cjs'),
-      isArray = await check(mod, 'options', mod.options, 'array');
+    const isArray = await check(mod, 'options', mod.options, 'array');
     if (!isArray) return false;
     const tests = [];
     for (const option of mod.options) {
       const key = 'options.option',
-        optTypeValid = await check(mod, `${key}.type`, option.type, optionTypes);
+        optTypeValid = await check(mod, `${key}.type`, option.type, registry.optionTypes);
       if (!optTypeValid) {
         tests.push(false);
         continue;
       }
-      option.environments = option.environments ?? supportedEnvs;
+      option.environments = option.environments ?? registry.supportedEnvs;
       tests.push([
         check(mod, `${key}.key`, option.key, 'alphanumeric'),
         check(mod, `${key}.label`, option.label, 'string'),
@@ -155,7 +156,7 @@ const validateEnvironments = async (mod) => {
         check(mod, `${key}.environments`, option.environments, 'array').then((isArray) => {
           if (!isArray) return false;
           return option.environments.map((environment) =>
-            check(mod, `${key}.environments.env`, environment, supportedEnvs)
+            check(mod, `${key}.environments.env`, environment, registry.supportedEnvs)
           );
         }),
       ]);
@@ -202,7 +203,7 @@ const validateEnvironments = async (mod) => {
  * @param {object} mod - a mod's mod.json in object form
  * @returns {boolean} whether or not the mod has passed validation
  */
-module.exports.validate = async function (mod) {
+export async function validate(mod) {
   let conditions = [
     check(mod, 'name', mod.name, 'string'),
     check(mod, 'id', mod.id, 'uuid'),
@@ -220,4 +221,4 @@ module.exports.validate = async function (mod) {
     conditions = await Promise.all(conditions.flat(Infinity));
   } while (conditions.some((condition) => Array.isArray(condition)));
   return conditions.every((passed) => passed);
-};
+}

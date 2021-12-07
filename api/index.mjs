@@ -1,5 +1,5 @@
-/*
- * notion-enhancer core: api
+/**
+ * notion-enhancer: api
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
@@ -8,23 +8,26 @@
 
 /** @module notion-enhancer/api */
 
+// compiles to .cjs for use in electron:
+// npx -y esbuild insert/api/index.mjs --bundle --format=cjs --outfile=insert/api/index.cjs
+
 /** environment-specific methods and constants */
-export * as env from './client/env.mjs';
+export * as env from './env.mjs';
 /** environment-specific file reading */
-export * as fs from './client/fs.mjs';
+export * as fs from './fs.mjs';
 /** environment-specific data persistence */
-export * as storage from './client/storage.mjs';
+export * as storage from './storage.mjs';
 
 /** access to electron renderer apis */
-export * as electron from './client/electron.mjs';
+export * as electron from './electron.mjs';
 
 /** a basic wrapper around notion's unofficial api */
-export * as notion from './client/notion.mjs';
+// export * as notion from './notion.mjs';
 /** helpers for formatting, validating and parsing values */
-export * as fmt from './client/fmt.mjs';
+export * as fmt from './fmt.mjs';
 /** interactions with the enhancer's repository of mods */
-export * as registry from './client/registry.mjs';
+export * as registry from './registry.mjs';
 /** helpers for manipulation of a webpage */
-export * as web from './client/web.mjs';
+export * as web from './web.mjs';
 /** shared notion-style elements */
-export * as components from './client/components/index.mjs';
+export * as components from './components/index.mjs';

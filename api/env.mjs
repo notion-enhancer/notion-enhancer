@@ -1,53 +1,57 @@
-/*
- * notion-enhancer core: api
+/**
+ * notion-enhancer: api
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
 'use strict';
-module.exports = {};
 
 /**
  * environment-specific methods and constants
  * @module notion-enhancer/api/env
  */
 
-const env = require('notion-enhancer/env/env.cjs');
+import * as env from '../env/env.mjs';
 
 /**
  * the environment/platform name code is currently being executed in
  * @constant
  * @type {string}
  */
-module.exports.name = env.name;
+export const name = env.name;
 
 /**
  * the current version of the enhancer
  * @constant
  * @type {string}
  */
-module.exports.version = env.version;
+export const version = env.version;
 
 /**
  * open the enhancer's menu
  * @type {function}
  */
-module.exports.focusMenu = env.focusMenu;
+export const focusMenu = env.focusMenu;
 
 /**
  * focus an active notion tab
  * @type {function}
  */
-module.exports.focusNotion = env.focusNotion;
+export const focusNotion = env.focusNotion;
 
 /**
  * reload all notion and enhancer menu tabs to apply changes
  * @type {function}
  */
-module.exports.reload = env.reload;
+export const reload = env.reload;
 
 /**
  * require() notion app files
- * @param {string} path - path from the root of notion/resources/app/ e.g. main/createWindow.js
+ * @param {string} path - within notion/resources/app/ e.g. main/createWindow.js
+ *
+ * @env win32
+ * @env linux
+ * @env darwin
+ * @runtime electron
  */
-module.exports.notionRequire = env.notionRequire;
+export const notionRequire = env.notionRequire;
