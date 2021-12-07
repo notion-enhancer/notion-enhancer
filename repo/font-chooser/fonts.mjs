@@ -1,4 +1,4 @@
-/*
+/**
  * notion-enhancer: font chooser
  * (c) 2021 TorchAtlas (https://bit.ly/torchatlas/)
  * (c) 2021 admiraldus (https://github.com/admiraldus

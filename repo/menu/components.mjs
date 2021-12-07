@@ -1,5 +1,5 @@
-/*
- * notion-enhancer core: menu
+/**
+ * notion-enhancer: menu
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
@@ -8,6 +8,10 @@
 
 import { fmt, web, registry, components } from '../../api/index.mjs';
 import { notifications } from './notifications.mjs';
+import '../../dep/jscolor.min.js';
+
+import '../../dep/markdown-it.min.js';
+const md = markdownit({ linkify: true });
 
 export const modComponents = {
   preview: (url) => web.html`<img
@@ -26,7 +30,7 @@ export const modComponents = {
   },
   description: (description) => {
     const $description = web.html`<p class="mod-description markdown-inline">
-      ${fmt.md.renderInline(description)}
+      ${md.renderInline(description)}
     </p>`;
     $description.querySelectorAll('a').forEach((a) => {
       a.target = '_blank';
@@ -69,7 +73,10 @@ export const options = {
       $input = $toggle.children[1];
     if (opt.tooltip) {
       $label.prepend($tooltipIcon);
-      components.tooltip($tooltipIcon, opt.tooltip, { offsetDirection: 'left', maxLines: 3 });
+      components.addTooltip($tooltipIcon, opt.tooltip, {
+        offsetDirection: 'left',
+        maxLines: 3,
+      });
     }
     $input.addEventListener('change', async (event) => {
       await profileDB.set([mod.id, opt.key], $input.checked);
@@ -98,7 +105,10 @@ export const options = {
       </select>`,
       $icon = web.html`${await components.feather('chevron-down', { class: 'input-icon' })}`;
     if (opt.tooltip)
-      components.tooltip($tooltipIcon, opt.tooltip, { offsetDirection: 'left', maxLines: 3 });
+      components.addTooltip($tooltipIcon, opt.tooltip, {
+        offsetDirection: 'left',
+        maxLines: 3,
+      });
     $select.addEventListener('change', async (event) => {
       await profileDB.set([mod.id, opt.key], $select.value);
       notifications.onChange();
@@ -117,7 +127,10 @@ export const options = {
       $input = web.html`<input type="text" class="input" value="${web.escape(value)}">`,
       $icon = web.html`${await components.feather('type', { class: 'input-icon' })}`;
     if (opt.tooltip)
-      components.tooltip($tooltipIcon, opt.tooltip, { offsetDirection: 'left', maxLines: 3 });
+      components.addTooltip($tooltipIcon, opt.tooltip, {
+        offsetDirection: 'left',
+        maxLines: 3,
+      });
     $input.addEventListener('change', async (event) => {
       await profileDB.set([mod.id, opt.key], $input.value);
       notifications.onChange();
@@ -136,7 +149,10 @@ export const options = {
       $input = web.html`<input type="number" class="input" value="${value}">`,
       $icon = web.html`${await components.feather('hash', { class: 'input-icon' })}`;
     if (opt.tooltip)
-      components.tooltip($tooltipIcon, opt.tooltip, { offsetDirection: 'left', maxLines: 3 });
+      components.addTooltip($tooltipIcon, opt.tooltip, {
+        offsetDirection: 'left',
+        maxLines: 3,
+      });
     $input.addEventListener('change', async (event) => {
       await profileDB.set([mod.id, opt.key], $input.value);
       notifications.onChange();
@@ -164,7 +180,7 @@ export const options = {
         $input.style.color = fmt.rgbContrast(r, g, b);
         $input.style.padding = '';
       },
-      $picker = new web.jscolor($input, {
+      $picker = new JSColor($input, {
         value,
         format: 'rgba',
         previewSize: 0,
@@ -176,7 +192,10 @@ export const options = {
         onChange: paint,
       });
     if (opt.tooltip)
-      components.tooltip($tooltipIcon, opt.tooltip, { offsetDirection: 'left', maxLines: 3 });
+      components.addTooltip($tooltipIcon, opt.tooltip, {
+        offsetDirection: 'left',
+        maxLines: 3,
+      });
     $input.addEventListener('change', async (event) => {
       await profileDB.set([mod.id, opt.key], $input.value);
       notifications.onChange();
@@ -201,7 +220,10 @@ export const options = {
       $filename = web.html`<span>${web.escape(filename || 'none')}</span>`,
       $latest = web.render(web.html`<button class="file-latest">Latest: </button>`, $filename);
     if (opt.tooltip)
-      components.tooltip($tooltipIcon, opt.tooltip, { offsetDirection: 'left', maxLines: 3 });
+      components.addTooltip($tooltipIcon, opt.tooltip, {
+        offsetDirection: 'left',
+        maxLines: 3,
+      });
     $input.addEventListener('change', (event) => {
       const file = event.target.files[0],
         reader = new FileReader();
@@ -237,7 +259,10 @@ export const options = {
       $input = web.html`<input type="text" class="input" value="${web.escape(value)}">`,
       $icon = web.html`${await components.feather('command', { class: 'input-icon' })}`;
     if (opt.tooltip)
-      components.tooltip($tooltipIcon, opt.tooltip, { offsetDirection: 'left', maxLines: 3 });
+      components.addTooltip($tooltipIcon, opt.tooltip, {
+        offsetDirection: 'left',
+        maxLines: 3,
+      });
     $input.addEventListener('keydown', async (event) => {
       event.preventDefault();
       const pressed = [],

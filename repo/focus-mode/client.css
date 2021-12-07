@@ -1,4 +1,4 @@
-/*
+/**
  * notion-enhancer: focus mode
  * (c) 2020 Arecsu
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)

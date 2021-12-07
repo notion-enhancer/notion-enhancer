@@ -1,5 +1,5 @@
-/*
- * notion-enhancer core: menu
+/**
+ * notion-enhancer: menu
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
@@ -16,9 +16,6 @@ import './styles.mjs';
   const { env, fs, storage, electron, registry, web, components } = api;
 
   for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
-    for (const sheet of mod.css?.menu || []) {
-      web.loadStylesheet(`repo/${mod._dir}/${sheet}`);
-    }
     for (let script of mod.js?.menu || []) {
       script = await import(fs.localPath(`repo/${mod._dir}/${script}`));
       script.default(api, await registry.db(mod.id));
@@ -43,13 +40,6 @@ import './styles.mjs';
     profileDB = await registry.profileDB();
 
   web.addHotkeyListener(await db.get(['hotkey']), env.focusNotion);
-
-  const loadTheme = async () => {
-    document.documentElement.className =
-      (await storage.get(['theme'], 'light')) === 'dark' ? 'dark' : '';
-  };
-  document.addEventListener('visibilitychange', loadTheme);
-  loadTheme();
 
   window.addEventListener('beforeunload', (event) => {
     // trigger input save
@@ -357,7 +347,7 @@ import './styles.mjs';
     $changelogNavItem = web.html`<button class="nav-item nav-changelog">
     ${await components.feather('clock', { class: 'nav-changelog-icon' })}
   </button>`;
-  components.tooltip($changelogNavItem, '**Update changelog & welcome message**');
+  components.addTooltip($changelogNavItem, '**Update changelog & welcome message**');
   $changelogNavItem.addEventListener('click', () => {
     $changelogModal.scrollTop = 0;
     $changelogModal.classList.add('modal-visible');

@@ -1,10 +1,10 @@
-/*
+/**
  * notion-enhancer: always on top
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-export const createButton = async ({ web, components }, db) => {
+export const createButton = async ({ electron, web, components }, db) => {
   let pinIcon =
       (await db.get(['pin_icon'])) ||
       `<svg viewBox="0 0 20 20" fill="currentColor">
@@ -28,8 +28,8 @@ export const createButton = async ({ web, components }, db) => {
   const $button = web.html`<div class="always_on_top--button"></div>`,
     $pin = web.html`<button id="always_on_top--pin">${pinIcon}</button>`,
     $unpin = web.html`<button id="always_on_top--unpin">${unpinIcon}</button>`;
-  components.tooltip($pin, '**Pin window to top**');
-  components.tooltip($unpin, '**Unpin window from top**');
+  components.addTooltip($pin, '**Pin window to top**');
+  components.addTooltip($unpin, '**Unpin window from top**');
   web.render($button, $pin);
 
   $pin.addEventListener('click', () => {

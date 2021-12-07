@@ -14,7 +14,9 @@
     }
   ],
   "css": {},
-  "js": {},
+  "js": {
+    "electron": [{ "source": "rendererIndex.cjs", "target": "renderer/index.js" }]
+  },
   "options": [
     {
       "key": "select_modifier",

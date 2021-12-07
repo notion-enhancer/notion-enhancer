@@ -1,4 +1,4 @@
-/*
+/**
  * notion-enhancer: tray
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
@@ -18,11 +18,11 @@ module.exports = async function ({ env }, db, __exports, __eval) {
   });
 
   const notionCreateWindow = __exports.createWindow;
-  __exports.createWindow = (relativeUrl = '', args, force = false) => {
+  __exports.createWindow = (relativeUrl = '', args) => {
     const windows = electron.BrowserWindow.getAllWindows();
     if (windows.length) windows.forEach((win) => win.show());
 
-    if (force || !windows.length) {
+    if (relativeUrl || !windows.length) {
       // hijack close event to hide instead
       const window = notionCreateWindow(relativeUrl, args);
       window.prependListener('close', (e) => {

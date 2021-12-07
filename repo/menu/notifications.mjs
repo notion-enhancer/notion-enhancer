@@ -1,11 +1,14 @@
-/*
- * notion-enhancer core: menu
+/**
+ * notion-enhancer: menu
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
 import { env, fs, storage, fmt, web, components } from '../../api/index.mjs';
 import { tw } from './styles.mjs';
+
+import '../../dep/markdown-it.min.js';
+const md = markdownit({ linkify: true });
 
 const notificationsURL = 'https://notion-enhancer.github.io/notifications.json';
 export const notifications = {
@@ -39,7 +42,7 @@ export const notifications = {
       web.render(
         $notification,
         web.html`<span class="notification-text markdown-inline">
-          ${fmt.md.renderInline(message)}
+          ${md.renderInline(message)}
         </span>`,
         web.html`${await components.feather(icon, { class: 'notification-icon' })}`
       )
@@ -158,7 +161,7 @@ export const $changelogModal = web.render(
           </ul>
           <h3 class="modal-content-heading">what's new</h3>
           <div class="markdown">
-            ${fmt.md.render(await fs.getText('repo/menu/whats-new.md'))}
+            ${md.render(await fs.getText('repo/menu/whats-new.md'))}
           </div>
         </div>
       </div>`,

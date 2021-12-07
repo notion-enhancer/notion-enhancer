@@ -1,5 +1,5 @@
-/*
- * notion-enhancer core: theming
+/**
+ * notion-enhancer: theming
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
@@ -164,6 +164,10 @@ body,
   box-shadow: var(--theme--ui_shadow, rgba(15, 15, 15, 0.05)) 0px 0px 0px 1px,
     var(--theme--ui_shadow, rgba(15, 15, 15, 0.1)) 0px 3px 6px,
     var(--theme--ui_shadow, rgba(15, 15, 15, 0.2)) 0px 9px 24px !important;
+}
+[style*='z-index:'][style*='box-shadow: '][style*='font-size: 12px;'][style*='min-height: 24px; overflow: hidden; pointer-events:']
+  > .notion-focusable {
+  color: var(--theme--text) !important;
 }
 
 .notion-calendar-view

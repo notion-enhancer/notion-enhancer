@@ -1,4 +1,4 @@
-/*
+/**
  * notion-enhancer: word counter
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
@@ -54,8 +54,8 @@ export default async function ({ web, components }, db) {
   $statList.querySelectorAll('.word-counter--stat').forEach(($stat) => {
     $stat.addEventListener('click', () => web.copyToClipboard($stat.innerText));
   });
-  components.tooltip($readingTooltip, '**~ 275 wpm**', { offsetDirection: 'left' });
-  components.tooltip($speakingTooltip, '**~ 180 wpm**', { offsetDirection: 'left' });
+  components.addTooltip($readingTooltip, '**~ 275 wpm**', { offsetDirection: 'left' });
+  components.addTooltip($speakingTooltip, '**~ 180 wpm**', { offsetDirection: 'left' });
 
   let viewFocused = false,
     $page;

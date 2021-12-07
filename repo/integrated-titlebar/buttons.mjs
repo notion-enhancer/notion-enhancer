@@ -1,4 +1,4 @@
-/*
+/**
  * notion-enhancer: integrated titlebar
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
@@ -47,10 +47,10 @@ export const createWindowButtons = async ({ electron, web, components }, db) => 
     $close = web.html`<button id="integrated_titlebar--close">
       ${closeIcon}
     </button>`;
-  components.tooltip($minimize, '**Minimize window**');
-  components.tooltip($maximize, '**Maximize window**');
-  components.tooltip($unmaximize, '**Unmaximize window**');
-  components.tooltip($close, '**Close window**');
+  components.addTooltip($minimize, '**Minimize window**');
+  components.addTooltip($maximize, '**Maximize window**');
+  components.addTooltip($unmaximize, '**Unmaximize window**');
+  components.addTooltip($close, '**Close window**');
 
   $minimize.addEventListener('click', () => electron.browser.minimize());
   $maximize.addEventListener('click', () => electron.browser.maximize());

@@ -1,4 +1,4 @@
-/*
+/**
  * notion-enhancer: global block links
  * (c) 2021 admiraldus (https://github.com/admiraldus)
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
@@ -44,7 +44,7 @@ export default async function ({ web, components, notion }, db) {
       $btns.forEach(($btn) => {
         if (!$btn.previousElementSibling?.classList?.contains?.(topbarCopyClass)) {
           const $copy = $topbarCopyTemplate.cloneNode(true);
-          components.tooltip($copy, '**Copy page link**');
+          components.addTooltip($copy, '**Copy page link**');
           $btn.before($copy);
 
           let resetButtonDelay;

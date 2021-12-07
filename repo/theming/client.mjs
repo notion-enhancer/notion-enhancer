@@ -1,12 +1,12 @@
-/*
- * notion-enhancer core: theming
+/**
+ * notion-enhancer: theming
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
 'use strict';
 
-export default async function ({ web, registry }, db) {
+export default async function ({ web, registry, storage, electron }, db) {
   const enabledThemes = await registry.list(
     async (m) => (await registry.enabled(m.id)) && m.tags.includes('theme')
   );
@@ -16,12 +16,19 @@ export default async function ({ web, registry }, db) {
     web.loadStylesheet('repo/theming/colors.css');
   }
 
-  const updateTheme = () =>
+  const updateTheme = () => {
+    storage
+      .set(['theme'], document.querySelector('.notion-dark-theme') ? 'dark' : 'light')
+      .then(() => {
+        electron.sendToHost('update-theme');
+      });
     document.documentElement.classList[
       document.body.classList.contains('dark') ? 'add' : 'remove'
     ]('dark');
-  updateTheme();
+  };
   web.addDocumentObserver((mutation) => {
-    if (mutation.target === document.body) updateTheme();
+    if (mutation.target === document.body && document.hasFocus()) updateTheme();
   });
+  if (document.hasFocus()) updateTheme();
+  document.addEventListener('visibilitychange', updateTheme);
 }

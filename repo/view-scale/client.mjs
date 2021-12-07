@@ -1,4 +1,4 @@
-/*
+/**
  * notion-enhancer: view scale
  * (c) 2021 SP12893678 (https://sp12893678.tk/)
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
@@ -56,8 +56,8 @@ export default async function ({ electron, web, components }, db) {
       $scaleMinus = web.html`<button class="view_scale--button">
         ${await components.feather('zoom-out')}
       </button>`;
-    components.tooltip($scalePlus, '**Zoom into the window**');
-    components.tooltip($scaleMinus, '**Zoom out of the window**');
+    components.addTooltip($scalePlus, '**Zoom into the window**');
+    components.addTooltip($scaleMinus, '**Zoom out of the window**');
     updateScale = () => {
       if (getZoomFactor() !== zoomFactor) zoomFactor = getZoomFactor();
       $scaleSlider.value = Math.round(zoomFactor * 100);

@@ -1,4 +1,4 @@
-/*
+/**
  * notion-enhancer: right to left
  * (c) 2021 obahareth <omar@omar.engineer> (https://omar.engineer)
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)

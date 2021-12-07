@@ -13,12 +13,17 @@
     }
   ],
   "css": {
-    "frame": ["variables.css"],
+    "frame": ["variables.css", "electronSearch.css"],
     "client": ["variables.css", "prism.css", "patches.css"],
-    "menu": ["variables.css", "prism.css"]
+    "menu": ["variables.css"]
   },
   "js": {
-    "client": ["client.mjs"]
+    "client": ["client.mjs"],
+    "menu": ["menu.mjs"],
+    "electron": [
+      { "source": "rendererIndex.cjs", "target": "renderer/index.js" },
+      { "source": "rendererSearch.cjs", "target": "renderer/search.js" }
+    ]
   },
   "options": [
     {

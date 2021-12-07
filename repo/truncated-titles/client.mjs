@@ -1,4 +1,4 @@
-/*
+/**
  * notion-enhancer: truncated titles
  * (c) 2021 admiraldus (https://github.com/admiraldus)
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
@@ -19,7 +19,7 @@ export default async function ({ web, components }, db) {
         if ($elements.includes($tableTitle)) return;
 
         if ($tableTitle.scrollWidth > $tableTitle.clientWidth) {
-          components.tooltip(
+          components.addTooltip(
             $tableTitle.parentElement.parentElement.parentElement,
             web.html`<span>${web.escape($tableTitle.innerText)}</span>`,
             750

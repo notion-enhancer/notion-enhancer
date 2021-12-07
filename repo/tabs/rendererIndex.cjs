@@ -1,9 +1,11 @@
 /**
- * notion-enhancer: bypass preview
+ * notion-enhancer: tabs
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-.notion-peek-renderer {
-  display: none;
-}
+'use strict';
+
+module.exports = async function (api, db, __exports, __eval) {
+  console.log(123);
+};

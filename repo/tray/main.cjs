@@ -1,4 +1,4 @@
-/*
+/**
  * notion-enhancer: tray
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
@@ -48,9 +48,9 @@ module.exports = async function ({ env, registry }, db, __exports, __eval) {
   // duplicate window prevention
   const createWindow = () => {
     const { createWindow } = env.notionRequire('main/createWindow.js');
-    createWindow('', null, true);
+    createWindow('/');
   };
-  electron.ipcMain.on(`notion-enhancer:create-new-window`, createWindow);
+  electron.ipcMain.on('notion-enhancer:create-new-window', createWindow);
 
   const contextMenu = electron.Menu.buildFromTemplate([
     {

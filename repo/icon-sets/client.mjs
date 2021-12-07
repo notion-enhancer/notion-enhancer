@@ -1,4 +1,4 @@
-/*
+/**
  * notion-enhancer: icon sets
  * (c) 2019 jayhxmo (https://jaymo.io/)
  * (c) 2020 CloudHill <rl.cloudhill@gmail.com> (https://github.com/CloudHill)
@@ -67,7 +67,7 @@ export default async function ({ web, fs, components, notion }, db) {
       $spinner.remove();
       if ($tooltip) {
         const $infoSvg = web.html`${await components.feather('info', { class: 'info' })}`;
-        components.tooltip($infoSvg, $tooltip, { offsetDirection: 'right' });
+        components.addTooltip($infoSvg, $tooltip, { offsetDirection: 'right' });
         web.render($title, $infoSvg);
       }
     })();
