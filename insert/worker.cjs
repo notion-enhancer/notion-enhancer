@@ -1,4 +1,4 @@
-/*
+/**
  * notion-enhancer
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
@@ -49,6 +49,8 @@ module.exports.focusMenu = async () => {
     appQuit = true;
   });
 
+  // handle opening external links
+  // must have target="_blank"
   enhancerMenu.webContents.on('new-window', (e, url) => {
     e.preventDefault();
     require('electron').shell.openExternal(url);
@@ -72,7 +74,7 @@ module.exports.focusNotion = () => {
     { BrowserWindow } = require('electron'),
     { createWindow } = env.notionRequire('main/createWindow.js');
   let window = BrowserWindow.getAllWindows().find((win) => win.id !== enhancerMenu.id);
-  if (!window) window = createWindow('', null, true);
+  if (!window) window = createWindow('/');
   window.show();
 };
 

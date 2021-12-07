@@ -1,5 +1,5 @@
-/*
- * notion-enhancer core: api
+/**
+ * notion-enhancer: api
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
@@ -18,7 +18,7 @@
  * @returns {Promise} value ?? fallback
  */
 export const get = (path, fallback = undefined) => {
-  return window.__enhancerElectronApi.db.get(path, fallback);
+  return globalThis.__enhancerElectronApi.db.get(path, fallback);
 };
 
 /**
@@ -28,7 +28,7 @@ export const get = (path, fallback = undefined) => {
  * @returns {Promise} resolves when data has been saved
  */
 export const set = (path, value) => {
-  return window.__enhancerElectronApi.db.set(path, value);
+  return globalThis.__enhancerElectronApi.db.set(path, value);
 };
 
 /**
@@ -52,7 +52,7 @@ export const db = (namespace, getFunc = get, setFunc = set) => {
  * storage is initiated from the current process
  */
 export const addChangeListener = (callback) => {
-  return window.__enhancerElectronApi.db.addChangeListener(callback);
+  return globalThis.__enhancerElectronApi.db.addChangeListener(callback);
 };
 
 /**
@@ -60,7 +60,7 @@ export const addChangeListener = (callback) => {
  * @param {onStorageChangeCallback} callback
  */
 export const removeChangeListener = (callback) => {
-  return window.__enhancerElectronApi.db.removeChangeListener(callback);
+  return globalThis.__enhancerElectronApi.db.removeChangeListener(callback);
 };
 
 /**

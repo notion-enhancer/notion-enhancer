@@ -1,5 +1,5 @@
-/*
- * notion-enhancer core: api
+/**
+ * notion-enhancer: api
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
@@ -24,8 +24,14 @@ export const localPath = (path) => `notion://www.notion.so/__notion-enhancer/${p
  * @param {object} [opts] - the second argument of a fetch() request
  * @returns {object} the json value of the requested file as a js object
  */
-export const getJSON = (path, opts = {}) =>
-  fetch(path.startsWith('http') ? path : localPath(path), opts).then((res) => res.json());
+export const getJSON = (path, opts = {}) => {
+  if (path.startsWith('http')) return fetch(path, opts).then((res) => res.json());
+  try {
+    return globalThis.__enhancerElectronApi.nodeRequire(`notion-enhancer/${path}`);
+  } catch (err) {
+    return fetch(localPath(path), opts).then((res) => res.json());
+  }
+};
 
 /**
  * fetch a text file's contents
@@ -33,8 +39,16 @@ export const getJSON = (path, opts = {}) =>
  * @param {object} [opts] - the second argument of a fetch() request
  * @returns {string} the text content of the requested file
  */
-export const getText = (path, opts = {}) =>
-  fetch(path.startsWith('http') ? path : localPath(path), opts).then((res) => res.text());
+export const getText = (path, opts = {}) => {
+  if (path.startsWith('http')) return fetch(path, opts).then((res) => res.text());
+  try {
+    const fs = globalThis.__enhancerElectronApi.nodeRequire('fs'),
+      { resolve: resolvePath } = globalThis.__enhancerElectronApi.nodeRequire('path');
+    return fs.readFileSync(resolvePath(`${__dirname}/../../${path}`));
+  } catch (err) {
+    return fetch(localPath(path), opts).then((res) => res.text());
+  }
+};
 
 /**
  * check if a file exists
@@ -43,7 +57,17 @@ export const getText = (path, opts = {}) =>
  */
 export const isFile = async (path) => {
   try {
-    await fetch(path.startsWith('http') ? path : localPath(path));
+    const fs = globalThis.__enhancerElectronApi.nodeRequire('fs'),
+      { resolve: resolvePath } = globalThis.__enhancerElectronApi.nodeRequire('path');
+    if (path.startsWith('http')) {
+      await fetch(path);
+    } else {
+      try {
+        fs.existsSync(resolvePath(`${__dirname}/../../${path}`));
+      } catch (err) {
+        await fetch(localPath(path));
+      }
+    }
     return true;
   } catch {
     return false;
