@@ -94,7 +94,7 @@ const ipcRenderer = {
   },
   onMessage: (channel, callback) => {
     const { ipcRenderer } = require('electron');
-    ipcRenderer.addListener(`notion-enhancer:${channel}`, callback);
+    ipcRenderer.on(`notion-enhancer:${channel}`, callback);
   },
 };
 
@@ -106,6 +106,7 @@ globalThis.__enhancerElectronApi = {
   browser: isRenderer ? require('electron').remote.getCurrentWindow() : {},
   webFrame: isRenderer ? require('electron').webFrame : {},
   notionRequire: (path) => require(`../../${path}`),
+  notionPath: (path) => require('path').resolve(`${__dirname}/../../${path}`),
   nodeRequire: (path) => require(path),
 
   focusMenu: () => {

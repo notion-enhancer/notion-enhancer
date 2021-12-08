@@ -45,6 +45,11 @@ export const reload = globalThis.__enhancerElectronApi.reload;
 
 /**
  * require() notion app files
- * @param {string} path - within notion/resources/app e.g. main/createWindow.js
+ * @param {string} path - within notion/resources/app/ e.g. main/createWindow.js
+ *
+ * @env win32
+ * @env linux
+ * @env darwin
+ * @runtime electron
  */
 export const notionRequire = globalThis.__enhancerElectronApi.notionRequire;
