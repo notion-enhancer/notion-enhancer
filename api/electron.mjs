@@ -48,7 +48,8 @@ export const webFrame = globalThis.__enhancerElectronApi?.webFrame;
  * @runtime client
  * @runtime menu
  */
-export const sendMessage = globalThis.__enhancerElectronApi?.ipcRenderer?.sendMessage;
+export const sendMessage = (channel, data) =>
+  globalThis.__enhancerElectronApi.ipcRenderer.sendMessage(channel, data);
 
 /**
  * send a message to the webview's parent renderer process
@@ -61,14 +62,14 @@ export const sendMessage = globalThis.__enhancerElectronApi?.ipcRenderer?.sendMe
  * @runtime client
  * @runtime menu
  */
-export const sendMessageToHost =
-  globalThis.__enhancerElectronApi?.ipcRenderer?.sendMessageToHost;
+export const sendMessageToHost = (channel, data) =>
+  globalThis.__enhancerElectronApi.ipcRenderer.sendMessageToHost(channel, data);
 
 /**
  * receive a message from either the main process or
  * the webview's parent renderer process
  * @param {string} channel - the message identifier to listen for
- * @param {function} listener - the message handler, passed the args (event, data)
+ * @param {function} callback - the message handler, passed the args (event, data)
  *
  * @env win32
  * @env linux
@@ -76,4 +77,5 @@ export const sendMessageToHost =
  * @runtime client
  * @runtime menu
  */
-export const onMessage = globalThis.__enhancerElectronApi?.ipcRenderer?.onMessage;
+export const onMessage = (channel, callback) =>
+  globalThis.__enhancerElectronApi.ipcRenderer.onMessage(channel, callback);

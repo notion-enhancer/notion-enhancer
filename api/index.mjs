@@ -9,7 +9,7 @@
 /** @module notion-enhancer/api */
 
 // compiles to .cjs for use in electron:
-// npx -y esbuild insert/api/index.mjs --bundle --format=cjs --outfile=insert/api/index.cjs
+// npx -y esbuild insert/api/index.mjs --minify --bundle --format=cjs --outfile=insert/api/index.cjs
 
 /** environment-specific methods and constants */
 export * as env from './env.mjs';
@@ -22,7 +22,7 @@ export * as storage from './storage.mjs';
 export * as electron from './electron.mjs';
 
 /** a basic wrapper around notion's unofficial api */
-// export * as notion from './notion.mjs';
+export * as notion from './notion.mjs';
 /** helpers for formatting, validating and parsing values */
 export * as fmt from './fmt.mjs';
 /** interactions with the enhancer's repository of mods */
