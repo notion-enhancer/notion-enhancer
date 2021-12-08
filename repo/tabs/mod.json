@@ -13,7 +13,9 @@
       "avatar": "https://dragonwocky.me/avatar.jpg"
     }
   ],
-  "css": {},
+  "css": {
+    "frame": ["tabs.css"]
+  },
   "js": {
     "electron": [{ "source": "rendererIndex.cjs", "target": "renderer/index.js" }]
   },

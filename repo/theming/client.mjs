@@ -20,7 +20,7 @@ export default async function ({ web, registry, storage, electron }, db) {
     storage
       .set(['theme'], document.querySelector('.notion-dark-theme') ? 'dark' : 'light')
       .then(() => {
-        electron.sendToHost('update-theme');
+        electron.sendMessageToHost('update-theme');
       });
     document.documentElement.classList[
       document.body.classList.contains('dark') ? 'add' : 'remove'

@@ -1,0 +1,33 @@
+/**
+ * notion-enhancer: tabs
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+.search-webview {
+  width: 100%;
+  height: 60px;
+  transition: transform 70ms ease-in;
+  transform: translateY(-100%);
+  pointer-events: none;
+  position: absolute;
+  z-index: 999;
+}
+.search-webview.search-active {
+  transition: transform 70ms ease-out;
+  transform: translateY(0%);
+  pointer-events: auto;
+}
+
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.notion-webview {
+  width: 100%;
+  height: 100%;
+}

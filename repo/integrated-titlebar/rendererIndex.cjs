@@ -6,7 +6,7 @@
 
 'use strict';
 
-module.exports = async function (api, db, __exports, __eval) {
+module.exports = async function ({ registry }, db, __exports, __eval) {
   const dragareaSelector = '[style*="-webkit-app-region: drag;"]';
 
   await new Promise((res, rej) => {
@@ -22,20 +22,24 @@ module.exports = async function (api, db, __exports, __eval) {
   });
 
   const tilingMode = await db.get(['tiling']),
-    dragareaHeight = await db.get(['dragarea_height']);
+    dragareaHeight = await db.get(['dragarea_height']),
+    tabsEnabled = await registry.enabled('e1692c29-475e-437b-b7ff-3eee872e1a42');
 
-  const dragarea = document.querySelector(dragareaSelector);
-  dragarea.style.top = '2px';
-  dragarea.style.height = tilingMode ? '0' : `${dragareaHeight}px`;
+  if (tabsEnabled) {
+  } else {
+    const dragarea = document.querySelector(dragareaSelector);
+    dragarea.style.top = '2px';
+    dragarea.style.height = tilingMode ? '0' : `${dragareaHeight}px`;
 
-  document.getElementById('notion').addEventListener('ipc-message', (event) => {
-    switch (event.channel) {
-      case 'notion-enhancer:sidebar-width':
-        dragarea.style.left = event.args[0];
-        break;
-      case 'notion-enhancer:panel-width':
-        dragarea.style.right = event.args[0];
-        break;
-    }
-  });
+    document.getElementById('notion').addEventListener('ipc-message', (event) => {
+      switch (event.channel) {
+        case 'notion-enhancer:sidebar-width':
+          dragarea.style.left = event.args[0];
+          break;
+        case 'notion-enhancer:panel-width':
+          dragarea.style.right = event.args[0];
+          break;
+      }
+    });
+  }
 };

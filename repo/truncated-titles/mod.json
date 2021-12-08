@@ -15,9 +15,7 @@
   "js": {
     "client": ["client.mjs"]
   },
-  "css": {
-    "client": ["client.css"]
-  },
+  "css": {},
   "options": [
     {
       "type": "toggle",
