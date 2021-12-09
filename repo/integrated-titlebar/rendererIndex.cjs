@@ -6,27 +6,22 @@
 
 'use strict';
 
-module.exports = async function ({ registry }, db, __exports, __eval) {
-  const dragareaSelector = '[style*="-webkit-app-region: drag;"]';
-
-  await new Promise((res, rej) => {
-    let isReadyInt;
-    isReadyInt = setInterval(isReadyTest, 100);
-    function isReadyTest() {
-      if (document.querySelector(dragareaSelector)) {
-        clearInterval(isReadyInt);
-        res(true);
-      }
-    }
-    isReadyTest();
-  });
-
+module.exports = async function ({ fs, web, registry }, db, __exports, __eval) {
   const tilingMode = await db.get(['tiling']),
     dragareaHeight = await db.get(['dragarea_height']),
     tabsEnabled = await registry.enabled('e1692c29-475e-437b-b7ff-3eee872e1a42');
 
-  if (tabsEnabled) {
+  if (tabsEnabled && !tilingMode) {
+    await web.whenReady();
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = fs.localPath('repo/integrated-titlebar/tabs.mjs');
+    document.head.appendChild(script);
+    web.loadStylesheet('repo/integrated-titlebar/buttons.css');
   } else {
+    const dragareaSelector = '[style*="-webkit-app-region: drag;"]';
+    await web.whenReady([dragareaSelector]);
+
     const dragarea = document.querySelector(dragareaSelector);
     dragarea.style.top = '2px';
     dragarea.style.height = tilingMode ? '0' : `${dragareaHeight}px`;

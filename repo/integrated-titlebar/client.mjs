@@ -9,14 +9,15 @@
 import { createWindowButtons } from './buttons.mjs';
 
 export default async function (api, db) {
-  const { web, electron } = api,
+  const { web, registry, electron } = api,
     tilingMode = await db.get(['tiling']),
     dragareaHeight = await db.get(['dragarea_height']),
+    tabsEnabled = await registry.enabled('e1692c29-475e-437b-b7ff-3eee872e1a42'),
     sidebarSelector = '.notion-sidebar',
     panelSelector = '#enhancer--panel',
     topbarSelector = '.notion-topbar',
     topbarActionsSelector = '.notion-topbar-action-buttons';
-  if (tilingMode) return;
+  if (tilingMode || tabsEnabled) return;
 
   let sidebarWidth = '0px',
     panelWidth = '0px';

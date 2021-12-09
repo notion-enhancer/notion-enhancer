@@ -79,7 +79,9 @@ export default async function ({ electron, web, components }, db) {
 
     web.addHotkeyListener(['Ctrl', '+'], updateScale);
     web.addHotkeyListener(['Ctrl', '-'], updateScale);
+    web.addHotkeyListener(['Ctrl', '0'], updateScale);
     web.addHotkeyListener(['Command', '+'], updateScale);
     web.addHotkeyListener(['Command', '-'], updateScale);
+    web.addHotkeyListener(['Command', '0'], updateScale);
   }
 }

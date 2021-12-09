@@ -12,6 +12,8 @@ module.exports = async function ({ components, env, web, fs }, db, __exports, __
     electronWindow = electron.remote.getCurrentWindow(),
     notionIpc = env.notionRequire('helpers/notionIpc');
 
+  let focusedTab, xIcon;
+  const tabCache = new Map();
   class Tab {
     $notion = web.html`
       <webview class="notion-webview" partition="persist:notion"
@@ -27,9 +29,75 @@ module.exports = async function ({ components, env, web, fs }, db, __exports, __
       ></webview>
     `;
 
-    constructor(notionUrl = 'notion://www.notion.so/') {
-      this.$notion.src = notionUrl;
+    $tabTitle = web.html`<span class="tab-title">v0.11.0 plan v0.11.0 plan v0.11.0 plan v0.11.0 plan</span>`;
+    $closeTab = web.html`<span class="tab-close">${xIcon}</span>`;
+    $tab = web.render(
+      web.html`<button class="tab" draggable="true"></button>`,
+      this.$tabTitle,
+      this.$closeTab
+    );
 
+    constructor($tabs, $root, notionUrl = 'notion://www.notion.so/') {
+      this.$notion.src = notionUrl;
+      tabCache.set($tab, this);
+
+      web.render($tabs, this.$tab);
+      web.render($root, this.$search);
+      web.render($root, this.$notion);
+      electronWindow.on('focus', () => {
+        if (focusedTab === this) this.$notion.focus();
+      });
+
+      this.$tab.addEventListener('click', (event) => {
+        if (event.target !== this.$closeTab && !this.$closeTab.contains(event.target)) {
+          this.focusTab();
+        }
+      });
+      this.$closeTab.addEventListener('click', () => this.closeTab());
+
+      this.focusTab();
+      this.listen();
+      return this;
+    }
+
+    focusTab() {
+      document.querySelectorAll('.notion-webview, .search-webview').forEach(($webview) => {
+        if (![this.$notion, this.$search].includes($webview)) $webview.style.display = '';
+      });
+      document.querySelectorAll('.tab.current').forEach(($tab) => {
+        if ($tab !== this.$tab) $tab.classList.remove('current');
+      });
+      this.$tab.classList.add('current');
+      this.$notion.style.display = 'flex';
+      this.$search.style.display = 'flex';
+      this.focusNotion();
+      focusedTab = this;
+    }
+    closeTab() {
+      const $sibling = this.$tab.nextElementSibling || this.$tab.previousElementSibling;
+      if ($sibling) {
+        this.$tab.remove();
+        this.$notion.remove();
+        this.$search.remove();
+        if (focusedTab === this) $sibling.click();
+      }
+    }
+
+    webContents() {
+      return electron.remote.webContents.fromId(this.$notion.getWebContentsId());
+    }
+    focusNotion() {
+      document.activeElement?.blur?.();
+      this.$notion.blur();
+      this.$notion.focus();
+    }
+    focusSearch() {
+      document.activeElement?.blur?.();
+      this.$search.blur();
+      this.$search.focus();
+    }
+
+    listen() {
       const fromNotion = (channel, listener) =>
           notionIpc.receiveIndexFromNotion.addListener(this.$notion, channel, listener),
         fromSearch = (channel, listener) =>
@@ -58,6 +126,7 @@ module.exports = async function ({ components, env, web, fs }, db, __exports, __
       });
 
       notionIpc.proxyAllMainToNotion(this.$notion);
+
       fromNotion('search:start', () => this.startSearch());
       fromNotion('search:stop', () => this.stopSearch());
       fromNotion('search:set-theme', (theme) => toSearch('search:set-theme', theme));
@@ -66,21 +135,9 @@ module.exports = async function ({ components, env, web, fs }, db, __exports, __
       fromSearch('search:next', (query) => this.searchNext(query));
       fromSearch('search:prev', (query) => this.searchPrev(query));
 
-      return this;
-    }
-
-    webContents() {
-      return electron.remote.webContents.fromId(this.$notion.getWebContentsId());
-    }
-    focusNotion() {
-      document.activeElement?.blur?.();
-      this.$notion.blur();
-      this.$notion.focus();
-    }
-    focusSearch() {
-      document.activeElement?.blur?.();
-      this.$search.blur();
-      this.$search.focus();
+      fromNotion('zoom', (zoomFactor) => {
+        this.webContents().setZoomFactor(zoomFactor);
+      });
     }
 
     #firstQuery = true;
@@ -118,25 +175,17 @@ module.exports = async function ({ components, env, web, fs }, db, __exports, __
   }
 
   window['__start'] = async () => {
-    const $topbar = web.html`
-      <header id="tabs">
-        <button class="tab current" draggable="true">
-          <span class="tab-title">v0.11.0 plan</span>
-          <span class="tab-close">
-            ${await components.feather('x')}
-          </span>
-        </button>
-        <button class="tab new"><span>+</span></button>
-      </header>
-    `;
-    document.body.prepend($topbar);
+    const $header = web.html`<header></header>`,
+      $tabs = web.html`<div id="tabs"></div>`,
+      $newTab = web.html`<button class="new-tab">${await components.feather('plus')}</button>`,
+      $root = document.querySelector('#root'),
+      $windowActions = web.html`<div id="window-actions"></div>`;
+    document.body.prepend(web.render($header, $tabs, $newTab, $windowActions));
+    xIcon = await components.feather('x');
 
-    const $root = document.querySelector('#root');
-    const tab = new Tab(url.parse(window.location.href, true).query.path);
-    web.render($root, tab.$search);
-    web.render($root, tab.$notion);
-    electronWindow.on('focus', () => {
-      tab.$notion.focus();
+    $newTab.addEventListener('click', () => {
+      new Tab($tabs, $root, url.parse(window.location.href, true).query.path);
     });
+    $newTab.click();
   };
 };

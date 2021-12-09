@@ -37,6 +37,7 @@
   border: none;
   background: transparent;
   font-size: 18px;
+  -webkit-app-region: no-drag;
 }
 .integrated_titlebar--buttons button svg {
   display: block;

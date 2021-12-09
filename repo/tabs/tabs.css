@@ -4,6 +4,10 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+* {
+  box-sizing: border-box;
+}
+
 html,
 body {
   height: 100%;
@@ -11,6 +15,7 @@ body {
   margin: 0;
   padding: 0;
   background: var(--theme--bg) !important;
+  overflow: hidden;
 }
 
 body {
@@ -18,37 +23,109 @@ body {
   flex-direction: column;
 }
 
-#tabs {
+header {
   display: flex;
   background: var(--theme--bg_secondary);
   width: 100%;
-  padding-top: 4px;
+  padding: 12px 8px 0 8px;
   user-select: none;
   -webkit-app-region: drag;
+  z-index: 3;
 }
 
+#tabs {
+  display: flex;
+}
 #tabs .tab {
   display: flex;
+  flex-grow: 1;
+  max-width: 14em;
+  padding: 10.4px 9.6px 6.4px 9.6px;
+  margin-top: -4px;
+
   color: var(--theme--text_secondary);
   background: var(--theme--bg);
   font-family: var(--theme--font_sans);
-  border: none;
-  padding: 0.4em 0.6em;
-  border-bottom: 2px solid var(--theme--ui_divider);
   font-size: 16px;
+  font-weight: 500;
+  border: none;
+  border-bottom: 3px solid var(--theme--ui_divider);
   -webkit-app-region: no-drag;
 }
 #tabs .tab .tab-title {
-  /* padding: 0.2em; */
+  white-space: nowrap;
+  overflow: hidden;
 }
 #tabs .tab .tab-close {
-  width: 20px;
+  transition: background 20ms ease-in 0s;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 3px;
   height: 20px;
+  width: 20px;
+  padding: 0 0.25px 0 0;
+
+  margin-left: auto;
+  border: none;
+  background: transparent;
+  font-size: 18px;
 }
 #tabs .tab .tab-close svg {
   width: 14px;
   height: 14px;
   fill: var(--theme--icon_secondary);
+}
+#tabs .tab:hover {
+  background: var(--theme--ui_interactive-hover);
+}
+#tabs .tab.current {
+  background: var(--theme--ui_interactive-active);
+}
+
+.new-tab {
+  transition: background 20ms ease-in 0s;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 3px;
+  height: 28px;
+  width: 33px;
+  padding: 0 0.25px 0 0;
+
+  margin-left: 6px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  -webkit-app-region: no-drag;
+}
+.new-tab svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  fill: var(--theme--icon);
+  color: var(--theme--icon);
+}
+.new-tab:focus,
+.new-tab:hover,
+#tabs .tab-close:focus,
+#tabs .tab-close:hover {
+  background: var(--theme--ui_interactive-hover);
+}
+.new-tab:active,
+#tabs .tab-close:active {
+  background: var(--theme--ui_interactive-active);
+}
+
+#window-actions {
+  margin-left: auto;
+}
+#window-actions > * {
+  -webkit-app-region: no-drag;
 }
 
 #root {
@@ -58,16 +135,18 @@ body {
 .notion-webview {
   width: 100%;
   height: 100%;
+  display: none;
 }
 
 .search-webview {
   width: 100%;
   height: 60px;
+  display: none;
   transition: transform 70ms ease-in;
   transform: translateY(-100%);
   pointer-events: none;
   position: absolute;
-  z-index: 999;
+  z-index: 2;
 }
 .search-webview.search-active {
   transition: transform 70ms ease-out;
