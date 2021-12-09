@@ -24,7 +24,7 @@
   display: block;
   height: 16px;
   width: 16px;
-  fill: var(--theme--icon_secondary);
+  fill: var(--theme--icon);
 }
 .global_block_links--topbar_copy > span {
   margin-left: 2px;

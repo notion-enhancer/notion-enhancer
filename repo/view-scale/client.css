@@ -85,4 +85,6 @@
   display: block;
   width: 14px;
   height: 14px;
+  fill: var(--theme--icon);
+  color: var(--theme--icon);
 }

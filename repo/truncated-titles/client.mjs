@@ -46,7 +46,6 @@ export default async function ({ web, components }, db) {
           $title.firstElementChild.firstElementChild.style.maxWidth = '400px';
         });
         $timelineItem.addEventListener('mouseout', async (event) => {
-          console.log(event, $timelineItem.matches(':hover'));
           if (!$timelineItem.matches(':hover')) {
             $title.style.width = $timelineItem.clientWidth + 'px';
             $title.firstElementChild.firstElementChild.style.maxWidth =

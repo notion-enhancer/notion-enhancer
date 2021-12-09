@@ -5,7 +5,7 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-:root:not(.dark) {
+:root.light {
   --pinky_boom--brown: #a52a2a80;
   --pinky_boom--orange: #ffa60080;
   --pinky_boom--yellow: #ffff0080;

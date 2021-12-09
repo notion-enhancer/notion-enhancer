@@ -6,7 +6,7 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-:root:not(.dark) {
+:root.light {
   /*
    * variables are named for consistency with gruvbox dark,
    * but the _light variants are actually darker here

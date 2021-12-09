@@ -16,19 +16,42 @@ export default async function ({ web, registry, storage, electron }, db) {
     web.loadStylesheet('repo/theming/colors.css');
   }
 
-  const updateTheme = () => {
-    storage
-      .set(['theme'], document.querySelector('.notion-dark-theme') ? 'dark' : 'light')
-      .then(() => {
-        electron.sendMessageToHost('update-theme');
-      });
-    document.documentElement.classList[
-      document.body.classList.contains('dark') ? 'add' : 'remove'
-    ]('dark');
+  const updateTheme = async () => {
+    await storage.set(
+      ['theme'],
+      document.querySelector('.notion-dark-theme') ? 'dark' : 'light'
+    );
+    const mode = await storage.get(['theme'], 'light'),
+      inactive = mode === 'light' ? 'dark' : 'light';
+    document.documentElement.classList.add(mode);
+    document.documentElement.classList.remove(inactive);
+    electron.sendMessage('update-theme');
+    const searchThemeVars = [
+      'bg',
+      'text',
+      'icon',
+      'icon_secondary',
+      'accent_blue',
+      'accent_blue-text',
+      'accent_blue-hover',
+      'accent_blue-active',
+      'ui_shadow',
+      'ui_divider',
+      'ui_input',
+      'ui_interactive-hover',
+      'ui_interactive-active',
+    ].map((key) => [
+      key,
+      window.getComputedStyle(document.documentElement).getPropertyValue(`--theme--${key}`),
+    ]);
+    electron.sendMessage('set-search-theme', searchThemeVars);
   };
   web.addDocumentObserver((mutation) => {
-    if (mutation.target === document.body && document.hasFocus()) updateTheme();
+    const potentialThemeChange = [document.body, document.documentElement].includes(
+      mutation.target
+    );
+    if (potentialThemeChange && document.hasFocus()) updateTheme();
   });
-  if (document.hasFocus()) updateTheme();
+  updateTheme();
   document.addEventListener('visibilitychange', updateTheme);
 }

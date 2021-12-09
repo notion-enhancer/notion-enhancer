@@ -42,6 +42,8 @@
   display: block;
   width: 20px;
   height: 20px;
+  fill: var(--theme--icon);
+  color: var(--theme--icon);
 }
 
 .integrated_titlebar--buttons button:focus,

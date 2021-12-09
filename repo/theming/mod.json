@@ -21,6 +21,7 @@
     "client": ["client.mjs"],
     "menu": ["menu.mjs"],
     "electron": [
+      { "source": "main.cjs", "target": "main/main.js" },
       { "source": "rendererIndex.cjs", "target": "renderer/index.js" },
       { "source": "rendererSearch.cjs", "target": "renderer/search.js" }
     ]

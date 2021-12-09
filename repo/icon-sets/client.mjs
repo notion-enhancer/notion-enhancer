@@ -208,7 +208,7 @@ export default async function ({ web, fs, components, notion }, db) {
             );
           web.render($setsList, $title, $set);
         } catch (err) {
-          console.log(err);
+          console.error(err);
           web.render(
             $setsList,
             web.html`<div class="icon_sets--error">

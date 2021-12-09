@@ -4,6 +4,62 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+html,
+body {
+  height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--theme--bg) !important;
+}
+
+body {
+  display: flex;
+  flex-direction: column;
+}
+
+#tabs {
+  display: flex;
+  background: var(--theme--bg_secondary);
+  width: 100%;
+  padding-top: 4px;
+  user-select: none;
+  -webkit-app-region: drag;
+}
+
+#tabs .tab {
+  display: flex;
+  color: var(--theme--text_secondary);
+  background: var(--theme--bg);
+  font-family: var(--theme--font_sans);
+  border: none;
+  padding: 0.4em 0.6em;
+  border-bottom: 2px solid var(--theme--ui_divider);
+  font-size: 16px;
+  -webkit-app-region: no-drag;
+}
+#tabs .tab .tab-title {
+  /* padding: 0.2em; */
+}
+#tabs .tab .tab-close {
+  width: 20px;
+  height: 20px;
+}
+#tabs .tab .tab-close svg {
+  width: 14px;
+  height: 14px;
+  fill: var(--theme--icon_secondary);
+}
+
+#root {
+  flex-grow: 1;
+}
+
+.notion-webview {
+  width: 100%;
+  height: 100%;
+}
+
 .search-webview {
   width: 100%;
   height: 60px;
@@ -17,17 +73,4 @@
   transition: transform 70ms ease-out;
   transform: translateY(0%);
   pointer-events: auto;
-}
-
-html,
-body {
-  height: 100%;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-}
-
-.notion-webview {
-  width: 100%;
-  height: 100%;
 }

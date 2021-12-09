@@ -6,19 +6,13 @@
 
 'use strict';
 
-module.exports = async function ({ registry, web, storage, electron }, db, __exports, __eval) {
-  await web.whenReady(['#search']);
+module.exports = async function ({ web, electron }, db, __exports, __eval) {
+  await web.whenReady();
+  web.loadStylesheet('repo/theming/electronSearch.css');
 
-  const loadTheme = async () => {
-    document.documentElement.className =
-      (await storage.get(['theme'], 'light')) === 'dark' ? 'dark' : '';
-  };
-  document.querySelector('#search').addEventListener('focus', loadTheme);
-  loadTheme();
-
-  for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
-    for (const sheet of mod.css?.frame || []) {
-      web.loadStylesheet(`repo/${mod._dir}/${sheet}`);
+  electron.onMessage('set-search-theme', (event, theme) => {
+    for (const [key, value] of theme) {
+      document.documentElement.style.setProperty(`--theme--${key}`, value);
     }
-  }
+  });
 };

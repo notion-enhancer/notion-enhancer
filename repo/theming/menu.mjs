@@ -6,15 +6,18 @@
 
 'use strict';
 
-export default async function ({ web, registry, storage }, db) {
+export default async function ({ web, registry, storage, electron }, db) {
   await web.whenReady();
 
-  const loadTheme = async () => {
-    document.documentElement.className =
-      (await storage.get(['theme'], 'light')) === 'dark' ? 'dark' : '';
+  const updateTheme = async () => {
+    const mode = await storage.get(['theme'], 'light'),
+      inactive = mode === 'light' ? 'dark' : 'light';
+    document.documentElement.classList.add(mode);
+    document.documentElement.classList.remove(inactive);
   };
-  document.addEventListener('visibilitychange', loadTheme);
-  loadTheme();
+  document.addEventListener('visibilitychange', updateTheme);
+  electron.onMessage('update-theme', updateTheme);
+  updateTheme();
 
   for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
     for (const sheet of mod.css?.menu || []) {

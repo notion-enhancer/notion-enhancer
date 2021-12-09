@@ -6,8 +6,17 @@
 
 'use strict';
 
-module.exports = async function ({ registry, web, storage }, db, __exports, __eval) {
+module.exports = async function ({ registry, web, storage, electron }, db, __exports, __eval) {
   await web.whenReady();
+
+  const updateTheme = async () => {
+    const mode = await storage.get(['theme'], 'light'),
+      inactive = mode === 'light' ? 'dark' : 'light';
+    document.documentElement.classList.add(mode);
+    document.documentElement.classList.remove(inactive);
+  };
+  electron.onMessage('update-theme', updateTheme);
+  updateTheme();
 
   for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
     for (const sheet of mod.css?.frame || []) {

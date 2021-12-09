@@ -6,7 +6,7 @@
 
 'use strict';
 
-module.exports = async function ({ env, web, fs }, db, __exports, __eval) {
+module.exports = async function ({ components, env, web, fs }, db, __exports, __eval) {
   const url = require('url'),
     electron = require('electron'),
     electronWindow = electron.remote.getCurrentWindow(),
@@ -27,9 +27,14 @@ module.exports = async function ({ env, web, fs }, db, __exports, __eval) {
       ></webview>
     `;
 
-    #firstQuery = true;
     constructor(notionUrl = 'notion://www.notion.so/') {
-      this.navigate(notionUrl);
+      this.$notion.src = notionUrl;
+
+      const fromNotion = (channel, listener) =>
+          notionIpc.receiveIndexFromNotion.addListener(this.$notion, channel, listener),
+        fromSearch = (channel, listener) =>
+          notionIpc.receiveIndexFromSearch.addListener(this.$search, channel, listener),
+        toSearch = (channel, data) => notionIpc.sendIndexToSearch(this.$search, channel, data);
 
       this.$notion.addEventListener('dom-ready', () => {
         this.focusNotion();
@@ -48,44 +53,22 @@ module.exports = async function ({ env, web, fs }, db, __exports, __eval) {
           const matches = result
             ? { count: result.matches, index: result.activeMatchOrdinal }
             : { count: 0, index: 0 };
-          notionIpc.sendIndexToSearch(this.$search, 'search:result', matches);
+          toSearch('search:result', matches);
         });
-
-        notionIpc.proxyAllMainToNotion(this.$notion);
       });
 
-      notionIpc.receiveIndexFromNotion.addListener(this.$notion, 'search:start', () => {
-        this.startSearch();
-      });
-      notionIpc.receiveIndexFromSearch.addListener(this.$search, 'search:clear', () => {
-        this.clearSearch();
-      });
-      notionIpc.receiveIndexFromNotion.addListener(this.$notion, 'search:stop', () => {
-        this.stopSearch();
-      });
-      notionIpc.receiveIndexFromSearch.addListener(this.$search, 'search:stop', () => {
-        this.stopSearch();
-      });
-      notionIpc.receiveIndexFromNotion.addListener(
-        this.$notion,
-        'search:set-theme',
-        (theme) => {
-          notionIpc.sendIndexToSearch(this.$search, 'search:set-theme', theme);
-        }
-      );
-      notionIpc.receiveIndexFromSearch.addListener(this.$search, 'search:next', (query) => {
-        this.searchNext(query);
-      });
-      notionIpc.receiveIndexFromSearch.addListener(this.$search, 'search:prev', (query) => {
-        this.searchPrev(query);
-      });
+      notionIpc.proxyAllMainToNotion(this.$notion);
+      fromNotion('search:start', () => this.startSearch());
+      fromNotion('search:stop', () => this.stopSearch());
+      fromNotion('search:set-theme', (theme) => toSearch('search:set-theme', theme));
+      fromSearch('search:clear', () => this.clearSearch());
+      fromSearch('search:stop', () => this.stopSearch());
+      fromSearch('search:next', (query) => this.searchNext(query));
+      fromSearch('search:prev', (query) => this.searchPrev(query));
 
       return this;
     }
 
-    navigate(notionUrl) {
-      this.$notion.src = notionUrl;
-    }
     webContents() {
       return electron.remote.webContents.fromId(this.$notion.getWebContentsId());
     }
@@ -100,6 +83,7 @@ module.exports = async function ({ env, web, fs }, db, __exports, __eval) {
       this.$search.focus();
     }
 
+    #firstQuery = true;
     startSearch() {
       this.$search.classList.add('search-active');
       this.focusSearch();
@@ -133,11 +117,24 @@ module.exports = async function ({ env, web, fs }, db, __exports, __eval) {
     }
   }
 
-  window['__start'] = () => {
-    const tab = new Tab(url.parse(window.location.href, true).query.path);
-    web.render(document.body, tab.$search);
-    web.render(document.body, tab.$notion);
+  window['__start'] = async () => {
+    const $topbar = web.html`
+      <header id="tabs">
+        <button class="tab current" draggable="true">
+          <span class="tab-title">v0.11.0 plan</span>
+          <span class="tab-close">
+            ${await components.feather('x')}
+          </span>
+        </button>
+        <button class="tab new"><span>+</span></button>
+      </header>
+    `;
+    document.body.prepend($topbar);
 
+    const $root = document.querySelector('#root');
+    const tab = new Tab(url.parse(window.location.href, true).query.path);
+    web.render($root, tab.$search);
+    web.render($root, tab.$notion);
     electronWindow.on('focus', () => {
       tab.$notion.focus();
     });
