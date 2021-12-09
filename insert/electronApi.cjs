@@ -84,17 +84,20 @@ const db = {
 };
 
 const ipcRenderer = {
-  sendMessage: (channel, data = undefined) => {
+  sendMessage: (channel, data = undefined, namespace = 'notion-enhancer') => {
     const { ipcRenderer } = require('electron');
-    ipcRenderer.send(`notion-enhancer:${channel}`, data);
+    channel = namespace ? `${namespace}:${channel}` : channel;
+    ipcRenderer.send(channel, data);
   },
-  sendMessageToHost: (channel, data = undefined) => {
+  sendMessageToHost: (channel, data = undefined, namespace = 'notion-enhancer') => {
     const { ipcRenderer } = require('electron');
-    ipcRenderer.sendToHost(`notion-enhancer:${channel}`, data);
+    channel = namespace ? `${namespace}:${channel}` : channel;
+    ipcRenderer.sendToHost(channel, data);
   },
-  onMessage: (channel, callback) => {
+  onMessage: (channel, callback, namespace = 'notion-enhancer') => {
     const { ipcRenderer } = require('electron');
-    ipcRenderer.on(`notion-enhancer:${channel}`, callback);
+    channel = namespace ? `${namespace}:${channel}` : channel;
+    ipcRenderer.on(channel, callback);
   },
 };
 

@@ -27,7 +27,7 @@
 
     const errors = await registry.errors();
     if (errors.length) {
-      console.log('[notion-enhancer] registry errors:');
+      console.error('[notion-enhancer] registry errors:');
       console.table(errors);
     }
   }
