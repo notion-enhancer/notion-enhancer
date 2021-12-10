@@ -10,10 +10,9 @@ module.exports = async function ({ registry, web, storage, electron }, db, __exp
   await web.whenReady();
 
   const updateTheme = async () => {
-    const mode = await storage.get(['theme'], 'light'),
-      inactive = mode === 'light' ? 'dark' : 'light';
+    const mode = await storage.get(['theme'], 'light');
     document.documentElement.classList.add(mode);
-    document.documentElement.classList.remove(inactive);
+    document.documentElement.classList.remove(mode === 'light' ? 'dark' : 'light');
   };
   electron.onMessage('update-theme', updateTheme);
   updateTheme();

@@ -6,7 +6,7 @@
 
 'use strict';
 
-module.exports = async function ({ components, env, web, fs }, db, __exports, __eval) {
+module.exports = async function ({ components, env, web, fmt, fs }, db, __exports, __eval) {
   const url = require('url'),
     electron = require('electron'),
     electronWindow = electron.remote.getCurrentWindow(),
@@ -32,14 +32,14 @@ module.exports = async function ({ components, env, web, fs }, db, __exports, __
     $tabTitle = web.html`<span class="tab-title">v0.11.0 plan v0.11.0 plan v0.11.0 plan v0.11.0 plan</span>`;
     $closeTab = web.html`<span class="tab-close">${xIcon}</span>`;
     $tab = web.render(
-      web.html`<button class="tab" draggable="true"></button>`,
+      web.html`<div class="tab" draggable="true" id="${fmt.uuidv4()}"></div>`,
       this.$tabTitle,
       this.$closeTab
     );
 
     constructor($tabs, $root, notionUrl = 'notion://www.notion.so/') {
       this.$notion.src = notionUrl;
-      tabCache.set($tab, this);
+      tabCache.set(this.$tab.id, this);
 
       web.render($tabs, this.$tab);
       web.render($root, this.$search);
@@ -56,11 +56,15 @@ module.exports = async function ({ components, env, web, fs }, db, __exports, __
       this.$closeTab.addEventListener('click', () => this.closeTab());
 
       this.focusTab();
-      this.listen();
+      this.$tab.animate([{ width: '0px' }, { width: `${this.$tab.clientWidth}px` }], {
+        duration: 100,
+        easing: 'ease-in',
+      }).finished;
+      this.listenToNotion();
       return this;
     }
 
-    focusTab() {
+    async focusTab() {
       document.querySelectorAll('.notion-webview, .search-webview').forEach(($webview) => {
         if (![this.$notion, this.$search].includes($webview)) $webview.style.display = '';
       });
@@ -73,14 +77,21 @@ module.exports = async function ({ components, env, web, fs }, db, __exports, __
       this.focusNotion();
       focusedTab = this;
     }
-    closeTab() {
+    async closeTab() {
       const $sibling = this.$tab.nextElementSibling || this.$tab.previousElementSibling;
       if ($sibling) {
+        const width = `${this.$tab.clientWidth}px`;
+        this.$tab.style.width = 0;
+        this.$tab.style.pointerEvents = 'none';
+        await this.$tab.animate([{ width }, { width: '0px' }], {
+          duration: 100,
+          easing: 'ease-out',
+        }).finished;
         this.$tab.remove();
         this.$notion.remove();
         this.$search.remove();
         if (focusedTab === this) $sibling.click();
-      }
+      } else electronWindow.close();
     }
 
     webContents() {
@@ -97,7 +108,7 @@ module.exports = async function ({ components, env, web, fs }, db, __exports, __
       this.$search.focus();
     }
 
-    listen() {
+    listenToNotion() {
       const fromNotion = (channel, listener) =>
           notionIpc.receiveIndexFromNotion.addListener(this.$notion, channel, listener),
         fromSearch = (channel, listener) =>
@@ -177,11 +188,67 @@ module.exports = async function ({ components, env, web, fs }, db, __exports, __
   window['__start'] = async () => {
     const $header = web.html`<header></header>`,
       $tabs = web.html`<div id="tabs"></div>`,
-      $newTab = web.html`<button class="new-tab">${await components.feather('plus')}</button>`,
+      $newTab = web.html`<div class="new-tab">${await components.feather('plus')}</div>`,
       $root = document.querySelector('#root'),
       $windowActions = web.html`<div id="window-actions"></div>`;
     document.body.prepend(web.render($header, $tabs, $newTab, $windowActions));
     xIcon = await components.feather('x');
+
+    let $draggedTab;
+    const getDragTarget = ($el) => {
+        while (!$el.matches('.tab, header, body')) $el = $el.parentElement;
+        if ($el.matches('header')) $el = $el.firstElementChild;
+        return $el.matches('#tabs, .tab') ? $el : undefined;
+      },
+      resetTabs = () => {
+        document
+          .querySelectorAll('.dragged-over')
+          .forEach(($el) => $el.classList.remove('dragged-over'));
+      };
+    $header.addEventListener('dragstart', (event) => {
+      $draggedTab = getDragTarget(event.target);
+      $draggedTab.style.opacity = 0.5;
+      event.dataTransfer.setData(
+        'text',
+        JSON.stringify({
+          window: electronWindow.webContents.id,
+          tab: $draggedTab.id,
+          title: $draggedTab.children[0].innerText,
+          url: tabCache.get($draggedTab.id).$notion.src,
+        })
+      );
+    });
+    $header.addEventListener('dragover', (event) => {
+      const $target = getDragTarget(event.target);
+      if ($target) {
+        resetTabs();
+        $target.classList.add('dragged-over');
+        event.preventDefault();
+      }
+    });
+    $header.addEventListener('dragend', (event) => {
+      resetTabs();
+      $draggedTab.style.opacity = '';
+      $draggedTab = undefined;
+    });
+    document.addEventListener('drop', (event) => {
+      const eventData = JSON.parse(event.dataTransfer.getData('text')),
+        sameWindow = eventData.window === electronWindow.webContents.id,
+        $target = getDragTarget(event.target),
+        movement =
+          $target &&
+          (!sameWindow ||
+            ($target !== $draggedTab &&
+              $target !== $draggedTab.nextElementSibling &&
+              ($target.matches('#tabs') ? $target.lastElementChild !== $draggedTab : true)));
+      if (movement) {
+        if (sameWindow) {
+          if ($target.matches('#tabs')) {
+            $target.append($draggedTab);
+          } else $target.before($draggedTab);
+        }
+      }
+    });
 
     $newTab.addEventListener('click', () => {
       new Tab($tabs, $root, url.parse(window.location.href, true).query.path);

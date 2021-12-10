@@ -27,7 +27,7 @@ header {
   display: flex;
   background: var(--theme--bg_secondary);
   width: 100%;
-  padding: 12px 8px 0 8px;
+  padding: 8px;
   user-select: none;
   -webkit-app-region: drag;
   z-index: 3;
@@ -35,13 +35,16 @@ header {
 
 #tabs {
   display: flex;
+  margin-bottom: -8px;
+  overflow: hidden;
 }
-#tabs .tab {
+.tab {
   display: flex;
   flex-grow: 1;
+  flex-shrink: 1;
   max-width: 14em;
-  padding: 10.4px 9.6px 6.4px 9.6px;
-  margin-top: -4px;
+  overflow: hidden;
+  padding: 6.4px 9.6px 6.4px 9.6px;
 
   color: var(--theme--text_secondary);
   background: var(--theme--bg);
@@ -52,11 +55,27 @@ header {
   border-bottom: 3px solid var(--theme--ui_divider);
   -webkit-app-region: no-drag;
 }
-#tabs .tab .tab-title {
+.tab .tab-title {
   white-space: nowrap;
   overflow: hidden;
 }
-#tabs .tab .tab-close {
+
+.tab:hover {
+  background: var(--theme--ui_interactive-hover);
+}
+.tab.current {
+  background: var(--theme--ui_interactive-active);
+}
+
+#tabs.dragged-over {
+  box-shadow: 2px 0 0 0 var(--theme--accent_blue-selection);
+}
+.tab.dragged-over {
+  box-shadow: inset 2px 0 0 0 var(--theme--accent_blue-selection);
+}
+
+.new-tab,
+.tab-close {
   transition: background 20ms ease-in 0s;
   cursor: pointer;
   display: inline-flex;
@@ -68,57 +87,35 @@ header {
   width: 20px;
   padding: 0 0.25px 0 0;
 
-  margin-left: auto;
   border: none;
   background: transparent;
-  font-size: 18px;
+  font-size: 14px;
+  -webkit-app-region: no-drag;
 }
-#tabs .tab .tab-close svg {
+.new-tab svg,
+.tab-close svg {
   width: 14px;
   height: 14px;
   fill: var(--theme--icon_secondary);
+  color: var(--theme--icon_secondary);
 }
-#tabs .tab:hover {
+.new-tab:focus,
+.new-tab:hover,
+.tab-close:focus,
+.tab-close:hover {
   background: var(--theme--ui_interactive-hover);
 }
-#tabs .tab.current {
+.new-tab:active,
+.tab-close:active {
   background: var(--theme--ui_interactive-active);
 }
 
 .new-tab {
-  transition: background 20ms ease-in 0s;
-  cursor: pointer;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  border-radius: 3px;
-  height: 28px;
-  width: 33px;
-  padding: 0 0.25px 0 0;
-
-  margin-left: 6px;
-  border: none;
-  background: transparent;
-  font-size: 18px;
-  -webkit-app-region: no-drag;
+  align-self: center;
+  margin: 0 48px -4px 6px;
 }
-.new-tab svg {
-  display: block;
-  width: 20px;
-  height: 20px;
-  fill: var(--theme--icon);
-  color: var(--theme--icon);
-}
-.new-tab:focus,
-.new-tab:hover,
-#tabs .tab-close:focus,
-#tabs .tab-close:hover {
-  background: var(--theme--ui_interactive-hover);
-}
-.new-tab:active,
-#tabs .tab-close:active {
-  background: var(--theme--ui_interactive-active);
+.tab-close {
+  margin-left: auto;
 }
 
 #window-actions {
@@ -131,13 +128,11 @@ header {
 #root {
   flex-grow: 1;
 }
-
 .notion-webview {
   width: 100%;
   height: 100%;
   display: none;
 }
-
 .search-webview {
   width: 100%;
   height: 60px;

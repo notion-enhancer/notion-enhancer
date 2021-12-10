@@ -234,8 +234,8 @@ import './styles.mjs';
             const mode = mod.tags.includes('light') ? 'light' : 'dark',
               id = mod.id,
               mods = await registry.list(
-                (mod) =>
-                  mod.environments.includes(env.name) &&
+                async (mod) =>
+                  (await registry.enabled(mod.id)) &&
                   mod.tags.includes('theme') &&
                   mod.tags.includes(mode) &&
                   mod.id !== id

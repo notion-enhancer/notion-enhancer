@@ -10,10 +10,9 @@ export default async function ({ web, registry, storage, electron }, db) {
   await web.whenReady();
 
   const updateTheme = async () => {
-    const mode = await storage.get(['theme'], 'light'),
-      inactive = mode === 'light' ? 'dark' : 'light';
+    const mode = await storage.get(['theme'], 'light');
     document.documentElement.classList.add(mode);
-    document.documentElement.classList.remove(inactive);
+    document.documentElement.classList.remove(mode === 'light' ? 'dark' : 'light');
   };
   document.addEventListener('visibilitychange', updateTheme);
   electron.onMessage('update-theme', updateTheme);

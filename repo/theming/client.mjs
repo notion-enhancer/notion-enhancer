@@ -17,14 +17,15 @@ export default async function ({ web, registry, storage, electron }, db) {
   }
 
   const updateTheme = async () => {
-    await storage.set(
-      ['theme'],
-      document.querySelector('.notion-dark-theme') ? 'dark' : 'light'
-    );
-    const mode = await storage.get(['theme'], 'light'),
-      inactive = mode === 'light' ? 'dark' : 'light';
+    const isDark =
+        document.querySelector('.notion-dark-theme') ||
+        document.querySelector('.notion-body.dark'),
+      isLight = document.querySelector('.notion-light-theme'),
+      mode = isDark ? 'dark' : isLight ? 'light' : '';
+    if (!mode) return;
+    await storage.set(['theme'], mode);
     document.documentElement.classList.add(mode);
-    document.documentElement.classList.remove(inactive);
+    document.documentElement.classList.remove(mode === 'light' ? 'dark' : 'light');
     electron.sendMessage('update-theme');
     const searchThemeVars = [
       'bg',
@@ -47,11 +48,10 @@ export default async function ({ web, registry, storage, electron }, db) {
     electron.sendMessage('set-search-theme', searchThemeVars);
   };
   web.addDocumentObserver((mutation) => {
-    const potentialThemeChange = [document.body, document.documentElement].includes(
-      mutation.target
-    );
+    const potentialThemeChange = mutation.target.matches?.('html, body, .notion-app-inner');
     if (potentialThemeChange && document.hasFocus()) updateTheme();
   });
   updateTheme();
   document.addEventListener('visibilitychange', updateTheme);
+  document.addEventListener('focus', updateTheme);
 }
