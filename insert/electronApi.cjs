@@ -10,20 +10,31 @@ const os = require('os'),
   path = require('path'),
   fs = require('fs'),
   _cacheFile = path.resolve(`${os.homedir()}/.notion-enhancer`),
-  _fsQueue = [],
+  _fsQueue = new Set(),
   _onDbChangeListeners = [];
 
 // handle leftover cache from prev versions
 if (fs.existsSync(_cacheFile) && fs.lstatSync(_cacheFile).isDirectory()) {
   fs.rmdirSync(_cacheFile);
 }
-if (!fs.existsSync(_cacheFile)) fs.writeFileSync(_cacheFile, '{}', 'utf8');
 
 const isRenderer = process && process.type === 'renderer';
 
-const getData = () => {
+const getCache = async () => {
     try {
-      return JSON.parse(fs.readFileSync(_cacheFile));
+      return fs.readFileSync(_cacheFile);
+    } catch (err) {
+      await new Promise((res, rej) => setTimeout(res, 50));
+      return getCache();
+    }
+  },
+  getData = async () => {
+    if (!fs.existsSync(_cacheFile)) {
+      fs.writeFileSync(_cacheFile, '{}', 'utf8');
+      return {};
+    }
+    try {
+      return JSON.parse(await getCache());
     } catch (err) {
       return {};
     }
@@ -31,9 +42,10 @@ const getData = () => {
   saveData = (data) => fs.writeFileSync(_cacheFile, JSON.stringify(data));
 
 const db = {
-  get: (path, fallback = undefined) => {
+  get: async (path, fallback = undefined) => {
     if (!path.length) return fallback;
-    const values = getData();
+    while (_fsQueue.size) await new Promise(requestIdleCallback);
+    const values = await getData();
     let value = values;
     while (path.length) {
       if (value === undefined) {
@@ -42,38 +54,31 @@ const db = {
       }
       value = value[path.shift()];
     }
-    return Promise.resolve(value ?? fallback);
+    return value ?? fallback;
   },
-  set: (path, value) => {
+  set: async (path, value) => {
     if (!path.length) return undefined;
-    const precursor = _fsQueue[_fsQueue.length - 1] || undefined,
-      interaction = new Promise(async (res, rej) => {
-        if (precursor !== undefined) {
-          await precursor;
-          _fsQueue.shift();
-        }
-        const pathClone = [...path],
-          values = getData();
-        let pointer = values,
-          old;
-        while (path.length) {
-          const key = path.shift();
-          if (!path.length) {
-            old = pointer[key];
-            pointer[key] = value;
-            break;
-          }
-          pointer[key] = pointer[key] ?? {};
-          pointer = pointer[key];
-        }
-        saveData(values);
-        _onDbChangeListeners.forEach((listener) =>
-          listener({ path: pathClone, new: value, old })
-        );
-        res(value);
-      });
-    _fsQueue.push(interaction);
-    return interaction;
+    while (_fsQueue.size) await new Promise(requestIdleCallback);
+    const op = Symbol();
+    _fsQueue.add(op);
+    const pathClone = [...path],
+      values = await getData();
+    let pointer = values,
+      old;
+    while (path.length) {
+      const key = path.shift();
+      if (!path.length) {
+        old = pointer[key];
+        pointer[key] = value;
+        break;
+      }
+      pointer[key] = pointer[key] ?? {};
+      pointer = pointer[key];
+    }
+    saveData(values);
+    _onDbChangeListeners.forEach((listener) => listener({ path: pathClone, new: value, old }));
+    _fsQueue.delete(op);
+    return value;
   },
   addChangeListener: (callback) => {
     _onDbChangeListeners.push(callback);

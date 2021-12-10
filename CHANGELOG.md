@@ -42,6 +42,7 @@ a complete redesign & rewrite of the enhancer, with new features and a port to t
 - cli can now detect and apply to user-only installations on macOS.
 - moved the tray to its own configurable and enable/disable-able mod, with window management enhancements
   that follow more sensible defaults and work more reliably.
+- tabs will auto shrink/expand to take up available space instead of wrapping to a second line.
 
 #### removed
 

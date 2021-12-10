@@ -81,7 +81,7 @@ module.exports.focusNotion = () => {
 module.exports.reload = () => {
   const { app } = require('electron');
   app.relaunch({ args: process.argv.slice(1).filter((arg) => arg !== '--startup') });
-  app.exit(0);
+  app.quit();
 };
 
 module.exports.listen = () => {
