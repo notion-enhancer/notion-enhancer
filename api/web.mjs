@@ -26,17 +26,18 @@ let _hotkeyListenersActivated = false,
  */
 export const whenReady = (selectors = []) => {
   return new Promise((res, rej) => {
-    function onLoad() {
-      let isReadyInt;
-      isReadyInt = setInterval(isReadyTest, 100);
-      function isReadyTest() {
-        if (selectors.every((selector) => document.querySelector(selector))) {
-          clearInterval(isReadyInt);
-          res(true);
-        }
+    const onLoad = () => {
+      const interval = setInterval(isReady, 100);
+      function isReady() {
+        const ready =
+          document.hasFocus() &&
+          selectors.every((selector) => document.querySelector(selector));
+        if (!ready) return;
+        clearInterval(interval);
+        res(true);
       }
-      isReadyTest();
-    }
+      isReady();
+    };
     if (document.readyState !== 'complete') {
       document.addEventListener('readystatechange', (event) => {
         if (document.readyState === 'complete') onLoad();
@@ -169,7 +170,7 @@ export const readFromClipboard = () => {
 
 const triggerHotkeyListener = (event, hotkey) => {
   const inInput = document.activeElement.nodeName === 'INPUT' && !hotkey.listenInInput;
-  if (inInput) return;
+  if (inInput || !document.hasFocus()) return;
   const pressed = hotkey.keys.every((key) => {
     key = key.toLowerCase();
     const modifiers = {
@@ -261,7 +262,7 @@ export const addDocumentObserver = (callback, selectors = []) => {
       }
     };
     _documentObserver = new MutationObserver((list, observer) => {
-      if (!_documentObserverEvents.length)
+      if (!_documentObserverEvents.length && document.hasFocus())
         requestIdleCallback(() => handle(_documentObserverEvents));
       _documentObserverEvents.push(...list);
     });
