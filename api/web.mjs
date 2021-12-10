@@ -29,9 +29,7 @@ export const whenReady = (selectors = []) => {
     const onLoad = () => {
       const interval = setInterval(isReady, 100);
       function isReady() {
-        const ready =
-          document.hasFocus() &&
-          selectors.every((selector) => document.querySelector(selector));
+        const ready = selectors.every((selector) => document.querySelector(selector));
         if (!ready) return;
         clearInterval(interval);
         res(true);
@@ -170,7 +168,7 @@ export const readFromClipboard = () => {
 
 const triggerHotkeyListener = (event, hotkey) => {
   const inInput = document.activeElement.nodeName === 'INPUT' && !hotkey.listenInInput;
-  if (inInput || !document.hasFocus()) return;
+  if (inInput) return;
   const pressed = hotkey.keys.every((key) => {
     key = key.toLowerCase();
     const modifiers = {
@@ -262,7 +260,7 @@ export const addDocumentObserver = (callback, selectors = []) => {
       }
     };
     _documentObserver = new MutationObserver((list, observer) => {
-      if (!_documentObserverEvents.length && document.hasFocus())
+      if (!_documentObserverEvents.length)
         requestIdleCallback(() => handle(_documentObserverEvents));
       _documentObserverEvents.push(...list);
     });
