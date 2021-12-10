@@ -15,14 +15,6 @@ import { createWindowButtons } from './buttons.mjs';
     windowActionsSelector = '#window-actions';
 
   await web.whenReady([windowActionsSelector]);
-  // const $tabs = document.querySelector(topbarActionsSelector),
-  //   $dragarea = web.html`<div class="integrated_titlebar--dragarea"></div>`;
-  // $tabs.prepend($dragarea);
-  // document.documentElement.style.setProperty(
-  //   '--integrated_titlebar--dragarea-height',
-  //   dragareaHeight + 'px'
-  // );
-
   const $topbarActions = document.querySelector(windowActionsSelector),
     $windowButtons = await createWindowButtons(api, db);
   web.render($topbarActions, $windowButtons);

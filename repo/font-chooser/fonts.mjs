@@ -1,6 +1,6 @@
 /**
  * notion-enhancer: font chooser
- * (c) 2021 TorchAtlas (https://bit.ly/torchatlas/)
+ * (c) 2021 TorchAtlas (https://github.com/torchatlas/)
  * (c) 2021 admiraldus (https://github.com/admiraldus
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license

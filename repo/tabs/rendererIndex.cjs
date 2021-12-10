@@ -15,6 +15,8 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, __export
   let focusedTab, xIcon;
   const tabCache = new Map();
   class Tab {
+    id = fmt.uuidv4();
+
     $notion = web.html`
       <webview class="notion-webview" partition="persist:notion"
         preload="file://${fs.notionPath('renderer/preload.js')}"
@@ -29,16 +31,29 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, __export
       ></webview>
     `;
 
-    $tabTitle = web.html`<span class="tab-title">v0.11.0 plan v0.11.0 plan v0.11.0 plan v0.11.0 plan</span>`;
+    $tabIcon = web.html`<span class="tab-icon"></span>`;
+    $tabTitle = web.html`<span class="tab-title"></span>`;
     $closeTab = web.html`<span class="tab-close">${xIcon}</span>`;
     $tab = web.render(
-      web.html`<div class="tab" draggable="true" id="${fmt.uuidv4()}"></div>`,
+      web.html`<div class="tab" draggable="true" id="${this.id}"></div>`,
+      this.$tabIcon,
       this.$tabTitle,
       this.$closeTab
     );
 
-    constructor($tabs, $root, notionUrl = 'notion://www.notion.so/') {
+    constructor(
+      $tabs,
+      $root,
+      {
+        notionUrl = 'notion://www.notion.so/',
+        cancelAnimation = false,
+        icon = '',
+        title = 'notion.so',
+      } = {}
+    ) {
       this.$notion.src = notionUrl;
+      this.$tabTitle.innerText = title;
+      this.setIcon(icon);
       tabCache.set(this.$tab.id, this);
 
       web.render($tabs, this.$tab);
@@ -50,21 +65,23 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, __export
 
       this.$tab.addEventListener('click', (event) => {
         if (event.target !== this.$closeTab && !this.$closeTab.contains(event.target)) {
-          this.focusTab();
+          this.focus();
         }
       });
-      this.$closeTab.addEventListener('click', () => this.closeTab());
+      this.$closeTab.addEventListener('click', () => this.close());
 
-      this.focusTab();
-      this.$tab.animate([{ width: '0px' }, { width: `${this.$tab.clientWidth}px` }], {
-        duration: 100,
-        easing: 'ease-in',
-      }).finished;
-      this.listenToNotion();
+      if (!cancelAnimation) {
+        this.$tab.animate([{ width: '0px' }, { width: `${this.$tab.clientWidth}px` }], {
+          duration: 100,
+          easing: 'ease-in',
+        }).finished;
+      }
+      this.focus();
+      this.addNotionListeners();
       return this;
     }
 
-    async focusTab() {
+    async focus() {
       document.querySelectorAll('.notion-webview, .search-webview').forEach(($webview) => {
         if (![this.$notion, this.$search].includes($webview)) $webview.style.display = '';
       });
@@ -77,9 +94,10 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, __export
       this.focusNotion();
       focusedTab = this;
     }
-    async closeTab() {
+    async close() {
       const $sibling = this.$tab.nextElementSibling || this.$tab.previousElementSibling;
       if ($sibling) {
+        if (!focusedTab || focusedTab === this) $sibling.click();
         const width = `${this.$tab.clientWidth}px`;
         this.$tab.style.width = 0;
         this.$tab.style.pointerEvents = 'none';
@@ -90,8 +108,19 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, __export
         this.$tab.remove();
         this.$notion.remove();
         this.$search.remove();
-        if (focusedTab === this) $sibling.click();
       } else electronWindow.close();
+    }
+
+    setIcon(icon) {
+      if (icon.startsWith('url(')) {
+        // img
+        this.$tabIcon.style.background = icon;
+        this.$tabIcon.innerText = '';
+      } else {
+        // unicode (native)
+        this.$tabIcon.innerText = icon;
+        this.$tabIcon.style.background = '';
+      }
     }
 
     webContents() {
@@ -101,6 +130,9 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, __export
       document.activeElement?.blur?.();
       this.$notion.blur();
       this.$notion.focus();
+      requestAnimationFrame(() => {
+        notionIpc.sendIndexToNotion(this.$notion, 'notion-enhancer:trigger-title-update');
+      });
     }
     focusSearch() {
       document.activeElement?.blur?.();
@@ -108,7 +140,7 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, __export
       this.$search.focus();
     }
 
-    listenToNotion() {
+    addNotionListeners() {
       const fromNotion = (channel, listener) =>
           notionIpc.receiveIndexFromNotion.addListener(this.$notion, channel, listener),
         fromSearch = (channel, listener) =>
@@ -149,6 +181,11 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, __export
       fromNotion('zoom', (zoomFactor) => {
         this.webContents().setZoomFactor(zoomFactor);
       });
+
+      fromNotion('notion-enhancer:set-tab-title', (title) => {
+        this.$tabTitle.innerText = title;
+      });
+      fromNotion('notion-enhancer:set-tab-icon', (icon) => this.setIcon(icon));
     }
 
     #firstQuery = true;
@@ -194,65 +231,90 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, __export
     document.body.prepend(web.render($header, $tabs, $newTab, $windowActions));
     xIcon = await components.feather('x');
 
+    $newTab.addEventListener('click', () => {
+      new Tab($tabs, $root);
+    });
+    electron.ipcRenderer.on('notion-enhancer:close-tab', (event, id) => {
+      const tab = tabCache.get(id);
+      if (tab) tab.close();
+    });
+
+    new Tab($tabs, $root, {
+      notionUrl: url.parse(window.location.href, true).query.path,
+      cancelAnimation: true,
+    });
+
     let $draggedTab;
     const getDragTarget = ($el) => {
         while (!$el.matches('.tab, header, body')) $el = $el.parentElement;
         if ($el.matches('header')) $el = $el.firstElementChild;
         return $el.matches('#tabs, .tab') ? $el : undefined;
       },
-      resetTabs = () => {
+      clearDragStatus = () => {
         document
           .querySelectorAll('.dragged-over')
           .forEach(($el) => $el.classList.remove('dragged-over'));
+      },
+      resetDraggedTabs = () => {
+        if ($draggedTab) {
+          clearDragStatus();
+          $draggedTab.style.opacity = '';
+          $draggedTab = undefined;
+        }
       };
     $header.addEventListener('dragstart', (event) => {
       $draggedTab = getDragTarget(event.target);
       $draggedTab.style.opacity = 0.5;
+      const tab = tabCache.get($draggedTab.id);
       event.dataTransfer.setData(
         'text',
         JSON.stringify({
           window: electronWindow.webContents.id,
           tab: $draggedTab.id,
-          title: $draggedTab.children[0].innerText,
-          url: tabCache.get($draggedTab.id).$notion.src,
+          icon: tab.$tabIcon.innerText || tab.$tabIcon.style.background,
+          title: tab.$tabTitle.innerText,
+          url: tab.$notion.src,
         })
       );
     });
     $header.addEventListener('dragover', (event) => {
       const $target = getDragTarget(event.target);
       if ($target) {
-        resetTabs();
+        clearDragStatus();
         $target.classList.add('dragged-over');
         event.preventDefault();
       }
     });
-    $header.addEventListener('dragend', (event) => {
-      resetTabs();
-      $draggedTab.style.opacity = '';
-      $draggedTab = undefined;
-    });
     document.addEventListener('drop', (event) => {
       const eventData = JSON.parse(event.dataTransfer.getData('text')),
+        $target = getDragTarget(event.target) || $tabs,
         sameWindow = eventData.window === electronWindow.webContents.id,
-        $target = getDragTarget(event.target),
-        movement =
-          $target &&
-          (!sameWindow ||
-            ($target !== $draggedTab &&
-              $target !== $draggedTab.nextElementSibling &&
-              ($target.matches('#tabs') ? $target.lastElementChild !== $draggedTab : true)));
-      if (movement) {
-        if (sameWindow) {
-          if ($target.matches('#tabs')) {
-            $target.append($draggedTab);
-          } else $target.before($draggedTab);
-        }
+        tabMovement =
+          !sameWindow ||
+          ($target &&
+            $target !== $draggedTab &&
+            $target !== $draggedTab.nextElementSibling &&
+            ($target.matches('#tabs') ? $target.lastElementChild !== $draggedTab : true));
+      if (!sameWindow) {
+        electron.ipcRenderer.send('notion-enhancer:close-tab', {
+          window: eventData.window,
+          id: eventData.tab,
+        });
+        const transferred = new Tab($tabs, $root, {
+          notionUrl: eventData.url,
+          cancelAnimation: true,
+          icon: eventData.icon,
+          title: eventData.title,
+        });
+        $draggedTab = transferred.$tab;
       }
+      if (tabMovement) {
+        if ($target.matches('#tabs')) {
+          $target.append($draggedTab);
+        } else $target.before($draggedTab);
+      }
+      resetDraggedTabs();
     });
-
-    $newTab.addEventListener('click', () => {
-      new Tab($tabs, $root, url.parse(window.location.href, true).query.path);
-    });
-    $newTab.click();
+    $header.addEventListener('dragend', (event) => resetDraggedTabs());
   };
 };

@@ -42,6 +42,7 @@ header {
   display: flex;
   flex-grow: 1;
   flex-shrink: 1;
+  width: 14em;
   max-width: 14em;
   overflow: hidden;
   padding: 6.4px 9.6px 6.4px 9.6px;
@@ -54,6 +55,16 @@ header {
   border: none;
   border-bottom: 3px solid var(--theme--ui_divider);
   -webkit-app-region: no-drag;
+}
+.tab .tab-icon {
+  font-size: 14px;
+  margin-right: 6px;
+}
+.tab .tab-icon[style*='background'] {
+  width: 14px;
+  height: 14px;
+  align-self: center;
+  margin-right: 8px;
 }
 .tab .tab-title {
   white-space: nowrap;

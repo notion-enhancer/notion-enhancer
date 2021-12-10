@@ -17,7 +17,11 @@
     "frame": ["tabs.css"]
   },
   "js": {
-    "electron": [{ "source": "rendererIndex.cjs", "target": "renderer/index.js" }]
+    "client": ["client.mjs"],
+    "electron": [
+      { "source": "main.cjs", "target": "main/main.js" },
+      { "source": "rendererIndex.cjs", "target": "renderer/index.js" }
+    ]
   },
   "options": [
     {
