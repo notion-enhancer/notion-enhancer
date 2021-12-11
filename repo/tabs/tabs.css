@@ -46,7 +46,7 @@ header {
   width: 14em;
   max-width: 14em;
   overflow: hidden;
-  padding: 0.4em 0.6em 0.4em 0.6em;
+  padding: 0.4em 0.6em;
 
   color: var(--theme--text_secondary);
   background: var(--theme--bg);
@@ -61,26 +61,28 @@ header {
 .tab.current {
   background: var(--theme--ui_interactive-active);
 }
-#tabs.dragged-over {
-  box-shadow: 2px 0 0 0 var(--theme--accent_blue-selection);
-}
-.tab.dragged-over {
-  box-shadow: inset 2px 0 0 0 var(--theme--accent_blue-selection);
+
+.drag-indicator {
+  z-index: 1;
+  width: 0.125em;
+  margin: 0 -0.0625em;
+  background: var(--theme--accent_blue-selection);
 }
 
 .tab-title {
   white-space: nowrap;
   overflow: hidden;
+  margin-right: 0.25em;
 }
 .tab-icon {
-  font-size: 0.875em;
   margin-right: 0.375em;
+  flex-shrink: 0;
 }
 .tab-icon[style*='background'] {
   width: 0.875em;
   height: 0.875em;
   align-self: center;
-  margin: 0 0.5em 2px 0;
+  margin-right: 0.5em;
 }
 .tab-icon:not([style*='background']):empty,
 .tab-icon + svg {
@@ -88,6 +90,7 @@ header {
 }
 .tab-icon:not([style*='background']):empty + svg {
   /* placeholder icon */
+  flex-shrink: 0;
   display: inline-block;
   margin: 1px 0.5em 0 0;
   width: 1.125em;
@@ -110,9 +113,9 @@ header {
   width: 1.25em;
   padding: 0 0.25px 0 0;
 
+  align-self: center;
   border: none;
   background: transparent;
-  font-size: 0.875em;
   -webkit-app-region: no-drag;
 }
 .new-tab svg,
@@ -134,7 +137,6 @@ header {
 }
 
 .new-tab {
-  align-self: center;
   margin: 0 3em 0 0.375em;
 }
 .tab-close {
@@ -165,8 +167,17 @@ header {
 [data-tab-style='traditional tabbed'] .new-tab {
   margin-bottom: -0.25em;
 }
+[data-tab-style='rectangular'] .tab-close,
+[data-tab-style='traditional tabbed'] .tab-close {
+  align-self: auto;
+}
+[data-tab-style='rectangular'] .drag-indicator,
+[data-tab-style='traditional tabbed'] .drag-indicator,
 [data-tab-style='rectangular'] #tabs {
   margin-bottom: -0.5em;
+}
+[data-tab-style='rectangular'] .tab {
+  padding: 0.6em 0.6em 0.8em 0.6em;
 }
 [data-tab-style='traditional tabbed'] header {
   padding-top: 0.6875em;
@@ -177,7 +188,7 @@ header {
 [data-tab-style='traditional tabbed'] .tab {
   border-top-left-radius: 0.875em;
   border-top-right-radius: 0.875em;
-  padding: 0.6em 0.6em 0.4em 0.6em;
+  padding: 0.6em;
 }
 [data-tab-style='bubble'] .tab {
   border-radius: 0.375em;
@@ -185,12 +196,15 @@ header {
 [data-tab-style='bubble'] .tab:not(:first-child) {
   margin-left: 0.5em;
 }
+[data-tab-style='bubble'] .drag-indicator {
+  margin: 0 -0.3125em 0 0.1875em;
+}
+[data-tab-style='bubble'] .drag-indicator:first-child {
+  margin: 0 0.187em 0 -0.312em;
+}
 [data-tab-style='compact'] header {
   padding: 0;
   font-size: 14px;
-}
-[data-tab-style='compact'] .tab-close {
-  align-self: center;
 }
 [data-tab-style='compact'] #window-actions {
   transform: scale(0.8);

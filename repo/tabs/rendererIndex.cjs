@@ -29,28 +29,26 @@ module.exports = async function (api, db, __exports, __eval) {
       notionUrl: url.parse(window.location.href, true).query.path,
       cancelAnimation: true,
     });
-    $newTab.addEventListener('click', () => {
-      new Tab($tabs, $root);
-    });
+    $newTab.addEventListener('click', () => new Tab($tabs, $root));
     electron.ipcRenderer.on('notion-enhancer:close-tab', (event, id) => {
       const tab = tabCache.get(id);
       if (tab) tab.close();
     });
+    electron.ipcRenderer.on(
+      'notion-enhancer:open-tab',
+      (event, opts) => new Tab($tabs, $root, opts)
+    );
 
     let $draggedTab;
-    const getDragTarget = ($el) => {
+    const $dragIndicator = web.html`<span class="drag-indicator"></span>`,
+      getDragTarget = ($el) => {
         while (!$el.matches('.tab, header, body')) $el = $el.parentElement;
         if ($el.matches('header')) $el = $el.firstElementChild;
         return $el.matches('#tabs, .tab') ? $el : undefined;
       },
-      clearDragStatus = () => {
-        document
-          .querySelectorAll('.dragged-over')
-          .forEach(($el) => $el.classList.remove('dragged-over'));
-      },
       resetDraggedTabs = () => {
         if ($draggedTab) {
-          clearDragStatus();
+          $dragIndicator.remove();
           $draggedTab.style.opacity = '';
           $draggedTab = undefined;
         }
@@ -73,8 +71,11 @@ module.exports = async function (api, db, __exports, __eval) {
     $header.addEventListener('dragover', (event) => {
       const $target = getDragTarget(event.target);
       if ($target) {
-        clearDragStatus();
-        $target.classList.add('dragged-over');
+        if ($target.matches('#tabs')) {
+          $target.after($dragIndicator);
+        } else if ($target.matches('#tabs > :first-child')) {
+          $tabs.before($dragIndicator);
+        } else $target.before($dragIndicator);
         event.preventDefault();
       }
     });

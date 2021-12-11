@@ -20,6 +20,7 @@
     "client": ["client.mjs"],
     "electron": [
       { "source": "main.cjs", "target": "main/main.js" },
+      { "source": "systemMenu.cjs", "target": "main/systemMenu.js" },
       { "source": "rendererIndex.cjs", "target": "renderer/index.js" }
     ]
   },
@@ -40,7 +41,7 @@
       "type": "select",
       "key": "select_modifier",
       "label": "tab select modifier",
-      "tooltip": "**usage: Modifier+1 to Modifier+9, Modifier+ArrowLeft, Modifier+ArrowRight and Modifier+ link click**",
+      "tooltip": "**usage: Modifier+1 to Modifier+9, Modifier+ArrowLeft and Modifier+ArrowRight**",
       "values": [
         "Alt",
         "Command",

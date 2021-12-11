@@ -7,6 +7,17 @@
 'use strict';
 
 export default async function ({ web, electron }, db) {
+  const newTabHotkey = await db.get(['new_tab']),
+    closeTabHotkey = await db.get(['close_tab']),
+    selectTabModifier = await db.get(['select_modifier']);
+  web.addHotkeyListener(newTabHotkey, () => electron.sendMessageToHost('new-tab'));
+  web.addHotkeyListener(closeTabHotkey, () => electron.sendMessageToHost('close-tab'));
+  for (let i = 1; i < 10; i++) {
+    web.addHotkeyListener([selectTabModifier, i.toString()], () => {
+      electron.sendMessageToHost('select-tab', i);
+    });
+  }
+
   const breadcrumbSelector =
       '.notion-topbar > div > :nth-child(2) > .notion-focusable:last-child',
     imgIconSelector = `${breadcrumbSelector} .notion-record-icon img`,

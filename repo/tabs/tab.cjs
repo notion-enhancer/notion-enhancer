@@ -48,8 +48,8 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, tabCache
     );
 
     constructor(
-      $tabs,
-      $root,
+      $tabList,
+      $tabContainer,
       {
         notionUrl = 'notion://www.notion.so/',
         cancelAnimation = false,
@@ -57,14 +57,17 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, tabCache
         title = 'notion.so',
       } = {}
     ) {
+      this.$tabList = $tabList;
+      this.$tabContainer = $tabContainer;
+
       this.$notion.src = notionUrl;
       this.$tabTitle.innerText = title;
       this.setIcon(icon);
       tabCache.set(this.$tab.id, this);
 
-      web.render($tabs, this.$tab);
-      web.render($root, this.$search);
-      web.render($root, this.$notion);
+      web.render($tabList, this.$tab);
+      web.render($tabContainer, this.$search);
+      web.render($tabContainer, this.$notion);
       electronWindow.on('focus', () => {
         if (focusedTab === this) this.$notion.focus();
       });
@@ -192,6 +195,16 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, tabCache
         this.$tabTitle.innerText = title;
       });
       fromNotion('notion-enhancer:set-tab-icon', (icon) => this.setIcon(icon));
+
+      fromNotion(
+        'notion-enhancer:new-tab',
+        () => new this.constructor(this.$tabList, this.$tabContainer)
+      );
+      fromNotion('notion-enhancer:close-tab', () => this.close());
+      fromNotion('notion-enhancer:select-tab', (i) => {
+        const $tab = i === 9 ? this.$tabList.lastElementChild : this.$tabList.children[i - 1];
+        if ($tab) $tab.click();
+      });
     }
 
     #firstQuery = true;
