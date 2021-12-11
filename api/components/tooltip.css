@@ -20,7 +20,6 @@
   position: absolute;
   z-index: 999999999999999999;
   pointer-events: none;
-  text-align: center;
 }
 #enhancer--tooltip p {
   margin: 0;

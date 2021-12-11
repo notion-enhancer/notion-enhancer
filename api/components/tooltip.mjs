@@ -44,6 +44,7 @@ const countLines = ($el) =>
         x += window.innerWidth - x > x ? pad : -pad;
         _$tooltip.style.left = `${x}px`;
       }
+      _$tooltip.style.textAlign = 'center';
     }
 
     if (['left', 'right'].includes(offsetDirection)) {
@@ -52,6 +53,7 @@ const countLines = ($el) =>
       if (offsetDirection === 'right') x += rect.width + pad;
       _$tooltip.style.left = `${x}px`;
       _$tooltip.style.top = `${y}px`;
+      _$tooltip.style.textAlign = 'auto';
     }
 
     return true;
