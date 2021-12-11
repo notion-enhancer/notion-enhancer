@@ -18,6 +18,8 @@ a complete redesign & rewrite of the enhancer, with new features and a port to t
 - an icon sets option to encode images to data urls to prevent quality reduction.
 - customisation of integrated titlebar & always on top window buttons.
 - an open on startup option under the tray mod.
+- optional icon or title-only tab labels.
+- choice of tab layout styles: traditional tabbed, traditional, bubble and compact.
 
 #### improved
 
