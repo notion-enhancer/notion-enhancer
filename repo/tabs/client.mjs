@@ -6,14 +6,17 @@
 
 'use strict';
 
-export default async function ({ electron }, db) {
+export default async function ({ web, electron }, db) {
+  const breadcrumbSelector =
+      '.notion-topbar > div > :nth-child(2) > .notion-focusable:last-child',
+    imgIconSelector = `${breadcrumbSelector} .notion-record-icon img`,
+    nativeIconSelector = `${breadcrumbSelector} .notion-record-icon [role="image"]`,
+    titleSelector = `${breadcrumbSelector} > :not(.notion-record-icon)`,
+    viewSelector = '.notion-collection-view-select';
+
   let title = '',
     icon = '';
   const notionSetWindowTitle = __electronApi.setWindowTitle,
-    imgIconSelector =
-      '.notion-topbar > div > :nth-child(2) > .notion-focusable:last-child .notion-record-icon img',
-    nativeIconSelector =
-      '.notion-topbar > div > :nth-child(2) > .notion-focusable:last-child .notion-record-icon [role="image"]',
     getIcon = () => {
       const $imgIcon = document.querySelector(imgIconSelector),
         $nativeIcon = document.querySelector(nativeIconSelector);
@@ -37,4 +40,13 @@ export default async function ({ electron }, db) {
   __electronApi.setWindowTitle = (newTitle) => updateTitle(newTitle);
   document.addEventListener('focus', updateTitle);
   electron.onMessage('trigger-title-update', () => updateTitle());
+
+  await web.whenReady([titleSelector]);
+  const $title = document.querySelector(titleSelector),
+    $view = document.querySelector(viewSelector);
+  if (!title && $title) {
+    if ($view) {
+      updateTitle(`${$title.innerText} | ${$view.innerText}`);
+    } else updateTitle($title.innerText);
+  }
 }

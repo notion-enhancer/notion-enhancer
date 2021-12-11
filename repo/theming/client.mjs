@@ -17,6 +17,7 @@ export default async function ({ web, registry, storage, electron }, db) {
   }
 
   const updateTheme = async () => {
+    if (document.visibilityState !== 'visible' && !document.hasFocus()) return;
     const isDark =
         document.querySelector('.notion-dark-theme') ||
         document.querySelector('.notion-body.dark'),
