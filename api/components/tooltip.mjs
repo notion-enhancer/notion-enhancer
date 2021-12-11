@@ -53,7 +53,7 @@ const countLines = ($el) =>
       if (offsetDirection === 'right') x += rect.width + pad;
       _$tooltip.style.left = `${x}px`;
       _$tooltip.style.top = `${y}px`;
-      _$tooltip.style.textAlign = 'auto';
+      _$tooltip.style.textAlign = 'start';
     }
 
     return true;
