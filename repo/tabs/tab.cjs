@@ -8,7 +8,7 @@
 
 let focusedTab;
 
-module.exports = async function ({ components, env, web, fmt, fs }, db, tabCache) {
+module.exports = async function ({ components, env, web, fmt, fs }, db, tabCache = new Map()) {
   const electron = require('electron'),
     electronWindow = electron.remote.getCurrentWindow(),
     notionIpc = env.notionRequire('helpers/notionIpc'),
@@ -55,23 +55,21 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, tabCache
         cancelAnimation = false,
         icon = '',
         title = 'notion.so',
+        cache = tabCache,
       } = {}
     ) {
+      this.tabCache = cache;
       this.$tabList = $tabList;
       this.$tabContainer = $tabContainer;
 
       this.$notion.src = notionUrl;
       this.$tabTitle.innerText = title;
       this.setIcon(icon);
-      tabCache.set(this.$tab.id, this);
+      this.tabCache.set(this.$tab.id, this);
 
-      web.render($tabList, this.$tab);
-      web.render($tabContainer, this.$search);
-      web.render($tabContainer, this.$notion);
       electronWindow.on('focus', () => {
         if (focusedTab === this) this.$notion.focus();
       });
-
       this.$tab.addEventListener('click', (event) => {
         if (event.target !== this.$closeTab && !this.$closeTab.contains(event.target)) {
           this.focus();
@@ -79,6 +77,16 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, tabCache
       });
       this.$closeTab.addEventListener('click', () => this.close());
 
+      this.open(cancelAnimation);
+      this.addNotionListeners();
+      return this;
+    }
+
+    open(cancelAnimation = false) {
+      this.closed = false;
+      web.render(this.$tabList, this.$tab);
+      web.render(this.$tabContainer, this.$search);
+      web.render(this.$tabContainer, this.$notion);
       if (!cancelAnimation) {
         this.$tab.animate([{ width: '0px' }, { width: `${this.$tab.clientWidth}px` }], {
           duration: 100,
@@ -86,10 +94,7 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, tabCache
         }).finished;
       }
       this.focus();
-      this.addNotionListeners();
-      return this;
     }
-
     async focus() {
       document.querySelectorAll('.notion-webview, .search-webview').forEach(($webview) => {
         if (![this.$notion, this.$search].includes($webview)) $webview.style.display = '';
@@ -100,12 +105,13 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, tabCache
       this.$tab.classList.add('current');
       this.$notion.style.display = 'flex';
       this.$search.style.display = 'flex';
-      this.focusNotion();
+      if (this.domReady) this.focusNotion();
       focusedTab = this;
     }
     async close() {
       const $sibling = this.$tab.nextElementSibling || this.$tab.previousElementSibling;
       if ($sibling) {
+        this.closed = Date.now();
         if (!focusedTab || focusedTab === this) $sibling.click();
         const width = `${this.$tab.clientWidth}px`;
         this.$tab.style.width = 0;
@@ -117,6 +123,9 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, tabCache
         this.$tab.remove();
         this.$notion.remove();
         this.$search.remove();
+        this.$tab.style.width = '';
+        this.$tab.style.pointerEvents = '';
+        this.domReady = false;
       } else electronWindow.close();
     }
 
@@ -149,6 +158,7 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, tabCache
       this.$search.focus();
     }
 
+    domReady = false;
     addNotionListeners() {
       const fromNotion = (channel, listener) =>
           notionIpc.receiveIndexFromNotion.addListener(this.$notion, channel, listener),
@@ -157,7 +167,8 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, tabCache
         toSearch = (channel, data) => notionIpc.sendIndexToSearch(this.$search, channel, data);
 
       this.$notion.addEventListener('dom-ready', () => {
-        this.focusNotion();
+        if (focusedTab === this) this.focus();
+        this.domReady = true;
 
         const navigateHistory = (event, cmd) => {
           const swipe = event === 'swipe',
@@ -201,6 +212,12 @@ module.exports = async function ({ components, env, web, fmt, fs }, db, tabCache
         () => new this.constructor(this.$tabList, this.$tabContainer)
       );
       fromNotion('notion-enhancer:close-tab', () => this.close());
+      fromNotion('notion-enhancer:restore-tab', () => {
+        const tab = [...this.tabCache.values()]
+          .filter((tab) => tab.closed)
+          .sort((a, b) => b.closed - a.closed)[0];
+        if (tab) tab.open();
+      });
       fromNotion('notion-enhancer:select-tab', (i) => {
         const $tab = i === 9 ? this.$tabList.lastElementChild : this.$tabList.children[i - 1];
         if ($tab) $tab.click();

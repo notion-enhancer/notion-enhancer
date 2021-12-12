@@ -9,8 +9,16 @@
 export default async function ({ web, electron }, db) {
   const newTabHotkey = await db.get(['new_tab']),
     closeTabHotkey = await db.get(['close_tab']),
+    restoreTabHotkey = await db.get(['restore_tab']),
     selectTabModifier = await db.get(['select_modifier']);
-  web.addHotkeyListener(newTabHotkey, () => electron.sendMessageToHost('new-tab'));
+  web.addHotkeyListener(newTabHotkey, () => {
+    electron.sendMessageToHost('new-tab');
+    console.log('new-tab');
+  });
+  web.addHotkeyListener(restoreTabHotkey, () => {
+    electron.sendMessageToHost('restore-tab');
+    console.log('restore-tab');
+  });
   web.addHotkeyListener(closeTabHotkey, () => electron.sendMessageToHost('close-tab'));
   for (let i = 1; i < 10; i++) {
     web.addHotkeyListener([selectTabModifier, i.toString()], () => {
