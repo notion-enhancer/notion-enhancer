@@ -272,7 +272,7 @@ function css() {
     notCallout = ":not([style*='border-radius'])",
     notBoardCard = ":not([style*='box-shadow'])",
     isTag =
-      "[style*='border-radius: 3px; padding-left: 6px; padding-right: 6px;'][style*='line-height: 120%;']";
+      "[style*='align-items: center;'][style*='border-radius: 3px; padding-left: 6px;'][style*='line-height: 120%;']";
   let css = '';
   for (const c in colors) {
     css += `
