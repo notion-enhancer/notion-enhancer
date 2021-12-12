@@ -8,10 +8,11 @@
 
 let focusedTab;
 
-module.exports = async function ({ components, env, web, fmt, fs }, db, tabCache = new Map()) {
-  const electron = require('electron'),
+module.exports = async function (api, db, tabCache = new Map()) {
+  const { components, web, fmt, fs } = api,
+    electron = require('electron'),
     electronWindow = electron.remote.getCurrentWindow(),
-    notionIpc = env.notionRequire('helpers/notionIpc'),
+    notionIpc = api.electron.notionRequire('helpers/notionIpc'),
     xIcon = await components.feather('x');
 
   return class Tab {

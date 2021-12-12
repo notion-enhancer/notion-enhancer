@@ -8,8 +8,9 @@
 
 let tray;
 
-module.exports = async function ({ env, registry }, db, __exports, __eval) {
-  const electron = require('electron'),
+module.exports = async function (api, db, __exports, __eval) {
+  const { env, registry } = api,
+    electron = require('electron'),
     path = require('path'),
     enhancerIcon = path.resolve(`${__dirname}/../../media/colour-x16.png`),
     hotkey = await db.get(['hotkey']),
@@ -47,7 +48,7 @@ module.exports = async function ({ env, registry }, db, __exports, __eval) {
   // since notion's default is broken by
   // duplicate window prevention
   const createWindow = () => {
-    const { createWindow } = env.notionRequire('main/createWindow.js');
+    const { createWindow } = api.electron.notionRequire('main/createWindow.js');
     createWindow('/');
   };
   electron.ipcMain.on('notion-enhancer:create-new-window', createWindow);

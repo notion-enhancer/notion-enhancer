@@ -6,9 +6,9 @@
 
 'use strict';
 
-module.exports = async function ({ env }, db, __exports, __eval) {
+module.exports = async function (api, db, __exports, __eval) {
   const electron = require('electron'),
-    urlHelpers = env.notionRequire('helpers/urlHelpers'),
+    urlHelpers = api.electron.notionRequire('helpers/urlHelpers'),
     runInBackground = await db.get(['run_in_background']);
   if (!runInBackground) return;
 
@@ -19,7 +19,7 @@ module.exports = async function ({ env }, db, __exports, __eval) {
 
   const notionCreateWindow = __exports.createWindow;
   __exports.createWindow = (relativeUrl = '', args) => {
-    const windows = electron.BrowserWindow.getAllWindows();
+    const windows = api.electron.getNotionWindows();
     if (windows.length) windows.forEach((win) => win.show());
 
     if (relativeUrl || !windows.length) {
@@ -44,14 +44,15 @@ module.exports = async function ({ env }, db, __exports, __eval) {
 
       return window;
     } else {
+      const window = api.electron.getFocusedNotionWindow() || windows[0];
       // prevents duplicate windows on dock/taskbar click
-      windows[0].focus();
+      window.focus();
       if (relativeUrl) {
         // handle requests passed via the notion:// protocol
         // or ctrl+click
-        windows[0].loadURL(urlHelpers.getIndexUrl(relativeUrl));
+        window.loadURL(urlHelpers.getIndexUrl(relativeUrl));
       }
-      return windows[0];
+      return window;
     }
   };
 };
