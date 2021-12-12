@@ -50,10 +50,6 @@ export const isFile = fs.isFile;
 /**
  * get an absolute path to files within notion
  * @param {string} path - relative to the root notion/resources/app/ e.g. renderer/search.js
- *
- * @env win32
- * @env linux
- * @env darwin
  * @runtime electron
  */
 export const notionPath = fs.notionPath;

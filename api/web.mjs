@@ -169,23 +169,35 @@ export const readFromClipboard = () => {
 const triggerHotkeyListener = (event, hotkey) => {
   const inInput = document.activeElement.nodeName === 'INPUT' && !hotkey.listenInInput;
   if (inInput) return;
-  const pressed = hotkey.keys.every((key) => {
-    key = key.toLowerCase();
-    const modifiers = {
+  const modifiers = {
       metaKey: ['meta', 'os', 'win', 'cmd', 'command'],
       ctrlKey: ['ctrl', 'control'],
       shiftKey: ['shift'],
       altKey: ['alt'],
-    };
-    for (const modifier in modifiers) {
-      const pressed = modifiers[modifier].includes(key) && event[modifier];
-      if (pressed) return true;
-    }
-    if (key === 'space') key = ' ';
-    if (key === 'plus') key = '+';
-    if (key === event.key.toLowerCase()) return true;
-  });
-  if (pressed) hotkey.callback(event);
+    },
+    pressed = hotkey.keys.every((key) => {
+      key = key.toLowerCase();
+      for (const modifier in modifiers) {
+        const pressed = modifiers[modifier].includes(key) && event[modifier];
+        if (pressed) {
+          // mark modifier as part of hotkey
+          modifiers[modifier] = [];
+          return true;
+        }
+      }
+      if (key === 'space') key = ' ';
+      if (key === 'plus') key = '+';
+      if (key === event.key.toLowerCase()) return true;
+    });
+  if (!pressed) return;
+  // test for modifiers not in hotkey
+  // e.g. to differentiate ctrl+x from ctrl+shift+x
+  for (const modifier in modifiers) {
+    const modifierPressed = event[modifier],
+      modifierNotInHotkey = modifiers[modifier].length > 0;
+    if (modifierPressed && modifierNotInHotkey) return;
+  }
+  hotkey.callback(event);
 };
 
 /**

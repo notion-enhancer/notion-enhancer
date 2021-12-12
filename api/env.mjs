@@ -44,14 +44,3 @@ export const focusNotion = env.focusNotion;
  * @type {function}
  */
 export const reload = env.reload;
-
-/**
- * require() notion app files
- * @param {string} path - within notion/resources/app/ e.g. main/createWindow.js
- *
- * @env win32
- * @env linux
- * @env darwin
- * @runtime electron
- */
-export const notionRequire = env.notionRequire;
