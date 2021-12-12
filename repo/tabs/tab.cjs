@@ -64,7 +64,7 @@ module.exports = async function (api, db, tabCache = new Map()) {
       this.$tabContainer = $tabContainer;
 
       this.$notion.src = notionUrl;
-      this.$tabTitle.innerText = title;
+      this.setTitle(title);
       this.setIcon(icon);
       this.tabCache.set(this.$tab.id, this);
 
@@ -130,7 +130,14 @@ module.exports = async function (api, db, tabCache = new Map()) {
       } else electronWindow.close();
     }
 
+    title = '';
+    setTitle(title) {
+      this.title = title;
+      this.$tabTitle.innerText = title;
+    }
+    icon = '';
     setIcon(icon) {
+      this.icon = icon;
       if (icon.startsWith('url(')) {
         // img
         this.$tabIcon.style.background = icon;
@@ -203,9 +210,7 @@ module.exports = async function (api, db, tabCache = new Map()) {
         this.webContents().setZoomFactor(zoomFactor);
       });
 
-      fromNotion('notion-enhancer:set-tab-title', (title) => {
-        this.$tabTitle.innerText = title;
-      });
+      fromNotion('notion-enhancer:set-tab-title', (title) => this.setTitle(title));
       fromNotion('notion-enhancer:set-tab-icon', (icon) => this.setIcon(icon));
 
       fromNotion(

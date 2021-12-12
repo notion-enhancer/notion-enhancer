@@ -28,10 +28,6 @@ module.exports = async function (api, db, __exports, __eval) {
       $windowActions = web.html`<div id="window-actions"></div>`;
     document.body.prepend(web.render($header, $tabs, $newTab, $windowActions));
 
-    new Tab($tabs, $root, {
-      notionUrl: url.parse(window.location.href, true).query.path,
-      cancelAnimation: true,
-    });
     $newTab.addEventListener('click', () => new Tab($tabs, $root));
     electron.ipcRenderer.on('notion-enhancer:close-tab', (event, id) => {
       const tab = tabCache.get(id);
@@ -41,6 +37,32 @@ module.exports = async function (api, db, __exports, __eval) {
       'notion-enhancer:open-tab',
       (event, opts) => new Tab($tabs, $root, opts)
     );
+
+    const rememberLastOpen = await db.get(['remember_last_open']),
+      openTabs = await db.get(['last_open_tabs_cache']);
+    if (rememberLastOpen && openTabs && Array.isArray(openTabs)) {
+      for (const tab of openTabs) {
+        new Tab($tabs, $root, { ...tab, cancelAnimation: true });
+      }
+    } else {
+      new Tab($tabs, $root, {
+        notionUrl: url.parse(window.location.href, true).query.path,
+        cancelAnimation: true,
+      });
+    }
+    window.addEventListener('beforeunload', () => {
+      const openTabs = [...$tabs.children]
+        .filter(($tab) => tabCache.get($tab.id))
+        .map(($tab) => {
+          const tab = tabCache.get($tab.id);
+          return {
+            notionUrl: tab.$notion.src,
+            icon: tab.icon,
+            title: tab.title,
+          };
+        });
+      db.set(['last_open_tabs_cache'], openTabs);
+    });
 
     let $draggedTab;
     const $dragIndicator = web.html`<span class="drag-indicator"></span>`,

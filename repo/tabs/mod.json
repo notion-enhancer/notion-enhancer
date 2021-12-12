@@ -27,6 +27,13 @@
   },
   "options": [
     {
+      "type": "toggle",
+      "key": "remember_last_open",
+      "label": "remember last open tabs",
+      "tooltip": "**a continue-where-you-left-off experience** (reopens recently active tabs after an app relaunch)",
+      "value": true
+    },
+    {
       "type": "select",
       "key": "label_type",
       "label": "tab labels",
