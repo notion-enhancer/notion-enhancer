@@ -11,6 +11,16 @@ module.exports = async function (target, __exports, __eval) {
   const api = require('notion-enhancer/api/index.cjs'),
     { registry } = api;
 
+  if (target === 'renderer/index') {
+    document.addEventListener('readystatechange', (event) => {
+      if (document.readyState !== 'complete') return false;
+      const script = document.createElement('script');
+      script.type = 'module';
+      script.src = api.fs.localPath('frame.mjs');
+      document.head.appendChild(script);
+    });
+  }
+
   if (target === 'renderer/preload') {
     document.addEventListener('readystatechange', (event) => {
       if (document.readyState !== 'complete') return false;
