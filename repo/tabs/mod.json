@@ -21,6 +21,7 @@
     "electron": [
       { "source": "main.cjs", "target": "main/main.js" },
       { "source": "systemMenu.cjs", "target": "main/systemMenu.js" },
+      { "source": "createWindow.cjs", "target": "main/createWindow.js" },
       { "source": "rendererIndex.cjs", "target": "renderer/index.js" }
     ]
   },

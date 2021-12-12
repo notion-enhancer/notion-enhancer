@@ -48,6 +48,7 @@ module.exports = async function ({ env }, db, __exports, __eval) {
       windows[0].focus();
       if (relativeUrl) {
         // handle requests passed via the notion:// protocol
+        // or ctrl+click
         windows[0].loadURL(urlHelpers.getIndexUrl(relativeUrl));
       }
       return windows[0];
