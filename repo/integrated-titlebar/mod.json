@@ -14,16 +14,15 @@
     }
   ],
   "css": {
+    "frame": ["buttons.css"],
     "client": ["buttons.css"],
     "menu": ["buttons.css"]
   },
   "js": {
+    "frame": ["frame.mjs"],
     "client": ["client.mjs"],
     "menu": ["menu.mjs"],
-    "electron": [
-      { "source": "createWindow.cjs", "target": "main/createWindow.js" },
-      { "source": "rendererIndex.cjs", "target": "renderer/index.js" }
-    ]
+    "electron": [{ "source": "createWindow.cjs", "target": "main/createWindow.js" }]
   },
   "options": [
     {

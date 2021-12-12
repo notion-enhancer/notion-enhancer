@@ -6,18 +6,21 @@
 
 'use strict';
 
-module.exports = async function ({ fs, web, registry }, db, __exports, __eval) {
-  const tilingMode = await db.get(['tiling']),
+import { createWindowButtons } from './buttons.mjs';
+
+export default async function (api, db) {
+  const { web, registry } = api,
+    tilingMode = await db.get(['tiling']),
     dragareaHeight = await db.get(['dragarea_height']),
     tabsEnabled = await registry.enabled('e1692c29-475e-437b-b7ff-3eee872e1a42');
 
   if (tabsEnabled && !tilingMode) {
-    await web.whenReady();
-    const script = document.createElement('script');
-    script.type = 'module';
-    script.src = fs.localPath('repo/integrated-titlebar/tabs.mjs');
-    document.head.appendChild(script);
-    web.loadStylesheet('repo/integrated-titlebar/buttons.css');
+    const windowActionsSelector = '#window-actions';
+    await web.whenReady([windowActionsSelector]);
+
+    const $topbarActions = document.querySelector(windowActionsSelector),
+      $windowButtons = await createWindowButtons(api, db);
+    web.render($topbarActions, $windowButtons);
   } else {
     const dragareaSelector = '[style*="-webkit-app-region: drag;"]';
     await web.whenReady([dragareaSelector]);
@@ -37,4 +40,4 @@ module.exports = async function ({ fs, web, registry }, db, __exports, __eval) {
       }
     });
   }
-};
+}

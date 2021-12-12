@@ -13,9 +13,11 @@
     }
   ],
   "css": {
+    "frame": ["tabs.css"],
     "client": ["client.css"]
   },
   "js": {
+    "frame": ["tabs.mjs"],
     "client": ["client.mjs"]
   },
   "options": [
@@ -25,6 +27,13 @@
       "label": "even padding",
       "tooltip": "matches the empty space at the top and sides of the frame with **extra padding at the bottom when the sidebar is hidden**",
       "value": true
+    },
+    {
+      "type": "toggle",
+      "key": "tabs",
+      "label": "hide tabs",
+      "tooltip": "makes the tab bar transparent unless hovered over",
+      "value": false
     }
   ]
 }

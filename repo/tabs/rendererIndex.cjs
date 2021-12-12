@@ -13,6 +13,9 @@ module.exports = async function (api, db, __exports, __eval) {
     { components, web } = api;
 
   window['__start'] = async () => {
+    // display:none; to prevent content flash while css loads
+    document.body.style.display = 'none';
+
     const tabCache = new Map(),
       Tab = await require('./tab.cjs')(api, db, tabCache);
     document.body.dataset.tabLabels = await db.get(['label_type']);

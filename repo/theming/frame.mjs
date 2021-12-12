@@ -6,7 +6,7 @@
 
 'use strict';
 
-module.exports = async function ({ registry, web, storage, electron }, db, __exports, __eval) {
+export default async function ({ web, storage, electron }, db) {
   await web.whenReady();
 
   const updateTheme = async () => {
@@ -16,10 +16,4 @@ module.exports = async function ({ registry, web, storage, electron }, db, __exp
   };
   electron.onMessage('update-theme', updateTheme);
   updateTheme();
-
-  for (const mod of await registry.list((mod) => registry.enabled(mod.id))) {
-    for (const sheet of mod.css?.frame || []) {
-      web.loadStylesheet(`repo/${mod._dir}/${sheet}`);
-    }
-  }
-};
+}
