@@ -69,11 +69,24 @@ module.exports.focusMenu = async () => {
   });
 };
 
+module.exports.getNotionWindows = () => {
+  const { BrowserWindow } = require('electron'),
+    windows = BrowserWindow.getAllWindows();
+  if (enhancerMenu) return windows.filter((win) => win.id !== enhancerMenu.id);
+  return windows;
+};
+
+module.exports.getFocusedNotionWindow = () => {
+  const { BrowserWindow } = require('electron'),
+    focusedWindow = BrowserWindow.getFocusedWindow();
+  if (enhancerMenu && focusedWindow && focusedWindow.id === enhancerMenu.id) return null;
+  return focusedWindow;
+};
+
 module.exports.focusNotion = () => {
-  const { env } = require('notion-enhancer/api/index.cjs'),
-    { BrowserWindow } = require('electron'),
-    { createWindow } = env.notionRequire('main/createWindow.js');
-  let window = BrowserWindow.getAllWindows().find((win) => win.id !== enhancerMenu.id);
+  const api = require('notion-enhancer/api/index.cjs'),
+    { createWindow } = api.electron.notionRequire('main/createWindow.js');
+  let window = module.exports.getFocusedNotionWindow() || module.exports.getNotionWindows()[0];
   if (!window) window = createWindow('/');
   window.show();
 };

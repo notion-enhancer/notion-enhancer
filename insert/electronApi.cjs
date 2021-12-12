@@ -133,5 +133,14 @@ globalThis.__enhancerElectronApi = {
     return reload();
   },
 
+  getNotionWindows: () => {
+    const { getNotionWindows } = require('notion-enhancer/worker.cjs');
+    return getNotionWindows();
+  },
+  getFocusedNotionWindow: () => {
+    const { getFocusedNotionWindow } = require('notion-enhancer/worker.cjs');
+    return getFocusedNotionWindow();
+  },
+
   ipcRenderer,
 };
