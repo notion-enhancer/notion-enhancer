@@ -32,7 +32,9 @@ export const localPath = (path) => `notion://www.notion.so/__notion-enhancer/${p
  * @returns {object} the json value of the requested file as a js object
  */
 export const getJSON = (path, opts = {}) => {
-  if (path.startsWith('http')) return fetch(path, opts).then((res) => res.json());
+  path = path.replace(/^https:\/\/www\.notion\.so\//, 'notion://www.notion.so/');
+  const networkPath = path.startsWith('http') || path.startsWith('notion://');
+  if (networkPath) return fetch(path, opts).then((res) => res.json());
   try {
     return globalThis.__enhancerElectronApi.nodeRequire(`notion-enhancer/${path}`);
   } catch (err) {
@@ -47,7 +49,9 @@ export const getJSON = (path, opts = {}) => {
  * @returns {string} the text content of the requested file
  */
 export const getText = (path, opts = {}) => {
-  if (path.startsWith('http')) return fetch(path, opts).then((res) => res.text());
+  path = path.replace(/^https:\/\/www\.notion\.so\//, 'notion://www.notion.so/');
+  const networkPath = path.startsWith('http') || path.startsWith('notion://');
+  if (networkPath) return fetch(path, opts).then((res) => res.text());
   try {
     const fs = globalThis.__enhancerElectronApi.nodeRequire('fs');
     return fs.readFileSync(notionPath(`notion-enhancer/${path}`));
