@@ -14,6 +14,13 @@
 import * as fs from '../env/fs.mjs';
 
 /**
+ * get an absolute path to files within notion
+ * @param {string} path - relative to the root notion/resources/app/ e.g. renderer/search.js
+ * @runtime electron
+ */
+export const notionPath = fs.notionPath;
+
+/**
  * transform a path relative to the enhancer root directory into an absolute path
  * @type {function}
  * @param {string} path - a url or within-the-enhancer filepath
@@ -46,10 +53,3 @@ export const getText = fs.getText;
  * @returns {boolean} whether or not the file exists
  */
 export const isFile = fs.isFile;
-
-/**
- * get an absolute path to files within notion
- * @param {string} path - relative to the root notion/resources/app/ e.g. renderer/search.js
- * @runtime electron
- */
-export const notionPath = fs.notionPath;
