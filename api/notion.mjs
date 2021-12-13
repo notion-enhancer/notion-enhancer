@@ -24,6 +24,30 @@ const standardiseUUID = (uuid) => {
 };
 
 /**
+ * unofficial content api: get a block by id
+ * (requires user to be signed in or content to be public).
+ * why not use the official api?
+ * 1. cors blocking prevents use on the client
+ * 2. the majority of blocks are still 'unsupported'
+ * @param {string} id - uuidv4 record id
+ * @param {string} [table] - record type (default: 'block').
+ * may also be 'collection', 'collection_view', 'space', 'notion_user', 'discussion', or 'comment'
+ * @returns {Promise<object>} record data. type definitions can be found here:
+ * https://github.com/NotionX/react-notion-x/tree/master/packages/notion-types/src
+ */
+export const get = async (id, table = 'block') => {
+  id = standardiseUUID(id);
+  const json = await fs.getJSON('https://www.notion.so/api/v3/getRecordValues', {
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({ requests: [{ table, id }] }),
+    method: 'POST',
+  });
+  return json?.results?.[0]?.value || json;
+};
+
+/**
  * get the id of the current user (requires user to be signed in)
  * @returns {string} uuidv4 user id
  */
@@ -47,30 +71,6 @@ let _spaceID;
 export const getSpaceID = async () => {
   if (!_spaceID) _spaceID = (await get(getPageID())).space_id;
   return _spaceID;
-};
-
-/**
- * unofficial content api: get a block by id
- * (requires user to be signed in or content to be public).
- * why not use the official api?
- * 1. cors blocking prevents use on the client
- * 2. the majority of blocks are still 'unsupported'
- * @param {string} id - uuidv4 record id
- * @param {string} [table] - record type (default: 'block').
- * may also be 'collection', 'collection_view', 'space', 'notion_user', 'discussion', or 'comment'
- * @returns {Promise<object>} record data. type definitions can be found here:
- * https://github.com/NotionX/react-notion-x/tree/master/packages/notion-types/src
- */
-export const get = async (id, table = 'block') => {
-  id = standardiseUUID(id);
-  const json = await fs.getJSON('https://www.notion.so/api/v3/getRecordValues', {
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ requests: [{ table, id }] }),
-    method: 'POST',
-  });
-  return json.results[0].value;
 };
 
 /**
