@@ -12,6 +12,13 @@
  */
 
 /**
+ * get an absolute path to files within notion
+ * @param {string} path - relative to the root notion/resources/app/ e.g. renderer/search.js
+ * @runtime electron
+ */
+export const notionPath = globalThis.__enhancerElectronApi.notionPath;
+
+/**
  * transform a path relative to the enhancer root directory into an absolute path
  * @param {string} path - a url or within-the-enhancer filepath
  * @returns {string} an absolute filepath
@@ -42,9 +49,8 @@ export const getJSON = (path, opts = {}) => {
 export const getText = (path, opts = {}) => {
   if (path.startsWith('http')) return fetch(path, opts).then((res) => res.text());
   try {
-    const fs = globalThis.__enhancerElectronApi.nodeRequire('fs'),
-      { resolve: resolvePath } = globalThis.__enhancerElectronApi.nodeRequire('path');
-    return fs.readFileSync(resolvePath(`${__dirname}/../../${path}`));
+    const fs = globalThis.__enhancerElectronApi.nodeRequire('fs');
+    return fs.readFileSync(notionPath(`notion-enhancer/${path}`));
   } catch (err) {
     return fetch(localPath(path), opts).then((res) => res.text());
   }
@@ -57,13 +63,12 @@ export const getText = (path, opts = {}) => {
  */
 export const isFile = async (path) => {
   try {
-    const fs = globalThis.__enhancerElectronApi.nodeRequire('fs'),
-      { resolve: resolvePath } = globalThis.__enhancerElectronApi.nodeRequire('path');
+    const fs = globalThis.__enhancerElectronApi.nodeRequire('fs');
     if (path.startsWith('http')) {
       await fetch(path);
     } else {
       try {
-        fs.existsSync(resolvePath(`${__dirname}/../../${path}`));
+        fs.existsSync(notionPath(`notion-enhancer/${path}`));
       } catch (err) {
         await fetch(localPath(path));
       }
@@ -73,10 +78,3 @@ export const isFile = async (path) => {
     return false;
   }
 };
-
-/**
- * get an absolute path to files within notion
- * @param {string} path - relative to the root notion/resources/app/ e.g. renderer/search.js
- * @runtime electron
- */
-export const notionPath = globalThis.__enhancerElectronApi.notionPath;

@@ -14,8 +14,8 @@ export default async function (filepath) {
   await fsp.writeFile(
     filepath,
     contents.replace(
-      /\}\nexports\.setupSystemMenu = setupSystemMenu;/g,
-      'return template;}\nexports.setupSystemMenu = setupSystemMenu;'
+      /electron_1\.Menu\.setApplicationMenu\(menu\);/g,
+      'electron_1.Menu.setApplicationMenu(menu); return template;'
     )
   );
   return true;

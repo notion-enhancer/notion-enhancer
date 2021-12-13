@@ -30,6 +30,15 @@ export default function (notionFolder = findNotion()) {
     executable: executable ? resolvePath(executable) : undefined,
     backup: backup ? resolvePath(backup) : undefined,
     cache: fs.existsSync(insertCache) ? insertCache : undefined,
+    installation: path.resolve(
+      resolvePath('.')
+        .split(path.sep)
+        .reduceRight((prev, val) => {
+          if (val.toLowerCase().includes('notion') || prev.toLowerCase().includes('notion'))
+            prev = `${val}/${prev}`;
+          return prev;
+        }, '')
+    ),
   };
   if (insert) {
     if (insertVersion === enhancerVersion) {

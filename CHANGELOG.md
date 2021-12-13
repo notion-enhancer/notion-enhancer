@@ -20,6 +20,9 @@ a complete redesign & rewrite of the enhancer, with new features and a port to t
 - an open on startup option under the tray mod.
 - optional icon or title-only tab labels.
 - choice of tab layout styles: traditional tabbed, traditional, bubble and compact.
+- a hotkey for reopening closed tabs.
+- an option to remember last open tabs for a continue-where-you-left-off experience
+  (recently active tabs are reopened after an app relaunch).
 
 #### improved
 
@@ -41,10 +44,12 @@ a complete redesign & rewrite of the enhancer, with new features and a port to t
   with an option to truncate timeline item titles.
 - renamed "notion icons" to "icon sets" with new support for uploading/reusing custom icons
   directly within the icon picker.
-- cli can now detect and apply to user-only installations on macOS.
 - moved the tray to its own configurable and enable/disable-able mod, with window management enhancements
   that follow more sensible defaults and work more reliably.
 - tabs will auto shrink/expand to take up available space instead of wrapping to a second line.
+- a visually revamped cli to more clearly and aesthetically communicate status and usage.
+- cli can now detect and apply to user-only installations on macOS.
+- a shortcut built into the cli to fix the "you do not have permission to open this app" error on macos.
 
 #### removed
 

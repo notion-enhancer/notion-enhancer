@@ -51,7 +51,7 @@ export default async function (
     asar.extractAll(status.executable, status.executable.replace(/\.asar$/, ''));
     s.stop();
   }
-  if (takeBackup) {
+  if (status.code === 0 && takeBackup) {
     s = spinner('  * backing up default app').loop();
     if (status.executable.endsWith('.asar')) {
       await fsp.rename(status.executable, status.executable + '.bak');
@@ -63,7 +63,7 @@ export default async function (
   }
 
   s = spinner('  * inserting enhancements').loop();
-  if (!(status.code === 2 && applyDevPatch)) {
+  if (status.code === 0) {
     const notionFiles = (await readDirDeep(status.executable))
       .map((file) => file.path)
       .filter((file) => file.endsWith('.js') && !file.includes('node_modules'));

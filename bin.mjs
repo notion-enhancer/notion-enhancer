@@ -16,6 +16,7 @@ import { line, options, log, help, args, lastSpinner } from './pkg/cli.mjs';
 import apply from './pkg/apply.mjs';
 import remove from './pkg/remove.mjs';
 import check from './pkg/check.mjs';
+import sign from './pkg/sign.mjs';
 
 const manifest = pkg(),
   opts = options({
@@ -36,6 +37,7 @@ const displayHelp = () => {
       ['apply', 'add enhancements to the notion app'],
       ['remove', 'return notion to its pre-enhanced/pre-modded state'],
       ['check, status', 'check the current state of the notion app'],
+      ['sign', '[macos only] fix the "you do not have permission to open this app" error'],
     ],
     options: [
       ['-y, --yes', 'skip prompts'],
@@ -72,22 +74,22 @@ function handleError(err) {
       stack = err.stack.split('\n');
     for (let i = 0; i < stack.length; i++) {
       const text = stack[i].replace(/^    /, '  ');
-      if (i > 1) {
-        strs.push('{grey ');
-        tags.push(text);
-        strs.push('}');
-        tags.push('');
-      } else if (i > 0) {
-        strs.push('');
-        tags.push(text);
-      } else {
+      if (i === 0) {
         const [type, msg] = text.split(/:((.+)|$)/);
         strs.push('{bold.red ');
         tags.push(type);
         strs.push(':} ');
         tags.push(msg);
+      } else {
+        strs.push('{grey ');
+        tags.push(text);
+        strs.push('}');
+        tags.push('');
       }
-      strs.push(i !== stack.length - 1 ? '\n' : '');
+      if (i !== stack.length - 1) {
+        strs.push('\n');
+        tags.push('');
+      }
     }
     log(strs, ...tags);
   } else {
@@ -131,6 +133,14 @@ try {
         line.forward(23);
         line.write(': ' + status.message + '\r\n');
       }
+      break;
+    }
+    case 'sign': {
+      log`{bold.rgb(245,245,245) [NOTION-ENHANCER] SIGN}`;
+      const res = await sign(notionPath);
+      if (res) {
+        log`{bold.rgb(245,245,245) SUCCESS} {green ✔}`;
+      } else log`{bold.rgb(245,245,245) CANCELLED} {red ✘}`;
       break;
     }
     default:
