@@ -21,7 +21,7 @@ export default async function ({ web, components }, db) {
         if ($tableTitle.scrollWidth > $tableTitle.clientWidth) {
           components.addTooltip(
             $tableTitle.parentElement.parentElement.parentElement,
-            web.html`<span>${web.escape($tableTitle.innerText)}</span>`,
+            web.html`<span><b>${web.escape($tableTitle.innerText)}</b></span>`,
             750
           );
           $elements.push($tableTitle);

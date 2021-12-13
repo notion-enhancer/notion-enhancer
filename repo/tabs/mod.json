@@ -4,6 +4,7 @@
   "environments": ["linux", "win32", "darwin"],
   "version": "0.3.0",
   "description": "open multiple notion pages in a single window.",
+  "preview": "tabs.jpg",
   "tags": ["extension", "app"],
   "authors": [
     {

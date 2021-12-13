@@ -30,7 +30,7 @@
       "type": "toggle",
       "key": "prevent_quality_reduction",
       "label": "prevent icon quality reduction",
-      "tooltip": "**this may break icons in widgets** - encodes and submits images as data urls to prevent notion from optimising them (reduces image quality by ~20%)",
+      "tooltip": "**this may break icons in widgets or be rejected by notion if images are too high quality** - encodes and submits images as data urls to prevent notion from optimising them (reduces image quality by ~20%)",
       "value": true
     },
     {

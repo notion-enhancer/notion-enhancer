@@ -23,7 +23,8 @@ export default async function (api, db) {
     panelWidth = '0px';
   const updateDragareaOffsets = () => {
     const $sidebar = document.querySelector(sidebarSelector),
-      newSidebarWidth = $sidebar.style.height === 'auto' ? '0px' : $sidebar.style.width,
+      newSidebarWidth =
+        !$sidebar || $sidebar.style.height === 'auto' ? '0px' : $sidebar.style.width,
       $panel = document.querySelector(panelSelector),
       newPanelWidth =
         $panel && $panel.dataset.enhancerPanelPinned === 'true'

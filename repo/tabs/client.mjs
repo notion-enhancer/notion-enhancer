@@ -28,7 +28,8 @@ export default async function ({ web, electron }, db) {
 
   const breadcrumbSelector =
       '.notion-topbar > div > :nth-child(2) > .notion-focusable:last-child',
-    imgIconSelector = `${breadcrumbSelector} .notion-record-icon img`,
+    imgIconSelector = `${breadcrumbSelector} .notion-record-icon img:not(.notion-emoji)`,
+    emojiIconSelector = `${breadcrumbSelector} .notion-record-icon img.notion-emoji`,
     nativeIconSelector = `${breadcrumbSelector} .notion-record-icon [role="image"]`,
     titleSelector = `${breadcrumbSelector} > :not(.notion-record-icon)`,
     viewSelector = '.notion-collection-view-select';
@@ -38,9 +39,13 @@ export default async function ({ web, electron }, db) {
   const notionSetWindowTitle = __electronApi.setWindowTitle,
     getIcon = () => {
       const $imgIcon = document.querySelector(imgIconSelector),
+        $emojiIcon = document.querySelector(emojiIconSelector),
         $nativeIcon = document.querySelector(nativeIconSelector);
       if ($imgIcon) {
-        return $imgIcon.style.background.replace(
+        return `url("${$imgIcon.src}") 0 / 100%`;
+      }
+      if ($emojiIcon) {
+        return $emojiIcon.style.background.replace(
           /url\("\/images/,
           'url("notion://www.notion.so/images'
         );

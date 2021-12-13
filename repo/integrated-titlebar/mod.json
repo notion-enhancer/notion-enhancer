@@ -4,6 +4,7 @@
   "environments": ["linux", "win32"],
   "version": "0.11.0",
   "description": "replaces the native window titlebar with buttons inset into the app.",
+  "preview": "integrated-titlebar.jpg",
   "tags": ["extension", "layout"],
   "authors": [
     {

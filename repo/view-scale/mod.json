@@ -4,6 +4,7 @@
   "environments": ["linux", "win32", "darwin"],
   "version": "0.1.0",
   "description": "zoom in/out of the notion window with the mousewheel or a visual slider (`ctrl/cmd +/-` are available in-app by default).",
+  "preview": "view-scale.jpg",
   "tags": ["extension", "app"],
   "authors": [
     {
