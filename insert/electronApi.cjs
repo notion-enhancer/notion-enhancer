@@ -20,26 +20,49 @@ if (fs.existsSync(_cacheFile) && fs.lstatSync(_cacheFile).isDirectory()) {
 
 const isRenderer = process && process.type === 'renderer';
 
-const getCache = async () => {
-    try {
-      return fs.readFileSync(_cacheFile);
-    } catch (err) {
-      await new Promise((res, rej) => setTimeout(res, 50));
-      return getCache();
-    }
-  },
-  getData = async () => {
+// things are a little weird here:
+// multiple processes performing file ops at once
+// (e.g. when too many windows/tabs are open)
+// = an empty string is returned the cache contents
+// and the db is reset. this loop roughly addresses that.
+
+// a "real" db might be better, but sql or query-based
+// would be incompatible with the chrome ext.
+// -- lowdb might have been a nice flat/json db,
+// but unfortunately it is esm only
+
+const getData = async () => {
     if (!fs.existsSync(_cacheFile)) {
       fs.writeFileSync(_cacheFile, '{}', 'utf8');
       return {};
     }
-    try {
-      return JSON.parse(await getCache());
-    } catch (err) {
-      return {};
+
+    let cacheBuffer = '',
+      jsonData = {},
+      attemptsRemaining = 3;
+    while (attemptsRemaining) {
+      cacheBuffer = fs.readFileSync(_cacheFile);
+      if (cacheBuffer) {
+        try {
+          jsonData = JSON.parse(cacheBuffer);
+          break;
+        } catch {
+          jsonData = {};
+        }
+      }
+      --attemptsRemaining || (await new Promise((res, rej) => setTimeout(res, 50)));
     }
+    return jsonData;
   },
-  saveData = (data) => fs.writeFileSync(_cacheFile, JSON.stringify(data));
+  saveData = (data) => fs.writeFileSync(_cacheFile, JSON.stringify(data)),
+  performFsOperation = async (callback) => {
+    while (_fsQueue.size) await new Promise(requestIdleCallback);
+    const op = Symbol();
+    _fsQueue.add(op);
+    const res = await callback();
+    _fsQueue.delete(op);
+    return res;
+  };
 
 const db = {
   get: async (path, fallback = undefined) => {
@@ -58,27 +81,27 @@ const db = {
   },
   set: async (path, value) => {
     if (!path.length) return undefined;
-    while (_fsQueue.size) await new Promise(requestIdleCallback);
-    const op = Symbol();
-    _fsQueue.add(op);
-    const pathClone = [...path],
-      values = await getData();
-    let pointer = values,
-      old;
-    while (path.length) {
-      const key = path.shift();
-      if (!path.length) {
-        old = pointer[key];
-        pointer[key] = value;
-        break;
+    return await performFsOperation(async () => {
+      const pathClone = [...path],
+        values = await getData();
+      let pointer = values,
+        old;
+      while (path.length) {
+        const key = path.shift();
+        if (!path.length) {
+          old = pointer[key];
+          pointer[key] = value;
+          break;
+        }
+        pointer[key] = pointer[key] ?? {};
+        pointer = pointer[key];
       }
-      pointer[key] = pointer[key] ?? {};
-      pointer = pointer[key];
-    }
-    saveData(values);
-    _onDbChangeListeners.forEach((listener) => listener({ path: pathClone, new: value, old }));
-    _fsQueue.delete(op);
-    return value;
+      saveData(values);
+      _onDbChangeListeners.forEach((listener) =>
+        listener({ path: pathClone, new: value, old })
+      );
+      return value;
+    });
   },
   addChangeListener: (callback) => {
     _onDbChangeListeners.push(callback);
