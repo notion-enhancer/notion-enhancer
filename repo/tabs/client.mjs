@@ -27,7 +27,7 @@ export default async function ({ web, electron }, db) {
   }
 
   const breadcrumbSelector =
-      '.notion-topbar > div > :nth-child(2) > .notion-focusable:last-child',
+      '.notion-topbar > div > [class="notranslate"] > .notion-focusable:last-child',
     imgIconSelector = `${breadcrumbSelector} .notion-record-icon img:not(.notion-emoji)`,
     emojiIconSelector = `${breadcrumbSelector} .notion-record-icon img.notion-emoji`,
     nativeIconSelector = `${breadcrumbSelector} .notion-record-icon [role="image"]`,

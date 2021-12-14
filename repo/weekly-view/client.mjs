@@ -11,7 +11,7 @@ export default async function ({ web }, db) {
     calendarSelector = '.notion-calendar-view',
     viewSelector = '.notion-collection-view-select:not([data-weekly-view])',
     todaySelector = '.notion-calendar-view-day[style*="background"]',
-    weekSelector = '[style="position: relative; display: flex; height: 124px;"]',
+    weekSelector = '[style^="position: relative; display: flex; height: "]',
     toolbarBtnSelector =
       '.notion-calendar-view > :first-child > :first-child > :first-child > :nth-last-child(2)';
 
@@ -30,11 +30,14 @@ export default async function ({ web }, db) {
         }
       } else {
         const $weekContainer = $calendar.querySelector(weekSelector).parentElement;
-        $weekContainer.style.maxHeight = '124px';
         for (const $week of $calendar.querySelectorAll(weekSelector)) {
-          if (!$week.querySelector(todaySelector)) {
+          if ($week.querySelector(todaySelector)) {
+            $weekContainer.style.maxHeight = $week.style.height;
+            break;
+          } else {
             $week.style.height = '0';
-          } else break;
+            $week.style.opacity = '0';
+          }
         }
       }
     });
