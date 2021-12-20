@@ -55,7 +55,7 @@ export const uuidv4 = () => {
  * @returns {string} the shaded color
  */
 export const rgbLogShade = (p, c) => {
-  var i = parseInt,
+  const i = parseInt,
     r = Math.round,
     [a, b, c, d] = c.split(','),
     P = p < 0,
