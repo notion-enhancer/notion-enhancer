@@ -6,7 +6,7 @@
 
 'use strict';
 
-module.exports = async function (api, db, __exports, __eval) {
+module.exports = function (api, db, __exports, __eval) {
   __eval(`
     const notionRectFromFocusedWindow = getRectFromFocusedWindow;
     getRectFromFocusedWindow = (windowState) => {

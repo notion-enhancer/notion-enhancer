@@ -88,7 +88,7 @@ const customClasses = {
   'input': apply`transition block w-full mt-2 pl-3 pr-14 py-2 text-sm rounded-md flex bg-input text-foreground
     appearance-none placeholder-foreground-secondary ring-1 ring-divider focus:(outline-none ring ring-accent-blue-active)`,
   'input-tooltip': apply`h-4 w-4 -mt-1 inline-block mr-2`,
-  'input-icon': apply`absolute w-11 h-9 right-0 bottom-0 py-2 px-3 bg-notion-secondary rounded-r-md text-icon`,
+  'input-icon': apply`absolute w-11 h-[calc(2.25rem-1px)] right-0 bottom-0 py-2 px-3 bg-notion-secondary rounded-r-md text-icon`,
   'input-placeholder': apply`text-foreground-secondary`,
   'select-option': apply`bg-notion-secondary`,
   'file-latest': apply`block w-full text-left text-foreground-secondary text-xs mt-2 hover:line-through cursor-pointer`,

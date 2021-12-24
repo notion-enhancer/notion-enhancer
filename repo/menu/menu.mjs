@@ -41,7 +41,7 @@ import './styles.mjs';
 
   web.addHotkeyListener(await db.get(['hotkey']), env.focusNotion);
 
-  window.addEventListener('beforeunload', (event) => {
+  globalThis.addEventListener('beforeunload', (_event) => {
     // trigger input save
     document.activeElement.blur();
   });
@@ -98,7 +98,7 @@ import './styles.mjs';
       </button>`,
         $error = web.html`<p class="profile-error"></p>`;
 
-      $export.addEventListener('click', async (event) => {
+      $export.addEventListener('click', async (_event) => {
         const now = new Date(),
           $a = web.html`<a
           class="hidden"
@@ -130,13 +130,13 @@ import './styles.mjs';
         reader.readAsText(file);
       });
 
-      $select.addEventListener('change', async (event) => {
+      $select.addEventListener('change', (_event) => {
         if ($select.value === '--') {
           $edit.value = '';
         } else $edit.value = $select.value;
       });
 
-      $save.addEventListener('click', async (event) => {
+      $save.addEventListener('click', async (_event) => {
         if (profileNames.includes($edit.value) && $select.value !== $edit.value) {
           web.render(
             web.empty($error),
@@ -144,14 +144,10 @@ import './styles.mjs';
           );
           return false;
         }
-        if (!$edit.value) {
-          web.render(web.empty($error), 'Profile names cannot be empty.');
-          return false;
-        }
-        if (!$edit.value.match(/^[A-Za-z0-9_-]+$/)) {
+        if (!$edit.value || !$edit.value.match(/^[A-Za-z0-9_-]+$/)) {
           web.render(
             web.empty($error),
-            'Profile names can only contain letters, numbers, dashes and underscores.'
+            'Profile names may not be empty & may only contain letters, numbers, hyphens and underscores.'
           );
           return false;
         }
@@ -168,7 +164,7 @@ import './styles.mjs';
         env.reload();
       });
 
-      $delete.addEventListener('click', async (event) => {
+      $delete.addEventListener('click', async (_event) => {
         await storage.set(['profiles', $select.value], undefined);
         await storage.set(
           ['currentprofile'],
@@ -180,12 +176,9 @@ import './styles.mjs';
       _$profileConfig = web.render(
         web.html`<div></div>`,
         web.html`<p class="options-placeholder">
-        Profiles are used to switch entire configurations.
-        Here they can be selected, renamed or deleted.
-        Profile names can only contain letters, numbers,
-        dashes and underscores. <br>
+        Profiles are used to switch entire configurations.<br>
         Be careful - deleting a profile deletes all configuration
-        related to it. 
+        related to it.<br>
       </p>`,
         web.render(
           web.html`<label class="input-label"></label>`,
@@ -284,7 +277,7 @@ import './styles.mjs';
               (mod) => mod.environments.includes(env.name) && mod.tags.includes(category)
             );
           web.addHotkeyListener(['/'], () => $search.focus());
-          $search.addEventListener('input', (event) => {
+          $search.addEventListener('input', (_event) => {
             const query = $search.value.toLowerCase();
             for (const $mod of $list.children) {
               const matches = !query || $mod.innerText.toLowerCase().includes(query);
@@ -436,7 +429,7 @@ import './styles.mjs';
   router.setDefaultView('extensions');
 
   router.addQueryListener('id', openSidebarMenu);
-  async function openSidebarMenu(id) {
+  function openSidebarMenu(id) {
     if (!id) return;
     id = web.escape(id);
 

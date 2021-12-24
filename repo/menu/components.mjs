@@ -78,7 +78,7 @@ export const options = {
         maxLines: 3,
       });
     }
-    $input.addEventListener('change', async (event) => {
+    $input.addEventListener('change', async (_event) => {
       await profileDB.set([mod.id, opt.key], $input.checked);
       notifications.onChange();
     });
@@ -109,7 +109,7 @@ export const options = {
         offsetDirection: 'left',
         maxLines: 3,
       });
-    $select.addEventListener('change', async (event) => {
+    $select.addEventListener('change', async (_event) => {
       await profileDB.set([mod.id, opt.key], $select.value);
       notifications.onChange();
     });
@@ -131,7 +131,7 @@ export const options = {
         offsetDirection: 'left',
         maxLines: 3,
       });
-    $input.addEventListener('change', async (event) => {
+    $input.addEventListener('change', async (_event) => {
       await profileDB.set([mod.id, opt.key], $input.value);
       notifications.onChange();
     });
@@ -153,7 +153,7 @@ export const options = {
         offsetDirection: 'left',
         maxLines: 3,
       });
-    $input.addEventListener('change', async (event) => {
+    $input.addEventListener('change', async (_event) => {
       await profileDB.set([mod.id, opt.key], $input.value);
       notifications.onChange();
     });
@@ -172,7 +172,7 @@ export const options = {
       $icon = web.html`${await components.feather('droplet', { class: 'input-icon' })}`,
       paint = () => {
         $input.style.background = $picker.toBackground();
-        const [r, g, b, a] = $picker
+        const [r, g, b] = $picker
           .toRGBAString()
           .slice(5, -1)
           .split(',')
@@ -196,7 +196,7 @@ export const options = {
         offsetDirection: 'left',
         maxLines: 3,
       });
-    $input.addEventListener('change', async (event) => {
+    $input.addEventListener('change', async (_event) => {
       await profileDB.set([mod.id, opt.key], $input.value);
       notifications.onChange();
     });
@@ -237,7 +237,7 @@ export const options = {
       };
       reader.readAsText(file);
     });
-    $latest.addEventListener('click', (event) => {
+    $latest.addEventListener('click', (_event) => {
       $filename.innerText = 'none';
       profileDB.set([mod.id, opt.key], {});
     });

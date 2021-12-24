@@ -380,7 +380,7 @@ function css() {
 
 // 'light' or 'dark'
 function vars(mode) {
-  let sets = {};
+  const sets = {};
   for (const color in colors) {
     for (let key in colors[color][mode]) {
       const prefix = key.split('-')[0],
@@ -397,4 +397,10 @@ function vars(mode) {
   return vars;
 }
 
-console.log(css());
+if (process.argv.includes('css')) {
+  console.log(css());
+} else if (process.argv.includes('light')) {
+  console.log(vars('light'));
+} else if (process.argv.includes('dark')) {
+  console.log(vars('dark'));
+}
