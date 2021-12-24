@@ -8,14 +8,15 @@
 
 /**
  * access to electron renderer apis
- * @module notion-enhancer/api/env
+ * @namespace electron
  */
+import * as _api from './index.mjs'; // trick jsdoc
 
 /**
  * access to the electron BrowserWindow instance for the current window
  * see https://www.electronjs.org/docs/latest/api/browser-window
  * @type {BrowserWindow}
- * @runtime electron (renderer process)
+ * @process electron (renderer process)
  */
 export const browser = globalThis.__enhancerElectronApi?.browser;
 
@@ -23,7 +24,7 @@ export const browser = globalThis.__enhancerElectronApi?.browser;
  * access to the electron webFrame instance for the current page
  * see https://www.electronjs.org/docs/latest/api/web-frame
  * @type {webFrame}
- * @runtime electron (renderer process)
+ * @process electron (renderer process)
  */
 export const webFrame = globalThis.__enhancerElectronApi?.webFrame;
 
@@ -34,7 +35,7 @@ export const webFrame = globalThis.__enhancerElectronApi?.webFrame;
  * @param {string=} namespace - a prefix for the message to categorise
  * it as e.g. enhancer-related. this should not be changed unless replicating
  * builtin ipc events.
- * @runtime electron (renderer process)
+ * @process electron (renderer process)
  */
 export const sendMessage = (channel, data, namespace = 'notion-enhancer') => {
   if (globalThis.__enhancerElectronApi) {
@@ -49,7 +50,7 @@ export const sendMessage = (channel, data, namespace = 'notion-enhancer') => {
  * @param {string=} namespace - a prefix for the message to categorise
  * it as e.g. enhancer-related. this should not be changed unless replicating
  * builtin ipc events.
- * @runtime electron (renderer process)
+ * @process electron (renderer process)
  */
 export const sendMessageToHost = (channel, data, namespace = 'notion-enhancer') => {
   if (globalThis.__enhancerElectronApi) {
@@ -65,7 +66,7 @@ export const sendMessageToHost = (channel, data, namespace = 'notion-enhancer') 
  * @param {string=} namespace - a prefix for the message to categorise
  * it as e.g. enhancer-related. this should not be changed unless replicating
  * builtin ipc events.
- * @runtime electron (renderer process)
+ * @process electron (renderer process)
  */
 export const onMessage = (channel, callback, namespace = 'notion-enhancer') => {
   if (globalThis.__enhancerElectronApi) {
@@ -76,7 +77,7 @@ export const onMessage = (channel, callback, namespace = 'notion-enhancer') => {
 /**
  * require() notion app files
  * @param {string} path - within notion/resources/app/ e.g. main/createWindow.js
- * @runtime electron (main process)
+ * @process electron (main process)
  */
 export const notionRequire = (path) => {
   return globalThis.__enhancerElectronApi
@@ -86,7 +87,7 @@ export const notionRequire = (path) => {
 
 /**
  * get all available app windows excluding the menu
- * @runtime electron (main process)
+ * @process electron (main process)
  */
 export const getNotionWindows = () => {
   return globalThis.__enhancerElectronApi
@@ -96,7 +97,7 @@ export const getNotionWindows = () => {
 
 /**
  * get the currently focused notion window
- * @runtime electron (main process)
+ * @process electron (main process)
  */
 export const getFocusedNotionWindow = () => {
   return globalThis.__enhancerElectronApi

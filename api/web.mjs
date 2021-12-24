@@ -8,7 +8,7 @@
 
 /**
  * helpers for manipulation of a webpage
- * @module notion-enhancer/api/web
+ * @namespace web
  */
 
 import { fs } from './index.mjs';
@@ -16,16 +16,16 @@ import { fs } from './index.mjs';
 let _hotkeyListenersActivated = false,
   _hotkeyEventListeners = [],
   _documentObserver,
-  _documentObserverListeners = [],
-  _documentObserverEvents = [];
+  _documentObserverListeners = [];
+const _documentObserverEvents = [];
 
 /**
  * wait until a page is loaded and ready for modification
- * @param {array} [selectors] - wait for the existence of elements that match these css selectors
+ * @param {array=} selectors - wait for the existence of elements that match these css selectors
  * @returns {Promise} a promise that will resolve when the page is ready
  */
 export const whenReady = (selectors = []) => {
-  return new Promise((res, rej) => {
+  return new Promise((res, _rej) => {
     const onLoad = () => {
       const interval = setInterval(isReady, 100);
       function isReady() {
@@ -37,7 +37,7 @@ export const whenReady = (selectors = []) => {
       isReady();
     };
     if (document.readyState !== 'complete') {
-      document.addEventListener('readystatechange', (event) => {
+      document.addEventListener('readystatechange', (_event) => {
         if (document.readyState === 'complete') onLoad();
       });
     } else onLoad();
@@ -46,7 +46,7 @@ export const whenReady = (selectors = []) => {
 
 /**
  * parse the current location search params into a usable form
- * @returns {map<string,string>} a map of the url search params
+ * @returns {Map<string, string>} a map of the url search params
  */
 export const queryParams = () => new URLSearchParams(window.location.search);
 
@@ -207,10 +207,10 @@ const triggerHotkeyListener = (event, hotkey) => {
  * available modifiers are 'alt', 'ctrl', 'meta', and 'shift'.
  * can be provided as a + separated string.
  * @param {function} callback - called whenever the keys are pressed
- * @param {object} [opts] - fine-tuned control over when the hotkey should be triggered
- * @param {boolean} [opts.listenInInput] - whether the hotkey callback should be triggered
+ * @param {object=} opts - fine-tuned control over when the hotkey should be triggered
+ * @param {boolean=} opts.listenInInput - whether the hotkey callback should be triggered
  * when an input is focused
- * @param {boolean} [opts.keydown] - whether to listen for the hotkey on keydown.
+ * @param {boolean=} opts.keydown - whether to listen for the hotkey on keydown.
  * by default, hotkeys are triggered by the keyup event.
  */
 export const addHotkeyListener = (
@@ -248,7 +248,7 @@ export const removeHotkeyListener = (callback) => {
 /**
  * add a listener to watch for changes to the dom
  * @param {onDocumentObservedCallback} callback
- * @param {array<string>} [selectors]
+ * @param {string[]=} selectors
  */
 export const addDocumentObserver = (callback, selectors = []) => {
   if (!_documentObserver) {
@@ -271,7 +271,7 @@ export const addDocumentObserver = (callback, selectors = []) => {
         }
       }
     };
-    _documentObserver = new MutationObserver((list, observer) => {
+    _documentObserver = new MutationObserver((list, _observer) => {
       if (!_documentObserverEvents.length)
         requestIdleCallback(() => handle(_documentObserverEvents));
       _documentObserverEvents.push(...list);

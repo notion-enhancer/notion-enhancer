@@ -8,7 +8,7 @@
 
 /**
  * interactions with the enhancer's repository of mods
- * @module notion-enhancer/api/registry
+ * @namespace registry
  */
 
 import { env, fs, storage } from './index.mjs';
@@ -17,7 +17,7 @@ import { validate } from './registry-validation.mjs';
 /**
  * mod ids whitelisted as part of the enhancer's core, permanently enabled
  * @constant
- * @type {array<string>}
+ * @type {string[]}
  */
 export const core = [
   'a6621988-551d-495a-97d8-3c568bca2e9e',
@@ -28,14 +28,14 @@ export const core = [
 /**
  * all environments/platforms currently supported by the enhancer
  * @constant
- * @type {array<string>}
+ * @type {string[]}
  */
 export const supportedEnvs = ['linux', 'win32', 'darwin', 'extension'];
 
 /**
  * all available configuration types
  * @constant
- * @type {array<string>}
+ * @type {string[]}
  */
 export const optionTypes = ['toggle', 'select', 'text', 'number', 'color', 'file', 'hotkey'];
 
@@ -43,7 +43,7 @@ export const optionTypes = ['toggle', 'select', 'text', 'number', 'color', 'file
  * the name of the active configuration profile
  * @returns {string}
  */
-export const profileName = async () => storage.get(['currentprofile'], 'default');
+export const profileName = () => storage.get(['currentprofile'], 'default');
 
 /**
  * the root database for the current profile
@@ -51,8 +51,8 @@ export const profileName = async () => storage.get(['currentprofile'], 'default'
  */
 export const profileDB = async () => storage.db(['profiles', await profileName()]);
 
-let _list,
-  _errors = [];
+let _list;
+const _errors = [];
 /**
  * list all available mods in the repo
  * @param {function} filter - a function to filter out mods
@@ -60,7 +60,8 @@ let _list,
  */
 export const list = async (filter = (mod) => true) => {
   if (!_list) {
-    _list = new Promise(async (res, rej) => {
+    // deno-lint-ignore no-async-promise-executor
+    _list = new Promise(async (res, _rej) => {
       const passed = [];
       for (const dir of await fs.getJSON('repo/registry.json')) {
         try {
@@ -84,7 +85,7 @@ export const list = async (filter = (mod) => true) => {
 
 /**
  * list validation errors encountered when loading the repo
- * @returns {array<object>} error objects with an error message and a source directory
+ * @returns {{ source: string, message: string }[]} error objects with an error message and a source directory
  */
 export const errors = async () => {
   await list();

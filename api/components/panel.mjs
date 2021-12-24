@@ -7,10 +7,7 @@
 
 'use strict';
 
-/**
- * shared notion-style elements
- * @module notion-enhancer/api/components/side-panel
- */
+/** shared notion-style elements */
 
 import { web, components, registry } from '../index.mjs';
 
@@ -63,7 +60,7 @@ const panelPinnedAttr = 'data-enhancer-panel-pinned',
     db.set(['panel.pinned'], isPinned());
   },
   // resize
-  updateWidth = async () => {
+  updateWidth = () => {
     document.documentElement.style.setProperty('--component--panel-width', panelWidth + 'px');
     db.set(['panel.width'], panelWidth);
   },
@@ -78,7 +75,7 @@ const panelPinnedAttr = 'data-enhancer-panel-pinned',
     $notionFrame.style.paddingRight = panelWidth + 'px';
     if ($notionRightSidebar) $notionRightSidebar.style.right = panelWidth + 'px';
   },
-  resizeEnd = (event) => {
+  resizeEnd = (_event) => {
     $panel.style.width = '';
     $hoverTrigger.style.width = '';
     $notionFrame.style.paddingRight = '';
@@ -151,16 +148,18 @@ const panelPinnedAttr = 'data-enhancer-panel-pinned',
           document.activeElement.click();
           event.stopPropagation();
           break;
-        case 'ArrowUp':
+        case 'ArrowUp': {
           const $prev = event.target.previousElementSibling;
           ($prev || event.target.parentElement.lastElementChild).focus();
           event.stopPropagation();
           break;
-        case 'ArrowDown':
+        }
+        case 'ArrowDown': {
           const $next = event.target.nextElementSibling;
           ($next || event.target.parentElement.firstElementChild).focus();
           event.stopPropagation();
           break;
+        }
       }
     }
   },
@@ -240,7 +239,7 @@ async function enablePanelResize() {
   });
 }
 
-async function createViews() {
+function createViews() {
   $notionApp = document.querySelector('.notion-app-inner');
   $header.addEventListener('click', openSwitcher);
   $switcherTrigger.addEventListener('click', openSwitcher);

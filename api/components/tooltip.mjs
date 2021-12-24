@@ -6,10 +6,7 @@
 
 'use strict';
 
-/**
- * shared notion-style elements
- * @module notion-enhancer/api/components/tooltip
- */
+/** shared notion-style elements */
 
 import { fs, web } from '../index.mjs';
 
@@ -20,7 +17,7 @@ const countLines = ($el) =>
       (prev, val) => (prev.some((p) => p.y === val.y) ? prev : [...prev, val]),
       []
     ).length,
-  position = async ($ref, offsetDirection, maxLines) => {
+  position = ($ref, offsetDirection, maxLines) => {
     _$tooltip.style.top = `0px`;
     _$tooltip.style.left = `0px`;
     const rect = $ref.getBoundingClientRect(),
@@ -63,12 +60,12 @@ const countLines = ($el) =>
  * add a tooltip to show extra information on hover
  * @param {HTMLElement} $ref - the element that will trigger the tooltip when hovered
  * @param {string|HTMLElement} $content - markdown or element content of the tooltip
- * @param {object=} [options] - configuration of how the tooltip should be displayed
- * @param {number} [options.delay] - the amount of time in ms the element needs to be hovered over
+ * @param {object=} options - configuration of how the tooltip should be displayed
+ * @param {number=} options.delay - the amount of time in ms the element needs to be hovered over
  * for the tooltip to be shown (default: 100)
- * @param {string} [options.offsetDirection] - which side of the element the tooltip
+ * @param {string=} options.offsetDirection - which side of the element the tooltip
  * should be shown on: 'top', 'bottom', 'left' or 'right' (default: 'bottom')
- * @param {number} [options.maxLines] - the max number of lines that the content may be wrapped
+ * @param {number=} options.maxLines - the max number of lines that the content may be wrapped
  * to, used to position and size the tooltip correctly (default: 1)
  */
 export const addTooltip = async (
@@ -94,7 +91,7 @@ export const addTooltip = async (
     </div>`;
 
   let displayDelay;
-  $ref.addEventListener('mouseover', async (event) => {
+  $ref.addEventListener('mouseover', (_event) => {
     if (!displayDelay) {
       displayDelay = setTimeout(async () => {
         if ($ref.matches(':hover')) {
@@ -111,7 +108,7 @@ export const addTooltip = async (
     }
   });
 
-  $ref.addEventListener('mouseout', async (event) => {
+  $ref.addEventListener('mouseout', async (_event) => {
     displayDelay = undefined;
     if (_$tooltip.style.display === 'block' && !$ref.matches(':hover')) {
       await _$tooltip.animate([{ opacity: 1 }, { opacity: 0 }], { duration: 65 }).finished;

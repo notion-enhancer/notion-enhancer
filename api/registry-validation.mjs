@@ -85,7 +85,7 @@ const validateEnvironments = async (mod) => {
     const isArray = await check(mod, 'css', mod.css, 'object');
     if (!isArray) return false;
     const tests = [];
-    for (let dest of ['frame', 'client', 'menu']) {
+    for (const dest of ['frame', 'client', 'menu']) {
       if (!mod.css[dest]) continue;
       let test = await check(mod, `css.${dest}`, mod.css[dest], 'array');
       if (test) {
@@ -101,7 +101,7 @@ const validateEnvironments = async (mod) => {
     const isArray = await check(mod, 'js', mod.js, 'object');
     if (!isArray) return false;
     const tests = [];
-    for (let dest of ['frame', 'client', 'menu']) {
+    for (const dest of ['frame', 'client', 'menu']) {
       if (!mod.js[dest]) continue;
       let test = await check(mod, `js.${dest}`, mod.js[dest], 'array');
       if (test) {

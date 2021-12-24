@@ -8,7 +8,7 @@
 
 /**
  * a basic wrapper around notion's content apis
- * @module notion-enhancer/api/notion
+ * @namespace notion
  */
 
 import { web, fs, fmt } from './index.mjs';
@@ -30,7 +30,7 @@ const standardiseUUID = (uuid) => {
  * 1. cors blocking prevents use on the client
  * 2. the majority of blocks are still 'unsupported'
  * @param {string} id - uuidv4 record id
- * @param {string} [table] - record type (default: 'block').
+ * @param {string=} table - record type (default: 'block').
  * may also be 'collection', 'collection_view', 'space', 'notion_user', 'discussion', or 'comment'
  * @returns {Promise<object>} record data. type definitions can be found here:
  * https://github.com/NotionX/react-notion-x/tree/master/packages/notion-types/src
@@ -79,9 +79,9 @@ export const getSpaceID = async () => {
  * why not use the official api?
  * 1. cors blocking prevents use on the client
  * 2. the majority of blocks are still 'unsupported'
- * @param {string} [query] - query to search blocks in the space for
- * @param {number} [limit] - the max number of results to return (default: 20)
- * @param {string} [spaceID] - uuidv4 workspace id
+ * @param {string=} query - query to search blocks in the space for
+ * @param {number=} limit - the max number of results to return (default: 20)
+ * @param {string=} spaceID - uuidv4 workspace id
  * @returns {object} the number of total results, the list of matches, and related record values.
  * type definitions can be found here: https://github.com/NotionX/react-notion-x/blob/master/packages/notion-types/src/api.ts
  */
@@ -142,14 +142,14 @@ export const search = async (query = '', limit = 20, spaceID = getSpaceID()) => 
  * then find the value of blockRecord.properties.title using notion.get.
  * type definitions can be found here: https://github.com/NotionX/react-notion-x/blob/master/packages/notion-types/src/core.ts
  * @param {string} pointer.recordID - uuidv4 record id
- * @param {string} [pointer.recordTable] - record type (default: 'block').
+ * @param {string=} pointer.recordTable - record type (default: 'block').
  * may also be 'collection', 'collection_view', 'space', 'notion_user', 'discussion', or 'comment'
- * @param {string} [pointer.property] - the record property to update.
+ * @param {string=} pointer.property - the record property to update.
  * for record content, it will be the default: 'title'.
  * for page properties, it will be the property id (the key used in pageRecord.properties).
  * other possible values are unknown/untested
- * @param {string} [pointer.spaceID] - uuidv4 workspace id
- * @param {string} [pointer.path] - the path to the key to be set within the record
+ * @param {string=} pointer.spaceID - uuidv4 workspace id
+ * @param {string=} pointer.path - the path to the key to be set within the record
  * (default: [], the root of the record's values)
  * @returns {boolean|object} true if success, else an error object
  */
@@ -202,16 +202,16 @@ export const set = async (
  * for examples, use notion.get to fetch an existing block record.
  * type definitions can be found here: https://github.com/NotionX/react-notion-x/blob/master/packages/notion-types/src/block.ts
  * may also be 'collection', 'collection_view', 'space', 'notion_user', 'discussion', or 'comment'
- * @param {object} [insert.recordValue] - the new raw data values to set to the record.
- * @param {object} [insert.recordTable] - record type (default: 'block').
+ * @param {object=} insert.recordValue - the new raw data values to set to the record.
+ * @param {object=} insert.recordTable - record type (default: 'block').
  * may also be 'collection', 'collection_view', 'space', 'notion_user', 'discussion', or 'comment'
- * @param {string} [pointer.prepend] - insert before pointer.siblingID. if false, will be appended after
- * @param {string} [pointer.siblingID] - uuidv4 sibling id. if unset, the record will be
+ * @param {string=} pointer.prepend - insert before pointer.siblingID. if false, will be appended after
+ * @param {string=} pointer.siblingID - uuidv4 sibling id. if unset, the record will be
  * inserted at the end of the page start (or the start if pointer.prepend is true)
- * @param {string} [pointer.parentID] - uuidv4 parent id
- * @param {string} [pointer.parentTable] - parent record type (default: 'block').
- * @param {string} [pointer.spaceID] - uuidv4 space id
- * @param {string} [pointer.userID] - uuidv4 user id
+ * @param {string=} pointer.parentID - uuidv4 parent id
+ * @param {string=} pointer.parentTable - parent record type (default: 'block').
+ * @param {string=} pointer.spaceID - uuidv4 space id
+ * @param {string=} pointer.userID - uuidv4 user id
  * instead of the end
  * @returns {string|object} error object or uuidv4 of the new record
  */
@@ -313,9 +313,9 @@ export const create = async (
  * 1. cors blocking prevents use on the client
  * 2. the majority of blocks are still 'unsupported'
  * @param {File} file - the file to upload
- * @param {object} [pointer] - where the file should be accessible from
- * @param {string} [pointer.pageID] - uuidv4 page id
- * @param {string} [pointer.spaceID] - uuidv4 space id
+ * @param {object=} pointer - where the file should be accessible from
+ * @param {string=} pointer.pageID - uuidv4 page id
+ * @param {string=} pointer.spaceID - uuidv4 space id
  * @returns {string|object} error object or the url of the uploaded file
  */
 export const upload = async (file, { pageID = getPageID(), spaceID = getSpaceID() } = {}) => {
@@ -351,7 +351,7 @@ export const upload = async (file, { pageID = getPageID(), spaceID = getSpaceID(
  * (requires user to be signed in or content to be public)
  * @param src source url for file
  * @param {string} recordID uuidv4 record/block/file id
- * @param {string} [recordTable] record type (default: 'block').
+ * @param {string=} recordTable record type (default: 'block').
  * may also be 'collection', 'collection_view', 'space', 'notion_user', 'discussion', or 'comment'
  * @returns {string} url signed if necessary, else string as-is
  */

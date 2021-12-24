@@ -6,10 +6,7 @@
 
 'use strict';
 
-/**
- * shared notion-style elements
- * @module notion-enhancer/api/components/feather
- */
+/** shared notion-style elements */
 
 import { fs, web } from '../index.mjs';
 

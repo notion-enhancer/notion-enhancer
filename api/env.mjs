@@ -8,7 +8,7 @@
 
 /**
  * environment-specific methods and constants
- * @module notion-enhancer/api/env
+ * @namespace env
  */
 
 import * as env from '../env/env.mjs';

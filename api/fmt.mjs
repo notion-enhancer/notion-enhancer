@@ -8,16 +8,16 @@
 
 /**
  * helpers for formatting or parsing text
- * @module notion-enhancer/api/fmt
+ * @namespace fmt
  */
 
 import { fs } from './index.mjs';
 
 /**
- * transform a heading into a slug (a lowercase alphanumeric string separated by dashes),
+ * transform a heading into a slug (a lowercase alphanumeric string separated by hyphens),
  * e.g. for use as an anchor id
  * @param {string} heading - the original heading to be slugified
- * @param {Set<string>} [slugs] - a list of pre-generated slugs to avoid duplicates
+ * @param {Set<string>=} slugs - a list of pre-generated slugs to avoid duplicates
  * @returns {string} the generated slug
  */
 export const slugger = (heading, slugs = new Set()) => {
@@ -49,26 +49,25 @@ export const uuidv4 = () => {
 /**
  * log-based shading of an rgb color, from
  * https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
- * @param {number} p - a decimal amount to shade the color.
+ * @param {number} shade - a decimal amount to shade the color.
  * 1 = white, 0 = the original color, -1 = black
- * @param {string} c - the rgb color
+ * @param {string} color - the rgb color
  * @returns {string} the shaded color
  */
-export const rgbLogShade = (p, c) => {
-  const i = parseInt,
-    r = Math.round,
-    [a, b, c, d] = c.split(','),
-    P = p < 0,
-    t = P ? 0 : p * 255 ** 2,
-    P = P ? 1 + p : 1 - p;
+export const rgbLogShade = (shade, color) => {
+  const int = parseInt,
+    round = Math.round,
+    [a, b, c, d] = color.split(','),
+    t = shade < 0 ? 0 : shade * 255 ** 2,
+    p = shade < 0 ? 1 + shade : 1 - shade;
   return (
     'rgb' +
     (d ? 'a(' : '(') +
-    r((P * i(a[3] == 'a' ? a.slice(5) : a.slice(4)) ** 2 + t) ** 0.5) +
+    round((p * int(a[3] == 'a' ? a.slice(5) : a.slice(4)) ** 2 + t) ** 0.5) +
     ',' +
-    r((P * i(b) ** 2 + t) ** 0.5) +
+    round((p * int(b) ** 2 + t) ** 0.5) +
     ',' +
-    r((P * i(c) ** 2 + t) ** 0.5) +
+    round((p * int(c) ** 2 + t) ** 0.5) +
     (d ? ',' + d : ')')
   );
 };
@@ -104,8 +103,8 @@ function test(str, pattern) {
 
 /**
  * test the type of a value. unifies builtin, regex, and environment/api checks
- * @param {*} value - the value to check
- * @param {string|array<values>} type - the type the value should be or a list of allowed values
+ * @param {unknown} value - the value to check
+ * @param {string|string[]} type - the type the value should be or a list of allowed values
  * @returns {boolean} whether or not the value matches the type
  */
 export const is = async (value, type, { extension = '' } = {}) => {

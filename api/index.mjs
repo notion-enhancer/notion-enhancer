@@ -6,8 +6,6 @@
 
 'use strict';
 
-/** @module notion-enhancer/api */
-
 // compiles to .cjs for use in electron:
 // npx -y esbuild insert/api/index.mjs --minify --bundle --format=cjs --outfile=insert/api/index.cjs
 

@@ -7,10 +7,7 @@
 
 'use strict';
 
-/**
- * shared notion-style elements
- * @module notion-enhancer/api/components/corner-action
- */
+/** shared notion-style elements */
 
 import { web } from '../index.mjs';
 
