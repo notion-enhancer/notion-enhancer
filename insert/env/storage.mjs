@@ -6,15 +6,12 @@
 
 'use strict';
 
-/**
- * environment-specific data persistence
- * @module notion-enhancer/api/storage
- */
+/** environment-specific data persistence */
 
 /**
  * get persisted data
- * @param {array<string>} path - the path of keys to the value being fetched
- * @param {*} [fallback] - a default value if the path is not matched
+ * @param {string[]} path - the path of keys to the value being fetched
+ * @param {unknown=} fallback - a default value if the path is not matched
  * @returns {Promise} value ?? fallback
  */
 export const get = (path, fallback = undefined) => {
@@ -23,8 +20,8 @@ export const get = (path, fallback = undefined) => {
 
 /**
  * persist data
- * @param {array<string>} path - the path of keys to the value being set
- * @param {*} value - the data to save
+ * @param {string[]} path - the path of keys to the value being set
+ * @param {unknown} value - the data to save
  * @returns {Promise} resolves when data has been saved
  */
 export const set = (path, value) => {
@@ -33,9 +30,9 @@ export const set = (path, value) => {
 
 /**
  * create a wrapper for accessing a partition of the storage
- * @param {array<string>} namespace - the path of keys to prefix all storage requests with
- * @param {function} [get] - the storage get function to be wrapped
- * @param {function} [set] - the storage set function to be wrapped
+ * @param {string[]} namespace - the path of keys to prefix all storage requests with
+ * @param {function=} get - the storage get function to be wrapped
+ * @param {function=} set - the storage set function to be wrapped
  * @returns {object} an object with the wrapped get/set functions
  */
 export const db = (namespace, getFunc = get, setFunc = set) => {
@@ -67,6 +64,6 @@ export const removeChangeListener = (callback) => {
  * @callback onStorageChangeCallback
  * @param {object} event
  * @param {string} event.path- the path of keys to the changed value
- * @param {string} [event.new] - the new value being persisted to the store
- * @param {string} [event.old] - the previous value associated with the key
+ * @param {string=} event.new - the new value being persisted to the store
+ * @param {string=} event.old - the previous value associated with the key
  */

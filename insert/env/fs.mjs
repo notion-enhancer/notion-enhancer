@@ -6,15 +6,12 @@
 
 'use strict';
 
-/**
- * environment-specific file reading
- * @module notion-enhancer/api/fs
- */
+/** environment-specific file reading */
 
 /**
  * get an absolute path to files within notion
  * @param {string} path - relative to the root notion/resources/app/ e.g. renderer/search.js
- * @runtime electron
+ * @process electron
  */
 export const notionPath = globalThis.__enhancerElectronApi.notionPath;
 
@@ -28,7 +25,7 @@ export const localPath = (path) => `notion://www.notion.so/__notion-enhancer/${p
 /**
  * fetch and parse a json file's contents
  * @param {string} path - a url or within-the-enhancer filepath
- * @param {object} [opts] - the second argument of a fetch() request
+ * @param {object=} opts - the second argument of a fetch() request
  * @returns {object} the json value of the requested file as a js object
  */
 export const getJSON = (path, opts = {}) => {
@@ -37,7 +34,7 @@ export const getJSON = (path, opts = {}) => {
   if (networkPath) return fetch(path, opts).then((res) => res.json());
   try {
     return globalThis.__enhancerElectronApi.nodeRequire(`notion-enhancer/${path}`);
-  } catch (err) {
+  } catch {
     return fetch(localPath(path), opts).then((res) => res.json());
   }
 };
@@ -45,7 +42,7 @@ export const getJSON = (path, opts = {}) => {
 /**
  * fetch a text file's contents
  * @param {string} path - a url or within-the-enhancer filepath
- * @param {object} [opts] - the second argument of a fetch() request
+ * @param {object=} opts - the second argument of a fetch() request
  * @returns {string} the text content of the requested file
  */
 export const getText = (path, opts = {}) => {
@@ -55,7 +52,7 @@ export const getText = (path, opts = {}) => {
   try {
     const fs = globalThis.__enhancerElectronApi.nodeRequire('fs');
     return fs.readFileSync(notionPath(`notion-enhancer/${path}`));
-  } catch (err) {
+  } catch {
     return fetch(localPath(path), opts).then((res) => res.text());
   }
 };
@@ -73,7 +70,7 @@ export const isFile = async (path) => {
     } else {
       try {
         fs.existsSync(notionPath(`notion-enhancer/${path}`));
-      } catch (err) {
+      } catch {
         await fetch(localPath(path));
       }
     }

@@ -6,10 +6,7 @@
 
 'use strict';
 
-/**
- * environment-specific methods and constants
- * @module notion-enhancer/api/env
- */
+/** environment-specific methods and constants */
 
 /**
  * the environment/platform name code is currently being executed in
