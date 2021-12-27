@@ -47,7 +47,7 @@ body,
 .notion-update-sidebar-tab-updates-header + .notion-scroller,
 .notion-update-sidebar-tab-comments-header,
 .notion-update-sidebar-tab-comments-header + div,
-.notion-code-block ~ [style$='padding-right: 105px;'] {
+.notion-code-block > div > div > [style*='background: '][style$='padding-right: 105px;'] {
   background: var(--theme--bg) !important;
 }
 .notion-timeline-item-row + div > div > div,
@@ -276,6 +276,11 @@ body,
   color: var(--theme--text) !important;
   fill: var(--theme--text) !important;
 }
+.notion-body:not(.dark) [style*='background: rgba(55, 53, 47, 0.16)'] svg,
+.notion-body.dark .notion-focusable[role='button'][style*='background: rgb(63, 68, 71);'] svg {
+  color: var(--theme--text) !important;
+  fill: var(--theme--text) !important;
+}
 
 .notion-focusable-within,
 .notion-share-menu
@@ -356,25 +361,12 @@ body,
   [style*='width: 7px; height: 7px; background: rgb(211, 79, 67); border-radius: 100%;'] {
   background: var(--theme--accent_red) !important;
 }
-#notion-app
-  .DayPicker-Day.DayPicker-Day--range.DayPicker-Day--start:not([style*='color: white'])::after,
-#notion-app
-  .DayPicker-Day.DayPicker-Day--range.DayPicker-Day--end:not([style*='color: white'])::after {
-  content: '';
-  background-color: var(--theme--accent_blue-selection) !important;
-  position: absolute;
-  width: 32px;
-  height: 30px;
+#notion-app .DayPicker-Day.DayPicker-Day--range.DayPicker-Day--start,
+#notion-app .DayPicker-Day.DayPicker-Day--range.DayPicker-Day--end {
+  background-color: var(--theme--accent_blue) !important;
 }
-#notion-app
-  .DayPicker-Day.DayPicker-Day--range.DayPicker-Day--start:not([style*='color: white'])::after {
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-}
-#notion-app
-  .DayPicker-Day.DayPicker-Day--range.DayPicker-Day--end:not([style*='color: white'])::after {
-  border-top-right-radius: 3px;
-  border-bottom-right-radius: 3px;
+#notion-app .DayPicker-Day.DayPicker-Day--range:hover {
+  border-radius: 0 !important;
 }
 .notion-calendar-view-day[style*='background'] {
   background-color: var(--theme--accent_red) !important;

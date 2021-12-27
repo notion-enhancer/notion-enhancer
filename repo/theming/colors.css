@@ -62,14 +62,15 @@
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgba(247, 247, 245, 0.7)'],
+  [style*='background-color: rgba(247, 247, 245, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(51, 55, 59)'] {
+  [style*='background-color: rgb(51, 55, 59)'] {
   background: var(--theme--board_gray) !important;
+  color: var(--theme--board_gray-text) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(247, 247, 245, 0.7)']
@@ -81,6 +82,16 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_gray-card) !important;
   color: var(--theme--board_gray-card_text) !important;
+}
+.notion-body.dark
+  .notion-board-group[style*='background-color: rgb(51, 55, 59)']
+  > [data-block-id]
+  > [rel='noopener noreferrer']
+  [placeholder='Untitled'] {
+  -webkit-text-fill-color: var(
+    --theme--board_gray-card_text,
+    var(--theme--board_gray-text)
+  ) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(247, 247, 245, 0.7)']
@@ -162,14 +173,15 @@
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgba(250, 246, 245, 0.7)'],
+  [style*='background-color: rgba(250, 246, 245, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(59, 54, 51)'] {
+  [style*='background-color: rgb(59, 54, 51)'] {
   background: var(--theme--board_brown) !important;
+  color: var(--theme--board_brown-text) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(250, 246, 245, 0.7)']
@@ -181,6 +193,16 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_brown-card) !important;
   color: var(--theme--board_brown-card_text) !important;
+}
+.notion-body.dark
+  .notion-board-group[style*='background-color: rgb(59, 54, 51)']
+  > [data-block-id]
+  > [rel='noopener noreferrer']
+  [placeholder='Untitled'] {
+  -webkit-text-fill-color: var(
+    --theme--board_brown-card_text,
+    var(--theme--board_brown-text)
+  ) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(250, 246, 245, 0.7)']
@@ -262,14 +284,15 @@
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgba(252, 245, 242, 0.7)'],
+  [style*='background-color: rgba(252, 245, 242, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(61, 54, 49)'] {
+  [style*='background-color: rgb(61, 54, 49)'] {
   background: var(--theme--board_orange) !important;
+  color: var(--theme--board_orange-text) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(252, 245, 242, 0.7)']
@@ -281,6 +304,16 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_orange-card) !important;
   color: var(--theme--board_orange-card_text) !important;
+}
+.notion-body.dark
+  .notion-board-group[style*='background-color: rgb(61, 54, 49)']
+  > [data-block-id]
+  > [rel='noopener noreferrer']
+  [placeholder='Untitled'] {
+  -webkit-text-fill-color: var(
+    --theme--board_orange-card_text,
+    var(--theme--board_orange-text)
+  ) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(252, 245, 242, 0.7)']
@@ -362,14 +395,15 @@
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgba(250, 247, 237, 0.7)'],
+  [style*='background-color: rgba(250, 247, 237, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(56, 55, 49)'] {
+  [style*='background-color: rgb(56, 55, 49)'] {
   background: var(--theme--board_yellow) !important;
+  color: var(--theme--board_yellow-text) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(250, 247, 237, 0.7)']
@@ -381,6 +415,16 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_yellow-card) !important;
   color: var(--theme--board_yellow-card_text) !important;
+}
+.notion-body.dark
+  .notion-board-group[style*='background-color: rgb(56, 55, 49)']
+  > [data-block-id]
+  > [rel='noopener noreferrer']
+  [placeholder='Untitled'] {
+  -webkit-text-fill-color: var(
+    --theme--board_yellow-card_text,
+    var(--theme--board_yellow-text)
+  ) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(250, 247, 237, 0.7)']
@@ -462,14 +506,15 @@
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgba(244, 248, 243, 0.7)'],
+  [style*='background-color: rgba(244, 248, 243, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(49, 57, 53)'] {
+  [style*='background-color: rgb(49, 57, 53)'] {
   background: var(--theme--board_green) !important;
+  color: var(--theme--board_green-text) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(244, 248, 243, 0.7)']
@@ -481,6 +526,16 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_green-card) !important;
   color: var(--theme--board_green-card_text) !important;
+}
+.notion-body.dark
+  .notion-board-group[style*='background-color: rgb(49, 57, 53)']
+  > [data-block-id]
+  > [rel='noopener noreferrer']
+  [placeholder='Untitled'] {
+  -webkit-text-fill-color: var(
+    --theme--board_green-card_text,
+    var(--theme--board_green-text)
+  ) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(244, 248, 243, 0.7)']
@@ -562,14 +617,15 @@
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgba(241, 248, 251, 0.7)'],
+  [style*='background-color: rgba(241, 248, 251, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(49, 56, 64)'] {
+  [style*='background-color: rgb(49, 56, 64)'] {
   background: var(--theme--board_blue) !important;
+  color: var(--theme--board_blue-text) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(241, 248, 251, 0.7)']
@@ -581,6 +637,16 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_blue-card) !important;
   color: var(--theme--board_blue-card_text) !important;
+}
+.notion-body.dark
+  .notion-board-group[style*='background-color: rgb(49, 56, 64)']
+  > [data-block-id]
+  > [rel='noopener noreferrer']
+  [placeholder='Untitled'] {
+  -webkit-text-fill-color: var(
+    --theme--board_blue-card_text,
+    var(--theme--board_blue-text)
+  ) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(241, 248, 251, 0.7)']
@@ -662,14 +728,15 @@
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgba(249, 246, 252, 0.7)'],
+  [style*='background-color: rgba(249, 246, 252, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(57, 53, 65)'] {
+  [style*='background-color: rgb(57, 53, 65)'] {
   background: var(--theme--board_purple) !important;
+  color: var(--theme--board_purple-text) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(249, 246, 252, 0.7)']
@@ -681,6 +748,16 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_purple-card) !important;
   color: var(--theme--board_purple-card_text) !important;
+}
+.notion-body.dark
+  .notion-board-group[style*='background-color: rgb(57, 53, 65)']
+  > [data-block-id]
+  > [rel='noopener noreferrer']
+  [placeholder='Untitled'] {
+  -webkit-text-fill-color: var(
+    --theme--board_purple-card_text,
+    var(--theme--board_purple-text)
+  ) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(249, 246, 252, 0.7)']
@@ -762,14 +839,15 @@
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgba(251, 245, 251, 0.7)'],
+  [style*='background-color: rgba(251, 245, 251, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(60, 53, 58)'] {
+  [style*='background-color: rgb(60, 53, 58)'] {
   background: var(--theme--board_pink) !important;
+  color: var(--theme--board_pink-text) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(251, 245, 251, 0.7)']
@@ -781,6 +859,16 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_pink-card) !important;
   color: var(--theme--board_pink-card_text) !important;
+}
+.notion-body.dark
+  .notion-board-group[style*='background-color: rgb(60, 53, 58)']
+  > [data-block-id]
+  > [rel='noopener noreferrer']
+  [placeholder='Untitled'] {
+  -webkit-text-fill-color: var(
+    --theme--board_pink-card_text,
+    var(--theme--board_pink-text)
+  ) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(251, 245, 251, 0.7)']
@@ -862,14 +950,15 @@
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgba(253, 245, 243, 0.7)'],
+  [style*='background-color: rgba(253, 245, 243, 0.7)'],
 .notion-body.dark
   .notion-board-view
   > .notion-selectable
   > :first-child
   > :nth-child(2)
-  > [style*='background-color: rgb(66, 51, 51)'] {
+  [style*='background-color: rgb(66, 51, 51)'] {
   background: var(--theme--board_red) !important;
+  color: var(--theme--board_red-text) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(253, 245, 243, 0.7)']
@@ -881,6 +970,16 @@
   > [rel='noopener noreferrer'] {
   background: var(--theme--board_red-card) !important;
   color: var(--theme--board_red-card_text) !important;
+}
+.notion-body.dark
+  .notion-board-group[style*='background-color: rgb(66, 51, 51)']
+  > [data-block-id]
+  > [rel='noopener noreferrer']
+  [placeholder='Untitled'] {
+  -webkit-text-fill-color: var(
+    --theme--board_red-card_text,
+    var(--theme--board_red-text)
+  ) !important;
 }
 .notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(253, 245, 243, 0.7)']

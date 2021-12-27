@@ -340,10 +340,11 @@ function css() {
     .notion-body.dark
       .notion-board-group[style*='background-color: ${colors[c].dark['board']}'],
     .notion-body:not(.dark) .notion-board-view > .notion-selectable > :first-child > :nth-child(2)
-      > [style*='background-color: ${colors[c].light['board']}'],
+      [style*='background-color: ${colors[c].light['board']}'],
     .notion-body.dark .notion-board-view > .notion-selectable > :first-child > :nth-child(2)
-      > [style*='background-color: ${colors[c].dark['board']}'] {
+      [style*='background-color: ${colors[c].dark['board']}'] {
       background: var(--theme--board_${c}) !important;
+      color: var(--theme--board_${c}-text) !important;
     }
     .notion-body:not(.dark)
       .notion-board-group[style*='background-color: ${colors[c].light['board']}']
@@ -353,6 +354,11 @@ function css() {
       > [data-block-id] > [rel='noopener noreferrer'] {
       background: var(--theme--board_${c}-card) !important;
       color: var(--theme--board_${c}-card_text) !important;
+    }
+    .notion-body.dark
+      .notion-board-group[style*='background-color: ${colors[c].dark['board']}']
+      > [data-block-id] > [rel='noopener noreferrer'] [placeholder="Untitled"] {
+      -webkit-text-fill-color: var(--theme--board_${c}-card_text, var(--theme--board_${c}-text)) !important;
     }
     .notion-body:not(.dark)
       .notion-board-group[style*='background-color: ${colors[c].light['board']}']

@@ -37,8 +37,8 @@
   --theme--scrollbar_thumb-hover: var(--ocean--accent);
 
   --theme--ui_divider: rgba(255, 255, 255, 0.1);
-  --theme--ui_interactive-hover: var(--ocean--tet);
-  --theme--ui_interactive-active: var(--ocean--tet);
+  --theme--ui_interactive-hover: rgb(0, 1, 8, 0.3);
+  --theme--ui_interactive-active: rgb(0, 1, 8, 0.6);
   --theme--ui_toggle-off: #30313c;
   --theme--ui_corner_action: var(--theme--bg_card);
   --theme--ui_corner_action-hover: var(--theme--ui_interactive-hover);
