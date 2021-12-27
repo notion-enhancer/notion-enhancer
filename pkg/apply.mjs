@@ -17,7 +17,7 @@ import remove from './remove.mjs';
 
 export default async function (
   notionFolder = findNotion(),
-  { overwritePrevious = undefined, takeBackup = true, applyDevPatch = false } = {}
+  { overwritePrevious = undefined, patchPrevious = false, takeBackup = true } = {}
 ) {
   let status = check(notionFolder);
   switch (status.code) {
@@ -26,7 +26,7 @@ export default async function (
     case 1: // corrupted
       throw Error(status.message);
     case 2: // same version already applied
-      if (!applyDevPatch) {
+      if (!patchPrevious) {
         log`  {grey * notion-enhancer v${status.version} already applied}`;
         return true;
       }

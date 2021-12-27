@@ -125,8 +125,12 @@ export const help = ({
   if (version) version = ' v' + version;
   const cmdPad = Math.max(...commands.map((cmd) => cmd[0].length)),
     optPad = Math.max(...options.map((opt) => opt[0].length));
-  commands = commands.map((cmd) => `  ${cmd[0].padEnd(cmdPad)}  :  ${cmd[1]}`).join('\n');
-  options = options.map((opt) => `  ${opt[0].padEnd(optPad)}  :  ${opt[1]}`).join('\n');
+  commands = commands
+    .map((cmd) => `  ${cmd[0].padEnd(cmdPad)}  ${chalk`{grey :}`}  ${cmd[1]}`)
+    .join('\n');
+  options = options
+    .map((opt) => `  ${opt[0].padEnd(optPad)}  ${chalk`{grey :}`}  ${opt[1]}`)
+    .join('\n');
   log`{bold.rgb(245,245,245) ${name}${version}}`;
   if (link) log`{grey ${link}}`;
   log`\n{bold.rgb(245,245,245) USAGE}`;

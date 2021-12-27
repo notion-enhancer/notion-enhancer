@@ -37,7 +37,6 @@ const displayHelp = () => {
       ['apply', 'add enhancements to the notion app'],
       ['remove', 'return notion to its pre-enhanced/pre-modded state'],
       ['check, status', 'check the current state of the notion app'],
-      ['sign', '[macos only] fix the "you do not have permission to open this app" error'],
     ],
     options: [
       ['-y, --yes', 'skip prompts'],
@@ -48,6 +47,7 @@ const displayHelp = () => {
         'provide a file location to enhance (otherwise auto-picked)',
       ],
       ['--no-backup', 'skip backup (faster enhancement, but disables removal)'],
+      ['--patch', 'overwrite inserted files (useful for quick development/testing)'],
       ['-h, --help', 'display usage information'],
       ['-v, --version', 'display version number'],
     ],
@@ -105,8 +105,8 @@ try {
       log`{bold.rgb(245,245,245) [NOTION-ENHANCER] APPLY}`;
       const res = await apply(notionPath, {
         overwritePrevious: promptRes,
+        patchPrevious: opts.get('patch') ? true : false,
         takeBackup: opts.get('no-backup') ? false : true,
-        applyDevPatch: opts.get('dev-patch') ? true : false,
       });
       if (res) {
         log`{bold.rgb(245,245,245) SUCCESS} {green ✔}`;
@@ -133,14 +133,6 @@ try {
         line.forward(23);
         line.write(': ' + status.message + '\r\n');
       }
-      break;
-    }
-    case 'sign': {
-      log`{bold.rgb(245,245,245) [NOTION-ENHANCER] SIGN}`;
-      const res = await sign(notionPath);
-      if (res) {
-        log`{bold.rgb(245,245,245) SUCCESS} {green ✔}`;
-      } else log`{bold.rgb(245,245,245) CANCELLED} {red ✘}`;
       break;
     }
     default:
