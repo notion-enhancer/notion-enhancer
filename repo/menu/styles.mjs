@@ -97,7 +97,7 @@ const customClasses = {
   'important-link': apply`text-accent-red border-b border-accent-red opacity-80 hover:opacity-100`,
   'danger': apply`text-red-text`,
   'link': apply`no-underline border-b border-foreground-secondary opacity-70 hover:opacity-90`,
-  'modal': apply`fixed z-10 inset-0 overflow-y-auto min-h-screen text-center
+  'modal': apply`fixed flex z-10 inset-0 overflow-y-auto min-h-screen text-center
     ease-out duration-300 transition-opacity opacity-0 pointer-events-none`,
   'modal-visible': {
     '@apply': apply`ease-in duration-200 opacity-100 pointer-events-auto`,
@@ -105,7 +105,7 @@ const customClasses = {
   },
   'modal-overlay': apply`fixed inset-0 bg-black bg-opacity-50 transition-opacity`,
   'modal-box': apply`inline-block rounded-lg text-left overflow-hidden shadow-xl
-    transform transition-all m-8 align-middle
+    transform transition-all m-auto align-middle
     ease-in duration-200 opacity-0 scale-95`,
   'modal-body': apply`bg-notion-secondary p-6 pt-4 max-w-xl w-full`,
   'modal-actions': apply`bg-notion py-3 px-6 flex flex-row-reverse`,
@@ -115,12 +115,7 @@ const customClasses = {
   'modal-title-description': apply`mt-2 text-sm text-foreground-secondary`,
   'modal-content': {
     '@apply': apply`mt-4 text-sm`,
-    '& .markdown h4': apply`px-2 py-1 inline-block rounded-md bg-tag text-tag-text`,
-  },
-  'modal-content-heading': apply`mt-2 text-lg font-bold`,
-  'modal-content-list': {
-    '@apply': apply`list-disc pl-5`,
-    '& li': apply`my-px`,
+    'p': apply`mt-2`,
   },
   'modal-button': apply`w-full inline-flex justify-center rounded-md text-base font-medium shadow-sm px-4 py-2
     not-focus:hover:bg-interactive-hover focus:bg-interactive-active focus:outline-none`,

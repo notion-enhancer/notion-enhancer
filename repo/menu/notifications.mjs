@@ -4,7 +4,7 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { env, fs, storage, fmt, web, components } from '../../api/index.mjs';
+import { env, fs, storage, web, components } from '../../api/index.mjs';
 import { tw } from './styles.mjs';
 
 import '../../dep/markdown-it.min.js';
@@ -109,60 +109,29 @@ export const $changelogModal = web.render(
           </div>
         </div>
         <div class="modal-content">
-          <h3 class="modal-content-heading">welcome</h3>
           <p>
-            hi! i'm dragonwocky, the creator of the notion-enhancer.
-            if you're seeing this, you've just installed or updated to a new
-            version of the enhancer. you should check out the
-            <a href="https://notion-enhancer.github.io/getting-started" class="link" target="_blank">getting started</a>
-            guide for a quick overview of how to use it. for extra support
-            or to chat with others who use the enhancer, you can join our
-            <a href="https://discord.com/invite/sFWPXtA" class="link" target="_blank">discord server</a>.
+            Welcome to the notion-enhancer! For help getting started, check out the
+            <a href="https://notion-enhancer.github.io/getting-started/basic-usage/" class="link" target="_blank">
+            basic usage</a> guide. If you've upgraded from a previous version of the notion-enhancer, you can see
+            what's new <a href="https://notion-enhancer.github.io/about/changelog/" class="link">here</a>.
           </p>
-          <p class="mt-1">
-            p.s. maintaining and updating the enhancer takes a lot of time and work.
-            if you would like to support future development of the enhancer,
+          <p>
+            If you spot a bug or have a new feature idea, have a read through the
+            <a href="https://notion-enhancer.github.io/about/contributing/" class="link">Contributing</a>
+            guide to learn how & where to talk to us about it. For extra support, come join our
+            <a href="https://discord.com/invite/sFWPXtA" class="link" target="_blank">Discord community</a>.
+          </p>
+          <p>
+            Maintaining and updating the notion-enhancer does take a lot of time and work,
+            so if you'd like to support future development
             <a href="https://buy.stripe.com/00gdR93R6csIgDKeUV" class="important-link" target="_blank">
-              please consider making a donation
-            </a></span>.
+            please consider making a donation</a>.
           </p>
-          <h3 class="modal-content-heading">license</h3>
           <p>
-            the enhancer is developed publicly on
-            <a href="https://github.com/notion-enhancer/" class="link" target="_blank">github</a>
-            as an open-source project under the
-            <a href="https://notion-enhancer.github.io/license" class="link" target="_blank">mit license</a>.
-            in summary:
+            By clicking &quot;Accept & Continue&quot; below you agree to the notion-enhancer's
+            <a href="https://notion-enhancer.github.io/about/privacy-policy/" class="link">Privacy Policy</a> and
+            <a href="https://notion-enhancer.github.io/about/terms-and-conditions/" class="link">Terms & Conditions</a>.
           </p>
-          <ul class="modal-content-list">
-            <li>you are free to use or modify the enhancer in any way</li>
-            <li>
-              copyright of the enhancer and its parts goes to their respective
-              creators and must be attributed
-            </li>
-            <li>
-              though the enhancer aims for high quality,
-              it comes with no warranty and its creators are not
-              liable for any potential consequences of use
-              nor do they have any legal responsibility to provide
-              continued updates or support
-            </li>
-          </ul>
-          <h3 class="modal-content-heading">privacy</h3>
-          <p>
-            by using the enhancer you agree to give the enhancer
-            access to your data to:
-          </p>
-          <ul class="modal-content-list">
-            <li>observe content for reactive enhancements</li>
-            <li>use content for adaptive enhancements</li>
-            <li>locally store content for persistent enhancements and user configuration</li>
-            <li>update content with integrations</li>
-          </ul>
-          <h3 class="modal-content-heading">what's new</h3>
-          <div class="markdown">
-            ${md.render(await fs.getText('repo/menu/whats-new.md'))}
-          </div>
         </div>
       </div>`,
       web.render(web.html`<div class="modal-actions"></div>`, $changelogModalButton)
