@@ -124,7 +124,7 @@ export const $changelogModal = web.render(
           <p>
             Maintaining and updating the notion-enhancer does take a lot of time and work,
             so if you'd like to support future development
-            <a href="https://buy.stripe.com/00gdR93R6csIgDKeUV" class="important-link" target="_blank">
+            <a href="https://github.com/sponsors/dragonwocky" class="important-link" target="_blank">
             please consider making a donation</a>.
           </p>
           <p>
