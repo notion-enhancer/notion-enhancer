@@ -16,7 +16,6 @@ import { line, options, log, help, args, lastSpinner } from './pkg/cli.mjs';
 import apply from './pkg/apply.mjs';
 import remove from './pkg/remove.mjs';
 import check from './pkg/check.mjs';
-import sign from './pkg/sign.mjs';
 
 const manifest = pkg(),
   opts = options({
