@@ -6,7 +6,7 @@
 
 'use strict';
 
-async function focusMenu() {
+function focusMenu() {
   chrome.tabs.query({ windowId: chrome.windows.WINDOW_ID_CURRENT }, (tabs) => {
     const url = chrome.runtime.getURL('repo/menu/menu.html'),
       menu = tabs.find((tab) => tab.url.startsWith(url));
@@ -17,7 +17,7 @@ async function focusMenu() {
 }
 chrome.browserAction.onClicked.addListener(focusMenu);
 
-async function focusNotion() {
+function focusNotion() {
   chrome.tabs.query({ windowId: chrome.windows.WINDOW_ID_CURRENT }, (tabs) => {
     const notion = tabs.find((tab) => {
       const url = new URL(tab.url),
@@ -30,7 +30,7 @@ async function focusNotion() {
   });
 }
 
-async function reload() {
+function reload() {
   chrome.tabs.query({ windowId: chrome.windows.WINDOW_ID_CURRENT }, (tabs) => {
     const menu = chrome.runtime.getURL('repo/menu/menu.html');
     tabs.forEach((tab) => {
