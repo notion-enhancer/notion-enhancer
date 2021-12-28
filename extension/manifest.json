@@ -26,14 +26,5 @@
       "js": ["init.js"]
     }
   ],
-  "permissions": [
-    "tabs",
-    "storage",
-    "clipboardRead",
-    "clipboardWrite",
-    "unlimitedStorage",
-    "https://*.notion.so/*",
-    "https://*.notion.site/*",
-    "<all_urls>"
-  ]
+  "permissions": ["tabs", "storage", "clipboardRead", "clipboardWrite", "unlimitedStorage"]
 }
