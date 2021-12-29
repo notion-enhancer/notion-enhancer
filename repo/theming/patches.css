@@ -179,6 +179,7 @@
 
 /* backgrounds */
 
+[style*='height: calc(100% + 17px); background:'][style*='width: 20px; margin-left: -20px; margin-top: -17px;'],
 .notion-board-view .notion-focusable[role='button'][style*='height: 33px; width: 35px'],
 .notion-board-view
   > :first-child
