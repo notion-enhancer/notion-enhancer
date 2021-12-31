@@ -6,10 +6,7 @@
 
 'use strict';
 
-/**
- * environment-specific filesystem reading
- * @module notion-enhancer/api/fs
- */
+/** environment-specific file reading */
 
 /**
  * transform a path relative to the enhancer root directory into an absolute path
@@ -21,7 +18,7 @@ export const localPath = chrome.runtime.getURL;
 /**
  * fetch and parse a json file's contents
  * @param {string} path - a url or within-the-enhancer filepath
- * @param {object} [opts] - the second argument of a fetch() request
+ * @param {object=} opts - the second argument of a fetch() request
  * @returns {object} the json value of the requested file as a js object
  */
 export const getJSON = (path, opts = {}) =>
@@ -30,7 +27,7 @@ export const getJSON = (path, opts = {}) =>
 /**
  * fetch a text file's contents
  * @param {string} path - a url or within-the-enhancer filepath
- * @param {object} [opts] - the second argument of a fetch() request
+ * @param {object=} opts - the second argument of a fetch() request
  * @returns {string} the text content of the requested file
  */
 export const getText = (path, opts = {}) =>
