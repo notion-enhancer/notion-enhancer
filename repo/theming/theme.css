@@ -47,7 +47,8 @@ body,
 .notion-update-sidebar-tab-updates-header + .notion-scroller,
 .notion-update-sidebar-tab-comments-header,
 .notion-update-sidebar-tab-comments-header + div,
-.notion-code-block > div > div > [style*='background: '][style$='padding-right: 105px;'] {
+.notion-code-block > div > div > [style*='background: '][style$='padding-right: 105px;'],
+[style*='z-index: 84'] {
   background: var(--theme--bg) !important;
 }
 .notion-timeline-item-row + div > div > div,
