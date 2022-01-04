@@ -10,6 +10,27 @@
 // included for posterity/updates
 // -- not executed by the enhancer at runtime
 
+const lightGray = {
+  'light': {
+    'tag': 'rgba(227, 226, 224, 0.5)',
+    'tag-text': 'rgb(50, 48, 44)',
+    'board': 'rgba(249, 249, 245, 0.5)',
+    'board-card': 'white',
+    'board-card_text': 'inherit',
+    'board-text': 'rgba(145, 145, 142, 0.5)',
+  },
+  'dark': {
+    'tag': 'rgba(71, 76, 80, 0.7)',
+    'tag-text': 'rgba(255, 255, 255, 0.88)',
+    'board': 'rgba(51, 55, 59, 0.7)',
+    'board-card': 'rgba(60, 65, 68, 0.7)',
+    'board-card_text': 'inherit',
+    'board-text': 'rgba(107, 112, 116, 0.7)',
+  }
+};
+// TODO also add colouring for the preview box?
+
+
 const colors = {
   'gray': {
     'light': {
@@ -274,6 +295,65 @@ function css() {
     isTag =
       "[style*='align-items: center;'][style*='border-radius: 3px; padding-left: 6px;'][style*='line-height: 120%;']";
   let css = '';
+
+  // generate light gray separately
+  css += `
+
+    /* light gray */
+
+    .notion-body:not(.dark) [style*='background: ${lightGray.light['tag']}']${isTag},
+    .notion-body.dark [style*='background: ${lightGray.dark['tag']}']${isTag} {
+      background: var(--theme--tag_light-gray) !important;
+      color: var(--theme--tag_light-gray-text) !important;
+    }
+
+    .notion-body:not(.dark)
+      .notion-board-group[style*='background-color: ${lightGray.light['board']}'],
+    .notion-body.dark
+      .notion-board-group[style*='background-color: ${lightGray.dark['board']}'],
+    .notion-body:not(.dark) .notion-board-view > .notion-selectable > :first-child > :nth-child(2)
+      [style*='background-color: ${lightGray.light['board']}'],
+    .notion-body.dark .notion-board-view > .notion-selectable > :first-child > :nth-child(2)
+      [style*='background-color: ${lightGray.dark['board']}'] {
+      background: var(--theme--board_light-gray) !important;
+      color: var(--theme--board_light-gray-text) !important;
+    }
+    .notion-body:not(.dark)
+      .notion-board-group[style*='background-color: ${lightGray.light['board']}']
+      > [data-block-id] > [rel='noopener noreferrer'],
+    .notion-body.dark
+      .notion-board-group[style*='background-color: ${lightGray.dark['board']}']
+      > [data-block-id] > [rel='noopener noreferrer'] {
+      background: var(--theme--board_light-gray-card) !important;
+      color: var(--theme--board_light-gray-card_text) !important;
+    }
+    .notion-body.dark
+      .notion-board-group[style*='background-color: ${lightGray.dark['board']}']
+      > [data-block-id] > [rel='noopener noreferrer'] [placeholder="Untitled"] {
+      -webkit-text-fill-color: var(--theme--board_light-gray-card_text, var(--theme--board_light-gray-text)) !important;
+    }
+    .notion-body:not(.dark)
+      .notion-board-group[style*='background-color: ${lightGray.light['board']}']
+      > [data-block-id] > [rel='noopener noreferrer'] > .notion-focusable:hover {
+      background: rgba(255, 255, 255, 0.2) !important;
+    }
+    .notion-body.dark
+      .notion-board-group[style*='background-color: ${lightGray.dark['board']}']
+      > [data-block-id] > [rel='noopener noreferrer'] > .notion-focusable:hover {
+      background: rgba(0, 0, 0, 0.1) !important;
+    }
+    .notion-body:not(.dark) .notion-board-view
+      [style*='color: ${lightGray.light['board-text']}'],
+    .notion-body.dark .notion-board-view [style*='color: ${lightGray.dark['board-text']}'],
+    .notion-body:not(.dark) .notion-board-view
+      [style*='fill: ${lightGray.light['board-text']}'],
+    .notion-body.dark .notion-board-view [style*='fill: ${lightGray.dark['board-text']}'] {
+      color: var(--theme--board_light-gray-text) !important;
+      fill: var(--theme--board_light-gray-text) !important;
+    }
+  `;
+
+  // generate the rest of the colours
   for (const c in colors) {
     css += `
 
@@ -386,7 +466,19 @@ function css() {
 
 // 'light' or 'dark'
 function vars(mode) {
-  const sets = {};
+  // add the prefixes that light gray doesn't have first to preserve the same order
+  const sets = {'text': '', 'highlight': '', 'callout': ''};
+
+  // light gray separately
+  for (let key in lightGray[mode]) {
+    const prefix = key.split('-')[0],
+      value = lightGray[mode][key];
+    if (!sets[prefix]) sets[prefix] = '';
+    key = [`--theme--${prefix}_light-gray`, ...key.split('-').slice(1)].join('-');
+    sets[prefix] += `${key}: ${value};\n`;
+  }
+
+  // other colors
   for (const color in colors) {
     for (let key in colors[color][mode]) {
       const prefix = key.split('-')[0],
@@ -410,3 +502,4 @@ if (process.argv.includes('css')) {
 } else if (process.argv.includes('dark')) {
   console.log(vars('dark'));
 }
+
