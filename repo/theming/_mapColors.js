@@ -26,10 +26,9 @@ const lightGray = {
     'board-card': 'rgba(60, 65, 68, 0.7)',
     'board-card_text': 'inherit',
     'board-text': 'rgba(107, 112, 116, 0.7)',
-  }
+  },
 };
 // TODO also add colouring for the preview box?
-
 
 const colors = {
   'gray': {
@@ -293,7 +292,10 @@ function css() {
     notCallout = ":not([style*='border-radius'])",
     notBoardCard = ":not([style*='box-shadow'])",
     isTag =
-      "[style*='align-items: center;'][style*='border-radius: 3px; padding-left: 6px;'][style*='line-height: 120%;']";
+      "[style*='align-items: center;'][style*='border-radius: 3px; padding-left: 6px;'][style*='line-height: 120%;']",
+    isTagPalette = "[style*='border-radius: 3px;'][style*='width: 18px; height: 18px;']",
+    isHighlightPalette =
+      "[style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;']";
   let css = '';
 
   // generate light gray separately
@@ -303,6 +305,16 @@ function css() {
 
     .notion-body:not(.dark) [style*='background: ${lightGray.light['tag']}']${isTag},
     .notion-body.dark [style*='background: ${lightGray.dark['tag']}']${isTag} {
+      background: var(--theme--tag_light-gray) !important;
+      color: var(--theme--tag_light-gray-text) !important;
+    }
+
+    .notion-body:not(.dark) [style*='background: ${
+      lightGray.light['tag']
+    }']${isTagPalette},
+    .notion-body.dark [style*='background: ${
+      lightGray.dark['board-text']
+    }']${isTagPalette} {
       background: var(--theme--tag_light-gray) !important;
       color: var(--theme--tag_light-gray-text) !important;
     }
@@ -415,6 +427,25 @@ function css() {
       color: var(--theme--tag_${c}-text) !important;
     }
 
+    .notion-body:not(.dark) [style*='background: ${
+      colors[c].light['callout']
+    }']${isHighlightPalette},
+    .notion-body.dark [style*='background: ${
+      colors[c].dark['callout']
+    }']${isHighlightPalette} {
+      background: var(--theme--highlight_${c}) !important;
+      color: var(--theme--highlight_${c}-text) !important;
+    }
+    .notion-body:not(.dark) [style*='background: ${
+      colors[c].light['tag']
+    }']${isTagPalette},
+    .notion-body.dark [style*='background: ${
+      colors[c].dark['board-text']
+    }']${isTagPalette} {
+      background: var(--theme--tag_${c}) !important;
+      color: var(--theme--tag_${c}-text) !important;
+    }
+
     .notion-body:not(.dark)
       .notion-board-group[style*='background-color: ${colors[c].light['board']}'],
     .notion-body.dark
@@ -452,10 +483,14 @@ function css() {
     }
     .notion-body:not(.dark) .notion-board-view
       [style*='color: ${colors[c].light['board-text']}'],
-    .notion-body.dark .notion-board-view [style*='color: ${colors[c].dark['board-text']}'],
+    .notion-body.dark .notion-board-view [style*='color: ${
+      colors[c].dark['board-text']
+    }'],
     .notion-body:not(.dark) .notion-board-view
       [style*='fill: ${colors[c].light['board-text']}'],
-    .notion-body.dark .notion-board-view [style*='fill: ${colors[c].dark['board-text']}'] {
+    .notion-body.dark .notion-board-view [style*='fill: ${
+      colors[c].dark['board-text']
+    }'] {
       color: var(--theme--board_${c}-text) !important;
       fill: var(--theme--board_${c}-text) !important;
     }
@@ -467,7 +502,7 @@ function css() {
 // 'light' or 'dark'
 function vars(mode) {
   // add the prefixes that light gray doesn't have first to preserve the same order
-  const sets = {'text': '', 'highlight': '', 'callout': ''};
+  const sets = { text: '', highlight: '', callout: '' };
 
   // light gray separately
   for (let key in lightGray[mode]) {
@@ -502,4 +537,3 @@ if (process.argv.includes('css')) {
 } else if (process.argv.includes('dark')) {
   console.log(vars('dark'));
 }
-

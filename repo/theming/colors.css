@@ -15,6 +15,14 @@
 }
 
 .notion-body:not(.dark)
+  [style*='background: rgba(227, 226, 224, 0.5)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'],
+.notion-body.dark
+  [style*='background: rgba(107, 112, 116, 0.7)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'] {
+  background: var(--theme--tag_light-gray) !important;
+  color: var(--theme--tag_light-gray-text) !important;
+}
+
+.notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(249, 249, 245, 0.5)'],
 .notion-body.dark .notion-board-group[style*='background-color: rgba(51, 55, 59, 0.7)'],
 .notion-body:not(.dark)
@@ -121,6 +129,21 @@
   [style*='background: rgb(227, 226, 224)'][style*='align-items: center;'][style*='border-radius: 3px; padding-left: 6px;'][style*='line-height: 120%;'],
 .notion-body.dark
   [style*='background: rgb(71, 76, 80)'][style*='align-items: center;'][style*='border-radius: 3px; padding-left: 6px;'][style*='line-height: 120%;'] {
+  background: var(--theme--tag_gray) !important;
+  color: var(--theme--tag_gray-text) !important;
+}
+
+.notion-body:not(.dark)
+  [style*='background: rgb(241, 241, 239)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'],
+.notion-body.dark
+  [style*='background: rgb(60, 65, 68)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'] {
+  background: var(--theme--highlight_gray) !important;
+  color: var(--theme--highlight_gray-text) !important;
+}
+.notion-body:not(.dark)
+  [style*='background: rgb(227, 226, 224)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'],
+.notion-body.dark
+  [style*='background: rgb(107, 112, 116)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'] {
   background: var(--theme--tag_gray) !important;
   color: var(--theme--tag_gray-text) !important;
 }
@@ -237,6 +260,21 @@
 }
 
 .notion-body:not(.dark)
+  [style*='background: rgb(244, 238, 238)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'],
+.notion-body.dark
+  [style*='background: rgb(76, 61, 53)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'] {
+  background: var(--theme--highlight_brown) !important;
+  color: var(--theme--highlight_brown-text) !important;
+}
+.notion-body:not(.dark)
+  [style*='background: rgb(238, 224, 218)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'],
+.notion-body.dark
+  [style*='background: rgb(155, 98, 69)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'] {
+  background: var(--theme--tag_brown) !important;
+  color: var(--theme--tag_brown-text) !important;
+}
+
+.notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(250, 246, 245, 0.7)'],
 .notion-body.dark .notion-board-group[style*='background-color: rgb(59, 54, 51)'],
 .notion-body:not(.dark)
@@ -343,6 +381,21 @@
   [style*='background: rgb(250, 222, 201)'][style*='align-items: center;'][style*='border-radius: 3px; padding-left: 6px;'][style*='line-height: 120%;'],
 .notion-body.dark
   [style*='background: rgb(136, 84, 44)'][style*='align-items: center;'][style*='border-radius: 3px; padding-left: 6px;'][style*='line-height: 120%;'] {
+  background: var(--theme--tag_orange) !important;
+  color: var(--theme--tag_orange-text) !important;
+}
+
+.notion-body:not(.dark)
+  [style*='background: rgb(251, 236, 221)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'],
+.notion-body.dark
+  [style*='background: rgb(85, 59, 41)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'] {
+  background: var(--theme--highlight_orange) !important;
+  color: var(--theme--highlight_orange-text) !important;
+}
+.notion-body:not(.dark)
+  [style*='background: rgb(250, 222, 201)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'],
+.notion-body.dark
+  [style*='background: rgb(168, 92, 30)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'] {
   background: var(--theme--tag_orange) !important;
   color: var(--theme--tag_orange-text) !important;
 }
@@ -459,6 +512,21 @@
 }
 
 .notion-body:not(.dark)
+  [style*='background: rgb(251, 243, 219)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'],
+.notion-body.dark
+  [style*='background: rgb(79, 64, 41)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'] {
+  background: var(--theme--highlight_yellow) !important;
+  color: var(--theme--highlight_yellow-text) !important;
+}
+.notion-body:not(.dark)
+  [style*='background: rgb(253, 236, 200)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'],
+.notion-body.dark
+  [style*='background: rgb(137, 107, 42)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'] {
+  background: var(--theme--tag_yellow) !important;
+  color: var(--theme--tag_yellow-text) !important;
+}
+
+.notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(250, 247, 237, 0.7)'],
 .notion-body.dark .notion-board-group[style*='background-color: rgb(56, 55, 49)'],
 .notion-body:not(.dark)
@@ -565,6 +633,21 @@
   [style*='background: rgb(219, 237, 219)'][style*='align-items: center;'][style*='border-radius: 3px; padding-left: 6px;'][style*='line-height: 120%;'],
 .notion-body.dark
   [style*='background: rgb(50, 82, 65)'][style*='align-items: center;'][style*='border-radius: 3px; padding-left: 6px;'][style*='line-height: 120%;'] {
+  background: var(--theme--tag_green) !important;
+  color: var(--theme--tag_green-text) !important;
+}
+
+.notion-body:not(.dark)
+  [style*='background: rgb(237, 243, 236)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'],
+.notion-body.dark
+  [style*='background: rgb(46, 68, 58)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'] {
+  background: var(--theme--highlight_green) !important;
+  color: var(--theme--highlight_green-text) !important;
+}
+.notion-body:not(.dark)
+  [style*='background: rgb(219, 237, 219)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'],
+.notion-body.dark
+  [style*='background: rgb(61, 124, 86)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'] {
   background: var(--theme--tag_green) !important;
   color: var(--theme--tag_green-text) !important;
 }
@@ -681,6 +764,21 @@
 }
 
 .notion-body:not(.dark)
+  [style*='background: rgb(231, 243, 248)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'],
+.notion-body.dark
+  [style*='background: rgb(45, 66, 86)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'] {
+  background: var(--theme--highlight_blue) !important;
+  color: var(--theme--highlight_blue-text) !important;
+}
+.notion-body:not(.dark)
+  [style*='background: rgb(211, 229, 239)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'],
+.notion-body.dark
+  [style*='background: rgb(46, 117, 164)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'] {
+  background: var(--theme--tag_blue) !important;
+  color: var(--theme--tag_blue-text) !important;
+}
+
+.notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(241, 248, 251, 0.7)'],
 .notion-body.dark .notion-board-group[style*='background-color: rgb(49, 56, 64)'],
 .notion-body:not(.dark)
@@ -787,6 +885,21 @@
   [style*='background: rgb(232, 222, 238)'][style*='align-items: center;'][style*='border-radius: 3px; padding-left: 6px;'][style*='line-height: 120%;'],
 .notion-body.dark
   [style*='background: rgb(83, 68, 116)'][style*='align-items: center;'][style*='border-radius: 3px; padding-left: 6px;'][style*='line-height: 120%;'] {
+  background: var(--theme--tag_purple) !important;
+  color: var(--theme--tag_purple-text) !important;
+}
+
+.notion-body:not(.dark)
+  [style*='background: rgba(244, 240, 247, 0.8)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'],
+.notion-body.dark
+  [style*='background: rgb(69, 58, 91)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'] {
+  background: var(--theme--highlight_purple) !important;
+  color: var(--theme--highlight_purple-text) !important;
+}
+.notion-body:not(.dark)
+  [style*='background: rgb(232, 222, 238)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'],
+.notion-body.dark
+  [style*='background: rgb(123, 96, 180)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'] {
   background: var(--theme--tag_purple) !important;
   color: var(--theme--tag_purple-text) !important;
 }
@@ -903,6 +1016,21 @@
 }
 
 .notion-body:not(.dark)
+  [style*='background: rgba(249, 238, 243, 0.8)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'],
+.notion-body.dark
+  [style*='background: rgb(81, 56, 77)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'] {
+  background: var(--theme--highlight_pink) !important;
+  color: var(--theme--highlight_pink-text) !important;
+}
+.notion-body:not(.dark)
+  [style*='background: rgb(245, 224, 233)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'],
+.notion-body.dark
+  [style*='background: rgb(169, 76, 157)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'] {
+  background: var(--theme--tag_pink) !important;
+  color: var(--theme--tag_pink-text) !important;
+}
+
+.notion-body:not(.dark)
   .notion-board-group[style*='background-color: rgba(251, 245, 251, 0.7)'],
 .notion-body.dark .notion-board-group[style*='background-color: rgb(60, 53, 58)'],
 .notion-body:not(.dark)
@@ -1009,6 +1137,21 @@
   [style*='background: rgb(255, 226, 221)'][style*='align-items: center;'][style*='border-radius: 3px; padding-left: 6px;'][style*='line-height: 120%;'],
 .notion-body.dark
   [style*='background: rgb(122, 54, 59)'][style*='align-items: center;'][style*='border-radius: 3px; padding-left: 6px;'][style*='line-height: 120%;'] {
+  background: var(--theme--tag_red) !important;
+  color: var(--theme--tag_red-text) !important;
+}
+
+.notion-body:not(.dark)
+  [style*='background: rgb(253, 235, 236)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'],
+.notion-body.dark
+  [style*='background: rgb(94, 52, 54)'][style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;'] {
+  background: var(--theme--highlight_red) !important;
+  color: var(--theme--highlight_red-text) !important;
+}
+.notion-body:not(.dark)
+  [style*='background: rgb(255, 226, 221)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'],
+.notion-body.dark
+  [style*='background: rgb(194, 65, 82)'][style*='border-radius: 3px;'][style*='width: 18px; height: 18px;'] {
   background: var(--theme--tag_red) !important;
   color: var(--theme--tag_red-text) !important;
 }
