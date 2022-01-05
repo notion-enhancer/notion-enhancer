@@ -305,8 +305,8 @@ function css() {
 
     .notion-body:not(.dark) [style*='background: ${lightGray.light['tag']}']${isTag},
     .notion-body.dark [style*='background: ${lightGray.dark['tag']}']${isTag} {
-      background: var(--theme--tag_light-gray) !important;
-      color: var(--theme--tag_light-gray-text) !important;
+      background: var(--theme--tag_light_gray) !important;
+      color: var(--theme--tag_light_gray-text) !important;
     }
 
     .notion-body:not(.dark) [style*='background: ${
@@ -315,8 +315,8 @@ function css() {
     .notion-body.dark [style*='background: ${
       lightGray.dark['board-text']
     }']${isTagPalette} {
-      background: var(--theme--tag_light-gray) !important;
-      color: var(--theme--tag_light-gray-text) !important;
+      background: var(--theme--tag_light_gray) !important;
+      color: var(--theme--tag_light_gray-text) !important;
     }
 
     .notion-body:not(.dark)
@@ -327,8 +327,8 @@ function css() {
       [style*='background-color: ${lightGray.light['board']}'],
     .notion-body.dark .notion-board-view > .notion-selectable > :first-child > :nth-child(2)
       [style*='background-color: ${lightGray.dark['board']}'] {
-      background: var(--theme--board_light-gray) !important;
-      color: var(--theme--board_light-gray-text) !important;
+      background: var(--theme--board_light_gray) !important;
+      color: var(--theme--board_light_gray-text) !important;
     }
     .notion-body:not(.dark)
       .notion-board-group[style*='background-color: ${lightGray.light['board']}']
@@ -336,13 +336,13 @@ function css() {
     .notion-body.dark
       .notion-board-group[style*='background-color: ${lightGray.dark['board']}']
       > [data-block-id] > [rel='noopener noreferrer'] {
-      background: var(--theme--board_light-gray-card) !important;
-      color: var(--theme--board_light-gray-card_text) !important;
+      background: var(--theme--board_light_gray-card) !important;
+      color: var(--theme--board_light_gray-card_text) !important;
     }
     .notion-body.dark
       .notion-board-group[style*='background-color: ${lightGray.dark['board']}']
       > [data-block-id] > [rel='noopener noreferrer'] [placeholder="Untitled"] {
-      -webkit-text-fill-color: var(--theme--board_light-gray-card_text, var(--theme--board_light-gray-text)) !important;
+      -webkit-text-fill-color: var(--theme--board_light_gray-card_text, var(--theme--board_light_gray-text)) !important;
     }
     .notion-body:not(.dark)
       .notion-board-group[style*='background-color: ${lightGray.light['board']}']
@@ -360,8 +360,8 @@ function css() {
     .notion-body:not(.dark) .notion-board-view
       [style*='fill: ${lightGray.light['board-text']}'],
     .notion-body.dark .notion-board-view [style*='fill: ${lightGray.dark['board-text']}'] {
-      color: var(--theme--board_light-gray-text) !important;
-      fill: var(--theme--board_light-gray-text) !important;
+      color: var(--theme--board_light_gray-text) !important;
+      fill: var(--theme--board_light_gray-text) !important;
     }
   `;
 
@@ -509,7 +509,7 @@ function vars(mode) {
     const prefix = key.split('-')[0],
       value = lightGray[mode][key];
     if (!sets[prefix]) sets[prefix] = '';
-    key = [`--theme--${prefix}_light-gray`, ...key.split('-').slice(1)].join('-');
+    key = [`--theme--${prefix}_light_gray`, ...key.split('-').slice(1)].join('-');
     sets[prefix] += `${key}: ${value};\n`;
   }
 
