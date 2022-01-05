@@ -28,7 +28,6 @@ const lightGray = {
     'board-text': 'rgba(107, 112, 116, 0.7)',
   },
 };
-// TODO also add colouring for the preview box?
 
 const colors = {
   'gray': {
