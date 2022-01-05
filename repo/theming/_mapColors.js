@@ -291,7 +291,7 @@ function css() {
     notCallout = ":not([style*='border-radius'])",
     notBoardCard = ":not([style*='box-shadow'])",
     isTag =
-      "[style*='align-items: center;'][style*='border-radius: 3px; padding-left: 6px;'][style*='line-height: 120%;']",
+      "[style*='align-items: center;'][style*='border-radius: 3px; padding-left: '][style*='line-height: 120%;']",
     isTagPalette = "[style*='border-radius: 3px;'][style*='width: 18px; height: 18px;']",
     isHighlightPalette =
       "[style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;']";
