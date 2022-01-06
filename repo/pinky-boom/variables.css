@@ -90,6 +90,9 @@
   --theme--callout_red: var(--pinky_boom--red);
   --theme--callout_red-text: white;
 
+  --theme--board_light_gray: rgba(166, 166, 166, 0.5);
+  --theme--board_light_gray-text: white;
+  --theme--board_light_gray-card: rgba(166, 166, 166, 0.25);
   --theme--board_gray: rgba(128, 128, 128, 0.5);
   --theme--board_gray-text: white;
   --theme--board_gray-card: rgba(128, 128, 128, 0.25);
@@ -119,6 +122,8 @@
   --theme--board_red-card: var(--pinky_boom--red);
 
   --theme--tag_default: #ffc9e6;
+  --theme--tag_light_gray: rgba(166, 166, 166, 0.25);
+  --theme--tag_light_gray-text: black;
   --theme--tag_gray: rgba(128, 128, 128, 0.25);
   --theme--tag_gray-text: black;
   --theme--tag_brown: var(--pinky_boom--brown);

@@ -69,6 +69,7 @@
   --theme--callout_pink: rgba(243, 61, 158, 0.301);
   --theme--callout_red: rgba(122, 20, 20, 0.623);
 
+  --theme--tag_light_gray: rgba(165, 166, 167, 0.5);
   --theme--tag_gray: rgba(126, 128, 129, 0.5);
   --theme--tag_brown: #50331f;
   --theme--tag_orange: rgba(255, 155, 0, 0.58);
@@ -79,6 +80,9 @@
   --theme--tag_pink: rgba(243, 61, 159, 0.5);
   --theme--tag_red: rgb(122, 20, 20);
 
+  --theme--board_light_gray: rgba(165, 166, 167, 0.089);
+  --theme--board_light_gray-card: var(--theme--tag_light_gray);
+  --theme--board_light_gray-card_text: var(--theme--tag_light_gray-text);
   --theme--board_gray: rgba(126, 128, 129, 0.089);
   --theme--board_gray-card: var(--theme--tag_gray);
   --theme--board_gray-card_text: var(--theme--tag_gray-text);

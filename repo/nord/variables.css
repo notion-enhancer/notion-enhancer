@@ -87,6 +87,7 @@
   --theme--callout_red: var(--nord--red);
 
   --theme--tag_default: rgba(151, 154, 155, 0.5);
+  --theme--tag_light_gray: rgba(182, 184, 185, 0.5);
   --theme--tag_gray: rgba(151, 154, 155, 0.5);
   --theme--tag_brown: rgba(147, 114, 100, 0.5);
   --theme--tag_orange: rgba(255, 163, 68, 0.5);
@@ -97,6 +98,10 @@
   --theme--tag_pink: rgba(226, 85, 161, 0.5);
   --theme--tag_red: rgba(255, 115, 105, 0.5);
 
+  --theme--board_light_gray: rgba(69, 75, 78, 0.3);
+  --theme--board_light_gray-card: var(--theme--tag_light_gray);
+  --theme--board_light_gray-card_text: var(--theme--tag_light_gray-text);
+  --theme--board_light_gray-text: rgba(161, 162, 163, 0.95);
   --theme--board_gray: rgba(69, 75, 78, 0.3);
   --theme--board_gray-card: var(--theme--tag_gray);
   --theme--board_gray-card_text: var(--theme--tag_gray-text);

@@ -10,6 +10,7 @@
   --cola--tet: #492341;
   --cola--info: #9b6890;
   --cola--accent: #bf799b;
+  --cola--light_gray: #ADADAD;
   --cola--gray: #8a8a8a;
   --cola--brown: #755241;
   --cola--orange: #e6846b;
@@ -98,6 +99,8 @@
   --theme--callout_red: var(--theme--tag_red);
   --theme--callout_red-text: var(--theme--tag-text);
 
+  --theme--tag_light_gray: var(--cola--light_gray);
+  --theme--tag_light_gray-text: var(--cola--main);
   --theme--tag_gray: var(--cola--gray);
   --theme--tag_gray-text: var(--cola--main);
   --theme--tag_brown: var(--cola--brown);
@@ -117,6 +120,9 @@
   --theme--tag_red: var(--cola--red);
   --theme--tag_red-text: #ffffff;
 
+  --theme--board_light_gray: var(--cola--light_gray);
+  --theme--board_light_gray-text: var(--cola--main);
+  --theme--board_light_gray-card: var(--theme--tag_light_gray);
   --theme--board_gray: var(--cola--gray);
   --theme--board_gray-text: var(--cola--main);
   --theme--board_gray-card: var(--theme--tag_gray);

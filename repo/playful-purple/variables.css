@@ -81,6 +81,8 @@
 
   --theme--tag_default: rgb(234, 234, 234);
   --theme--tag_default-text: rgb(17, 17, 17);
+  --theme--tag_light_gray: rgb(240, 240, 240);
+  --theme--tag_light_gray-text: rgb(88, 88, 88);
   --theme--tag_gray: rgb(234, 234, 234);
   --theme--tag_gray-text: rgb(17, 17, 17);
   --theme--tag_brown: rgb(206, 206, 206);
@@ -100,6 +102,10 @@
   --theme--tag_red: rgb(251, 228, 228);
   --theme--tag_red-text: rgb(138, 0, 10);
 
+  --theme--board_light_gray: #EBEBED;
+  --theme--board_light_gray-text: #74777A;
+  --theme--board_light_gray-card: var(--theme--tag_light_gray);
+  --theme--board_light_gray-card_text: var(--theme--tag_light_gray-text);
   --theme--board_gray: #e2e3e5;
   --theme--board_gray-text: #383d41;
   --theme--board_gray-card: var(--theme--tag_gray);
