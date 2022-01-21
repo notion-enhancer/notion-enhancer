@@ -500,8 +500,15 @@ function css() {
 
 // 'light' or 'dark'
 function vars(mode) {
-  // add the prefixes that light gray doesn't have first to preserve the same order
-  const sets = { text: '', highlight: '', callout: '' };
+  // order in which variables will appear
+  const sets = {
+    'text': '',
+    'highlight': '',
+    'callout': '',
+    // tag_default has the same color in light and dark
+    'tag': '--theme--tag_default: rgba(206, 205, 202, 0.5);\n--theme--tag_default-text: var(--theme--text);\n',
+    'board': ''
+  };
 
   // light gray separately
   for (let key in lightGray[mode]) {

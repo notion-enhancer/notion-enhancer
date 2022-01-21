@@ -724,6 +724,7 @@ body,
   border-color: var(--theme--text_secondary) !important;
 }
 
+/* make sure to change in _mapColors.js as well if colors ever change */
 .notion-body.dark [style*='background: rgb(80, 85, 88)']:not([role='button']),
 .notion-body.dark [style*='background-color: rgb(80, 85, 88)']:not([role='button']),
 .notion-body:not(.dark) [style*='background: rgba(206, 205, 202, 0.5)']:not([role='button']),
