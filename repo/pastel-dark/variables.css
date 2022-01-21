@@ -73,6 +73,8 @@
   --theme--callout_pink: #fdcce8b1;
   --theme--callout_red: #ffc8ce9e;
 
+  --theme--tag_light_gray: #C8C6C4;
+  --theme--tag_light_gray-text: rgb(55, 53, 47);
   --theme--tag_gray: #b1aeab;
   --theme--tag_gray-text: rgb(55, 53, 47);
   --theme--tag_brown: #d8b6a6;
@@ -92,6 +94,9 @@
   --theme--tag_red: #f8acb4;
   --theme--tag_red-text: rgb(55, 53, 47);
 
+  --theme--board_light_gray: #D4D4D389;
+  --theme--board_light_gray-text: #C8C6C4;
+  --theme--board_light_gray-card: rgb(255, 255, 255, 0.2);
   --theme--board_gray: #c2c1c089;
   --theme--board_gray-text: #b1aeab;
   --theme--board_gray-card: rgb(255, 255, 255, 0.2);

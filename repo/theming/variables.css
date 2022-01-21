@@ -111,6 +111,8 @@
 
   --theme--tag_default: rgba(206, 205, 202, 0.5);
   --theme--tag_default-text: var(--theme--text);
+  --theme--tag_light_gray: rgba(227, 226, 224, 0.5);
+  --theme--tag_light_gray-text: rgb(50, 48, 44);
   --theme--tag_gray: rgb(227, 226, 224);
   --theme--tag_gray-text: rgb(50, 48, 44);
   --theme--tag_brown: rgb(238, 224, 218);
@@ -130,6 +132,10 @@
   --theme--tag_red: rgb(255, 226, 221);
   --theme--tag_red-text: rgb(93, 23, 21);
 
+  --theme--board_light_gray: rgba(249, 249, 245, 0.5);
+  --theme--board_light_gray-card: white;
+  --theme--board_light_gray-card_text: inherit;
+  --theme--board_light_gray-text: rgba(145, 145, 142, 0.5);
   --theme--board_gray: rgba(247, 247, 245, 0.7);
   --theme--board_gray-card: white;
   --theme--board_gray-card_text: inherit;
@@ -293,6 +299,8 @@
 
   --theme--tag_default: rgba(206, 205, 202, 0.5);
   --theme--tag_default-text: var(--theme--text);
+  --theme--tag_light_gray: rgba(71, 76, 80, 0.7);
+  --theme--tag_light_gray-text: rgba(255, 255, 255, 0.88);
   --theme--tag_gray: rgb(71, 76, 80);
   --theme--tag_gray-text: rgba(255, 255, 255, 0.88);
   --theme--tag_brown: rgb(92, 71, 61);
@@ -312,6 +320,10 @@
   --theme--tag_red: rgb(122, 54, 59);
   --theme--tag_red-text: rgba(255, 255, 255, 0.88);
 
+  --theme--board_light_gray: rgba(51, 55, 59, 0.7);
+  --theme--board_light_gray-card: rgba(60, 65, 68, 0.7);
+  --theme--board_light_gray-card_text: inherit;
+  --theme--board_light_gray-text: rgba(107, 112, 116, 0.7);
   --theme--board_gray: rgb(51, 55, 59);
   --theme--board_gray-card: rgb(60, 65, 68);
   --theme--board_gray-card_text: inherit;

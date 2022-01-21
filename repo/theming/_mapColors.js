@@ -10,6 +10,25 @@
 // included for posterity/updates
 // -- not executed by the enhancer at runtime
 
+const lightGray = {
+  'light': {
+    'tag': 'rgba(227, 226, 224, 0.5)',
+    'tag-text': 'rgb(50, 48, 44)',
+    'board': 'rgba(249, 249, 245, 0.5)',
+    'board-card': 'white',
+    'board-card_text': 'inherit',
+    'board-text': 'rgba(145, 145, 142, 0.5)',
+  },
+  'dark': {
+    'tag': 'rgba(71, 76, 80, 0.7)',
+    'tag-text': 'rgba(255, 255, 255, 0.88)',
+    'board': 'rgba(51, 55, 59, 0.7)',
+    'board-card': 'rgba(60, 65, 68, 0.7)',
+    'board-card_text': 'inherit',
+    'board-text': 'rgba(107, 112, 116, 0.7)',
+  },
+};
+
 const colors = {
   'gray': {
     'light': {
@@ -272,8 +291,80 @@ function css() {
     notCallout = ":not([style*='border-radius'])",
     notBoardCard = ":not([style*='box-shadow'])",
     isTag =
-      "[style*='align-items: center;'][style*='border-radius: 3px; padding-left: 6px;'][style*='line-height: 120%;']";
+      "[style*='align-items: center;'][style*='border-radius: 3px; padding-left: '][style*='line-height: 120%;']",
+    isTagPalette = "[style*='border-radius: 3px;'][style*='width: 18px; height: 18px;']",
+    isHighlightPalette =
+      "[style*='align-items: center; justify-content: center; width: 22px; height: 22px;'][style*='border-radius: 3px; font-weight: 500;']";
   let css = '';
+
+  // generate light gray separately
+  css += `
+
+    /* light gray */
+
+    .notion-body:not(.dark) [style*='background: ${lightGray.light['tag']}']${isTag},
+    .notion-body.dark [style*='background: ${lightGray.dark['tag']}']${isTag} {
+      background: var(--theme--tag_light_gray) !important;
+      color: var(--theme--tag_light_gray-text) !important;
+    }
+
+    .notion-body:not(.dark) [style*='background: ${
+      lightGray.light['tag']
+    }']${isTagPalette},
+    .notion-body.dark [style*='background: ${
+      lightGray.dark['board-text']
+    }']${isTagPalette} {
+      background: var(--theme--tag_light_gray) !important;
+      color: var(--theme--tag_light_gray-text) !important;
+    }
+
+    .notion-body:not(.dark)
+      .notion-board-group[style*='background-color: ${lightGray.light['board']}'],
+    .notion-body.dark
+      .notion-board-group[style*='background-color: ${lightGray.dark['board']}'],
+    .notion-body:not(.dark) .notion-board-view > .notion-selectable > :first-child > :nth-child(2)
+      [style*='background-color: ${lightGray.light['board']}'],
+    .notion-body.dark .notion-board-view > .notion-selectable > :first-child > :nth-child(2)
+      [style*='background-color: ${lightGray.dark['board']}'] {
+      background: var(--theme--board_light_gray) !important;
+      color: var(--theme--board_light_gray-text) !important;
+    }
+    .notion-body:not(.dark)
+      .notion-board-group[style*='background-color: ${lightGray.light['board']}']
+      > [data-block-id] > [rel='noopener noreferrer'],
+    .notion-body.dark
+      .notion-board-group[style*='background-color: ${lightGray.dark['board']}']
+      > [data-block-id] > [rel='noopener noreferrer'] {
+      background: var(--theme--board_light_gray-card) !important;
+      color: var(--theme--board_light_gray-card_text) !important;
+    }
+    .notion-body.dark
+      .notion-board-group[style*='background-color: ${lightGray.dark['board']}']
+      > [data-block-id] > [rel='noopener noreferrer'] [placeholder="Untitled"] {
+      -webkit-text-fill-color: var(--theme--board_light_gray-card_text, var(--theme--board_light_gray-text)) !important;
+    }
+    .notion-body:not(.dark)
+      .notion-board-group[style*='background-color: ${lightGray.light['board']}']
+      > [data-block-id] > [rel='noopener noreferrer'] > .notion-focusable:hover {
+      background: rgba(255, 255, 255, 0.2) !important;
+    }
+    .notion-body.dark
+      .notion-board-group[style*='background-color: ${lightGray.dark['board']}']
+      > [data-block-id] > [rel='noopener noreferrer'] > .notion-focusable:hover {
+      background: rgba(0, 0, 0, 0.1) !important;
+    }
+    .notion-body:not(.dark) .notion-board-view
+      [style*='color: ${lightGray.light['board-text']}'],
+    .notion-body.dark .notion-board-view [style*='color: ${lightGray.dark['board-text']}'],
+    .notion-body:not(.dark) .notion-board-view
+      [style*='fill: ${lightGray.light['board-text']}'],
+    .notion-body.dark .notion-board-view [style*='fill: ${lightGray.dark['board-text']}'] {
+      color: var(--theme--board_light_gray-text) !important;
+      fill: var(--theme--board_light_gray-text) !important;
+    }
+  `;
+
+  // generate the rest of the colours
   for (const c in colors) {
     css += `
 
@@ -335,6 +426,25 @@ function css() {
       color: var(--theme--tag_${c}-text) !important;
     }
 
+    .notion-body:not(.dark) [style*='background: ${
+      colors[c].light['callout']
+    }']${isHighlightPalette},
+    .notion-body.dark [style*='background: ${
+      colors[c].dark['callout']
+    }']${isHighlightPalette} {
+      background: var(--theme--highlight_${c}) !important;
+      color: var(--theme--highlight_${c}-text) !important;
+    }
+    .notion-body:not(.dark) [style*='background: ${
+      colors[c].light['tag']
+    }']${isTagPalette},
+    .notion-body.dark [style*='background: ${
+      colors[c].dark['board-text']
+    }']${isTagPalette} {
+      background: var(--theme--tag_${c}) !important;
+      color: var(--theme--tag_${c}-text) !important;
+    }
+
     .notion-body:not(.dark)
       .notion-board-group[style*='background-color: ${colors[c].light['board']}'],
     .notion-body.dark
@@ -372,10 +482,14 @@ function css() {
     }
     .notion-body:not(.dark) .notion-board-view
       [style*='color: ${colors[c].light['board-text']}'],
-    .notion-body.dark .notion-board-view [style*='color: ${colors[c].dark['board-text']}'],
+    .notion-body.dark .notion-board-view [style*='color: ${
+      colors[c].dark['board-text']
+    }'],
     .notion-body:not(.dark) .notion-board-view
       [style*='fill: ${colors[c].light['board-text']}'],
-    .notion-body.dark .notion-board-view [style*='fill: ${colors[c].dark['board-text']}'] {
+    .notion-body.dark .notion-board-view [style*='fill: ${
+      colors[c].dark['board-text']
+    }'] {
       color: var(--theme--board_${c}-text) !important;
       fill: var(--theme--board_${c}-text) !important;
     }
@@ -386,7 +500,26 @@ function css() {
 
 // 'light' or 'dark'
 function vars(mode) {
-  const sets = {};
+  // order in which variables will appear
+  const sets = {
+    'text': '',
+    'highlight': '',
+    'callout': '',
+    // tag_default has the same color in light and dark
+    'tag': '--theme--tag_default: rgba(206, 205, 202, 0.5);\n--theme--tag_default-text: var(--theme--text);\n',
+    'board': ''
+  };
+
+  // light gray separately
+  for (let key in lightGray[mode]) {
+    const prefix = key.split('-')[0],
+      value = lightGray[mode][key];
+    if (!sets[prefix]) sets[prefix] = '';
+    key = [`--theme--${prefix}_light_gray`, ...key.split('-').slice(1)].join('-');
+    sets[prefix] += `${key}: ${value};\n`;
+  }
+
+  // other colors
   for (const color in colors) {
     for (let key in colors[color][mode]) {
       const prefix = key.split('-')[0],

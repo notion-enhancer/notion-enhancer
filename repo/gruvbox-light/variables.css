@@ -12,6 +12,7 @@
    * but the _light variants are actually darker here
    */
   --gruvbox_light--bg: #fbf1c7;
+  --gruvbox_light--light_gray_dark: #B3A89E;
   --gruvbox_light--gray_dark: #928374;
   --gruvbox_light--red_dark: #cc241d;
   --gruvbox_light--red_light: #9d0006;
@@ -122,6 +123,8 @@
 
   --theme--tag_default: var(--gruvbox_light--gray_dark);
   --theme--tag_default-text: var(--gruvbox_light--bg2);
+  --theme--tag_light_gray: var(--gruvbox_light--light_gray_dark);
+  --theme--tag_light_gray-text: var(--gruvbox_light--bg0);
   --theme--tag_gray: var(--gruvbox_light--gray_dark);
   --theme--tag_gray-text: var(--gruvbox_light--bg2);
   --theme--tag_brown: var(--gruvbox_light--fg3);
@@ -141,6 +144,9 @@
   --theme--tag_red: var(--gruvbox_light--red_dark);
   --theme--tag_red-text: var(--gruvbox_light--bg0);
 
+  --theme--board_light_gray: var(--gruvbox_light--light_gray_dark);
+  --theme--board_light_gray-text: var(--gruvbox_light--bg0_h);
+  --theme--board_light_gray-card: var(--theme--tag_light_gray);
   --theme--board_gray: var(--theme--text_gray);
   --theme--board_gray-text: var(--gruvbox_light--bg0);
   --theme--board_gray-card: var(--theme--tag_gray);

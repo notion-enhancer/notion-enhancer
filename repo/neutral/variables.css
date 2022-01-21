@@ -67,6 +67,7 @@
 
   --theme--tag-text: var(--theme--text);
   --theme--tag_default: var(--theme--highlight_gray);
+  --theme--tag_light_gray: #8A8A8A;
   --theme--tag_gray: var(--theme--highlight_gray);
   --theme--tag_brown: var(--theme--highlight_brown);
   --theme--tag_orange: var(--theme--highlight_orange);
@@ -77,6 +78,10 @@
   --theme--tag_pink: var(--theme--highlight_pink);
   --theme--tag_red: var(--theme--highlight_red);
 
+  --theme--board_light_gray: rgba(112, 112, 112, 0.175);
+  --theme--board_light_gray-text: #AAAAAA;
+  --theme--board_light_gray-card: var(--theme--tag_light_gray);
+  --theme--board_light_gray-card_text: var(--theme--tag_light_gray-text);
   --theme--board_gray: rgba(88, 88, 88, 0.175);
   --theme--board_gray-text: var(--theme--text_gray);
   --theme--board_gray-card: var(--theme--tag_gray);
