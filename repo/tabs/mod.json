@@ -64,6 +64,18 @@
     },
     {
       "type": "hotkey",
+      "key": "prev_tab",
+      "label": "previous tab hotkey",
+      "value": "Control+Shift+Tab"
+    },
+    {
+      "type": "hotkey",
+      "key": "next_tab",
+      "label": "next tab hotkey",
+      "value": "Control+Tab"
+    },
+    {
+      "type": "hotkey",
       "key": "new_tab",
       "label": "new tab hotkey",
       "value": "Control+T"

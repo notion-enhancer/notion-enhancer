@@ -10,14 +10,14 @@ export default async function ({ web, electron }, db) {
   const newTabHotkey = await db.get(['new_tab']),
     closeTabHotkey = await db.get(['close_tab']),
     restoreTabHotkey = await db.get(['restore_tab']),
-    selectTabModifier = await db.get(['select_modifier']);
+    selectTabModifier = await db.get(['select_modifier']),
+    prevTabHotkey = await db.get(['prev_tab']),
+    nextTabHotkey = await db.get(['next_tab']);
   web.addHotkeyListener(newTabHotkey, () => {
     electron.sendMessageToHost('new-tab');
-    console.log('new-tab');
   });
   web.addHotkeyListener(restoreTabHotkey, () => {
     electron.sendMessageToHost('restore-tab');
-    console.log('restore-tab');
   });
   web.addHotkeyListener(closeTabHotkey, () => electron.sendMessageToHost('close-tab'));
   for (let i = 1; i < 10; i++) {
@@ -25,6 +25,12 @@ export default async function ({ web, electron }, db) {
       electron.sendMessageToHost('select-tab', i);
     });
   }
+  web.addHotkeyListener(prevTabHotkey, () => {
+    electron.sendMessageToHost('select-prev-tab')
+  });
+  web.addHotkeyListener(nextTabHotkey, () => {
+    electron.sendMessageToHost('select-next-tab')
+  }); 
 
   const breadcrumbSelector =
       '.notion-topbar > div > [class="notranslate"] > .notion-focusable:last-child',

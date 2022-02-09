@@ -228,6 +228,36 @@ module.exports = async function (api, db, tabCache = new Map()) {
         const $tab = i === 9 ? this.$tabList.lastElementChild : this.$tabList.children[i - 1];
         if ($tab) $tab.click();
       });
+      fromNotion('notion-enhancer:select-prev-tab', () => {
+        if (this.$tabList.count == 1) {
+          return;
+        }
+        const $sibling = this.$tab.previousElementSibling;
+        if ($sibling) {
+          $sibling.click();
+        }
+        else {
+          let $tab = this.$tabList.lastElementChild;
+          if ($tab) {
+            $tab.click();
+          }
+        }
+      });
+      fromNotion('notion-enhancer:select-next-tab', () => {
+        if (this.$tabList.count == 1) {
+          return;
+        }
+        const $sibling = this.$tab.nextElementSibling;
+        if ($sibling) {
+          $sibling.click();
+        }
+        else {
+          let $tab = this.$tabList.children[0]
+          if ($tab) {
+            $tab.click();
+          }
+        }
+      });
     }
 
     #firstQuery = true;
