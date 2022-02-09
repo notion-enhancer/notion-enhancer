@@ -48,7 +48,21 @@ export default async function ({ web }, db) {
       }
     }
   }
-
+  if (await db.get(['toggle_header'])) {
+    css += `
+      .notion-page-content .notion-selectable.notion-sub_sub_header-block > div > div > div:last-child::before {
+        border-left: 1px ${style} var(--indentation_lines--color, currentColor);
+        opacity: ${opacity};
+      }
+      .notion-page-content .notion-selectable.notion-sub_header-block > div > div > div:last-child::before {
+        border-left: 1px ${style} var(--indentation_lines--color, currentColor);
+        opacity: ${opacity};
+      }
+      .notion-page-content .notion-selectable.notion-sub_sub_sub_header-block > div > div > div:last-child::before {
+        border-left: 1px ${style} var(--indentation_lines--color, currentColor);
+        opacity: ${opacity};
+      }`;
+  }
   if (db.get(['table_of_contents'])) {
     css += `
       .notion-page-content .notion-table_of_contents-block > div > div > a > div

@@ -52,6 +52,12 @@
     },
     {
       "type": "toggle",
+      "key": "toggle_header",
+      "label": "toggle headers",
+      "value": true
+    },
+    {
+      "type": "toggle",
       "key": "table_of_contents",
       "label": "tables of contents",
       "value": true
