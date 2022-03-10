@@ -28,30 +28,19 @@
 .enhancer--tweak-normalise_table_scroll
   .notion-page-template-modal
   .notion-collection_view-block,
-.enhancer--tweak-normalise_table_scroll .notion-collection-view-body .notion-table-view {
+.enhancer--tweak-normalise_table_dscroll .notion-collection-view-body .notion-table-view {
   width: 100% !important;
-  padding-left: 0;
-  padding-right: 0;
+  padding: 0 !important;
 }
 .enhancer--tweak-normalise_table_scroll
   .notion-collection_view-block
   > [contenteditable]
   > .notion-scroller
-  > [class$='view'][style*='padding-left'],
-.enhancer--tweak-normalise_table_scroll
-  .notion-collection_view-block
-  > :first-child[style*='padding-left'] {
-  padding-left: 0 !important;
-}
-.enhancer--tweak-normalise_table_scroll
-  .notion-collection_view-block
-  > [contenteditable]
-  > .notion-scroller
-  > [class$='view'][style*='padding-right'],
+  > [class$='view'][style*='padding'],
 .enhancer--tweak-normalise_table_scroll
   .notion-collection_view-block
   > :first-child[style*='padding-right'] {
-  padding-right: 0 !important;
+  padding: 1px !important;
 }
 
 .enhancer--tweak-snappy_transitions * {
