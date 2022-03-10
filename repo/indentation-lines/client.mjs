@@ -48,22 +48,26 @@ export default async function ({ web }, db) {
       }
     }
   }
+
   if (await db.get(['toggle_header'])) {
     css += `
-      .notion-page-content .notion-selectable.notion-sub_sub_header-block > div > div > div:last-child::before {
-        border-left: 1px ${style} var(--indentation_lines--color, currentColor);
-        opacity: ${opacity};
-      }
-      .notion-page-content .notion-selectable.notion-sub_header-block > div > div > div:last-child::before {
-        border-left: 1px ${style} var(--indentation_lines--color, currentColor);
-        opacity: ${opacity};
-      }
-      .notion-page-content .notion-selectable.notion-sub_sub_sub_header-block > div > div > div:last-child::before {
+      .notion-page-content [class$=header-block] > div > div > div:last-child::before {
         border-left: 1px ${style} var(--indentation_lines--color, currentColor);
         opacity: ${opacity};
       }`;
+
+    if (rainbow) {
+      for (let i = 0; i < colors.length; i++) {
+        css += `
+        .notion-page-content ${`[class$=header-block] `.repeat(i + 1)}
+          > div > div > div:last-child::before{
+          --indentation_lines--color: var(--theme--text_${colors[i]});
+        }`;
+      }
+    }
   }
-  if (db.get(['table_of_contents'])) {
+
+  if (await db.get(['table_of_contents'])) {
     css += `
       .notion-page-content .notion-table_of_contents-block > div > div > a > div
         > div:not([style*='margin-left: 0px']) > div::before {
@@ -84,7 +88,7 @@ export default async function ({ web }, db) {
     }
   }
 
-  if (db.get(['outliner'])) {
+  if (await db.get(['outliner'])) {
     css += `
       .outliner--header:not([style='--outliner--indent:0px;'])::before {
         border-left: 1px ${style} var(--indentation_lines--color, currentColor);
