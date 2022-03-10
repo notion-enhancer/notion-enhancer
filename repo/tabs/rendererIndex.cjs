@@ -10,7 +10,7 @@ module.exports = async function (api, db, __exports, __eval) {
   const url = require('url'),
     electron = require('electron'),
     electronWindow = electron.remote.getCurrentWindow(),
-    { components, web } = api;
+    { components, web, env } = api;
 
   window['__start'] = async () => {
     // display:none; to prevent content flash while css loads
@@ -27,6 +27,9 @@ module.exports = async function (api, db, __exports, __eval) {
       $root = document.querySelector('#root'),
       $windowActions = web.html`<div id="window-actions"></div>`;
     document.body.prepend(web.render($header, $tabs, $newTab, $windowActions));
+
+    // make space for native window buttons on mac
+    if (env.name === 'darwin') $tabs.style.paddingLeft = '72px';
 
     $newTab.addEventListener('click', () => new Tab($tabs, $root));
     electron.ipcRenderer.on('notion-enhancer:close-tab', (event, id) => {
