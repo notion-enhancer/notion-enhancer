@@ -4,39 +4,51 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-'use strict';
+"use strict";
 
 export default async function ({ web }, db) {
-  const pageSelector = '.notion-page-content',
-    calendarSelector = '.notion-calendar-view',
-    viewSelector = '.notion-collection-view-select:not([data-weekly-view])',
+  const pageSelector = ".notion-page-content",
+    calendarSelector = ".notion-calendar-view",
+    collectionSelector =
+            ".notion-page-content > .notion-selectable.notion-collection_view-block",
+    viewSelector = ":scope>div>div>div>div>div",
     todaySelector = '.notion-calendar-view-day[style*="background"]',
     weekSelector = '[style^="position: relative; display: flex; height: "]',
     toolbarBtnSelector =
-      '.notion-calendar-view > :first-child > :first-child > :first-child > :nth-last-child(2)';
+            ".notion-calendar-view > :first-child > :first-child > :first-child > :nth-last-child(2)";
 
   const transformCalendarView = () => {
     const $page = document.querySelector(pageSelector);
-    document.querySelectorAll(viewSelector).forEach(async ($view) => {
-      if ($view.innerText.toLowerCase() !== 'weekly') return;
-      const $calendar = $view.parentElement.parentElement.parentElement.parentElement;
+    document.querySelectorAll(collectionSelector).forEach(async ($view) => {
+
+      const currentText = [].slice.call($view.querySelector(viewSelector).children).filter((e) => e.children[0].style.borderBottomWidth.toString() === "2px" )[0].innerText.toLowerCase();
+
+      if (currentText !== "weekly")
+        return;
+
+      const $calendar =
+                $view.parentElement.parentElement.parentElement.parentElement;
       if (!$calendar.querySelector(todaySelector)) {
         $calendar.querySelector(toolbarBtnSelector).click();
       }
       await new Promise((res, rej) => requestAnimationFrame(res));
       if ($page) {
         for (const $week of $calendar.querySelectorAll(weekSelector)) {
-          if (!$week.querySelector(todaySelector)) $week.style.height = '0';
+          if (!$week.querySelector(todaySelector)) {
+            $week.style.height = "0";
+            $week.style.display = "none";
+          }
         }
       } else {
-        const $weekContainer = $calendar.querySelector(weekSelector).parentElement;
+        const $weekContainer =
+                    $calendar.querySelector(weekSelector).parentElement;
         for (const $week of $calendar.querySelectorAll(weekSelector)) {
           if ($week.querySelector(todaySelector)) {
             $weekContainer.style.maxHeight = $week.style.height;
             break;
           } else {
-            $week.style.height = '0';
-            $week.style.opacity = '0';
+            $week.style.height = "0";
+            $week.style.opacity = "0";
           }
         }
       }
