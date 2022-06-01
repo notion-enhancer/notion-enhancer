@@ -134,7 +134,7 @@ globalThis.__enhancerElectronApi = {
   version: require('notion-enhancer/package.json').version,
   db,
 
-  browser: isRenderer ? require('electron').remote.getCurrentWindow() : {},
+  browser: isRenderer ? require('electron').remote?.getCurrentWindow() : {},
   webFrame: isRenderer ? require('electron').webFrame : {},
   notionRequire: (path) => require(`../../${path}`),
   notionPath: (path) => require('path').resolve(`${__dirname}/../../${path}`),
