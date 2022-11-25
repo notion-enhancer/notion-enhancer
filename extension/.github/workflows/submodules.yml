@@ -1,0 +1,20 @@
+name: 'update submodules'
+
+on:
+  workflow_dispatch:
+
+jobs:
+  sync:
+    name: 'update submodules'
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout repo
+        uses: actions/checkout@v2
+        with:
+          submodules: true
+      - name: pull updates
+        run: |
+          git pull --recurse-submodules
+          git submodule update --remote --recursive
+      - name: commit changes
+        uses: stefanzweifel/git-auto-commit-action@v4
