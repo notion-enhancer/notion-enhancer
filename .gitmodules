@@ -2,7 +2,3 @@
 	path = repo
 	url = git@github.com:notion-enhancer/repo.git
 	branch = dev
-[submodule "dep"]
-	path = dep
-	url = git@github.com:notion-enhancer/dep.git
-	branch = main
