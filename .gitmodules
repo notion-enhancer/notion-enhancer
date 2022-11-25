@@ -1,4 +1,0 @@
-[submodule "extension"]
-	path = extension
-	url = git@github.com:notion-enhancer/extension.git
-	branch = dev
