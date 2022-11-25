@@ -1,0 +1,31 @@
+/**
+ * notion-enhancer: components
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+#enhancer--tooltip {
+  font-family: var(--theme--font_sans);
+  background: var(--theme--ui_tooltip);
+  border-radius: 3px;
+  box-shadow: var(--theme--ui_shadow) 0px 1px 4px;
+  color: var(--theme--ui_tooltip-description);
+  display: none;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.4;
+  max-width: 20rem;
+  overflow: hidden;
+  padding: 4px 8px;
+  position: absolute;
+  z-index: 999999999999999999;
+  pointer-events: none;
+}
+#enhancer--tooltip p {
+  margin: 0;
+}
+#enhancer--tooltip b,
+#enhancer--tooltip strong {
+  font-weight: 500;
+  color: var(--theme--ui_tooltip-title);
+}
