@@ -11,7 +11,7 @@ const notificationsURL = 'https://notion-enhancer.github.io/notifications.json';
 export default async function ({ env, fs, storage, registry, web }, db) {
   web.addHotkeyListener(await db.get(['hotkey']), env.focusMenu);
 
-  const sidebarSelector = '.notion-sidebar-container .notion-sidebar > div:nth-child(4)';
+  const sidebarSelector = '.notion-sidebar-container .notion-sidebar > div:nth-child(3) > div > div:nth-child(2)';
   await web.whenReady([sidebarSelector]);
 
   const $sidebarLink = web.html`<div class="enhancer--sidebarMenuLink" role="button" tabindex="0">
