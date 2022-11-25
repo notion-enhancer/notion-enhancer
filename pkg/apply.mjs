@@ -68,7 +68,7 @@ export default async function (
       .map((file) => file.path)
       .filter((file) => file.endsWith('.js') && !file.includes('node_modules'));
     for (const file of notionFiles) {
-      const target = file.slice(status.executable.length + 1, -3),
+      const target = file.slice(status.executable.length + 1, -3).replace(/\\/g, '/'),
         replacer = path.resolve(`${__dirname(import.meta)}/replacers/${target}.mjs`);
       if (fs.existsSync(replacer)) {
         await (await import(`./replacers/${target}.mjs`)).default(file);
