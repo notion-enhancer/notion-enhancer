@@ -1,16 +1,16 @@
 [submodule "api"]
-	path = insert/api
+	path = api
 	url = git@github.com:notion-enhancer/api.git
 	branch = dev
 [submodule "repo"]
-	path = insert/repo
+	path = repo
 	url = git@github.com:notion-enhancer/repo.git
 	branch = dev
 [submodule "media"]
-	path = insert/media
+	path = media
 	url = git@github.com:notion-enhancer/media.git
 	branch = main
 [submodule "dep"]
-	path = insert/dep
+	path = dep
 	url = git@github.com:notion-enhancer/dep.git
 	branch = main
