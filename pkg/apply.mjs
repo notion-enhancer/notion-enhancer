@@ -75,7 +75,7 @@ export default async function (
       }
       await fsp.appendFile(
         file,
-        `\n\n//notion-enhancer\nrequire('notion-enhancer')('${target}', exports, (js) => eval(js))`
+        `\n\n//notion-enhancer\nrequire('notion-enhancer')('${target}', exports, (js) => eval(js));`
       );
     }
   }
