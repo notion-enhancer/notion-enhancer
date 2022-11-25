@@ -9,7 +9,9 @@
 export default async function ({ web }, db) {
   const pageSelector = '.notion-page-content',
     calendarSelector = '.notion-calendar-view',
-    viewSelector = '.notion-collection-view-select:not([data-weekly-view])',
+    viewSelector =
+      '.notion-page-content > .notion-selectable.notion-collection_view-block',
+    viewControlSelector = ':scope>div>div>div>div>div',
     todaySelector = '.notion-calendar-view-day[style*="background"]',
     weekSelector = '[style^="position: relative; display: flex; height: "]',
     toolbarBtnSelector =
@@ -17,8 +19,28 @@ export default async function ({ web }, db) {
 
   const transformCalendarView = () => {
     const $page = document.querySelector(pageSelector);
-    document.querySelectorAll(viewSelector).forEach(async ($view) => {
-      if ($view.innerText.toLowerCase() !== 'weekly') return;
+    document.querySelectorAll(viewSelector).forEach(async ($view) => {    
+      let currentText;  
+      // Get view controls children nodes, convert to array, filter out non-text
+      const $viewNodes = []
+        .slice.call($view.querySelector(viewControlSelector).children)
+        .filter(node => node.tagName.toLowerCase().match(/(div|span)/g));
+
+      // Find current view by analyzing children (which changes on viewport) 
+      if ($viewNodes.length === 1)
+      {
+        // Mobile: Simple dropdown button (like legacy), text is current view
+        currentText = $viewNodes[0].innerText.toLowerCase();
+      } else {
+        // Wide/Desktop: Tabs listed, current view indicated by border style
+        currentText = $viewNodes
+          // Find selected view by border style (possibly fragile)
+          .filter(($e) => $e.children[0].style.borderBottomWidth.toString() === '2px')[0]
+          .innerText.toLowerCase();
+      }
+      
+      if (currentText !== 'weekly') return;
+
       const $calendar = $view.parentElement.parentElement.parentElement.parentElement;
       if (!$calendar.querySelector(todaySelector)) {
         $calendar.querySelector(toolbarBtnSelector).click();
@@ -26,7 +48,10 @@ export default async function ({ web }, db) {
       await new Promise((res, rej) => requestAnimationFrame(res));
       if ($page) {
         for (const $week of $calendar.querySelectorAll(weekSelector)) {
-          if (!$week.querySelector(todaySelector)) $week.style.height = '0';
+          if (!$week.querySelector(todaySelector)) {
+            $week.style.height = 0;
+            $week.style.visibility = 'hidden';
+          }
         }
       } else {
         const $weekContainer = $calendar.querySelector(weekSelector).parentElement;
@@ -36,7 +61,7 @@ export default async function ({ web }, db) {
             break;
           } else {
             $week.style.height = '0';
-            $week.style.opacity = '0';
+            $week.style.visibility = 'hidden';
           }
         }
       }
