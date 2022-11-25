@@ -1,0 +1,172 @@
+/**
+ * notion-enhancer: cherry cola
+ * (c) 2020 Alexa Baldon <alnbaldon@gmail.com> (https://github.com/runargs)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+:root.dark {
+  --cola--main: #180915;
+  --cola--sec: #1d0919;
+  --cola--tet: #492341;
+  --cola--info: #9b6890;
+  --cola--accent: #bf799b;
+  --cola--light_gray: #ADADAD;
+  --cola--gray: #8a8a8a;
+  --cola--brown: #755241;
+  --cola--orange: #e6846b;
+  --cola--yellow: #d7b56e;
+  --cola--green: #8f9b4f;
+  --cola--blue: #6ebdb7;
+  --cola--purple: #813d63;
+  --cola--pink: #d86f71;
+  --cola--red: #a33232;
+
+  --theme--accent_blue: var(--cola--accent);
+  --theme--accent_blue-selection: rgba(78, 32, 69, 0.5);
+  --theme--accent_blue-hover: #bd6992;
+  --theme--accent_blue-active: #cc86a8;
+  --theme--accent_blue-text: #fff;
+  --theme--accent_red: var(--cola--accent);
+  --theme--accent_red-button: #bf799b63;
+  --theme--accent_red-text: #fff;
+
+  --theme--bg: var(--cola--main);
+  --theme--bg_secondary: var(--cola--sec);
+  --theme--bg_card: var(--cola--sec);
+
+  --theme--scrollbar_track: transparent;
+  --theme--scrollbar_thumb: var(--cola--sec);
+  --theme--scrollbar_thumb-hover: var(--cola--accent);
+
+  --theme--ui_divider: rgba(73, 35, 65, 0.7);
+  --theme--ui_interactive-hover: var(--cola--tet);
+  --theme--ui_interactive-active: var(--cola--tet);
+  --theme--ui_toggle-off: rgba(73, 35, 65, 0.7);
+  --theme--ui_corner_action: var(--theme--bg_card);
+  --theme--ui_corner_action-hover: var(--theme--ui_interactive-hover);
+  --theme--ui_corner_action-active: var(--theme--ui_interactive-active);
+
+  --theme--icon: #fff;
+  --theme--icon_secondary: var(--cola--info);
+
+  --theme--text: #fff;
+  --theme--text_secondary: var(--cola--info);
+  --theme--text_gray: var(--cola--gray);
+  --theme--text_brown: var(--cola--brown);
+  --theme--text_orange: var(--cola--orange);
+  --theme--text_yellow: var(--cola--yellow);
+  --theme--text_green: var(--cola--green);
+  --theme--text_blue: var(--cola--blue);
+  --theme--text_purple: var(--cola--purple);
+  --theme--text_pink: var(--cola--pink);
+  --theme--text_red: var(--cola--red);
+
+  --theme--highlight_gray: var(--theme--tag_gray);
+  --theme--highlight_gray-text: var(--theme--tag-text);
+  --theme--highlight_brown: var(--theme--tag_brown);
+  --theme--highlight_brown-text: var(--theme--tag-text);
+  --theme--highlight_orange: var(--theme--tag_orange);
+  --theme--highlight_orange-text: var(--theme--tag-text);
+  --theme--highlight_yellow: var(--theme--tag_yellow);
+  --theme--highlight_yellow-text: var(--theme--tag-text);
+  --theme--highlight_green: var(--theme--tag_green);
+  --theme--highlight_green-text: var(--theme--tag-text);
+  --theme--highlight_blue: var(--theme--tag_blue);
+  --theme--highlight_blue-text: var(--theme--tag-text);
+  --theme--highlight_purple: var(--theme--tag_purple);
+  --theme--highlight_purple-text: var(--theme--tag-text);
+  --theme--highlight_pink: var(--theme--tag_pink);
+  --theme--highlight_pink-text: var(--theme--tag-text);
+  --theme--highlight_red: var(--theme--tag_red);
+  --theme--highlight_red-text: var(--theme--tag-text);
+
+  --theme--callout_gray: var(--theme--tag_gray);
+  --theme--callout_gray-text: var(--theme--tag-text);
+  --theme--callout_brown: var(--theme--tag_brown);
+  --theme--callout_brown-text: var(--theme--tag-text);
+  --theme--callout_orange: var(--theme--tag_orange);
+  --theme--callout_orange-text: var(--theme--tag-text);
+  --theme--callout_yellow: var(--theme--tag_yellow);
+  --theme--callout_yellow-text: var(--theme--tag-text);
+  --theme--callout_green: var(--theme--tag_green);
+  --theme--callout_green-text: var(--theme--tag-text);
+  --theme--callout_blue: var(--theme--tag_blue);
+  --theme--callout_blue-text: var(--theme--tag-text);
+  --theme--callout_purple: var(--theme--tag_purple);
+  --theme--callout_purple-text: var(--theme--tag-text);
+  --theme--callout_pink: var(--theme--tag_pink);
+  --theme--callout_pink-text: var(--theme--tag-text);
+  --theme--callout_red: var(--theme--tag_red);
+  --theme--callout_red-text: var(--theme--tag-text);
+
+  --theme--tag_light_gray: var(--cola--light_gray);
+  --theme--tag_light_gray-text: var(--cola--main);
+  --theme--tag_gray: var(--cola--gray);
+  --theme--tag_gray-text: var(--cola--main);
+  --theme--tag_brown: var(--cola--brown);
+  --theme--tag_brown-text: #ffffff;
+  --theme--tag_orange: var(--cola--orange);
+  --theme--tag_orange-text: var(--cola--main);
+  --theme--tag_yellow: var(--cola--yellow);
+  --theme--tag_yellow-text: var(--cola--main);
+  --theme--tag_green: var(--cola--green);
+  --theme--tag_green-text: var(--cola--main);
+  --theme--tag_blue: var(--cola--blue);
+  --theme--tag_blue-text: var(--cola--main);
+  --theme--tag_purple: var(--cola--purple);
+  --theme--tag_purple-text: #ffffff;
+  --theme--tag_pink: var(--cola--pink);
+  --theme--tag_pink-text: var(--cola--main);
+  --theme--tag_red: var(--cola--red);
+  --theme--tag_red-text: #ffffff;
+
+  --theme--board_light_gray: var(--cola--light_gray);
+  --theme--board_light_gray-text: var(--cola--main);
+  --theme--board_light_gray-card: var(--theme--tag_light_gray);
+  --theme--board_gray: var(--cola--gray);
+  --theme--board_gray-text: var(--cola--main);
+  --theme--board_gray-card: var(--theme--tag_gray);
+  --theme--board_brown: var(--cola--brown);
+  --theme--board_brown-text: var(--cola--main);
+  --theme--board_brown-card: var(--theme--tag_brown);
+  --theme--board_orange: var(--cola--orange);
+  --theme--board_orange-text: var(--cola--main);
+  --theme--board_orange-card: var(--theme--tag_orange);
+  --theme--board_yellow: var(--cola--yellow);
+  --theme--board_yellow-text: var(--cola--main);
+  --theme--board_yellow-card: var(--theme--tag_yellow);
+  --theme--board_green: var(--cola--green);
+  --theme--board_green-text: var(--cola--main);
+  --theme--board_green-card: var(--theme--tag_green);
+  --theme--board_blue: var(--cola--blue);
+  --theme--board_blue-text: var(--cola--main);
+  --theme--board_blue-card: var(--theme--tag_blue);
+  --theme--board_purple: var(--cola--purple);
+  --theme--board_purple-text: var(--cola--main);
+  --theme--board_purple-card: var(--theme--tag_purple);
+  --theme--board_pink: var(--cola--pink);
+  --theme--board_pink-text: var(--cola--main);
+  --theme--board_pink-card: var(--theme--tag_pink);
+  --theme--board_red: var(--cola--red);
+  --theme--board_red-text: var(--cola--main);
+  --theme--board_red-card: var(--theme--tag_red);
+
+  --theme--code_inline: var(--cola--main);
+  --theme--code_inline-text: var(--cola--accent);
+
+  --theme--code: var(--cola--sec);
+  --theme--code_function: var(--theme--text_blue);
+  --theme--code_keyword: var(--theme--text_pink);
+  --theme--code_tag: var(--theme--text_pink);
+  --theme--code_operator: var(--theme--text_yellow);
+  --theme--code_property: var(--theme--text_pink);
+  --theme--code_builtin: var(--theme--text_yellow);
+  --theme--code_attr-name: var(--theme--text_yellow);
+  --theme--code_comment: var(--theme--text_gray);
+  --theme--code_punctuation: var(--theme--text_gray);
+  --theme--code_doctype: var(--theme--text_gray);
+  --theme--code_number: var(--theme--text_purple);
+  --theme--code_selector: var(--theme--text_orange);
+  --theme--code_atrule: var(--theme--text_orange);
+  --theme--code_regex: var(--theme--text_yellow);
+}

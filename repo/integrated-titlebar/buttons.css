@@ -1,0 +1,76 @@
+/**
+ * notion-enhancer: integrated titlebar
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+.integrated_titlebar--dragarea {
+  width: 100%;
+  display: block;
+  -webkit-app-region: drag;
+  background: var(--theme--bg_secondary);
+  height: var(--integrated_titlebar--dragarea-height);
+}
+
+.integrated_titlebar--buttons {
+  display: flex;
+  align-items: center;
+}
+.sidebar > .integrated_titlebar--buttons {
+  margin: -0.5rem 0 0.75rem auto;
+}
+
+.integrated_titlebar--buttons button {
+  user-select: none;
+  transition: background 20ms ease-in 0s;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 3px;
+  height: 28px;
+  width: 33px;
+  padding: 0 0.25px 0 0;
+
+  margin-left: 2px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+  -webkit-app-region: no-drag;
+}
+.integrated_titlebar--buttons button svg {
+  display: block;
+  width: 20px;
+  height: 20px;
+  fill: var(--theme--icon);
+  color: var(--theme--icon);
+}
+
+.integrated_titlebar--buttons button:focus,
+.integrated_titlebar--buttons button:hover {
+  background: var(--theme--ui_interactive-hover);
+}
+.integrated_titlebar--buttons button:active {
+  background: var(--theme--ui_interactive-active);
+}
+#integrated_titlebar--close:focus,
+#integrated_titlebar--close:hover,
+#integrated_titlebar--close:active {
+  background: var(--theme--accent_red);
+  color: var(--theme--accent_red-text);
+}
+
+.notion-update-sidebar [style*='margin-top: 45px;'] {
+  margin-top: calc(45px + var(--integrated_titlebar--dragarea-height, 0px)) !important;
+}
+.notion-topbar {
+  height: calc(45px + var(--integrated_titlebar--dragarea-height, 0px)) !important;
+}
+.notion-frame {
+  height: calc(100vh - 45px - var(--integrated_titlebar--dragarea-height, 0px)) !important;
+}
+
+body > .body-container {
+  height: calc(100% - var(--integrated_titlebar--dragarea-height, 0px)) !important;
+}

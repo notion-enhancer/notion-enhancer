@@ -1,0 +1,33 @@
+{
+  "name": "truncated titles",
+  "id": "1794c0bd-7b96-46ad-aa0b-fc4bd76fc7fb",
+  "version": "0.2.0",
+  "description": "see the full text of a truncated title on hover.",
+  "preview": "truncated-titles.jpg",
+  "tags": ["extension", "layout"],
+  "authors": [
+    {
+      "name": "admiraldus",
+      "homepage": "https://github.com/admiraldus",
+      "avatar": "https://raw.githubusercontent.com/admiraldus/admiraldus/main/module.gif"
+    }
+  ],
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "css": {},
+  "options": [
+    {
+      "type": "toggle",
+      "key": "tables",
+      "label": "table titles",
+      "value": true
+    },
+    {
+      "type": "toggle",
+      "key": "timelines",
+      "label": "timeline items",
+      "value": true
+    }
+  ]
+}

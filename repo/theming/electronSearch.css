@@ -1,0 +1,61 @@
+/**
+ * notion-enhancer: theming
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+#container {
+  background: var(--theme--bg) !important;
+  box-shadow: var(--theme--ui_shadow, rgba(15, 15, 15, 0.05)) 0px 0px 0px 1px,
+    var(--theme--ui_shadow, rgba(15, 15, 15, 0.1)) 0px 3px 6px,
+    var(--theme--ui_shadow, rgba(15, 15, 15, 0.2)) 0px 9px 24px !important;
+}
+
+#container #results {
+  color: var(--theme--text) !important;
+}
+
+#container #prev,
+#container #next {
+  border-color: var(--theme--ui_divider) !important;
+}
+#container .enabled:focus,
+#container .enabled:hover {
+  background: var(--theme--ui_interactive-hover) !important;
+}
+#container .enabled:active {
+  background: var(--theme--ui_interactive-active) !important;
+}
+#container #prev svg,
+#container #next svg {
+  fill: var(--theme--icon_secondary) !important;
+}
+#container #button-separator {
+  background: var(--theme--ui_divider) !important;
+}
+
+#container #search-icon svg,
+#container #clear-icon svg {
+  fill: var(--theme--icon) !important;
+}
+#container #input-wrap #search {
+  background: var(--theme--ui_input) !important;
+  color: var(--theme--text) !important;
+}
+
+#container #done {
+  background: var(--theme--accent_blue) !important;
+  color: var(--theme--accent_blue-text) !important;
+}
+#container #done:focus,
+#container #done:hover {
+  background: var(--theme--accent_blue-hover) !important;
+}
+#container #done:active {
+  background: var(--theme--accent_blue-active) !important;
+}
+
+#container .enabled::after,
+#container #done::after {
+  background: transparent !important;
+}

@@ -1,0 +1,97 @@
+/**
+ * notion-enhancer: menu
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+.markdown table {
+  border-spacing: 0;
+  border: 1px solid var(--theme--ui_divider);
+}
+.markdown table th {
+  text-align: left;
+}
+.markdown table th,
+.markdown table td {
+  padding: 5px 8px 6px;
+  border: 1px solid var(--theme--ui_divider);
+}
+.markdown h1 {
+  font-size: 1.875rem;
+  margin: 1rem 0 0.5rem 0;
+}
+.markdown h2 {
+  font-size: 1.5rem;
+  margin: 1rem 0 0.5rem 0;
+}
+.markdown h3 {
+  font-size: 1.25rem;
+  margin: 1rem 0 0.5rem 0;
+}
+.markdown h4 {
+  font-weight: bold;
+  margin: 0.5rem 0;
+}
+.markdown ul,
+.markdown ol {
+  padding-left: 1.25rem;
+}
+.markdown ul {
+  list-style: disc;
+}
+.markdown ol {
+  list-style: decimal;
+}
+.markdown li {
+  margin: 1px 0;
+}
+.markdown ol li {
+  padding-left: 0.25rem;
+}
+.markdown blockquote {
+  border-left: 2px solid currentColor;
+  padding-left: 0.75rem;
+  margin: 0.5rem 0;
+}
+.markdown hr {
+  border: 0.5px solid var(--theme--ui_divider);
+}
+.markdown-inline a,
+.markdown a {
+  opacity: 0.7;
+  text-decoration: none;
+  border-bottom: 0.05em solid var(--theme--text_secondary);
+}
+.markdown-inline a:hover,
+.markdown a:hover {
+  opacity: 0.9;
+}
+
+.markdown :not(pre) > code,
+.markdown-inline code {
+  padding: 0.2em 0.4em;
+  border-radius: 3px;
+  background: var(--theme--code_inline);
+  color: var(--theme--code_inline-text);
+}
+.markdown pre {
+  padding: 2em 1.25em;
+  border-radius: 3px;
+  tab-size: 2;
+  white-space: pre;
+  overflow-x: auto;
+  background: var(--theme--code);
+  color: var(--theme--code_plain);
+}
+.markdown pre,
+.markdown code,
+.markdown-inline code {
+  font-family: var(--theme--font_code);
+  font-size: 0.796875rem;
+  text-align: left;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  hyphens: none;
+  line-height: 1.5;
+}

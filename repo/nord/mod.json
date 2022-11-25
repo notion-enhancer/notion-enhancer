@@ -1,0 +1,28 @@
+{
+  "name": "nord",
+  "id": "d64ad391-1494-4112-80ae-0a3b6f4b0c3f",
+  "version": "0.2.0",
+  "description": "an arctic, north-bluish color palette.",
+  "preview": "nord.png",
+  "tags": ["theme", "dark"],
+  "authors": [
+    {
+      "name": "Artic Ice Studio",
+      "email": "development@arcticicestudio.com",
+      "homepage": "https://www.nordtheme.com/",
+      "avatar": "https://avatars.githubusercontent.com/u/7836623"
+    },
+    {
+      "name": "MANNNNEN",
+      "homepage": "https://github.com/MANNNNEN",
+      "avatar": "https://avatars.githubusercontent.com/u/35939149"
+    }
+  ],
+  "css": {
+    "frame": ["variables.css"],
+    "client": ["variables.css"],
+    "menu": ["variables.css"]
+  },
+  "js": {},
+  "options": []
+}

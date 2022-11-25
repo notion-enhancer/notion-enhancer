@@ -1,0 +1,429 @@
+/**
+ * notion-enhancer: simpler databases
+ * (c) 2020 CloudHill <rl.cloudhill@gmail.com> (https://github.com/CloudHill)
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+.simpler_databases--config_button:hover {
+  background: linear-gradient(
+      var(--theme--ui_interactive-hover),
+      var(--theme--ui_interactive-hover)
+    ),
+    linear-gradient(var(--theme--bg), var(--theme--bg));
+}
+.simpler_databases--config_button svg {
+  width: 12px;
+  height: 12px;
+  fill: var(--theme--icon_secondary);
+}
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[icon]']):not([data-simpler-db-tweaks*='[title]']):not([data-simpler-db-tweaks*='[toggle]']):not([data-simpler-db-tweaks*='[views']):not([data-simpler-db-tweaks*='[toolbar]'])
+  [style*=' height: 42px;']
+  > :last-child {
+  position: absolute;
+  top: 4px;
+  right: 0;
+  z-index: 99;
+  pointer-events: auto;
+}
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[icon]']):not([data-simpler-db-tweaks*='[title]']):not([data-simpler-db-tweaks*='[toggle]']):not([data-simpler-db-tweaks*='[views']):not([data-simpler-db-tweaks*='[toolbar]'])
+  .simpler_databases--config_button {
+  box-shadow: var(--theme--ui_shadow, rgba(15, 15, 15, 0.05)) 0px 0px 0px 1px,
+    var(--theme--ui_shadow, rgba(15, 15, 15, 0.1)) 0px 3px 6px,
+    var(--theme--ui_shadow, rgba(15, 15, 15, 0.2)) 0px 9px 24px !important;
+}
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[icon]']):not([data-simpler-db-tweaks*='[title]']):not([data-simpler-db-tweaks*='[toggle]']):not([data-simpler-db-tweaks*='[views']):not([data-simpler-db-tweaks*='[toolbar]'])
+  .simpler_databases--config_button:not(:hover) {
+  background: var(--theme--bg);
+}
+
+.simpler_databases--overlay_container {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  overflow: hidden;
+}
+
+.simpler_databases--config_menu {
+  position: relative;
+  width: 220px;
+  max-height: 70vh;
+  padding: 8px 0;
+  border-radius: 3px;
+  box-shadow: var(--theme--ui_shadow, rgba(15, 15, 15, 0.05)) 0px 0px 0px 1px,
+    var(--theme--ui_shadow, rgba(15, 15, 15, 0.1)) 0px 3px 6px,
+    var(--theme--ui_shadow, rgba(15, 15, 15, 0.2)) 0px 9px 24px;
+  background: var(--theme--bg_card);
+  overflow: hidden auto;
+}
+
+.simpler_databases--config_item-toggle,
+.simpler_databases--config_item-input {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: 28px;
+  font-size: 14px;
+  line-height: 1.2;
+  user-select: none;
+}
+.simpler_databases--config_item-toggle {
+  cursor: pointer;
+}
+.simpler_databases--config_item-toggle:hover,
+.simpler_databases--config_item-toggle:focus {
+  background: var(--theme--ui_interactive-hover);
+}
+.simpler_databases--config_item-input {
+  padding: 6px 0;
+}
+
+.simpler_databases--config_title {
+  margin: 0 14px;
+  min-width: 0;
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.simpler_databases--config_toggle {
+  flex-shrink: 0;
+  position: relative;
+  height: 14px;
+  width: 26px;
+  margin-left: auto;
+  margin-right: 14px;
+  padding: 2px;
+  border-radius: 44px;
+  cursor: pointer;
+  user-select: none;
+  box-sizing: content-box;
+  background: var(--theme--ui_toggle-off);
+  transition: background 200ms ease 0s, box-shadow 200ms ease 0s;
+}
+.simpler_databases--config_toggle[data-toggled='true'] {
+  background: var(--theme--ui_toggle-on);
+}
+.simpler_databases--config_toggle::before {
+  content: '';
+  position: absolute;
+  width: 14px;
+  height: 14px;
+  border-radius: 44px;
+  background: var(--theme--ui_toggle-feature);
+  transition: transform 200ms ease-out 0s, background 200ms ease-out 0s;
+}
+.simpler_databases--config_toggle[data-toggled='true']::before {
+  transform: translateX(12px);
+}
+
+.simpler_databases--config_input {
+  display: flex;
+  align-items: center;
+  height: 28px;
+  margin: 0 14px;
+  padding: 3px 6px;
+  background: var(--theme--ui_input);
+  box-shadow: var(--theme--ui_shadow) 0px 0px 0px 1px inset;
+  border-radius: 3px;
+  font-size: 14px;
+  line-height: 20px;
+  cursor: text;
+  width: 100%;
+}
+.simpler_databases--config_input input {
+  font-size: inherit;
+  line-height: inherit;
+  border: none;
+  background: none;
+  width: 100%;
+  display: block;
+  resize: none;
+  padding: 0;
+}
+
+.simpler_databases--config_divider {
+  border-bottom: 1px solid var(--theme--ui_divider);
+  width: 100%;
+  margin: 6px 0;
+}
+
+.notion-collection_view-block[data-simpler-db-tweaks*='[config-open]']
+  [style*=' height: 42px;']
+  > :not(:first-child) {
+  opacity: 1 !important;
+}
+
+/* TWEAKS */
+
+/* Toggle */
+.simpler_databases--toggle {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background 20ms ease-in 0s;
+}
+.simpler_databases--toggle svg {
+  width: 12px;
+  height: 12px;
+  transform: rotateZ(180deg);
+  transition: transform 200ms ease-out 0s;
+}
+.simpler_databases--toggle:hover {
+  background: var(--theme--ui_interactive-hover);
+}
+
+.notion-collection_view-block[data-simpler-db-tweaks*='[toggle]'][data-simpler-db-toggle-hidden='true']
+  .simpler_databases--toggle
+  svg {
+  transform: rotateZ(90deg);
+}
+
+.notion-collection_view-block[data-simpler-db-tweaks*='[toggle]'] > div > .notion-scroller {
+  transition: height 200ms ease-in, opacity 200ms ease-in;
+}
+.notion-collection_view-block[data-simpler-db-tweaks*='[toggle]'][data-simpler-db-toggle-hidden='true']
+  > div
+  > .notion-scroller {
+  opacity: 0;
+  height: 0 !important;
+}
+
+.notion-collection_view-block[data-simpler-db-tweaks*='[toggle]'][data-simpler-db-toggle-hidden='true']
+  [data-simpler-db-hide-items]
+  [class$='view']
+  > .notion-collection_view-block,
+.notion-collection_view-block[data-simpler-db-tweaks*='[toggle]'][data-simpler-db-toggle-hidden='true']
+  [data-simpler-db-hide-items]
+  .notion-collection-item {
+  display: none !important;
+}
+
+/* Title */
+
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[title]'])
+  [style*=' height: 42px;']
+  > [style*='white-space: nowrap; overflow: hidden;']
+  [placeholder] {
+  display: none !important;
+}
+
+/* Icons + Link Arrows */
+
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[icon]'])
+  [style*=' height: 42px;']
+  a
+  :first-child[style*='margin-right: 6px'] {
+  display: none !important;
+}
+
+/* Views */
+
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[views]'])
+  [style*=' height: 42px;']
+  > [role='button'] {
+  display: none !important;
+}
+
+/* Toolbar */
+
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[toolbar]'])
+  .simpler_databases--config_button
+  ~ * {
+  display: none !important;
+}
+
+/* Header - table, calendar */
+
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[header_row]'])
+  .notion-table-view
+  > .notion-collection_view-block
+  > :first-child,
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[header_row]'])
+  .notion-table-view
+  > .notion-collection_view-block
+  > :first-child
+  + div {
+  display: none !important;
+}
+
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[header_row]'])
+  .notion-table-view
+  .notion-collection_view-block
+  > [style*='height: 34px']
+  + div {
+  border-top: 1px solid var(--theme--ui_divider);
+}
+
+/* New Item - table, board, timeline, list, gallery */
+
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[new_item]'])
+  .notion-table-view-add-row,
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[new_item]'])
+  .notion-board-view
+  .notion-board-group
+  > [role='button']:not(.notion-collection-item),
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[new_item]'])
+  .notion-timeline-item-row:last-child,
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[new_item]'])
+  .notion-list-view
+  > .notion-collection_view-block
+  > [role='button']:not(.notion-collection-item),
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[new_item]'])
+  .notion-gallery-view
+  > .notion-collection_view-block
+  [style*='grid']
+  > [role='button'] {
+  display: none !important;
+}
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[new_item]'])
+  .notion-timeline-view
+  > [style*='padding-bottom: 34px;'] {
+  padding-bottom: 0 !important;
+}
+
+/* Calc Row - table, timeline */
+
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[calc_row]'])
+  .notion-table-view-add-row
+  ~ div:not(.notion-selectable-halo):not([role='button']),
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[calc_row]'])
+  .notion-timeline-view
+  > [style*='z-index: 4;']:last-child {
+  display: none !important;
+}
+
+/* Hidden Columns - board */
+
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[hidden_column]'])
+  .notion-board-view
+  > .notion-collection_view-block
+  [style*='width: 220px;'] {
+  display: none !important;
+}
+
+/* Add Group - board */
+
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[add_group]'])
+  .notion-board-view
+  > .notion-collection_view-block
+  [style*='width: 180px;'] {
+  display: none !important;
+}
+
+/* New Column - table */
+
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[new_column]'])
+  .notion-table-view-add-column,
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[new_column]'])
+  .notion-table-view
+  .notion-collection-item
+  > [style*='width: 32px;'] {
+  display: none !important;
+}
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[new_column]'])
+  .notion-table-view-add-row
+  + [style*='padding-right: 32px;'] {
+  padding-right: 0 !important;
+}
+
+/* Full Width - table */
+
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[full_width]'])
+  .notion-table-view
+  > .notion-collection_view-block {
+  max-width: fit-content;
+}
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[full_width]'])
+  .notion-table-view
+  .notion-collection_view-block
+  > [style*='min-width'] {
+  min-width: 0 !important;
+}
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[full_width]'])
+  .notion-table-view
+  .notion-collection-item {
+  width: fit-content;
+}
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[full_width]'])
+  .notion-table-view
+  .notion-collection_view-block
+  > [style*='height: 34px']
+  + div,
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[full_width]'])
+  .notion-table-view
+  .notion-collection_view-block
+  > :first-child {
+  border-left: 1px solid var(--theme--ui_divider);
+}
+
+/* COMPOUND TWEAKS */
+
+/* Title and Link disabled > Hide title container */
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[icon]']):not([data-simpler-db-tweaks*='[title]'])
+  [style*=' height: 42px;']
+  > [style*='white-space: nowrap; overflow: hidden;'] {
+  display: none !important;
+}
+
+/* New Row and Calc Row disabled > Add bottom border - table */
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[calc_row]']):not([data-simpler-db-tweaks*='[new_item]'])
+  .notion-table-view
+  .notion-collection_view-block
+  > [style*='height: 34px']
+  + div {
+  border-bottom: 1px solid var(--theme--ui_divider);
+}
+
+/* New Column enabled with Full Width disabled > Add right border - table */
+.notion-collection_view-block[data-simpler-db-tweaks][data-simpler-db-tweaks*='[new_column]']:not([data-simpler-db-tweaks*='[full_width]'])
+  .notion-table-view
+  .notion-collection_view-block
+  > [style*='height: 34px']
+  + div,
+.notion-collection_view-block[data-simpler-db-tweaks][data-simpler-db-tweaks*='[new_column]']:not([data-simpler-db-tweaks*='[full_width]'])
+  .notion-table-view
+  .notion-collection_view-block
+  > :first-child {
+  border-right: 1px solid var(--theme--ui_divider);
+}
+
+/* REMOVE DATABASE HEADER < Title, Link, Toggle, Views, and Toolbar disabled */
+
+/* Hide Header */
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[icon]']):not([data-simpler-db-tweaks*='[title]']):not([data-simpler-db-tweaks*='[toggle]']):not([data-simpler-db-tweaks*='[views']):not([data-simpler-db-tweaks*='[toolbar]'])
+  [style*='min-height: 42px'] {
+  min-height: 0 !important;
+  max-height: 0;
+  pointer-events: none;
+}
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[icon]']):not([data-simpler-db-tweaks*='[title]']):not([data-simpler-db-tweaks*='[toggle]']):not([data-simpler-db-tweaks*='[views']):not([data-simpler-db-tweaks*='[toolbar]'])
+  [style*='height: 42px'] {
+  overflow: visible !important;
+}
+
+/* Hide Top Border */
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[icon]']):not([data-simpler-db-tweaks*='[title]']):not([data-simpler-db-tweaks*='[toggle]']):not([data-simpler-db-tweaks*='[views']):not([data-simpler-db-tweaks*='[toolbar]'])
+  :not(.notion-table-view)
+  > .notion-collection_view-block
+  > [style*='box-shadow'] {
+  box-shadow: none !important;
+}
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[icon]']):not([data-simpler-db-tweaks*='[title]']):not([data-simpler-db-tweaks*='[toggle]']):not([data-simpler-db-tweaks*='[views']):not([data-simpler-db-tweaks*='[toolbar]'])
+  :not(.notion-table-view)
+  > .notion-collection_view-block[style*='border-top'],
+.notion-collection_view-block[data-simpler-db-tweaks]:not([data-simpler-db-tweaks*='[icon]']):not([data-simpler-db-tweaks*='[title]']):not([data-simpler-db-tweaks*='[toggle]']):not([data-simpler-db-tweaks*='[views']):not([data-simpler-db-tweaks*='[toolbar]'])
+  :not(.notion-table-view)
+  > .notion-collection_view-block
+  > [style*='border-top'] {
+  border-top: none !important;
+}

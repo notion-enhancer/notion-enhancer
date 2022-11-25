@@ -1,0 +1,90 @@
+/**
+ * notion-enhancer: view scale
+ * (c) 2021 SP12893678 (https://sp12893678.tk/)
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+.view_scale--container {
+  border: 1px solid var(--theme--ui_divider);
+  border-radius: 9999px !important;
+  margin: 0 4px;
+  padding: 0 5px 0 4px;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+
+.view_scale--slider {
+  appearance: none;
+  outline: 0;
+  border: 0px;
+  overflow: hidden;
+  width: 150px;
+  height: 20px;
+  margin: auto 4px auto 0;
+  cursor: ew-resize;
+  border-radius: 9999px;
+}
+.view_scale--slider::-webkit-slider-runnable-track {
+  appearance: none;
+  height: 20px;
+  background-color: var(--theme--ui_toggle-off);
+}
+.view_scale--slider::-webkit-slider-thumb {
+  appearance: none;
+  position: relative;
+  width: 20px;
+  height: 20px;
+  border-radius: 9999px;
+  border: 0px;
+  background: var(--theme--ui_toggle-on);
+  box-shadow: -100px 0 0 90px var(--theme--ui_toggle-on),
+    inset 0 0 0 20px var(--theme--ui_toggle-on);
+  transition: 0.2s;
+}
+.view_scale--slider:active::-webkit-slider-thumb {
+  background: var(--theme--ui_toggle-feature);
+  box-shadow: -100px 0 0 90px var(--theme--ui_toggle-on),
+    inset 0 0 0 2px var(--theme--ui_toggle-on);
+}
+
+.view_scale--counter {
+  font-size: 14px;
+  margin: auto 4px auto 0;
+  width: 5ch;
+  text-align: right;
+}
+
+.view_scale--button {
+  user-select: none;
+  transition: background 20ms ease-in 0s;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 9999px;
+  height: 20px;
+  width: 20px;
+  padding: 0 0.25px 0 0;
+
+  margin-left: 2px;
+  border: none;
+  background: transparent;
+  font-size: 18px;
+}
+.view_scale--button:focus,
+.view_scale--button:hover {
+  background: var(--theme--ui_interactive-hover);
+}
+.view_scale--button:active {
+  background: var(--theme--ui_interactive-active);
+}
+.view_scale--button svg {
+  display: block;
+  width: 14px;
+  height: 14px;
+  fill: var(--theme--icon);
+  color: var(--theme--icon);
+}

@@ -1,0 +1,14 @@
+/**
+ * notion-enhancer: focus mode
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+[data-focus-mode='hide-tabs'] header:not(:hover) {
+  background: var(--theme--bg);
+  border-bottom-color: transparent;
+}
+[data-focus-mode='hide-tabs'] header:not(:hover) > * {
+  opacity: 0;
+  transition: opacity 200ms ease-in-out;
+}

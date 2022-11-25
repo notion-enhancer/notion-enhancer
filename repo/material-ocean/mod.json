@@ -1,0 +1,23 @@
+{
+  "name": "material ocean",
+  "id": "69e7ccb2-4aef-484c-876d-3de1b433d2b9",
+  "version": "0.2.0",
+  "description": "an oceanic colour palette.",
+  "preview": "material-ocean.png",
+  "tags": ["theme", "dark"],
+  "authors": [
+    {
+      "name": "blacksuan19",
+      "email": "abubakaryagob@gmail.com",
+      "homepage": "http://github.com/blacksuan19",
+      "avatar": "https://avatars.githubusercontent.com/u/10248473"
+    }
+  ],
+  "css": {
+    "frame": ["variables.css"],
+    "client": ["variables.css"],
+    "menu": ["variables.css"]
+  },
+  "js": {},
+  "options": []
+}

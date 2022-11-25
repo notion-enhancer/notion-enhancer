@@ -1,0 +1,23 @@
+{
+  "name": "calendar scroll",
+  "id": "b1c7db33-dfee-489a-a76c-0dd66f7ed29a",
+  "version": "0.2.0",
+  "description": "adds a button to jump down to the current week in fullpage/infinite-scroll calendars.",
+  "preview": "calendar-scroll.png",
+  "tags": ["extension", "shortcut"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "css": {
+    "client": ["client.css"]
+  },
+  "options": []
+}

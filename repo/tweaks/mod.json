@@ -1,0 +1,124 @@
+{
+  "name": "tweaks",
+  "id": "5174a483-c88d-4bf8-a95f-35cd330b76e2",
+  "version": "0.2.0",
+  "description": "common style/layout changes and custom code insertion. check out the [tweaks page](https://notion-enhancer.github.io/advanced/tweaks) for more.",
+  "tags": ["extension", "customisation"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "css": {
+    "client": ["client.css"]
+  },
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "options": [
+    {
+      "type": "file",
+      "key": "insert.css",
+      "label": "css insert",
+      "tooltip": "**upload a css file that will be applied to the notion client**",
+      "extensions": [".css"]
+    },
+    {
+      "type": "number",
+      "key": "tweak.responsive_breakpoint_px",
+      "label": "responsive columns breakpoint (px)",
+      "tooltip": "the **width in pixels below which in-page columns are resized** to appear full-width to reduce content squishing",
+      "value": 600
+    },
+    {
+      "type": "number",
+      "key": "tweak.responsive_breakpoint_percent",
+      "label": "responsive columns breakpoint (%)",
+      "tooltip": "the **percentage of the screen below which in-page columns are resized to appear full-width** to reduce content squishing",
+      "value": 30
+    },
+    {
+      "type": "toggle",
+      "key": "tweak.full_width_pages",
+      "label": "full width pages",
+      "tooltip": "**decreases padding so every page appears full width**",
+      "value": false
+    },
+    {
+      "type": "toggle",
+      "key": "tweak.normalise_table_scroll",
+      "label": "wrap tables to page width",
+      "tooltip": "**force horizontally scrollable tables to respect the width and padding of a page when they overflow**",
+      "value": true
+    },
+    {
+      "type": "toggle",
+      "key": "tweak.snappy_transitions",
+      "label": "snappy transitions",
+      "tooltip": "enabling this **eliminates css animation time**, but will not prevent motion e.g. the sidebar popping out",
+      "value": false
+    },
+    {
+      "type": "toggle",
+      "key": "tweak.hide_help",
+      "label": "hide help button",
+      "value": false
+    },
+    {
+      "type": "toggle",
+      "key": "tweak.hide_slash_for_commands",
+      "label": "hide \"Type '/' for commands\"",
+      "value": false
+    },
+    {
+      "type": "toggle",
+      "key": "tweak.thicker_bold",
+      "label": "thicker bold text",
+      "value": true
+    },
+    {
+      "type": "toggle",
+      "key": "tweak.spaced_lines",
+      "label": "readable line spacing",
+      "tooltip": "**greater line spacing between text blocks**",
+      "value": false
+    },
+    {
+      "type": "toggle",
+      "key": "tweak.condensed_bullets",
+      "label": "condense bullet points",
+      "tooltip": "**tighter line spacing between bullet point blocks**",
+      "value": false
+    },
+    {
+      "type": "toggle",
+      "key": "tweak.bracketed_links",
+      "label": "bracketed links",
+      "tooltip": "**render links surrounded with [[brackets]] instead of __underlined__**",
+      "value": false
+    },
+    {
+      "type": "toggle",
+      "key": "tweak.accented_links",
+      "label": "accented links",
+      "tooltip": "**links are shown by default with notion's blue colour or a theme's equivalent**",
+      "value": false
+    },
+    {
+      "type": "toggle",
+      "key": "tweak.quotation_marks",
+      "label": "quote block quotation marks",
+      "tooltip": "**wrap quote block content in large, decorative serif quotation marks**",
+      "value": false
+    },
+    {
+      "type": "select",
+      "key": "tweak.img_alignment",
+      "label": "image alignment",
+      "values": ["center", "left", "right"]
+    }
+  ]
+}

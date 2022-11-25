@@ -1,0 +1,63 @@
+/**
+ * notion-enhancer: code line numbers
+ * (c) 2020 CloudHill <rl.cloudhill@gmail.com> (https://github.com/CloudHill)
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+.notion-code-block.line-numbers {
+  position: relative;
+}
+.code_line_numbers--plain:not(:empty) + div,
+.code_line_numbers--background:not(:empty) + div,
+.code_line_numbers--border:not(:empty) + div {
+  padding-left: 64px !important;
+}
+
+.code_line_numbers--plain,
+.code_line_numbers--background,
+.code_line_numbers--border {
+  position: absolute;
+  left: 0;
+  right: calc(100% - 64px);
+  top: 34px;
+  bottom: 32px;
+  padding-right: 27px;
+
+  font-size: 85%;
+  font-family: var(--theme--font_code);
+  text-align: right;
+  line-height: 1.5;
+  opacity: 0.8;
+  color: var(--theme--text_secondary);
+
+  overflow: hidden;
+  pointer-events: none;
+}
+.code_line_numbers--plain:empty,
+.code_line_numbers--background:empty,
+.code_line_numbers--border:empty {
+  display: none;
+}
+.code_line_numbers--background::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 7.25px;
+  width: calc(100% - 27px);
+  height: 100%;
+  display: block;
+  background-color: var(--theme--bg);
+  border-radius: 4px;
+  z-index: -1;
+}
+.code_line_numbers--border::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: calc(100% - 52px);
+  width: 2px;
+  height: 100%;
+  display: block;
+  background-color: var(--theme--ui_divider);
+}

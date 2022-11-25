@@ -1,0 +1,96 @@
+{
+  "name": "tabs",
+  "id": "e1692c29-475e-437b-b7ff-3eee872e1a42",
+  "environments": ["linux", "win32", "darwin"],
+  "version": "0.3.0",
+  "description": "open multiple notion pages in a single window.",
+  "preview": "tabs.jpg",
+  "tags": ["extension", "app"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "css": {
+    "frame": ["tabs.css"]
+  },
+  "js": {
+    "client": ["client.mjs"],
+    "electron": [
+      { "source": "main.cjs", "target": "main/main.js" },
+      { "source": "systemMenu.cjs", "target": "main/systemMenu.js" },
+      { "source": "createWindow.cjs", "target": "main/createWindow.js" },
+      { "source": "rendererIndex.cjs", "target": "renderer/index.js" }
+    ]
+  },
+  "options": [
+    {
+      "type": "toggle",
+      "key": "remember_last_open",
+      "label": "remember last open tabs",
+      "tooltip": "**a continue-where-you-left-off experience** (reopens recently active tabs after an app relaunch)",
+      "value": true
+    },
+    {
+      "type": "select",
+      "key": "label_type",
+      "label": "tab labels",
+      "values": ["page icon & title", "page icon only", "page title only"]
+    },
+    {
+      "type": "select",
+      "key": "layout_style",
+      "label": "tab layout",
+      "values": ["traditional tabbed", "rectangular", "bubble", "compact"]
+    },
+    {
+      "type": "select",
+      "key": "select_modifier",
+      "label": "tab select modifier",
+      "tooltip": "**usage: Modifier+1 to Modifier+9, Modifier+ArrowLeft and Modifier+ArrowRight**",
+      "values": [
+        "Alt",
+        "Command",
+        "Control",
+        "Super",
+        "Alt+Shift",
+        "Command+Shift",
+        "Control+Shift",
+        "Super+Shift"
+      ]
+    },
+    {
+      "type": "hotkey",
+      "key": "prev_tab",
+      "label": "previous tab hotkey",
+      "value": "Control+Shift+Tab"
+    },
+    {
+      "type": "hotkey",
+      "key": "next_tab",
+      "label": "next tab hotkey",
+      "value": "Control+Tab"
+    },
+    {
+      "type": "hotkey",
+      "key": "new_tab",
+      "label": "new tab hotkey",
+      "value": "Control+T"
+    },
+    {
+      "type": "hotkey",
+      "key": "close_tab",
+      "label": "close tab hotkey",
+      "value": "Control+W"
+    },
+    {
+      "type": "hotkey",
+      "key": "restore_tab",
+      "label": "restore previously opened tab hotkey",
+      "value": "Control+Shift+T"
+    }
+  ]
+}

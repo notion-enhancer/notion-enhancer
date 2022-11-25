@@ -1,0 +1,41 @@
+{
+  "name": "always on top",
+  "id": "be2d75f5-48f5-4ece-98bd-772244e559f3",
+  "environments": ["linux", "win32", "darwin"],
+  "version": "0.2.0",
+  "description": "adds a button that can be used to pin the notion window on top of all other windows at all times.",
+  "preview": "always-on-top.jpg",
+  "tags": ["extension", "app"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "css": {
+    "client": ["button.css"],
+    "menu": ["button.css"]
+  },
+  "js": {
+    "client": ["client.mjs"],
+    "menu": ["menu.mjs"]
+  },
+  "options": [
+    {
+      "type": "text",
+      "key": "pin_icon",
+      "label": "pin window icon",
+      "tooltip": "**may be an svg string or any unicode symbol e.g. an emoji** (the default icon will be used if this field is left empty)",
+      "value": ""
+    },
+    {
+      "type": "text",
+      "key": "unpin_icon",
+      "label": "unpin window icon",
+      "tooltip": "**may be an svg string or any unicode symbol e.g. an emoji** (the default icon will be used if this field is left empty)",
+      "value": ""
+    }
+  ]
+}

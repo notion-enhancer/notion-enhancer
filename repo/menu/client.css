@@ -1,0 +1,69 @@
+/**
+ * notion-enhancer: menu
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+.enhancer--sidebarMenuLink {
+  user-select: none;
+  -webkit-user-select: none;
+  transition: background 20ms ease-in 0s;
+  cursor: pointer;
+  color: var(--theme--text_secondary);
+}
+.enhancer--sidebarMenuLink:hover {
+  background: var(--theme--ui_interactive-hover);
+}
+.enhancer--sidebarMenuLink svg {
+  width: 16px;
+  height: 16px;
+  margin-left: 2px;
+}
+.enhancer--sidebarMenuLink > div {
+  display: flex;
+  align-items: center;
+  min-height: 27px;
+  font-size: 14px;
+  padding: 2px 14px;
+  width: 100%;
+}
+.enhancer--sidebarMenuLink > div > :first-child {
+  flex-shrink: 0;
+  flex-grow: 0;
+  border-radius: 3px;
+  width: 22px;
+  height: 22px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 8px;
+}
+.enhancer--sidebarMenuLink > div > :nth-child(2) {
+  flex: 1 1 auto;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.enhancer--sidebarMenuLink:active {
+  color: var(--theme--text);
+}
+.enhancer--sidebarMenuLink > div > .enhancer--notificationBubble {
+  display: flex;
+}
+.enhancer--sidebarMenuLink > div > .enhancer--notificationBubble > div {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  font-size: 10px;
+  font-weight: 600;
+  border-radius: 3px;
+  color: var(--theme--accent_red-text);
+  background: var(--theme--accent_red);
+}
+.enhancer--sidebarMenuLink > div > .enhancer--notificationBubble > div > span {
+  margin-bottom: 1px;
+  margin-left: -0.5px;
+}

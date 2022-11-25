@@ -1,0 +1,156 @@
+/**
+ * notion-enhancer: theming
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+.token.property {
+  color: var(--theme--code_property) !important;
+}
+.token.tag {
+  color: var(--theme--code_tag) !important;
+}
+.token.boolean {
+  color: var(--theme--code_boolean) !important;
+}
+.token.number {
+  color: var(--theme--code_number) !important;
+}
+.token.constant {
+  color: var(--theme--code_constant) !important;
+}
+.token.symbol {
+  color: var(--theme--code_symbol) !important;
+}
+.token.deleted {
+  color: var(--theme--code_deleted) !important;
+}
+.token.selector {
+  color: var(--theme--code_selector) !important;
+}
+.token.attr-name {
+  color: var(--theme--code_attr-name) !important;
+}
+.token.string {
+  color: var(--theme--code_string) !important;
+}
+.token.char {
+  color: var(--theme--code_char) !important;
+}
+.token.builtin {
+  color: var(--theme--code_builtin) !important;
+}
+.token.inserted {
+  color: var(--theme--code_inserted) !important;
+}
+.token.operator {
+  color: var(--theme--code_operator) !important;
+}
+.token.entity {
+  color: var(--theme--code_entity) !important;
+}
+.token.url {
+  color: var(--theme--code_url) !important;
+}
+.token.variable {
+  color: var(--theme--code_variable) !important;
+}
+.token.comment {
+  color: var(--theme--code_comment) !important;
+}
+.token.cdata {
+  color: var(--theme--code_cdata) !important;
+}
+.token.prolog {
+  color: var(--theme--code_prolog) !important;
+}
+.token.doctype {
+  color: var(--theme--code_doctype) !important;
+}
+.token.atrule {
+  color: var(--theme--code_atrule) !important;
+}
+.token.attr-value {
+  color: var(--theme--code_attr-value) !important;
+}
+.token.keyword {
+  color: var(--theme--code_keyword) !important;
+}
+.token.regex {
+  color: var(--theme--code_regex) !important;
+}
+.token.important {
+  color: var(--theme--code_important) !important;
+}
+.token.function {
+  color: var(--theme--code_function) !important;
+}
+.token.class-name {
+  color: var(--theme--code_class-name) !important;
+}
+.token.parameter {
+  color: var(--theme--code_parameter) !important;
+}
+.token.decorator {
+  color: var(--theme--code_decorator) !important;
+}
+.token.id {
+  color: var(--theme--code_id) !important;
+}
+.token.class {
+  color: var(--theme--code_class) !important;
+}
+.token.pseudo-element {
+  color: var(--theme--code_pseudo-element) !important;
+}
+.token.pseudo-class {
+  color: var(--theme--code_pseudo-class) !important;
+}
+.token.attribute {
+  color: var(--theme--code_attribute) !important;
+}
+.token.value {
+  color: var(--theme--code_value) !important;
+}
+.token.unit {
+  color: var(--theme--code_unit) !important;
+}
+.token.punctuation {
+  color: var(--theme--code_punctuation) !important;
+  opacity: 0.7 !important;
+}
+.token.annotation {
+  color: var(--theme--code_annotation) !important;
+}
+
+.token.operator {
+  background: transparent !important;
+}
+.token.namespace {
+  opacity: 0.7 !important;
+}
+.token.important,
+.token.bold {
+  font-weight: bold !important;
+}
+.token.italic {
+  font-style: italic !important;
+}
+.token.entity {
+  cursor: help !important;
+}
+.token a {
+  color: inherit !important;
+}
+.token.punctuation.brace-hover,
+.token.punctuation.brace-selected {
+  outline: solid 1px !important;
+}
+
+.token.operator,
+.token.entity,
+.token.url,
+.language-css .token.string,
+.style .token.string {
+  background: none !important;
+}
