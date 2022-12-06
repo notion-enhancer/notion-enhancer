@@ -1,1 +1,7 @@
-node_modules/*
+# dependencies
+node_modules/
+
+# yarn
+yarn.lock
+.yarn/
+.pnp.*

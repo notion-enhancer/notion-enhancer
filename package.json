@@ -1,28 +1,21 @@
 {
   "name": "notion-enhancer",
-  "version": "0.11.0",
+  "version": "0.11.1-dev",
   "author": "dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)",
   "description": "an enhancer/customiser for the all-in-one productivity workspace notion.so",
-  "homepage": "https://github.com/notion-enhancer/desktop",
+  "homepage": "https://notion-enhancer.github.io",
+  "repository": "github:notion-enhancer/desktop",
+  "bugs": "https://github.com/notion-enhancer/desktop/issues",
+  "funding": "https://github.com/sponsors/dragonwocky",
   "license": "MIT",
-  "bin": {
-    "notion-enhancer": "bin.mjs"
-  },
+  "bin": "bin.mjs",
   "type": "module",
   "engines": {
     "node": ">=16.x.x"
   },
-  "scripts": {
-    "test": "echo \"no test specified\"",
-    "preuninstall": "node bin.js remove -n"
-  },
   "dependencies": {
-    "asar": "^3.1.0",
-    "chalk": "^4.1.2"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/notion-enhancer/desktop.git"
+    "arg": "^5.0.2",
+    "chalk-template": "^0.4.0"
   },
   "keywords": [
     "windows",
@@ -40,7 +33,5 @@
     "notion",
     "notion-enhancer"
   ],
-  "bugs": {
-    "url": "https://github.com/notion-enhancer/desktop/issues"
-  }
+  "packageManager": "yarn@3.3.0"
 }
