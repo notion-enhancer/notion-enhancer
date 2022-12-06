@@ -4,7 +4,7 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import chalk from "chalk-template";
+import asar from "@electron/asar";
 import os from "node:os";
 import { promises as fsp, existsSync } from "node:fs";
 import { resolve } from "node:path";
@@ -43,11 +43,11 @@ const nodeRequire = createRequire(import.meta.url),
 
 const setNotionPath = (path) => {
     // sets notion resource path to user provided value
-    // e.g. from cli
+    // e.g. with the --path cli option
     __notionResources = path;
   },
-  getNotionResources = () => {
-    if (__notionResources) return __notionResources;
+  getResourcePath = (path) => {
+    if (__notionResources) return resolve(`${__notionResources}/${path}`);
     polyfillWslEnv("LOCALAPPDATA");
     polyfillWslEnv("PROGRAMW6432");
     const potentialPaths = [
@@ -63,48 +63,75 @@ const setNotionPath = (path) => {
       if (!targetPlatforms.includes(platform)) continue;
       if (!existsSync(testPath)) continue;
       __notionResources = testPath;
-      return __notionResources;
+      return resolve(`${__notionResources}/${path}`);
     }
   },
-  getEnhancerCache = () => {
+  // prefer unpacked if both exist
+  getAppPath = () => ["app", "app.asar"].map(getResourcePath).find(existsSync),
+  getBackupPath = () => ["app.bak", "app.asar.bak"].map(getResourcePath).find(existsSync),
+  getCachePath = () => {
     if (__enhancerCache) return __enhancerCache;
     const home = platform === "wsl" ? polyfillWslEnv("HOMEPATH") : os.homedir();
     __enhancerCache = resolve(`${home}/.notion-enhancer`);
     return __enhancerCache;
+  },
+  checkEnhancementVersion = () => {
+    const insertPath = getResourcePath("app/node_modules/notion-enhancer");
+    if (!existsSync(insertPath)) return undefined;
+    const insertManifest = getResourcePath("app/node_modules/notion-enhancer/package.json"),
+      insertVersion = nodeRequire(insertManifest).version;
+    return insertVersion;
   };
 
-const checkEnhancementStatus = () => {
-  const resourcePath = (path) => resolve(`${getNotionResources()}/${path}`),
-    doesResourceExist = (path) => existsSync(resourcePath(path));
-
-  const isAppUnpacked = doesResourceExist("app"),
-    isAppPacked = doesResourceExist("app.asar"),
-    isBackupUnpacked = doesResourceExist("app.bak"),
-    isBackupPacked = doesResourceExist("app.asar.bak"),
-    isEnhancerInserted = doesResourceExist("app/node_module/notion-enhancer"),
-    enhancerInsertManifest = isEnhancerInserted
-      ? resourcePath("app/node_module/notion-enhancer/package.json")
-      : undefined;
-
-  // prefer unpacked if both exist: extraction is slow
-  return {
-    appPath: isAppUnpacked
-      ? resourcePath("app")
-      : isAppPacked
-      ? resourcePath("app.asar")
-      : undefined,
-    backupPath: isBackupUnpacked
-      ? resourcePath("app.bak")
-      : isBackupPacked
-      ? resourcePath("app.asar.bak")
-      : undefined,
-    cachePath: existsSync(getEnhancerCache()) //
-      ? getEnhancerCache()
-      : undefined,
-    insertVersion: isEnhancerInserted
-      ? nodeRequire(enhancerInsertManifest).version
-      : undefined,
+const unpackApp = () => {
+    const appPath = getAppPath();
+    if (!appPath || !appPath.endsWith("asar")) return false;
+    asar.extractAll(appPath, appPath.replace(/\.asar$/, ""));
+    return true;
+  },
+  applyEnhancements = () => {
+    const appPath = getAppPath();
+    if (!appPath || appPath.endsWith("asar")) return false;
+    // ...
+    return true;
+  },
+  takeBackup = async () => {
+    const appPath = getAppPath();
+    if (!appPath) return false;
+    const backupPath = getBackupPath();
+    if (backupPath) await fsp.rm(backupPath, { recursive: true });
+    const destPath = `${appPath}.bak`;
+    if (!appPath.endsWith(".asar")) {
+      await fsp.cp(appPath, destPath, { recursive: true });
+    } else await fsp.rename(appPath, destPath);
+    return true;
+  },
+  restoreBackup = async () => {
+    const backupPath = getBackupPath();
+    if (!backupPath) return false;
+    const destPath = backupPath.replace(/\.bak$/, "");
+    if (existsSync(destPath)) await fsp.rm(destPath, { recursive: true });
+    await fsp.rename(backupPath, destPath);
+    const appPath = getAppPath();
+    if (destPath !== appPath) await fsp.rm(appPath, { recursive: true });
+    return true;
+  },
+  removeCache = async () => {
+    if (!existsSync(getCachePath())) return;
+    await fsp.rm(getCachePath());
+    return true;
   };
+
+export {
+  getResourcePath,
+  getAppPath,
+  getBackupPath,
+  getCachePath,
+  checkEnhancementVersion,
+  setNotionPath,
+  unpackApp,
+  applyEnhancements,
+  takeBackup,
+  restoreBackup,
+  removeCache,
 };
-
-export { checkEnhancementStatus, setNotionPath };
