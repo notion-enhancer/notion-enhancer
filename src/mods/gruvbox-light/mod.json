@@ -1,0 +1,29 @@
+{
+  "name": "gruvbox light",
+  "id": "54f01911-60fc-4c9d-85b5-5c5ca3dd6b81",
+  "version": "0.3.0",
+  "description": "a sepia, 'retro groove' palette based on the vim theme of the same name.",
+  "preview": "gruvbox-light.png",
+  "tags": ["theme", "light"],
+  "authors": [
+    {
+      "name": "morhetz",
+      "email": "morhetz@gmail.com",
+      "homepage": "https://github.com/morhetz",
+      "avatar": "https://avatars.githubusercontent.com/u/554231"
+    },
+    {
+      "name": "jordanrobinson",
+      "email": "me@jordanrobinson.co.uk",
+      "homepage": "https://jordanrobinson.co.uk/",
+      "avatar": "https://avatars.githubusercontent.com/u/1202911"
+    }
+  ],
+  "css": {
+    "frame": ["variables.css"],
+    "client": ["variables.css"],
+    "menu": ["variables.css"]
+  },
+  "js": {},
+  "options": []
+}

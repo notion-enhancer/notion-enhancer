@@ -1,0 +1,56 @@
+/**
+ * notion-enhancer: collapse properties
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+#enhancer--collapse-properties {
+  display: flex;
+  background: var(--theme--ui_interactive-hover);
+  border: 1px solid transparent;
+  font-size: 14px;
+  border-radius: 3px;
+  line-height: 1.2;
+  font-weight: 600;
+  padding: 0.3em 0.5em;
+  margin: 1em 0;
+  width: 100%;
+}
+#enhancer--collapse-properties:focus,
+#enhancer--collapse-properties:hover {
+  background: transparent;
+  border: 1px solid var(--theme--ui_interactive-hover);
+}
+#enhancer--collapse-properties:active {
+  background: var(--theme--ui_interactive-active);
+}
+
+#enhancer--collapse-properties > span {
+  text-align: left;
+  color: var(--theme--text);
+}
+#enhancer--collapse-properties > span:before {
+  content: 'Properties';
+}
+#enhancer--collapse-properties > svg {
+  fill: var(--theme--icon);
+  height: 0.8em;
+  width: 0.8em;
+  margin: auto 0.5em auto 0;
+  transition: transform 200ms ease-out 0s;
+}
+
+#enhancer--collapse-properties[data-collapsed='false'] > svg {
+  transform: rotateZ(180deg);
+}
+#enhancer--collapse-properties[data-collapsed='true'] > svg {
+  transform: rotateZ(90deg);
+}
+
+#enhancer--collapse-properties + div {
+  overflow: hidden;
+}
+#enhancer--collapse-properties[data-collapsed='true'] + div {
+  max-height: 0 !important;
+  opacity: 0;
+}

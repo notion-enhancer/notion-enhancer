@@ -1,0 +1,57 @@
+{
+  "name": "topbar icons",
+  "id": "e0700ce3-a9ae-45f5-92e5-610ded0e348d",
+  "version": "0.3.0",
+  "description": "choose between text or icons for the topbar buttons.",
+  "preview": "topbar-icons.jpg",
+  "tags": ["extension", "customisation"],
+  "authors": [
+    {
+      "name": "CloudHill",
+      "email": "rh.cloudhill@gmail.com",
+      "homepage": "https://github.com/CloudHill",
+      "avatar": "https://avatars.githubusercontent.com/u/54142180"
+    }
+  ],
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "css": {},
+  "options": [
+    {
+      "type": "toggle",
+      "key": "share",
+      "label": "share",
+      "tooltip": "**on = icon, off = text**",
+      "value": false
+    },
+    {
+      "type": "toggle",
+      "key": "comments",
+      "label": "comments",
+      "tooltip": "**on = icon, off = text**",
+      "value": true
+    },
+    {
+      "type": "toggle",
+      "key": "updates",
+      "label": "updates",
+      "tooltip": "**on = icon, off = text**",
+      "value": true
+    },
+    {
+      "type": "toggle",
+      "key": "favorite",
+      "label": "favorite",
+      "tooltip": "**on = icon, off = text**",
+      "value": true
+    },
+    {
+      "type": "toggle",
+      "key": "more",
+      "label": "more (3 dots)",
+      "tooltip": "**on = icon, off = text**",
+      "value": true
+    }
+  ]
+}

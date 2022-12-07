@@ -1,0 +1,39 @@
+{
+  "name": "focus mode",
+  "id": "5a08598d-bfac-4167-9ae8-2bd0e2ef141e",
+  "version": "0.3.0",
+  "description": "hide the titlebar/menubar when the sidebar is closed (returns on hover).",
+  "tags": ["extension", "layout"],
+  "authors": [
+    {
+      "name": "arecsu",
+      "email": "alejandro9r@gmail.com",
+      "homepage": "https://github.com/Arecsu",
+      "avatar": "https://avatars.githubusercontent.com/u/12679098"
+    }
+  ],
+  "css": {
+    "frame": ["tabs.css"],
+    "client": ["client.css"]
+  },
+  "js": {
+    "frame": ["tabs.mjs"],
+    "client": ["client.mjs"]
+  },
+  "options": [
+    {
+      "type": "toggle",
+      "key": "padded",
+      "label": "even padding",
+      "tooltip": "matches the empty space at the top and sides of the frame with **extra padding at the bottom when the sidebar is hidden**",
+      "value": true
+    },
+    {
+      "type": "toggle",
+      "key": "tabs",
+      "label": "hide tabs",
+      "tooltip": "makes the tab bar transparent unless hovered over",
+      "value": false
+    }
+  ]
+}

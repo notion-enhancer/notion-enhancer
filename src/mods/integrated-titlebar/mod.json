@@ -1,0 +1,72 @@
+{
+  "name": "integrated titlebar",
+  "id": "a5658d03-21c6-4088-bade-fa4780459133",
+  "environments": ["linux", "win32"],
+  "version": "0.11.0",
+  "description": "replaces the native window titlebar with buttons inset into the app.",
+  "preview": "integrated-titlebar.jpg",
+  "tags": ["extension", "layout"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "css": {
+    "frame": ["buttons.css"],
+    "client": ["buttons.css"],
+    "menu": ["buttons.css"]
+  },
+  "js": {
+    "frame": ["frame.mjs"],
+    "client": ["client.mjs"],
+    "menu": ["menu.mjs"],
+    "electron": [{ "source": "createWindow.cjs", "target": "main/createWindow.js" }]
+  },
+  "options": [
+    {
+      "type": "toggle",
+      "key": "tiling",
+      "label": "tiling window manager mode",
+      "tooltip": "**completely remove the close/minimise/maximise buttons** (only for advanced use, not recommended)",
+      "value": false
+    },
+    {
+      "type": "number",
+      "key": "dragarea_height",
+      "label": "dragarea height (px)",
+      "tooltip": "**the height of the rectangle added to the top of the window, used to drag/move the window around** (dragging is not possible in a frameless window without this bar)",
+      "value": 12
+    },
+    {
+      "type": "text",
+      "key": "minimize_icon",
+      "label": "minimize window icon",
+      "tooltip": "**may be an svg string or any unicode symbol e.g. an emoji** (the default icon will be used if this field is left empty)",
+      "value": ""
+    },
+    {
+      "type": "text",
+      "key": "maximize_icon",
+      "label": "maximize window icon",
+      "tooltip": "**may be an svg string or any unicode symbol e.g. an emoji** (the default icon will be used if this field is left empty)",
+      "value": ""
+    },
+    {
+      "type": "text",
+      "key": "unmaximize_icon",
+      "label": "unmaximize window icon",
+      "tooltip": "**may be an svg string or any unicode symbol e.g. an emoji** (the default icon will be used if this field is left empty)",
+      "value": ""
+    },
+    {
+      "type": "text",
+      "key": "close_icon",
+      "label": "close window icon",
+      "tooltip": "**may be an svg string or any unicode symbol e.g. an emoji** (the default icon will be used if this field is left empty)",
+      "value": ""
+    }
+  ]
+}

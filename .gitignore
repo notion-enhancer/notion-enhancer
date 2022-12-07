@@ -1,1 +1,9 @@
-node_modules/*
+# builds
+dist/
+
+# dependencies
+node_modules/
+
+# yarn
+.yarn/
+.pnp.*

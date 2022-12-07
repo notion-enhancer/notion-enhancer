@@ -1,0 +1,25 @@
+/**
+ * notion-enhancer: calendar scroll
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+#enhancer--calendar-scroll {
+  background: var(--theme--ui_interactive-hover);
+  border: 1px solid transparent;
+  font-size: 14px;
+  color: var(--theme--text);
+  height: 24px;
+  border-radius: 3px;
+  line-height: 1.2;
+  padding: 0 0.5em;
+  margin-right: 5px;
+}
+#enhancer--calendar-scroll:focus,
+#enhancer--calendar-scroll:hover {
+  background: transparent;
+  border: 1px solid var(--theme--ui_interactive-hover);
+}
+#enhancer--calendar-scroll:active {
+  background: var(--theme--ui_interactive-active);
+}

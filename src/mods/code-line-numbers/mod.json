@@ -1,0 +1,36 @@
+{
+  "name": "code line numbers",
+  "id": "d61dc8a7-b195-465b-935f-53eea9efe74e",
+  "version": "0.4.0",
+  "description": "adds line numbers to code blocks.",
+  "preview": "code-line-numbers.png",
+  "tags": ["extension", "usability"],
+  "authors": [
+    {
+      "name": "CloudHill",
+      "email": "rh.cloudhill@gmail.com",
+      "homepage": "https://github.com/CloudHill",
+      "avatar": "https://avatars.githubusercontent.com/u/54142180"
+    }
+  ],
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "css": {
+    "client": ["client.css"]
+  },
+  "options": [
+    {
+      "type": "toggle",
+      "key": "single_lined",
+      "label": "number single-lined code blocks",
+      "value": false
+    },
+    {
+      "type": "select",
+      "key": "style",
+      "label": "line number style",
+      "values": ["plain", "background", "border"]
+    }
+  ]
+}

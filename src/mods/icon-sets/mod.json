@@ -1,0 +1,43 @@
+{
+  "name": "icon sets",
+  "id": "2d1f4809-9581-40dd-9bf3-4239db406483",
+  "version": "0.4.0",
+  "description": "upload, save and reuse custom icons directly from the icon picker. check out the [icons page](https://notion-enhancer.github.io/advanced/icons) for instructions on loading entire sets.",
+  "preview": "icon-sets.jpg",
+  "tags": ["integration", "customisation"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "css": {
+    "client": ["client.css"]
+  },
+  "options": [
+    {
+      "type": "toggle",
+      "key": "default_sets",
+      "label": "load default icon sets from github",
+      "value": true
+    },
+    {
+      "type": "toggle",
+      "key": "prevent_quality_reduction",
+      "label": "prevent icon quality reduction",
+      "tooltip": "**this may break icons in widgets or be rejected by notion if images are too high quality** - encodes and submits images as data urls to prevent notion from optimising them (reduces image quality by ~20%)",
+      "value": true
+    },
+    {
+      "type": "file",
+      "key": "json",
+      "label": "custom icon sets (.json)",
+      "extensions": [".json"]
+    }
+  ]
+}

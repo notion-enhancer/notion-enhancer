@@ -1,0 +1,23 @@
+{
+  "name": "cherry cola",
+  "id": "ec5c4640-68d4-4d25-aefd-62c7e9737cfb",
+  "version": "0.2.0",
+  "description": "a delightfully plummy, cherry cola flavored theme.",
+  "preview": "cherry-cola.png",
+  "tags": ["theme", "dark"],
+  "authors": [
+    {
+      "name": "runargs",
+      "email": "alnbaldon@gmail.com",
+      "homepage": "http://github.com/runargs",
+      "avatar": "https://avatars.githubusercontent.com/u/39810066"
+    }
+  ],
+  "css": {
+    "frame": ["variables.css"],
+    "client": ["variables.css"],
+    "menu": ["variables.css"]
+  },
+  "js": {},
+  "options": []
+}

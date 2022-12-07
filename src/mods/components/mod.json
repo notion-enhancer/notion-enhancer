@@ -1,0 +1,33 @@
+{
+  "__comment": "pseudo-mod to allow configuration of api-provided components",
+  "name": "components",
+  "id": "36a2ffc9-27ff-480e-84a7-c7700a7d232d",
+  "version": "0.2.0",
+  "description": "shared notion-style elements.",
+  "tags": ["core"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    },
+    {
+      "name": "CloudHill",
+      "email": "rh.cloudhill@gmail.com",
+      "homepage": "https://github.com/CloudHill",
+      "avatar": "https://avatars.githubusercontent.com/u/54142180"
+    }
+  ],
+  "js": {},
+  "css": {},
+  "options": [
+    {
+      "type": "hotkey",
+      "key": "panel.hotkey",
+      "label": "toggle panel hotkey",
+      "value": "Ctrl+Alt+\\",
+      "tooltip": "**opens/closes the side panel in notion** if a mod that uses it has been enabled"
+    }
+  ]
+}

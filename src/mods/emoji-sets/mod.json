@@ -1,0 +1,46 @@
+{
+  "name": "emoji sets",
+  "id": "a2401ee1-93ba-4b8c-9781-7f570bf5d71e",
+  "version": "0.4.0",
+  "description": "pick from a variety of emoji styles to use.",
+  "preview": "emoji-sets.jpg",
+  "tags": ["extension", "customisation"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "css": {
+    "client": ["client.css"]
+  },
+  "options": [
+    {
+      "type": "select",
+      "key": "style",
+      "label": "emoji style",
+      "tooltip": "**initial use may involve some lag and load-time for emojis until they have all been cached**",
+      "values": [
+        "twitter",
+        "apple",
+        "google",
+        "microsoft",
+        "samsung",
+        "whatsapp",
+        "facebook",
+        "messenger",
+        "joypixels",
+        "openmoji",
+        "emojidex",
+        "lg",
+        "htc",
+        "mozilla"
+      ]
+    }
+  ]
+}

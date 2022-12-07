@@ -1,0 +1,22 @@
+{
+  "name": "bypass preview",
+  "id": "cb6fd684-f113-4a7a-9423-8f0f0cff069f",
+  "version": "0.2.0",
+  "description": "go straight to the normal full view when opening a page.",
+  "tags": ["extension", "automation"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "email": "thedragonring.bod@gmail.com",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "js": {
+    "client": ["client.mjs"]
+  },
+  "css": {
+    "client": ["client.css"]
+  },
+  "options": []
+}

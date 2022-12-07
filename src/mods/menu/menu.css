@@ -1,0 +1,25 @@
+/**
+ * notion-enhancer: menu
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+::selection {
+  background: var(--theme--accent_blue-selection);
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+  background: transparent;
+}
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
+  background: var(--theme--scrollbar_track) !important;
+}
+::-webkit-scrollbar-thumb {
+  background: var(--theme--scrollbar_thumb) !important;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--theme--scrollbar_thumb-hover) !important;
+}

@@ -1,0 +1,84 @@
+/**
+ * notion-enhancer: dracula
+ * (c) 2016 Dracula Theme
+ * (c) 2020 CloudHill
+ * (c) 2020 mimishahzad
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+.notion-dark-theme img[src*='/images/onboarding/use-case-note.png'],
+.notion-dark-theme img[src*='/images/onboarding/team-features-illustration.png'] {
+  filter: invert(1) !important;
+}
+.notion-dark-theme img[src*='/images/onboarding/checked.svg'] {
+  filter: hue-rotate(45deg) !important;
+}
+.notion-dark-theme
+  img[style*='display: block; object-fit: cover; border-radius: 100%; width: 90px; height: 90px;'],
+.notion-dark-theme
+  img[style*='display: block; object-fit: cover; border-radius: 3px; width: 56.832px; height: 56.832px; transition: opacity 100ms ease-out 0s;'] {
+  transition: filter 0.4s ease !important;
+}
+.notion-dark-theme
+  img[style*='display: block; object-fit: cover; border-radius: 100%; width: 90px; height: 90px;']:hover,
+.notion-dark-theme
+  img[style*='display: block; object-fit: cover; border-radius: 3px; width: 56.832px; height: 56.832px; transition: opacity 100ms ease-out 0s;']:hover {
+  filter: brightness(1.2);
+}
+
+.notion-dark-theme .notion-token-remove-button[role*='button'][tabindex*='0']:hover,
+.notion-dark-theme .notion-record-icon {
+  background: transparent !important;
+}
+
+.notion-dark-theme .notion-focusable:focus-within,
+.notion-dark-theme .notion-to_do-block > div > div > div[style*='background:'],
+.notion-dark-theme div[role='button'],
+[style*='height: 4px;'] > .notion-selectable.notion-collection_view_page-block > *,
+.notion-dark-theme .notion-calendar-view-day[style*='background: #282a36;'],
+.DayPicker-Day--today,
+.notion-dark-theme
+  .DayPicker:not(.DayPicker--interactionDisabled)
+  .DayPicker-Day--outside:hover,
+.notion-dark-theme
+  .DayPicker:not(.DayPicker--interactionDisabled)
+  .DayPicker-Day:not(.DayPicker-Day--disabled):not(.DayPicker-Day--value)
+  .DayPicker-Day.DayPicker-Day--start.DayPicker-Day--selected,
+.notion-dark-theme .DayPicker-Day.DayPicker-Day--range.DayPicker-Day--start,
+.notion-dark-theme .DayPicker-Day.DayPicker-Day--range.DayPicker-Day--end {
+  transition: color 0.4s ease, background 0.4s ease, box-shadow 0.4s ease !important;
+}
+
+.notion-dark-theme [style*='background: #282a36;'],
+.notion-dark-theme
+  [style*='background: rgb(80, 85, 88);'][style*='color: rgba(255, 255, 255, 0.7)'],
+.notion-dark-theme
+  [style*='background: rgb(80, 85, 88);'][style*='width: 18px;'][style*='height: 18px;'],
+.notion-dark-theme
+  [style*='box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.2) 0px 5px 10px, rgba(15, 15, 15, 0.4) 0px 15px 40px;'],
+.notion-dark-theme [style*='background: rgba(151, 154, 155, 0.5);'],
+.notion-dark-theme [style*='background: rgba(147, 114, 100, 0.5)'],
+.notion-dark-theme [style*='background: rgba(255, 163, 68, 0.5)'],
+.notion-dark-theme [style*='background: rgba(255, 220, 73, 0.5)'],
+.notion-dark-theme [style*='background: rgba(77, 171, 154, 0.5)'],
+.notion-dark-theme [style*='background: rgba(82, 156, 202, 0.5)'],
+.notion-dark-theme [style*='background: rgba(154, 109, 215, 0.5)'],
+.notion-dark-theme [style*='background: rgba(226, 85, 161, 0.5)'],
+.notion-dark-theme [style*='background: rgba(255, 115, 105, 0.5)'] {
+  box-shadow: 0 2px 4px rgb(0 0 0 / 66%) !important;
+}
+
+.notion-dark-theme .notion-code-block .token.parameter,
+.notion-dark-theme .notion-code-block .token.decorator,
+.notion-dark-theme .notion-code-block .token.id,
+.notion-dark-theme .notion-code-block .token.class,
+.notion-dark-theme .notion-code-block .token.pseudo-element,
+.notion-dark-theme .notion-code-block .token.pseudo-class,
+.notion-dark-theme .notion-code-block .token.attribute {
+  font-style: italic;
+}
+
+.notion-dark-theme .notion-code-block .token.punctuation {
+  opacity: 1;
+}
