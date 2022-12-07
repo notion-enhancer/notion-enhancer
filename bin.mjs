@@ -11,7 +11,6 @@ import chalk from "chalk-template";
 import os from "node:os";
 import { createRequire } from "node:module";
 import {
-  getResourcePath,
   getAppPath,
   getBackupPath,
   getCachePath,
@@ -24,40 +23,20 @@ import {
   removeCache,
 } from "./scripts/enhance-desktop-app.mjs";
 import { existsSync } from "node:fs";
-
-let __quiet, __spinner;
 const nodeRequire = createRequire(import.meta.url),
-  manifest = nodeRequire("./package.json"),
-  print = (...args) => __quiet || process.stdout.write(chalk(...args)),
-  printObject = (value) => __quiet || console.dir(value, { depth: null });
+  manifest = nodeRequire("./package.json");
 
-const hideCursor = () => process.stdout.write("\x1b[?25l"),
-  showCursor = () => process.stdout.write("\x1b[?25h"),
-  stopSpinner = () => __spinner?.stop(),
-  startSpinner = () => {
-    // cleanup prev spinner
-    stopSpinner();
-    let i = 0;
-    const frames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"],
-      interval = setInterval(() => __spinner.step(), 80);
-    // prevent backspace removing existing stdout
-    print`   `;
-    __spinner = {
-      step() {
-        i++;
-        // overwrite spinner with next frame
-        print`\b\b\b {bold.yellow ${frames[i % frames.length]}} `;
-        hideCursor();
-      },
-      stop() {
-        clearInterval(interval);
-        // overwrite spinner with arrow on completion
-        print`\b\b\b {bold.yellow →}\n`;
-        showCursor();
-      },
-    };
-  },
-  readStdin = () => {
+let __quiet, __debug;
+const print = (...args) => __quiet || process.stdout.write(chalk(...args)),
+  printObject = (value) => __quiet || console.dir(value, { depth: null }),
+  clearLine = `\r\x1b[K`,
+  showCursor = `\x1b[?25h`,
+  hideCursor = `\x1b[?25l`,
+  cursorUp = (n) => `\x1b[${n}A`,
+  cursorForward = (n) => `\x1b[${n}C`;
+
+let __confirmation;
+const readStdin = () => {
     return new Promise((res) => {
       process.stdin.resume();
       process.stdin.setEncoding("utf8");
@@ -67,41 +46,54 @@ const hideCursor = () => process.stdout.write("\x1b[?25l"),
       });
     });
   },
-  promptInput = async (prompt) => {
+  promptConfirmation = async (prompt) => {
     let input;
+    const validInputs = ["Y", "y", "N", "n"],
+      promptLength = `    > ${prompt} [Y/n]: `.length;
     // prevent line clear remove existing stdout
     print`\n`;
     do {
-      // clear line and continue prompting until valid input is received
-      print`\x1b[1A\r\x1b[K  {inverse > ${prompt} [Y/n]:} `;
-      input = (await readStdin()).trim();
-    } while (!["Y", "y", "N", "n"].includes(input));
+      // clear line and repeat prompt until valid input is received
+      print`${cursorUp(1)}${clearLine}    {inverse > ${prompt} [Y/n]:} `;
+      // autofill prompt response if --yes, --no or --quiet flags passed
+      if (validInputs.includes(__confirmation)) {
+        input = __confirmation;
+        print`${__confirmation}\n`;
+      } else input = (await readStdin()).trim();
+      if (!input) {
+        // default to Y if enter is pressed w/out input
+        input = "Y";
+        print`${cursorUp(1)}${cursorForward(promptLength)}Y\n`;
+      }
+    } while (!validInputs.includes(input));
+    // move cursor to immediately after input
+    print`${cursorUp(1)}${cursorForward(promptLength + 1)}`;
     return input;
   };
 
-const commands = [
-    // ["command", "description"]
-    ["apply", "add enhancements to the notion app"],
-    ["remove", "return notion to its pre-enhanced/pre-modded state"],
-    ["check", "check the current state of the notion app"],
-  ],
-  options = [
-    // ["alias, option=example", [type, "description"]]
-    [
-      "--path=</path/to/notion/resources>",
-      [String, "manually provide a notion installation location"],
-    ],
-    ["--backup", [Boolean, ""]],
-    ["--overwrite", [Boolean, "overwrite inserted enhancements (for rapid development)"]],
-    ["-y, --yes", [Boolean, 'skip prompts; assume "yes" and run non-interactively']],
-    ["-n, --no", [Boolean, 'skip prompts; assume "no" and run non-interactively']],
-    ["-q, --quiet", [Boolean, 'skip prompts; assume "no" and hide all output']],
-    ["-d, --debug", [Boolean, "show detailed error messages"]],
-    ["-j, --json", [Boolean, "display json output (where applicable)"]],
-    ["-h, --help", [Boolean, "display usage information"]],
-    ["-v, --version", [Boolean, "display version number"]],
-  ],
-  compileOptsToArgSpec = () => {
+let __spinner;
+const spinnerFrames = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"],
+  stopSpinner = () => {
+    if (!__spinner) return;
+    clearInterval(__spinner);
+    // show cursor and overwrite spinner with arrow on completion
+    print`\b{bold.yellow →}\n${showCursor}`;
+    __spinner = undefined;
+  },
+  startSpinner = () => {
+    // cleanup prev spinner if necessary
+    stopSpinner();
+    // hide cursor and print first frame
+    print`${hideCursor}{bold.yellow ${spinnerFrames[0]}}`;
+    let i = 0;
+    __spinner = setInterval(() => {
+      i++;
+      // overwrite spinner with next frame
+      print`\b{bold.yellow ${spinnerFrames[i % spinnerFrames.length]}}`;
+    }, 80);
+  };
+
+const compileOptsToArgSpec = (options) => {
     const args = {};
     for (const [opt, [type]] of options) {
       const aliases = opt.split(", ").map((alias) => alias.split("=")[0]),
@@ -114,7 +106,7 @@ const commands = [
     }
     return args;
   },
-  compileOptsToJsonOutput = () => {
+  compileOptsToJsonOutput = (options) => {
     // the structure used to define options above
     // is convenient and compact, but requires additional
     // parsing to understand. this function processes
@@ -134,8 +126,7 @@ const commands = [
     });
   };
 
-const args = arg(compileOptsToArgSpec(options)),
-  printHelp = () => {
+const printHelp = (commands, options) => {
     const { name, version, homepage } = manifest,
       usage = `${name} <command> [options]`;
     if (args["--json"]) {
@@ -145,7 +136,7 @@ const args = arg(compileOptsToArgSpec(options)),
         homepage,
         usage,
         commands: Object.fromEntries(commands),
-        options: compileOptsToJsonOutput(),
+        options: compileOptsToJsonOutput(options),
       });
     } else {
       const cmdPad = Math.max(...commands.map(([cmd]) => cmd.length)),
@@ -174,170 +165,211 @@ const args = arg(compileOptsToArgSpec(options)),
       print`${enhancerVersion} via ${nodeVersion} on ${osVersion}\n`;
     }
   };
-if (args["--quiet"]) __quiet = true;
-if (args["--help"]) [printHelp(), process.exit()];
-if (args["--version"]) [printVersion(), process.exit()];
-if (args["--path"]) setNotionPath(args["--path"]);
-const defaultPromptValue = args["--yes"]
-  ? "y"
-  : args["--no"] || args["--quiet"]
-  ? "n"
-  : undefined;
 
-const appPath = getAppPath(),
-  backupPath = getBackupPath(),
-  cachePath = getCachePath(),
-  insertVersion = checkEnhancementVersion(),
-  onVersionMismatch = `notion-enhancer v${insertVersion} applied != v${manifest.version} current`,
-  onNotionNotFound = `notion installation not found (corrupted or nonexistent)`,
-  onEnhancerNotApplied = `notion-enhancer not applied (notion installation found)`,
-  onSuccess = chalk`{bold.whiteBright SUCCESS} {green ✔}`,
-  onFail = chalk`{bold.whiteBright FAILURE} {red ✘}`,
-  onCancel = chalk`{bold.whiteBright CANCELLED} {red ✘}`;
+try {
+  const commands = [
+      // ["command", "description"]
+      ["apply", "add enhancements to the notion app"],
+      ["remove", "return notion to its pre-enhanced/pre-modded state"],
+      ["check", "check the current state of the notion app"],
+    ],
+    options = [
+      // ["alias, option=example", [type, "description"]]
+      [
+        "--path=</path/to/notion/resources>",
+        [String, "manually provide a notion installation location"],
+      ],
+      ["--overwrite", [Boolean, "for rapid development; unsafely overwrite sources"]],
+      ["--no-backup", [Boolean, "skip backup; enhancement will be faster but irreversible"]],
+      ["-y, --yes", [Boolean, 'skip prompts; assume "yes" and run non-interactively']],
+      ["-n, --no", [Boolean, 'skip prompts; assume "no" and run non-interactively']],
+      ["-q, --quiet", [Boolean, 'skip prompts; assume "no" unless -y and hide all output']],
+      ["-d, --debug", [Boolean, "show detailed error messages"]],
+      ["-j, --json", [Boolean, "display json output (where applicable)"]],
+      ["-h, --help", [Boolean, "display usage information"]],
+      ["-v, --version", [Boolean, "display version number"]],
+    ];
 
-const removeEnhancementsVerbose = async () => {
-    if (appPath) {
-      print`  {grey * ${onNotionNotFound}: skipping}\n`;
-    } else if (insertVersion) {
-      print`  {grey * notion installation found: notion-enhancer v${insertVersion} applied}\n`;
-      if (backupPath) {
-        print`  {grey * backup found: restoring}`;
-        startSpinner();
-        await restoreBackup();
-        stopSpinner();
-      } else {
-        print`  {grey * backup not found: skipping}\n`;
-        print`  {red * to remove the notion-enhancer from notion, uninstall notion and then install}\n`;
-        print`  {red   a vanilla version of the app from https://www.notion.so/desktop (mac, windows)}\n`;
-        print`  {red   or ${manifest.homepage}/getting-started/installation (linux)\n}`;
-        return false;
-      }
-    } else print`  {grey * ${onEnhancerNotApplied}: skipping}\n`;
-    return true;
-  },
-  removeCacheVerbose = async () => {
-    // optionally remove ~/.notion-enhancer
-    if (!existsSync(cachePath)) {
-      print`  {grey * cache found: ${cachePath}}\n`;
-      const deleteCache = defaultPromptValue ?? (await promptInput("delete?"));
-      if (defaultPromptValue) print`  {inverse > delete? [Y/n]:} ${deleteCache}\n`;
-      if (["Y", "y"].includes(deleteCache)) {
-        print`  {grey * cache found: removing}`;
-        startSpinner();
-        await removeCache();
-        stopSpinner();
-      } else print`  {grey * cache found: keeping}\n`;
-    } else print`  {grey * cache not found: skipping}\n`;
-    return true;
+  const args = arg(compileOptsToArgSpec(options));
+  if (args["--debug"]) __debug = true;
+  if (args["--quiet"]) __quiet = true;
+  if (args["--no"] || args["--quiet"]) __confirmation = "n";
+  if (args["--yes"]) __confirmation = "y";
+  if (args["--help"]) printHelp(commands, options), process.exit();
+  if (args["--version"]) printVersion(), process.exit();
+  if (args["--path"]) setNotionPath(args["--path"]);
+
+  const appPath = getAppPath(),
+    backupPath = getBackupPath(),
+    cachePath = getCachePath(),
+    insertVersion = checkEnhancementVersion();
+
+  const messages = {
+    "notion-found": `notion installation found`,
+    "notion-not-found": `notion installation not found (corrupted or nonexistent)`,
+    "notion-is-packed": `electron archive found: extracting app.asar`,
+
+    "not-applied": `notion-enhancer not applied`,
+    "version-applied": `notion-enhancer v${manifest.version} applied`,
+    "version-mismatch": `notion-enhancer v${insertVersion} applied != v${manifest.version} current`,
+    "prompt-version-replace": `replace?`,
+
+    "backup-found": `backup found`,
+    "backup-not-found": `backup not found`,
+    "creating-backup": `backing up notion before enhancement`,
+    "restoring-backup": `restoring`,
+    "inserting-enhancements": `inserting enhancements and patching notion sources`,
+    "manual-removal-instructions": `to remove the notion-enhancer from notion, uninstall notion and
+    then install a vanilla version of the app from https://www.notion.so/desktop (mac,
+    windows) or ${manifest.homepage}/getting-started/installation (linux)`,
+
+    "cache-found": `cache found`,
+    "cache-not-found": `cache not found: nothing to remove`,
+    "prompt-cache-removal": `remove?`,
+  };
+  const SUCCESS = chalk`{bold.whiteBright SUCCESS} {green ✔}`,
+    FAILURE = chalk`{bold.whiteBright FAILURE} {red ✘}`,
+    CANCELLED = chalk`{bold.whiteBright CANCELLED} {red ✘}`,
+    INCOMPLETE = Symbol();
+
+  const interactiveRestoreBackup = async () => {
+    if (backupPath) {
+      // replace enhanced app with vanilla app.bak/app.asar.bak
+      print`  {grey * ${messages["backup-found"]}: ${messages["restoring-backup"]}} `;
+      startSpinner();
+      await restoreBackup();
+      stopSpinner();
+      return INCOMPLETE;
+    } else {
+      print`  {red * ${messages["backup-not-found"]}: ${messages["manual-removal-instructions"]}}\n`;
+      return FAILURE;
+    }
   };
 
-switch (args["_"][0]) {
-  case "apply": {
-    print`{bold.whiteBright [NOTION-ENHANCER] APPLY} `;
-    // notion not installed
-    if (!appPath) throw Error(onNotionNotFound);
-    // same version already applied
-    if (insertVersion === manifest.version && !args["--overwrite"]) {
-      print`  {grey * notion-enhancer v${insertVersion} already applied}`;
-    } else {
-      // diff version already applied
-      if (insertVersion && insertVersion !== manifest.version) {
-        print`  {grey * ${onVersionMismatch}}`;
-        const deleteCache = defaultPromptValue ?? (await promptInput("update?"));
-        if (defaultPromptValue) print`  {inverse > update? [Y/n]:} ${deleteCache}\n`;
-        if (["Y", "y"].includes(deleteCache)) {
-          print`  {grey * different version found: removing}`;
+  const canEnhancementsBeApplied = async () => {
+      if (!appPath) {
+        // notion not installed
+        print`  {red * ${messages["notion-not-found"]}}\n`;
+        return FAILURE;
+      } else if (insertVersion === manifest.version) {
+        // same version already applied
+        if (args["--overwrite"]) {
+          print`  {grey * ${messages["inserting-enhancements"]}} `;
           startSpinner();
-          await removeCacheVerbose();
+          await applyEnhancements();
           stopSpinner();
-        } else print`  {grey * different version found: keeping}\n`;
+          print`  {grey * ${messages["version-applied"]}}\n`;
+        } else print`  {grey * ${messages["notion-found"]}: ${messages["version-applied"]}}\n`;
+        return SUCCESS;
       }
+      if (insertVersion && insertVersion !== manifest.version) {
+        // diff version already applied
+        print`  {grey * ${messages["notion-found"]}: ${messages["version-mismatch"]}}\n`;
+        const replaceEnhancements = //
+          ["Y", "y"].includes(await promptConfirmation(messages["prompt-version-replace"]));
+        print`\n`;
+        return replaceEnhancements ? await interactiveRestoreBackup() : CANCELLED;
+      } else return INCOMPLETE;
+    },
+    interactiveApplyEnhancements = async () => {
+      if (appPath.endsWith(".asar")) {
+        print`  {grey * ${messages["notion-is-packed"]}} `;
+        // asar blocks thread = spinner won't actually spin
+        // first frame at least can serve as waiting indicator
+        startSpinner();
+        unpackApp();
+        stopSpinner();
+      }
+      // backup is used to restore app to pre-enhanced state
+      // new backup should be taken every enhancement
+      // e.g. in case old backup was from prev. version of app
+      if (!args["--no-backup"]) {
+        print`  {grey * ${messages["creating-backup"]}} `;
+        startSpinner();
+        await takeBackup();
+        stopSpinner();
+      }
+      print`  {grey * ${messages["inserting-enhancements"]}} `;
+      startSpinner();
+      await applyEnhancements();
+      stopSpinner();
+      print`  {grey * ${messages["version-applied"]}}\n`;
+      return SUCCESS;
+    };
+
+  const interactiveRemoveEnhancements = async () => {
+      if (!appPath) {
+        // notion not installed
+        print`  {red * ${messages["notion-not-found"]}}\n`;
+        return FAILURE;
+      } else if (insertVersion) {
+        print`  {grey * ${messages["notion-found"]}: ${messages["version-applied"]}}\n`;
+        return (await interactiveRestoreBackup()) === INCOMPLETE ? SUCCESS : FAILURE;
+      }
+      print`  {grey * ${messages["notion-found"]}: ${messages["not-applied"]}}\n`;
+      return SUCCESS;
+    },
+    promptCacheRemoval = async () => {
+      // optionally remove ~/.notion-enhancer
+      if (existsSync(cachePath)) {
+        print`  {grey * ${messages["cache-found"]}: ${cachePath}}\n`;
+        if (["Y", "y"].includes(await promptConfirmation(messages["prompt-cache-removal"]))) {
+          print` `;
+          startSpinner();
+          await removeCache();
+          stopSpinner();
+        } else print`\n`;
+      } else print`  {grey * ${messages["cache-not-found"]}}\n`;
+    };
+
+  switch (args["_"][0]) {
+    case "apply": {
+      print`{bold.whiteBright [NOTION-ENHANCER] APPLY}\n`;
+      let res = await canEnhancementsBeApplied();
+      if (res === INCOMPLETE) res = await interactiveApplyEnhancements();
+      print`${res}\n`;
+      break;
+    }
+    case "remove": {
+      print`{bold.whiteBright [NOTION-ENHANCER] REMOVE}\n`;
+      const res = await interactiveRemoveEnhancements();
+      await promptCacheRemoval();
+      print`${res}\n`;
+      break;
+    }
+    case "check": {
+      if (args["--json"]) {
+        printObject({
+          appPath,
+          backupPath,
+          cachePath,
+          cacheExists: existsSync(cachePath),
+          insertVersion,
+          currentVersion: manifest.version,
+        });
+        process.exit();
+      }
+      print`{bold.whiteBright [NOTION-ENHANCER] CHECK:} `;
+      if (manifest.version === insertVersion) {
+        print`${messages["version-applied"]}\n`;
+      } else if (insertVersion) {
+        print`${messages["version-mismatch"]}\n`;
+      } else if (appPath) {
+        print`${messages["not-applied"]}\n`;
+      } else print`${messages["notion-not-found"]}\n`;
+      break;
     }
 
-    // let s;
-    // if (status.executable.endsWith(".asar")) {
-    //   s = spinner("  * unpacking app files").loop();
-    // ...
-    //   s.stop();
-    // }
-    // if (status.code === 0 && takeBackup) {
-    //   s = spinner("  * backing up default app").loop();
-    // ...
-    //   s.stop();
-    // }
-
-    //   const res = await apply(notionPath, {
-    //     overwritePrevious: promptRes,
-    //     patchPrevious: opts.get("patch") ? true : false,
-    //     takeBackup: opts.get("no-backup") ? false : true,
-    //   });
-    //   if (res) {
-    //     log`{bold.whiteBright SUCCESS} {green ✔}`;
-    //   } else log`{bold.whiteBright CANCELLED} {red ✘}`;
-    break;
+    default:
+      printHelp(commands, options);
   }
-
-  case "remove": {
-    print`{bold.whiteBright [NOTION-ENHANCER] REMOVE}\n`;
-    let success = await removeEnhancementsVerbose();
-    success = (await removeCacheVerbose()) && success;
-    // failure if backup could not be restored
-    print`${success ? onSuccess : onFail}\n`;
-    break;
-  }
-
-  case "check": {
-    if (args["--json"]) {
-      printObject({
-        appPath,
-        backupPath,
-        cachePath,
-        doesCacheExist: existsSync(cachePath),
-        insertVersion,
-      });
-      process.exit();
-    }
-    print`{bold.whiteBright [NOTION-ENHANCER] CHECK:} `;
-    if (manifest.version === insertVersion) {
-      print`notion-enhancer v${insertVersion} applied\n`;
-    } else if (insertVersion) {
-      print`${onVersionMismatch}\n`;
-    } else if (appPath) {
-      print`${onEnhancerNotApplied}\n`;
-    } else print`${onNotionNotFound}\n`;
-    break;
-  }
-
-  default:
-    printHelp();
+} catch (error) {
+  const message = error.message.split("\n")[0];
+  if (__debug) {
+    print`{bold.red ${error.name}:} ${message}\n{grey ${error.stack
+      .split("\n")
+      .splice(1)
+      .map((at) => at.replace(/\s{4}/g, "  "))
+      .join("\n")}}`;
+  } else print`{bold.red Error:} ${message} {grey (run with -d for more information)}\n`;
 }
-
-// function handleError(err) {
-//   if (opts.get("dev")) {
-//     const strs = [],
-//       tags = [],
-//       stack = err.stack.split("\n");
-//     for (let i = 0; i < stack.length; i++) {
-//       const text = stack[i].replace(/^    /, "  ");
-//       if (i === 0) {
-//         const [type, msg] = text.split(/:((.+)|$)/);
-//         strs.push("{bold.red ");
-//         tags.push(type);
-//         strs.push(":} ");
-//         tags.push(msg);
-//       } else {
-//         strs.push("{grey ");
-//         tags.push(text);
-//         strs.push("}");
-//         tags.push("");
-//       }
-//       if (i !== stack.length - 1) {
-//         strs.push("\n");
-//         tags.push("");
-//       }
-//     }
-//     log(strs, ...tags);
-//   } else {
-//     log`{bold.red Error:} ${err.message} {grey (run with -d for more information)}`;
-//   }
-// }

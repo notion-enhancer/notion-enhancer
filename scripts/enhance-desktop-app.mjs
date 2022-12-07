@@ -95,16 +95,16 @@ const setNotionPath = (path) => {
     return __enhancerCache;
   },
   checkEnhancementVersion = () => {
-    const insertPath = getResourcePath("app/node_modules/notion-enhancer");
-    if (!existsSync(insertPath)) return undefined;
-    const manifestPath = getResourcePath("app/node_modules/notion-enhancer/package.json"),
-      insertVersion = nodeRequire(manifestPath).version;
+    const manifestPath = getResourcePath("app/node_modules/notion-enhancer/package.json");
+    if (!existsSync(manifestPath)) return undefined;
+    const insertVersion = nodeRequire(manifestPath).version;
     return insertVersion;
   };
 
 const unpackApp = () => {
     const appPath = getAppPath();
     if (!appPath || !appPath.endsWith("asar")) return false;
+    // asar reads synchronously
     asar.extractAll(appPath, appPath.replace(/\.asar$/, ""));
     return true;
   },
@@ -123,7 +123,7 @@ const unpackApp = () => {
         return dest !== browserDest;
       },
     });
-    // patch-desktop-app.mjs
+    // call patch-desktop-app.mjs on each file
     const notionScripts = (await readdirDeep(appPath)).filter((file) => file.endsWith(".js")),
       scriptUpdates = [];
     for (const file of notionScripts) {
