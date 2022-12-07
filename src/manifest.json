@@ -16,14 +16,14 @@
   "browser_action": {},
   "background": { "scripts": ["worker.js"] },
   "options_ui": {
-    "page": "repo/menu/menu.html",
+    "page": "mods/menu/menu.html",
     "open_in_tab": true
   },
-  "web_accessible_resources": ["env/*", "api/*", "dep/*", "media/*", "repo/*"],
+  "web_accessible_resources": ["browser/*", "common/*", "dep/*", "media/*", "mods/*"],
   "content_scripts": [
     {
       "matches": ["https://*.notion.so/*", "https://*.notion.site/*"],
-      "js": ["init.js"]
+      "js": ["browser/init.js"]
     }
   ],
   "permissions": ["tabs", "storage", "clipboardRead", "clipboardWrite", "unlimitedStorage"]

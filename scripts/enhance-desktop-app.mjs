@@ -115,13 +115,14 @@ const unpackApp = () => {
       insertPath = getResourcePath("app/node_modules/notion-enhancer");
     if (existsSync(insertPath)) await fsp.rm(insertPath, { recursive: true });
     // insert the notion-enhancer/src folder into notion's node_modules folder
+    const excludedDests = [
+      getResourcePath("app/node_modules/notion-enhancer/browser"),
+      getResourcePath("app/node_modules/notion-enhancer/manifest.json"),
+    ];
     await fsp.cp(srcPath, insertPath, {
       recursive: true,
-      filter: (_, dest) => {
-        // exclude browser-specific files
-        const browserDest = getResourcePath("app/node_modules/notion-enhancer/browser");
-        return dest !== browserDest;
-      },
+      // exclude browser-specific files
+      filter: (_, dest) => !excludedDests.includes(dest),
     });
     // call patch-desktop-app.mjs on each file
     const notionScripts = (await readdirDeep(appPath)).filter((file) => file.endsWith(".js")),
@@ -135,7 +136,7 @@ const unpackApp = () => {
     }
     // create package.json
     const manifestPath = getResourcePath("app/node_modules/notion-enhancer/package.json"),
-      insertManifest = { ...manifest, main: "desktop/init.cjs" };
+      insertManifest = { ...manifest, main: "electron/init.cjs" };
     // remove cli-specific fields
     delete insertManifest.bin;
     delete insertManifest.type;

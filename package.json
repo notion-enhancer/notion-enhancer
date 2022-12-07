@@ -10,6 +10,9 @@
   "license": "MIT",
   "bin": "bin.mjs",
   "type": "module",
+  "scripts": {
+    "build-ext": "./scripts/build-browser-extension.sh"
+  },
   "engines": {
     "node": ">=16.x.x"
   },
