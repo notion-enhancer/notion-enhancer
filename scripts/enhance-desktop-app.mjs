@@ -6,7 +6,8 @@
 
 import asar from "@electron/asar";
 import os from "node:os";
-import { promises as fsp, existsSync } from "node:fs";
+import fsp from "node:fs/promises";
+import { existsSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 import { join, resolve } from "node:path";
 import { execSync } from "node:child_process";
@@ -101,11 +102,12 @@ const setNotionPath = (path) => {
     return insertVersion;
   };
 
-const unpackApp = () => {
+const unpackApp = async () => {
     const appPath = getAppPath();
     if (!appPath || !appPath.endsWith("asar")) return false;
     // asar reads synchronously
     asar.extractAll(appPath, appPath.replace(/\.asar$/, ""));
+    await fsp.rm(appPath);
     return true;
   },
   applyEnhancements = async () => {
@@ -140,9 +142,11 @@ const unpackApp = () => {
     // remove cli-specific fields
     delete insertManifest.bin;
     delete insertManifest.type;
+    delete insertManifest.scripts;
     delete insertManifest.engines;
-    delete insertManifest.dependencies;
     delete insertManifest.packageManager;
+    delete insertManifest.dependencies;
+    delete insertManifest.devDependencies;
     scriptUpdates.push(fsp.writeFile(manifestPath, JSON.stringify(insertManifest)));
     await Promise.all(scriptUpdates);
     return true;

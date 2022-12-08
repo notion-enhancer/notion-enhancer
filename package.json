@@ -7,19 +7,16 @@
   "repository": "github:notion-enhancer/desktop",
   "bugs": "https://github.com/notion-enhancer/desktop/issues",
   "funding": "https://github.com/sponsors/dragonwocky",
+  "packageManager": "yarn@3.3.0",
   "license": "MIT",
   "bin": "bin.mjs",
   "type": "module",
   "scripts": {
-    "build-ext": "./scripts/build-browser-extension.sh"
+    "build": "./scripts/build-browser-extension.sh",
+    "vendor": "node ./scripts/vendor-dependencies.mjs"
   },
   "engines": {
     "node": ">=16.x.x"
-  },
-  "dependencies": {
-    "@electron/asar": "^3.2.2",
-    "arg": "^5.0.2",
-    "chalk-template": "^0.4.0"
   },
   "keywords": [
     "windows",
@@ -37,5 +34,9 @@
     "notion",
     "notion-enhancer"
   ],
-  "packageManager": "yarn@3.3.0"
+  "dependencies": {
+    "@electron/asar": "^3.2.2",
+    "arg": "^5.0.2",
+    "chalk-template": "^0.4.0"
+  }
 }

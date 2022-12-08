@@ -19,7 +19,7 @@
     "page": "mods/menu/menu.html",
     "open_in_tab": true
   },
-  "web_accessible_resources": ["browser/*", "common/*", "dep/*", "media/*", "mods/*"],
+  "web_accessible_resources": ["browser/*", "common/*", "vendor/*", "media/*", "mods/*"],
   "content_scripts": [
     {
       "matches": ["https://*.notion.so/*", "https://*.notion.site/*"],

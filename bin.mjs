@@ -277,7 +277,7 @@ try {
         // asar blocks thread = spinner won't actually spin
         // first frame at least can serve as waiting indicator
         startSpinner();
-        unpackApp();
+        await unpackApp();
         stopSpinner();
       }
       // backup is used to restore app to pre-enhanced state
@@ -364,6 +364,7 @@ try {
       printHelp(commands, options);
   }
 } catch (error) {
+  stopSpinner();
   const message = error.message.split("\n")[0];
   if (__debug) {
     print`{bold.red ${error.name}:} ${message}\n{grey ${error.stack

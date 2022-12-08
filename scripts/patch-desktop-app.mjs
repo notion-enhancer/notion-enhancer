@@ -32,19 +32,16 @@ const patches = {
         { /* notion-enhancer */
         const schemePrefix = "notion://www.notion.so/__notion-enhancer/";
         if (req.url.startsWith(schemePrefix)) {
-            const { search, hash, pathname } = new URL(req.url),
+          const { search, hash, pathname } = new URL(req.url),
             fileExt = pathname.split(".").reverse()[0],
             filePath = \`../node_modules/notion-enhancer/\${req.url.slice(
                 schemePrefix.length,
                 -(search.length + hash.length)
-            )}\`,
-            mimeType = Object.entries(require("notion-enhancer/dep/mime-db.json"))
-                .filter(([_, data]) => data.extensions)
-                .find(([_, data]) => data.extensions.includes(fileExt));
-            callback({
-              data: require("fs").createReadStream(require("path").resolve(\`\${__dirname}/\${filePath}\`)),
-              headers: { "content-type": mimeType },
-            });
+            )}\`;
+          callback({
+            data: require("fs").createReadStream(require("path").resolve(\`\${__dirname}/\${filePath}\`)),
+            headers: { "content-type": require("notion-enhancer/vendor/content-types.min.js").get(fileExt) },
+          });
         }
         }`;
     if (scriptContent.includes(replaceValue)) return scriptContent;
