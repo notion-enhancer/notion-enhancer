@@ -13,14 +13,14 @@ import { createRequire } from "node:module";
 import {
   getAppPath,
   getBackupPath,
-  getCachePath,
+  getConfigPath,
   checkEnhancementVersion,
   setNotionPath,
   unpackApp,
   applyEnhancements,
   takeBackup,
   restoreBackup,
-  removeCache,
+  removeConfig,
 } from "./scripts/enhance-desktop-app.mjs";
 import { existsSync } from "node:fs";
 const nodeRequire = createRequire(import.meta.url),
@@ -201,7 +201,7 @@ try {
 
   const appPath = getAppPath(),
     backupPath = getBackupPath(),
-    cachePath = getCachePath(),
+    configPath = getConfigPath(),
     insertVersion = checkEnhancementVersion();
 
   const messages = {
@@ -223,9 +223,9 @@ try {
     then install a vanilla version of the app from https://www.notion.so/desktop (mac,
     windows) or ${manifest.homepage}/getting-started/installation (linux)`,
 
-    "cache-found": `cache found`,
-    "cache-not-found": `cache not found: nothing to remove`,
-    "prompt-cache-removal": `remove?`,
+    "config-found": `config found`,
+    "config-not-found": `config not found: nothing to remove`,
+    "prompt-config-removal": `remove?`,
   };
   const SUCCESS = chalk`{bold.whiteBright SUCCESS} {green ✔}`,
     FAILURE = chalk`{bold.whiteBright FAILURE} {red ✘}`,
@@ -309,17 +309,16 @@ try {
       print`  {grey * ${messages["notion-found"]}: ${messages["not-applied"]}}\n`;
       return SUCCESS;
     },
-    promptCacheRemoval = async () => {
-      // optionally remove ~/.notion-enhancer
-      if (existsSync(cachePath)) {
-        print`  {grey * ${messages["cache-found"]}: ${cachePath}}\n`;
-        if (["Y", "y"].includes(await promptConfirmation(messages["prompt-cache-removal"]))) {
+    promptConfigRemoval = async () => {
+      if (existsSync(configPath)) {
+        print`  {grey * ${messages["config-found"]}: ${configPath}}\n`;
+        if (["Y", "y"].includes(await promptConfirmation(messages["prompt-config-removal"]))) {
           print` `;
           startSpinner();
-          await removeCache();
+          await removeConfig();
           stopSpinner();
         } else print`\n`;
-      } else print`  {grey * ${messages["cache-not-found"]}}\n`;
+      } else print`  {grey * ${messages["config-not-found"]}}\n`;
     };
 
   switch (args["_"][0]) {
@@ -333,7 +332,7 @@ try {
     case "remove": {
       print`{bold.whiteBright [NOTION-ENHANCER] REMOVE}\n`;
       const res = await interactiveRemoveEnhancements();
-      await promptCacheRemoval();
+      await promptConfigRemoval();
       print`${res}\n`;
       break;
     }
@@ -342,8 +341,8 @@ try {
         printObject({
           appPath,
           backupPath,
-          cachePath,
-          cacheExists: existsSync(cachePath),
+          configPath,
+          configExists: existsSync(configPath),
           insertVersion,
           currentVersion: manifest.version,
         });

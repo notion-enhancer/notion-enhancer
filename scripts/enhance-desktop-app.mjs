@@ -15,7 +15,7 @@ import { createRequire } from "node:module";
 
 import patch from "./patch-desktop-app.mjs";
 
-let __notionResources, __enhancerCache;
+let __notionResources, __enhancerConfig;
 const nodeRequire = createRequire(import.meta.url),
   manifest = nodeRequire("../package.json"),
   platform =
@@ -89,11 +89,11 @@ const setNotionPath = (path) => {
   // prefer unpacked if both exist
   getAppPath = () => ["app", "app.asar"].map(getResourcePath).find(existsSync),
   getBackupPath = () => ["app.bak", "app.asar.bak"].map(getResourcePath).find(existsSync),
-  getCachePath = () => {
-    if (__enhancerCache) return __enhancerCache;
+  getConfigPath = () => {
+    if (__enhancerConfig) return __enhancerConfig;
     const home = platform === "wsl" ? polyfillWslEnv("HOMEPATH") : os.homedir();
-    __enhancerCache = resolve(`${home}/.notion-enhancer`);
-    return __enhancerCache;
+    __enhancerConfig = resolve(`${home}/.notion-enhancer.db`);
+    return __enhancerConfig;
   },
   checkEnhancementVersion = () => {
     const manifestPath = getResourcePath("app/node_modules/notion-enhancer/package.json");
@@ -172,9 +172,9 @@ const unpackApp = async () => {
     if (destPath !== appPath) await fsp.rm(appPath, { recursive: true });
     return true;
   },
-  removeCache = async () => {
-    if (!existsSync(getCachePath())) return;
-    await fsp.rm(getCachePath());
+  removeConfig = async () => {
+    if (!existsSync(getConfigPath())) return;
+    await fsp.rm(getConfigPath());
     return true;
   };
 
@@ -182,12 +182,12 @@ export {
   getResourcePath,
   getAppPath,
   getBackupPath,
-  getCachePath,
+  getConfigPath,
   checkEnhancementVersion,
   setNotionPath,
   unpackApp,
   applyEnhancements,
   takeBackup,
   restoreBackup,
-  removeCache,
+  removeConfig,
 };
