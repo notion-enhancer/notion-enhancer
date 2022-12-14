@@ -4,14 +4,45 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-'use strict';
+/**
+ * log-based shading of an rgb color, from
+ * https://stackoverflow.com/questions/5560248/programmatically-lighten-or-darken-a-hex-color-or-rgb-and-blend-colors
+ * @param {number} shade - a decimal amount to shade the color.
+ * 1 = white, 0 = the original color, -1 = black
+ * @param {string} color - the rgb color
+ * @returns {string} the shaded color
+ */
+export const rgbLogShade = (shade, color) => {
+  const int = parseInt,
+    round = Math.round,
+    [a, b, c, d] = color.split(","),
+    t = shade < 0 ? 0 : shade * 255 ** 2,
+    p = shade < 0 ? 1 + shade : 1 - shade;
+  return (
+    "rgb" +
+    (d ? "a(" : "(") +
+    round((p * int(a[3] == "a" ? a.slice(5) : a.slice(4)) ** 2 + t) ** 0.5) +
+    "," +
+    round((p * int(b) ** 2 + t) ** 0.5) +
+    "," +
+    round((p * int(c) ** 2 + t) ** 0.5) +
+    (d ? "," + d : ")")
+  );
+};
 
 /**
- * helpers for manipulation of a webpage
- * @namespace web
+ * pick a contrasting color e.g. for text on a variable color background
+ * using the hsp (perceived brightness) constants from http://alienryderflex.com/hsp.html
+ * @param {number} r - red (0-255)
+ * @param {number} g - green (0-255)
+ * @param {number} b - blue (0-255)
+ * @returns {string} the contrasting rgb color, white or black
  */
-
-import { fs } from './index.mjs';
+export const rgbContrast = (r, g, b) => {
+  return Math.sqrt(0.299 * (r * r) + 0.587 * (g * g) + 0.114 * (b * b)) > 165.75
+    ? "rgb(0,0,0)"
+    : "rgb(255,255,255)";
+};
 
 let _hotkeyListenersActivated = false,
   _hotkeyEventListeners = [],
@@ -36,9 +67,9 @@ export const whenReady = (selectors = []) => {
       }
       isReady();
     };
-    if (document.readyState !== 'complete') {
-      document.addEventListener('readystatechange', (_event) => {
-        if (document.readyState === 'complete') onLoad();
+    if (document.readyState !== "complete") {
+      document.addEventListener("readystatechange", (_event) => {
+        if (document.readyState === "complete") onLoad();
       });
     } else onLoad();
   });
@@ -57,12 +88,12 @@ export const queryParams = () => new URLSearchParams(window.location.search);
  */
 export const escape = (str) =>
   str
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/'/g, '&#39;')
-    .replace(/"/g, '&quot;')
-    .replace(/\\/g, '&#x5C;');
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/'/g, "&#39;")
+    .replace(/"/g, "&quot;")
+    .replace(/\\/g, "&#x5C;");
 
 /**
  * a tagged template processor for raw html:
@@ -75,18 +106,18 @@ export const raw = (str, ...templates) => {
     .map(
       (chunk) =>
         chunk +
-        (['string', 'number'].includes(typeof templates[0])
+        (["string", "number"].includes(typeof templates[0])
           ? templates.shift()
-          : escape(JSON.stringify(templates.shift(), null, 2) ?? ''))
+          : escape(JSON.stringify(templates.shift(), null, 2) ?? ""))
     )
-    .join('');
-  return html.includes('<pre')
+    .join("");
+  return html.includes("<pre")
     ? html.trim()
     : html
         .split(/\n/)
         .map((line) => line.trim())
         .filter((line) => line.length)
-        .join(' ');
+        .join(" ");
 };
 
 /**
@@ -131,7 +162,7 @@ export const empty = ($container) => {
 export const loadStylesheet = (path) => {
   const $stylesheet = html`<link
     rel="stylesheet"
-    href="${path.startsWith('https://') ? path : fs.localPath(path)}"
+    href="${path.startsWith("https://") ? path : fs.localPath(path)}"
   />`;
   render(document.head, $stylesheet);
   return $stylesheet;
@@ -146,14 +177,14 @@ export const copyToClipboard = async (str) => {
   try {
     await navigator.clipboard.writeText(str);
   } catch {
-    const $el = document.createElement('textarea');
+    const $el = document.createElement("textarea");
     $el.value = str;
-    $el.setAttribute('readonly', '');
-    $el.style.position = 'absolute';
-    $el.style.left = '-9999px';
+    $el.setAttribute("readonly", "");
+    $el.style.position = "absolute";
+    $el.style.left = "-9999px";
     document.body.appendChild($el);
     $el.select();
-    document.execCommand('copy');
+    document.execCommand("copy");
     document.body.removeChild($el);
   }
 };
@@ -167,13 +198,13 @@ export const readFromClipboard = () => {
 };
 
 const triggerHotkeyListener = (event, hotkey) => {
-  const inInput = document.activeElement.nodeName === 'INPUT' && !hotkey.listenInInput;
+  const inInput = document.activeElement.nodeName === "INPUT" && !hotkey.listenInInput;
   if (inInput) return;
   const modifiers = {
-      metaKey: ['meta', 'os', 'win', 'cmd', 'command'],
-      ctrlKey: ['ctrl', 'control'],
-      shiftKey: ['shift'],
-      altKey: ['alt'],
+      metaKey: ["meta", "os", "win", "cmd", "command"],
+      ctrlKey: ["ctrl", "control"],
+      shiftKey: ["shift"],
+      altKey: ["alt"],
     },
     pressed = hotkey.keys.every((key) => {
       key = key.toLowerCase();
@@ -185,8 +216,8 @@ const triggerHotkeyListener = (event, hotkey) => {
           return true;
         }
       }
-      if (key === 'space') key = ' ';
-      if (key === 'plus') key = '+';
+      if (key === "space") key = " ";
+      if (key === "plus") key = "+";
       if (key === event.key.toLowerCase()) return true;
     });
   if (!pressed) return;
@@ -218,17 +249,17 @@ export const addHotkeyListener = (
   callback,
   { listenInInput = false, keydown = false } = {}
 ) => {
-  if (typeof keys === 'string') keys = keys.split('+');
+  if (typeof keys === "string") keys = keys.split("+");
   _hotkeyEventListeners.push({ keys, callback, listenInInput, keydown });
 
   if (!_hotkeyListenersActivated) {
     _hotkeyListenersActivated = true;
-    document.addEventListener('keyup', (event) => {
+    document.addEventListener("keyup", (event) => {
       for (const hotkey of _hotkeyEventListeners.filter(({ keydown }) => !keydown)) {
         triggerHotkeyListener(event, hotkey);
       }
     });
-    document.addEventListener('keydown', (event) => {
+    document.addEventListener("keydown", (event) => {
       for (const hotkey of _hotkeyEventListeners.filter(({ keydown }) => keydown)) {
         triggerHotkeyListener(event, hotkey);
       }

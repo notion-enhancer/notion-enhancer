@@ -19,7 +19,8 @@ let __notionResources, __enhancerConfig;
 const nodeRequire = createRequire(import.meta.url),
   manifest = nodeRequire("../package.json"),
   platform =
-    process.platform === "linux" && os.release().toLowerCase().includes("microsoft")
+    process.platform === "linux" &&
+    os.release().toLowerCase().includes("microsoft")
       ? "wsl"
       : process.platform,
   polyfillWslEnv = (name) => {
@@ -55,7 +56,6 @@ const nodeRequire = createRequire(import.meta.url),
       if (stat.isDirectory()) {
         files = files.concat(await readdirDeep(file));
       } else if (stat.isSymbolicLink()) {
-        //
       } else files.push(file);
     }
     return files;
@@ -70,17 +70,19 @@ const setNotionPath = (path) => {
     if (__notionResources) return resolve(`${__notionResources}/${path}`);
     polyfillWslEnv("LOCALAPPDATA");
     polyfillWslEnv("PROGRAMW6432");
-    const potentialPaths = [
-      // [["targeted", "platforms"], "/path/to/notion/resources"]
-      [["darwin"], `/Users/${process.env.USER}/Applications/Notion.app/Contents/Resources`],
-      [["darwin"], "/Applications/Notion.app/Contents/Resources"],
-      [["win32", "wsl"], resolve(`${process.env.LOCALAPPDATA}/Programs/Notion/resources`)],
-      [["win32", "wsl"], resolve(`${process.env.PROGRAMW6432}/Notion/resources`)],
-      // https://aur.archlinux.org/packages/notion-app/
-      [["linux"], "/opt/notion-app"],
-    ];
-    for (const [targetPlatforms, testPath] of potentialPaths) {
-      if (!targetPlatforms.includes(platform)) continue;
+    const potentialPaths = {
+      win32: [
+        resolve(`${process.env.LOCALAPPDATA}/Programs/Notion/resources`),
+        resolve(`${process.env.PROGRAMW6432}/Notion/resources`),
+      ],
+      darwin: [
+        `/Users/${process.env.USER}/Applications/Notion.app/Contents/Resources`,
+        "/Applications/Notion.app/Contents/Resources",
+      ],
+      linux: ["/opt/notion-app"],
+    };
+    potentialPaths["wsl"] = potentialPaths["win32"];
+    for (const testPath of potentialPaths[platform]) {
       if (!existsSync(testPath)) continue;
       __notionResources = testPath;
       return resolve(`${__notionResources}/${path}`);
@@ -88,7 +90,8 @@ const setNotionPath = (path) => {
   },
   // prefer unpacked if both exist
   getAppPath = () => ["app", "app.asar"].map(getResourcePath).find(existsSync),
-  getBackupPath = () => ["app.bak", "app.asar.bak"].map(getResourcePath).find(existsSync),
+  getBackupPath = () =>
+    ["app.bak", "app.asar.bak"].map(getResourcePath).find(existsSync),
   getConfigPath = () => {
     if (__enhancerConfig) return __enhancerConfig;
     const home = platform === "wsl" ? polyfillWslEnv("HOMEPATH") : os.homedir();
@@ -96,6 +99,7 @@ const setNotionPath = (path) => {
     return __enhancerConfig;
   },
   checkEnhancementVersion = () => {
+    // prettier-ignore
     const manifestPath = getResourcePath("app/node_modules/notion-enhancer/package.json");
     if (!existsSync(manifestPath)) return undefined;
     const insertVersion = nodeRequire(manifestPath).version;
@@ -127,8 +131,10 @@ const unpackApp = async () => {
       filter: (_, dest) => !excludedDests.includes(dest),
     });
     // call patch-desktop-app.mjs on each file
-    const notionScripts = (await readdirDeep(appPath)).filter((file) => file.endsWith(".js")),
-      scriptUpdates = [];
+    // prettier-ignore
+    const notionScripts = (await readdirDeep(appPath))
+    .filter((file) => file.endsWith(".js")),
+    scriptUpdates = [];
     for (const file of notionScripts) {
       const scriptId = file.slice(appPath.length + 1, -3).replace(/\\/g, "/"),
         scriptContent = await fsp.readFile(file, { encoding: "utf8" }),
@@ -137,17 +143,18 @@ const unpackApp = async () => {
       if (changesMade) scriptUpdates.push(fsp.writeFile(file, patchedContent));
     }
     // create package.json
+    // prettier-ignore
     const manifestPath = getResourcePath("app/node_modules/notion-enhancer/package.json"),
-      insertManifest = { ...manifest, main: "electron/init.cjs" };
+      jsManifest = { ...manifest, main: "electron/init.js" };
     // remove cli-specific fields
-    delete insertManifest.bin;
-    delete insertManifest.type;
-    delete insertManifest.scripts;
-    delete insertManifest.engines;
-    delete insertManifest.packageManager;
-    delete insertManifest.dependencies;
-    delete insertManifest.devDependencies;
-    scriptUpdates.push(fsp.writeFile(manifestPath, JSON.stringify(insertManifest)));
+    delete jsManifest.bin;
+    delete jsManifest.type;
+    delete jsManifest.scripts;
+    delete jsManifest.engines;
+    delete jsManifest.packageManager;
+    delete jsManifest.dependencies;
+    const jsonManifest = JSON.stringify(jsManifest);
+    scriptUpdates.push(fsp.writeFile(manifestPath, jsonManifest));
     await Promise.all(scriptUpdates);
     return true;
   },

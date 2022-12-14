@@ -6,7 +6,8 @@
 
 const patches = {
   "*": async (scriptId, scriptContent) => {
-    const prevTriggerFound = /require\(['|"]notion-enhancer['|"]\)/.test(scriptContent);
+    const prevTriggerPattern = /require\(['|"]notion-enhancer['|"]\)/,
+      prevTriggerFound = prevTriggerPattern.test(scriptContent);
     if (prevTriggerFound) return scriptContent;
     const enhancerTrigger =
       '\n\n/*notion-enhancer*/require("notion-enhancer")' +
@@ -18,6 +19,7 @@ const patches = {
     // https://github.com/notion-enhancer/desktop/issues/160
     // enable the notion:// url scheme/protocol on linux
     const searchValue = /process.platform === "win32"/g,
+      // prettier-ignore
       replaceValue = 'process.platform === "win32" || process.platform === "linux"';
     if (scriptContent.includes(replaceValue)) return scriptContent;
     return scriptContent.replace(searchValue, replaceValue);
@@ -36,7 +38,7 @@ const patches = {
             fileExt = pathname.split(".").reverse()[0],
             filePath = \`../node_modules/notion-enhancer/\${req.url.slice(
                 schemePrefix.length,
-                -(search.length + hash.length)
+                -(search.length + hash.length) || undefined
             )}\`;
           callback({
             data: require("fs").createReadStream(require("path").resolve(\`\${__dirname}/\${filePath}\`)),

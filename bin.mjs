@@ -141,8 +141,10 @@ const printHelp = (commands, options) => {
     } else {
       const cmdPad = Math.max(...commands.map(([cmd]) => cmd.length)),
         optPad = Math.max(...options.map((opt) => opt[0].length)),
-        parseCmd = (cmd) => chalk`  ${cmd[0].padEnd(cmdPad)}  {grey :}  ${cmd[1]}`,
-        parseOpt = (opt) => chalk`  ${opt[0].padEnd(optPad)}  {grey :}  ${opt[1][1]}`;
+        parseCmd = (cmd) =>
+          chalk`  ${cmd[0].padEnd(cmdPad)}  {grey :}  ${cmd[1]}`,
+        parseOpt = (opt) =>
+          chalk`  ${opt[0].padEnd(optPad)}  {grey :}  ${opt[1][1]}`;
       print`{bold.whiteBright ${name} v${version}}\n{grey ${homepage}}
       \n{bold.whiteBright USAGE}\n${name} <command> [options]
       \n{bold.whiteBright COMMANDS}\n${commands.map(parseCmd).join("\n")}
@@ -179,11 +181,26 @@ try {
         "--path=</path/to/notion/resources>",
         [String, "manually provide a notion installation location"],
       ],
-      ["--overwrite", [Boolean, "for rapid development; unsafely overwrite sources"]],
-      ["--no-backup", [Boolean, "skip backup; enhancement will be faster but irreversible"]],
-      ["-y, --yes", [Boolean, 'skip prompts; assume "yes" and run non-interactively']],
-      ["-n, --no", [Boolean, 'skip prompts; assume "no" and run non-interactively']],
-      ["-q, --quiet", [Boolean, 'skip prompts; assume "no" unless -y and hide all output']],
+      [
+        "--overwrite",
+        [Boolean, "for rapid development; unsafely overwrite sources"],
+      ],
+      [
+        "--no-backup",
+        [Boolean, "skip backup; enhancement will be faster but irreversible"],
+      ],
+      [
+        "-y, --yes",
+        [Boolean, 'skip prompts; assume "yes" and run non-interactively'],
+      ],
+      [
+        "-n, --no",
+        [Boolean, 'skip prompts; assume "no" and run non-interactively'],
+      ],
+      [
+        "-q, --quiet",
+        [Boolean, 'skip prompts; assume "no" unless -y and hide all output'],
+      ],
       ["-d, --debug", [Boolean, "show detailed error messages"]],
       ["-j, --json", [Boolean, "display json output (where applicable)"]],
       ["-h, --help", [Boolean, "display usage information"]],
@@ -259,16 +276,20 @@ try {
           await applyEnhancements();
           stopSpinner();
           print`  {grey * ${messages["version-applied"]}}\n`;
-        } else print`  {grey * ${messages["notion-found"]}: ${messages["version-applied"]}}\n`;
+        } else {
+          print`  {grey * ${messages["notion-found"]}: ${messages["version-applied"]}}\n`;
+        }
         return SUCCESS;
       }
       if (insertVersion && insertVersion !== manifest.version) {
         // diff version already applied
         print`  {grey * ${messages["notion-found"]}: ${messages["version-mismatch"]}}\n`;
-        const replaceEnhancements = //
-          ["Y", "y"].includes(await promptConfirmation(messages["prompt-version-replace"]));
+        // prettier-ignore
+        const promptReplacement = await promptConfirmation(messages["prompt-version-replace"]);
         print`\n`;
-        return replaceEnhancements ? await interactiveRestoreBackup() : CANCELLED;
+        return ["Y", "y"].includes(promptReplacement)
+          ? await interactiveRestoreBackup()
+          : CANCELLED;
       } else return INCOMPLETE;
     },
     interactiveApplyEnhancements = async () => {
@@ -304,7 +325,9 @@ try {
         return FAILURE;
       } else if (insertVersion) {
         print`  {grey * ${messages["notion-found"]}: ${messages["version-applied"]}}\n`;
-        return (await interactiveRestoreBackup()) === INCOMPLETE ? SUCCESS : FAILURE;
+        return (await interactiveRestoreBackup()) === INCOMPLETE
+          ? SUCCESS
+          : FAILURE;
       }
       print`  {grey * ${messages["notion-found"]}: ${messages["not-applied"]}}\n`;
       return SUCCESS;
@@ -312,7 +335,9 @@ try {
     promptConfigRemoval = async () => {
       if (existsSync(configPath)) {
         print`  {grey * ${messages["config-found"]}: ${configPath}}\n`;
-        if (["Y", "y"].includes(await promptConfirmation(messages["prompt-config-removal"]))) {
+        // prettier-ignore
+        const promptRemoval = await promptConfirmation(messages["prompt-config-removal"]);
+        if (["Y", "y"].includes(promptRemoval)) {
           print` `;
           startSpinner();
           await removeConfig();
@@ -371,5 +396,7 @@ try {
       .splice(1)
       .map((at) => at.replace(/\s{4}/g, "  "))
       .join("\n")}}`;
-  } else print`{bold.red Error:} ${message} {grey (run with -d for more information)}\n`;
+  } else {
+    print`{bold.red Error:} ${message} {grey (run with -d for more information)}\n`;
+  }
 }
