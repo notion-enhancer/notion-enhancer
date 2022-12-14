@@ -44,7 +44,7 @@ const initDatabase = (namespace) => {
       });
       if (!namespace) return obj;
       let entries = Object.entries(obj);
-      entries = entries.filter(([key]) => key.startsWith(`${namespace}__`));
+      entries = entries.filter(([key]) => key.startsWith(namespace));
       return Object.fromEntries(entries);
     },
     populate: async (obj) => {

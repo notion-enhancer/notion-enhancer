@@ -7,24 +7,21 @@
 "use strict";
 
 let _core, _mods;
-const getCore = () => {
-    _core ??= globalThis.__enhancerApi.readJson("/core/mod.json");
+const getCore = async () => {
+    _core ??= await globalThis.__enhancerApi.readJson("core/mod.json");
+    _core._src = "core";
     return _core;
   },
   getMods = async () => {
     const { readJson } = globalThis.__enhancerApi;
-    _mods ??= await Promise.all([
+    // prettier-ignore
+    _mods ??= (await Promise.all([
       getCore(),
-      // prettier-ignore
-      ...(await readJson("/mods/registry.json")).map(async (modFolder) => {
-        try {
-          modFolder = `/mods/${modFolder}/mod.json`;
-          const modManifest = await readJson(modFolder);
-          modManifest._src = modFolder;
-          return modManifest;
-        } catch {}
+      ...(await readJson("mods/registry.json")).map(async (modFolder) => {
+        const modManifest = await readJson(`mods/${modFolder}/mod.json`);
+        return {...modManifest, _src: `mods/${modFolder}` };
       }),
-    ]).filter((mod) => mod);
+    ]));
     return _mods;
   },
   getThemes = async () => {
@@ -51,8 +48,8 @@ const getProfile = async () => {
       mod = (await getMods()).find((mod) => mod.id === id);
     if (mod.platforms && !mod.platforms.includes(platform)) return false;
     const { initDatabase } = globalThis.__enhancerApi,
-      enabledMods = await initDatabase([await getProfile(), "enabledMods"]);
-    return Boolean(enabledMods.get(id));
+      enabledMods = initDatabase([await getProfile(), "enabledMods"]);
+    return Boolean(await enabledMods.get(id));
   };
 
 globalThis.__enhancerApi ??= {};

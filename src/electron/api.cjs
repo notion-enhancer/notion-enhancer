@@ -14,7 +14,7 @@ const fs = require("fs"),
 const notionRequire = (target) => require(`../../../${target}`),
   notionPath = (target) => path.resolve(`${__dirname}/../../../${target}`);
 
-const enhancerRequire = (target) => require(`../${target}`),
+const enhancerRequire = (target) => require(`notion-enhancer/${target}`),
   enhancerPath = (target) => path.resolve(`${__dirname}/../${target}`),
   enhancerUrl = (target) =>
     `notion://www.notion.so/__notion-enhancer/${target}`,
@@ -52,22 +52,21 @@ const initDatabase = (namespace) => {
     db = __db ?? sqlite(enhancerConfig),
     init = db.prepare(`CREATE TABLE IF NOT EXISTS ${table} (
       key     TEXT PRIMARY KEY,
-      value   TEXT,
-      mtime   INTEGER
+      value   TEXT
     )`);
   init.run();
   __db = db;
 
   // prettier-ignore
-  const insert = db.prepare(`INSERT INTO ${table} (key, value, mtime) VALUES (?, ?, ?)`),
+  const insert = db.prepare(`INSERT INTO ${table} (key, value) VALUES (?, ?)`),
     // prettier-ignore
-    update = db.prepare(`UPDATE ${table} SET value = ?, mtime = ? WHERE key = ?`),
+    update = db.prepare(`UPDATE ${table} SET value = ? WHERE key = ?`),
     select = db.prepare(`SELECT * FROM ${table} WHERE key = ? LIMIT 1`),
     dump = db.prepare(`SELECT * FROM ${table}`),
     populate = db.transaction((obj) => {
       for (const key in obj) {
-        if (select.get(key)) update.run(value, key, Date.now());
-        else insert.run(key, value, Date.now());
+        if (select.get(key)) update.run(value, key);
+        else insert.run(key, value);
       }
     });
 
@@ -78,14 +77,15 @@ const initDatabase = (namespace) => {
     },
     set: (key, value) => {
       key = key.startsWith(namespace) ? key : namespace + key;
-      if (select.get(key)) return update.run(value, key, Date.now());
-      else return insert.run(key, value, Date.now());
+      return select.get(key) === undefined
+        ? insert.run(key, value)
+        : update.run(value, key);
     },
     dump: () => {
-      const rows = dump.all();
-      let entries = rows.map(({ key, value }) => [key, value]);
-      if (!namespace) return Object.fromEntries(entries);
-      entries = entries.filter(([key]) => key.startsWith(`${namespace}__`));
+      const entries = dump
+        .all()
+        .map(({ key, value }) => [key, value])
+        .filter(([key]) => key.startsWith(namespace));
       return Object.fromEntries(entries);
     },
     populate,

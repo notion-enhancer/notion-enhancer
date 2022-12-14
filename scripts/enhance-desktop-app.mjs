@@ -145,7 +145,7 @@ const unpackApp = async () => {
     // create package.json
     // prettier-ignore
     const manifestPath = getResourcePath("app/node_modules/notion-enhancer/package.json"),
-      jsManifest = { ...manifest, main: "electron/init.js" };
+      jsManifest = { ...manifest, main: "electron/init.cjs" };
     // remove cli-specific fields
     delete jsManifest.bin;
     delete jsManifest.type;
