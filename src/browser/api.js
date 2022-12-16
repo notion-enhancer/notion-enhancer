@@ -49,7 +49,7 @@ const initDatabase = (namespace) => {
     },
     populate: async (obj) => {
       return new Promise((res, _rej) => {
-        chrome.storage.local.set(obj, () => res(value));
+        chrome.storage.local.set(obj, () => res(obj));
       });
     },
   };

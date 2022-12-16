@@ -11,6 +11,8 @@ import { fileURLToPath } from "node:url";
 
 const dependencies = {
   "twind.min.js": "https://cdn.twind.style",
+  "htm+preact.min.js":
+    "https://unpkg.com/htm@3.1.1/preact/standalone.module.js",
   "lucide.min.js": "https://unpkg.com/lucide@0.104.0/dist/umd/lucide.min.js",
   "jscolor.min.js":
     "https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.5.1/jscolor.min.js",

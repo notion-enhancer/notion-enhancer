@@ -65,8 +65,8 @@ const initDatabase = (namespace) => {
     dump = db.prepare(`SELECT * FROM ${table}`),
     populate = db.transaction((obj) => {
       for (const key in obj) {
-        if (select.get(key)) update.run(value, key);
-        else insert.run(key, value);
+        if (select.get(key)) update.run(obj[key], key);
+        else insert.run(key, obj[key]);
       }
     });
 

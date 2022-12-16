@@ -36,9 +36,19 @@
       "type": "file",
       "key": "customStyles",
       "description": "Adds the styles from an uploaded .css file to Notion. Use this if you would like to customise the current theme or <a href=\"https://notion-enhancer.github.io/advanced/tweaks\">otherwise tweak Notion's appearance</a>."
+    },
+    {
+      "type": "heading",
+      "label": "Advanced"
+    },
+    {
+      "type": "toggle",
+      "key": "debugMode",
+      "description": "Activates built-in debugging tools accessible through the application menu.",
+      "value": false
     }
   ],
   "clientStyles": [],
-  "clientScripts": [],
+  "clientScripts": ["client.js"],
   "electronScripts": []
 }
