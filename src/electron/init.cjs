@@ -25,7 +25,7 @@ module.exports = async (target, __exports, __eval) => {
       if (document.readyState !== "complete") return false;
       const $script = document.createElement("script");
       $script.type = "module";
-      $script.src = enhancerUrl("common/loader.js");
+      $script.src = enhancerUrl("common/loader.mjs");
       document.head.appendChild($script);
     });
   }

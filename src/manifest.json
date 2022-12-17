@@ -14,12 +14,12 @@
     "512": "/media/colour-x512.png"
   },
   "action": {},
-  "background": { "service_worker": "/browser/worker.js" },
+  "background": { "service_worker": "/browser/worker.mjs" },
   "options_page": "/core/menu.html",
   "content_scripts": [
     {
       "matches": ["*://*.notion.so/*", "https://*.notion.site/*"],
-      "js": ["/browser/init.js"]
+      "js": ["/browser/init.mjs"]
     }
   ],
   "web_accessible_resources": [

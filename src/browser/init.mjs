@@ -7,7 +7,7 @@
 "use strict";
 
 (async () => {
-  await import("./api.js");
+  await import("./api.mjs");
   await import("../common/registry.js");
-  await import("../common/loader.js");
+  await import("../common/loader.mjs");
 })();

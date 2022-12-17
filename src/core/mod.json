@@ -49,6 +49,6 @@
     }
   ],
   "clientStyles": [],
-  "clientScripts": ["client.js"],
+  "clientScripts": ["client.mjs"],
   "electronScripts": []
 }
