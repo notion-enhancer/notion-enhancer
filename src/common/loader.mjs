@@ -11,6 +11,7 @@
     pageLoaded = /(^\/$)|(-[0-9a-f]{32}$)/.test(location.pathname);
   if (!signedIn || !pageLoaded) return;
 
+  await import("./domUtils.mjs");
   const { getMods, getProfile, isEnabled, enhancerUrl, initDatabase } =
     globalThis.__enhancerApi;
   for (const mod of await getMods()) {

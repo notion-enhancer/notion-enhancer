@@ -11,15 +11,16 @@ import { fileURLToPath } from "node:url";
 
 const dependencies = {
   "twind.min.js": "https://cdn.twind.style",
+  "lucide.min.js": "https://unpkg.com/lucide@0.104.0/dist/umd/lucide.min.js",
   "htm+preact.min.js":
     "https://unpkg.com/htm@3.1.1/preact/standalone.module.js",
-  "lucide.min.js": "https://unpkg.com/lucide@0.104.0/dist/umd/lucide.min.js",
   "jscolor.min.js":
     "https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.5.1/jscolor.min.js",
 };
 
 const output = fileURLToPath(new URL("../src/vendor", import.meta.url)),
-  write = (file, data) => fsp.writeFile(resolve(`${output}/${file}`), data);
+  write = (file, data) => fsp.writeFile(resolve(`${output}/${file}`), data),
+  append = (file, data) => fsp.appendFile(resolve(`${output}/${file}`), data);
 if (existsSync(output)) await fsp.rm(output, { recursive: true });
 await fsp.mkdir(output);
 for (const file in dependencies) {
@@ -27,6 +28,9 @@ for (const file in dependencies) {
     res = await (await fetch(source)).text();
   await write(file, res);
 }
+
+// expose vendored twind cdn
+await append("twind.min.js", `\n;globalThis.twind = twind;`);
 
 // build content type lookup script from mime-db to avoid
 // re-processing entire the database every time a file is
