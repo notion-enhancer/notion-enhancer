@@ -1,0 +1,80 @@
+/**
+ * notion-enhancer
+ * (c) 2022 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+.notion-enhancer--menu-button {
+  display: flex;
+  user-select: none;
+  cursor: pointer;
+  transition: background 20ms ease-in;
+  border-radius: 3px;
+  font-size: 14px;
+  margin: 1px 4px;
+  padding: 2px 10px;
+}
+.notion-enhancer--menu-button:hover {
+  background: rgba(255, 255, 255, 0.055);
+}
+.notion-enhancer--menu-button > :nth-child(1) {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px;
+  height: 22px;
+  margin-right: 8px;
+}
+
+.notion-enhancer--menu-modal {
+  z-index: 999;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vw;
+  overflow: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 100ms ease-in;
+}
+.notion-enhancer--menu-modal[data-open="true"] {
+  pointer-events: auto;
+  opacity: 1;
+}
+.notion-enhancer--menu-modal > :nth-child(1) {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 15, 15, 0.8);
+}
+.notion-enhancer--menu-modal > :nth-child(2) {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vw;
+  pointer-events: none;
+}
+.notion-enhancer--menu-modal > :nth-child(2) > iframe {
+  position: relative;
+  z-index: 1;
+  background: rgb(32, 32, 32);
+  box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px,
+    rgba(15, 15, 15, 0.2) 0px 5px 10px, rgba(15, 15, 15, 0.4) 0px 15px 40px;
+  border-radius: 5px;
+  width: 1150px;
+  height: calc(100vh - 100px);
+  max-width: calc(100vw - 100px);
+  max-height: 715px;
+  overflow: hidden;
+  opacity: 0;
+  transform: scale(0.95);
+  transition: opacity 100ms ease-in, transform 0s ease-in 200ms;
+}
+.notion-enhancer--menu-modal[data-open="true"] > :nth-child(2) > iframe {
+  pointer-events: auto;
+  opacity: 1;
+  transform: scale(1);
+  transition: transform 80ms ease-in;
+}

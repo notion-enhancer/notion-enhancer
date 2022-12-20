@@ -10,10 +10,9 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const dependencies = {
-  "twind.min.js": "https://cdn.twind.style",
+  "htm.min.js": "https://unpkg.com/htm@3.1.1/mini/index.module.js",
+  "twind.min.js": "https://unpkg.com/@twind/cdn@1.0.4/cdn.global.js",
   "lucide.min.js": "https://unpkg.com/lucide@0.104.0/dist/umd/lucide.min.js",
-  "htm+preact.min.js":
-    "https://unpkg.com/htm@3.1.1/preact/standalone.module.js",
   "jscolor.min.js":
     "https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.5.1/jscolor.min.js",
 };

@@ -7,7 +7,7 @@
 "use strict";
 
 require("./api.cjs");
-require("../common/registry.js");
+require("../common/api.js");
 
 module.exports = async (target, __exports, __eval) => {
   const {

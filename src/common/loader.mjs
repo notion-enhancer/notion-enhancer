@@ -1,6 +1,6 @@
 /**
  * notion-enhancer
- * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2022 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
@@ -8,10 +8,14 @@
 
 (async () => {
   const signedIn = localStorage["LRU:KeyValueStore2:current-user-id"],
-    pageLoaded = /(^\/$)|(-[0-9a-f]{32}$)/.test(location.pathname);
+    pageLoaded = /(^\/$)|((-|\/)[0-9a-f]{32}((\?.+)|$))/.test(
+      location.pathname
+    );
   if (!signedIn || !pageLoaded) return;
 
-  await import("./domUtils.mjs");
+  await import("./api.js");
+  await import("./dom.mjs");
+  await import("./events.mjs");
   const { getMods, getProfile, isEnabled, enhancerUrl, initDatabase } =
     globalThis.__enhancerApi;
   for (const mod of await getMods()) {

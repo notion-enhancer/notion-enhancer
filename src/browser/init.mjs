@@ -8,6 +8,5 @@
 
 (async () => {
   await import("./api.mjs");
-  await import("../common/registry.js");
   await import("../common/loader.mjs");
 })();

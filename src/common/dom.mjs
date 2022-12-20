@@ -6,25 +6,26 @@
 
 import "../vendor/twind.min.js";
 import "../vendor/lucide.min.js";
-import { html, render } from "../vendor/htm+preact.min.js";
+import htm from "../vendor/htm.min.js";
 
 const { readFile } = globalThis.__enhancerApi,
-  enhancerIcon = await readFile("/media/colour.svg"),
-  enhancerIconMonochrome = await readFile("/media/monochrome.svg");
+  enhancerIconColour = await readFile("/assets/colour.svg"),
+  enhancerIconMonochrome = await readFile("/assets/monochrome.svg");
 
-const kebekToPascalCase = (string) =>
+const kebabToPascalCase = (string) =>
     string[0].toUpperCase() +
     string.replace(/-[a-z]/g, (match) => match.slice(1).toUpperCase()).slice(1),
-  hToString = (tag, attrs, children = []) =>
-    `<${tag}${Object.entries(attrs)
+  hToString = (type, props, ...children) =>
+    `<${type}${Object.entries(props)
       .map(([attr, value]) => ` ${attr}="${value}"`)
       .join("")}>${children
+      .flat(Infinity)
       .map(([tag, attrs, children]) => hToString(tag, attrs, children))
-      .join("")}</${tag}>`;
+      .join("")}</${type}>`;
 
 // https://gist.github.com/jennyknuth/222825e315d45a738ed9d6e04c7a88d0
-const encodeSvg = (svg) => {
-  return svg
+const encodeSvg = (svg) =>
+  svg
     .replace(
       "<svg",
       ~svg.indexOf("xmlns") ? "<svg" : '<svg xmlns="http://www.w3.org/2000/svg"'
@@ -37,7 +38,6 @@ const encodeSvg = (svg) => {
     .replace(/</g, "%3C")
     .replace(/>/g, "%3E")
     .replace(/\s+/g, " ");
-};
 
 // https://antfu.me/posts/icons-in-pure-css
 const presetIcons = () => ({
@@ -50,14 +50,13 @@ const presetIcons = () => ({
         // version by default, renders the monochrome version when
         // mask mode is requested via i-notion-enhancer?mask
         if (icon === "notion-enhancer") {
-          svg = mode === "mask" ? enhancerIconMonochrome : enhancerIcon;
+          svg = mode === "mask" ? enhancerIconMonochrome : enhancerIconColour;
         } else {
-          icon = kebekToPascalCase(icon);
+          icon = kebabToPascalCase(icon);
           if (!globalThis.lucide[icon]) return;
           svg = hToString(...globalThis.lucide[icon]);
         }
         const dataUri = `url("data:image/svg+xml;utf8,${encodeSvg(svg)}")`;
-        console.log(dataUri);
         if (mode === "auto") mode = undefined;
         mode ??= svg.includes("currentColor") ? "mask" : "bg";
         return mode === "mask"
@@ -80,18 +79,21 @@ const presetIcons = () => ({
     ],
   ],
 });
-globalThis.twind.install({ presets: [presetIcons()] });
 
-// by default, preact doesn't work nicely with existing dom nodes
-// not introduced via preact: this appends a preact component to an
-// element without overwriting its existing children
-const append = (component, target) => {
-  if (typeof target === "string") target = document.querySelector(target);
-  if (!target) return false;
-  const fragment = new DocumentFragment();
-  render(component, fragment);
-  target.append(fragment);
-  return true;
-};
+const { twind } = globalThis;
+twind.install({ presets: [presetIcons()] });
 
-export { html, append };
+// constructs elements via html`tagged templates`
+const h = (type, props, ...children) => {
+    const elem = document.createElement(type);
+    for (const prop in props) {
+      if (["string", "number", "boolean"].includes(typeof props[prop])) {
+        elem.setAttribute(prop, props[prop]);
+      } else elem[prop] = props[prop];
+    }
+    for (const child of children) elem.append(child);
+    return elem;
+  },
+  html = htm.bind(h);
+
+export { html, twind };
