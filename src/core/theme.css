@@ -1,0 +1,97 @@
+/**
+ * notion-enhancer
+ * (c) 2022 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+/* prism.js standard tokens: https://prismjs.com/tokens.html */
+.notion-code-block .token.keyword {
+  color: var(--theme--code-keyword);
+}
+.notion-code-block .token.builtin {
+  color: var(--theme--code-builtin);
+}
+.notion-code-block .token.class-name {
+  color: var(--theme--code-class_name);
+}
+.notion-code-block .token.function {
+  color: var(--theme--code-function);
+}
+.notion-code-block .token.boolean {
+  color: var(--theme--code-boolean);
+}
+.notion-code-block .token.number {
+  color: var(--theme--code-number);
+}
+.notion-code-block .token.string {
+  color: var(--theme--code-string);
+}
+.notion-code-block .token.char {
+  color: var(--theme--code-char);
+}
+.notion-code-block .token.symbol {
+  color: var(--theme--code-symbol);
+}
+.notion-code-block .token.regex {
+  color: var(--theme--code-regex);
+}
+.notion-code-block .token.url {
+  color: var(--theme--code-url);
+}
+.notion-code-block .token.operator {
+  color: var(--theme--code-operator);
+}
+.notion-code-block .token.variable {
+  color: var(--theme--code-variable);
+}
+.notion-code-block .token.constant {
+  color: var(--theme--code-constant);
+}
+.notion-code-block .token.property {
+  color: var(--theme--code-property);
+}
+.notion-code-block .token.punctuation {
+  color: var(--theme--code-punctuation);
+}
+.notion-code-block .token.important {
+  color: var(--theme--code-important);
+}
+.notion-code-block .token.comment {
+  color: var(--theme--code-comment);
+}
+.notion-code-block .token.tag {
+  color: var(--theme--code-tag);
+}
+.notion-code-block .token.attr-name {
+  color: var(--theme--code-attr_name);
+}
+.notion-code-block .token.attr-value {
+  color: var(--theme--code-attr_value);
+}
+.notion-code-block .token.namespace {
+  color: var(--theme--code-namespace);
+}
+.notion-code-block .token.prolog {
+  color: var(--theme--code-prolog);
+}
+.notion-code-block .token.doctype {
+  color: var(--theme--code-doctype);
+}
+.notion-code-block .token.cdata {
+  color: var(--theme--code-cdata);
+}
+.notion-code-block .token.entity {
+  color: var(--theme--code-entity);
+}
+.notion-code-block .token.atrule {
+  color: var(--theme--code-atrule);
+}
+.notion-code-block .token.selector {
+  color: var(--theme--code-selector);
+}
+.notion-code-block .token.inserted {
+  color: var(--theme--code-inserted);
+}
+.notion-code-block .token.deleted {
+  color: var(--theme--code-deleted);
+}

@@ -8,7 +8,8 @@ import { html } from "../common/dom.mjs";
 import { addMutationListener } from "../common/events.mjs";
 
 export default async () => {
-  const { enhancerUrl } = globalThis.__enhancerApi;
+  const { enhancerUrl } = globalThis.__enhancerApi,
+    menuButtonIconStyle = "";
 
   const icon = `i-notion-enhancer${
     menuButtonIconStyle === "monochrome" ? "?mask" : " text-[16px]"

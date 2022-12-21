@@ -1,0 +1,74 @@
+/**
+ * notion-enhancer
+ * (c) 2022 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+:root {
+}
+
+body:not(.dark) {
+  --theme--code-keyword: rgb(0, 119, 170);
+  --theme--code-builtin: rgb(102, 153, 0);
+  --theme--code-class_name: rgb(221, 74, 104);
+  --theme--code-function: var(--theme--code-class_name);
+  --theme--code-boolean: rgb(153, 0, 85);
+  --theme--code-number: var(--theme--code-boolean);
+  --theme--code-string: var(--theme--code-builtin);
+  --theme--code-char: var(--theme--code-builtin);
+  --theme--code-symbol: var(--theme--code-boolean);
+  --theme--code-regex: rgb(238, 153, 0);
+  --theme--code-url: rgb(154, 110, 58);
+  --theme--code-operator: var(--theme--code-url);
+  --theme--code-variable: var(--theme--code-regex);
+  --theme--code-constant: var(--theme--code-boolean);
+  --theme--code-property: var(--theme--code-boolean);
+  --theme--code-punctuation: rgb(153, 153, 153);
+  --theme--code-important: var(--theme--code-regex);
+  --theme--code-comment: rgb(112, 128, 144);
+  --theme--code-tag: var(--theme--code-boolean);
+  --theme--code-attr_name: var(--theme--code-builtin);
+  --theme--code-attr_value: var(--theme--code-keyword);
+  --theme--code-namespace: rgb(55, 53, 47);
+  --theme--code-prolog: var(--theme--code-comment);
+  --theme--code-doctype: var(--theme--code-comment);
+  --theme--code-cdata: var(--theme--code-comment);
+  --theme--code-entity: var(--theme--code-url);
+  --theme--code-atrule: var(--theme--code-keyword);
+  --theme--code-selector: var(--theme--code-builtin);
+  --theme--code-inserted: var(--theme--code-builtin);
+  --theme--code-deleted: var(--theme--code-boolean);
+}
+
+body.dark {
+  --theme--code-keyword: rgb(209, 148, 158);
+  --theme--code-builtin: rgb(189, 224, 82);
+  --theme--code-class_name: rgba(255, 255, 255, 0.81);
+  --theme--code-function: var(--theme--code-class_name);
+  --theme--code-boolean: var(--theme--code-keyword);
+  --theme--code-number: var(--theme--code-keyword);
+  --theme--code-string: var(--theme--code-builtin);
+  --theme--code-char: var(--theme--code-builtin);
+  --theme--code-symbol: var(--theme--code-keyword);
+  --theme--code-regex: rgb(238, 153, 0);
+  --theme--code-url: rgb(245, 184, 61);
+  --theme--code-operator: var(--theme--code-url);
+  --theme--code-variable: var(--theme--code-url);
+  --theme--code-constant: var(--theme--code-keyword);
+  --theme--code-property: var(--theme--code-keyword);
+  --theme--code-punctuation: var(--theme--code-class_name);
+  --theme--code-important: var(--theme--code-regex);
+  --theme--code-comment: rgb(153, 128, 102);
+  --theme--code-tag: var(--theme--code-keyword);
+  --theme--code-attr_name: var(--theme--code-builtin);
+  --theme--code-attr_value: var(--theme--code-keyword);
+  --theme--code-namespace: var(--theme--code-class_name);
+  --theme--code-prolog: var(--theme--code-comment);
+  --theme--code-doctype: var(--theme--code-comment);
+  --theme--code-cdata: var(--theme--code-comment);
+  --theme--code-entity: var(--theme--code-url);
+  --theme--code-atrule: var(--theme--code-keyword);
+  --theme--code-selector: var(--theme--code-builtin);
+  --theme--code-inserted: var(--theme--code-builtin);
+  --theme--code-deleted: rgb(255, 0, 0);
+}

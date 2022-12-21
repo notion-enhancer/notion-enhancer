@@ -4,6 +4,9 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+@import url("./theme.css");
+@import url("./variables.css");
+
 .notion-enhancer--menu-button {
   display: flex;
   user-select: none;
@@ -31,8 +34,7 @@
   position: fixed;
   inset: 0;
   width: 100vw;
-  height: 100vw;
-  overflow: hidden;
+  height: 100vh;
   opacity: 0;
   pointer-events: none;
   transition: opacity 100ms ease-in;
@@ -53,12 +55,10 @@
   align-items: center;
   justify-content: center;
   width: 100vw;
-  height: 100vw;
+  height: 100vh;
   pointer-events: none;
 }
 .notion-enhancer--menu-modal > :nth-child(2) > iframe {
-  position: relative;
-  z-index: 1;
   background: rgb(32, 32, 32);
   box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px,
     rgba(15, 15, 15, 0.2) 0px 5px 10px, rgba(15, 15, 15, 0.4) 0px 15px 40px;
