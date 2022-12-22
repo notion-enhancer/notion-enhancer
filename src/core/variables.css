@@ -4,43 +4,42 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-:root {
-}
-
-body:not(.dark) {
-  --theme--code-keyword: rgb(0, 119, 170);
-  --theme--code-builtin: rgb(102, 153, 0);
-  --theme--code-class_name: rgb(221, 74, 104);
-  --theme--code-function: var(--theme--code-class_name);
-  --theme--code-boolean: rgb(153, 0, 85);
-  --theme--code-number: var(--theme--code-boolean);
-  --theme--code-string: var(--theme--code-builtin);
-  --theme--code-char: var(--theme--code-builtin);
-  --theme--code-symbol: var(--theme--code-boolean);
-  --theme--code-regex: rgb(238, 153, 0);
-  --theme--code-url: rgb(154, 110, 58);
-  --theme--code-operator: var(--theme--code-url);
-  --theme--code-variable: var(--theme--code-regex);
-  --theme--code-constant: var(--theme--code-boolean);
-  --theme--code-property: var(--theme--code-boolean);
-  --theme--code-punctuation: rgb(153, 153, 153);
-  --theme--code-important: var(--theme--code-regex);
-  --theme--code-comment: rgb(112, 128, 144);
-  --theme--code-tag: var(--theme--code-boolean);
-  --theme--code-attr_name: var(--theme--code-builtin);
-  --theme--code-attr_value: var(--theme--code-keyword);
-  --theme--code-namespace: rgb(55, 53, 47);
-  --theme--code-prolog: var(--theme--code-comment);
-  --theme--code-doctype: var(--theme--code-comment);
-  --theme--code-cdata: var(--theme--code-comment);
-  --theme--code-entity: var(--theme--code-url);
-  --theme--code-atrule: var(--theme--code-keyword);
-  --theme--code-selector: var(--theme--code-builtin);
-  --theme--code-inserted: var(--theme--code-builtin);
-  --theme--code-deleted: var(--theme--code-boolean);
-}
-
 body.dark {
+  --theme--fg-primary: rgba(255, 255, 255, 0.81);
+  --theme--fg-secondary: rgb(155, 155, 155);
+  --theme--fg-gray: rgb(155, 155, 155);
+  --theme--fg-brown: rgb(186, 133, 111);
+  --theme--fg-orange: rgb(199, 125, 72);
+  --theme--fg-yellow: rgb(202, 152, 73);
+  --theme--fg-green: rgb(82, 158, 114);
+  --theme--fg-blue: rgb(94, 135, 201);
+  --theme--fg-purple: rgb(157, 104, 211);
+  --theme--fg-pink: rgb(209, 87, 150);
+  --theme--fg-red: rgb(223, 84, 82);
+  --theme--bg-light_gray: rgb(55, 55, 55);
+  --theme--bg-gray: rgb(90, 90, 90);
+  --theme--bg-brown: rgb(96, 59, 44);
+  --theme--bg-orange: rgb(133, 76, 29);
+  --theme--bg-yellow: rgb(137, 99, 42);
+  --theme--bg-green: rgb(43, 89, 63);
+  --theme--bg-blue: rgb(40, 69, 108);
+  --theme--bg-purple: rgb(73, 47, 100);
+  --theme--bg-red: rgb(110, 54, 48);
+  --theme--bg-pink: rgb(105, 49, 76);
+  --theme--accent-primary: rgb(35, 131, 226);
+  --theme--accent-primary_hover: rgb(0, 117, 211);
+  --theme--accent-primary_contrast: rgb(255, 255, 255);
+  --theme--accent-primary_transparent: rgba(35, 131, 226, 0.14);
+  --theme--accent-secondary: rgb(235, 87, 87);
+  --theme--accent-secondary_contrast: rgb(255, 255, 255);
+  --theme--accent-secondary_transparent: rgba(235, 87, 87, 0.1);
+  --theme--scrollbar-track: rgba(202, 204, 206, 0.04);
+  --theme--scrollbar-thumb: #474c50;
+  --theme--scrollbar-thumb_hover: rgba(202, 204, 206, 0.3);
+  --theme--code-inli: #eb5757;
+  --theme--code-inline_bg: rgba(135, 131, 120, 0.15);
+  --theme--code-block_fg: rgba(255, 255, 255, 0.81);
+  --theme--code-block_bg: rgba(255, 255, 255, 0.03);
   --theme--code-keyword: rgb(209, 148, 158);
   --theme--code-builtin: rgb(189, 224, 82);
   --theme--code-class_name: rgba(255, 255, 255, 0.81);
@@ -71,4 +70,72 @@ body.dark {
   --theme--code-selector: var(--theme--code-builtin);
   --theme--code-inserted: var(--theme--code-builtin);
   --theme--code-deleted: rgb(255, 0, 0);
+}
+
+body:not(.dark) {
+  --theme--fg-primary: rgb(55, 53, 47);
+  --theme--fg-secondary: rgba(25, 23, 17, 0.6);
+  --theme--fg-gray: rgb(120, 119, 116);
+  --theme--fg-brown: rgb(159, 107, 83);
+  --theme--fg-orange: rgb(217, 115, 13);
+  --theme--fg-yellow: rgb(203, 145, 47);
+  --theme--fg-green: rgb(68, 131, 97);
+  --theme--fg-blue: rgb(51, 126, 169);
+  --theme--fg-purple: rgb(144, 101, 176);
+  --theme--fg-pink: rgb(193, 76, 138);
+  --theme--fg-red: rgb(212, 76, 71);
+  --theme--bg-light_gray: rgba(227, 226, 224, 0.5);
+  --theme--bg-gray: rgb(227, 226, 224);
+  --theme--bg-brown: rgb(238, 224, 218);
+  --theme--bg-orange: rgb(250, 222, 201);
+  --theme--bg-yellow: rgb(253, 236, 200);
+  --theme--bg-green: rgb(219, 237, 219);
+  --theme--bg-blue: rgb(211, 229, 239);
+  --theme--bg-purple: rgb(232, 222, 238);
+  --theme--bg-red: rgb(255, 226, 221);
+  --theme--bg-pink: rgb(245, 224, 233);
+  --theme--accent-primary: rgb(35, 131, 226);
+  --theme--accent-primary_hover: rgb(0, 117, 211);
+  --theme--accent-primary_contrast: rgb(255, 255, 255);
+  --theme--accent-primary_transparent: rgba(35, 131, 226, 0.14);
+  --theme--accent-secondary: rgb(235, 87, 87);
+  --theme--accent-secondary_contrast: rgb(255, 255, 255);
+  --theme--accent-secondary_transparent: rgba(235, 87, 87, 0.1);
+  --theme--scrollbar-track: #edece9;
+  --theme--scrollbar-thumb: #d3d1cb;
+  --theme--scrollbar-thumb_hover: #aeaca6;
+  --theme--code-inli: #eb5757;
+  --theme--code-inline_bg: rgba(135, 131, 120, 0.15);
+  --theme--code-block_fg: rgb(55, 53, 47);
+  --theme--code-block_bg: rgb(247, 246, 243);
+  --theme--code-keyword: rgb(0, 119, 170);
+  --theme--code-builtin: rgb(102, 153, 0);
+  --theme--code-class_name: rgb(221, 74, 104);
+  --theme--code-function: var(--theme--code-class_name);
+  --theme--code-boolean: rgb(153, 0, 85);
+  --theme--code-number: var(--theme--code-boolean);
+  --theme--code-string: var(--theme--code-builtin);
+  --theme--code-char: var(--theme--code-builtin);
+  --theme--code-symbol: var(--theme--code-boolean);
+  --theme--code-regex: rgb(238, 153, 0);
+  --theme--code-url: rgb(154, 110, 58);
+  --theme--code-operator: var(--theme--code-url);
+  --theme--code-variable: var(--theme--code-regex);
+  --theme--code-constant: var(--theme--code-boolean);
+  --theme--code-property: var(--theme--code-boolean);
+  --theme--code-punctuation: rgb(153, 153, 153);
+  --theme--code-important: var(--theme--code-regex);
+  --theme--code-comment: rgb(112, 128, 144);
+  --theme--code-tag: var(--theme--code-boolean);
+  --theme--code-attr_name: var(--theme--code-builtin);
+  --theme--code-attr_value: var(--theme--code-keyword);
+  --theme--code-namespace: rgb(55, 53, 47);
+  --theme--code-prolog: var(--theme--code-comment);
+  --theme--code-doctype: var(--theme--code-comment);
+  --theme--code-cdata: var(--theme--code-comment);
+  --theme--code-entity: var(--theme--code-url);
+  --theme--code-atrule: var(--theme--code-keyword);
+  --theme--code-selector: var(--theme--code-builtin);
+  --theme--code-inserted: var(--theme--code-builtin);
+  --theme--code-deleted: var(--theme--code-boolean);
 }

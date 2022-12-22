@@ -5,7 +5,6 @@
  */
 
 @import url("./theme.css");
-@import url("./variables.css");
 
 .notion-enhancer--menu-button {
   display: flex;
