@@ -77,3 +77,12 @@
   transform: scale(1);
   transition: transform 80ms ease-in;
 }
+
+/* patch: remove backgrounds from prism tokens */
+.notion-light-theme .token.operator,
+.notion-light-theme .token.entity,
+.notion-light-theme .token.url,
+.notion-light-theme .language-css .token.string,
+.notion-light-theme .style .token.string {
+  background: transparent !important;
+}

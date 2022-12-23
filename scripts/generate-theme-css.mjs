@@ -13,27 +13,52 @@
 // the css body below should be passed through https://css.github.io/csso/csso.html
 // and then saved to core/theme.css. repeat this process for both light and dark modes
 
+// not yet themed: notion's new svg icons
+
+// future application once cleaned up and improved:
+// generate theme at runtime rather than manually building    styles
+
 const darkMode = document.body.classList.contains("dark"),
   modeSelector = darkMode ? ".dark" : ":not(.dark)";
 let cssRoot = "",
   cssBody = "";
 
-const generateQuerySelector = (el) => {
-    if (el.tagName === "HTML") return "html";
-    const parentSelector = generateQuerySelector(el.parentElement);
-    if (el.id) return `${parentSelector} > #${el.id}`;
-    const classes = [...el.classList].map((cls) => `.${cls}`).join(""),
-      style = el.getAttribute("style")
-        ? `[style="${el.getAttribute("style").replace(/"/g, "'")}"]`
-        : "",
-      index = `:nth-child(${[...el.parentElement.children].indexOf(el) + 1})`;
-    return `${parentSelector} > ${classes || style || index}`;
-  },
-  getComputedPropertyValue = (el, prop) => {
-    const styles = window.getComputedStyle(el),
-      value = styles.getPropertyValue(prop);
-    return value;
-  };
+const getComputedPropertyValue = (el, prop) => {
+  const styles = window.getComputedStyle(el),
+    value = styles.getPropertyValue(prop);
+  return value;
+};
+
+const generateFontStyles = () => {
+  const fontSans = `ui-sans-serif, -apple-system, BlinkMacSystemFont,
+      "Segoe UI", Helvetica, "Apple Color Emoji", Arial,
+      sans-serif, "Segoe UI Emoji", "Segoe UI Symbol"`,
+    fontSerif = `Lyon-Text, Georgia, YuMincho, "Yu Mincho",
+      "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC",
+      "Songti SC", SimSun, "Nanum Myeongjo", NanumMyeongjo, Batang, serif`,
+    fontMono = `iawriter-mono, Nitti, Menlo, Courier, monospace`,
+    fontCode = `SFMono-Regular, Consolas, "Liberation Mono", Menlo, Courier, monospace`;
+  cssRoot += `
+    --theme--font-sans: ${fontSans};
+    --theme--font-serif: ${fontSerif};
+    --theme--font-mono: ${fontMono};
+    --theme--font-code: ${fontCode};`;
+  cssBody += `
+    [style*='Segoe UI'] {
+      font-family: var(--theme--font-sans, ${fontSans.split(',')[0]}), ${fontSans} !important;
+    }
+    [style*='Georgia'] {
+      font-family: var(--theme--font-serif, ${fontSerif.split(',')[0]}), ${fontSerif} !important;
+    }
+    [style*='iawriter-mono'] {
+      font-family: var(--theme--font-mono, ${fontMono.split(',')[0]}), ${fontMono} !important;
+    }
+    [style*='SFMono-Regular'] {
+      font-family: var(--theme--font-code, ${fontCode.split(',')[0]}), ${fontCode} !important;
+    }
+  `;
+};
+generateFontStyles();
 
 const generateForegroundStyles = () => {
   const rgbPrimary = darkMode ? "rgb(255, 255, 255)" : "rgb(55, 53, 47)",
@@ -41,8 +66,14 @@ const generateForegroundStyles = () => {
     defaultSecondary = darkMode
       ? "rgb(155, 155, 155)"
       : "rgba(25, 23, 17, 0.6)",
-    fgPrimary = new Set([rgbPrimary]),
-    fgSecondary = new Set([defaultSecondary]);
+    fgPrimary = new Set([
+      rgbPrimary,
+      darkMode ? "rgb(211, 211, 211)" : "rgba(255, 255, 255, 0.9)",
+    ]),
+    fgSecondary = new Set([
+      defaultSecondary,
+      darkMode ? "rgb(127, 127, 127)" : "rgba(206, 205, 202, 0.6)",
+    ]);
   for (const el of document.querySelectorAll(
     '[style^="color"], [style*=" color"], [style*=";color"], [style*="fill"]'
   )) {
@@ -95,17 +126,117 @@ const generateForegroundStyles = () => {
     .notion-body${modeSelector} [style*="fill:${colorVal}"],
     .notion-body${modeSelector} [style*="fill: ${colorVal}"]`;
   cssBody += `
-  ${[...fgPrimary].map(mapFgToSelectors).join(", ")} {
+    ${[...fgPrimary].map(mapFgToSelectors).join(", ")} {
       color: var(--theme--fg-primary, ${defaultPrimary}) !important;
       caret-color: var(--theme--fg-primary, ${defaultPrimary}) !important;
-      -webkit-text-fill-color: currentColor !important;
+      text-decoration-color: currentColor !important;
       fill: var(--theme--fg-primary, ${defaultPrimary}) !important;
     }
+    .notion-body${modeSelector} .rdp-nav_icon,
+    .notion-body${modeSelector} .rdp-head_cell,
+    .notion-body${modeSelector} .rdp-day.rdp-day_outside,
+    .notion-body${modeSelector} ::placeholder,
     ${[...fgSecondary].map(mapFgToSelectors).join(", ")} {
       color: var(--theme--fg-secondary, ${defaultSecondary}) !important; 
       caret-color: var(--theme--fg-secondary, ${defaultSecondary}) !important;
-      -webkit-text-fill-color: currentColor !important;
+      text-decoration-color: currentColor !important;
       fill: var(--theme--fg-secondary, ${defaultSecondary}) !important; 
+    }
+    ${[...fgPrimary]
+      .map(
+        (colorVal) =>
+          `.notion-body${modeSelector} :is(
+          [style*="caret-color:${colorVal}"], [style*="caret-color: ${colorVal}"])`
+      )
+      .join(", ")} {
+      caret-color: var(--theme--fg-primary, ${defaultPrimary}) !important;
+    }
+    .notion-body${modeSelector} ::placeholder,
+    ${[...fgSecondary]
+      .map(
+        (colorVal) =>
+          `.notion-body${modeSelector} :is(
+          [style*="caret-color:${colorVal}"], [style*="caret-color: ${colorVal}"])`
+      )
+      .join(", ")} {
+      caret-color: var(--theme--fg-secondary, ${defaultSecondary}) !important;
+    }
+    .notion-body${modeSelector} [style*="-webkit-text-fill-color:"] {
+      -webkit-text-fill-color: var(--theme--fg-secondary, ${defaultSecondary}) !important;
+    }
+  `;
+
+  // borders
+  const defaultBorder = darkMode ? "rgb(47, 47, 47)" : "rgb(233, 233, 231)",
+    possibleBorders = darkMode
+      ? [defaultBorder.slice(4, -1), "255, 255, 255"]
+      : [defaultBorder.slice(4, -1), "55, 53, 47"],
+    borderColors = new Set([
+      darkMode ? "rgb(37, 37, 37)" : "rgb(238, 238, 237)",
+    ]),
+    boxShadows = new Set(
+      darkMode
+        ? [
+            "box-shadow: rgba(255, 255, 255, 0.094) 0px -1px 0px;",
+            "box-shadow: rgba(15, 15, 15, 0.2) 0px 0px 0px 1px inset;",
+            "box-shadow: rgb(25, 25, 25) -3px 0px 0px, rgb(47, 47, 47) 0px 1px 0px;",
+          ]
+        : [
+            "box-shadow: rgba(55, 53, 47, 0.09) 0px -1px 0px;",
+            "box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px inset;",
+            "box-shadow: white -3px 0px 0px, rgb(233, 233, 231) 0px 1px 0px;",
+          ]
+    );
+  for (const el of document.querySelectorAll(
+    `[style*="border:"], [style*="border-right:"], [style*="border-left:"],
+    [style*="border-top:"], [style*="border-bottom:"], [style*="box-shadow:"]`
+  )) {
+    const borderColor = el
+      .getAttribute("style")
+      .match(/(?:^|(?:;\s*))border(?:-\w+)?:\s*([^;]+);?/)?.[1];
+    if (
+      borderColor &&
+      possibleBorders.some((border) => borderColor.includes(border))
+    ) {
+      borderColors.add(borderColor);
+    }
+    const boxShadowStyle = el
+      .getAttribute("style")
+      .match(/(?:^|(?:;\s*))box-shadow:\s*([^;]+);?/)?.[0];
+    if (
+      boxShadowStyle &&
+      possibleBorders.some((border) => boxShadowStyle.includes(border))
+    ) {
+      boxShadows.add(boxShadowStyle);
+    }
+  }
+  cssRoot += `--theme--fg-border: ${defaultBorder};`;
+  cssBody += `
+    .notion-body${modeSelector} ${[...borderColors]
+    .map(
+      (border) =>
+        `[style*="${border}"]:is([style*="border:"],
+        [style*="border-top:"], [style*="border-left:"],
+        [style*="border-bottom:"], [style*="border-right:"])`
+    )
+    .join(", ")} {
+      border-color: var(--theme--fg-border, ${defaultBorder}) !important;
+    }
+    ${[...boxShadows]
+      .map(
+        (shadow) =>
+          `.notion-body${modeSelector} [style*="${shadow}"] {
+            ${shadow
+              .replace(
+                /rgba?\([^\)]+\)/g,
+                `var(--theme--fg-border, ${defaultBorder})`
+              )
+              .slice(0, -1)} !important;
+      }`
+      )
+      .join("")}
+    .notion-body${modeSelector} [style*="height: 1px;"][style*="background"] {
+      background: var(--theme--fg-border, ${defaultBorder}) !important;
     }
   `;
 
@@ -115,13 +246,17 @@ const generateForegroundStyles = () => {
     '.notion-selectable .notion-enable-hover[style*="color:"][style*="fill:"]'
   )) {
     if (!el.innerText || el.innerText.includes(" ")) continue;
+    if (el.getAttribute("style").includes("mono")) continue;
     const cssVar = `--theme--fg-${el.innerText}`,
       colorVal = getComputedPropertyValue(el, "color"),
-      styleAttr = el.getAttribute("style");
+      styleAttr = el
+        .getAttribute("style")
+        .match(/(?:^|(?:;\s*))color:\s*([^;]+);?/)[1];
     cssRoot += `${cssVar}: ${colorVal};`;
     refs[`${cssVar}, ${colorVal}`] ??= [];
     refs[`${cssVar}, ${colorVal}`].push(
-      `.notion-body${modeSelector} .notion-enable-hover[style*="${styleAttr}"]`
+      `.notion-body${modeSelector} .notion-enable-hover[style*="${styleAttr}"],
+      .notion-body${modeSelector} .notion-code-block span.token[style*="${styleAttr}"]`
     );
   }
   // block text color
@@ -140,20 +275,20 @@ const generateForegroundStyles = () => {
     );
   }
   // board text
-  for (const parent of document.querySelectorAll(
+  for (const group of document.querySelectorAll(
     ".notion-board-view .notion-board-group"
   )) {
     // get color name from card
-    const card = parent.querySelector('a[style*="background"]'),
+    const card = group.querySelector('a[style*="background"]'),
       innerText = card.innerText.replace("Drag image to reposition\n", "");
     if (!innerText || innerText.includes(" ")) continue;
-    const el = parent.querySelector('[style*="height: 32px"]'),
+    const el = group.querySelector('[style*="height: 32px"]'),
       colorVal = getComputedPropertyValue(el, "color"),
       cssVar = `--theme--fg-${
         // --fg-light_gray doesn't exist
         innerText === "light_gray" ? "secondary" : innerText
       }`,
-      styleAttr = parent
+      styleAttr = group
         .getAttribute("style")
         .match(/background(?:-color)?:\s*([^;]+);?/)[1];
     refs[`${cssVar}, ${colorVal}`] ??= [];
@@ -175,6 +310,90 @@ const generateForegroundStyles = () => {
 generateForegroundStyles();
 
 const generateBackgroundStyles = () => {
+  const defaultPrimary = darkMode ? "rgb(25, 25, 25)" : "rgb(255, 255, 255)",
+    defaultSecondary = darkMode ? "rgb(32, 32, 32)" : "rgb(251, 251, 250)",
+    bgPrimary = new Set([
+      defaultPrimary,
+      ...(darkMode
+        ? ["rgb(37, 37, 37)", "rgba(255, 255, 255, 0.13)"]
+        : ["white", "rgb(247, 247, 247)"]),
+    ]),
+    bgSecondary = new Set([
+      defaultSecondary,
+      ...(darkMode
+        ? ["rgba(255, 255, 255, 0.0", "rgb(47, 47, 47)"]
+        : ["rgb(253, 253, 253)", "rgb(15, 15, 15)"]),
+    ]);
+  for (const el of document.querySelectorAll(
+    '[style*="background:"], [style*="background-color:"]'
+  )) {
+    const colorVal = el
+      .getAttribute("style")
+      .match(/background(?:-color)?:\s*([^;]+);?/)?.[1];
+    if (colorVal.startsWith(`rgba(${defaultPrimary.slice(4, -1)}`)) {
+      const alpha = +colorVal.slice(5, -1).split(", ")[3];
+      if (alpha > 0.8) {
+        bgPrimary.add(colorVal);
+      } else bgSecondary.add(colorVal);
+    }
+  }
+  cssRoot += `
+    --theme--bg-primary: ${defaultPrimary};
+    --theme--bg-secondary: ${defaultSecondary};
+  `;
+  const mapBgToSelectors = (colorVal) =>
+    `.notion-body${modeSelector} [style*="background:${colorVal}"],
+    .notion-body${modeSelector} [style*="background: ${colorVal}"],
+    .notion-body${modeSelector} [style*="background-color:${colorVal}"],
+    .notion-body${modeSelector} [style*="background-color: ${colorVal}"]`;
+  cssBody += `
+    ${[...bgPrimary].map(mapBgToSelectors).join(", ")} {
+      background: var(--theme--bg-primary, ${defaultPrimary}) !important;
+    }
+     .notion-body${modeSelector} .notion-focusable-within [style*="background"],
+    ${[...bgSecondary].map(mapBgToSelectors).join(", ")} {
+      background: var(--theme--bg-secondary, ${defaultSecondary}) !important;
+    }
+    [style*="linear-gradient(to left, ${
+      defaultPrimary === "rgb(255, 255, 255)" ? "white" : defaultPrimary
+    } 20%, rgba(${defaultPrimary.slice(4, -1)}, 0) 100%)"] {
+      background-image: linear-gradient(to left,
+        var(--theme--bg-primary, ${defaultPrimary}) 20%, transparent 100%) !important;
+    }
+    [style*="linear-gradient(to right, ${
+      defaultPrimary === "rgb(255, 255, 255)" ? "white" : defaultPrimary
+    } 20%, rgba(${defaultPrimary.slice(4, -1)}, 0) 100%)"] {
+      background-image: linear-gradient(to right,
+        var(--theme--bg-primary, ${defaultPrimary}) 20%, transparent 100%) !important;
+    }
+  `;
+
+  // hovered elements, inputs and unchecked toggle backgrounds
+  const bgHover = darkMode
+    ? ["rgba(255, 255, 255, 0.055)", "rgb(47, 47, 47)"]
+    : [
+        "rgba(55, 53, 47, 0.08)",
+        "rgba(242, 241, 238, 0.6)",
+        "rgb(225, 225, 225)",
+        "rgb(239, 239, 238)",
+      ];
+  cssRoot += `--theme--bg-hover: ${bgHover[0]};`;
+  cssBody += `${bgHover
+    .map(
+      (hover) => `.notion-body${modeSelector} :is(
+        [style*="background: ${hover}"], [style*="background-color: ${hover}"]
+      )${
+        hover === "rgb(47, 47, 47)"
+          ? '[style*="transition: background"]:hover'
+          : ""
+      }`
+    )
+    .join(", ")},
+    .notion-body${modeSelector} [style*="height: 14px; width: 26px; border-radius: 44px;"][style*="rgba"] {
+    background: var(--theme--bg-hover, ${bgHover[0]}) !important;
+  }`;
+
+  // get bg variable values from tags
   for (const el of document.querySelectorAll(
     '.notion-collection_view-block [style*="height: 20px; border-radius: 3px; padding-left: 6px;"]'
   )) {
@@ -186,11 +405,9 @@ const generateBackgroundStyles = () => {
   const refs = {};
   for (const targetSelector of [
     // inline highlight
-    '.notion-selectable .notion-enable-hover[style^="background:"]',
+    '.notion-selectable .notion-enable-hover[style*="background:"]',
     // block highlight
     '.notion-text-block > [style*="background:"]',
-    // callout block
-    '.notion-callout-block > div > [style*="background:"]',
     // database tag
     '[style*="height: 20px; border-radius: 3px; padding-left: 6px;"][style*="background:"]',
     '.notion-collection_view-block [style*="height: 14px; border-radius: 3px; padding-left: 6px;"]',
@@ -209,25 +426,67 @@ const generateBackgroundStyles = () => {
       );
     }
   }
-  // board card: in light mode all have bg "white" by default,
-  // must be styled based on parent
-  for (const parent of document.querySelectorAll(
+  // board cards
+  for (const group of document.querySelectorAll(
     ".notion-board-view .notion-board-group"
   )) {
-    const el = parent.querySelector('a[style*="background"]'),
-      innerText = el.innerText.replace("Drag image to reposition\n", "");
+    const page = group.querySelector('a[style*="background"]'),
+      innerText = page.innerText.replace("Drag image to reposition\n", "");
     if (!innerText || innerText.includes(" ")) continue;
-    const cssVar = `--theme--bg-${innerText}`,
+    const pageVar = `--theme--bg-${innerText}`,
+      pageColor = getComputedPropertyValue(page, "background-color"),
+      groupVar = `--theme--bg_dim-${innerText}`,
+      groupColor = group
+        .getAttribute("style")
+        .match(/background(?:-color)?:\s*([^;]+);?/)[1];
+    // get bg_dim variable values
+    cssRoot += `${groupVar}: ${groupColor};`;
+    // in light mode pages in board views all have bg "white"
+    // by default, must be styled based on parent
+    refs[`${pageVar}, ${pageColor}`] ??= [];
+    refs[`${pageVar}, ${pageColor}`].push(
+      `.notion-body${modeSelector} .notion-board-view
+      .notion-board-group[style*="${groupColor}"] a[style*="background"]`
+    );
+    refs[`${groupVar}, ${groupColor}`] ??= [];
+    refs[`${groupVar}, ${groupColor}`].push(
+      `.notion-body${modeSelector} .notion-board-view
+      [style*="${groupColor}"]:is(.notion-board-group, [style*="border-top-left-radius: 5px;"])`
+    );
+  }
+  // use bg-yellow for notification highlights
+  refs[`--theme--bg-yellow, rgba(255, 212, 0, 0.14)`] ??= [];
+  refs[`--theme--bg-yellow, rgba(255, 212, 0, 0.14)`].push(
+    `.notion-body${modeSelector} [style*="background: rgba(255, 212, 0, 0.14)"]`
+  );
+  // use bg_dim for callout blocks
+  for (const el of document.querySelectorAll(
+    '.notion-callout-block > div > [style*="background:"]'
+  )) {
+    if (!el.innerText || el.innerText.includes(" ")) continue;
+    const cssVar = `--theme--bg_dim-${el.innerText}`,
       colorVal = getComputedPropertyValue(el, "background-color"),
-      styleAttr = parent
+      styleAttr = el
         .getAttribute("style")
         .match(/background(?:-color)?:\s*([^;]+);?/)[1];
     refs[`${cssVar}, ${colorVal}`] ??= [];
     refs[`${cssVar}, ${colorVal}`].push(
-      `.notion-body${modeSelector} .notion-board-view
-       .notion-board-group[style*="${styleAttr}"] a[style*="background"]`
+      `.notion-body${modeSelector} .notion-callout-block > div
+        > [style*="background:"][style*="${styleAttr}"]`
     );
   }
+  // use light_gray for taglike elements e.g. file property values
+  const taglikeEl = document.querySelector(
+      '[style*="height: 18px; border-radius: 3px; background"]'
+    ),
+    taglikeBg = taglikeEl
+      .getAttribute("style")
+      .match(/background(?:-color)?:\s*([^;]+);?/)[1];
+  refs[`--theme--bg-light_gray, ${taglikeBg}`] ??= [];
+  refs[`--theme--bg-light_gray, ${taglikeBg}`].push(
+    `[style*="height: 18px; border-radius: 3px; background"][style*="${taglikeBg}"]`
+  );
+  // group selectors with same bg together
   for (const varRef in refs) {
     cssBody += `${refs[varRef].join(",")} {
       background: var(${varRef}) !important;
@@ -242,19 +501,33 @@ const generateAccentStyles = () => {
   const accentPrimary = "rgb(35, 131, 226)",
     accentPrimaryHover = "rgb(0, 117, 211)",
     accentPrimaryContrast = "rgb(255, 255, 255)",
-    accentPrimaryTransparent = "rgba(35, 131, 226, 0.14)",
+    accentPrimaryTransparent = [
+      "rgba(35, 131, 226, 0.14)",
+      "rgba(35, 131, 226, 0.",
+    ],
+    accentPrimaryBoxShadows = [
+      "box-shadow: rgb(35, 131, 226) 0px 0px 0px 2px inset",
+    ],
     accentSecondary = [
       "rgb(235, 87, 87)",
       "rgb(180, 65, 60)",
+      "rgb(211, 79, 67)",
       "rgb(205, 73, 69)",
     ],
     accentSecondaryContrast = "rgb(255, 255, 255)",
     accentSecondaryTransparent = "rgba(235, 87, 87, 0.1)",
-    accentSecondaryBorder = "1px solid rgb(110, 54, 48)";
+    accentSecondaryBorder = [
+      "border: 1px solid rgb(110, 54, 48)",
+      "border: 1px solid rgba(235, 87, 87, 0.5)",
+      "border: 2px solid rgb(110, 54, 48)",
+      "border: 2px solid rgb(227, 134, 118)",
+      "border-right: 1px solid rgb(180, 65, 60)",
+      "border-right: 1px solid rgb(211, 79, 67)",
+    ];
   cssRoot += `--theme--accent-primary: ${accentPrimary};
     --theme--accent-primary_hover: ${accentPrimaryHover};
     --theme--accent-primary_contrast: ${accentPrimaryContrast};
-    --theme--accent-primary_transparent: ${accentPrimaryTransparent};
+    --theme--accent-primary_transparent: ${accentPrimaryTransparent[0]};
     --theme--accent-secondary: ${accentSecondary[0]};
     --theme--accent-secondary_contrast: ${accentSecondaryContrast};
     --theme--accent-secondary_transparent: ${accentSecondaryTransparent};`;
@@ -285,29 +558,75 @@ const generateAccentStyles = () => {
     .notion-table-selection-overlay [style*='border: 2px solid'] {
       border-color: var(--theme--accent-primary, ${accentPrimary}) !important;
     }
+    .notion-focusable-within:focus-within {
+      box-shadow: var(--theme--accent-primary, ${accentPrimary}) 0px 0px 0px 1px inset,
+        var(--theme--accent-primary, ${accentPrimary}) 0px 0px 0px 2px !important;
+    }
+    .notion-focusable:focus-visible {
+      box-shadow: var(--theme--accent-primary, ${accentPrimary}) 0px 0px 0px 1px inset,
+        var(--theme--accent-primary, ${accentPrimary}) 0px 0px 0px 2px !important;
+    }
+    ${[...accentPrimaryBoxShadows]
+      .map(
+        (shadow) =>
+          `[style*="${shadow}"] {
+            ${shadow.replace(
+              /rgba?\([^\)]+\)/g,
+              `var(--theme--accent-primary, ${accentPrimary})`
+            )} !important;
+      }`
+      )
+      .join("")}
     *::selection,
     .notion-selectable-halo,
-    [style*="background: ${accentPrimaryTransparent}"],
-    [style*="background-color: ${accentPrimaryTransparent}"] {
-      background: var(--theme--accent-primary_transparent, ${accentPrimaryTransparent}) !important;
+    #notion-app .rdp-day:not(.rdp-day_disabled):not(.rdp-day_selected):not(.rdp-day_value):not(.rdp-day_start):not(.rdp-day_end):hover,
+    [style*="background: ${accentPrimaryTransparent[1]}"],
+    [style*="background-color: ${accentPrimaryTransparent[1]}"] {
+      background: var(--theme--accent-primary_transparent, ${
+        accentPrimaryTransparent[0]
+      }) !important;
     }
-    [style*="color: ${accentSecondary[0]}"],
-    [style*="color: ${accentSecondary[1]}"],
-    [style*="fill: ${accentSecondary[0]}"],
-    [style*="fill: ${accentSecondary[1]}"] {
-      color: var(--theme--accent-secondary, ${accentSecondary}) !important;
+    ${accentSecondary
+      .map(
+        (accent) =>
+          `[style*="color: ${accent}"],
+          [style*="fill: ${accent}"]`
+      )
+      .join(", ")} {
+      color: var(--theme--accent-secondary, ${accentSecondary[0]}) !important;
+      fill: var(--theme--accent-secondary, ${accentSecondary[0]}) !important;
     }
-    [style*="background: ${accentSecondary[0]}"],
-    [style*="background: ${accentSecondary[1]}"],
-    [style*="background: ${accentSecondary[2]}"],
-    [style*="background-color: ${accentSecondary[0]}"],
-    [style*="background-color: ${accentSecondary[1]}"],
-    [style*="background-color: ${accentSecondary[2]}"] {
-      background: var(--theme--accent-secondary, ${accentSecondary[0]}) !important;
+    #notion-app .rdp-day_today:not(.rdp-day_selected):not(.rdp-day_value):not(.rdp-day_start):not(.rdp-day_end)::after,
+    ${accentSecondary
+      .map(
+        (accent) =>
+          `[style*="background: ${accent}"],
+          [style*="background-color: ${accent}"]`
+      )
+      .join(", ")} {
+      background: var(--theme--accent-secondary, ${
+        accentSecondary[0]
+      }) !important;
       color: var(--theme--accent-secondary_contrast, ${accentSecondaryContrast}) !important;
       fill: var(--theme--accent-secondary_contrast, ${accentSecondaryContrast}) !important;
     }
-    [style*="background: ${accentSecondary[1]}"] + [style*="color: white;"] {
+    #notion-app .rdp-day_today:not(.rdp-day_selected):not(.rdp-day_value):not(.rdp-day_start):not(.rdp-day_end),
+    :is(${accentSecondary
+      .map(
+        (accent) =>
+          `[style*="background: ${accent}"],
+          [style*="background-color: ${accent}"]`
+      )
+      .join(", ")})
+    + :is([style*="fill: white;"], [style*="color: white;"]),
+    :is(${accentSecondary
+      .map(
+        (accent) =>
+          `[style*="background: ${accent}"],
+          [style*="background-color: ${accent}"]`
+      )
+      .join(", ")})
+    :is([style*="fill: white;"], [style*="color: white;"]) {
       color: var(--theme--accent-secondary_contrast, ${accentSecondaryContrast}) !important;
       fill: var(--theme--accent-secondary_contrast, ${accentSecondaryContrast}) !important;
     }
@@ -315,10 +634,13 @@ const generateAccentStyles = () => {
     [style*="background-color: ${accentSecondaryTransparent}"] {
       background: var(--theme--accent-secondary_transparent, ${accentSecondaryTransparent}) !important;
     }
-    [style*="border: ${accentSecondaryBorder}"] {
-      border-color: var(--theme--accent-secondary, ${accentSecondary[0]}) !important;
-    }
-    `;
+    ${accentSecondaryBorder
+      .map((border) => `[style*="${border}"]`)
+      .join(", ")} {
+      border-color: var(--theme--accent-secondary, ${
+        accentSecondary[0]
+      }) !important;
+    }`;
 };
 generateAccentStyles();
 

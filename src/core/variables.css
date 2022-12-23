@@ -5,8 +5,18 @@
  */
 
 body.dark {
+  --theme--font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif,
+    "Segoe UI Emoji", "Segoe UI Symbol";
+  --theme--font-serif: Lyon-Text, Georgia, YuMincho, "Yu Mincho",
+    "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC",
+    SimSun, "Nanum Myeongjo", NanumMyeongjo, Batang, serif;
+  --theme--font-mono: iawriter-mono, Nitti, Menlo, Courier, monospace;
+  --theme--font-code: SFMono-Regular, Consolas, "Liberation Mono", Menlo,
+    Courier, monospace;
   --theme--fg-primary: rgba(255, 255, 255, 0.81);
   --theme--fg-secondary: rgb(155, 155, 155);
+  --theme--fg-border: rgb(47, 47, 47);
   --theme--fg-gray: rgb(155, 155, 155);
   --theme--fg-brown: rgb(186, 133, 111);
   --theme--fg-orange: rgb(199, 125, 72);
@@ -16,6 +26,9 @@ body.dark {
   --theme--fg-purple: rgb(157, 104, 211);
   --theme--fg-pink: rgb(209, 87, 150);
   --theme--fg-red: rgb(223, 84, 82);
+  --theme--bg-primary: rgb(25, 25, 25);
+  --theme--bg-secondary: rgb(32, 32, 32);
+  --theme--bg-hover: rgba(255, 255, 255, 0.055);
   --theme--bg-light_gray: rgb(55, 55, 55);
   --theme--bg-gray: rgb(90, 90, 90);
   --theme--bg-brown: rgb(96, 59, 44);
@@ -24,8 +37,18 @@ body.dark {
   --theme--bg-green: rgb(43, 89, 63);
   --theme--bg-blue: rgb(40, 69, 108);
   --theme--bg-purple: rgb(73, 47, 100);
-  --theme--bg-red: rgb(110, 54, 48);
   --theme--bg-pink: rgb(105, 49, 76);
+  --theme--bg-red: rgb(110, 54, 48);
+  --theme--bg_dim-light_gray: rgb(28, 28, 28);
+  --theme--bg_dim-gray: rgb(32, 32, 32);
+  --theme--bg_dim-brown: rgb(35, 30, 28);
+  --theme--bg_dim-orange: rgb(37, 31, 27);
+  --theme--bg_dim-yellow: rgb(35, 31, 26);
+  --theme--bg_dim-green: rgb(29, 34, 32);
+  --theme--bg_dim-blue: rgb(27, 31, 34);
+  --theme--bg_dim-purple: rgb(31, 29, 33);
+  --theme--bg_dim-pink: rgb(35, 28, 31);
+  --theme--bg_dim-red: rgb(36, 30, 29);
   --theme--accent-primary: rgb(35, 131, 226);
   --theme--accent-primary_hover: rgb(0, 117, 211);
   --theme--accent-primary_contrast: rgb(255, 255, 255);
@@ -36,7 +59,7 @@ body.dark {
   --theme--scrollbar-track: rgba(202, 204, 206, 0.04);
   --theme--scrollbar-thumb: #474c50;
   --theme--scrollbar-thumb_hover: rgba(202, 204, 206, 0.3);
-  --theme--code-inli: #eb5757;
+  --theme--code-inline_fg: #eb5757;
   --theme--code-inline_bg: rgba(135, 131, 120, 0.15);
   --theme--code-block_fg: rgba(255, 255, 255, 0.81);
   --theme--code-block_bg: rgba(255, 255, 255, 0.03);
@@ -73,8 +96,18 @@ body.dark {
 }
 
 body:not(.dark) {
+  --theme--font-sans: ui-sans-serif, -apple-system, BlinkMacSystemFont,
+    "Segoe UI", Helvetica, "Apple Color Emoji", Arial, sans-serif,
+    "Segoe UI Emoji", "Segoe UI Symbol";
+  --theme--font-serif: Lyon-Text, Georgia, YuMincho, "Yu Mincho",
+    "Hiragino Mincho ProN", "Hiragino Mincho Pro", "Songti TC", "Songti SC",
+    SimSun, "Nanum Myeongjo", NanumMyeongjo, Batang, serif;
+  --theme--font-mono: iawriter-mono, Nitti, Menlo, Courier, monospace;
+  --theme--font-code: SFMono-Regular, Consolas, "Liberation Mono", Menlo,
+    Courier, monospace;
   --theme--fg-primary: rgb(55, 53, 47);
   --theme--fg-secondary: rgba(25, 23, 17, 0.6);
+  --theme--fg-border: rgb(233, 233, 231);
   --theme--fg-gray: rgb(120, 119, 116);
   --theme--fg-brown: rgb(159, 107, 83);
   --theme--fg-orange: rgb(217, 115, 13);
@@ -84,6 +117,9 @@ body:not(.dark) {
   --theme--fg-purple: rgb(144, 101, 176);
   --theme--fg-pink: rgb(193, 76, 138);
   --theme--fg-red: rgb(212, 76, 71);
+  --theme--bg-primary: rgb(255, 255, 255);
+  --theme--bg-secondary: rgb(251, 251, 250);
+  --theme--bg-hover: rgba(55, 53, 47, 0.08);
   --theme--bg-light_gray: rgba(227, 226, 224, 0.5);
   --theme--bg-gray: rgb(227, 226, 224);
   --theme--bg-brown: rgb(238, 224, 218);
@@ -92,8 +128,18 @@ body:not(.dark) {
   --theme--bg-green: rgb(219, 237, 219);
   --theme--bg-blue: rgb(211, 229, 239);
   --theme--bg-purple: rgb(232, 222, 238);
-  --theme--bg-red: rgb(255, 226, 221);
   --theme--bg-pink: rgb(245, 224, 233);
+  --theme--bg-red: rgb(255, 226, 221);
+  --theme--bg_dim-light_gray: rgba(249, 249, 245, 0.5);
+  --theme--bg_dim-gray: rgba(247, 247, 245, 0.7);
+  --theme--bg_dim-brown: rgba(250, 246, 245, 0.7);
+  --theme--bg_dim-orange: rgba(252, 245, 242, 0.7);
+  --theme--bg_dim-yellow: rgba(250, 247, 237, 0.7);
+  --theme--bg_dim-green: rgba(244, 248, 243, 0.7);
+  --theme--bg_dim-blue: rgba(241, 248, 251, 0.7);
+  --theme--bg_dim-purple: rgba(249, 246, 252, 0.7);
+  --theme--bg_dim-pink: rgba(251, 245, 251, 0.7);
+  --theme--bg_dim-red: rgba(253, 245, 243, 0.7);
   --theme--accent-primary: rgb(35, 131, 226);
   --theme--accent-primary_hover: rgb(0, 117, 211);
   --theme--accent-primary_contrast: rgb(255, 255, 255);
@@ -104,7 +150,7 @@ body:not(.dark) {
   --theme--scrollbar-track: #edece9;
   --theme--scrollbar-thumb: #d3d1cb;
   --theme--scrollbar-thumb_hover: #aeaca6;
-  --theme--code-inli: #eb5757;
+  --theme--code-inline_fg: #eb5757;
   --theme--code-inline_bg: rgba(135, 131, 120, 0.15);
   --theme--code-block_fg: rgb(55, 53, 47);
   --theme--code-block_bg: rgb(247, 246, 243);
