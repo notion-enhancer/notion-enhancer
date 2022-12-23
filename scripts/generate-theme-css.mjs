@@ -16,7 +16,7 @@
 // not yet themed: notion's new svg icons
 
 // future application once cleaned up and improved:
-// generate theme at runtime rather than manually building    styles
+// generate theme at runtime rather than manually building styles
 
 const darkMode = document.body.classList.contains("dark"),
   modeSelector = darkMode ? ".dark" : ":not(.dark)";
@@ -45,16 +45,24 @@ const generateFontStyles = () => {
     --theme--font-code: ${fontCode};`;
   cssBody += `
     [style*='Segoe UI'] {
-      font-family: var(--theme--font-sans, ${fontSans.split(',')[0]}), ${fontSans} !important;
+      font-family: var(--theme--font-sans, ${
+        fontSans.split(",")[0]
+      }), ${fontSans} !important;
     }
     [style*='Georgia'] {
-      font-family: var(--theme--font-serif, ${fontSerif.split(',')[0]}), ${fontSerif} !important;
+      font-family: var(--theme--font-serif, ${
+        fontSerif.split(",")[0]
+      }), ${fontSerif} !important;
     }
     [style*='iawriter-mono'] {
-      font-family: var(--theme--font-mono, ${fontMono.split(',')[0]}), ${fontMono} !important;
+      font-family: var(--theme--font-mono, ${
+        fontMono.split(",")[0]
+      }), ${fontMono} !important;
     }
     [style*='SFMono-Regular'] {
-      font-family: var(--theme--font-code, ${fontCode.split(',')[0]}), ${fontCode} !important;
+      font-family: var(--theme--font-code, ${
+        fontCode.split(",")[0]
+      }), ${fontCode} !important;
     }
   `;
 };
@@ -177,14 +185,14 @@ const generateForegroundStyles = () => {
     boxShadows = new Set(
       darkMode
         ? [
-            "box-shadow: rgba(255, 255, 255, 0.094) 0px -1px 0px;",
-            "box-shadow: rgba(15, 15, 15, 0.2) 0px 0px 0px 1px inset;",
-            "box-shadow: rgb(25, 25, 25) -3px 0px 0px, rgb(47, 47, 47) 0px 1px 0px;",
+            "; box-shadow: rgba(255, 255, 255, 0.094) 0px -1px 0px;",
+            "; box-shadow: rgba(15, 15, 15, 0.2) 0px 0px 0px 1px inset;",
+            "; box-shadow: rgb(25, 25, 25) -3px 0px 0px, rgb(47, 47, 47) 0px 1px 0px;",
           ]
         : [
-            "box-shadow: rgba(55, 53, 47, 0.09) 0px -1px 0px;",
-            "box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px inset;",
-            "box-shadow: white -3px 0px 0px, rgb(233, 233, 231) 0px 1px 0px;",
+            "; box-shadow: rgba(55, 53, 47, 0.09) 0px -1px 0px;",
+            "; box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px inset;",
+            "; box-shadow: white -3px 0px 0px, rgb(233, 233, 231) 0px 1px 0px;",
           ]
     );
   for (const el of document.querySelectorAll(
@@ -224,12 +232,14 @@ const generateForegroundStyles = () => {
     }
     ${[...boxShadows]
       .map(
-        (shadow) =>
+        (shadow, i) =>
           `.notion-body${modeSelector} [style*="${shadow}"] {
             ${shadow
               .replace(
                 /rgba?\([^\)]+\)/g,
-                `var(--theme--fg-border, ${defaultBorder})`
+                i === 2
+                  ? "transparent"
+                  : `var(--theme--fg-border, ${defaultBorder})`
               )
               .slice(0, -1)} !important;
       }`
