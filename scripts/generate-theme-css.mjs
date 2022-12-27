@@ -333,7 +333,8 @@ const generateBackgroundStyles = () => {
       ...(darkMode
         ? ["rgba(255, 255, 255, 0.0", "rgb(47, 47, 47)"]
         : ["rgb(253, 253, 253)", "rgb(15, 15, 15)"]),
-    ]);
+    ]),
+    bgOverlay = darkMode ? "rgba(15, 15, 15, 0.8)" : "rgba(15, 15, 15, 0.6)";
   for (const el of document.querySelectorAll(
     '[style*="background:"], [style*="background-color:"]'
   )) {
@@ -350,6 +351,7 @@ const generateBackgroundStyles = () => {
   cssRoot += `
     --theme--bg-primary: ${defaultPrimary};
     --theme--bg-secondary: ${defaultSecondary};
+    --theme--overlay-shadow: ${bgOverlay};
   `;
   const mapBgToSelectors = (colorVal) =>
     `.notion-body${modeSelector} [style*="background:${colorVal}"],
@@ -360,7 +362,8 @@ const generateBackgroundStyles = () => {
     ${[...bgPrimary].map(mapBgToSelectors).join(", ")} {
       background: var(--theme--bg-primary, ${defaultPrimary}) !important;
     }
-     .notion-body${modeSelector} .notion-focusable-within [style*="background"],
+     .notion-body${modeSelector} .notion-focusable-within
+     [style*="background"]:not([style*="background: none"]),
     ${[...bgSecondary].map(mapBgToSelectors).join(", ")} {
       background: var(--theme--bg-secondary, ${defaultSecondary}) !important;
     }
@@ -375,6 +378,10 @@ const generateBackgroundStyles = () => {
     } 20%, rgba(${defaultPrimary.slice(4, -1)}, 0) 100%)"] {
       background-image: linear-gradient(to right,
         var(--theme--bg-primary, ${defaultPrimary}) 20%, transparent 100%) !important;
+    }
+    .notion-body${modeSelector} .notion-overlay-container
+    [data-overlay] > div > [style*="position: absolute"]:first-child {
+      background: var(--theme--overlay-shadow, ${bgOverlay}) !important;
     }
   `;
 
@@ -662,7 +669,8 @@ const generateScrollbarStyles = () => {
     --theme--scrollbar-thumb: ${scrollbarThumb};
     --theme--scrollbar-thumb_hover: ${scrollbarThumbHover};`;
   cssBody += `
-    .notion-body${modeSelector} ::-webkit-scrollbar-track {
+    .notion-body${modeSelector} ::-webkit-scrollbar-track,
+    .notion-body${modeSelector} ::-webkit-scrollbar-corner {
       background: var(--theme--scrollbar-track, ${scrollbarTrack}) !important;
     }
     .notion-body${modeSelector} ::-webkit-scrollbar-thumb {

@@ -15,8 +15,11 @@ export default async () => {
     menuButtonIconStyle === "monochrome" ? "?mask" : " text-[16px]"
   }`;
 
-  const modalBackground = html`<div class="notion-enhancer--menu-modal">
-    <div onclick=${() => modalBackground.removeAttribute("data-open")}></div>
+  const menuModal = html`<div
+    class="notion-enhancer--menu-modal"
+    style="display:none"
+  >
+    <div onclick=${() => menuModal.removeAttribute("data-open")}></div>
     <div>
       <iframe
         title="notion-enhancer menu"
@@ -24,16 +27,14 @@ export default async () => {
       ></iframe>
     </div>
   </div>`;
-  document.body.append(modalBackground);
+  document.body.append(menuModal);
 
   const notionSidebar = `.notion-sidebar-container .notion-sidebar > :nth-child(3) > div > :nth-child(2)`,
     menuButton = html`<div
       tabindex="0"
       role="button"
       class="notion-enhancer--menu-button"
-      onclick=${() => {
-        modalBackground.dataset.open = true;
-      }}
+      onclick=${() => menuModal.setAttribute("data-open", true)}
     >
       <div><i class=${icon}></i></div>
       <div>notion-enhancer</div>

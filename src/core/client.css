@@ -4,6 +4,7 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+@import url("./variables.css");
 @import url("./theme.css");
 
 .notion-enhancer--menu-button {
@@ -17,7 +18,7 @@
   padding: 2px 10px;
 }
 .notion-enhancer--menu-button:hover {
-  background: rgba(255, 255, 255, 0.055);
+  background: var(--theme--bg-hover);
 }
 .notion-enhancer--menu-button > :nth-child(1) {
   display: flex;
@@ -37,6 +38,8 @@
   opacity: 0;
   pointer-events: none;
   transition: opacity 100ms ease-in;
+  /* style="display:none" is set to prevent pop-in fouc */
+  display: auto !important;
 }
 .notion-enhancer--menu-modal[data-open="true"] {
   pointer-events: auto;
@@ -45,7 +48,7 @@
 .notion-enhancer--menu-modal > :nth-child(1) {
   position: fixed;
   inset: 0;
-  background: rgba(15, 15, 15, 0.8);
+  background: var(--theme--bg-overlay);
 }
 .notion-enhancer--menu-modal > :nth-child(2) {
   position: fixed;
@@ -58,7 +61,7 @@
   pointer-events: none;
 }
 .notion-enhancer--menu-modal > :nth-child(2) > iframe {
-  background: rgb(32, 32, 32);
+  background: var(--theme--bg-secondary);
   box-shadow: rgba(15, 15, 15, 0.1) 0px 0px 0px 1px,
     rgba(15, 15, 15, 0.2) 0px 5px 10px, rgba(15, 15, 15, 0.4) 0px 15px 40px;
   border-radius: 5px;
