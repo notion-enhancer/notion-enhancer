@@ -56,7 +56,7 @@
       "value": false
     }
   ],
-  "clientStyles": ["client.css", "variables.css"],
+  "clientStyles": ["variables.css"],
   "clientScripts": ["client.mjs"],
   "electronScripts": []
 }

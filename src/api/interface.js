@@ -43,58 +43,6 @@ const encodeSvg = (svg) =>
     .replace(/\s+/g, " ");
 
 twind.install({
-  theme: {
-    fontFamily: {
-      sans: ["var(--theme--font-sans)"],
-      mono: ["var(--theme--font-code)"],
-    },
-    colors: {
-      "fg-primary": "var(--theme--fg-primary)",
-      "fg-secondary": "var(--theme--fg-secondary)",
-      "fg-border": "var(--theme--fg-border)",
-      "fg-gray": "var(--theme--fg-gray)",
-      "fg-brown": "var(--theme--fg-brown)",
-      "fg-orange": "var(--theme--fg-orange)",
-      "fg-yellow": "var(--theme--fg-yellow)",
-      "fg-green": "var(--theme--fg-green)",
-      "fg-blue": "var(--theme--fg-blue)",
-      "fg-purple": "var(--theme--fg-purple)",
-      "fg-pink": "var(--theme--fg-pink)",
-      "fg-red": "var(--theme--fg-red)",
-      "bg-primary": "var(--theme--bg-primary)",
-      "bg-secondary": "var(--theme--bg-secondary)",
-      "bg-overlay": "var(--theme--bg-overlay)",
-      "bg-hover": "var(--theme--bg-hover)",
-      "bg-light_gray": "var(--theme--bg-light_gray)",
-      "bg-gray": "var(--theme--bg-gray)",
-      "bg-brown": "var(--theme--bg-brown)",
-      "bg-orange": "var(--theme--bg-orange)",
-      "bg-yellow": "var(--theme--bg-yellow)",
-      "bg-green": "var(--theme--bg-green)",
-      "bg-blue": "var(--theme--bg-blue)",
-      "bg-purple": "var(--theme--bg-purple)",
-      "bg-pink": "var(--theme--bg-pink)",
-      "bg-red": "var(--theme--bg-red)",
-      "dim-light_gray": "var(--theme--dim-light_gray)",
-      "dim-gray": "var(--theme--dim-gray)",
-      "dim-brown": "var(--theme--dim-brown)",
-      "dim-orange": "var(--theme--dim-orange)",
-      "dim-yellow": "var(--theme--dim-yellow)",
-      "dim-green": "var(--theme--dim-green)",
-      "dim-blue": "var(--theme--dim-blue)",
-      "dim-purple": "var(--theme--dim-purple)",
-      "dim-pink": "var(--theme--dim-pink)",
-      "dim-red": "var(--theme--dim-red)",
-      "accent-primary": "var(--theme--accent-primary)",
-      "accent-primary_hover": "var(--theme--accent-primary_hover)",
-      "accent-primary_contrast": "var(--theme--accent-primary_contrast)",
-      "accent-primary_transparent": "var(--theme--accent-primary_transparent)",
-      "accent-secondary": "var(--theme--accent-secondary)",
-      "accent-secondary_contrast": "var(--theme--accent-secondary_contrast)",
-      "accent-secondary_transparent":
-        "var(--theme--accent-secondary_transparent)",
-    },
-  },
   rules: [
     [
       /^i-((?:\w|-)+)(?:\?(mask|bg|auto))?$/,
@@ -133,6 +81,7 @@ twind.install({
       },
     ],
   ],
+  variants: [["open", "&[open]"]],
 });
 
 // construct elements via tagged tagged

@@ -43,23 +43,33 @@ export default async (api, db) => {
       $menuFrame.contentWindow.postMessage(msg, "*");
     },
     openMenu = () => {
-      if (!$menuFrame) return;
-      setTheme();
-      $menuModal.setAttribute("data-open", true);
+      if ($menuFrame) setTheme();
+      $menuModal?.setAttribute("open", true);
     },
-    closeMenu = () => $menuModal.removeAttribute("data-open");
+    closeMenu = () => $menuModal.removeAttribute("open");
 
   $menuFrame = html`<iframe
     title="notion-enhancer menu"
     src="${enhancerUrl("core/menu/index.html")}"
+    class="
+      rounded-[5px] w-[1150px] h-[calc(100vh-100px)]
+      max-w-[calc(100vw-100px)] max-h-[715px] overflow-hidden
+      bg-[color:var(--theme--bg-secondary)] drop-shadow-xl
+      transition opacity-0 scale-95
+      group-open:(pointer-events-auto opacity-100 scale-100)
+    "
     onload=${setTheme}
   ></iframe>`;
   $menuModal = html`<div
-    class="notion-enhancer--menu-modal
+    class="notion-enhancer--menu-modal group
     z-[999] fixed inset-0 w-screen h-screen
-    transition pointer-events-none opacity-0"
+    transition pointer-events-none opacity-0
+    open:(pointer-events-auto opacity-100)"
   >
-    <div class="fixed inset-0 bg-bg-overlay" onclick=${closeMenu}></div>
+    <div
+      class="fixed inset-0 bg-[color:var(--theme--bg-overlay)]"
+      onclick=${closeMenu}
+    ></div>
     <div
       class="fixed inset-0 flex w-screen h-screen
       items-center justify-center pointer-events-none"
@@ -76,7 +86,7 @@ export default async (api, db) => {
     class="notion-enhancer--menu-button
     flex select-none cursor-pointer rounded-[3px]
     text-[14px] my-px mx-[4px] py-[2px] px-[10px]
-    transition hover:bg-bg-hover"
+    transition hover:bg-[color:var(--theme--bg-hover)]"
   >
     <div class="flex items-center justify-center w-[22px] h-[22px] mr-[8px]">
       <i

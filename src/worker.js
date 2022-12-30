@@ -25,15 +25,14 @@ const tabQueue = new Set(),
         message: "open-menu",
       });
     } else tabQueue.add(tab.id);
+  },
+  reloadNotionTabs = async () => {
+    const openTabs = await chrome.tabs.query({
+        windowId: chrome.windows.WINDOW_ID_CURRENT,
+      }),
+      notionTabs = openTabs.filter(isNotionTab);
+    notionTabs.forEach((tab) => chrome.tabs.reload(tab.id));
   };
-
-const reloadNotionTabs = async () => {
-  const openTabs = await chrome.tabs.query({
-      windowId: chrome.windows.WINDOW_ID_CURRENT,
-    }),
-    notionTabs = openTabs.filter(isNotionTab);
-  notionTabs.forEach((tab) => chrome.tabs.reload(tab.id));
-};
 
 chrome.action.onClicked.addListener(openEnhancerMenu);
 chrome.runtime.onMessage.addListener((msg, sender) => {
