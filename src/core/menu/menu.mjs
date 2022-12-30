@@ -37,5 +37,4 @@ window.addEventListener("message", async (event) => {
   updateTheme(event.data?.mode);
   await importApi();
   await importStyles();
-  console.log(globalThis.__enhancerApi);
 });

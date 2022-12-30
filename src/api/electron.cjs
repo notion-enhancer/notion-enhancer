@@ -37,6 +37,15 @@ const readFile = (file) => {
     app.exit();
   };
 
+const sendMessage = (channel, message) => {
+    const { ipcRenderer } = require("electron");
+    ipcRenderer.send(channel, message);
+  },
+  onMessage = (channel, listener) => {
+    const { ipcRenderer } = require("electron");
+    ipcRenderer.on(channel, listener);
+  };
+
 let __db;
 const initDatabase = (namespace, fallbacks = {}) => {
   if (Array.isArray(namespace)) namespace = namespace.join("__");
@@ -97,5 +106,7 @@ Object.assign(globalThis.__enhancerApi, {
   readFile,
   readJson,
   reloadApp,
+  sendMessage,
+  onMessage,
   initDatabase,
 });

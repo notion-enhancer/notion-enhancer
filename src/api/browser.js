@@ -20,7 +20,21 @@ const readFile = async (file) => {
     const res = await fetch(file);
     return await res.json();
   },
-  reloadApp = () => chrome.runtime.sendMessage({ action: "reload" });
+  reloadApp = () => {
+    chrome.runtime.sendMessage({
+      channel: "notion-enhancer",
+      message: "reload-app",
+    });
+  };
+
+const sendMessage = (channel, message) => {
+    chrome.runtime.sendMessage({ channel, message });
+  },
+  onMessage = (channel, listener) => {
+    chrome.runtime.onMessage.addListener((msg) => {
+      if (msg?.channel === channel) listener(msg.message);
+    });
+  };
 
 const initDatabase = (namespace, fallbacks = {}) => {
   if (Array.isArray(namespace)) namespace = namespace.join("__");
@@ -66,5 +80,7 @@ Object.assign(globalThis.__enhancerApi, {
   readFile,
   readJson,
   reloadApp,
+  sendMessage,
+  onMessage,
   initDatabase,
 });

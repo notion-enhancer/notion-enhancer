@@ -7,7 +7,7 @@
 const notionSidebar = `.notion-sidebar-container .notion-sidebar > :nth-child(3) > div > :nth-child(2)`;
 
 export default async (api, db) => {
-  const { enhancerUrl, platform } = api,
+  const { platform, enhancerUrl, onMessage, sendMessage } = api,
     { html, addMutationListener, addKeyListener } = api,
     openMenuHotkey = await db.get("openMenuHotkey"),
     menuButtonIconStyle = await db.get("menuButtonIconStyle"),
@@ -34,17 +34,40 @@ export default async (api, db) => {
   // menu
 
   let $menuModal, $menuFrame;
-  const getTheme = () => {
-      return document.body.classList.contains("dark") ? "dark" : "light";
+  const setTheme = () => {
+      if (platform !== "browser") $menuFrame.contentWindow.__enhancerApi = api;
+      const msg = {
+        namespace: "notion-enhancer",
+        mode: document.body.classList.contains("dark") ? "dark" : "light",
+      };
+      $menuFrame.contentWindow.postMessage(msg, "*");
     },
     openMenu = () => {
       if (!$menuFrame) return;
-      const msg = { namespace: "notion-enhancer", mode: getTheme() };
-      if (platform !== "browser") $menuFrame.contentWindow.__enhancerApi = api;
-      $menuFrame.contentWindow.postMessage(msg, "*");
+      setTheme();
       $menuModal.setAttribute("data-open", true);
     },
     closeMenu = () => $menuModal.removeAttribute("data-open");
+
+  $menuFrame = html`<iframe
+    title="notion-enhancer menu"
+    src="${enhancerUrl("core/menu/index.html")}"
+    onload=${setTheme}
+  ></iframe>`;
+  $menuModal = html`<div
+    class="notion-enhancer--menu-modal
+    z-[999] fixed inset-0 w-screen h-screen
+    transition pointer-events-none opacity-0"
+  >
+    <div class="fixed inset-0 bg-bg-overlay" onclick=${closeMenu}></div>
+    <div
+      class="fixed inset-0 flex w-screen h-screen
+      items-center justify-center pointer-events-none"
+    >
+      ${$menuFrame}
+    </div>
+  </div>`;
+  document.body.append($menuModal);
 
   const $menuButton = html`<div
     onclick=${openMenu}
@@ -70,25 +93,9 @@ export default async (api, db) => {
   });
   document.querySelector(notionSidebar)?.append($menuButton);
 
-  $menuModal = html`<div
-    class="notion-enhancer--menu-modal
-    z-[999] fixed inset-0 w-screen h-screen
-    transition pointer-events-none opacity-0"
-  >
-    <div class="fixed inset-0 bg-bg-overlay" onclick=${closeMenu}></div>
-    <div
-      class="fixed inset-0 flex w-screen h-screen
-      items-center justify-center point-events-none"
-    >
-      <iframe
-        title="notion-enhancer menu"
-        src="${enhancerUrl("core/menu/index.html")}"
-        onload=${(event) => ($menuFrame = event.target)}
-      ></iframe>
-    </div>
-  </div>`;
-  document.body.append($menuModal);
-
+  onMessage("notion-enhancer", (message) => {
+    if (message === "open-menu") openMenu();
+  });
   addKeyListener(openMenuHotkey, (event) => {
     event.preventDefault();
     openMenu();
@@ -97,4 +104,6 @@ export default async (api, db) => {
     if (document.activeElement?.nodeName === "INPUT") return;
     closeMenu();
   });
+
+  sendMessage("notion-enhancer", "load-complete");
 };

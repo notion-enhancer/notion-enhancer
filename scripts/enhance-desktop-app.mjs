@@ -121,15 +121,7 @@ const unpackApp = async () => {
       insertPath = getResourcePath("app/node_modules/notion-enhancer");
     if (existsSync(insertPath)) await fsp.rm(insertPath, { recursive: true });
     // insert the notion-enhancer/src folder into notion's node_modules folder
-    const excludedDests = [
-      getResourcePath("app/node_modules/notion-enhancer/browser"),
-      getResourcePath("app/node_modules/notion-enhancer/manifest.json"),
-    ];
-    await fsp.cp(srcPath, insertPath, {
-      recursive: true,
-      // exclude browser-specific files
-      filter: (_, dest) => !excludedDests.includes(dest),
-    });
+    await fsp.cp(srcPath, insertPath, { recursive: true });
     // call patch-desktop-app.mjs on each file
     // prettier-ignore
     const notionScripts = (await readdirDeep(appPath))
