@@ -9,31 +9,26 @@
 const fs = require("fs"),
   os = require("os"),
   path = require("path"),
-  platform = process.platform;
+  notionRequire = (target) => require(`../../../${target}`);
 
-const notionRequire = (target) => require(`../../../${target}`),
-  notionPath = (target) => path.resolve(`${__dirname}/../../../${target}`);
-
-const enhancerRequire = (target) => require(`notion-enhancer/${target}`),
-  enhancerPath = (target) => path.resolve(`${__dirname}/../${target}`),
+const platform = process.platform,
+  enhancerVersion = require("notion-enhancer/package.json").version,
   enhancerUrl = (target) =>
-    `notion://www.notion.so/__notion-enhancer/${target}`,
-  enhancerVersion = enhancerRequire("package.json").version,
-  enhancerConfig = path.resolve(`${os.homedir()}/.notion-enhancer.db`);
+    `notion://www.notion.so/__notion-enhancer/${target.replace(/^\//, "")}`;
 
 const readFile = (file) => {
     // prettier-ignore
     file = file.replace(/^https:\/\/www\.notion\.so\//, "notion://www.notion.so/");
     const useFetch = file.startsWith("http") || file.startsWith("notion://");
     if (useFetch) return fetch(file).then((res) => res.text());
-    return fs.readFileSync(enhancerPath(file));
+    return fs.readFileSync(path.resolve(`${__dirname}/../${file}`), "utf-8");
   },
   readJson = (file) => {
     // prettier-ignore
     file = file.replace(/^https:\/\/www\.notion\.so\//, "notion://www.notion.so/");
     const useFetch = file.startsWith("http") || file.startsWith("notion://");
     if (useFetch) return fetch(file).then((res) => res.json());
-    return require(enhancerPath(file));
+    return require(path.resolve(`${__dirname}/../${file}`));
   },
   reloadApp = () => {
     const { app } = require("electron"),
@@ -43,13 +38,13 @@ const readFile = (file) => {
   };
 
 let __db;
-const initDatabase = (namespace) => {
+const initDatabase = (namespace, fallbacks = {}) => {
   if (Array.isArray(namespace)) namespace = namespace.join("__");
   namespace = namespace ? namespace + "__" : "";
 
   const table = "settings",
     sqlite = require("better-sqlite3"),
-    db = __db ?? sqlite(enhancerConfig),
+    db = __db ?? sqlite(path.resolve(`${os.homedir()}/.notion-enhancer.db`)),
     init = db.prepare(`CREATE TABLE IF NOT EXISTS ${table} (
       key     TEXT PRIMARY KEY,
       value   TEXT
@@ -72,8 +67,9 @@ const initDatabase = (namespace) => {
 
   return {
     get: (key) => {
+      const fallback = fallbacks[key];
       key = key.startsWith(namespace) ? key : namespace + key;
-      return select.get(key)?.value;
+      return select.get(key)?.value ?? fallback;
     },
     set: (key, value) => {
       key = key.startsWith(namespace) ? key : namespace + key;
@@ -94,14 +90,10 @@ const initDatabase = (namespace) => {
 
 globalThis.__enhancerApi ??= {};
 Object.assign(globalThis.__enhancerApi, {
-  platform,
   notionRequire,
-  notionPath,
-  enhancerRequire,
-  enhancerPath,
+  platform,
   enhancerUrl,
   enhancerVersion,
-  enhancerConfig,
   readFile,
   readJson,
   reloadApp,

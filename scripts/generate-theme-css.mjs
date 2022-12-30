@@ -10,8 +10,9 @@
 // the variables at the top of the file should be placed in core/variables.css
 // as a reference for theme developers, but not loaded into notion.
 
-// the css body below should be passed through https://css.github.io/csso/csso.html
-// and then saved to core/theme.css. repeat this process for both light and dark modes
+// the css body below should be passed through https://css-minifier.com/ and
+// https://css.github.io/csso/csso.html, then saved to core/theme.css.
+// repeat this process for both light and dark modes.
 
 // not yet themed: notion's new svg icons
 
@@ -452,11 +453,11 @@ const generateBackgroundStyles = () => {
     if (!innerText || innerText.includes(" ")) continue;
     const pageVar = `--theme--bg-${innerText}`,
       pageColor = getComputedPropertyValue(page, "background-color"),
-      groupVar = `--theme--bg_dim-${innerText}`,
+      groupVar = `--theme--dim-${innerText}`,
       groupColor = group
         .getAttribute("style")
         .match(/background(?:-color)?:\s*([^;]+);?/)[1];
-    // get bg_dim variable values
+    // get dim variable values
     cssRoot += `${groupVar}: ${groupColor};`;
     // in light mode pages in board views all have bg "white"
     // by default, must be styled based on parent
@@ -476,12 +477,12 @@ const generateBackgroundStyles = () => {
   refs[`--theme--bg-yellow, rgba(255, 212, 0, 0.14)`].push(
     `.notion-body${modeSelector} [style*="background: rgba(255, 212, 0, 0.14)"]`
   );
-  // use bg_dim for callout blocks
+  // use dim for callout blocks
   for (const el of document.querySelectorAll(
     '.notion-callout-block > div > [style*="background:"]'
   )) {
     if (!el.innerText || el.innerText.includes(" ")) continue;
-    const cssVar = `--theme--bg_dim-${el.innerText}`,
+    const cssVar = `--theme--dim-${el.innerText}`,
       colorVal = getComputedPropertyValue(el, "background-color"),
       styleAttr = el
         .getAttribute("style")
@@ -770,6 +771,18 @@ const prismTokens = [
       cssBody += `.notion-body${modeSelector} .notion-code-block .token.${token} {
         color: var(${cssVar}, ${colorVal}) !important;
       }`;
+    }
+    // patch: remove backgrounds from prism tokens
+    if (!darkMode) {
+      cssBody += `
+        .notion-body${modeSelector} .token.operator,
+        .notion-body${modeSelector} .token.entity,
+        .notion-body${modeSelector} .token.url,
+        .notion-body${modeSelector} .language-css .token.string,
+        .notion-body${modeSelector} .style .token.string {
+          background: transparent !important;
+        }
+      `;
     }
   };
 generateCodeStyles();

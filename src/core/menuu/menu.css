@@ -1,10 +1,10 @@
 /**
- * notion-enhancer
- * (c) 2022 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * notion-enhancer: menu
+ * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-/* ::selection {
+::selection {
   background: var(--theme--accent_blue-selection);
 }
 
@@ -22,4 +22,4 @@
 }
 ::-webkit-scrollbar-thumb:hover {
   background: var(--theme--scrollbar_thumb-hover) !important;
-} */
+}

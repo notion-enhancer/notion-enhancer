@@ -6,35 +6,33 @@
 
 "use strict";
 
-let _core, _mods;
-const getCore = async () => {
-    _core ??= await globalThis.__enhancerApi.readJson("core/mod.json");
-    _core._src = "core";
-    return _core;
-  },
-  getMods = async () => {
+let _mods;
+const getMods = async () => {
     const { readJson } = globalThis.__enhancerApi;
-    // prettier-ignore
-    _mods ??= (await Promise.all([
-      getCore(),
-      ...(await readJson("mods/registry.json")).map(async (modFolder) => {
-        const modManifest = await readJson(`mods/${modFolder}/mod.json`);
-        return {...modManifest, _src: `mods/${modFolder}` };
-      }),
-    ]));
+    _mods ??= await Promise.all(
+      // prettier-ignore
+      (await readJson("registry.json")).map(async (_src) => {
+        const modManifest = await readJson(`${_src}/mod.json`);
+        return { ...modManifest, _src };
+      })
+    );
     return _mods;
+  },
+  getCore = async () => {
+    const mods = await getMods();
+    return mods.find(({ _src }) => _src === "core");
   },
   getThemes = async () => {
     const mods = await getMods();
-    return mods.filter(({ tags }) => tags.includes("theme"));
+    return mods.find(({ _src }) => _src.startsWith("themes/"));
   },
   getExtensions = async () => {
     const mods = await getMods();
-    return mods.filter(({ tags }) => tags.includes("extension"));
+    return mods.find(({ _src }) => _src.startsWith("extensions/"));
   },
   getIntegrations = async () => {
     const mods = await getMods();
-    return mods.filter(({ tags }) => tags.includes("integration"));
+    return mods.find(({ _src }) => _src.startsWith("integrations/"));
   };
 
 const getProfile = async () => {
@@ -43,13 +41,27 @@ const getProfile = async () => {
     return currentProfile ?? "default";
   },
   isEnabled = async (id) => {
-    if (id === (await getCore()).id) return true;
     const { platform } = globalThis.__enhancerApi,
       mod = (await getMods()).find((mod) => mod.id === id);
+    if (mod._src === "core") return true;
     if (mod.platforms && !mod.platforms.includes(platform)) return false;
     const { initDatabase } = globalThis.__enhancerApi,
       enabledMods = initDatabase([await getProfile(), "enabledMods"]);
     return Boolean(await enabledMods.get(id));
+  },
+  optionDefaults = async (id) => {
+    const mod = (await getMods()).find((mod) => mod.id === id),
+      optionEntries = mod.options
+        .map((opt) => {
+          if (
+            ["toggle", "text", "number", "hotkey", "color"].includes(opt.type)
+          )
+            return [opt.key, opt.value];
+          if (opt.type === "select") return [opt.key, opt.values[0]];
+          return undefined;
+        })
+        .filter((opt) => opt);
+    return Object.fromEntries(optionEntries);
   };
 
 globalThis.__enhancerApi ??= {};
@@ -61,4 +73,5 @@ Object.assign(globalThis.__enhancerApi, {
   getIntegrations,
   getProfile,
   isEnabled,
+  optionDefaults,
 });

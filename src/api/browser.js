@@ -22,14 +22,17 @@ const readFile = async (file) => {
   },
   reloadApp = () => chrome.runtime.sendMessage({ action: "reload" });
 
-const initDatabase = (namespace) => {
+const initDatabase = (namespace, fallbacks = {}) => {
   if (Array.isArray(namespace)) namespace = namespace.join("__");
   namespace = namespace ? namespace + "__" : "";
   return {
     get: async (key) => {
+      const fallback = fallbacks[key];
       key = key.startsWith(namespace) ? key : namespace + key;
       return new Promise((res, _rej) => {
-        chrome.storage.local.get(key, (value) => res(value));
+        chrome.storage.local.get([key], ({ [key]: value }) =>
+          res(value ?? fallback)
+        );
       });
     },
     set: async (key, value) => {

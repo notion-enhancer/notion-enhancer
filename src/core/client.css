@@ -5,60 +5,10 @@
  */
 
 @import url("./variables.css");
-@import url("./theme.css");
 
-.notion-enhancer--menu-button {
-  display: flex;
-  user-select: none;
-  cursor: pointer;
-  transition: background 20ms ease-in;
-  border-radius: 3px;
-  font-size: 14px;
-  margin: 1px 4px;
-  padding: 2px 10px;
-}
-.notion-enhancer--menu-button:hover {
-  background: var(--theme--bg-hover);
-}
-.notion-enhancer--menu-button > :nth-child(1) {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 22px;
-  height: 22px;
-  margin-right: 8px;
-}
-
-.notion-enhancer--menu-modal {
-  z-index: 999;
-  position: fixed;
-  inset: 0;
-  width: 100vw;
-  height: 100vh;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 100ms ease-in;
-  /* style="display:none" is set to prevent pop-in fouc */
-  display: auto !important;
-}
 .notion-enhancer--menu-modal[data-open="true"] {
   pointer-events: auto;
   opacity: 1;
-}
-.notion-enhancer--menu-modal > :nth-child(1) {
-  position: fixed;
-  inset: 0;
-  background: var(--theme--bg-overlay);
-}
-.notion-enhancer--menu-modal > :nth-child(2) {
-  position: fixed;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100vw;
-  height: 100vh;
-  pointer-events: none;
 }
 .notion-enhancer--menu-modal > :nth-child(2) > iframe {
   background: var(--theme--bg-secondary);
@@ -79,13 +29,4 @@
   opacity: 1;
   transform: scale(1);
   transition: transform 80ms ease-in;
-}
-
-/* patch: remove backgrounds from prism tokens */
-.notion-light-theme .token.operator,
-.notion-light-theme .token.entity,
-.notion-light-theme .token.url,
-.notion-light-theme .language-css .token.string,
-.notion-light-theme .style .token.string {
-  background: transparent !important;
 }

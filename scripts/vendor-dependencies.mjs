@@ -10,7 +10,7 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const dependencies = {
-  "htm.min.js": "https://unpkg.com/htm@3.1.1/mini/index.module.js",
+  "htm.min.js": "https://unpkg.com/htm@3.1.1/mini/index.js",
   "twind.min.js": "https://unpkg.com/@twind/cdn@1.0.4/cdn.global.js",
   "lucide.min.js": "https://unpkg.com/lucide@0.104.0/dist/umd/lucide.min.js",
   "jscolor.min.js":
