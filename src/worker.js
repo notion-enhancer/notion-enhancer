@@ -48,5 +48,4 @@ chrome.runtime.onMessage.addListener((msg, sender) => {
   } else if (msg.message === "reload-app") {
     reloadNotionTabs();
   }
-  return true;
 });

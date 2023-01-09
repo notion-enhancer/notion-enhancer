@@ -17,18 +17,16 @@ export default async (api, db) => {
   // appearance
 
   if (loadThemeOverrides) {
-    const $themeOverrides = html`<link
+    document.head.append(html`<link
       rel="stylesheet"
       href=${enhancerUrl("core/theme.css")}
-    />`;
-    document.head.append($themeOverrides);
+    />`);
   }
 
   if (customStyles) {
-    const $cssInsert = html`<style>
+    document.head.append(html`<style>
       ${customStyles}
-    </style>`;
-    document.head.append($cssInsert);
+    </style>`);
   }
 
   // menu
@@ -55,8 +53,8 @@ export default async (api, db) => {
       rounded-[5px] w-[1150px] h-[calc(100vh-100px)]
       max-w-[calc(100vw-100px)] max-h-[715px] overflow-hidden
       bg-[color:var(--theme--bg-secondary)] drop-shadow-xl
-      transition opacity-0 scale-95
       group-open:(pointer-events-auto opacity-100 scale-100)
+      transition opacity-0 scale-95
     "
     onload=${setTheme}
   ></iframe>`;
