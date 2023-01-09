@@ -24,15 +24,15 @@ const getMods = async () => {
   },
   getThemes = async () => {
     const mods = await getMods();
-    return mods.find(({ _src }) => _src.startsWith("themes/"));
+    return mods.filter(({ _src }) => _src.startsWith("themes/"));
   },
   getExtensions = async () => {
     const mods = await getMods();
-    return mods.find(({ _src }) => _src.startsWith("extensions/"));
+    return mods.filter(({ _src }) => _src.startsWith("extensions/"));
   },
   getIntegrations = async () => {
     const mods = await getMods();
-    return mods.find(({ _src }) => _src.startsWith("integrations/"));
+    return mods.filter(({ _src }) => _src.startsWith("integrations/"));
   };
 
 const getProfile = async () => {

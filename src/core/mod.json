@@ -30,13 +30,13 @@
       "type": "select",
       "key": "menuButtonIconStyle",
       "description": "Sets whether the notion-enhancer icon added to Notion's sidebar should be coloured or monochrome. The latter style will match the theme's icon colour for users who would like the icon to be less noticeable.",
-      "values": ["colour", "monochrome"]
+      "values": ["Colour", "Monochrome"]
     },
     {
-      "type": "toggle",
+      "type": "select",
       "key": "loadThemeOverrides",
-      "description": "Loads the styling required for a theme to customise Notion's interface. Turning this off will disable all themes but may increase client performance.",
-      "value": true
+      "description": "Loads the styling required for a theme to customise Notion's interface. Disabling this will increase client performance.",
+      "values": ["Auto", "Enabled", "Disabled"]
     },
     {
       "type": "file",
