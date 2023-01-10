@@ -1,6 +1,6 @@
 /**
  * notion-enhancer
- * (c) 2022 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2023 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
@@ -22,25 +22,93 @@ const kebabToPascalCase = (string) =>
     `<${type}${Object.entries(props)
       .map(([attr, value]) => ` ${attr}="${value}"`)
       .join("")}>${children
-      .flat(Infinity)
-      .map(([tag, attrs, children]) => hToString(tag, attrs, children))
+      .map((child) => (Array.isArray(child) ? hToString(...child) : child))
       .join("")}</${type}>`;
 
 // https://gist.github.com/jennyknuth/222825e315d45a738ed9d6e04c7a88d0
 const encodeSvg = (svg) =>
-  svg
-    .replace(
-      "<svg",
-      ~svg.indexOf("xmlns") ? "<svg" : '<svg xmlns="http://www.w3.org/2000/svg"'
-    )
-    .replace(/"/g, "'")
-    .replace(/%/g, "%25")
-    .replace(/#/g, "%23")
-    .replace(/{/g, "%7B")
-    .replace(/}/g, "%7D")
-    .replace(/</g, "%3C")
-    .replace(/>/g, "%3E")
-    .replace(/\s+/g, " ");
+    svg
+      .replace(
+        "<svg",
+        ~svg.indexOf("xmlns")
+          ? "<svg"
+          : '<svg xmlns="http://www.w3.org/2000/svg"'
+      )
+      .replace(/"/g, "'")
+      .replace(/%/g, "%25")
+      .replace(/#/g, "%23")
+      .replace(/{/g, "%7B")
+      .replace(/}/g, "%7D")
+      .replace(/</g, "%3C")
+      .replace(/>/g, "%3E")
+      .replace(/\s+/g, " "),
+  svgElements = [
+    "animate",
+    "animateMotion",
+    "animateTransform",
+    "circle",
+    "clipPath",
+    "defs",
+    "desc",
+    "discard",
+    "ellipse",
+    "feBlend",
+    "feColorMatrix",
+    "feComponentTransfer",
+    "feComposite",
+    "feConvolveMatrix",
+    "feDiffuseLighting",
+    "feDisplacementMap",
+    "feDistantLight",
+    "feDropShadow",
+    "feFlood",
+    "feFuncA",
+    "feFuncB",
+    "feFuncG",
+    "feFuncR",
+    "feGaussianBlur",
+    "feImage",
+    "feMerge",
+    "feMergeNode",
+    "feMorphology",
+    "feOffset",
+    "fePointLight",
+    "feSpecularLighting",
+    "feSpotLight",
+    "feTile",
+    "feTurbulence",
+    "filter",
+    "foreignObject",
+    "g",
+    "hatch",
+    "hatchpath",
+    "image",
+    "line",
+    "linearGradient",
+    "marker",
+    "mask",
+    "metadata",
+    "mpath",
+    "path",
+    "pattern",
+    "polygon",
+    "polyline",
+    "radialGradient",
+    "rect",
+    "script",
+    "set",
+    "stop",
+    "style",
+    "svg",
+    "switch",
+    "symbol",
+    "text",
+    "textPath",
+    "title",
+    "tspan",
+    "use",
+    "view",
+  ];
 
 twind.install({
   rules: [
@@ -56,39 +124,47 @@ twind.install({
         } else {
           icon = kebabToPascalCase(icon);
           if (!globalThis.lucide[icon]) return;
-          svg = hToString(...globalThis.lucide[icon]);
+          const [type, props, children] = globalThis.lucide[icon];
+          svg = hToString(type, props, ...children);
         }
         // https://antfu.me/posts/icons-in-pure-css
         const dataUri = `url("data:image/svg+xml;utf8,${encodeSvg(svg)}")`;
         if (mode === "auto") mode = undefined;
         mode ??= svg.includes("currentColor") ? "mask" : "bg";
-        return mode === "mask"
-          ? {
-              mask: `${dataUri} no-repeat`,
-              "mask-size": "100% 100%",
-              "background-color": "currentColor",
-              color: "inherit",
-              height: "1em",
-              width: "1em",
-            }
-          : {
-              background: `${dataUri} no-repeat`,
-              "background-size": "100% 100%",
-              "background-color": "transparent",
-              height: "1em",
-              width: "1em",
-            };
+        return {
+          display: "inline-block",
+          height: "1em",
+          width: "1em",
+          ...(mode === "mask"
+            ? {
+                mask: `${dataUri} no-repeat`,
+                "mask-size": "100% 100%",
+                "background-color": "currentColor",
+                color: "inherit",
+              }
+            : {
+                background: `${dataUri} no-repeat`,
+                "background-size": "100% 100%",
+                "background-color": "transparent",
+              }),
+        };
       },
     ],
   ],
   variants: [["open", "&[open]"]],
 });
 
-// construct elements via tagged tagged
-// e.g. html`<div class=${className}></div>`
+// html`<div class=${className}></div>`
 const h = (type, props, ...children) => {
-    const elem = document.createElement(type);
-    for (const prop in props) {
+    children = children.flat(Infinity);
+    // html`<${Component} attr="value">Click Me<//>`
+    if (typeof type === "function") {
+      return type(props ?? {}, ...children);
+    }
+    const elem = svgElements.includes(type)
+      ? document.createElementNS("http://www.w3.org/2000/svg", type)
+      : document.createElement(type);
+    for (const prop in props ?? {}) {
       if (["string", "number", "boolean"].includes(typeof props[prop])) {
         elem.setAttribute(prop, props[prop]);
       } else elem[prop] = props[prop];
