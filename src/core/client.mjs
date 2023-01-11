@@ -45,20 +45,24 @@ export default async (api, db) => {
 
   // menu
 
-  let $menuModal, $menuFrame;
-  const setTheme = () => {
-      if (platform !== "browser") $menuFrame.contentWindow.__enhancerApi = api;
+  let $menuModal, $menuFrame, _notionTheme;
+  const updateTheme = (force = false) => {
+    const darkMode = document.body.classList.contains("dark"),
+      notionTheme = darkMode ? "dark" : "light";
+    if (notionTheme !== _notionTheme || force) {
+      _notionTheme = notionTheme;
       const msg = {
         namespace: "notion-enhancer",
-        mode: document.body.classList.contains("dark") ? "dark" : "light",
+        mode: notionTheme,
       };
-      $menuFrame.contentWindow.postMessage(msg, "*");
-    },
-    openMenu = () => {
-      if ($menuFrame) setTheme();
+      $menuFrame?.contentWindow.postMessage(msg, "*");
+    }
+  };
+
+  const openMenu = () => {
       $menuModal?.setAttribute("open", true);
     },
-    closeMenu = () => $menuModal.removeAttribute("open");
+    closeMenu = () => $menuModal?.removeAttribute("open");
 
   $menuFrame = html`<iframe
     title="notion-enhancer menu"
@@ -66,11 +70,18 @@ export default async (api, db) => {
     class="
       rounded-[5px] w-[1150px] h-[calc(100vh-100px)]
       max-w-[calc(100vw-100px)] max-h-[715px] overflow-hidden
-      bg-[color:var(--theme--bg-secondary)] drop-shadow-xl
+      bg-[color:var(--theme--bg-primary)] drop-shadow-xl
       group-open:(pointer-events-auto opacity-100 scale-100)
       transition opacity-0 scale-95
     "
-    onload=${setTheme}
+    onload=${() => {
+      // pass notion-enhancer api to electron menu process
+      if (platform !== "browser") {
+        $menuFrame.contentWindow.__enhancerApi = api;
+      }
+      // menu relies on updateTheme for render trigger
+      updateTheme(true);
+    }}
   ></iframe>`;
   $menuModal = html`<div
     class="notion-enhancer--menu-modal group
@@ -115,6 +126,9 @@ export default async (api, db) => {
   });
   document.querySelector(notionSidebar)?.append($menuButton);
 
+  addMutationListener("body", () => {
+    if ($menuModal?.hasAttribute("open")) updateTheme();
+  });
   onMessage("notion-enhancer", (message) => {
     if (message === "open-menu") openMenu();
   });

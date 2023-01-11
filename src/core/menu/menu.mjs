@@ -4,10 +4,11 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { Sidebar, SidebarSection, SidebarButton } from "./components.mjs";
+import { setState, useState } from "./state.mjs";
+import { Sidebar, SidebarSection, SidebarButton, View } from "./components.mjs";
 
 let stylesLoaded = false,
-  sidebarPopulated = false;
+  interfacePopulated = false;
 const importApi = async () => {
     // chrome extensions run in an isolated execution context
     // but extension:// pages can access chrome apis
@@ -25,66 +26,75 @@ const importApi = async () => {
     stylesLoaded = true;
     await import("../../load.mjs");
   },
-  updateTheme = (mode) => {
-    if (mode === "dark") {
-      document.body.classList.add("dark");
-    } else if (mode === "light") {
-      document.body.classList.remove("dark");
-    }
-  },
-  populateSidebar = () => {
+  populateInterface = () => {
     const { html } = globalThis.__enhancerApi;
-    if (!html || sidebarPopulated) return;
-    sidebarPopulated = true;
-    document.body.append(html`<${Sidebar}>
-      ${[
-        "notion-enhancer",
-        { icon: "notion-enhancer", title: "Welcome", onClick() {} },
-        {
-          icon: "message-circle",
-          title: "Community",
-          href: "https://discord.gg/sFWPXtA",
-        },
-        {
-          icon: "clock",
-          title: "Changelog",
-          href: "https://notion-enhancer.github.io/about/changelog/",
-        },
-        {
-          icon: "book",
-          title: "Documentation",
-          href: "https://notion-enhancer.github.io/",
-        },
-        {
-          icon: "github",
-          title: "Source Code",
-          href: "https://github.com/notion-enhancer",
-        },
-        {
-          icon: "coffee",
-          title: "Sponsor",
-          href: "https://github.com/sponsors/dragonwocky",
-        },
-        "Settings",
-        { icon: "sliders-horizontal", title: "Core", onClick() {} },
-        { icon: "palette", title: "Themes", onClick() {} },
-        { icon: "zap", title: "Extensions", onClick() {} },
-        { icon: "plug", title: "Integrations", onClick() {} },
-      ].map((item) => {
-        if (typeof item === "string") {
-          return html`<${SidebarSection}>${item}<//>`;
-        } else {
-          const { title, ...props } = item;
-          return html`<${SidebarButton} ...${props}>${title}<//>`;
-        }
-      })}
-    <//>`);
+    if (!html || interfacePopulated) return;
+    interfacePopulated = true;
+    const $sidebar = html`<${Sidebar}>
+        ${[
+          "notion-enhancer",
+          { icon: "notion-enhancer", title: "Welcome" },
+          {
+            icon: "message-circle",
+            title: "Community",
+            href: "https://discord.gg/sFWPXtA",
+          },
+          {
+            icon: "clock",
+            title: "Changelog",
+            href: "https://notion-enhancer.github.io/about/changelog/",
+          },
+          {
+            icon: "book",
+            title: "Documentation",
+            href: "https://notion-enhancer.github.io/",
+          },
+          {
+            icon: "github",
+            title: "Source Code",
+            href: "https://github.com/notion-enhancer",
+          },
+          {
+            icon: "coffee",
+            title: "Sponsor",
+            href: "https://github.com/sponsors/dragonwocky",
+          },
+          "Settings",
+          { icon: "sliders-horizontal", title: "Core" },
+          { icon: "palette", title: "Themes" },
+          { icon: "zap", title: "Extensions" },
+          { icon: "plug", title: "Integrations" },
+        ].map((item) => {
+          if (typeof item === "string") {
+            return html`<${SidebarSection}>${item}<//>`;
+          } else {
+            const { title, ...props } = item;
+            return html`<${SidebarButton} ...${props}>${title}<//>`;
+          }
+        })}
+      <//>`,
+      $views = [
+        html`<${View} id="welcome">welcome<//>`,
+        html`<${View} id="core">core<//>`,
+        html`<${View} id="themes">themes<//>`,
+        html`<${View} id="extensions">extensions<//>`,
+        html`<${View} id="integrations">integrations<//>`,
+      ];
+    document.body.append($sidebar, ...$views);
   };
 
 window.addEventListener("message", async (event) => {
   if (event.data?.namespace !== "notion-enhancer") return;
-  updateTheme(event.data?.mode);
+  setState({ theme: event.data?.mode });
   await importApi();
   await importStyles();
-  populateSidebar();
+  // wait for api globals to be available
+  requestIdleCallback(() => populateInterface());
+});
+useState(["theme"], ([mode]) => {
+  if (mode === "dark") {
+    document.body.classList.add("dark");
+  } else if (mode === "light") {
+    document.body.classList.remove("dark");
+  }
 });

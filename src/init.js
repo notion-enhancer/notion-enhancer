@@ -1,6 +1,6 @@
 /**
  * notion-enhancer
- * (c) 2022 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2023 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
@@ -34,7 +34,7 @@ if (isElectron()) {
         const $script = document.createElement("script");
         $script.type = "module";
         $script.src = enhancerUrl("load.mjs");
-        document.head.appendChild($script);
+        document.head.append($script);
       });
     }
 
