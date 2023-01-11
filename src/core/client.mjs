@@ -60,6 +60,7 @@ export default async (api, db) => {
   };
 
   const openMenu = () => {
+      updateTheme(true);
       $menuModal?.setAttribute("open", true);
     },
     closeMenu = () => $menuModal?.removeAttribute("open");

@@ -7,11 +7,13 @@
 "use strict";
 
 (async () => {
+  console.log("notion-enhancer: loading...");
+
   // prettier-ignore
   const { enhancerUrl } = globalThis.__enhancerApi,
-    isMenu = location.href.startsWith(enhancerUrl("/core/menu/index.html")),
-    pageLoaded = /(^\/$)|((-|\/)[0-9a-f]{32}((\?.+)|$))/.test(location.pathname),
-    signedIn = localStorage["LRU:KeyValueStore2:current-user-id"];
+  isMenu = location.href.startsWith(enhancerUrl("/core/menu/index.html")),
+  pageLoaded = /(^\/$)|((-|\/)[0-9a-f]{32}((\?.+)|$))/.test(location.pathname),
+  signedIn = localStorage["LRU:KeyValueStore2:current-user-id"];
   if (!isMenu && !(signedIn && pageLoaded)) return;
 
   await import("./vendor/twind.min.js");
@@ -25,6 +27,9 @@
 
   for (const mod of await getMods()) {
     if (!(await isEnabled(mod.id))) continue;
+    const isTheme = mod._src.startsWith("themes/"),
+      isCore = mod._src === "core";
+    if (isMenu && !(isTheme || isCore)) continue;
 
     // clientStyles
     for (let stylesheet of mod.clientStyles ?? []) {
@@ -33,9 +38,9 @@
       $stylesheet.href = enhancerUrl(`${mod._src}/${stylesheet}`);
       document.head.append($stylesheet);
     }
-    if (isMenu) continue;
 
     // clientScripts
+    if (isMenu) continue;
     const options = await optionDefaults(mod.id),
       db = initDatabase([await getProfile(), mod.id], options);
     for (let script of mod.clientScripts ?? []) {
@@ -43,4 +48,6 @@
       script.default(globalThis.__enhancerApi, db);
     }
   }
+
+  console.log("notion-enhancer: ready");
 })();
