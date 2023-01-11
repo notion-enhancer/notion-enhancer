@@ -33,7 +33,7 @@ const SidebarButton = ({ icon, ...props }, ...children) => {
       icon === "notion-enhancer"
         ? "w-[16px] h-[16px] ml-[2px] mr-[10px]"
         : "w-[18px] h-[18px] ml-px mr-[9px]",
-    el = html`<${props.href ? "a" : "button"}
+    $el = html`<${props.href ? "a" : "button"}
       class="flex select-none cursor-pointer w-full
       items-center py-[5px] px-[15px] text-[14px] last:mb-[12px]
       transition hover:bg-[color:var(--theme--bg-hover)]"
@@ -43,20 +43,20 @@ const SidebarButton = ({ icon, ...props }, ...children) => {
       <span class="leading-[20px]">${children}</span>
     <//>`;
   if (!props.href) {
-    const id = el.innerText;
-    el.onclick ??= () => setState({ view: id });
+    const id = $el.innerText;
+    $el.onclick ??= () => setState({ view: id });
     useState(["view"], ([view = "welcome"]) => {
       const active = view.toLowerCase() === id.toLowerCase();
-      el.style.background = active ? "var(--theme--bg-hover)" : "";
-      el.style.fontWeight = active ? "600" : "";
+      $el.style.background = active ? "var(--theme--bg-hover)" : "";
+      $el.style.fontWeight = active ? "600" : "";
     });
   }
-  return el;
+  return $el;
 };
 
 const View = ({ id }, ...children) => {
   const { html } = globalThis.__enhancerApi,
-    el = html`<article
+    $el = html`<article
       id=${id}
       class="notion-enhancer--menu-view h-full
       overflow-y-auto px-[60px] py-[36px] grow"
@@ -65,9 +65,9 @@ const View = ({ id }, ...children) => {
     </article>`;
   useState(["view"], ([view = "welcome"]) => {
     const active = view.toLowerCase() === id.toLowerCase();
-    el.style.display = active ? "" : "none";
+    $el.style.display = active ? "" : "none";
   });
-  return el;
+  return $el;
 };
 
 const TextInput = ({}, ...children) => {};
@@ -80,7 +80,52 @@ const ColorInput = ({}, ...children) => {};
 
 const FileInput = ({}, ...children) => {};
 
-const Select = ({}, ...children) => {};
+const Select = ({ values, onchange, ...props }, ...children) => {
+  const { html } = globalThis.__enhancerApi,
+    updateWidth = ($select) => {
+      const $tmp = html`<span
+        class="text-[14px] pl-[8px] pr-[32px]
+        absolute top-[-9999px] left-[-9999px]"
+        >${$select.value}</span
+      >`;
+      document.body.append($tmp);
+      requestAnimationFrame(() => {
+        $select.style.width = `${Math.min($tmp.offsetWidth, 256)}px`;
+        $tmp.remove();
+      });
+    };
+  props.onchange = (event) => {
+    onchange?.(event);
+    updateWidth(event.target);
+  };
+
+  const $select = html`<select
+    class="appearance-none bg-transparent rounded-[4px] max-w-[256px]
+    text-[14px] leading-[1.2] h-[28px] pl-[8px] pr-[32px] cursor-pointer
+    transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
+    ...${props}
+  >
+    ${values.map((value) => {
+      return html`<option
+        value=${value}
+        class="bg-[color:var(--theme--bg-secondary)]
+        text-[color:var(--theme--fg-primary)]"
+      >
+        ${value}
+      </option>`;
+    })}
+  </select>`;
+  updateWidth($select);
+
+  return html`<div class="notion-enhancer--menu-select relative">
+    ${$select}
+    <i
+      class="i-chevron-down pointer-events-none
+      absolute right-[8px] top-[6px] w-[16px] h-[16px]
+      text-[color:var(--theme--fg-secondary)]"
+    ></i>
+  </div>`;
+};
 
 const Toggle = (props, ..._children) => {
   const { html } = globalThis.__enhancerApi;
@@ -128,7 +173,7 @@ const Option = ({ mod, type, ...props }, ..._children) => {
     </h2>`;
   }
 
-  const id = `${mod}-${props.key}`;
+  let $input;
   switch (type) {
     // case "text":
     //   break;
@@ -140,28 +185,40 @@ const Option = ({ mod, type, ...props }, ..._children) => {
     //   break;
     // case "file":
     //   break;
-    // case "select":
-    //   break;
-    // case "toggle":
-    default:
+    // <div
+    //     class="notion-focusable"
+    //     role="button"
+    //     tabindex="0"
+    // style="display: inline-flex; align-items: center; flex-shrink: 0; white-space: nowrap; height: 28px; border-radius: 4px; font-size: 14px; line-height: 1.2; min-width: 0px; padding-left: 8px; padding-right: 8px; color: rgba(255, 255, 255, 0.81); margin-top: 12px; margin-bottom: 4px;"
+    //   >
+    //     ${props.values[0]}
+    //     <svg
+    //       viewBox="0 0 30 30"
+    //       class="chevronDown"
+    //       style="width: 10px; height: 100%; display: block; fill: rgba(255, 255, 255, 0.282); flex-shrink: 0; backface-visibility: hidden; margin-left: 4px;"
+    //     >
+    //       <polygon points="15,17.4 4.8,7 2,9.8 15,23 28,9.8 25.2,7"></polygon>
+    //     </svg>
+    //   </div>
+    case "select":
+      $input = html`<${Select} values=${props.values} />`;
       break;
+    case "toggle":
+      $input = html`<${Toggle} />`;
   }
-  return html`
-    <label
-      class="notion-enhancer--menu-option mb-[18px]
-      flex items-center justify-between cursor-pointer"
-    >
-      <div class="flex flex-col mr-[10%]" for=${id}>
-        <h3 class="text-[14px] mb-[2px] mt-0">${label}</h3>
-        <p
-          class="text-[12px] leading-[16px]
-          text-[color:var(--theme--fg-secondary)]"
-          innerHTML=${description}
-        ></p>
-      </div>
-      <${Toggle} id=${id} />
-    </label>
-  `;
+  return html`<${type === "toggle" ? "label" : "div"}
+    class="notion-enhancer--menu-option flex items-center justify-between
+    mb-[18px] ${type === "toggle" ? "cursor-pointer" : ""}"
+    ><div class="flex flex-col mr-[10%]">
+      <h3 class="text-[14px] mb-[2px] mt-0">${label}</h3>
+      <p
+        class="text-[12px] leading-[16px]
+        text-[color:var(--theme--fg-secondary)]"
+        innerHTML=${description}
+      ></p>
+    </div>
+    ${$input}
+  <//>`;
 };
 
-export { Sidebar, SidebarSection, SidebarButton, View, Toggle, Option };
+export { Sidebar, SidebarSection, SidebarButton, View, Select, Toggle, Option };
