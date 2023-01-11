@@ -7,14 +7,15 @@
 "use strict";
 
 (async () => {
-  console.log("notion-enhancer: loading...");
-
   // prettier-ignore
   const { enhancerUrl } = globalThis.__enhancerApi,
   isMenu = location.href.startsWith(enhancerUrl("/core/menu/index.html")),
   pageLoaded = /(^\/$)|((-|\/)[0-9a-f]{32}((\?.+)|$))/.test(location.pathname),
   signedIn = localStorage["LRU:KeyValueStore2:current-user-id"];
   if (!isMenu && !(signedIn && pageLoaded)) return;
+
+  // avoid repeat logging
+  if (!isMenu) console.log("notion-enhancer: loading...");
 
   await import("./vendor/twind.min.js");
   await import("./vendor/lucide.min.js");
@@ -49,5 +50,6 @@
     }
   }
 
-  console.log("notion-enhancer: ready");
+  // consider "ready" after menu has loaded
+  if (isMenu) console.log("notion-enhancer: ready");
 })();
