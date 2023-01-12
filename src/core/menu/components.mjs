@@ -330,7 +330,7 @@ function FileInput({ filename, extensions, onupload, onchange, ...props }) {
           .join(",")}
         ...${props}
       />
-      <i class="i-file-up w-[16px] h-[16px] mr-[8px]"></i>
+      <i class="i-file-up w-[16px] h-[16px] mr-[6px]"></i>
       ${$filename}
     </label>
     ${$clear}

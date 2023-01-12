@@ -16,31 +16,36 @@ import {
 const renderOptions = async (mod) => {
   const { html, platform, getProfile } = globalThis.__enhancerApi,
     { optionDefaults, initDatabase } = globalThis.__enhancerApi,
-    options = await optionDefaults(mod.id),
-    db = initDatabase([await getProfile(), mod.id], options);
+    profile = await getProfile();
+  const db = initDatabase([profile, mod.id], await optionDefaults(mod.id)),
+    options = mod.options.reduce((options, opt, i) => {
+      if (!opt.key && (opt.type !== "heading" || !opt.label)) return options;
+      if (opt.targets && !opt.targets.includes(platform)) return options;
+      const prevOpt = options[options.length - 1];
+      // no consective headings
+      if (opt.type === "heading" && prevOpt?.type === opt.type) {
+        options[options.length - 1] = opt;
+      } else options.push(opt);
+      return options;
+    }, []);
+  // no empty/end headings e.g. if section is platform-specific
+  if (options[options.length - 1]?.type === "heading") options.pop();
   return Promise.all(
-    mod.options
-      .map(async (opt) => {
-        if (!opt.key && (opt.type !== "heading" || !opt.label)) return;
-        // if (opt.targets && !opt.targets.includes(platform)) return;
-        if (opt.type === "heading") return html`<${Option} ...${opt} />`;
-        const value = await db.get(opt.key),
-          _update = (value) => db.set(opt.key, value);
-        return html`<${Option} ...${{ ...opt, value, _update }} />`;
-      })
-      .filter((opt) => opt)
+    options.map(async (opt) => {
+      if (opt.type === "heading") return html`<${Option} ...${opt} />`;
+      const value = await db.get(opt.key),
+        _update = (value) => db.set(opt.key, value);
+      return html`<${Option} ...${{ ...opt, value, _update }} />`;
+    })
   );
 };
 
 let renderStarted;
 const render = async (iconStyle) => {
-  const { html, getProfile } = globalThis.__enhancerApi,
-    { optionDefaults, initDatabase } = globalThis.__enhancerApi;
-  if (!html || !getProfile || renderStarted) return;
-  renderStarted = true;
-
-  const { getCore, getThemes } = globalThis.__enhancerApi,
+  const { html, getCore, getThemes } = globalThis.__enhancerApi,
     { getExtensions, getIntegrations } = globalThis.__enhancerApi;
+  if (!html || !getCore || renderStarted) return;
+  renderStarted = true;
 
   const $sidebar = html`<${Sidebar}>
       ${[
