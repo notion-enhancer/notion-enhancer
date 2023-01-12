@@ -100,9 +100,15 @@ function Option({ type, value, description, _update, ...props }) {
       $input = html`<${ColorInput} ...${{ value, onchange }} />`;
       break;
     case "file":
+      try {
+        value = JSON.parse(value);
+      } catch {
+        value = {};
+      }
       $input = html`<${FileInput}
+        filename="${value.filename}"
         extensions="${props.extensions}"
-        onchange=${onchange}
+        onupload=${(upload) => _update(JSON.stringify(upload))}
       />`;
       break;
     case "select":
@@ -278,27 +284,57 @@ function ColorInput({ value, ...props }) {
   </label>`;
 }
 
-function FileInput({ extensions, ...props }) {
-  // todo: show uploaded file name, clear prev upload
-  const { html } = globalThis.__enhancerApi;
-  return html`<label
-    tabindex="0"
-    class="notion-enhancer--menu-file-input flex shrink-0 items-center
-    h-[28px] leading-[1.2] px-[8px] rounded-[4px] cursor-pointer select-none
-    text-[14px] text-[color:var(--theme--fg-secondary)] transition duration-[20ms]
-    bg-[color:var(--theme--bg-secondary)] hover:bg-[color:var(--theme--bg-hover)]"
+function FileInput({ filename, extensions, onupload, onchange, ...props }) {
+  const { html } = globalThis.__enhancerApi,
+    $filename = html`<span>${filename || "Upload a file"}</span>`,
+    $clear = html`<button
+      class="ml-[8px] h-[14px] cursor-pointer text-[color:var(--theme--fg-secondary)]
+      transition duration-[20ms] hover:text-[color:var(--theme--fg-primary)]"
+      style=${filename ? "" : "display: none"}
+      onclick=${() => {
+        $filename.innerText = "Upload a file";
+        $clear.style.display = "none";
+        onupload?.({ filename: "", content: "" });
+      }}
+    >
+      <i class="i-x w-[14px] h-[14px]"></i>
+    </button>`;
+  props.onchange = (event) => {
+    const file = event.target.files[0],
+      reader = new FileReader();
+    reader.onload = async (progress) => {
+      const content = progress.currentTarget.result,
+        upload = { filename: file.name, content };
+      $filename.innerText = file.name;
+      $clear.style.display = "";
+      onupload?.(upload);
+    };
+    reader.readAsText(file);
+    onchange?.(event);
+  };
+  return html`<div
+    class="notion-enhancer--menu-file-input shrink-0 flex items-center"
   >
-    <input
-      type="file"
-      class="hidden"
-      accept=${extensions
-        ?.map((ext) => (ext.startsWith(".") ? ext : `.${ext}`))
-        .join(",")}
-      ...${props}
-    />
-    <i class="i-file-up w-[16px] h-[16px] mr-[8px]"></i>
-    <span>Upload a file</span>
-  </label>`;
+    <label
+      tabindex="0"
+      class="flex items-center cursor-pointer select-none
+      h-[28px] text-[14px] leading-[1.2] px-[8px] rounded-[4px]
+      text-[color:var(--theme--fg-secondary)] bg-[color:var(--theme--bg-secondary)] 
+      transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
+    >
+      <input
+        type="file"
+        class="hidden"
+        accept=${extensions
+          ?.map((ext) => (ext.startsWith(".") ? ext : `.${ext}`))
+          .join(",")}
+        ...${props}
+      />
+      <i class="i-file-up w-[16px] h-[16px] mr-[8px]"></i>
+      ${$filename}
+    </label>
+    ${$clear}
+  </div>`;
 }
 
 function Select({ values, value, onchange, ...props }) {

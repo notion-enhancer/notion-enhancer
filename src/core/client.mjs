@@ -21,7 +21,7 @@ export default async (api, db) => {
     openMenuHotkey = await db.get("openMenuHotkey"),
     menuButtonIconStyle = await db.get("menuButtonIconStyle"),
     loadThemeOverrides = await db.get("loadThemeOverrides"),
-    customStyles = await db.get("customStyles");
+    customStyles = JSON.parse((await db.get("customStyles")) || "{}").content;
 
   // appearance
 
@@ -38,9 +38,10 @@ export default async (api, db) => {
   }
 
   if (customStyles) {
-    document.head.append(html`<style>
+    const $customStyles = html`<style>
       ${customStyles}
-    </style>`);
+    </style>`;
+    document.head.append($customStyles);
   }
 
   // menu
