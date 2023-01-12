@@ -77,7 +77,11 @@ const modifierAliases = [
                 return true;
               }
             }
-            if (key === "plus") key = "+";
+            if (key === "space") key = " ";
+            if (key === "plus") key = "equal";
+            if (key === "minus") key = "-";
+            if (key === ",") key = "comma";
+            if (key === ".") key = "period";
             const keyPressed = [
               event.key.toLowerCase(),
               event.code.toLowerCase(),

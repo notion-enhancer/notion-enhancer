@@ -543,7 +543,7 @@ const h = (type, props, ...children) => {
       ? document.createElementNS("http://www.w3.org/2000/svg", type)
       : document.createElement(type);
     for (const prop in props ?? {}) {
-      if (htmlAttributes.includes(prop)) {
+      if (htmlAttributes.includes(prop) || prop.startsWith("data-")) {
         elem.setAttribute(prop, props[prop]);
       } else elem[prop] = props[prop];
     }

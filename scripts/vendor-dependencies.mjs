@@ -13,8 +13,10 @@ const dependencies = {
   "htm.min.js": "https://unpkg.com/htm@3.1.1/mini/index.js",
   "twind.min.js": "https://unpkg.com/@twind/cdn@1.0.7/cdn.global.js",
   "lucide.min.js": "https://unpkg.com/lucide@0.104.0/dist/umd/lucide.min.js",
-  "jscolor.min.js":
-    "https://cdnjs.cloudflare.com/ajax/libs/jscolor/2.5.1/jscolor.min.js",
+  "coloris.min.js":
+    "https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.js",
+  "coloris.min.css":
+    "https://cdn.jsdelivr.net/gh/mdbassit/Coloris@latest/dist/coloris.min.css",
 };
 
 const output = fileURLToPath(new URL("../src/vendor", import.meta.url)),

@@ -20,7 +20,7 @@
       "type": "hotkey",
       "key": "openMenuHotkey",
       "description": "Opens the notion-enhancer menu from within Notion.",
-      "value": "Ctrl+Shift+Comma"
+      "value": "Ctrl+Shift+,"
     },
     {
       "type": "heading",
