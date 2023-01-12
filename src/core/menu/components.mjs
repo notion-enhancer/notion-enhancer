@@ -69,46 +69,53 @@ function View({ id }, ...children) {
   return $el;
 }
 
-function Option({ mod, type, ...props }) {
+function Option({ type, value, description, _update, ...props }) {
   const { html } = globalThis.__enhancerApi,
     camelToSentenceCase = (string) =>
       string[0].toUpperCase() +
       string.replace(/[A-Z]/g, (match) => ` ${match.toLowerCase()}`).slice(1);
 
+  let $input;
   const label = props.label ?? camelToSentenceCase(props.key),
-    description = props.description;
-  if (type === "heading") {
-    return html`<h3
-      class="notion-enhancer--menu-heading font-semibold
+    onchange = (event) => _update(event.target.value);
+  switch (type) {
+    case "heading":
+      return html`<h3
+        class="notion-enhancer--menu-heading font-semibold
       mb-[16px] mt-[48px] first:mt-0 pb-[12px] text-[16px]
       border-b border-b-[color:var(--theme--fg-border)]"
-    >
-      ${label}
-    </h3>`;
-  }
-
-  let $input;
-  switch (type) {
+      >
+        ${label}
+      </h3>`;
     case "text":
-      $input = html`<${TextInput} value=${props.value} />`;
+      $input = html`<${TextInput} ...${{ value, onchange }} />`;
       break;
     case "number":
-      $input = html`<${NumberInput} value=${props.value} />`;
+      $input = html`<${NumberInput} ...${{ value, onchange }} />`;
       break;
     case "hotkey":
-      $input = html`<${HotkeyInput} value=${props.value} />`;
+      $input = html`<${HotkeyInput} ...${{ value, onchange }} />`;
       break;
     case "color":
-      $input = html`<${ColorInput} value=${props.value} />`;
+      $input = html`<${ColorInput} ...${{ value, onchange }} />`;
       break;
     case "file":
-      $input = html`<${FileInput} extensions=${props.extensions} />`;
+      $input = html`<${FileInput}
+        extensions="${props.extensions}"
+        onchange=${onchange}
+      />`;
       break;
     case "select":
-      $input = html`<${Select} values=${props.values} />`;
+      $input = html`<${Select}
+        values=${props.values}
+        ...${{ value, onchange }}
+      />`;
       break;
     case "toggle":
-      $input = html`<${Toggle} />`;
+      $input = html`<${Toggle}
+        checked=${value}
+        onchange=${(event) => _update(event.target.checked)}
+      />`;
   }
   return html`<${type === "toggle" ? "label" : "div"}
     class="notion-enhancer--menu-option flex items-center justify-between
@@ -189,10 +196,12 @@ function HotkeyInput({ value, onkeydown, ...props }) {
         if (event.code === "Period") key = ".";
         if (key === "Control") key = "Ctrl";
         // avoid e.g. Shift+Shift, force inclusion of non-modifier
-        if (keys.includes(event.key)) return;
+        if (keys.includes(key)) return;
         keys.push(key.length === 1 ? key.toUpperCase() : key);
         event.target.value = keys.join("+");
       }
+      event.target.dispatchEvent(new Event("input"));
+      event.target.dispatchEvent(new Event("change"));
     };
   props.onkeydown = (event) => {
     updateHotkey(event);
@@ -292,7 +301,7 @@ function FileInput({ extensions, ...props }) {
   </label>`;
 }
 
-function Select({ values, onchange, ...props }) {
+function Select({ values, value, onchange, ...props }) {
   const { html } = globalThis.__enhancerApi,
     updateWidth = ($select) => {
       const $tmp = html`<span
@@ -327,6 +336,7 @@ function Select({ values, onchange, ...props }) {
       </option>`;
     })}
   </select>`;
+  $select.value = value ?? $select.value;
   updateWidth($select);
 
   return html`<div class="notion-enhancer--menu-select relative">

@@ -13,13 +13,34 @@ import {
   Option,
 } from "./components.mjs";
 
+const renderOptions = async (mod) => {
+  const { html, platform, getProfile } = globalThis.__enhancerApi,
+    { optionDefaults, initDatabase } = globalThis.__enhancerApi,
+    options = await optionDefaults(mod.id),
+    db = initDatabase([await getProfile(), mod.id], options);
+  return Promise.all(
+    mod.options
+      .map(async (opt) => {
+        if (!opt.key && (opt.type !== "heading" || !opt.label)) return;
+        // if (opt.targets && !opt.targets.includes(platform)) return;
+        if (opt.type === "heading") return html`<${Option} ...${opt} />`;
+        const value = await db.get(opt.key),
+          _update = (value) => db.set(opt.key, value);
+        return html`<${Option} ...${{ ...opt, value, _update }} />`;
+      })
+      .filter((opt) => opt)
+  );
+};
+
 let renderStarted;
 const render = async (iconStyle) => {
-  const { html, getCore } = globalThis.__enhancerApi;
-  if (!html || !getCore || renderStarted) return;
+  const { html, getProfile } = globalThis.__enhancerApi,
+    { optionDefaults, initDatabase } = globalThis.__enhancerApi;
+  if (!html || !getProfile || renderStarted) return;
   renderStarted = true;
 
-  const core = await getCore();
+  const { getCore, getThemes } = globalThis.__enhancerApi,
+    { getExtensions, getIntegrations } = globalThis.__enhancerApi;
 
   const $sidebar = html`<${Sidebar}>
       ${[
@@ -69,11 +90,7 @@ const render = async (iconStyle) => {
     <//>`,
     $views = [
       html`<${View} id="welcome">welcome<//>`,
-      html`<${View} id="core">
-        ${core.options.map(
-          (opt) => html`<${Option} mod=${core.id} ...${opt} />`
-        )}
-      <//>`,
+      html`<${View} id="core">${await renderOptions(await getCore())}<//>`,
       html`<${View} id="themes">themes<//>`,
       html`<${View} id="extensions">extensions<//>`,
       html`<${View} id="integrations">integrations<//>`,
