@@ -78,9 +78,30 @@ const HotkeyInput = ({}, ...children) => {};
 
 const ColorInput = ({}, ...children) => {};
 
-const FileInput = ({}, ...children) => {};
+const FileInput = ({ extensions, ...props }, ..._children) => {
+  // todo: show uploaded file name, clear prev upload
+  const { html } = globalThis.__enhancerApi;
+  return html`<label
+    tabindex="0"
+    class="flex items-center h-[28px] max-w-[256px]
+    leading-[1.2] px-[8px] rounded-[4px] cursor-pointer select-none
+    text-[14px] text-[color:var(--theme--fg-secondary)] transition duration-[20ms]
+    bg-[color:var(--theme--bg-secondary)] hover:bg-[color:var(--theme--bg-hover)]"
+  >
+    <input
+      type="file"
+      class="hidden"
+      accept=${extensions
+        ?.map((ext) => (ext.startsWith(".") ? ext : `.${ext}`))
+        .join(",")}
+      ...${props}
+    />
+    <i class="i-file-up w-[16px] h-[16px] mr-[8px]"></i>
+    <span>Upload a file</span>
+  </label>`;
+};
 
-const Select = ({ values, onchange, ...props }, ...children) => {
+const Select = ({ values, onchange, ...props }, ..._children) => {
   const { html } = globalThis.__enhancerApi,
     updateWidth = ($select) => {
       const $tmp = html`<span
@@ -133,7 +154,7 @@ const Toggle = (props, ..._children) => {
     <input
       tabindex="-1"
       type="checkbox"
-      class="appearance-none w-0 h-0 checked:sibling:children:(
+      class="hidden checked:sibling:children:(
       bg-[color:var(--theme--accent-primary)] after:translate-x-[12px])"
       ...${props}
     />
@@ -183,23 +204,9 @@ const Option = ({ mod, type, ...props }, ..._children) => {
     //   break;
     // case "color":
     //   break;
-    // case "file":
-    //   break;
-    // <div
-    //     class="notion-focusable"
-    //     role="button"
-    //     tabindex="0"
-    // style="display: inline-flex; align-items: center; flex-shrink: 0; white-space: nowrap; height: 28px; border-radius: 4px; font-size: 14px; line-height: 1.2; min-width: 0px; padding-left: 8px; padding-right: 8px; color: rgba(255, 255, 255, 0.81); margin-top: 12px; margin-bottom: 4px;"
-    //   >
-    //     ${props.values[0]}
-    //     <svg
-    //       viewBox="0 0 30 30"
-    //       class="chevronDown"
-    //       style="width: 10px; height: 100%; display: block; fill: rgba(255, 255, 255, 0.282); flex-shrink: 0; backface-visibility: hidden; margin-left: 4px;"
-    //     >
-    //       <polygon points="15,17.4 4.8,7 2,9.8 15,23 28,9.8 25.2,7"></polygon>
-    //     </svg>
-    //   </div>
+    case "file":
+      $input = html`<${FileInput} extensions=${props.extensions} />`;
+      break;
     case "select":
       $input = html`<${Select} values=${props.values} />`;
       break;
@@ -221,4 +228,13 @@ const Option = ({ mod, type, ...props }, ..._children) => {
   <//>`;
 };
 
-export { Sidebar, SidebarSection, SidebarButton, View, Select, Toggle, Option };
+export {
+  Sidebar,
+  SidebarSection,
+  SidebarButton,
+  View,
+  FileInput,
+  Select,
+  Toggle,
+  Option,
+};
