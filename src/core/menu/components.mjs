@@ -29,10 +29,9 @@ function SidebarSection({}, ...children) {
 
 function SidebarButton({ icon, ...props }, ...children) {
   const { html } = globalThis.__enhancerApi,
-    iconSize =
-      icon === "notion-enhancer"
-        ? "w-[16px] h-[16px] ml-[2px] mr-[10px]"
-        : "w-[18px] h-[18px] ml-px mr-[9px]",
+    iconSize = icon.startsWith("notion-enhancer")
+      ? "w-[17px] h-[17px] ml-[1.5px] mr-[9.5px]"
+      : "w-[18px] h-[18px] ml-px mr-[9px]",
     $el = html`<${props.href ? "a" : "button"}
       class="flex select-none cursor-pointer w-full
       items-center py-[5px] px-[15px] text-[14px] last:mb-[12px]

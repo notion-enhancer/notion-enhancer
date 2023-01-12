@@ -53,6 +53,7 @@ export default async (api, db) => {
       _notionTheme = notionTheme;
       const msg = {
         namespace: "notion-enhancer",
+        iconStyle: menuButtonIconStyle,
         mode: notionTheme,
       };
       $menuFrame?.contentWindow.postMessage(msg, "*");

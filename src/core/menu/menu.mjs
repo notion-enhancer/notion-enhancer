@@ -14,7 +14,7 @@ import {
 } from "./components.mjs";
 
 let renderStarted;
-const render = async () => {
+const render = async (iconStyle) => {
   const { html, getCore } = globalThis.__enhancerApi;
   if (!html || !getCore || renderStarted) return;
   renderStarted = true;
@@ -24,7 +24,10 @@ const render = async () => {
   const $sidebar = html`<${Sidebar}>
       ${[
         "notion-enhancer",
-        { icon: "notion-enhancer", title: "Welcome" },
+        {
+          icon: `notion-enhancer${iconStyle === "Monochrome" ? "?mask" : ""}`,
+          title: "Welcome",
+        },
         {
           icon: "message-circle",
           title: "Community",
@@ -94,7 +97,7 @@ window.addEventListener("message", async (event) => {
   // load stylesheets from enabled themes
   await import("../../load.mjs");
   // wait for api globals to be available
-  requestIdleCallback(render);
+  requestIdleCallback(() => render(event.data?.iconStyle));
 });
 useState(["theme"], ([mode]) => {
   if (mode === "dark") document.body.classList.add("dark");
