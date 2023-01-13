@@ -52,7 +52,7 @@
       "type": "toggle",
       "key": "debugMode",
       "description": "Activates built-in debugging tools accessible through the application menu.",
-      "targets": ["darwin", "win32", "linux"],
+      "platforms": ["darwin", "win32", "linux"],
       "value": false
     }
   ],

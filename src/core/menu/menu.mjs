@@ -22,7 +22,7 @@ const renderOptions = async (mod) => {
   const db = initDatabase([profile, mod.id], await optionDefaults(mod.id));
   let options = mod.options.reduce((options, opt, i) => {
     if (!opt.key && (opt.type !== "heading" || !opt.label)) return options;
-    if (opt.targets && !opt.targets.includes(platform)) return options;
+    if (opt.platforms && !opt.platforms.includes(platform)) return options;
     const prevOpt = options[options.length - 1];
     // no consective headings
     if (opt.type === "heading" && prevOpt?.type === opt.type) {
@@ -46,7 +46,17 @@ const renderList = async (mods) => {
     { isEnabled, initDatabase } = globalThis.__enhancerApi,
     enabledMods = initDatabase([await getProfile(), "enabledMods"]);
   mods = mods
-    .filter((mod) => !mod.platforms || mod.platforms.includes(platform))
+    .filter((mod) => {
+      const required =
+          mod.id &&
+          mod.name &&
+          mod.version &&
+          mod.description &&
+          mod.thumbnail &&
+          mod.authors,
+        compatible = !mod.platforms || mod.platforms.includes(platform);
+      return required && compatible;
+    })
     .map(async (mod) => {
       const enabled = await isEnabled(mod.id),
         _update = (enabled) => enabledMods.set(mod.id, enabled);
