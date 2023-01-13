@@ -1,0 +1,16 @@
+{
+  "id": "fe0f4498-df34-4dd8-8470-27b6fcec9acd",
+  "name": "Classic Dark",
+  "version": "1.0.0",
+  "description": "The original Notion dark theme from pre-2022.",
+  "thumbnail": "classic-dark.png",
+  "tags": ["dark"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "clientStyles": ["client.css"]
+}

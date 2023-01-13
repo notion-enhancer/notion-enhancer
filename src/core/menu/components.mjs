@@ -69,6 +69,92 @@ function View({ id }, ...children) {
   return $el;
 }
 
+function List({}, ...children) {
+  const { html } = globalThis.__enhancerApi;
+  return html`<div class="flex flex-col gap-y-[14px]">${children}</div>`;
+}
+
+function Mod({
+  id,
+  name,
+  version,
+  description,
+  thumbnail,
+  tags = [],
+  authors,
+  options = [],
+  enabled,
+  _update,
+  _src,
+}) {
+  const { html, enhancerUrl } = globalThis.__enhancerApi,
+    $thumbnail = thumbnail
+      ? html`<img
+          src="${enhancerUrl(`${_src}/${thumbnail}`)}"
+          class="rounded-[4px] mr-[12px] h-[74px] my-auto"
+        />`
+      : "",
+    $options = options.length
+      ? html`<button
+          class="flex items-center p-[4px] rounded-[4px] transition
+          text-[color:var(--theme--fg-secondary)] my-auto mr-[8px]
+          duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
+          onclick=${() => {
+            // open mod options page
+          }}
+        >
+          <i class="i-settings w-[18px] h-[18px]"></i>
+        </button>`
+      : "";
+  return html`<label
+    id=${id}
+    for="${id}-toggle"
+    class="notion-enhancer--menu-mod flex items-stretch rounded-[4px]
+    bg-[color:var(--theme--bg-secondary)] w-full py-[18px] px-[16px]
+    border border-[color:var(--theme--fg-border)] cursor-pointer
+    transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
+  >
+    ${$thumbnail}
+    <div class="flex flex-col max-w-[50%]">
+      <div class="flex items-center text-[14px] mb-[5px]">
+        <h3 class="my-0">${name}</h3>
+        ${[`v${version}`, ...tags].map((tag) => {
+          return html`<span
+            class="text-([12px] [color:var(--theme--fg-secondary)])
+            ml-[8px] py-[2px] px-[6px] leading-tight tracking-wide
+            rounded-[3px] bg-[color:var(--theme--bg-hover)]"
+          >
+            ${tag}
+          </span>`;
+        })}
+      </div>
+      <p
+        class="text-[12px] leading-[16px] mb-[6px]
+        text-[color:var(--theme--fg-secondary)]"
+        innerHTML=${description}
+      ></p>
+      <div class="flex gap-x-[8px] text-[12px] leading-[16px]">
+        ${authors.map((author) => {
+          return html`<a href=${author.homepage} class="flex items-center">
+            <img src=${author.avatar} alt="" class="h-[12px] rounded-full" />
+            <span class="ml-[6px]">${author.name}</span>
+          </a>`;
+        })}
+      </div>
+    </div>
+    <div class="flex ml-auto">
+      ${$options}
+      <div class="my-auto scale-[1.15]">
+        <${Toggle}
+          id="${id}-toggle"
+          checked=${enabled}
+          onchange="${(event) => _update(event.target.checked)}"
+        />
+      </div>
+    </div>
+  </label>`;
+}
+
 function Option({ type, value, description, _update, ...props }) {
   const { html } = globalThis.__enhancerApi,
     camelToSentenceCase = (string) =>
@@ -80,13 +166,13 @@ function Option({ type, value, description, _update, ...props }) {
     onchange = (event) => _update(event.target.value);
   switch (type) {
     case "heading":
-      return html`<h3
+      return html`<h4
         class="notion-enhancer--menu-heading font-semibold
-      mb-[16px] mt-[48px] first:mt-0 pb-[12px] text-[16px]
-      border-b border-b-[color:var(--theme--fg-border)]"
+        mb-[16px] mt-[48px] first:mt-0 pb-[12px] text-[16px]
+        border-b border-b-[color:var(--theme--fg-border)]"
       >
         ${label}
-      </h3>`;
+      </h4>`;
     case "text":
       $input = html`<${TextInput} ...${{ value, onchange }} />`;
       break;
@@ -127,7 +213,7 @@ function Option({ type, value, description, _update, ...props }) {
     class="notion-enhancer--menu-option flex items-center justify-between
     mb-[18px] ${type === "toggle" ? "cursor-pointer" : ""}"
     ><div class="flex flex-col ${type === "text" ? "w-full" : "mr-[10%]"}">
-      <h4 class="text-[14px] mb-[2px] mt-0">${label}</h4>
+      <h5 class="text-[14px] mb-[2px] mt-0">${label}</h5>
       ${type === "text" ? $input : ""}
       <p
         class="text-[12px] leading-[16px]
@@ -397,8 +483,8 @@ function Toggle(props) {
     />
     <div
       tabindex="0"
-      class="w-[30px] h-[18px] transition duration-200
-      rounded-[44px] bg-[color:var(--theme--bg-hover)]"
+      class="w-[30px] h-[18px] rounded-[44px] cursor-pointer
+      transition duration-200 bg-[color:var(--theme--bg-hover)]"
     >
       <div
         class="w-full h-full rounded-[44px] p-[2px]
@@ -418,6 +504,8 @@ export {
   SidebarSection,
   SidebarButton,
   View,
+  List,
+  Mod,
   Option,
   TextInput,
   NumberInput,

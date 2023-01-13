@@ -1,0 +1,60 @@
+/**
+ * notion-enhancer
+ * (c) 2023 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+body.dark {
+  --theme--fg-primary: rgba(255, 255, 255, 0.9);
+  --theme--fg-secondary: rgba(255, 255, 255, 0.6);
+  --theme--fg-border: rgb(255, 255, 255, 0.07);
+  --theme--fg-gray: rgba(159, 164, 169, 1);
+  --theme--fg-brown: rgba(212, 150, 117, 1);
+  --theme--fg-orange: rgba(217, 133, 56, 1);
+  --theme--fg-yellow: rgba(201, 145, 38, 1);
+  --theme--fg-green: rgba(113, 178, 131, 1);
+  --theme--fg-blue: rgba(102, 170, 218, 1);
+  --theme--fg-purple: rgba(176, 152, 217, 1);
+  --theme--fg-pink: rgba(223, 132, 209, 1);
+  --theme--fg-red: rgba(234, 135, 140, 1);
+
+  --theme--bg-primary: rgb(47, 52, 55);
+  --theme--bg-secondary: rgb(55, 60, 63);
+  --theme--bg-hover: rgba(255, 255, 255, 0.1);
+  --theme--bg-light_gray: rgba(71, 76, 80, 0.7);
+  --theme--bg-gray: rgb(71, 76, 80);
+  --theme--bg-brown: rgb(92, 71, 61);
+  --theme--bg-orange: rgb(136, 84, 44);
+  --theme--bg-yellow: rgb(146, 118, 63);
+  --theme--bg-green: rgb(50, 82, 65);
+  --theme--bg-blue: rgb(42, 78, 107);
+  --theme--bg-purple: rgb(83, 68, 116);
+  --theme--bg-pink: rgb(106, 59, 99);
+  --theme--bg-red: rgb(122, 54, 59);
+
+  --theme--dim-light_gray: rgb(63, 68, 71);
+  --theme--dim-gray: rgb(60, 65, 68);
+  --theme--dim-brown: rgb(76, 61, 53);
+  --theme--dim-orange: rgb(85, 59, 41);
+  --theme--dim-yellow: rgb(79, 64, 41);
+  --theme--dim-green: rgb(46, 68, 58);
+  --theme--dim-blue: rgb(45, 66, 86);
+  --theme--dim-purple: rgb(69, 58, 91);
+  --theme--dim-pink: rgb(81, 56, 77);
+  --theme--dim-red: rgb(94, 52, 54);
+
+  --theme--accent-primary: rgb(46, 170, 220);
+  --theme--accent-primary_hover: rgb(6, 156, 205);
+  --theme--accent-primary_contrast: #fff;
+  --theme--accent-primary_transparent: rgb(46, 170, 220, 0.25);
+  --theme--accent-secondary: #eb5757;
+  --theme--accent-secondary_contrast: #fff;
+  --theme--accent-secondary_transparent: rgba(235, 87, 87, 0.1);
+
+  --theme--scrollbar-track: rgba(202, 204, 206, 0.04);
+  --theme--scrollbar-thumb: #474c50;
+  --theme--scrollbar-thumb_hover: rgba(202, 204, 206, 0.3);
+
+  --theme--code-block_fg: rgba(255, 255, 255, 0.9);
+  --theme--code-block_bg: rgb(63, 68, 71);
+}

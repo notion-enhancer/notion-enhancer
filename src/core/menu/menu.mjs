@@ -10,6 +10,8 @@ import {
   SidebarSection,
   SidebarButton,
   View,
+  List,
+  Mod,
   Option,
 } from "./components.mjs";
 
@@ -17,27 +19,40 @@ const renderOptions = async (mod) => {
   const { html, platform, getProfile } = globalThis.__enhancerApi,
     { optionDefaults, initDatabase } = globalThis.__enhancerApi,
     profile = await getProfile();
-  const db = initDatabase([profile, mod.id], await optionDefaults(mod.id)),
-    options = mod.options.reduce((options, opt, i) => {
-      if (!opt.key && (opt.type !== "heading" || !opt.label)) return options;
-      if (opt.targets && !opt.targets.includes(platform)) return options;
-      const prevOpt = options[options.length - 1];
-      // no consective headings
-      if (opt.type === "heading" && prevOpt?.type === opt.type) {
-        options[options.length - 1] = opt;
-      } else options.push(opt);
-      return options;
-    }, []);
+  const db = initDatabase([profile, mod.id], await optionDefaults(mod.id));
+  let options = mod.options.reduce((options, opt, i) => {
+    if (!opt.key && (opt.type !== "heading" || !opt.label)) return options;
+    if (opt.targets && !opt.targets.includes(platform)) return options;
+    const prevOpt = options[options.length - 1];
+    // no consective headings
+    if (opt.type === "heading" && prevOpt?.type === opt.type) {
+      options[options.length - 1] = opt;
+    } else options.push(opt);
+    return options;
+  }, []);
   // no empty/end headings e.g. if section is platform-specific
   if (options[options.length - 1]?.type === "heading") options.pop();
-  return Promise.all(
-    options.map(async (opt) => {
-      if (opt.type === "heading") return html`<${Option} ...${opt} />`;
-      const value = await db.get(opt.key),
-        _update = (value) => db.set(opt.key, value);
-      return html`<${Option} ...${{ ...opt, value, _update }} />`;
-    })
-  );
+  options = options.map(async (opt) => {
+    if (opt.type === "heading") return html`<${Option} ...${opt} />`;
+    const value = await db.get(opt.key),
+      _update = (value) => db.set(opt.key, value);
+    return html`<${Option} ...${{ ...opt, value, _update }} />`;
+  });
+  return Promise.all(options);
+};
+
+const renderList = async (mods) => {
+  const { html, platform, getProfile } = globalThis.__enhancerApi,
+    { isEnabled, initDatabase } = globalThis.__enhancerApi,
+    enabledMods = initDatabase([await getProfile(), "enabledMods"]);
+  mods = mods
+    .filter((mod) => !mod.platforms || mod.platforms.includes(platform))
+    .map(async (mod) => {
+      const enabled = await isEnabled(mod.id),
+        _update = (enabled) => enabledMods.set(mod.id, enabled);
+      return html`<${Mod} ...${{ ...mod, enabled, _update }} />`;
+    });
+  return html`<${List}>${await Promise.all(mods)}<//>`;
 };
 
 let renderStarted;
@@ -96,9 +111,13 @@ const render = async (iconStyle) => {
     $views = [
       html`<${View} id="welcome">welcome<//>`,
       html`<${View} id="core">${await renderOptions(await getCore())}<//>`,
-      html`<${View} id="themes">themes<//>`,
-      html`<${View} id="extensions">extensions<//>`,
-      html`<${View} id="integrations">integrations<//>`,
+      html`<${View} id="themes">${await renderList(await getThemes())}<//>`,
+      html`<${View} id="extensions">
+        ${await renderList(await getExtensions())}
+      <//>`,
+      html`<${View} id="integrations">
+        ${await renderList(await getIntegrations())}
+      <//>`,
     ];
   document.body.append($sidebar, ...$views);
 };
