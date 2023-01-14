@@ -6,6 +6,9 @@
 
 const _state = {},
   _subscribers = [],
+  getState = (keys) => {
+    return keys.map((key) => _state[key]);
+  },
   setState = (state) => {
     Object.assign(_state, state);
     const updates = Object.keys(state);
@@ -15,7 +18,7 @@ const _state = {},
   },
   useState = (keys, callback) => {
     _subscribers.push([keys, callback]);
-    callback(keys.map((key) => _state[key]));
+    callback(getState(keys));
   };
 
-export { setState, useState };
+export { setState, useState, getState };

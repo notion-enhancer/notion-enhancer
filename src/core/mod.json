@@ -27,6 +27,12 @@
       "label": "Appearance"
     },
     {
+      "type": "toggle",
+      "key": "toggle",
+      "description": "Sets whether the notion-enhancer icon added to Notion's sidebar should be coloured or monochrome. The latter style will match the theme's icon colour for users who would like the icon to be less noticeable.",
+      "value": true
+    },
+    {
       "type": "select",
       "key": "menuButtonIconStyle",
       "description": "Sets whether the notion-enhancer icon added to Notion's sidebar should be coloured or monochrome. The latter style will match the theme's icon colour for users who would like the icon to be less noticeable.",
@@ -54,6 +60,18 @@
       "description": "Activates built-in debugging tools accessible through the application menu.",
       "platforms": ["darwin", "win32", "linux"],
       "value": false
+    },
+    {
+      "type": "text",
+      "key": "text",
+      "description": "Activates built-in debugging tools accessible through the application menu.",
+      "value": ""
+    },
+    {
+      "type": "number",
+      "key": "number",
+      "description": "Activates built-in debugging tools accessible through the application menu.",
+      "value": ""
     }
   ],
   "clientStyles": ["variables.css"],

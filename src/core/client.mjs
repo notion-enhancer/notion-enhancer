@@ -21,7 +21,7 @@ export default async (api, db) => {
     openMenuHotkey = await db.get("openMenuHotkey"),
     menuButtonIconStyle = await db.get("menuButtonIconStyle"),
     loadThemeOverrides = await db.get("loadThemeOverrides"),
-    customStyles = JSON.parse((await db.get("customStyles")) || "{}").content;
+    customStyles = (await db.get("customStyles"))?.content;
 
   // appearance
 
@@ -54,8 +54,8 @@ export default async (api, db) => {
       _notionTheme = notionTheme;
       const msg = {
         namespace: "notion-enhancer",
-        iconStyle: menuButtonIconStyle,
-        mode: notionTheme,
+        theme: notionTheme,
+        icon: menuButtonIconStyle,
       };
       $menuFrame?.contentWindow.postMessage(msg, "*");
     }
@@ -64,6 +64,7 @@ export default async (api, db) => {
   const openMenu = () => {
       updateTheme(true);
       $menuModal?.setAttribute("open", true);
+      $menuFrame?.contentWindow.focus();
     },
     closeMenu = () => $menuModal?.removeAttribute("open");
 
@@ -129,6 +130,7 @@ export default async (api, db) => {
   });
   document.querySelector(notionSidebar)?.append($menuButton);
 
+  window.addEventListener("focus", () => updateTheme(true));
   addMutationListener("body", () => {
     if ($menuModal?.hasAttribute("open")) updateTheme();
   });

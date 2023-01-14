@@ -78,10 +78,15 @@ const initDatabase = (namespace, fallbacks = {}) => {
     get: (key) => {
       const fallback = fallbacks[key];
       key = key.startsWith(namespace) ? key : namespace + key;
-      return select.get(key)?.value ?? fallback;
+      try {
+        return JSON.parse(select.get(key)?.value);
+      } catch {
+        return select.get(key)?.value ?? fallback;
+      }
     },
     set: (key, value) => {
       key = key.startsWith(namespace) ? key : namespace + key;
+      value = JSON.stringify(value);
       return select.get(key) === undefined
         ? insert.run(key, value)
         : update.run(value, key);

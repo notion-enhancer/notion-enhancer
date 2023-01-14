@@ -12,5 +12,50 @@
       "avatar": "https://dragonwocky.me/avatar.jpg"
     }
   ],
+  "options": [
+    {
+      "type": "heading",
+      "label": "Hotkeys"
+    },
+    {
+      "type": "hotkey",
+      "key": "openMenuHotkey",
+      "description": "Opens the notion-enhancer menu from within Notion.",
+      "value": "Ctrl+Shift+,"
+    },
+    {
+      "type": "heading",
+      "label": "Appearance"
+    },
+    {
+      "type": "select",
+      "key": "menuButtonIconStyle",
+      "description": "Sets whether the notion-enhancer icon added to Notion's sidebar should be coloured or monochrome. The latter style will match the theme's icon colour for users who would like the icon to be less noticeable.",
+      "values": ["Colour", "Monochrome"]
+    },
+    {
+      "type": "select",
+      "key": "loadThemeOverrides",
+      "description": "Loads the styling required for a theme to customise Notion's interface. Disabling this will increase client performance.",
+      "values": ["Auto", "Enabled", "Disabled"]
+    },
+    {
+      "type": "file",
+      "key": "customStyles",
+      "description": "Adds the styles from an uploaded .css file to Notion. Use this if you would like to customise the current theme or <a href=\"https://notion-enhancer.github.io/advanced/tweaks\">otherwise tweak Notion's appearance</a>.",
+      "extensions": ["css"]
+    },
+    {
+      "type": "heading",
+      "label": "Advanced"
+    },
+    {
+      "type": "toggle",
+      "key": "debugMode",
+      "description": "Activates built-in debugging tools accessible through the application menu.",
+      "platforms": ["darwin", "win32", "linux"],
+      "value": false
+    }
+  ],
   "clientStyles": ["client.css"]
 }

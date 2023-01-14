@@ -4,7 +4,7 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { setState, useState } from "./state.mjs";
+import { setState, useState, getState } from "./state.mjs";
 
 function Sidebar({}, ...children) {
   const { html } = globalThis.__enhancerApi;
@@ -43,7 +43,7 @@ function SidebarButton({ icon, ...props }, ...children) {
     <//>`;
   if (!props.href) {
     const id = $el.innerText;
-    $el.onclick ??= () => setState({ view: id });
+    $el.onclick ??= () => setState({ transition: "fade", view: id });
     useState(["view"], ([view = "welcome"]) => {
       const active = view.toLowerCase() === id.toLowerCase();
       $el.style.background = active ? "var(--theme--bg-hover)" : "";
@@ -55,16 +55,34 @@ function SidebarButton({ icon, ...props }, ...children) {
 
 function View({ id }, ...children) {
   const { html } = globalThis.__enhancerApi,
+    duration = 100,
     $el = html`<article
       id=${id}
       class="notion-enhancer--menu-view h-full
-      overflow-y-auto px-[60px] py-[36px] grow"
+      grow overflow-y-auto px-[60px] py-[36px]"
     >
       ${children}
     </article>`;
   useState(["view"], ([view = "welcome"]) => {
-    const active = view.toLowerCase() === id.toLowerCase();
-    $el.style.display = active ? "" : "none";
+    const [transition] = getState(["transition"]),
+      isVisible = $el.style.display !== "none",
+      nowActive = view.toLowerCase() === id.toLowerCase();
+    if (transition === "fade") {
+      $el.style.opacity = "0";
+      $el.style.transition = `opacity ${duration}ms`;
+      if (isVisible && !nowActive) {
+        setTimeout(() => ($el.style.display = "none"), duration);
+      } else if (!isVisible && nowActive) {
+        setTimeout(() => {
+          $el.style.display = "";
+          requestIdleCallback(() => ($el.style.opacity = "1"));
+        }, duration);
+      }
+    } else {
+      $el.style.transition = "";
+      $el.style.opacity = nowActive ? "1" : "0";
+      $el.style.display = nowActive ? "" : "none";
+    }
   });
   return $el;
 }
@@ -83,11 +101,12 @@ function Mod({
   tags = [],
   authors,
   options = [],
-  enabled,
-  _update,
+  _get,
+  _set,
   _src,
 }) {
   const { html, enhancerUrl } = globalThis.__enhancerApi,
+    toggleId = Math.random().toString(36).slice(2, 5),
     $thumbnail = thumbnail
       ? html`<img
           src="${enhancerUrl(`${_src}/${thumbnail}`)}"
@@ -99,16 +118,13 @@ function Mod({
           class="flex items-center p-[4px] rounded-[4px] transition
           text-[color:var(--theme--fg-secondary)] my-auto mr-[8px]
           duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
-          onclick=${() => {
-            // open mod options page
-          }}
+          onclick=${() => setState({ transition: "none", view: id })}
         >
           <i class="i-settings w-[18px] h-[18px]"></i>
         </button>`
       : "";
   return html`<label
-    id=${id}
-    for="${id}-toggle"
+    for=${toggleId}
     class="notion-enhancer--menu-mod flex items-stretch rounded-[4px]
     bg-[color:var(--theme--bg-secondary)] w-full py-[18px] px-[16px]
     border border-[color:var(--theme--fg-border)] cursor-pointer
@@ -133,7 +149,7 @@ function Mod({
         text-[color:var(--theme--fg-secondary)]"
         innerHTML=${description}
       ></p>
-      <div class="flex gap-x-[8px] text-[12px] leading-[16px]">
+      <div class="mt-auto flex gap-x-[8px] text-[12px] leading-[16px]">
         ${authors.map((author) => {
           return html`<a href=${author.homepage} class="flex items-center">
             <img src=${author.avatar} alt="" class="h-[12px] rounded-full" />
@@ -145,25 +161,20 @@ function Mod({
     <div class="flex ml-auto">
       ${$options}
       <div class="my-auto scale-[1.15]">
-        <${Toggle}
-          id="${id}-toggle"
-          checked=${enabled}
-          onchange="${(event) => _update(event.target.checked)}"
-        />
+        <${Toggle} id=${toggleId} ...${{ _get, _set }} />
       </div>
     </div>
   </label>`;
 }
 
-function Option({ type, value, description, _update, ...props }) {
+function Option({ type, value, description, _get, _set, ...props }) {
   const { html } = globalThis.__enhancerApi,
     camelToSentenceCase = (string) =>
       string[0].toUpperCase() +
       string.replace(/[A-Z]/g, (match) => ` ${match.toLowerCase()}`).slice(1);
 
   let $input;
-  const label = props.label ?? camelToSentenceCase(props.key),
-    onchange = (event) => _update(event.target.value);
+  const label = props.label ?? camelToSentenceCase(props.key);
   switch (type) {
     case "heading":
       return html`<h4
@@ -174,40 +185,28 @@ function Option({ type, value, description, _update, ...props }) {
         ${label}
       </h4>`;
     case "text":
-      $input = html`<${TextInput} ...${{ value, onchange }} />`;
+      $input = html`<${TextInput} ...${{ _get, _set }} />`;
       break;
     case "number":
-      $input = html`<${NumberInput} ...${{ value, onchange }} />`;
+      $input = html`<${NumberInput} ...${{ _get, _set }} />`;
       break;
     case "hotkey":
-      $input = html`<${HotkeyInput} ...${{ value, onchange }} />`;
+      $input = html`<${HotkeyInput} ...${{ _get, _set }} />`;
       break;
     case "color":
-      $input = html`<${ColorInput} ...${{ value, onchange }} />`;
+      $input = html`<${ColorInput} ...${{ _get, _set }} />`;
       break;
     case "file":
-      try {
-        value = JSON.parse(value);
-      } catch {
-        value = {};
-      }
       $input = html`<${FileInput}
-        filename="${value.filename}"
         extensions="${props.extensions}"
-        onupload=${(upload) => _update(JSON.stringify(upload))}
+        ...${{ _get, _set }}
       />`;
       break;
     case "select":
-      $input = html`<${Select}
-        values=${props.values}
-        ...${{ value, onchange }}
-      />`;
+      $input = html`<${Select} values=${props.values} ...${{ _get, _set }} />`;
       break;
     case "toggle":
-      $input = html`<${Toggle}
-        checked=${value}
-        onchange=${(event) => _update(event.target.checked)}
-      />`;
+      $input = html`<${Toggle} ...${{ _get, _set }} />`;
   }
   return html`<${type === "toggle" ? "label" : "div"}
     class="notion-enhancer--menu-option flex items-center justify-between
@@ -225,19 +224,28 @@ function Option({ type, value, description, _update, ...props }) {
   <//>`;
 }
 
-function TextInput({ value, ...props }) {
-  const { html } = globalThis.__enhancerApi;
-  return html`<label
-    class="notion-enhancer--menu-text-input
-    relative block w-full mt-[4px] mb-[8px]"
-  >
-    <input
+function TextInput({ _get, _set, ...props }) {
+  const { html } = globalThis.__enhancerApi,
+    $input = html`<input
       type="text"
       class="appearance-none text-[14px] leading-[1.2] rounded-[4px] pb-px
       h-[28px] w-full pl-[8px] pr-[30px] bg-[color:var(--theme--bg-hover)]"
-      value=${value}
       ...${props}
-    />
+    />`;
+
+  const { onchange } = $input;
+  $input.onchange = (event) => {
+    onchange?.(event);
+    _set?.($input.value);
+  };
+  useState(["rerender"], () => {
+    _get?.().then((value) => ($input.value = value));
+  });
+
+  return html`<label
+    class="notion-enhancer--menu-text-input
+    relative block w-full mt-[4px] mb-[8px]"
+    >${$input}
     <i
       class="i-text-cursor pointer-events-none
       absolute right-[8px] top-[6px] w-[16px] h-[16px]
@@ -246,19 +254,28 @@ function TextInput({ value, ...props }) {
   </label>`;
 }
 
-function NumberInput({ value, ...props }) {
-  const { html } = globalThis.__enhancerApi;
+function NumberInput({ _get, _set, ...props }) {
+  const { html } = globalThis.__enhancerApi,
+    $input = html`<input
+      type="text"
+      class="appearance-none text-[14px] leading-[1.2] rounded-[4px] pb-px
+      h-[28px] w-full pl-[8px] pr-[32px] bg-[color:var(--theme--bg-hover)]"
+      ...${props}
+    />`;
+
+  const { onchange } = $input;
+  $input.onchange = (event) => {
+    onchange?.(event);
+    _set?.($input.value);
+  };
+  useState(["rerender"], () => {
+    _get?.().then((value) => ($input.value = value));
+  });
+
   return html`<label
     class="notion-enhancer--menu-number-input
     relative shrink-0 w-[192px]"
-  >
-    <input
-      type="number"
-      class="appearance-none text-[14px] leading-[1.2] rounded-[4px] pb-px
-      h-[28px] w-full pl-[8px] pr-[32px] bg-[color:var(--theme--bg-hover)]"
-      value=${value}
-      ...${props}
-    />
+    >${$input}
     <i
       class="i-hash pointer-events-none
       absolute right-[8px] top-[6px] w-[16px] h-[16px]
@@ -267,8 +284,14 @@ function NumberInput({ value, ...props }) {
   </label>`;
 }
 
-function HotkeyInput({ value, onkeydown, ...props }) {
+function HotkeyInput({ _get, _set, ...props }) {
   const { html } = globalThis.__enhancerApi,
+    $input = html`<input
+      type="text"
+      class="appearance-none text-[14px] leading-[1.2] rounded-[4px] pb-px
+      h-[28px] w-full pl-[8px] pr-[32px] bg-[color:var(--theme--bg-hover)]"
+      ...${props}
+    />`,
     updateHotkey = (event) => {
       event.preventDefault();
       const keys = [];
@@ -278,7 +301,7 @@ function HotkeyInput({ value, onkeydown, ...props }) {
         keys.push(alias);
       }
       if (!keys.length && ["Backspace", "Delete"].includes(event.key)) {
-        event.target.value = "";
+        $input.value = "";
       } else if (event.key) {
         let key = event.key;
         if (key === " ") key = "Space";
@@ -290,27 +313,26 @@ function HotkeyInput({ value, onkeydown, ...props }) {
         // avoid e.g. Shift+Shift, force inclusion of non-modifier
         if (keys.includes(key)) return;
         keys.push(key.length === 1 ? key.toUpperCase() : key);
-        event.target.value = keys.join("+");
+        $input.value = keys.join("+");
       }
-      event.target.dispatchEvent(new Event("input"));
-      event.target.dispatchEvent(new Event("change"));
+      $input.dispatchEvent(new Event("input"));
+      $input.dispatchEvent(new Event("change"));
     };
-  props.onkeydown = (event) => {
+
+  const { onkeydown } = $input;
+  $input.onkeydown = (event) => {
     updateHotkey(event);
     onkeydown?.(event);
+    _set?.($input.value);
   };
+  useState(["rerender"], () => {
+    _get?.().then((value) => ($input.value = value));
+  });
 
   return html`<label
     class="notion-enhancer--menu-hotkey-input
     relative shrink-0 w-[192px]"
-  >
-    <input
-      type="text"
-      class="appearance-none text-[14px] leading-[1.2] rounded-[4px] pb-px
-      h-[28px] w-full pl-[8px] pr-[32px] bg-[color:var(--theme--bg-hover)]"
-      value=${value}
-      ...${props}
-    />
+    >${$input}
     <i
       class="i-command pointer-events-none
       absolute right-[8px] top-[6px] w-[16px] h-[16px]
@@ -319,9 +341,21 @@ function HotkeyInput({ value, onkeydown, ...props }) {
   </label>`;
 }
 
-function ColorInput({ value, ...props }) {
+function ColorInput({ _get, _set, ...props }) {
+  Coloris({ format: "rgb" });
   const { html } = globalThis.__enhancerApi,
-    updateContrast = ($input, $icon) => {
+    $input = html`<input
+      type="text"
+      class="appearance-none text-[14px] leading-[1.2]
+      h-[28px] w-full pl-[8px] pr-[32px] pb-px"
+      data-coloris
+      ...${props}
+    />`,
+    $icon = html`<i
+      class="i-pipette pointer-events-none absolute opacity-70
+      right-[8px] top-[6px] w-[16px] h-[16px] text-current"
+    ></i>`,
+    updateContrast = () => {
       $input.style.background = $input.value;
       const [r, g, b, a = 1] = $input.value
         .replace(/^rgba?\(/, "")
@@ -337,26 +371,18 @@ function ColorInput({ value, ...props }) {
       $icon.style.color = $input.style.color;
     };
 
-  const $input = html`<input
-      type="text"
-      class="appearance-none text-[14px] leading-[1.2]
-      h-[28px] w-full pl-[8px] pr-[32px] pb-px"
-      style="background: ${value}"
-      value=${value}
-      data-coloris
-      ...${props}
-    />`,
-    $icon = html`<i
-      class="i-pipette pointer-events-none absolute opacity-70
-      right-[8px] top-[6px] w-[16px] h-[16px] text-current"
-    ></i>`,
-    { oninput } = $input;
+  const { oninput } = $input;
   $input.oninput = (event) => {
     oninput?.(event);
-    updateContrast($input, $icon);
+    _set?.($input.value);
+    updateContrast();
   };
-  updateContrast($input, $icon);
-  Coloris({ format: "rgb" });
+  useState(["rerender"], () => {
+    _get?.().then((value) => {
+      $input.value = value;
+      updateContrast();
+    });
+  });
 
   return html`<label
     class="notion-enhancer--menu-color-input shrink-0
@@ -365,26 +391,27 @@ function ColorInput({ value, ...props }) {
       [position:0_0,4px_4px]
       [size:8px_8px]
     )"
-  >
-    ${$input}${$icon}
+    >${$input}${$icon}
   </label>`;
 }
 
-function FileInput({ filename, extensions, onupload, onchange, ...props }) {
+function FileInput({ extensions, _get, _set, ...props }) {
   const { html } = globalThis.__enhancerApi,
-    $filename = html`<span>${filename || "Upload a file"}</span>`,
+    $filename = html`<span>Upload a file</span>`,
     $clear = html`<button
       class="ml-[8px] h-[14px] cursor-pointer text-[color:var(--theme--fg-secondary)]
       transition duration-[20ms] hover:text-[color:var(--theme--fg-primary)]"
-      style=${filename ? "" : "display: none"}
+      style="display: none"
       onclick=${() => {
         $filename.innerText = "Upload a file";
         $clear.style.display = "none";
-        onupload?.({ filename: "", content: "" });
+        _set?.({ filename: "", content: "" });
       }}
     >
       <i class="i-x w-[14px] h-[14px]"></i>
     </button>`;
+
+  const { onchange } = props;
   props.onchange = (event) => {
     const file = event.target.files[0],
       reader = new FileReader();
@@ -393,11 +420,18 @@ function FileInput({ filename, extensions, onupload, onchange, ...props }) {
         upload = { filename: file.name, content };
       $filename.innerText = file.name;
       $clear.style.display = "";
-      onupload?.(upload);
+      _set?.(upload);
     };
     reader.readAsText(file);
     onchange?.(event);
   };
+  useState(["rerender"], () => {
+    _get?.().then((file) => {
+      $filename.innerText = file?.filename || "Upload a file";
+      $clear.style.display = file?.filename ? "" : "none";
+    });
+  });
+
   return html`<div
     class="notion-enhancer--menu-file-input shrink-0 flex items-center"
   >
@@ -423,9 +457,25 @@ function FileInput({ filename, extensions, onupload, onchange, ...props }) {
   </div>`;
 }
 
-function Select({ values, value, onchange, ...props }) {
+function Select({ values, _get, _set, ...props }) {
   const { html } = globalThis.__enhancerApi,
-    updateWidth = ($select) => {
+    $select = html`<select
+      class="appearance-none bg-transparent rounded-[4px] cursor-pointer
+      text-[14px] leading-[1.2] pl-[8px] pr-[28px] h-[28px] max-w-[256px]
+      transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
+      ...${props}
+    >
+      ${values.map((value) => {
+        return html`<option
+          value=${value}
+          class="bg-[color:var(--theme--bg-secondary)]
+        text-[color:var(--theme--fg-primary)]"
+        >
+          ${value}
+        </option>`;
+      })}
+    </select>`,
+    updateWidth = () => {
       const $tmp = html`<span
         class="text-[14px] pl-[8px] pr-[28px]
         absolute top-[-9999px] left-[-9999px]"
@@ -437,29 +487,19 @@ function Select({ values, value, onchange, ...props }) {
         $tmp.remove();
       });
     };
-  props.onchange = (event) => {
-    onchange?.(event);
-    updateWidth(event.target);
-  };
 
-  const $select = html`<select
-    class="appearance-none bg-transparent rounded-[4px] cursor-pointer
-    text-[14px] leading-[1.2] pl-[8px] pr-[28px] h-[28px] max-w-[256px]
-    transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
-    ...${props}
-  >
-    ${values.map((value) => {
-      return html`<option
-        value=${value}
-        class="bg-[color:var(--theme--bg-secondary)]
-        text-[color:var(--theme--fg-primary)]"
-      >
-        ${value}
-      </option>`;
-    })}
-  </select>`;
-  $select.value = value ?? $select.value;
-  updateWidth($select);
+  const { onchange } = $select;
+  $select.onchange = (event) => {
+    onchange?.(event);
+    _set?.($select.value);
+    updateWidth();
+  };
+  useState(["rerender"], () => {
+    _get?.().then((value) => {
+      $select.value = value;
+      updateWidth();
+    });
+  });
 
   return html`<div class="notion-enhancer--menu-select relative">
     ${$select}
@@ -471,16 +511,27 @@ function Select({ values, value, onchange, ...props }) {
   </div>`;
 }
 
-function Toggle(props) {
-  const { html } = globalThis.__enhancerApi;
-  return html`<div class="notion-enhancer--menu-toggle shrink-0">
-    <input
+function Toggle({ _get, _set, ...props }) {
+  const { html } = globalThis.__enhancerApi,
+    $input = html`<input
       tabindex="-1"
       type="checkbox"
       class="hidden checked:sibling:children:(
-      bg-[color:var(--theme--accent-primary)] after:translate-x-[12px])"
+        bg-[color:var(--theme--accent-primary)] after:translate-x-[12px])"
       ...${props}
-    />
+    />`;
+
+  const { onchange } = $input;
+  $input.onchange = (event) => {
+    onchange?.(event);
+    _set?.($input.checked);
+  };
+  useState(["rerender"], () => {
+    _get?.().then((checked) => ($input.checked = checked));
+  });
+
+  return html`<div class="notion-enhancer--menu-toggle shrink-0">
+    ${$input}
     <div
       tabindex="0"
       class="w-[30px] h-[18px] rounded-[44px] cursor-pointer
