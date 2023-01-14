@@ -75,28 +75,30 @@ const initDatabase = (namespace, fallbacks = {}) => {
     });
 
   return {
+    // wrap methods in promises for consistency w/ chrome.storage
     get: (key) => {
       const fallback = fallbacks[key];
       key = key.startsWith(namespace) ? key : namespace + key;
       try {
-        return JSON.parse(select.get(key)?.value);
-      } catch {
-        return select.get(key)?.value ?? fallback;
-      }
+        const value = JSON.parse(select.get(key)?.value);
+        return Promise.resolve(value ?? fallback);
+      } catch {}
+      return Promise.resolve(fallback);
     },
     set: (key, value) => {
       key = key.startsWith(namespace) ? key : namespace + key;
       value = JSON.stringify(value);
-      return select.get(key) === undefined
-        ? insert.run(key, value)
-        : update.run(value, key);
+      if (select.get(key) === undefined) {
+        insert.run(key, value);
+      } else update.run(value, key);
+      return Promise.resolve(true);
     },
     dump: () => {
       const entries = dump
         .all()
         .map(({ key, value }) => [key, value])
         .filter(([key]) => key.startsWith(namespace));
-      return Object.fromEntries(entries);
+      return Promise.resolve(Object.fromEntries(entries));
     },
     populate,
   };

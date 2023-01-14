@@ -538,8 +538,8 @@ function Toggle({ _get, _set, ...props }) {
       transition duration-200 bg-[color:var(--theme--bg-hover)]"
     >
       <div
-        class="w-full h-full rounded-[44px] p-[2px]
-        hover:bg-[color:var(--theme--bg-hover)]
+        class="w-full h-full rounded-[44px] text-[12px]
+        p-[2px] hover:bg-[color:var(--theme--bg-hover)]
         transition duration-200 after:(
           inline-block w-[14px] h-[14px] rounded-[44px]
           bg-[color:var(--theme--accent-primary\\_contrast)]

@@ -7,13 +7,7 @@
 "use strict";
 
 const { twind, htm } = globalThis,
-  { readFile } = globalThis.__enhancerApi;
-
-let iconColour, iconMonochrome;
-(async () => {
-  iconColour = await readFile("/assets/colour.svg");
-  iconMonochrome = await readFile("/assets/monochrome.svg");
-})();
+  { readFile, iconColour, iconMonochrome } = globalThis.__enhancerApi;
 
 const kebabToPascalCase = (string) =>
     string[0].toUpperCase() +
@@ -56,6 +50,7 @@ const encodeSvg = (svg) =>
       svg = hToString(type, props, ...children);
     }
     // https://antfu.me/posts/icons-in-pure-css
+    if (!svg) console.log(icon);
     const dataUri = `url("data:image/svg+xml;utf8,${encodeSvg(svg)}")`;
     if (mode === "auto") mode = undefined;
     mode ??= svg.includes("currentColor") ? "mask" : "bg";

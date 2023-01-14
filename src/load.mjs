@@ -17,6 +17,7 @@
   // avoid repeat logging
   if (!isMenu) console.log("notion-enhancer: loading...");
 
+  await import("./assets/icons.svg.js");
   await import("./vendor/twind.min.js");
   await import("./vendor/lucide.min.js");
   await import("./vendor/htm.min.js");
