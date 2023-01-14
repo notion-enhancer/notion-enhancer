@@ -400,7 +400,7 @@ function FileInput({ extensions, _get, _set, ...props }) {
     $filename = html`<span>Upload a file</span>`,
     $clear = html`<button
       class="ml-[8px] h-[14px] cursor-pointer text-[color:var(--theme--fg-secondary)]
-      transition duration-[20ms] hover:text-[color:var(--theme--fg-primary)]"
+      transition duration-[20ms] hover:text-[color:var(--theme--fg-primary)] flex"
       style="display: none"
       onclick=${() => {
         $filename.innerText = "Upload a file";
@@ -459,50 +459,57 @@ function FileInput({ extensions, _get, _set, ...props }) {
 
 function Select({ values, _get, _set, ...props }) {
   const { html } = globalThis.__enhancerApi,
-    $select = html`<select
+    $select = html`<div
+      dir="rtl"
+      role="button"
+      tabindex="0"
       class="appearance-none bg-transparent rounded-[4px] cursor-pointer
-      text-[14px] leading-[1.2] pl-[8px] pr-[28px] h-[28px] max-w-[256px]
+      text-[14px] leading-[28px] h-[28px] max-w-[256px] pl-[8px] pr-[28px]
       transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
       ...${props}
+    ></div>`,
+    $popup = html`<div
+      class="group absolute top-0 left-0
+      flex flex-col justify-center items-end
+      pointer-events-none w-full h-full"
     >
-      ${values.map((value) => {
-        return html`<option
-          value=${value}
+      <div class="relative right-[100%]">
+        <div
           class="bg-[color:var(--theme--bg-secondary)]
-        text-[color:var(--theme--fg-primary)]"
+          w-[250px] max-w-[calc(100vw-24px)] max-h-[70vh]
+          py-[6px] px-[4px] drop-shadow-xl overflow-y-auto
+          transition duration-[200ms] opacity-0 scale-95 rounded-[4px]
+          group-open:(pointer-events-auto opacity-100 scale-100)"
         >
-          ${value}
-        </option>`;
-      })}
-    </select>`,
-    updateWidth = () => {
-      const $tmp = html`<span
-        class="text-[14px] pl-[8px] pr-[28px]
-        absolute top-[-9999px] left-[-9999px]"
-        >${$select.value}</span
-      >`;
-      document.body.append($tmp);
-      requestAnimationFrame(() => {
-        $select.style.width = `${Math.min($tmp.offsetWidth, 256)}px`;
-        $tmp.remove();
-      });
-    };
+          ${values.map((value) => {
+            return html`<${SelectOption} ...${{ value, _get, _set }} />`;
+          })}
+        </div>
+      </div>
+    </div>`;
 
-  const { onchange } = $select;
-  $select.onchange = (event) => {
-    onchange?.(event);
-    _set?.($select.value);
-    updateWidth();
+  const { onclick } = $select;
+  $select.onclick = (event) => {
+    onclick?.(event);
+    $popup.setAttribute("open", true);
   };
   useState(["rerender"], () => {
     _get?.().then((value) => {
-      $select.value = value;
-      updateWidth();
+      if ($popup.hasAttribute("open")) {
+        $popup.removeAttribute("open");
+        $select.style.width = `${$select.offsetWidth}px`;
+        $select.style.background = "transparent";
+        $select.innerText = value;
+        setTimeout(() => {
+          $select.style.width = "";
+          $select.style.background = "";
+        }, 200);
+      } else $select.innerText = value;
     });
   });
 
   return html`<div class="notion-enhancer--menu-select relative">
-    ${$select}
+    ${$select}${$popup}
     <i
       class="i-chevron-down pointer-events-none
       absolute right-[6px] top-[6px] w-[16px] h-[16px]
@@ -511,13 +518,45 @@ function Select({ values, _get, _set, ...props }) {
   </div>`;
 }
 
+function SelectOption({ value, _get, _set, ...props }) {
+  const { html } = globalThis.__enhancerApi,
+    $selected = html`<i class="ml-auto i-check w-[16px] h-[16px]"></i>`,
+    $option = html`<div
+      role="button"
+      tabindex="0"
+      class="select-none cursor-pointer rounded-[3px]
+      flex items-center w-full h-[28px] px-[12px] leading-[1.2]
+      transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
+      ...${props}
+    >
+      <div class="mr-[6px] text-[14px] text-ellipsis overflow-hidden">
+        ${value}
+      </div>
+    </div>`;
+
+  const { onclick } = $option;
+  $option.onclick = (event) => {
+    onclick?.(event);
+    _set?.(value);
+  };
+  useState(["rerender"], () => {
+    _get?.().then((actualValue) => {
+      if (actualValue === value) {
+        $option.append($selected);
+      } else $selected.remove();
+    });
+  });
+
+  return $option;
+}
+
 function Toggle({ _get, _set, ...props }) {
   const { html } = globalThis.__enhancerApi,
     $input = html`<input
       tabindex="-1"
       type="checkbox"
       class="hidden checked:sibling:children:(
-        bg-[color:var(--theme--accent-primary)] after:translate-x-[12px])"
+      bg-[color:var(--theme--accent-primary)] after:translate-x-[12px])"
       ...${props}
     />`;
 

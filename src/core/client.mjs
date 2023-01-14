@@ -71,13 +71,11 @@ export default async (api, db) => {
   $menuFrame = html`<iframe
     title="notion-enhancer menu"
     src="${enhancerUrl("core/menu/index.html")}"
-    class="
-      rounded-[5px] w-[1150px] h-[calc(100vh-100px)]
-      max-w-[calc(100vw-100px)] max-h-[715px] overflow-hidden
-      bg-[color:var(--theme--bg-primary)] drop-shadow-xl
-      group-open:(pointer-events-auto opacity-100 scale-100)
-      transition opacity-0 scale-95
-    "
+    class="rounded-[5px] w-[1150px] h-[calc(100vh-100px)]
+    max-w-[calc(100vw-100px)] max-h-[715px] overflow-hidden
+    bg-[color:var(--theme--bg-primary)] drop-shadow-xl
+    group-open:(pointer-events-auto opacity-100 scale-100)
+    transition opacity-0 scale-95"
     onload=${() => {
       // pass notion-enhancer api to electron menu process
       if (platform !== "browser") {

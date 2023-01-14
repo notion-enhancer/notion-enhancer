@@ -35,7 +35,10 @@ const renderOptions = async (mod) => {
   options = options.map(async (opt) => {
     if (opt.type === "heading") return html`<${Option} ...${opt} />`;
     const _get = () => db.get(opt.key),
-      _set = (value) => db.set(opt.key, value);
+      _set = async (value) => {
+        await db.set(opt.key, value);
+        setState({ rerender: true });
+      };
     return html`<${Option} ...${{ ...opt, _get, _set }} />`;
   });
   return Promise.all(options);
@@ -60,7 +63,10 @@ const compatibleMods = (mods) => {
       enabledMods = initDatabase([await getProfile(), "enabledMods"]);
     mods = compatibleMods(mods).map(async (mod) => {
       const _get = () => enabledMods.get(mod.id),
-        _set = (enabled) => enabledMods.set(mod.id, enabled);
+        _set = async (enabled) => {
+          await enabledMods.set(mod.id, enabled);
+          setState({ rerender: true });
+        };
       return html`<${Mod} ...${{ ...mod, _get, _set }} />`;
     });
     return html`<${List}>${await Promise.all(mods)}<//>`;
@@ -75,7 +81,10 @@ const renderOptionViews = async (parentView, mods) => {
     })
     .map(async (mod) => {
       const _get = () => enabledMods.get(mod.id),
-        _set = (enabled) => enabledMods.set(mod.id, enabled);
+        _set = async (enabled) => {
+          await enabledMods.set(mod.id, enabled);
+          setState({ rerender: true });
+        };
       return html`<${View} id=${mod.id}>
         <${Mod} ...${{ ...mod, options: [], _get, _set }} />
         ${await renderOptions(mod)}<//
