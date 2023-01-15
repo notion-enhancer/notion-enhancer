@@ -58,7 +58,7 @@ const compatibleMods = (mods) => {
       return required && compatible;
     });
   },
-  renderList = async (mods) => {
+  renderList = async (mods, description) => {
     const { html, getProfile, initDatabase } = globalThis.__enhancerApi,
       enabledMods = initDatabase([await getProfile(), "enabledMods"]);
     mods = compatibleMods(mods).map(async (mod) => {
@@ -69,29 +69,30 @@ const compatibleMods = (mods) => {
         };
       return html`<${Mod} ...${{ ...mod, _get, _set }} />`;
     });
-    return html`<${List}>${await Promise.all(mods)}<//>`;
+    return html`<${List} description=${description}>
+      ${await Promise.all(mods)}
+    <//>`;
+  },
+  renderOptionViews = async (parentView, mods) => {
+    const { html, getProfile, initDatabase } = globalThis.__enhancerApi,
+      enabledMods = initDatabase([await getProfile(), "enabledMods"]);
+    mods = compatibleMods(mods)
+      .filter((mod) => {
+        return mod.options?.filter((opt) => opt.type !== "heading").length;
+      })
+      .map(async (mod) => {
+        const _get = () => enabledMods.get(mod.id),
+          _set = async (enabled) => {
+            await enabledMods.set(mod.id, enabled);
+            setState({ rerender: true });
+          };
+        return html`<${View} id=${mod.id}>
+          <${Mod} ...${{ ...mod, options: [], _get, _set }} />
+          ${await renderOptions(mod)}<//
+        >`;
+      });
+    return Promise.all(mods);
   };
-
-const renderOptionViews = async (parentView, mods) => {
-  const { html, getProfile, initDatabase } = globalThis.__enhancerApi,
-    enabledMods = initDatabase([await getProfile(), "enabledMods"]);
-  mods = compatibleMods(mods)
-    .filter((mod) => {
-      return mod.options?.filter((opt) => opt.type !== "heading").length;
-    })
-    .map(async (mod) => {
-      const _get = () => enabledMods.get(mod.id),
-        _set = async (enabled) => {
-          await enabledMods.set(mod.id, enabled);
-          setState({ rerender: true });
-        };
-      return html`<${View} id=${mod.id}>
-        <${Mod} ...${{ ...mod, options: [], _get, _set }} />
-        ${await renderOptions(mod)}<//
-      >`;
-    });
-  return Promise.all(mods);
-};
 
 const render = async () => {
   const { html, getCore, getThemes } = globalThis.__enhancerApi,
@@ -150,13 +151,32 @@ const render = async () => {
     html`<${View} id="welcome">welcome<//>`,
     html`<${View} id="core">${await renderOptions(await getCore())}<//>`
   );
-  for (const { id, mods } of [
-    { id: "themes", mods: await getThemes() },
-    { id: "extensions", mods: await getExtensions() },
-    { id: "integrations", mods: await getIntegrations() },
+  for (const { id, mods, description } of [
+    {
+      id: "themes",
+      mods: await getThemes(),
+      description: `Themes override Notion's colour schemes. To switch between
+      dark mode and light mode, go to <span class="py-[2px] px-[4px] rounded-[3px]
+      bg-[color:var(--theme--bg-hover)]">Settings & members → My notifications &
+      settings → My settings → Appearance</span>.`,
+    },
+    {
+      id: "extensions",
+      mods: await getExtensions(),
+      description: `Extensions add to the functionality and layout of the Notion
+      client, interacting with and modifying existing interfaces.`,
+    },
+    {
+      id: "integrations",
+      mods: await getIntegrations(),
+      description: `<span class="text-[color:var(--theme--fg-red)]">
+      Integrations access and modify Notion content. They interact directly with
+      <span class="py-[2px] px-[4px] rounded-[3px] bg-[color:var(--theme--bg-hover)]">
+      https://www.notion.so/api/v3</span>. Use at your own risk.</span>`,
+    },
   ]) {
     document.body.append(
-      html`<${View} id=${id}>${await renderList(mods)}<//>`,
+      html`<${View} id=${id}>${await renderList(mods, description)}<//>`,
       ...(await renderOptionViews(id, mods))
     );
   }

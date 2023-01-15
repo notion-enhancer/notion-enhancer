@@ -87,9 +87,44 @@ function View({ id }, ...children) {
   return $el;
 }
 
-function List({}, ...children) {
+function List({ description }, ...children) {
   const { html } = globalThis.__enhancerApi;
-  return html`<div class="flex flex-col gap-y-[14px]">${children}</div>`;
+  return html`<div class="flex flex-col gap-y-[14px]">
+    <${Search} items=${children} />
+    <p
+      class="text-([12px] [color:var(--theme--fg-secondary)])"
+      innerHTML=${description}
+    ></p>
+    ${children}
+  </div>`;
+}
+
+function Search({ items, oninput, ...props }) {
+  const { html, addKeyListener } = globalThis.__enhancerApi,
+    $search = html`<${Input}
+      size="lg"
+      type="text"
+      icon="search"
+      placeholder="Search ('/' to focus)"
+      oninput=${(event) => {
+        oninput?.(event);
+        const query = event.target.value.toLowerCase();
+        for (const $item of items) {
+          const matches = $item.innerText.toLowerCase().includes(query);
+          $item.style.display = matches ? "" : "none";
+        }
+      }}
+      ...${props}
+    />`;
+  addKeyListener("/", (event) => {
+    if (document.activeElement?.nodeName === "INPUT") return;
+    // offsetParent == null if parent has "display: none;"
+    if ($search.offsetParent) {
+      event.preventDefault();
+      $search.focus();
+    }
+  });
+  return $search;
 }
 
 function Mod({
@@ -211,7 +246,8 @@ function Option({ type, value, description, _get, _set, ...props }) {
   return html`<${type === "toggle" ? "label" : "div"}
     class="notion-enhancer--menu-option flex items-center justify-between
     mb-[18px] ${type === "toggle" ? "cursor-pointer" : ""}"
-    ><div class="flex flex-col ${type === "text" ? "w-full" : "mr-[10%]"}">
+  >
+    <div class="flex flex-col ${type === "text" ? "w-full" : "mr-[10%]"}">
       <h5 class="text-[14px] mb-[2px] mt-0">${label}</h5>
       ${type === "text" ? $input : ""}
       <p
@@ -224,30 +260,34 @@ function Option({ type, value, description, _get, _set, ...props }) {
   <//>`;
 }
 
-function Input({ wide, transparent, icon, onrerender, ...props }) {
+function Input({ size, icon, transparent, onrerender, ...props }) {
   const { html } = globalThis.__enhancerApi,
     $input = html`<input
-      class="appearance-none h-[28px] w-full bg-transparent
-      pl-[8px] pr-[32px] pb-px text-[14px] leading-[1.2]"
+      class="${size === "lg"
+        ? "h-[36px] pl-[12px] pr-[40px]"
+        : "h-[28px] pl-[8px] pr-[32px]"}
+      w-full pb-px text-[14px] leading-[1.2]
+      appearance-none bg-transparent"
       ...${props}
     />`,
     $icon = html`<i
-      class="i-${icon} pointer-events-none
-      absolute right-[8px] top-[6px] w-[16px] h-[16px]
+      class="i-${icon} absolute w-[16px] h-[16px] pointer-events-none
+      ${size === "lg" ? "right-[12px] top-[10px]" : "right-[8px] top-[6px]"}
       text-[color:var(--theme--fg-secondary)]"
     ></i>`;
   useState(["rerender"], () => onrerender?.($input, $icon));
   return html`<label
+    focus=${() => $input.focus()}
     class="notion-enhancer--menu-input
     relative overflow-hidden rounded-[4px]
-    ${wide ? "block w-full mt-[4px] mb-[8px]" : "shrink-0 w-[192px]"}
-    ${transparent
-      ? `bg-(
-          [image:repeating-linear-gradient(45deg,#aaa_25%,transparent_25%,transparent_75%,#aaa_75%,#aaa),repeating-linear-gradient(45deg,#aaa_25%,#fff_25%,#fff_75%,#aaa_75%,#aaa)]
-          [position:0_0,4px_4px]
-          [size:8px_8px]
-        )`
-      : "bg-[color:var(--theme--bg-hover)]"}"
+    focus-within:ring-(& [color:var(--theme--accent-primary)])
+    ${size === "lg" ? "block w-full" : ""}
+    ${size === "md" ? "block w-full mt-[4px] mb-[8px]" : ""}
+    ${size === "sm" ? "shrink-0 w-[192px]" : ""}
+    bg-${transparent
+      ? `([image:repeating-linear-gradient(45deg,#aaa_25%,transparent_25%,transparent_75%,#aaa_75%,#aaa),repeating-linear-gradient(45deg,#aaa_25%,#fff_25%,#fff_75%,#aaa_75%,#aaa)]
+         [position:0_0,4px_4px] [size:8px_8px])`
+      : "[color:var(--theme--bg-hover)]"}"
     >${$input}${$icon}
   </label>`;
 }
@@ -255,7 +295,7 @@ function Input({ wide, transparent, icon, onrerender, ...props }) {
 function TextInput({ _get, _set, onchange, ...props }) {
   const { html } = globalThis.__enhancerApi;
   return html`<${Input}
-    wide
+    size="md"
     type="text"
     icon="text-cursor"
     onchange=${(event) => {
@@ -272,6 +312,7 @@ function TextInput({ _get, _set, onchange, ...props }) {
 function NumberInput({ _get, _set, onchange, ...props }) {
   const { html } = globalThis.__enhancerApi;
   return html`<${Input}
+    size="sm"
     type="number"
     icon="hash"
     onchange=${(event) => {
@@ -314,6 +355,7 @@ function HotkeyInput({ _get, _set, onkeydown, ...props }) {
       event.target.dispatchEvent(new Event("change"));
     };
   return html`<${Input}
+    size="sm"
     type="text"
     icon="command"
     onkeydown=${(event) => {
@@ -349,6 +391,7 @@ function ColorInput({ _get, _set, oninput, ...props }) {
     };
   return html`<${Input}
     transparent
+    size="sm"
     type="text"
     icon="pipette"
     data-coloris
@@ -439,6 +482,9 @@ function Select({ values, _get, _set, ...props }) {
       transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
       ...${props}
     ></div>`,
+    $options = values.map((value) => {
+      return html`<${SelectOption} ...${{ value, _get, _set }} />`;
+    }),
     $popup = html`<div
       class="group absolute top-0 left-0
       flex flex-col justify-center items-end
@@ -452,38 +498,48 @@ function Select({ values, _get, _set, ...props }) {
           transition duration-[200ms] opacity-0 scale-95 rounded-[4px]
           group-open:(pointer-events-auto opacity-100 scale-100)"
         >
-          ${values.map((value) => {
-            return html`<${SelectOption} ...${{ value, _get, _set }} />`;
-          })}
+          ${$options}
         </div>
       </div>
     </div>`;
 
-  const { onclick } = $select;
+  const { onclick, onkeydown } = $select,
+    openPopup = () => {
+      $popup.setAttribute("open", true);
+      $options.forEach(($opt) => ($opt.tabIndex = 0));
+      setState({ popupOpen: true });
+    },
+    closePopup = (value) => {
+      $popup.removeAttribute("open");
+      $options.forEach(($opt) => ($opt.tabIndex = -1));
+      $select.style.width = `${$select.offsetWidth}px`;
+      $select.style.background = "transparent";
+      if (value) $select.innerText = value;
+      setTimeout(() => {
+        $select.style.width = "";
+        $select.style.background = "";
+        setState({ popupOpen: false });
+      }, 200);
+    };
   $select.onclick = (event) => {
     onclick?.(event);
-    $popup.setAttribute("open", true);
-    setState({ popupOpen: true });
+    openPopup();
+  };
+  $select.onkeydown = (event) => {
+    onkeydown?.(event);
+    if (event.key === "Enter") openPopup();
   };
   useState(["rerender"], () => {
     _get?.().then((value) => {
       if ($popup.hasAttribute("open")) {
-        $popup.removeAttribute("open");
-        $select.style.width = `${$select.offsetWidth}px`;
-        $select.style.background = "transparent";
-        $select.innerText = value;
-        setTimeout(() => {
-          $select.style.width = "";
-          $select.style.background = "";
-          setState({ popupOpen: false });
-        }, 200);
+        closePopup(value);
       } else $select.innerText = value;
     });
   });
   document.addEventListener("click", (event) => {
     if (!$popup.hasAttribute("open")) return;
     if ($popup.contains(event.target) || event.target === $select) return;
-    _set?.($select.innerText);
+    closePopup();
   });
 
   return html`<div class="notion-enhancer--menu-select relative">
@@ -501,7 +557,6 @@ function SelectOption({ value, _get, _set, ...props }) {
     $selected = html`<i class="ml-auto i-check w-[16px] h-[16px]"></i>`,
     $option = html`<div
       role="button"
-      tabindex="0"
       class="select-none cursor-pointer rounded-[3px]
       flex items-center w-full h-[28px] px-[12px] leading-[1.2]
       transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
@@ -512,10 +567,14 @@ function SelectOption({ value, _get, _set, ...props }) {
       </div>
     </div>`;
 
-  const { onclick } = $option;
+  const { onclick, onkeydown } = $option;
   $option.onclick = (event) => {
     onclick?.(event);
     _set?.(value);
+  };
+  $option.onkeydown = (event) => {
+    onkeydown?.(event);
+    if (event.key === "Enter") _set?.(value);
   };
   useState(["rerender"], () => {
     _get?.().then((actualValue) => {
