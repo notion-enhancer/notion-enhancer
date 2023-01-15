@@ -224,74 +224,69 @@ function Option({ type, value, description, _get, _set, ...props }) {
   <//>`;
 }
 
-function TextInput({ _get, _set, ...props }) {
+function Input({ wide, transparent, icon, onrerender, ...props }) {
   const { html } = globalThis.__enhancerApi,
     $input = html`<input
-      type="text"
-      class="appearance-none text-[14px] leading-[1.2] rounded-[4px] pb-px
-      h-[28px] w-full pl-[8px] pr-[30px] bg-[color:var(--theme--bg-hover)]"
-      ...${props}
-    />`;
-
-  const { onchange } = $input;
-  $input.onchange = (event) => {
-    onchange?.(event);
-    _set?.($input.value);
-  };
-  useState(["rerender"], () => {
-    _get?.().then((value) => ($input.value = value));
-  });
-
-  return html`<label
-    class="notion-enhancer--menu-text-input
-    relative block w-full mt-[4px] mb-[8px]"
-    >${$input}
-    <i
-      class="i-text-cursor pointer-events-none
-      absolute right-[8px] top-[6px] w-[16px] h-[16px]
-      text-[color:var(--theme--fg-secondary)]"
-    ></i>
-  </label>`;
-}
-
-function NumberInput({ _get, _set, ...props }) {
-  const { html } = globalThis.__enhancerApi,
-    $input = html`<input
-      type="text"
-      class="appearance-none text-[14px] leading-[1.2] rounded-[4px] pb-px
-      h-[28px] w-full pl-[8px] pr-[32px] bg-[color:var(--theme--bg-hover)]"
-      ...${props}
-    />`;
-
-  const { onchange } = $input;
-  $input.onchange = (event) => {
-    onchange?.(event);
-    _set?.($input.value);
-  };
-  useState(["rerender"], () => {
-    _get?.().then((value) => ($input.value = value));
-  });
-
-  return html`<label
-    class="notion-enhancer--menu-number-input
-    relative shrink-0 w-[192px]"
-    >${$input}
-    <i
-      class="i-hash pointer-events-none
-      absolute right-[8px] top-[6px] w-[16px] h-[16px]
-      text-[color:var(--theme--fg-secondary)]"
-    ></i>
-  </label>`;
-}
-
-function HotkeyInput({ _get, _set, ...props }) {
-  const { html } = globalThis.__enhancerApi,
-    $input = html`<input
-      type="text"
-      class="appearance-none text-[14px] leading-[1.2] rounded-[4px] pb-px
-      h-[28px] w-full pl-[8px] pr-[32px] bg-[color:var(--theme--bg-hover)]"
+      class="appearance-none h-[28px] w-full bg-transparent
+      pl-[8px] pr-[32px] pb-px text-[14px] leading-[1.2]"
       ...${props}
     />`,
+    $icon = html`<i
+      class="i-${icon} pointer-events-none
+      absolute right-[8px] top-[6px] w-[16px] h-[16px]
+      text-[color:var(--theme--fg-secondary)]"
+    ></i>`;
+  useState(["rerender"], () => onrerender?.($input, $icon));
+  return html`<label
+    class="notion-enhancer--menu-input
+    relative overflow-hidden rounded-[4px]
+    ${wide ? "block w-full mt-[4px] mb-[8px]" : "shrink-0 w-[192px]"}
+    ${transparent
+      ? `bg-(
+          [image:repeating-linear-gradient(45deg,#aaa_25%,transparent_25%,transparent_75%,#aaa_75%,#aaa),repeating-linear-gradient(45deg,#aaa_25%,#fff_25%,#fff_75%,#aaa_75%,#aaa)]
+          [position:0_0,4px_4px]
+          [size:8px_8px]
+        )`
+      : "bg-[color:var(--theme--bg-hover)]"}"
+    >${$input}${$icon}
+  </label>`;
+}
+
+function TextInput({ _get, _set, onchange, ...props }) {
+  const { html } = globalThis.__enhancerApi;
+  return html`<${Input}
+    wide
+    type="text"
+    icon="text-cursor"
+    onchange=${(event) => {
+      onchange?.(event);
+      _set?.(event.target.value);
+    }}
+    onrerender=${($input) => {
+      _get?.().then((value) => ($input.value = value));
+    }}
+    ...${props}
+  />`;
+}
+
+function NumberInput({ _get, _set, onchange, ...props }) {
+  const { html } = globalThis.__enhancerApi;
+  return html`<${Input}
+    type="number"
+    icon="hash"
+    onchange=${(event) => {
+      onchange?.(event);
+      _set?.(event.target.value);
+    }}
+    onrerender=${($input) => {
+      _get?.().then((value) => ($input.value = value));
+    }}
+    ...${props}
+  />`;
+}
+
+function HotkeyInput({ _get, _set, onkeydown, ...props }) {
+  const { html } = globalThis.__enhancerApi,
     updateHotkey = (event) => {
       event.preventDefault();
       const keys = [];
@@ -301,7 +296,7 @@ function HotkeyInput({ _get, _set, ...props }) {
         keys.push(alias);
       }
       if (!keys.length && ["Backspace", "Delete"].includes(event.key)) {
-        $input.value = "";
+        event.target.value = "";
       } else if (event.key) {
         let key = event.key;
         if (key === " ") key = "Space";
@@ -313,49 +308,30 @@ function HotkeyInput({ _get, _set, ...props }) {
         // avoid e.g. Shift+Shift, force inclusion of non-modifier
         if (keys.includes(key)) return;
         keys.push(key.length === 1 ? key.toUpperCase() : key);
-        $input.value = keys.join("+");
+        event.target.value = keys.join("+");
       }
-      $input.dispatchEvent(new Event("input"));
-      $input.dispatchEvent(new Event("change"));
+      event.target.dispatchEvent(new Event("input"));
+      event.target.dispatchEvent(new Event("change"));
     };
-
-  const { onkeydown } = $input;
-  $input.onkeydown = (event) => {
-    updateHotkey(event);
-    onkeydown?.(event);
-    _set?.($input.value);
-  };
-  useState(["rerender"], () => {
-    _get?.().then((value) => ($input.value = value));
-  });
-
-  return html`<label
-    class="notion-enhancer--menu-hotkey-input
-    relative shrink-0 w-[192px]"
-    >${$input}
-    <i
-      class="i-command pointer-events-none
-      absolute right-[8px] top-[6px] w-[16px] h-[16px]
-      text-[color:var(--theme--fg-secondary)]"
-    ></i>
-  </label>`;
+  return html`<${Input}
+    type="text"
+    icon="command"
+    onkeydown=${(event) => {
+      updateHotkey(event);
+      onkeydown?.(event);
+      _set?.(event.target.value);
+    }}
+    onrerender=${($input) => {
+      _get?.().then((value) => ($input.value = value));
+    }}
+    ...${props}
+  />`;
 }
 
-function ColorInput({ _get, _set, ...props }) {
+function ColorInput({ _get, _set, oninput, ...props }) {
   Coloris({ format: "rgb" });
   const { html } = globalThis.__enhancerApi,
-    $input = html`<input
-      type="text"
-      class="appearance-none text-[14px] leading-[1.2]
-      h-[28px] w-full pl-[8px] pr-[32px] pb-px"
-      data-coloris
-      ...${props}
-    />`,
-    $icon = html`<i
-      class="i-pipette pointer-events-none absolute opacity-70
-      right-[8px] top-[6px] w-[16px] h-[16px] text-current"
-    ></i>`,
-    updateContrast = () => {
+    updateContrast = ($input, $icon) => {
       $input.style.background = $input.value;
       const [r, g, b, a = 1] = $input.value
         .replace(/^rgba?\(/, "")
@@ -369,30 +345,25 @@ function ColorInput({ _get, _set, ...props }) {
         $input.style.color = Math.sqrt(brightness) > 165.75 ? "#000" : "#fff";
       } else $input.style.color = "#000";
       $icon.style.color = $input.style.color;
+      $icon.style.opacity = "0.7";
     };
-
-  const { oninput } = $input;
-  $input.oninput = (event) => {
-    oninput?.(event);
-    _set?.($input.value);
-    updateContrast();
-  };
-  useState(["rerender"], () => {
-    _get?.().then((value) => {
-      $input.value = value;
-      updateContrast();
-    });
-  });
-
-  return html`<label
-    class="notion-enhancer--menu-color-input shrink-0
-    relative overflow-hidden rounded-[4px] w-[192px] bg-(
-      [image:repeating-linear-gradient(45deg,#aaa_25%,transparent_25%,transparent_75%,#aaa_75%,#aaa),repeating-linear-gradient(45deg,#aaa_25%,#fff_25%,#fff_75%,#aaa_75%,#aaa)]
-      [position:0_0,4px_4px]
-      [size:8px_8px]
-    )"
-    >${$input}${$icon}
-  </label>`;
+  return html`<${Input}
+    transparent
+    type="text"
+    icon="pipette"
+    data-coloris
+    oninput=${(event) => {
+      oninput?.(event);
+      _set?.(event.target.value);
+    }}
+    onrerender=${($input, $icon) => {
+      _get?.().then((value) => {
+        $input.value = value;
+        updateContrast($input, $icon);
+      });
+    }}
+    ...${props}
+  />`;
 }
 
 function FileInput({ extensions, _get, _set, ...props }) {
@@ -438,8 +409,8 @@ function FileInput({ extensions, _get, _set, ...props }) {
     <label
       tabindex="0"
       class="flex items-center cursor-pointer select-none
-      h-[28px] text-[14px] leading-[1.2] px-[8px] rounded-[4px]
-      text-[color:var(--theme--fg-secondary)] bg-[color:var(--theme--bg-secondary)] 
+      h-[28px] px-[8px] bg-[color:var(--theme--bg-secondary)]
+      text-([14px] [color:var(--theme--fg-secondary)]) rounded-[4px]
       transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
     >
       <input
@@ -596,19 +567,4 @@ function Toggle({ _get, _set, ...props }) {
   </div>`;
 }
 
-export {
-  Sidebar,
-  SidebarSection,
-  SidebarButton,
-  View,
-  List,
-  Mod,
-  Option,
-  TextInput,
-  NumberInput,
-  HotkeyInput,
-  ColorInput,
-  FileInput,
-  Select,
-  Toggle,
-};
+export { Sidebar, SidebarSection, SidebarButton, View, List, Mod, Option };

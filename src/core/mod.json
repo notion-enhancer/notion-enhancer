@@ -62,6 +62,12 @@
       "value": false
     },
     {
+      "type": "color",
+      "key": "color",
+      "description": "Activates built-in debugging tools accessible through the application menu.",
+      "value": ""
+    },
+    {
       "type": "text",
       "key": "text",
       "description": "Activates built-in debugging tools accessible through the application menu.",
