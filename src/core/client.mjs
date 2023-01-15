@@ -54,6 +54,7 @@ export default async (api, db) => {
       _notionTheme = notionTheme;
       const msg = {
         namespace: "notion-enhancer",
+        hotkey: openMenuHotkey,
         theme: notionTheme,
         icon: menuButtonIconStyle,
       };
@@ -129,6 +130,11 @@ export default async (api, db) => {
   document.querySelector(notionSidebar)?.append($menuButton);
 
   window.addEventListener("focus", () => updateTheme(true));
+  window.addEventListener("message", (event) => {
+    if (event.data?.namespace !== "notion-enhancer") return;
+    if (event.data?.action === "close-menu") closeMenu();
+    if (event.data?.action === "open-menu") openMenu();
+  });
   addMutationListener("body", () => {
     if ($menuModal?.hasAttribute("open")) updateTheme();
   });

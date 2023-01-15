@@ -165,13 +165,33 @@ const render = async () => {
 window.addEventListener("focus", () => setState({ rerender: true }));
 window.addEventListener("message", (event) => {
   if (event.data?.namespace !== "notion-enhancer") return;
-  const [theme, icon] = getState(["theme", "icon"]);
+  const [hotkey, theme, icon] = getState(["hotkey", "theme", "icon"]);
   setState({
     rerender: true,
+    hotkey: event.data?.hotkey ?? hotkey,
     theme: event.data?.theme ?? theme,
     icon: event.data?.icon ?? icon,
   });
 });
+useState(["hotkey"], ([hotkey]) => {
+  const { addKeyListener } = globalThis.__enhancerApi ?? {},
+    [hotkeyRegistered] = getState(["hotkeyRegistered"]);
+  if (!hotkey || !addKeyListener || hotkeyRegistered) return;
+  setState({ hotkeyRegistered: true });
+  addKeyListener(hotkey, (event) => {
+    event.preventDefault();
+    const msg = { namespace: "notion-enhancer", action: "open-menu" };
+    parent?.postMessage(msg, "*");
+  });
+  addKeyListener("Escape", () => {
+    const [popupOpen] = getState(["popupOpen"]);
+    if (!popupOpen) {
+      const msg = { namespace: "notion-enhancer", action: "close-menu" };
+      parent?.postMessage(msg, "*");
+    } else setState({ rerender: true });
+  });
+});
+
 useState(["theme"], ([theme]) => {
   if (theme === "dark") document.body.classList.add("dark");
   if (theme === "light") document.body.classList.remove("dark");

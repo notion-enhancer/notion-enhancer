@@ -492,6 +492,7 @@ function Select({ values, _get, _set, ...props }) {
   $select.onclick = (event) => {
     onclick?.(event);
     $popup.setAttribute("open", true);
+    setState({ popupOpen: true });
   };
   useState(["rerender"], () => {
     _get?.().then((value) => {
@@ -503,9 +504,15 @@ function Select({ values, _get, _set, ...props }) {
         setTimeout(() => {
           $select.style.width = "";
           $select.style.background = "";
+          setState({ popupOpen: false });
         }, 200);
       } else $select.innerText = value;
     });
+  });
+  document.addEventListener("click", (event) => {
+    if (!$popup.hasAttribute("open")) return;
+    if ($popup.contains(event.target) || event.target === $select) return;
+    _set?.($select.innerText);
   });
 
   return html`<div class="notion-enhancer--menu-select relative">
