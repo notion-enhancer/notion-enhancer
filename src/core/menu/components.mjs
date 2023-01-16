@@ -55,6 +55,17 @@ function SidebarButton({ id, icon, ...props }, ...children) {
   return $el;
 }
 
+function Footer({}, ...children) {
+  const { html } = globalThis.__enhancerApi;
+  return html`<div
+    class="flex w-full px-[60px] py-[16px]
+    border-t-(& [color:var(--theme--fg-border)])
+    bg-[color:var(--theme--bg-primary)]"
+  >
+    ${children}
+  </div>`;
+}
+
 function View({ id }, ...children) {
   const { html } = globalThis.__enhancerApi,
     $el = html`<article
@@ -122,10 +133,10 @@ function View({ id }, ...children) {
   return $el;
 }
 
-function List({ description }, ...children) {
+function List({ id, description }, ...children) {
   const { html } = globalThis.__enhancerApi;
   return html`<div class="flex flex-col gap-y-[14px]">
-    <${Search} items=${children} />
+    <${Search} type=${id} items=${children} />
     <p
       class="notion-enhancer--menu-description
       text-([12px] [color:var(--theme--fg-secondary)])"
@@ -135,13 +146,15 @@ function List({ description }, ...children) {
   </div>`;
 }
 
-function Search({ items, oninput, ...props }) {
+function Search({ type, items, oninput, ...props }) {
   const { html, addKeyListener } = globalThis.__enhancerApi,
     $search = html`<${Input}
       size="lg"
       type="text"
+      placeholder="Search ${items.length} ${items.length === 1
+        ? type.replace(/s$/, "")
+        : type} (Press '/' to focus)"
       icon="search"
-      placeholder="Search ('/' to focus)"
       oninput=${(event) => {
         oninput?.(event);
         const query = event.target.value.toLowerCase();
@@ -251,7 +264,7 @@ function Option({ type, value, description, _get, _set, ...props }) {
       return html`<h4
         class="notion-enhancer--menu-heading font-semibold
         mb-[16px] mt-[48px] first:mt-0 pb-[12px] text-[16px]
-        border-b border-b-[color:var(--theme--fg-border)]"
+        border-b-(& [color:var(--theme--fg-border)])"
       >
         ${label}
       </h4>`;
@@ -296,17 +309,23 @@ function Option({ type, value, description, _get, _set, ...props }) {
   <//>`;
 }
 
-function Button({ icon, ...props }, children) {
-  const { html } = globalThis.__enhancerApi;
+function Button({ primary, icon, class: cls, ...props }, children) {
+  const { html } = globalThis.__enhancerApi,
+    $icon = icon
+      ? html`<i class="i-${icon} w-[18px] h-[18px] mr-[8px]"></i>`
+      : "";
   return html`<button
-    class="mt-[14px] first:mt-0 mb-[14px] last:mb-0
-    flex items-center h-[32px] px-[12px] rounded-[4px]
-    cursor-pointer border-(& [color:var(--theme--fg-border)])
-    transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
+    class="flex items-center h-[32px] px-[12px] ${cls}
+    rounded-[4px] transition duration-[20ms] ${primary
+      ? `text-[color:var(--theme--accent-primary_contrast)]
+      font-medium bg-[color:var(--theme--accent-primary)]
+      hover:bg-[color:var(--theme--accent-primary\\_hover)]`
+      : `border-(& [color:var(--theme--fg-border)])
+      hover:bg-[color:var(--theme--bg-hover)]`}"
     ...${props}
   >
-    <i class="i-${icon} w-[18px] h-[18px]"></i>
-    <span class="ml-[8px] text-[14px]">${children}</span>
+    ${$icon}
+    <span class="text-[14px]">${children}</span>
   </button>`;
 }
 
@@ -680,6 +699,7 @@ export {
   Sidebar,
   SidebarSection,
   SidebarButton,
+  Footer,
   View,
   List,
   Mod,

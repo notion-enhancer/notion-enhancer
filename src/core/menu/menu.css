@@ -44,6 +44,7 @@ body {
   height: 100vh;
   color: var(--theme--fg-primary);
   font-family: var(--theme--font-sans);
+  overflow: hidden;
 }
 
 body > #skeleton {

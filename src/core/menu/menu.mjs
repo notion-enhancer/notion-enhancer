@@ -9,6 +9,7 @@ import {
   Sidebar,
   SidebarSection,
   SidebarButton,
+  Footer,
   View,
   List,
   Mod,
@@ -61,18 +62,18 @@ const renderSidebar = (items, categories) => {
     }
     return $sidebar;
   },
-  renderList = async (mods, description) => {
+  renderList = async (id, mods, description) => {
     const { html, getProfile, initDatabase } = globalThis.__enhancerApi,
       enabledMods = initDatabase([await getProfile(), "enabledMods"]);
     mods = mods.map(async (mod) => {
       const _get = () => enabledMods.get(mod.id),
         _set = async (enabled) => {
           await enabledMods.set(mod.id, enabled);
-          setState({ rerender: true });
+          setState({ rerender: true, databaseUpdated: true });
         };
       return html`<${Mod} ...${{ ...mod, _get, _set }} />`;
     });
-    return html`<${List} description=${description}>
+    return html`<${List} ...${{ id, description }}>
       ${await Promise.all(mods)}
     <//>`;
   },
@@ -98,7 +99,7 @@ const renderSidebar = (items, categories) => {
       const _get = () => db.get(opt.key),
         _set = async (value) => {
           await db.set(opt.key, value);
-          setState({ rerender: true });
+          setState({ rerender: true, databaseUpdated: true });
         };
       return html`<${Option} ...${{ ...opt, _get, _set }} />`;
     });
@@ -115,17 +116,9 @@ const renderSidebar = (items, categories) => {
         const _get = () => enabledMods.get(mod.id),
           _set = async (enabled) => {
             await enabledMods.set(mod.id, enabled);
-            setState({ rerender: true });
+            setState({ rerender: true, databaseUpdated: true });
           };
         return html`<${View} id=${mod.id}>
-          <${Button}
-            icon="chevron-left"
-            onclick=${() => {
-              setState({ transition: "slide-to-left", view: category.id });
-            }}
-          >
-            ${category.title}
-          <//>
           <${Mod} ...${{ ...mod, options: [], _get, _set }} />
           ${await renderOptions(mod)}
         <//>`;
@@ -134,8 +127,8 @@ const renderSidebar = (items, categories) => {
   };
 
 const render = async () => {
-  const { html, getCore, getThemes } = globalThis.__enhancerApi,
-    { getExtensions, getIntegrations } = globalThis.__enhancerApi,
+  const { html, reloadApp, getCore } = globalThis.__enhancerApi,
+    { getThemes, getExtensions, getIntegrations } = globalThis.__enhancerApi,
     [icon, renderStarted] = getState(["icon", "renderStarted"]);
   if (!html || !getCore || !icon || renderStarted) return;
   setState({ renderStarted: true });
@@ -210,18 +203,57 @@ const render = async () => {
     ];
 
   // view wrapper necessary for transitions
-  const $views = html`<div class="relative overflow-hidden">
+  const $views = html`<div class="grow relative overflow-hidden">
     <${View} id="welcome">welcome<//>
     <${View} id="core">${await renderOptions(await getCore())}<//>
   </div>`;
   for (const { id, title, description, mods } of categories) {
-    const $list = await renderList(mods, description),
+    const $list = await renderList(id, mods, description),
       $mods = await renderMods({ id, title }, mods);
     $views.append(html`<${View} id=${id}>${$list}<//>`, ...$mods);
   }
 
+  categories.forEach((c) => {
+    c.button = html`<${Button}
+      icon="chevron-left"
+      onclick=${() => setState({ transition: "slide-to-left", view: c.id })}
+    >
+      ${c.title}
+    <//>`;
+  });
+  const $reload = html`<${Button}
+      primary
+      class="ml-auto"
+      icon="refresh-cw"
+      onclick=${() => reloadApp()}
+      style="display: none"
+    >
+      Reload & Apply Changes
+    <//>`,
+    $footer = html`<${Footer}>${categories.map((c) => c.button)}${$reload}<//>`,
+    $main = html`<div class="flex flex-col overflow-hidden transition-[height]">
+      ${$views} ${$footer}
+    </div>`,
+    updateFooter = () => {
+      const buttons = [...$footer.children],
+        renderFooter = buttons.some(($el) => $el.style.display === "");
+      $main.style.height = renderFooter ? "100%" : "calc(100% + 65px)";
+    };
+  useState(["view"], ([view]) => {
+    for (const { mods, button } of categories) {
+      const renderButton = mods.some((mod) => mod.id === view);
+      button.style.display = renderButton ? "" : "none";
+      updateFooter();
+    }
+  });
+  useState(["databaseUpdated"], ([databaseUpdated]) => {
+    if (!databaseUpdated) return;
+    $reload.style.display = "";
+    updateFooter();
+  });
+
   const $skeleton = document.querySelector("#skeleton");
-  $skeleton.replaceWith(renderSidebar(sidebar, categories), $views);
+  $skeleton.replaceWith(renderSidebar(sidebar, categories), $main);
 };
 
 window.addEventListener("focus", () => setState({ rerender: true }));
