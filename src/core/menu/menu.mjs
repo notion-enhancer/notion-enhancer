@@ -146,9 +146,8 @@ const render = async () => {
         id: "themes",
         title: "Themes",
         description: `Themes override Notion's colour schemes. To switch between
-        dark mode and light mode, go to <span class="py-[2px] px-[4px] rounded-[3px]
-        bg-[color:var(--theme--bg-hover)]">Settings & members → My notifications &
-        settings → My settings → Appearance</span>.`,
+        dark mode and light mode, go to <mark>Settings & members → My notifications
+        & settings → My settings → Appearance</mark>.`,
         mods: compatibleMods(await getThemes()),
       },
       {
@@ -165,8 +164,7 @@ const render = async () => {
         title: "Integrations",
         description: `<span class="text-[color:var(--theme--fg-red)]">
         Integrations access and modify Notion content. They interact directly with
-        <span class="py-[2px] px-[4px] rounded-[3px] bg-[color:var(--theme--bg-hover)]">
-        https://www.notion.so/api/v3</span>. Use at your own risk.</span>`,
+        <mark>https://www.notion.so/api/v3</mark>. Use at your own risk.</span>`,
         mods: compatibleMods(await getIntegrations()),
       },
     ],
@@ -203,8 +201,12 @@ const render = async () => {
         href: "https://github.com/sponsors/dragonwocky",
       },
       "Settings",
-      { icon: "sliders-horizontal", id: "core", title: "Core" },
-      ...categories.map((c) => ({ icon: c.icon, id: c.id, title: c.title })),
+      {
+        id: "core",
+        title: "Core",
+        icon: "sliders-horizontal",
+      },
+      ...categories.map((c) => ({ id: c.id, title: c.title, icon: c.icon })),
     ];
 
   // view wrapper necessary for transitions
@@ -218,7 +220,8 @@ const render = async () => {
     $views.append(html`<${View} id=${id}>${$list}<//>`, ...$mods);
   }
 
-  document.body.append(renderSidebar(sidebar, categories), $views);
+  const $skeleton = document.querySelector("#skeleton");
+  $skeleton.replaceWith(renderSidebar(sidebar, categories), $views);
 };
 
 window.addEventListener("focus", () => setState({ rerender: true }));

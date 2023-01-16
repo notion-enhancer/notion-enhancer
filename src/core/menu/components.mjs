@@ -127,7 +127,8 @@ function List({ description }, ...children) {
   return html`<div class="flex flex-col gap-y-[14px]">
     <${Search} items=${children} />
     <p
-      class="text-([12px] [color:var(--theme--fg-secondary)])"
+      class="notion-enhancer--menu-description
+      text-([12px] [color:var(--theme--fg-secondary)])"
       innerHTML=${description}
     ></p>
     ${children}
@@ -215,8 +216,8 @@ function Mod({
         })}
       </div>
       <p
-        class="text-[12px] leading-[16px] mb-[6px]
-        text-[color:var(--theme--fg-secondary)]"
+        class="notion-enhancer--menu-description leading-[16px]
+        mb-[6px] text-([12px] [color:var(--theme--fg-secondary)])"
         innerHTML=${description}
       ></p>
       <div class="mt-auto flex gap-x-[8px] text-[12px] leading-[16px]">
@@ -286,8 +287,8 @@ function Option({ type, value, description, _get, _set, ...props }) {
       <h5 class="text-[14px] mb-[2px] mt-0">${label}</h5>
       ${type === "text" ? $input : ""}
       <p
-        class="text-[12px] leading-[16px]
-        text-[color:var(--theme--fg-secondary)]"
+        class="notion-enhancer--menu-description leading-[16px]
+        text-([12px] [color:var(--theme--fg-secondary)])"
         innerHTML=${description}
       ></p>
     </div>

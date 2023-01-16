@@ -4,6 +4,15 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
 ::selection {
   background: var(--theme--accent-primary_transparent);
 }
@@ -27,15 +36,78 @@
   background: var(--theme--scrollbar-thumb_hover);
 }
 
-.notion-enhancer--menu-option a {
+body {
+  display: grid;
+  grid-template-rows: 1fr;
+  grid-template-columns: 224.14px auto;
+  width: 100vw;
+  height: 100vh;
+  color: var(--theme--fg-primary);
+  font-family: var(--theme--font-sans);
+}
+
+body > #skeleton {
+  background: var(--theme--bg-secondary);
+}
+body > #skeleton .row {
+  display: flex;
+  align-items: center;
+  padding: 0 15px;
+  height: 30px;
+}
+body > #skeleton .shimmer {
+  height: 14px;
+  overflow: hidden;
+  position: relative;
+  border-radius: 4px;
+  background: var(--theme--bg-hover);
+}
+body > #skeleton .shimmer.icon {
+  margin-left: 1px;
+  margin-right: 9px;
+  height: 18px;
+  width: 18px;
+}
+body > #skeleton .shimmer::before {
+  content: "";
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  animation: 1s linear infinite skeleton-shimmer;
+  background: linear-gradient(
+    90deg,
+    transparent 0,
+    var(--theme--bg-hover) 50%,
+    transparent 100%
+  );
+}
+body > #skeleton .row-group {
+  height: 21px;
+  margin-top: 18px;
+}
+body > #skeleton .row-group:first-child {
+  margin-top: 10px;
+}
+body > #skeleton .row-group .shimmer {
+  height: 11px;
+}
+
+.notion-enhancer--menu-description mark {
+  color: inherit;
+  padding: 2px 4px;
+  border-radius: 3px;
+  background-color: var(--theme--bg-hover);
+}
+.notion-enhancer--menu-description a {
   text-decoration: underline;
   transition: 100ms ease-in;
 }
-.notion-enhancer--menu-option a:hover {
+.notion-enhancer--menu-description a:hover {
   color: var(--theme--accent-secondary);
 }
 
-/* coloris theming */
+/* https://coloris.js.org/ */
 .clr-picker {
   background-color: var(--theme--bg-secondary) !important;
 }
