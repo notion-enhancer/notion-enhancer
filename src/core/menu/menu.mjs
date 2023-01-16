@@ -12,56 +12,59 @@ import {
   View,
   List,
   Mod,
+  Button,
   Option,
 } from "./components.mjs";
 
-const renderOptions = async (mod) => {
-  const { html, platform, getProfile } = globalThis.__enhancerApi,
-    { optionDefaults, initDatabase } = globalThis.__enhancerApi,
-    profile = await getProfile();
-  const db = initDatabase([profile, mod.id], await optionDefaults(mod.id));
-  let options = mod.options.reduce((options, opt, i) => {
-    if (!opt.key && (opt.type !== "heading" || !opt.label)) return options;
-    if (opt.platforms && !opt.platforms.includes(platform)) return options;
-    const prevOpt = options[options.length - 1];
-    // no consective headings
-    if (opt.type === "heading" && prevOpt?.type === opt.type) {
-      options[options.length - 1] = opt;
-    } else options.push(opt);
-    return options;
-  }, []);
-  // no empty/end headings e.g. if section is platform-specific
-  if (options[options.length - 1]?.type === "heading") options.pop();
-  options = options.map(async (opt) => {
-    if (opt.type === "heading") return html`<${Option} ...${opt} />`;
-    const _get = () => db.get(opt.key),
-      _set = async (value) => {
-        await db.set(opt.key, value);
-        setState({ rerender: true });
-      };
-    return html`<${Option} ...${{ ...opt, _get, _set }} />`;
+const compatibleMods = (mods) => {
+  const { platform } = globalThis.__enhancerApi;
+  return mods.filter((mod) => {
+    const required =
+        mod.id &&
+        mod.name &&
+        mod.version &&
+        mod.description &&
+        mod.thumbnail &&
+        mod.authors,
+      compatible = !mod.platforms || mod.platforms.includes(platform);
+    return required && compatible;
   });
-  return Promise.all(options);
 };
 
-const compatibleMods = (mods) => {
-    const { platform } = globalThis.__enhancerApi;
-    return mods.filter((mod) => {
-      const required =
-          mod.id &&
-          mod.name &&
-          mod.version &&
-          mod.description &&
-          mod.thumbnail &&
-          mod.authors,
-        compatible = !mod.platforms || mod.platforms.includes(platform);
-      return required && compatible;
-    });
+const renderSidebar = (items, categories) => {
+    const { html, isEnabled } = globalThis.__enhancerApi,
+      $sidebar = html`<${Sidebar}>
+        ${items.map((item) => {
+          if (typeof item === "object") {
+            const { title, ...props } = item;
+            return html`<${SidebarButton} ...${props}>${title}<//>`;
+          } else return html`<${SidebarSection}>${item}<//>`;
+        })}
+      <//>`;
+    for (const { title, mods } of categories) {
+      const $title = html`<${SidebarSection}>${title}<//>`,
+        $mods = mods.map((mod) => [
+          mod.id,
+          html`<${SidebarButton} id=${mod.id}>${mod.name}<//>`,
+        ]);
+      $sidebar.append($title, ...$mods.map(([, $btn]) => $btn));
+      useState(["rerender"], async () => {
+        let sectionVisible = false;
+        for (const [id, $btn] of $mods) {
+          if (await isEnabled(id)) {
+            $btn.style.display = "";
+            sectionVisible = true;
+          } else $btn.style.display = "none";
+        }
+        $title.style.display = sectionVisible ? "" : "none";
+      });
+    }
+    return $sidebar;
   },
   renderList = async (mods, description) => {
     const { html, getProfile, initDatabase } = globalThis.__enhancerApi,
       enabledMods = initDatabase([await getProfile(), "enabledMods"]);
-    mods = compatibleMods(mods).map(async (mod) => {
+    mods = mods.map(async (mod) => {
       const _get = () => enabledMods.get(mod.id),
         _set = async (enabled) => {
           await enabledMods.set(mod.id, enabled);
@@ -73,10 +76,38 @@ const compatibleMods = (mods) => {
       ${await Promise.all(mods)}
     <//>`;
   },
-  renderOptionViews = async (parentView, mods) => {
+  renderOptions = async (mod) => {
+    const { html, platform, getProfile } = globalThis.__enhancerApi,
+      { optionDefaults, initDatabase } = globalThis.__enhancerApi,
+      profile = await getProfile();
+    const db = initDatabase([profile, mod.id], await optionDefaults(mod.id));
+    let options = mod.options.reduce((options, opt, i) => {
+      if (!opt.key && (opt.type !== "heading" || !opt.label)) return options;
+      if (opt.platforms && !opt.platforms.includes(platform)) return options;
+      const prevOpt = options[options.length - 1];
+      // no consective headings
+      if (opt.type === "heading" && prevOpt?.type === opt.type) {
+        options[options.length - 1] = opt;
+      } else options.push(opt);
+      return options;
+    }, []);
+    // no empty/end headings e.g. if section is platform-specific
+    if (options[options.length - 1]?.type === "heading") options.pop();
+    options = options.map(async (opt) => {
+      if (opt.type === "heading") return html`<${Option} ...${opt} />`;
+      const _get = () => db.get(opt.key),
+        _set = async (value) => {
+          await db.set(opt.key, value);
+          setState({ rerender: true });
+        };
+      return html`<${Option} ...${{ ...opt, _get, _set }} />`;
+    });
+    return Promise.all(options);
+  },
+  renderMods = async (category, mods) => {
     const { html, getProfile, initDatabase } = globalThis.__enhancerApi,
       enabledMods = initDatabase([await getProfile(), "enabledMods"]);
-    mods = compatibleMods(mods)
+    mods = mods
       .filter((mod) => {
         return mod.options?.filter((opt) => opt.type !== "heading").length;
       })
@@ -87,9 +118,17 @@ const compatibleMods = (mods) => {
             setState({ rerender: true });
           };
         return html`<${View} id=${mod.id}>
+          <${Button}
+            icon="chevron-left"
+            onclick=${() => {
+              setState({ transition: "slide-to-left", view: category.id });
+            }}
+          >
+            ${category.title}
+          <//>
           <${Mod} ...${{ ...mod, options: [], _get, _set }} />
-          ${await renderOptions(mod)}<//
-        >`;
+          ${await renderOptions(mod)}
+        <//>`;
       });
     return Promise.all(mods);
   };
@@ -101,11 +140,42 @@ const render = async () => {
   if (!html || !getCore || !icon || renderStarted) return;
   setState({ renderStarted: true });
 
-  const sidebar = [
+  const categories = [
+      {
+        icon: "palette",
+        id: "themes",
+        title: "Themes",
+        description: `Themes override Notion's colour schemes. To switch between
+        dark mode and light mode, go to <span class="py-[2px] px-[4px] rounded-[3px]
+        bg-[color:var(--theme--bg-hover)]">Settings & members → My notifications &
+        settings → My settings → Appearance</span>.`,
+        mods: compatibleMods(await getThemes()),
+      },
+      {
+        icon: "zap",
+        id: "extensions",
+        title: "Extensions",
+        description: `Extensions add to the functionality and layout of the Notion
+        client, interacting with and modifying existing interfaces.`,
+        mods: compatibleMods(await getExtensions()),
+      },
+      {
+        icon: "plug",
+        id: "integrations",
+        title: "Integrations",
+        description: `<span class="text-[color:var(--theme--fg-red)]">
+        Integrations access and modify Notion content. They interact directly with
+        <span class="py-[2px] px-[4px] rounded-[3px] bg-[color:var(--theme--bg-hover)]">
+        https://www.notion.so/api/v3</span>. Use at your own risk.</span>`,
+        mods: compatibleMods(await getIntegrations()),
+      },
+    ],
+    sidebar = [
       "notion-enhancer",
       {
-        icon: `notion-enhancer${icon === "Monochrome" ? "?mask" : ""}`,
+        id: "welcome",
         title: "Welcome",
+        icon: `notion-enhancer${icon === "Monochrome" ? "?mask" : ""}`,
       },
       {
         icon: "message-circle",
@@ -133,53 +203,22 @@ const render = async () => {
         href: "https://github.com/sponsors/dragonwocky",
       },
       "Settings",
-      { icon: "sliders-horizontal", title: "Core" },
-      { icon: "palette", title: "Themes" },
-      { icon: "zap", title: "Extensions" },
-      { icon: "plug", title: "Integrations" },
-    ],
-    $sidebar = html`<${Sidebar}>
-      ${sidebar.map((item) => {
-        if (typeof item === "object") {
-          const { title, ...props } = item;
-          return html`<${SidebarButton} ...${props}>${title}<//>`;
-        } else return html`<${SidebarSection}>${item}<//>`;
-      })}
-    <//>`;
-  document.body.append(
-    $sidebar,
-    html`<${View} id="welcome">welcome<//>`,
-    html`<${View} id="core">${await renderOptions(await getCore())}<//>`
-  );
-  for (const { id, mods, description } of [
-    {
-      id: "themes",
-      mods: await getThemes(),
-      description: `Themes override Notion's colour schemes. To switch between
-      dark mode and light mode, go to <span class="py-[2px] px-[4px] rounded-[3px]
-      bg-[color:var(--theme--bg-hover)]">Settings & members → My notifications &
-      settings → My settings → Appearance</span>.`,
-    },
-    {
-      id: "extensions",
-      mods: await getExtensions(),
-      description: `Extensions add to the functionality and layout of the Notion
-      client, interacting with and modifying existing interfaces.`,
-    },
-    {
-      id: "integrations",
-      mods: await getIntegrations(),
-      description: `<span class="text-[color:var(--theme--fg-red)]">
-      Integrations access and modify Notion content. They interact directly with
-      <span class="py-[2px] px-[4px] rounded-[3px] bg-[color:var(--theme--bg-hover)]">
-      https://www.notion.so/api/v3</span>. Use at your own risk.</span>`,
-    },
-  ]) {
-    document.body.append(
-      html`<${View} id=${id}>${await renderList(mods, description)}<//>`,
-      ...(await renderOptionViews(id, mods))
-    );
+      { icon: "sliders-horizontal", id: "core", title: "Core" },
+      ...categories.map((c) => ({ icon: c.icon, id: c.id, title: c.title })),
+    ];
+
+  // view wrapper necessary for transitions
+  const $views = html`<div class="relative overflow-hidden">
+    <${View} id="welcome">welcome<//>
+    <${View} id="core">${await renderOptions(await getCore())}<//>
+  </div>`;
+  for (const { id, title, description, mods } of categories) {
+    const $list = await renderList(mods, description),
+      $mods = await renderMods({ id, title }, mods);
+    $views.append(html`<${View} id=${id}>${$list}<//>`, ...$mods);
   }
+
+  document.body.append(renderSidebar(sidebar, categories), $views);
 };
 
 window.addEventListener("focus", () => setState({ rerender: true }));

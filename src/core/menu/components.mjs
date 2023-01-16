@@ -9,7 +9,7 @@ import { setState, useState, getState } from "./state.mjs";
 function Sidebar({}, ...children) {
   const { html } = globalThis.__enhancerApi;
   return html`<aside
-    class="notion-enhancer--menu-sidebar min-w-[224.14px] max-w-[250px]
+    class="notion-enhancer--menu-sidebar z-10 row-span-1
     h-full overflow-y-auto bg-[color:var(--theme--bg-secondary)]"
   >
     ${children}
@@ -27,22 +27,24 @@ function SidebarSection({}, ...children) {
   </h2>`;
 }
 
-function SidebarButton({ icon, ...props }, ...children) {
+function SidebarButton({ id, icon, ...props }, ...children) {
   const { html } = globalThis.__enhancerApi,
-    iconSize = icon.startsWith("notion-enhancer")
-      ? "w-[17px] h-[17px] ml-[1.5px] mr-[9.5px]"
-      : "w-[18px] h-[18px] ml-px mr-[9px]",
+    $icon = icon
+      ? html`<i
+          class="i-${icon} ${icon.startsWith("notion-enhancer")
+            ? "w-[17px] h-[17px] ml-[1.5px] mr-[9.5px]"
+            : "w-[18px] h-[18px] ml-px mr-[9px]"}"
+        ></i>`
+      : "",
     $el = html`<${props.href ? "a" : "button"}
       class="flex select-none cursor-pointer w-full
       items-center py-[5px] px-[15px] text-[14px] last:mb-[12px]
       transition hover:bg-[color:var(--theme--bg-hover)]"
       ...${props}
-    >
-      <i class="i-${icon} ${iconSize}"></i>
+      >${$icon}
       <span class="leading-[20px]">${children}</span>
     <//>`;
   if (!props.href) {
-    const id = $el.innerText;
     $el.onclick ??= () => setState({ transition: "fade", view: id });
     useState(["view"], ([view = "welcome"]) => {
       const active = view.toLowerCase() === id.toLowerCase();
@@ -55,11 +57,10 @@ function SidebarButton({ icon, ...props }, ...children) {
 
 function View({ id }, ...children) {
   const { html } = globalThis.__enhancerApi,
-    duration = 100,
     $el = html`<article
       id=${id}
-      class="notion-enhancer--menu-view h-full
-      grow overflow-y-auto px-[60px] py-[36px]"
+      class="notion-enhancer--menu-view h-full w-full
+      absolute overflow-y-auto px-[60px] py-[36px]"
     >
       ${children}
     </article>`;
@@ -67,21 +68,55 @@ function View({ id }, ...children) {
     const [transition] = getState(["transition"]),
       isVisible = $el.style.display !== "none",
       nowActive = view.toLowerCase() === id.toLowerCase();
-    if (transition === "fade") {
-      $el.style.opacity = "0";
-      $el.style.transition = `opacity ${duration}ms`;
-      if (isVisible && !nowActive) {
-        setTimeout(() => ($el.style.display = "none"), duration);
-      } else if (!isVisible && nowActive) {
-        setTimeout(() => {
-          $el.style.display = "";
-          requestIdleCallback(() => ($el.style.opacity = "1"));
-        }, duration);
+    switch (transition) {
+      case "fade": {
+        const duration = 100;
+        $el.style.transition = `opacity ${duration}ms`;
+        $el.style.opacity = "0";
+        if (isVisible && !nowActive) {
+          setTimeout(() => ($el.style.display = "none"), duration);
+        } else if (!isVisible && nowActive) {
+          setTimeout(() => {
+            $el.style.display = "";
+            requestIdleCallback(() => ($el.style.opacity = "1"));
+          }, duration);
+        }
+        break;
       }
-    } else {
-      $el.style.transition = "";
-      $el.style.opacity = nowActive ? "1" : "0";
-      $el.style.display = nowActive ? "" : "none";
+      case "slide-to-left":
+      case "slide-to-right": {
+        const duration = 200,
+          cssTransition = `opacity ${duration}ms, transform ${duration}ms`,
+          transformOut = `translateX(${
+            transition === "slide-to-right" ? "-100%" : "100%"
+          })`,
+          transformIn = `translateX(${
+            transition === "slide-to-right" ? "100%" : "-100%"
+          })`;
+        if (isVisible && !nowActive) {
+          $el.style.transition = cssTransition;
+          $el.style.transform = transformOut;
+          $el.style.opacity = "0";
+          setTimeout(() => {
+            $el.style.display = "none";
+            $el.style.transform = "";
+          }, duration);
+        } else if (!isVisible && nowActive) {
+          $el.style.transform = transformIn;
+          $el.style.opacity = "0";
+          $el.style.display = "";
+          requestIdleCallback(() => {
+            $el.style.transition = cssTransition;
+            $el.style.transform = "";
+            $el.style.opacity = "1";
+          });
+        }
+        break;
+      }
+      default:
+        $el.style.transition = "";
+        $el.style.opacity = nowActive ? "1" : "0";
+        $el.style.display = nowActive ? "" : "none";
     }
   });
   return $el;
@@ -153,7 +188,7 @@ function Mod({
           class="flex items-center p-[4px] rounded-[4px] transition
           text-[color:var(--theme--fg-secondary)] my-auto mr-[8px]
           duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
-          onclick=${() => setState({ transition: "none", view: id })}
+          onclick=${() => setState({ transition: "slide-to-right", view: id })}
         >
           <i class="i-settings w-[18px] h-[18px]"></i>
         </button>`
@@ -258,6 +293,20 @@ function Option({ type, value, description, _get, _set, ...props }) {
     </div>
     ${type === "text" ? "" : $input}
   <//>`;
+}
+
+function Button({ icon, ...props }, children) {
+  const { html } = globalThis.__enhancerApi;
+  return html`<button
+    class="mt-[14px] first:mt-0 mb-[14px] last:mb-0
+    flex items-center h-[32px] px-[12px] rounded-[4px]
+    cursor-pointer border-(& [color:var(--theme--fg-border)])
+    transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
+    ...${props}
+  >
+    <i class="i-${icon} w-[18px] h-[18px]"></i>
+    <span class="ml-[8px] text-[14px]">${children}</span>
+  </button>`;
 }
 
 function Input({ size, icon, transparent, onrerender, ...props }) {
@@ -626,4 +675,13 @@ function Toggle({ _get, _set, ...props }) {
   </div>`;
 }
 
-export { Sidebar, SidebarSection, SidebarButton, View, List, Mod, Option };
+export {
+  Sidebar,
+  SidebarSection,
+  SidebarButton,
+  View,
+  List,
+  Mod,
+  Button,
+  Option,
+};
