@@ -44,29 +44,32 @@ const initDatabase = (namespace, fallbacks = {}) => {
       const fallback = fallbacks[key];
       key = key.startsWith(namespace) ? key : namespace + key;
       return new Promise((res, _rej) => {
-        chrome.storage.local.get([key], ({ [key]: value }) =>
-          res(value ?? fallback)
-        );
+        chrome.storage.local.get([key], ({ [key]: value }) => {
+          return res(value ?? fallback);
+        });
       });
     },
     set: async (key, value) => {
       key = key.startsWith(namespace) ? key : namespace + key;
       return new Promise((res, _rej) => {
-        chrome.storage.local.set({ [key]: value }, () => res(value));
+        chrome.storage.local.set({ [key]: value }, () => res(true));
       });
     },
-    dump: async () => {
+    export: async () => {
       const obj = await new Promise((res, _rej) => {
         chrome.storage.local.get((value) => res(value));
       });
       if (!namespace) return obj;
-      let entries = Object.entries(obj);
-      entries = entries.filter(([key]) => key.startsWith(namespace));
+      const entries = Object.entries(obj)
+        .filter(([key]) => key.startsWith(namespace))
+        .map(([key, value]) => [key.slice(namespace.length), value]);
       return Object.fromEntries(entries);
     },
-    populate: async (obj) => {
+    import: async (obj) => {
+      const entries = Object.entries(obj) //
+        .map(([key, value]) => [namespace + key, value]);
       return new Promise((res, _rej) => {
-        chrome.storage.local.set(obj, () => res(obj));
+        chrome.storage.local.set(Object.fromEntries(entries), () => res(true));
       });
     },
   };

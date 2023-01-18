@@ -51,6 +51,13 @@ const initDatabase = (namespace, fallbacks = {}) => {
   if (Array.isArray(namespace)) namespace = namespace.join("__");
   namespace = namespace ? namespace + "__" : "";
 
+  //   schema:
+  // - ("profileIds") = $profileId[]
+  // - ("activeProfile") -> $profileId
+  // - $profileId: ("profileName") -> string
+  // - $profileId__enabledMods: ($modId) -> boolean
+  // - $profileId__$modId: ($optionKey) -> value
+
   const table = "settings",
     sqlite = require("better-sqlite3"),
     db = __db ?? sqlite(path.resolve(`${os.homedir()}/.notion-enhancer.db`)),
@@ -93,14 +100,19 @@ const initDatabase = (namespace, fallbacks = {}) => {
       } else update.run(value, key);
       return Promise.resolve(true);
     },
-    dump: () => {
+    export: () => {
       const entries = dump
         .all()
-        .map(({ key, value }) => [key, value])
-        .filter(([key]) => key.startsWith(namespace));
+        .filter(({ key }) => key.startsWith(namespace))
+        .map(({ key, value }) => [key.slice(namespace.length), value]);
       return Promise.resolve(Object.fromEntries(entries));
     },
-    populate,
+    import: (obj) => {
+      const entries = Object.entries(obj) //
+        .map(([key, value]) => [key.slice(namespace.length), value]);
+      populate(Object.fromEntries(entries));
+      return Promise.resolve(true);
+    },
   };
 };
 

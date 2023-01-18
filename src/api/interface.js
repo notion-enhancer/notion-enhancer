@@ -50,7 +50,6 @@ const encodeSvg = (svg) =>
       svg = hToString(type, props, ...children);
     }
     // https://antfu.me/posts/icons-in-pure-css
-    if (!svg) console.log(icon);
     const dataUri = `url("data:image/svg+xml;utf8,${encodeSvg(svg)}")`;
     if (mode === "auto") mode = undefined;
     mode ??= svg.includes("currentColor") ? "mask" : "bg";

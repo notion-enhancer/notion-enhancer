@@ -6,15 +6,18 @@
 
 import { getState, setState, useState } from "./state.mjs";
 import {
+  Button,
+  Description,
   Sidebar,
   SidebarSection,
   SidebarButton,
+  List,
   Footer,
   View,
-  List,
+  Input,
   Mod,
-  Button,
   Option,
+  Profile,
 } from "./components.mjs";
 
 const compatibleMods = (mods) => {
@@ -80,8 +83,8 @@ const renderSidebar = (items, categories) => {
   renderOptions = async (mod) => {
     const { html, platform, getProfile } = globalThis.__enhancerApi,
       { optionDefaults, initDatabase } = globalThis.__enhancerApi,
-      profile = await getProfile();
-    const db = initDatabase([profile, mod.id], await optionDefaults(mod.id));
+      profile = await getProfile(),
+      db = initDatabase([profile, mod.id], await optionDefaults(mod.id));
     let options = mod.options.reduce((options, opt, i) => {
       if (!opt.key && (opt.type !== "heading" || !opt.label)) return options;
       if (opt.platforms && !opt.platforms.includes(platform)) return options;
@@ -105,7 +108,84 @@ const renderSidebar = (items, categories) => {
     });
     return Promise.all(options);
   },
-  renderMods = async (category, mods) => {
+  renderProfiles = async () => {
+    const { html, getProfile, initDatabase, reloadApp } =
+        globalThis.__enhancerApi,
+      db = initDatabase();
+
+    let profileIds;
+    const $list = html`<ul></ul>`,
+      activeProfile = await getProfile(),
+      renderProfile = (id) => {
+        const profile = initDatabase([id]);
+        return html`<${Profile}
+          getName=${async () =>
+            (await profile.get("profileName")) ??
+            (id === "default" ? "default" : "")}
+          setName=${(name) => profile.set("profileName", name)}
+          isActive=${id === activeProfile}
+          setActive=${async (active) => {
+            if (!active) return;
+            await db.set("activeProfile", id);
+            reloadApp();
+          }}
+          exportData=${profile.export}
+          importData=${async (data) => {
+            await profile.import(data);
+            setState({ rerender: true, databaseUpdated: true });
+          }}
+        />`;
+      },
+      refreshProfiles = async () => {
+        profileIds = (await db.get("profileIds")) ?? ["default"];
+        const profiles = await Promise.all(profileIds.map(renderProfile));
+        $list.replaceChildren(...profiles);
+      },
+      addProfile = async (name) => {
+        const id = crypto.randomUUID();
+        await db.set("profileIds", [...profileIds, id]);
+        const profile = initDatabase([id]);
+        await profile.set("profileName", name);
+        refreshProfiles();
+      };
+    useState(["rerender"], () => {
+      refreshProfiles();
+    });
+
+    // todo: deleting profiles inc. clearing db keys,
+    // throwing errors on invalid json upload
+
+    const $input = html`<${Input}
+      size="md"
+      type="text"
+      icon="file-cog"
+      onkeydown=${(event) => {
+        if (event.key === "Enter") {
+          if (!$input.children[0].value) return;
+          addProfile($input.children[0].value);
+          $input.children[0].value = "";
+        }
+      }}
+    />`;
+    return html`<div>
+      ${$list}
+      <div class="flex items-center my-[14px] gap-[8px]">
+        ${$input}
+        <${Button}
+          size="sm"
+          icon="plus"
+          onclick=${() => {
+            if (!$input.children[0].value) return;
+            addProfile($input.children[0].value);
+            $input.children[0].value = "";
+          }}
+        >
+          Add Profile
+        <//>
+      </div>
+    </div>`;
+  },
+  renderMods = async (mods) => {
     const { html, getProfile, initDatabase } = globalThis.__enhancerApi,
       enabledMods = initDatabase([await getProfile(), "enabledMods"]);
     mods = mods
@@ -205,14 +285,25 @@ const render = async () => {
   // view wrapper necessary for transitions
   const $views = html`<div class="grow relative overflow-hidden">
     <${View} id="welcome">welcome<//>
-    <${View} id="core">${await renderOptions(await getCore())}<//>
+    <${View} id="core">
+      ${await renderOptions(await getCore())}
+      <${Option} type="heading" label="Profiles" />
+      <${Description}>
+        Profiles can be used to preserve and switch between notion-enhancer
+        configurations.
+      <//>
+      ${await renderProfiles()}
+    <//>
   </div>`;
-  for (const { id, title, description, mods } of categories) {
+  for (const { id, description, mods } of categories) {
     const $list = await renderList(id, mods, description),
-      $mods = await renderMods({ id, title }, mods);
+      $mods = await renderMods(mods);
     $views.append(html`<${View} id=${id}>${$list}<//>`, ...$mods);
   }
 
+  // footer appears only if buttons are visible
+  // - the matching category button appears on a mod's options page
+  // - the reload button appears if any options are changed
   categories.forEach((c) => {
     c.button = html`<${Button}
       icon="chevron-left"
@@ -237,7 +328,7 @@ const render = async () => {
     updateFooter = () => {
       const buttons = [...$footer.children],
         renderFooter = buttons.some(($el) => $el.style.display === "");
-      $main.style.height = renderFooter ? "100%" : "calc(100% + 65px)";
+      $main.style.height = renderFooter ? "100%" : "calc(100% + 33px)";
     };
   useState(["view"], ([view]) => {
     for (const { mods, button } of categories) {

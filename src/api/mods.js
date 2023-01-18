@@ -37,8 +37,10 @@ const getMods = async () => {
 
 const getProfile = async () => {
     const { initDatabase } = globalThis.__enhancerApi,
-      currentProfile = await initDatabase().get("currentProfile");
-    return currentProfile ?? "default";
+      db = initDatabase();
+    let activeProfile = await db.get("activeProfile");
+    activeProfile ??= await db.get("profileIds")?.[0];
+    return activeProfile ?? "default";
   },
   isEnabled = async (id) => {
     const { platform } = globalThis.__enhancerApi,

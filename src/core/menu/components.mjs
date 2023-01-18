@@ -6,6 +6,70 @@
 
 import { setState, useState, getState } from "./state.mjs";
 
+// generic
+
+function _Button(
+  { type, size, icon, primary, class: cls = "", ...props },
+  ...children
+) {
+  const { html } = globalThis.__enhancerApi,
+    iconSize =
+      size === "sm" && children.length
+        ? "w-[14px] h-[14px]"
+        : "w-[18px] h-[18px]";
+  return html`<${type}
+    class="flex gap-[8px] items-center px-[12px] shrink-0
+    rounded-[4px] ${size === "sm" ? "h-[28px]" : "h-[32px]"}
+    transition duration-[20ms] ${primary
+      ? `text-[color:var(--theme--accent-primary_contrast)]
+      font-medium bg-[color:var(--theme--accent-primary)]
+      hover:bg-[color:var(--theme--accent-primary\\_hover)]`
+      : `border-(& [color:var(--theme--fg-border)])
+      hover:bg-[color:var(--theme--bg-hover)]`} ${cls}"
+    ...${props}
+  >
+    ${icon ? html`<i class="i-${icon} ${iconSize}"></i>` : ""}
+    <span class="text-[${size === "sm" ? "13" : "14"}px] empty:hidden">
+      ${children}
+    </span>
+  <//>`;
+}
+
+function Button(props, ...children) {
+  const { html } = globalThis.__enhancerApi;
+  return html`<${_Button} type="button" ...${props}>${children}<//>`;
+}
+
+function Label(props, ...children) {
+  const { html } = globalThis.__enhancerApi;
+  return html`<${_Button} type="label" ...${props}>${children}<//>`;
+}
+
+function Description({ class: cls = "", ...props }, ...children) {
+  const { html } = globalThis.__enhancerApi;
+  return html`<p
+    class="notion-enhancer--menu-description leading-[16px]
+    text-([12px] [color:var(--theme--fg-secondary)]) ${cls}"
+    ...${props}
+  >
+    ${children}
+  </p>`;
+}
+
+function Icon({ icon, ...props }) {
+  const { html } = globalThis.__enhancerApi;
+  return html`<button
+    class="h-[14px] transition duration-[20ms]
+    text-[color:var(--theme--fg-secondary)]
+    hover:text-[color:var(--theme--fg-primary)]"
+    ...${props}
+  >
+    <i class="i-${icon} w-[14px] h-[14px]"></i>
+  </button>`;
+}
+
+// layout
+
 function Sidebar({}, ...children) {
   const { html } = globalThis.__enhancerApi;
   return html`<aside
@@ -55,6 +119,15 @@ function SidebarButton({ id, icon, ...props }, ...children) {
   return $el;
 }
 
+function List({ id, description }, ...children) {
+  const { html } = globalThis.__enhancerApi;
+  return html`<div class="flex flex-col gap-y-[14px]">
+    <${Search} type=${id} items=${children} />
+    <${Description} innerHTML=${description} />
+    ${children}
+  </div>`;
+}
+
 function Footer({}, ...children) {
   const { html } = globalThis.__enhancerApi;
   return html`<div
@@ -81,15 +154,20 @@ function View({ id }, ...children) {
       nowActive = view.toLowerCase() === id.toLowerCase();
     switch (transition) {
       case "fade": {
-        const duration = 100;
-        $el.style.transition = `opacity ${duration}ms`;
-        $el.style.opacity = "0";
+        const duration = 100,
+          cssTransition = `opacity ${duration}ms`;
         if (isVisible && !nowActive) {
+          $el.style.transition = cssTransition;
+          $el.style.opacity = "0";
           setTimeout(() => ($el.style.display = "none"), duration);
         } else if (!isVisible && nowActive) {
           setTimeout(() => {
+            $el.style.opacity = "0";
             $el.style.display = "";
-            requestIdleCallback(() => ($el.style.opacity = "1"));
+            requestIdleCallback(() => {
+              $el.style.transition = cssTransition;
+              $el.style.opacity = "1";
+            });
           }, duration);
         }
         break;
@@ -133,203 +211,16 @@ function View({ id }, ...children) {
   return $el;
 }
 
-function List({ id, description }, ...children) {
-  const { html } = globalThis.__enhancerApi;
-  return html`<div class="flex flex-col gap-y-[14px]">
-    <${Search} type=${id} items=${children} />
-    <p
-      class="notion-enhancer--menu-description
-      text-([12px] [color:var(--theme--fg-secondary)])"
-      innerHTML=${description}
-    ></p>
-    ${children}
-  </div>`;
-}
+// input
 
-function Search({ type, items, oninput, ...props }) {
-  const { html, addKeyListener } = globalThis.__enhancerApi,
-    $search = html`<${Input}
-      size="lg"
-      type="text"
-      placeholder="Search ${items.length} ${items.length === 1
-        ? type.replace(/s$/, "")
-        : type} (Press '/' to focus)"
-      icon="search"
-      oninput=${(event) => {
-        oninput?.(event);
-        const query = event.target.value.toLowerCase();
-        for (const $item of items) {
-          const matches = $item.innerText.toLowerCase().includes(query);
-          $item.style.display = matches ? "" : "none";
-        }
-      }}
-      ...${props}
-    />`;
-  addKeyListener("/", (event) => {
-    if (document.activeElement?.nodeName === "INPUT") return;
-    // offsetParent == null if parent has "display: none;"
-    if ($search.offsetParent) {
-      event.preventDefault();
-      $search.focus();
-    }
-  });
-  return $search;
-}
-
-function Mod({
-  id,
-  name,
-  version,
-  description,
-  thumbnail,
-  tags = [],
-  authors,
-  options = [],
-  _get,
-  _set,
-  _src,
+function Input({
+  size,
+  icon,
+  transparent,
+  onrerender,
+  class: cls = "",
+  ...props
 }) {
-  const { html, enhancerUrl } = globalThis.__enhancerApi,
-    toggleId = Math.random().toString(36).slice(2, 5),
-    $thumbnail = thumbnail
-      ? html`<img
-          src="${enhancerUrl(`${_src}/${thumbnail}`)}"
-          class="rounded-[4px] mr-[12px] h-[74px] my-auto"
-        />`
-      : "",
-    $options = options.length
-      ? html`<button
-          class="flex items-center p-[4px] rounded-[4px] transition
-          text-[color:var(--theme--fg-secondary)] my-auto mr-[8px]
-          duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
-          onclick=${() => setState({ transition: "slide-to-right", view: id })}
-        >
-          <i class="i-settings w-[18px] h-[18px]"></i>
-        </button>`
-      : "";
-  return html`<label
-    for=${toggleId}
-    class="notion-enhancer--menu-mod flex items-stretch rounded-[4px]
-    bg-[color:var(--theme--bg-secondary)] w-full py-[18px] px-[16px]
-    border border-[color:var(--theme--fg-border)] cursor-pointer
-    transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
-  >
-    ${$thumbnail}
-    <div class="flex flex-col max-w-[50%]">
-      <div class="flex items-center text-[14px] mb-[5px]">
-        <h3 class="my-0">${name}</h3>
-        ${[`v${version}`, ...tags].map((tag) => {
-          return html`<span
-            class="text-([12px] [color:var(--theme--fg-secondary)])
-            ml-[8px] py-[2px] px-[6px] leading-tight tracking-wide
-            rounded-[3px] bg-[color:var(--theme--bg-hover)]"
-          >
-            ${tag}
-          </span>`;
-        })}
-      </div>
-      <p
-        class="notion-enhancer--menu-description leading-[16px]
-        mb-[6px] text-([12px] [color:var(--theme--fg-secondary)])"
-        innerHTML=${description}
-      ></p>
-      <div class="mt-auto flex gap-x-[8px] text-[12px] leading-[16px]">
-        ${authors.map((author) => {
-          return html`<a href=${author.homepage} class="flex items-center">
-            <img src=${author.avatar} alt="" class="h-[12px] rounded-full" />
-            <span class="ml-[6px]">${author.name}</span>
-          </a>`;
-        })}
-      </div>
-    </div>
-    <div class="flex ml-auto">
-      ${$options}
-      <div class="my-auto scale-[1.15]">
-        <${Toggle} id=${toggleId} ...${{ _get, _set }} />
-      </div>
-    </div>
-  </label>`;
-}
-
-function Option({ type, value, description, _get, _set, ...props }) {
-  const { html } = globalThis.__enhancerApi,
-    camelToSentenceCase = (string) =>
-      string[0].toUpperCase() +
-      string.replace(/[A-Z]/g, (match) => ` ${match.toLowerCase()}`).slice(1);
-
-  let $input;
-  const label = props.label ?? camelToSentenceCase(props.key);
-  switch (type) {
-    case "heading":
-      return html`<h4
-        class="notion-enhancer--menu-heading font-semibold
-        mb-[16px] mt-[48px] first:mt-0 pb-[12px] text-[16px]
-        border-b-(& [color:var(--theme--fg-border)])"
-      >
-        ${label}
-      </h4>`;
-    case "text":
-      $input = html`<${TextInput} ...${{ _get, _set }} />`;
-      break;
-    case "number":
-      $input = html`<${NumberInput} ...${{ _get, _set }} />`;
-      break;
-    case "hotkey":
-      $input = html`<${HotkeyInput} ...${{ _get, _set }} />`;
-      break;
-    case "color":
-      $input = html`<${ColorInput} ...${{ _get, _set }} />`;
-      break;
-    case "file":
-      $input = html`<${FileInput}
-        extensions="${props.extensions}"
-        ...${{ _get, _set }}
-      />`;
-      break;
-    case "select":
-      $input = html`<${Select} values=${props.values} ...${{ _get, _set }} />`;
-      break;
-    case "toggle":
-      $input = html`<${Toggle} ...${{ _get, _set }} />`;
-  }
-  return html`<${type === "toggle" ? "label" : "div"}
-    class="notion-enhancer--menu-option flex items-center justify-between
-    mb-[18px] ${type === "toggle" ? "cursor-pointer" : ""}"
-  >
-    <div class="flex flex-col ${type === "text" ? "w-full" : "mr-[10%]"}">
-      <h5 class="text-[14px] mb-[2px] mt-0">${label}</h5>
-      ${type === "text" ? $input : ""}
-      <p
-        class="notion-enhancer--menu-description leading-[16px]
-        text-([12px] [color:var(--theme--fg-secondary)])"
-        innerHTML=${description}
-      ></p>
-    </div>
-    ${type === "text" ? "" : $input}
-  <//>`;
-}
-
-function Button({ primary, icon, class: cls, ...props }, children) {
-  const { html } = globalThis.__enhancerApi,
-    $icon = icon
-      ? html`<i class="i-${icon} w-[18px] h-[18px] mr-[8px]"></i>`
-      : "";
-  return html`<button
-    class="flex items-center h-[32px] px-[12px] ${cls}
-    rounded-[4px] transition duration-[20ms] ${primary
-      ? `text-[color:var(--theme--accent-primary_contrast)]
-      font-medium bg-[color:var(--theme--accent-primary)]
-      hover:bg-[color:var(--theme--accent-primary\\_hover)]`
-      : `border-(& [color:var(--theme--fg-border)])
-      hover:bg-[color:var(--theme--bg-hover)]`}"
-    ...${props}
-  >
-    ${$icon}
-    <span class="text-[14px]">${children}</span>
-  </button>`;
-}
-
-function Input({ size, icon, transparent, onrerender, ...props }) {
   const { html } = globalThis.__enhancerApi,
     $input = html`<input
       class="${size === "lg"
@@ -350,13 +241,13 @@ function Input({ size, icon, transparent, onrerender, ...props }) {
     class="notion-enhancer--menu-input
     relative overflow-hidden rounded-[4px]
     focus-within:ring-(& [color:var(--theme--accent-primary)])
-    ${size === "lg" ? "block w-full" : ""}
-    ${size === "md" ? "block w-full mt-[4px] mb-[8px]" : ""}
-    ${size === "sm" ? "shrink-0 w-[192px]" : ""}
+    ${size === "lg" ? "h-[36px] block w-full" : ""}
+    ${size === "md" ? "h-[28px] block w-full" : ""}
+    ${size === "sm" ? "h-[28px] shrink-0 w-[192px]" : ""}
     bg-${transparent
       ? `([image:repeating-linear-gradient(45deg,#aaa_25%,transparent_25%,transparent_75%,#aaa_75%,#aaa),repeating-linear-gradient(45deg,#aaa_25%,#fff_25%,#fff_75%,#aaa_75%,#aaa)]
          [position:0_0,4px_4px] [size:8px_8px])`
-      : "[color:var(--theme--bg-hover)]"}"
+      : "[color:var(--theme--bg-hover)]"} ${cls}"
     >${$input}${$icon}
   </label>`;
 }
@@ -367,6 +258,7 @@ function TextInput({ _get, _set, onchange, ...props }) {
     size="md"
     type="text"
     icon="text-cursor"
+    class="mt-[4px] mb-[8px]"
     onchange=${(event) => {
       onchange?.(event);
       _set?.(event.target.value);
@@ -481,18 +373,15 @@ function ColorInput({ _get, _set, oninput, ...props }) {
 function FileInput({ extensions, _get, _set, ...props }) {
   const { html } = globalThis.__enhancerApi,
     $filename = html`<span>Upload a file</span>`,
-    $clear = html`<button
-      class="ml-[8px] h-[14px] cursor-pointer text-[color:var(--theme--fg-secondary)]
-      transition duration-[20ms] hover:text-[color:var(--theme--fg-primary)] flex"
+    $clear = html`<${Icon}
+      icon="x"
       style="display: none"
       onclick=${() => {
         $filename.innerText = "Upload a file";
         $clear.style.display = "none";
         _set?.({ filename: "", content: "" });
       }}
-    >
-      <i class="i-x w-[14px] h-[14px]"></i>
-    </button>`;
+    />`;
 
   const { onchange } = props;
   props.onchange = (event) => {
@@ -516,7 +405,8 @@ function FileInput({ extensions, _get, _set, ...props }) {
   });
 
   return html`<div
-    class="notion-enhancer--menu-file-input shrink-0 flex items-center"
+    class="notion-enhancer--menu-file-input
+    shrink-0 flex items-center gap-[8px]"
   >
     <label
       tabindex="0"
@@ -659,7 +549,6 @@ function SelectOption({ value, _get, _set, ...props }) {
 function Toggle({ _get, _set, ...props }) {
   const { html } = globalThis.__enhancerApi,
     $input = html`<input
-      tabindex="-1"
       type="checkbox"
       class="hidden checked:sibling:children:(
       bg-[color:var(--theme--accent-primary)] after:translate-x-[12px])"
@@ -695,14 +584,289 @@ function Toggle({ _get, _set, ...props }) {
   </div>`;
 }
 
+function Checkbox({ _get, _set, ...props }) {
+  const { html } = globalThis.__enhancerApi,
+    $input = html`<input
+      type="checkbox"
+      class="hidden checked:sibling:(px-[1px]
+        bg-[color:var(--theme--accent-primary)])
+        not-checked:sibling:(children:text-transparent
+          border-(& [color:var(--theme--fg-primary)])
+          hover:bg-[color:var(--theme--bg-hover)])"
+      ...${props}
+    />`;
+
+  const { onchange } = $input;
+  $input.onchange = (event) => {
+    onchange?.(event);
+    _set?.($input.checked);
+  };
+  useState(["rerender"], () => {
+    _get?.().then((checked) => ($input.checked = checked));
+  });
+
+  return html`<label tabindex="0" class="cursor-pointer">
+    ${$input}
+    <div class="flex items-center h-[16px] transition duration-[200ms]">
+      <i class="i-check w-[14px] h-[14px]"></i>
+    </div>
+  </label>`;
+}
+
+function Search({ type, items, oninput, ...props }) {
+  const { html, addKeyListener } = globalThis.__enhancerApi,
+    $search = html`<${Input}
+      size="lg"
+      type="text"
+      placeholder="Search ${items.length} ${items.length === 1
+        ? type.replace(/s$/, "")
+        : type} (Press '/' to focus)"
+      icon="search"
+      oninput=${(event) => {
+        oninput?.(event);
+        const query = event.target.value.toLowerCase();
+        for (const $item of items) {
+          const matches = $item.innerText.toLowerCase().includes(query);
+          $item.style.display = matches ? "" : "none";
+        }
+      }}
+      ...${props}
+    />`;
+  addKeyListener("/", (event) => {
+    if (document.activeElement?.nodeName === "INPUT") return;
+    // offsetParent == null if parent has "display: none;"
+    if ($search.offsetParent) {
+      event.preventDefault();
+      $search.focus();
+    }
+  });
+  return $search;
+}
+
+// representative
+
+function Mod({
+  id,
+  name,
+  version,
+  description,
+  thumbnail,
+  tags = [],
+  authors,
+  options = [],
+  _get,
+  _set,
+  _src,
+}) {
+  const { html, enhancerUrl } = globalThis.__enhancerApi,
+    toggleId = Math.random().toString(36).slice(2, 5),
+    $thumbnail = thumbnail
+      ? html`<img
+          src="${enhancerUrl(`${_src}/${thumbnail}`)}"
+          class="rounded-[4px] mr-[12px] h-[74px] my-auto"
+        />`
+      : "",
+    $options = options.length
+      ? html`<button
+          class="flex items-center p-[4px] rounded-[4px] transition
+          text-[color:var(--theme--fg-secondary)] my-auto mr-[8px]
+          duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]
+          active:text-[color:var(--theme--fg-primary)]"
+          onclick=${() => setState({ transition: "slide-to-right", view: id })}
+        >
+          <i class="i-settings w-[18px] h-[18px]"></i>
+        </button>`
+      : "";
+  return html`<label
+    for=${toggleId}
+    class="notion-enhancer--menu-mod flex items-stretch rounded-[4px]
+    bg-[color:var(--theme--bg-secondary)] w-full py-[18px] px-[16px]
+    border border-[color:var(--theme--fg-border)] cursor-pointer
+    transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
+  >
+    ${$thumbnail}
+    <div class="flex flex-col max-w-[50%]">
+      <div class="flex items-center text-[14px] mb-[5px]">
+        <h3 class="my-0">${name}</h3>
+        ${[`v${version}`, ...tags].map((tag) => {
+          return html`<span
+            class="text-([12px] [color:var(--theme--fg-secondary)])
+            ml-[8px] py-[2px] px-[6px] leading-tight tracking-wide
+            rounded-[3px] bg-[color:var(--theme--bg-hover)]"
+          >
+            ${tag}
+          </span>`;
+        })}
+      </div>
+      <${Description} class="mb-[6px]" innerHTML=${description} />
+      <div class="mt-auto flex gap-x-[8px] text-[12px] leading-[16px]">
+        ${authors.map((author) => {
+          return html`<a href=${author.homepage} class="flex items-center">
+            <img src=${author.avatar} alt="" class="h-[12px] rounded-full" />
+            <span class="ml-[6px]">${author.name}</span>
+          </a>`;
+        })}
+      </div>
+    </div>
+    <div class="flex ml-auto">
+      ${$options}
+      <div class="my-auto scale-[1.15]">
+        <${Toggle} id=${toggleId} ...${{ _get, _set }} />
+      </div>
+    </div>
+  </label>`;
+}
+
+function Option({ type, value, description, _get, _set, ...props }) {
+  const { html } = globalThis.__enhancerApi,
+    camelToSentenceCase = (string) =>
+      string[0].toUpperCase() +
+      string.replace(/[A-Z]/g, (match) => ` ${match.toLowerCase()}`).slice(1);
+
+  let $input;
+  const label = props.label ?? camelToSentenceCase(props.key);
+  switch (type) {
+    case "heading":
+      return html`<h4
+        class="notion-enhancer--menu-heading font-semibold
+        mb-[16px] mt-[48px] first:mt-0 pb-[12px] text-[16px]
+        border-b-(& [color:var(--theme--fg-border)])"
+      >
+        ${label}
+      </h4>`;
+    case "text":
+      $input = html`<${TextInput} ...${{ _get, _set }} />`;
+      break;
+    case "number":
+      $input = html`<${NumberInput} ...${{ _get, _set }} />`;
+      break;
+    case "hotkey":
+      $input = html`<${HotkeyInput} ...${{ _get, _set }} />`;
+      break;
+    case "color":
+      $input = html`<${ColorInput} ...${{ _get, _set }} />`;
+      break;
+    case "file":
+      $input = html`<${FileInput}
+        extensions="${props.extensions}"
+        ...${{ _get, _set }}
+      />`;
+      break;
+    case "select":
+      $input = html`<${Select} values=${props.values} ...${{ _get, _set }} />`;
+      break;
+    case "toggle":
+      $input = html`<${Toggle} ...${{ _get, _set }} />`;
+  }
+  return html`<${type === "toggle" ? "label" : "div"}
+    class="notion-enhancer--menu-option flex items-center justify-between
+    mb-[18px] ${type === "toggle" ? "cursor-pointer" : ""}"
+  >
+    <div class="flex flex-col ${type === "text" ? "w-full" : "mr-[10%]"}">
+      <h5 class="text-[14px] mb-[2px] mt-0">${label}</h5>
+      ${type === "text" ? $input : ""}
+      <${Description} innerHTML=${description} />
+    </div>
+    ${type === "text" ? "" : $input}
+  <//>`;
+}
+
+function Profile({
+  getName,
+  setName,
+  isActive,
+  setActive,
+  exportData,
+  importData,
+  ...props
+}) {
+  const { html } = globalThis.__enhancerApi,
+    uploadProfile = (event) => {
+      const file = event.target.files[0],
+        reader = new FileReader();
+      reader.onload = async (progress) => {
+        try {
+          const res = JSON.parse(progress.currentTarget.result);
+          importData(res);
+        } catch {
+          // throw error
+        }
+      };
+      reader.readAsText(file);
+    },
+    downloadProfile = async () => {
+      const now = new Date(),
+        year = now.getFullYear().toString(),
+        month = (now.getMonth() + 1).toString().padStart(2, "0"),
+        day = now.getDate().toString().padStart(2, "0"),
+        hour = now.getHours().toString().padStart(2, "0"),
+        min = now.getMinutes().toString().padStart(2, "0"),
+        sec = now.getSeconds().toString().padStart(2, "0"),
+        date = year + month + day + hour + min + sec;
+
+      const $a = html`<a
+        class="hidden"
+        download="notion-enhancer_${await getName()}_${date}.json"
+        href="data:text/plain;charset=utf-8,${encodeURIComponent(
+          JSON.stringify(await exportData())
+        )}"
+      />`;
+      document.body.append($a);
+      $a.click();
+      $a.remove();
+    };
+
+  return html`<li class="flex items-center my-[14px] gap-[8px]" ...${props}>
+    <${Checkbox}
+      checked=${isActive}
+      disabled=${isActive}
+      ...${{ _set: setActive }}
+    />
+    <${Input}
+      size="md"
+      type="text"
+      icon="file-cog"
+      onchange=${(event) => setName(event.target.value)}
+      onrerender=${($input) => {
+        getName().then((value) => ($input.value = value));
+      }}
+    />
+    <${Label} size="sm" icon="import">
+      <input
+        type="file"
+        class="hidden"
+        accept=".json"
+        onchange=${uploadProfile}
+      />
+      Import
+    <//>
+    <${Button} size="sm" icon="upload" onclick=${downloadProfile}> Export <//>
+    <${Icon} icon="x" />
+  </li>`;
+}
+
 export {
+  Button,
+  Label,
+  Description,
+  Icon,
   Sidebar,
   SidebarSection,
   SidebarButton,
+  List,
   Footer,
   View,
-  List,
+  Input,
+  TextInput,
+  NumberInput,
+  HotkeyInput,
+  ColorInput,
+  FileInput,
+  Select,
+  Toggle,
+  Checkbox,
+  Search,
   Mod,
-  Button,
   Option,
+  Profile,
 };
