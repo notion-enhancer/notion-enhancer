@@ -31,10 +31,12 @@ const readFile = (file) => {
     return require(path.resolve(`${__dirname}/../${file}`));
   },
   reloadApp = () => {
-    const { app } = require("electron"),
-      args = process.argv.slice(1).filter((arg) => arg !== "--startup");
-    app.relaunch({ args });
-    app.exit();
+    const { app, ipcRenderer } = require("electron");
+    if (app) {
+      const args = process.argv.slice(1).filter((arg) => arg !== "--startup");
+      app.relaunch({ args });
+      app.exit();
+    } else ipcRenderer.send("notion-enhancer", "reload-app");
   };
 
 const sendMessage = (channel, message) => {

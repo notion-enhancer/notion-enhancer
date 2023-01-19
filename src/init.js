@@ -26,6 +26,8 @@ if (isElectron()) {
   } = globalThis.__enhancerApi;
 
   module.exports = async (target, __exports, __eval) => {
+    if (target === "main/main") require("./worker.js");
+
     // clientStyles
     // clientScripts
     if (target === "renderer/preload") {

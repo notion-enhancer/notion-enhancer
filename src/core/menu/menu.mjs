@@ -411,8 +411,6 @@ useState(["rerender"], async () => {
     // the notion:// protocol csp bypass allows scripts to
     // set iframe globals via $iframe.contentWindow
   }
-  // load stylesheets from enabled themes
-  await import("../../load.mjs");
-  // wait for api globals to be available
-  requestIdleCallback(() => render());
+  // load stylesheets and api globals
+  (await import("../../load.mjs")).default.then(render);
 });

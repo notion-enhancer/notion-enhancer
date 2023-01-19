@@ -6,7 +6,7 @@
 
 "use strict";
 
-(async () => {
+export default (async () => {
   // prettier-ignore
   const { enhancerUrl } = globalThis.__enhancerApi,
   isMenu = location.href.startsWith(enhancerUrl("/core/menu/index.html")),
@@ -17,13 +17,15 @@
   // avoid repeat logging
   if (!isMenu) console.log("notion-enhancer: loading...");
 
-  await import("./assets/icons.svg.js");
-  await import("./vendor/twind.min.js");
-  await import("./vendor/lucide.min.js");
-  await import("./vendor/htm.min.js");
+  await Promise.all([
+    import("./assets/icons.svg.js"),
+    import("./vendor/twind.min.js"),
+    import("./vendor/lucide.min.js"),
+    import("./vendor/htm.min.js"),
+    import("./api/events.js"),
+    import("./api/mods.js"),
+  ]);
   await import("./api/interface.js");
-  await import("./api/events.js");
-  await import("./api/mods.js");
   const { getMods, getProfile } = globalThis.__enhancerApi,
     { isEnabled, optionDefaults, initDatabase } = globalThis.__enhancerApi;
 
