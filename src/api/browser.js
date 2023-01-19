@@ -39,38 +39,35 @@ const sendMessage = (channel, message) => {
 const initDatabase = (namespace, fallbacks = {}) => {
   if (Array.isArray(namespace)) namespace = namespace.join("__");
   namespace = namespace ? namespace + "__" : "";
+  const namespaceify = (key) =>
+    key.startsWith(namespace) ? key : namespace + key;
   return {
     get: async (key) => {
       const fallback = fallbacks[key];
-      key = key.startsWith(namespace) ? key : namespace + key;
-      return new Promise((res, _rej) => {
-        chrome.storage.local.get([key], ({ [key]: value }) => {
-          return res(value ?? fallback);
-        });
-      });
+      key = namespaceify(key);
+      return (await chrome.storage.local.get([key]))[key] ?? fallback;
     },
-    set: async (key, value) => {
-      key = key.startsWith(namespace) ? key : namespace + key;
-      return new Promise((res, _rej) => {
-        chrome.storage.local.set({ [key]: value }, () => res(true));
-      });
+    set: (key, value) => {
+      key = namespaceify(key);
+      return chrome.storage.local.set({ [key]: value });
+    },
+    remove: (keys) => {
+      keys = Array.isArray(keys) ? keys : [keys];
+      keys = keys.map(namespaceify);
+      return chrome.storage.local.remove(keys);
     },
     export: async () => {
-      const obj = await new Promise((res, _rej) => {
-        chrome.storage.local.get((value) => res(value));
-      });
+      const obj = await chrome.storage.local.get();
       if (!namespace) return obj;
       const entries = Object.entries(obj)
         .filter(([key]) => key.startsWith(namespace))
         .map(([key, value]) => [key.slice(namespace.length), value]);
       return Object.fromEntries(entries);
     },
-    import: async (obj) => {
+    import: (obj) => {
       const entries = Object.entries(obj) //
         .map(([key, value]) => [namespace + key, value]);
-      return new Promise((res, _rej) => {
-        chrome.storage.local.set(Object.fromEntries(entries), () => res(true));
-      });
+      return chrome.storage.local.set(Object.fromEntries(entries));
     },
   };
 };

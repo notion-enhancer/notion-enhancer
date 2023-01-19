@@ -4,13 +4,7 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import {
-  getState,
-  setState,
-  useState,
-  setEnabled,
-  modDatabase,
-} from "./state.mjs";
+import { getState, setState, useState } from "./state.mjs";
 import {
   Button,
   Description,
@@ -72,7 +66,7 @@ const renderSidebar = (items, categories) => {
     return $sidebar;
   },
   renderList = async (id, mods, description) => {
-    const { html, isEnabled } = globalThis.__enhancerApi;
+    const { html, isEnabled, setEnabled } = globalThis.__enhancerApi;
     mods = mods.map(async (mod) => {
       const _get = () => isEnabled(mod.id),
         _set = async (enabled) => {
@@ -86,7 +80,7 @@ const renderSidebar = (items, categories) => {
     <//>`;
   },
   renderOptions = async (mod) => {
-    const { html, platform, getProfile } = globalThis.__enhancerApi;
+    const { html, platform, modDatabase } = globalThis.__enhancerApi;
     let options = mod.options.reduce((options, opt) => {
       if (!opt.key && (opt.type !== "heading" || !opt.label)) return options;
       if (opt.platforms && !opt.platforms.includes(platform)) return options;
@@ -116,14 +110,26 @@ const renderSidebar = (items, categories) => {
       db = initDatabase(),
       $list = html`<ul></ul>`,
       renderProfile = (id) => {
-        const profile = initDatabase([id]);
+        const profile = initDatabase([id]),
+          isActive = async () => id === (await getProfile()),
+          deleteProfile = async () => {
+            const keys = Object.keys(await profile.export());
+            profileIds.splice(profileIds.indexOf(id), 1);
+            await db.set("profileIds", profileIds);
+            await profile.remove(keys);
+            if (isActive()) {
+              await db.remove("activeProfile");
+              setState({ databaseUpdated: true });
+            }
+            setState({ rerender: true });
+          };
         return html`<${Profile}
           id=${id}
           getName=${async () =>
             (await profile.get("profileName")) ??
             (id === "default" ? "default" : "")}
           setName=${(name) => profile.set("profileName", name)}
-          isActive=${async () => id === (await getProfile())}
+          isActive=${isActive}
           setActive=${async () => {
             await db.set("activeProfile", id);
             setState({ rerender: true, databaseUpdated: true });
@@ -133,10 +139,12 @@ const renderSidebar = (items, categories) => {
             try {
               await profile.import(JSON.parse(json));
               setState({ rerender: true, databaseUpdated: true });
+              // success
             } catch {
               // error
             }
           }}
+          deleteProfile=${deleteProfile}
         />`;
       },
       refreshProfiles = async () => {
@@ -163,9 +171,6 @@ const renderSidebar = (items, categories) => {
         refreshProfiles();
       };
     useState(["rerender"], () => refreshProfiles());
-
-    // todo: deleting profiles inc. clearing db keys,
-    // throwing errors on invalid json upload
 
     const $input = html`<${Input}
       size="md"
@@ -198,7 +203,7 @@ const renderSidebar = (items, categories) => {
     </div>`;
   },
   renderMods = async (mods) => {
-    const { html, isEnabled } = globalThis.__enhancerApi;
+    const { html, isEnabled, setEnabled } = globalThis.__enhancerApi;
     mods = mods
       .filter((mod) => {
         return mod.options?.filter((opt) => opt.type !== "heading").length;
@@ -325,8 +330,8 @@ const render = async () => {
     <//>`;
   });
   const $reload = html`<${Button}
-      primary
       class="ml-auto"
+      variant="primary"
       icon="refresh-cw"
       onclick=${() => reloadApp()}
       style="display: none"

@@ -51,7 +51,16 @@ const getProfile = async () => {
       enabledMods = initDatabase([await getProfile(), "enabledMods"]);
     return Boolean(await enabledMods.get(id));
   },
-  optionDefaults = async (id) => {
+  setEnabled = async (id, enabled) => {
+    const { initDatabase } = globalThis.__enhancerApi;
+    // prettier-ignore
+    return await initDatabase([
+      await getProfile(),
+      "enabledMods"
+    ]).set(id, enabled);
+  };
+
+const optionDefaults = async (id) => {
     const mod = (await getMods()).find((mod) => mod.id === id),
       optionEntries = mod.options
         .map((opt) => {
@@ -64,6 +73,10 @@ const getProfile = async () => {
         })
         .filter((opt) => opt);
     return Object.fromEntries(optionEntries);
+  },
+  modDatabase = async (id) => {
+    const { initDatabase } = globalThis.__enhancerApi;
+    return initDatabase([await getProfile(), id], await optionDefaults(id));
   };
 
 globalThis.__enhancerApi ??= {};
@@ -75,5 +88,7 @@ Object.assign(globalThis.__enhancerApi, {
   getIntegrations,
   getProfile,
   isEnabled,
+  setEnabled,
   optionDefaults,
+  modDatabase,
 });

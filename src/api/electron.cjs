@@ -50,6 +50,8 @@ let __db;
 const initDatabase = (namespace, fallbacks = {}) => {
   if (Array.isArray(namespace)) namespace = namespace.join("__");
   namespace = namespace ? namespace + "__" : "";
+  const namespaceify = (key) =>
+    key.startsWith(namespace) ? key : namespace + key;
 
   //   schema:
   // - ("profileIds") = $profileId[]
@@ -68,11 +70,11 @@ const initDatabase = (namespace, fallbacks = {}) => {
   init.run();
   __db = db;
 
-  // prettier-ignore
   const insert = db.prepare(`INSERT INTO ${table} (key, value) VALUES (?, ?)`),
-    // prettier-ignore
     update = db.prepare(`UPDATE ${table} SET value = ? WHERE key = ?`),
     select = db.prepare(`SELECT * FROM ${table} WHERE key = ? LIMIT 1`),
+    remove = db.prepare(`DELETE FROM ${table} WHERE key = ?`),
+    removeMany = db.transaction((arr) => arr.forEach((key) => remove.run(key))),
     dump = db.prepare(`SELECT * FROM ${table}`),
     populate = db.transaction((obj) => {
       for (const key in obj) {
@@ -85,7 +87,7 @@ const initDatabase = (namespace, fallbacks = {}) => {
     // wrap methods in promises for consistency w/ chrome.storage
     get: (key) => {
       const fallback = fallbacks[key];
-      key = key.startsWith(namespace) ? key : namespace + key;
+      key = namespaceify(key);
       try {
         const value = JSON.parse(select.get(key)?.value);
         return Promise.resolve(value ?? fallback);
@@ -93,11 +95,17 @@ const initDatabase = (namespace, fallbacks = {}) => {
       return Promise.resolve(fallback);
     },
     set: (key, value) => {
-      key = key.startsWith(namespace) ? key : namespace + key;
+      key = namespaceify(key);
       value = JSON.stringify(value);
       if (select.get(key) === undefined) {
         insert.run(key, value);
       } else update.run(value, key);
+      return Promise.resolve(true);
+    },
+    remove: (keys) => {
+      keys = Array.isArray(keys) ? keys : [keys];
+      keys = keys.map(namespaceify);
+      removeMany(keys);
       return Promise.resolve(true);
     },
     export: () => {

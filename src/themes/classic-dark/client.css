@@ -48,8 +48,8 @@ body.dark {
   --theme--accent-primary_contrast: #fff;
   --theme--accent-primary_transparent: rgb(46, 170, 220, 0.25);
   --theme--accent-secondary: #eb5757;
+  --theme--accent-secondary_hover: rgba(235, 87, 87, 0.1);
   --theme--accent-secondary_contrast: #fff;
-  --theme--accent-secondary_transparent: rgba(235, 87, 87, 0.1);
 
   --theme--scrollbar-track: rgba(202, 204, 206, 0.04);
   --theme--scrollbar-thumb: #474c50;

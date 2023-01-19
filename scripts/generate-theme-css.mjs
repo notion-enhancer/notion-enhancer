@@ -693,13 +693,13 @@ const styleAccents = () => {
       "rgb(211, 79, 67)",
       "rgb(205, 73, 69)",
     ],
+    secondaryHover = cssVariable({
+      name: "accent-secondary_hover",
+      value: "rgba(235, 87, 87, 0.1)",
+    }),
     secondaryContrast = cssVariable({
       name: "accent-secondary_contrast",
       value: "white",
-    }),
-    secondaryTransparent = cssVariable({
-      name: "accent-secondary_transparent",
-      value: "rgba(235, 87, 87, 0.1)",
     });
   overrideStyle({
     property: "color",
@@ -746,7 +746,7 @@ const styleAccents = () => {
   });
   overrideStyle({
     property: "background",
-    variable: secondaryTransparent,
+    variable: secondaryHover,
     specificity: ["value"],
   });
 

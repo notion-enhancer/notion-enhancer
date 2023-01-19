@@ -9,7 +9,7 @@ import { setState, useState, getState } from "./state.mjs";
 // generic
 
 function _Button(
-  { type, size, icon, primary, class: cls = "", ...props },
+  { type, size, variant, icon, class: cls = "", ...props },
   ...children
 ) {
   const { html } = globalThis.__enhancerApi,
@@ -20,10 +20,14 @@ function _Button(
   return html`<${type}
     class="flex gap-[8px] items-center px-[12px] shrink-0
     rounded-[4px] ${size === "sm" ? "h-[28px]" : "h-[32px]"}
-    transition duration-[20ms] ${primary
+    transition duration-[20ms] ${variant === "primary"
       ? `text-[color:var(--theme--accent-primary\\_contrast)]
       font-medium bg-[color:var(--theme--accent-primary)]
       hover:bg-[color:var(--theme--accent-primary\\_hover)]`
+      : variant === "secondary"
+      ? `text-[color:var(--theme--accent-secondary)]
+      border-(& [color:var(--theme--accent-secondary)])
+      hover:bg-[color:var(--theme--accent-secondary\\_hover)]`
       : `border-(& [color:var(--theme--fg-border)])
       hover:bg-[color:var(--theme--bg-hover)]`} ${cls}"
     ...${props}
@@ -209,6 +213,79 @@ function View({ id }, ...children) {
     }
   });
   return $el;
+}
+
+function Popup(
+  { for: $trigger, onopen, onclose, onbeforeclose, ...props },
+  ...children
+) {
+  const { html } = globalThis.__enhancerApi,
+    $popup = html`<div
+      class="notion-enhancer--menu-popup
+      group absolute top-0 left-0 w-full h-full
+      flex flex-col justify-center items-end
+      pointer-events-none z-20"
+      ...${props}
+    >
+      <div class="relative right-[100%]">
+        <div
+          class="bg-[color:var(--theme--bg-secondary)]
+          w-[250px] max-w-[calc(100vw-24px)] max-h-[70vh]
+          py-[6px] px-[4px] drop-shadow-xl overflow-y-auto
+          transition duration-[200ms] opacity-0 scale-95 rounded-[4px]
+          group-open:(pointer-events-auto opacity-100 scale-100)"
+        >
+          ${children}
+        </div>
+      </div>
+    </div>`;
+
+  const { onclick, onkeydown } = $trigger,
+    enableTabbing = () => {
+      $popup
+        .querySelectorAll("[tabindex]")
+        .forEach(($el) => ($el.tabIndex = 0));
+    },
+    disableTabbing = () => {
+      $popup
+        .querySelectorAll("[tabindex]")
+        .forEach(($el) => ($el.tabIndex = -1));
+    },
+    openPopup = () => {
+      $popup.setAttribute("open", true);
+      enableTabbing();
+      onopen?.();
+      setState({ popupOpen: true });
+    },
+    closePopup = () => {
+      $popup.removeAttribute("open");
+      disableTabbing();
+      onbeforeclose?.();
+      setTimeout(() => {
+        onclose?.();
+        setState({ popupOpen: false });
+      }, 200);
+    };
+  disableTabbing();
+  $trigger.onclick = (event) => {
+    onclick?.(event);
+    openPopup();
+  };
+  $trigger.onkeydown = (event) => {
+    onkeydown?.(event);
+    if (event.key === "Enter") openPopup();
+  };
+  useState(["rerender"], () => {
+    if ($popup.hasAttribute("open")) closePopup();
+  });
+  document.addEventListener("click", (event) => {
+    if (!$popup.hasAttribute("open")) return;
+    if ($popup.contains(event.target) || $popup === event.target) return;
+    if ($trigger.contains(event.target) || $trigger === event.target) return;
+    closePopup();
+  });
+
+  return $popup;
 }
 
 // input
@@ -443,66 +520,26 @@ function Select({ values, _get, _set, ...props }) {
     ></div>`,
     $options = values.map((value) => {
       return html`<${SelectOption} ...${{ value, _get, _set }} />`;
-    }),
-    $popup = html`<div
-      class="group absolute top-0 left-0
-      flex flex-col justify-center items-end
-      pointer-events-none w-full h-full"
-    >
-      <div class="relative right-[100%]">
-        <div
-          class="bg-[color:var(--theme--bg-secondary)]
-          w-[250px] max-w-[calc(100vw-24px)] max-h-[70vh]
-          py-[6px] px-[4px] drop-shadow-xl overflow-y-auto
-          transition duration-[200ms] opacity-0 scale-95 rounded-[4px]
-          group-open:(pointer-events-auto opacity-100 scale-100)"
-        >
-          ${$options}
-        </div>
-      </div>
-    </div>`;
-
-  const { onclick, onkeydown } = $select,
-    openPopup = () => {
-      $popup.setAttribute("open", true);
-      $options.forEach(($opt) => ($opt.tabIndex = 0));
-      setState({ popupOpen: true });
-    },
-    closePopup = (value) => {
-      $popup.removeAttribute("open");
-      $options.forEach(($opt) => ($opt.tabIndex = -1));
-      $select.style.width = `${$select.offsetWidth}px`;
-      $select.style.background = "transparent";
-      if (value) $select.innerText = value;
-      setTimeout(() => {
-        $select.style.width = "";
-        $select.style.background = "";
-        setState({ popupOpen: false });
-      }, 200);
-    };
-  $select.onclick = (event) => {
-    onclick?.(event);
-    openPopup();
-  };
-  $select.onkeydown = (event) => {
-    onkeydown?.(event);
-    if (event.key === "Enter") openPopup();
-  };
-  useState(["rerender"], () => {
-    _get?.().then((value) => {
-      if ($popup.hasAttribute("open")) {
-        closePopup(value);
-      } else $select.innerText = value;
     });
-  });
-  document.addEventListener("click", (event) => {
-    if (!$popup.hasAttribute("open")) return;
-    if ($popup.contains(event.target) || event.target === $select) return;
-    closePopup();
+  useState(["rerender"], () => {
+    _get?.().then((value) => ($select.innerText = value));
   });
 
   return html`<div class="notion-enhancer--menu-select relative">
-    ${$select}${$popup}
+    ${$select}
+    <${Popup}
+      for=${$select}
+      onbeforeclose=${() => {
+        $select.style.width = `${$select.offsetWidth}px`;
+        $select.style.background = "transparent";
+      }}
+      onclose=${() => {
+        $select.style.width = "";
+        $select.style.background = "";
+      }}
+    >
+      ${$options}
+    <//>
     <i
       class="i-chevron-down pointer-events-none
       absolute right-[6px] top-[6px] w-[16px] h-[16px]
@@ -515,6 +552,7 @@ function SelectOption({ value, _get, _set, ...props }) {
   const { html } = globalThis.__enhancerApi,
     $selected = html`<i class="ml-auto i-check w-[16px] h-[16px]"></i>`,
     $option = html`<div
+      tabindex="0"
       role="button"
       class="select-none cursor-pointer rounded-[3px]
       flex items-center w-full h-[28px] px-[12px] leading-[1.2]
@@ -608,7 +646,10 @@ function Checkbox({ _get, _set, ...props }) {
   return html`<label tabindex="0" class="cursor-pointer">
     ${$input}
     <div class="flex items-center h-[16px] transition duration-[200ms]">
-      <i class="i-check w-[14px] h-[14px]"></i>
+      <i
+        class="i-check w-[14px] h-[14px]
+        text-[color:var(--theme--accent-primary\\_contrast)]"
+      ></i>
     </div>
   </label>`;
 }
@@ -778,6 +819,7 @@ function Profile({
   setActive,
   exportJson,
   importJson,
+  deleteProfile,
   ...props
 }) {
   const { html } = globalThis.__enhancerApi,
@@ -812,6 +854,35 @@ function Profile({
       $a.remove();
     };
 
+  const $delete = html`<${Icon} icon="x" />`,
+    $name = html`<mark></mark>`,
+    $confirmation = html`<${Popup}
+      for=${$delete}
+      onopen=${async () => ($name.innerText = await getName())}
+    >
+      <p class="text-[14px] pt-[2px] px-[8px]">
+        Are you sure you want to delete the profile ${$name} permanently?
+      </p>
+      <div class="flex flex-col gap-[8px] pt-[8px] pb-[6px] px-[8px]">
+        <${Button}
+          tabindex="0"
+          icon="trash"
+          class="justify-center"
+          variant="secondary"
+          onclick=${() => deleteProfile()}
+        >
+          Delete
+        <//>
+        <${Button}
+          tabindex="0"
+          class="justify-center"
+          onclick=${() => setState({ rerender: true })}
+        >
+          Cancel
+        <//>
+      </div>
+    <//>`;
+
   return html`<li class="flex items-center my-[14px] gap-[8px]" ...${props}>
     <${Checkbox}
       ...${{ _get: isActive, _set: setActive }}
@@ -834,8 +905,8 @@ function Profile({
       />
       Import
     <//>
-    <${Button} size="sm" icon="upload" onclick=${downloadProfile}> Export <//>
-    <${Icon} icon="x" />
+    <${Button} size="sm" icon="upload" onclick=${downloadProfile}>Export<//>
+    <div class="relative">${$delete}${$confirmation}</div>
   </li>`;
 }
 

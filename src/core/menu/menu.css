@@ -94,7 +94,7 @@ body > #skeleton .row-group .shimmer {
   height: 11px;
 }
 
-.notion-enhancer--menu-description mark {
+mark {
   color: inherit;
   padding: 2px 4px;
   border-radius: 3px;
