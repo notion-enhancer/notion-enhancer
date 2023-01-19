@@ -4,7 +4,13 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { getState, setState, useState } from "./state.mjs";
+import {
+  getState,
+  setState,
+  useState,
+  setEnabled,
+  modDatabase,
+} from "./state.mjs";
 import {
   Button,
   Description,
@@ -66,12 +72,11 @@ const renderSidebar = (items, categories) => {
     return $sidebar;
   },
   renderList = async (id, mods, description) => {
-    const { html, getProfile, initDatabase } = globalThis.__enhancerApi,
-      enabledMods = initDatabase([await getProfile(), "enabledMods"]);
+    const { html, isEnabled } = globalThis.__enhancerApi;
     mods = mods.map(async (mod) => {
-      const _get = () => enabledMods.get(mod.id),
+      const _get = () => isEnabled(mod.id),
         _set = async (enabled) => {
-          await enabledMods.set(mod.id, enabled);
+          await setEnabled(mod.id, enabled);
           setState({ rerender: true, databaseUpdated: true });
         };
       return html`<${Mod} ...${{ ...mod, _get, _set }} />`;
@@ -81,11 +86,8 @@ const renderSidebar = (items, categories) => {
     <//>`;
   },
   renderOptions = async (mod) => {
-    const { html, platform, getProfile } = globalThis.__enhancerApi,
-      { optionDefaults, initDatabase } = globalThis.__enhancerApi,
-      profile = await getProfile(),
-      db = initDatabase([profile, mod.id], await optionDefaults(mod.id));
-    let options = mod.options.reduce((options, opt, i) => {
+    const { html, platform, getProfile } = globalThis.__enhancerApi;
+    let options = mod.options.reduce((options, opt) => {
       if (!opt.key && (opt.type !== "heading" || !opt.label)) return options;
       if (opt.platforms && !opt.platforms.includes(platform)) return options;
       const prevOpt = options[options.length - 1];
@@ -99,9 +101,9 @@ const renderSidebar = (items, categories) => {
     if (options[options.length - 1]?.type === "heading") options.pop();
     options = options.map(async (opt) => {
       if (opt.type === "heading") return html`<${Option} ...${opt} />`;
-      const _get = () => db.get(opt.key),
+      const _get = async () => (await modDatabase(mod.id)).get(opt.key),
         _set = async (value) => {
-          await db.set(opt.key, value);
+          await (await modDatabase(mod.id)).set(opt.key, value);
           setState({ rerender: true, databaseUpdated: true });
         };
       return html`<${Option} ...${{ ...opt, _get, _set }} />`;
@@ -109,37 +111,49 @@ const renderSidebar = (items, categories) => {
     return Promise.all(options);
   },
   renderProfiles = async () => {
-    const { html, getProfile, initDatabase, reloadApp } =
-        globalThis.__enhancerApi,
-      db = initDatabase();
-
     let profileIds;
-    const $list = html`<ul></ul>`,
-      activeProfile = await getProfile(),
+    const { html, initDatabase, getProfile } = globalThis.__enhancerApi,
+      db = initDatabase(),
+      $list = html`<ul></ul>`,
       renderProfile = (id) => {
         const profile = initDatabase([id]);
         return html`<${Profile}
+          id=${id}
           getName=${async () =>
             (await profile.get("profileName")) ??
             (id === "default" ? "default" : "")}
           setName=${(name) => profile.set("profileName", name)}
-          isActive=${id === activeProfile}
-          setActive=${async (active) => {
-            if (!active) return;
+          isActive=${async () => id === (await getProfile())}
+          setActive=${async () => {
             await db.set("activeProfile", id);
-            reloadApp();
-          }}
-          exportData=${profile.export}
-          importData=${async (data) => {
-            await profile.import(data);
             setState({ rerender: true, databaseUpdated: true });
+          }}
+          exportJson=${async () => JSON.stringify(await profile.export())}
+          importJson=${async (json) => {
+            try {
+              await profile.import(JSON.parse(json));
+              setState({ rerender: true, databaseUpdated: true });
+            } catch {
+              // error
+            }
           }}
         />`;
       },
       refreshProfiles = async () => {
-        profileIds = (await db.get("profileIds")) ?? ["default"];
-        const profiles = await Promise.all(profileIds.map(renderProfile));
-        $list.replaceChildren(...profiles);
+        profileIds = await db.get("profileIds");
+        if (!profileIds?.length) profileIds = ["default"];
+        for (const $profile of $list.children) {
+          const exists = profileIds.includes($profile.id);
+          if (!exists) $profile.remove();
+        }
+        for (let i = 0; i < profileIds.length; i++) {
+          const id = profileIds[i];
+          if (document.getElementById(id)) continue;
+          const $profile = await renderProfile(id),
+            $next = document.getElementById(profileIds[i + 1]);
+          if ($next) $list.insertBefore($profile, $next);
+          else $list.append($profile);
+        }
       },
       addProfile = async (name) => {
         const id = crypto.randomUUID();
@@ -148,9 +162,7 @@ const renderSidebar = (items, categories) => {
         await profile.set("profileName", name);
         refreshProfiles();
       };
-    useState(["rerender"], () => {
-      refreshProfiles();
-    });
+    useState(["rerender"], () => refreshProfiles());
 
     // todo: deleting profiles inc. clearing db keys,
     // throwing errors on invalid json upload
@@ -186,16 +198,15 @@ const renderSidebar = (items, categories) => {
     </div>`;
   },
   renderMods = async (mods) => {
-    const { html, getProfile, initDatabase } = globalThis.__enhancerApi,
-      enabledMods = initDatabase([await getProfile(), "enabledMods"]);
+    const { html, isEnabled } = globalThis.__enhancerApi;
     mods = mods
       .filter((mod) => {
         return mod.options?.filter((opt) => opt.type !== "heading").length;
       })
       .map(async (mod) => {
-        const _get = () => enabledMods.get(mod.id),
+        const _get = () => isEnabled(mod.id),
           _set = async (enabled) => {
-            await enabledMods.set(mod.id, enabled);
+            await setEnabled(mod.id, enabled);
             setState({ rerender: true, databaseUpdated: true });
           };
         return html`<${View} id=${mod.id}>
@@ -218,9 +229,10 @@ const render = async () => {
         icon: "palette",
         id: "themes",
         title: "Themes",
-        description: `Themes override Notion's colour schemes. To switch between
-        dark mode and light mode, go to <mark>Settings & members → My notifications
-        & settings → My settings → Appearance</mark>.`,
+        description: `Themes override Notion's colour schemes. Dark themes require
+        Notion to be in dark mode and light themes require Notion to be in light
+        mode. To switch between dark mode and light mode, go to <mark>Settings &
+        members → My notifications & settings → My settings → Appearance</mark>.`,
         mods: compatibleMods(await getThemes()),
       },
       {

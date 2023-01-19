@@ -39,7 +39,7 @@ const getProfile = async () => {
     const { initDatabase } = globalThis.__enhancerApi,
       db = initDatabase();
     let activeProfile = await db.get("activeProfile");
-    activeProfile ??= await db.get("profileIds")?.[0];
+    activeProfile ??= (await db.get("profileIds"))?.[0];
     return activeProfile ?? "default";
   },
   isEnabled = async (id) => {

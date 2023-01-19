@@ -21,4 +21,18 @@ const _state = {},
     callback(getState(keys));
   };
 
-export { setState, useState, getState };
+const setEnabled = async (id, enabled) => {
+    const { getProfile, initDatabase } = globalThis.__enhancerApi;
+    // prettier-ignore
+    return await initDatabase([
+      await getProfile(),
+      "enabledMods"
+    ]).set(id, enabled);
+  },
+  modDatabase = async (id) => {
+    const { getProfile, initDatabase } = globalThis.__enhancerApi,
+      { optionDefaults } = globalThis.__enhancerApi;
+    return initDatabase([await getProfile(), id], await optionDefaults(id));
+  };
+
+export { setState, useState, getState, setEnabled, modDatabase };

@@ -21,7 +21,7 @@ function _Button(
     class="flex gap-[8px] items-center px-[12px] shrink-0
     rounded-[4px] ${size === "sm" ? "h-[28px]" : "h-[32px]"}
     transition duration-[20ms] ${primary
-      ? `text-[color:var(--theme--accent-primary_contrast)]
+      ? `text-[color:var(--theme--accent-primary\\_contrast)]
       font-medium bg-[color:var(--theme--accent-primary)]
       hover:bg-[color:var(--theme--accent-primary\\_hover)]`
       : `border-(& [color:var(--theme--fg-border)])
@@ -776,8 +776,8 @@ function Profile({
   setName,
   isActive,
   setActive,
-  exportData,
-  importData,
+  exportJson,
+  importJson,
   ...props
 }) {
   const { html } = globalThis.__enhancerApi,
@@ -785,12 +785,8 @@ function Profile({
       const file = event.target.files[0],
         reader = new FileReader();
       reader.onload = async (progress) => {
-        try {
-          const res = JSON.parse(progress.currentTarget.result);
-          importData(res);
-        } catch {
-          // throw error
-        }
+        const res = progress.currentTarget.result;
+        importJson(res);
       };
       reader.readAsText(file);
     },
@@ -807,8 +803,8 @@ function Profile({
       const $a = html`<a
         class="hidden"
         download="notion-enhancer_${await getName()}_${date}.json"
-        href="data:text/plain;charset=utf-8,${encodeURIComponent(
-          JSON.stringify(await exportData())
+        href="data:text/json;charset=utf-8,${encodeURIComponent(
+          await exportJson()
         )}"
       />`;
       document.body.append($a);
@@ -818,18 +814,16 @@ function Profile({
 
   return html`<li class="flex items-center my-[14px] gap-[8px]" ...${props}>
     <${Checkbox}
-      checked=${isActive}
-      disabled=${isActive}
-      ...${{ _set: setActive }}
+      ...${{ _get: isActive, _set: setActive }}
+      onchange=${(event) => (event.target.checked = true)}
     />
     <${Input}
       size="md"
       type="text"
       icon="file-cog"
       onchange=${(event) => setName(event.target.value)}
-      onrerender=${($input) => {
-        getName().then((value) => ($input.value = value));
-      }}
+      onrerender=${($input) =>
+        getName().then((value) => ($input.value = value))}
     />
     <${Label} size="sm" icon="import">
       <input
