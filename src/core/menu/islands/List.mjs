@@ -43,6 +43,21 @@ function List({ id, mods, description }) {
       const _get = () => isEnabled(mod.id),
         _set = async (enabled) => {
           await setEnabled(mod.id, enabled);
+          // only one theme of each mode may be
+          // enabled at a time ∴ disable others
+          // on theme of same mode enabled
+          if (enabled && id === "themes") {
+            const isDark = mod.tags.includes("dark"),
+              isLight = mod.tags.includes("light");
+            for (const other of mods) {
+              if (other.id === mod.id) continue;
+              const otherDark = other.tags.includes("dark"),
+                otherLight = other.tags.includes("light");
+              if ((isDark && otherDark) || (isLight && otherLight)) {
+                await setEnabled(other.id, false);
+              }
+            }
+          }
           setState({ rerender: true, databaseUpdated: true });
         };
       return html`<${Mod} ...${{ ...mod, _get, _set }} />`;
