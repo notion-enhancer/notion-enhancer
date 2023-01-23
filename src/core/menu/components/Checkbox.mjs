@@ -25,6 +25,12 @@ function Checkbox({ _get, _set, ...props }) {
   return html`<label
     tabindex="0"
     class="notion-enhancer--menu-checkbox cursor-pointer"
+    onkeydown=${(event) => {
+      if ([" ", "Enter"].includes(event.key)) {
+        event.preventDefault();
+        $input.click();
+      }
+    }}
   >
     ${$input}
     <div class="flex items-center h-[16px] transition duration-[200ms]">

@@ -39,14 +39,14 @@ function Profile({ id }) {
       class="py-[2px] px-[4px] rounded-[3px]
       bg-[color:var(--theme--bg-hover)]"
     ></span>`,
-    $success = html`<${Popup}
+    $uploadSuccess = html`<${Popup}
       onopen=${async () => ($successName.innerText = await getName())}
     >
       <p class="py-[2px] px-[8px] text-[14px]">
         The profile ${$successName} has been updated successfully.
       </p>
     <//>`,
-    $error = html`<${Popup}>
+    $uploadError = html`<${Popup}>
       <p
         class="py-[2px] px-[8px] text-[14px]
         text-[color:var(--theme--accent-secondary)]"
@@ -60,16 +60,13 @@ function Profile({ id }) {
       reader.onload = async (progress) => {
         const res = progress.currentTarget.result;
         try {
-          await profile.import({
-            ...JSON.parse(res),
-            profileName: await getName(),
-          });
+          await profile.import(JSON.parse(res));
           setState({ rerender: true, databaseUpdated: true });
-          $success.show();
-          setTimeout(() => $success.hide(), 2000);
+          $uploadSuccess.show();
+          setTimeout(() => $uploadSuccess.hide(), 2000);
         } catch (err) {
-          $error.show();
-          setTimeout(() => $error.hide(), 2000);
+          $uploadError.show();
+          setTimeout(() => $uploadError.hide(), 2000);
         }
       };
       reader.readAsText(file);
@@ -94,7 +91,14 @@ function Profile({ id }) {
       $a.click();
       $a.remove();
     },
-    deleteProfile = async () => {
+    $uploadInput = html`<input
+      type="file"
+      class="hidden"
+      accept=".json"
+      onchange=${uploadProfile}
+    />`;
+
+  const deleteProfile = async () => {
       let profileIds = await db.get("profileIds");
       if (!profileIds?.length) profileIds = ["default"];
       // clear profile data
@@ -108,9 +112,8 @@ function Profile({ id }) {
         await db.remove("activeProfile");
         setState({ rerender: true, databaseUpdated: true });
       } else setState({ rerender: true });
-    };
-
-  const $delete = html`<button
+    },
+    $delete = html`<button
       class="h-[14px] transition duration-[20ms]
       text-[color:var(--theme--fg-secondary)]
       hover:text-[color:var(--theme--fg-primary)]"
@@ -138,7 +141,7 @@ function Profile({ id }) {
         <${Button}
           tabindex="0"
           class="justify-center"
-          onclick=${() => $confirm.close()}
+          onclick=${() => $confirm.hide()}
         >
           Cancel
         <//>
@@ -151,14 +154,18 @@ function Profile({ id }) {
       onchange=${(event) => (event.target.checked = true)}
     />
     <${Input} icon="file-cog" ...${{ _get: getName, _set: setName }} />
-    <${Button} variant="sm" icon="import" class="relative" tagName="label">
-      <input
-        type="file"
-        class="hidden"
-        accept=".json"
-        onchange=${uploadProfile}
-      />
-      Import ${$success} ${$error}
+    <${Button}
+      icon="import"
+      variant="sm"
+      tagName="label"
+      class="relative"
+      onkeydown=${(event) => {
+        if ([" ", "Enter"].includes(event.key)) {
+          event.preventDefault();
+          $uploadInput.click();
+        }
+      }}
+      >${$uploadInput} Import ${$uploadSuccess}${$uploadError}
     <//>
     <${Button} variant="sm" icon="upload" onclick=${downloadProfile}>Export<//>
     <div class="relative flex">${$delete}${$confirm}</div>

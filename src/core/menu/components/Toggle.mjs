@@ -11,7 +11,8 @@ function Toggle({ _get, _set, ...props }) {
     $input = html`<input
       type="checkbox"
       class="hidden checked:sibling:children:(
-      bg-[color:var(--theme--accent-primary)] after:translate-x-[12px])"
+      bg-[color:var(--theme--accent-primary)]
+      after:translate-x-[12px])"
       ...${props}
     />`;
   extendProps($input, { onchange: () => _set?.($input.checked) });
@@ -25,6 +26,12 @@ function Toggle({ _get, _set, ...props }) {
       tabindex="0"
       class="w-[30px] h-[18px] rounded-[44px] cursor-pointer
       transition duration-200 bg-[color:var(--theme--bg-hover)]"
+      onkeydown=${(event) => {
+        if ([" ", "Enter"].includes(event.key)) {
+          event.preventDefault();
+          $input.click();
+        }
+      }}
     >
       <div
         class="w-full h-full rounded-[44px] text-[12px]

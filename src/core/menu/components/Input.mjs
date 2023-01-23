@@ -7,13 +7,16 @@
 import { extendProps, useState } from "../state.mjs";
 
 const updateHotkey = (event) => {
-    event.preventDefault();
     const keys = [];
     for (const modifier of ["metaKey", "ctrlKey", "altKey", "shiftKey"]) {
       if (!event[modifier]) continue;
       const alias = modifier[0].toUpperCase() + modifier.slice(1, -3);
       keys.push(alias);
     }
+    // retain tab for keyboard navigation of menu
+    if (event.key === "Tab" && !keys.length) {
+      return;
+    } else event.preventDefault();
     if (!keys.length && ["Backspace", "Delete"].includes(event.key)) {
       event.target.value = "";
     } else if (event.key) {
@@ -146,6 +149,12 @@ function Input({
           h-[28px] px-[8px] bg-[color:var(--theme--bg-secondary)]
           text-([14px] [color:var(--theme--fg-secondary)]) rounded-[4px]
           transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
+          onkeydown=${(event) => {
+            if ([" ", "Enter"].includes(event.key)) {
+              event.preventDefault();
+              $input.click();
+            }
+          }}
           >${$input}${$icon.children[0]}${$filename}
         </label>
         ${$clear}

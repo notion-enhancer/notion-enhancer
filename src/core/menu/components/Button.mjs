@@ -25,7 +25,7 @@ function Button({ icon, variant, tagName, ...props }, ...children) {
            hover:bg-[color:var(--theme--bg-hover)]`
     }`,
   });
-  return html`<${tagName ?? "button"} ...${props}>
+  return html`<${tagName ?? "button"} tabindex="0" ...${props}>
     ${icon
       ? html`<i
           class="i-${icon}

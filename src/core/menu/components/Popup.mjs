@@ -50,7 +50,10 @@ function Popup({ trigger, onopen, onclose, onbeforeclose }, ...children) {
     extendProps(trigger, {
       onclick: $popup.show,
       onkeydown(event) {
-        if (event.key === "Enter") $popup.show();
+        if ([" ", "Enter"].includes(event.key)) {
+          event.preventDefault();
+          $popup.show();
+        }
       },
     });
   }
