@@ -10,7 +10,7 @@ export default async (api, db) => {
   const {
       html,
       platform,
-      getThemes,
+      getMods,
       isEnabled,
       enhancerUrl,
       onMessage,
@@ -25,7 +25,9 @@ export default async (api, db) => {
 
   // appearance
 
-  const enabledThemes = (await getThemes()).map((theme) => isEnabled(theme.id)),
+  const enabledThemes = (await getMods("themes")).map((theme) =>
+      isEnabled(theme.id)
+    ),
     forceLoadOverrides = loadThemeOverrides === "Enabled",
     autoLoadOverrides =
       loadThemeOverrides === "Auto" &&

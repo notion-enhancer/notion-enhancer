@@ -5,11 +5,9 @@
  */
 
 const _state = {},
-  _subscribers = [],
-  getState = (keys) => {
-    return keys.map((key) => _state[key]);
-  },
-  setState = (state) => {
+  _subscribers = [];
+
+const setState = (state) => {
     Object.assign(_state, state);
     const updates = Object.keys(state);
     _subscribers
@@ -17,8 +15,27 @@ const _state = {},
       .forEach(([keys, callback]) => callback(keys.map((key) => _state[key])));
   },
   useState = (keys, callback) => {
-    _subscribers.push([keys, callback]);
-    callback(getState(keys));
+    const state = keys.map((key) => _state[key]);
+    if (callback) _subscribers.push([keys, callback]);
+    callback?.(state);
+    return state;
   };
 
-export { setState, useState, getState };
+const extendProps = (props, extend) => {
+  for (const key in extend) {
+    const { [key]: userProvided } = props;
+    if (typeof extend[key] === "function") {
+      props[key] = (...args) => {
+        extend[key](...args);
+        userProvided?.(...args);
+      };
+    } else if (key === "class") {
+      if (userProvided) props[key] += " ";
+      if (!userProvided) props[key] = "";
+      props[key] += extend[key];
+    } else props[key] = extend[key] ?? userProvided;
+  }
+  return props;
+};
+
+export { setState, useState, extendProps };

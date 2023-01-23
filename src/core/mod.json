@@ -65,7 +65,7 @@
       "type": "color",
       "key": "color",
       "description": "Activates built-in debugging tools accessible through the application menu.",
-      "value": ""
+      "value": "rgb(232, 69, 93)"
     },
     {
       "type": "text",

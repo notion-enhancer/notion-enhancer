@@ -1,6 +1,6 @@
 /**
  * notion-enhancer
- * (c) 2022 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2023 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
@@ -94,9 +94,9 @@ body > #skeleton .row-group .shimmer {
   height: 11px;
 }
 
-mark {
+.notion-enhancer--menu-description mark {
   color: inherit;
-  padding: 2px 4px;
+  padding: 0 4px;
   border-radius: 3px;
   background-color: var(--theme--bg-hover);
 }

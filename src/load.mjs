@@ -9,12 +9,10 @@
 export default (async () => {
   // prettier-ignore
   const { enhancerUrl } = globalThis.__enhancerApi,
-  isMenu = location.href.startsWith(enhancerUrl("/core/menu/index.html")),
-  pageLoaded = /(^\/$)|((-|\/)[0-9a-f]{32}((\?.+)|$))/.test(location.pathname),
-  signedIn = localStorage["LRU:KeyValueStore2:current-user-id"];
-  if (!isMenu && !(signedIn && pageLoaded)) return;
-
-  // avoid repeat logging
+    isMenu = location.href.startsWith(enhancerUrl("/core/menu/index.html")),
+    pageLoaded = /(^\/$)|((-|\/)[0-9a-f]{32}((\?.+)|$))/.test(location.pathname),
+    signedIn = localStorage["LRU:KeyValueStore2:current-user-id"];
+  if (!isMenu && (!signedIn || !pageLoaded)) return;
   if (!isMenu) console.log("notion-enhancer: loading...");
 
   await Promise.all([
@@ -26,14 +24,12 @@ export default (async () => {
     import("./api/mods.js"),
   ]);
   await import("./api/interface.js");
-  const { getMods, getProfile } = globalThis.__enhancerApi,
-    { isEnabled, optionDefaults, initDatabase } = globalThis.__enhancerApi;
+  const { getMods, isEnabled, modDatabase } = globalThis.__enhancerApi;
 
   for (const mod of await getMods()) {
     if (!(await isEnabled(mod.id))) continue;
-    const isTheme = mod._src.startsWith("themes/"),
-      isCore = mod._src === "core";
-    if (isMenu && !(isTheme || isCore)) continue;
+    const isTheme = mod._src.startsWith("themes/");
+    if (isMenu && !(mod._src === "core" || isTheme)) continue;
 
     // clientStyles
     for (let stylesheet of mod.clientStyles ?? []) {
@@ -45,14 +41,12 @@ export default (async () => {
 
     // clientScripts
     if (isMenu) continue;
-    const options = await optionDefaults(mod.id),
-      db = initDatabase([await getProfile(), mod.id], options);
+    const db = await modDatabase(mod.id);
     for (let script of mod.clientScripts ?? []) {
       script = await import(enhancerUrl(`${mod._src}/${script}`));
       script.default(globalThis.__enhancerApi, db);
     }
   }
 
-  // consider "ready" after menu has loaded
   if (isMenu) console.log("notion-enhancer: ready");
 })();

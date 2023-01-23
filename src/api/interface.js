@@ -538,8 +538,10 @@ const h = (type, props, ...children) => {
       : document.createElement(type);
     for (const prop in props ?? {}) {
       if (htmlAttributes.includes(prop) || prop.startsWith("data-")) {
-        if (typeof props[prop] === "boolean" && !props[prop]) continue;
-        elem.setAttribute(prop, props[prop]);
+        if (typeof props[prop] === "boolean") {
+          if (!props[prop]) continue;
+          elem.setAttribute(prop, "");
+        } else elem.setAttribute(prop, props[prop]);
       } else elem[prop] = props[prop];
     }
     elem.append(...children);

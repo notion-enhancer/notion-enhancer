@@ -16,14 +16,8 @@ const isElectron = () => {
 if (isElectron()) {
   require("./api/electron.cjs");
   require("./api/mods.js");
-  const {
-    getMods,
-    getProfile,
-    isEnabled,
-    optionDefaults,
-    enhancerUrl,
-    initDatabase,
-  } = globalThis.__enhancerApi;
+  const { enhancerUrl } = globalThis.__enhancerApi,
+    { getMods, isEnabled, modDatabase } = globalThis.__enhancerApi;
 
   module.exports = async (target, __exports, __eval) => {
     if (target === "main/main") require("./worker.js");
@@ -43,8 +37,7 @@ if (isElectron()) {
     // electronScripts
     for (const mod of await getMods()) {
       if (!mod.electronScripts || !(await isEnabled(mod.id))) continue;
-      const options = await optionDefaults(mod.id),
-        db = initDatabase([await getProfile(), mod.id], options);
+      const db = await modDatabase(mod.id);
       for (const { source, target: targetScript } of mod.electronScripts) {
         if (`${target}.js` !== targetScript) continue;
         const script = require(`notion-enhancer/${mod._src}/${source}`);

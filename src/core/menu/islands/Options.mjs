@@ -1,0 +1,86 @@
+/**
+ * notion-enhancer
+ * (c) 2023 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+import { setState } from "../state.mjs";
+import { Heading } from "../components/Heading.mjs";
+import { Description } from "../components/Description.mjs";
+import { Input } from "../components/Input.mjs";
+import { Select } from "../components/Select.mjs";
+import { Toggle } from "../components/Toggle.mjs";
+
+const camelToSentenceCase = (string) =>
+    string[0].toUpperCase() +
+    string.replace(/[A-Z]/g, (match) => ` ${match.toLowerCase()}`).slice(1),
+  filterOptionsForRender = (options) => {
+    const { platform } = globalThis.__enhancerApi;
+    options = options.reduce((options, opt) => {
+      // option must have key, headings may use label
+      if (!opt.key && (opt.type !== "heading" || !opt.label)) return options;
+      // ignore platform-specific options
+      if (opt.platforms && !opt.platforms.includes(platform)) return options;
+      // replace consective headings
+      const prev = options[options.length - 1];
+      if (opt.type === "heading" && prev?.type === opt.type) {
+        options[options.length - 1] = opt;
+      } else options.push(opt);
+      return options;
+    }, []);
+    // remove trailing heading
+    return options.at(-1)?.type === "heading" ? options.slice(0, -1) : options;
+  };
+
+function Option({ _get, _set, ...opt }) {
+  const { html } = globalThis.__enhancerApi;
+  return html`<${opt.type === "toggle" ? "label" : "div"}
+    class="notion-enhancer--menu-option flex items-center justify-between
+    mb-[18px] ${opt.type === "toggle" ? "cursor-pointer" : ""}"
+  >
+    <div class="flex flex-col ${opt.type === "text" ? "w-full" : "mr-[10%]"}">
+      <h5 class="text-[14px] mb-[2px] mt-0">${opt.label}</h5>
+      ${opt.type === "text"
+        ? html`<${Input}
+            type="text"
+            class="mt-[4px] mb-[8px]"
+            ...${{ _get, _set }}
+          />`
+        : ""}
+      <${Description} innerHTML=${opt.description} />
+    </div>
+    ${["number", "hotkey", "color"].includes(opt.type)
+      ? html`<${Input}
+          type=${opt.type}
+          class="shrink-0 !w-[192px]"
+          ...${{ _get, _set }}
+        />`
+      : opt.type === "file"
+      ? html`<${Input}
+          type="file"
+          extensions=${opt.extensions}
+          ...${{ _get, _set }}
+        />`
+      : opt.type === "select"
+      ? html`<${Select} values=${opt.values} ...${{ _get, _set }} />`
+      : opt.type === "toggle"
+      ? html`<${Toggle} ...${{ _get, _set }} />`
+      : ""}
+  <//>`;
+}
+
+function Options({ mod }) {
+  const { html, modDatabase } = globalThis.__enhancerApi;
+  return filterOptionsForRender(mod.options).map((opt) => {
+    opt.label ??= camelToSentenceCase(opt.key);
+    if (opt.type === "heading") return html`<${Heading}>${opt.label}<//>`;
+    const _get = async () => (await modDatabase(mod.id)).get(opt.key),
+      _set = async (value) => {
+        await (await modDatabase(mod.id)).set(opt.key, value);
+        setState({ rerender: true, databaseUpdated: true });
+      };
+    return html`<${Option} ...${{ _get, _set, ...opt }} />`;
+  });
+}
+
+export { Options };
