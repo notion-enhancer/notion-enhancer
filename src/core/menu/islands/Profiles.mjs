@@ -24,17 +24,37 @@ function Profile({ id }) {
     },
     setName = async (name) => {
       // name only has effect in menu
-      // doesn't need reload triggered
+      // doesn't need to trigger reload
       await profile.set("profileName", name);
-    };
-
-  const isActive = async () => id === (await getProfile()),
+    },
+    isActive = async () => {
+      return id === (await getProfile());
+    },
     setActive = async () => {
       await db.set("activeProfile", id);
       setState({ rerender: true, databaseUpdated: true });
     };
 
-  const uploadProfile = (event) => {
+  const $successName = html`<span
+      class="py-[2px] px-[4px] rounded-[3px]
+      bg-[color:var(--theme--bg-hover)]"
+    ></span>`,
+    $success = html`<${Popup}
+      onopen=${async () => ($successName.innerText = await getName())}
+    >
+      <p class="py-[2px] px-[8px] text-[14px]">
+        The profile ${$successName} has been updated successfully.
+      </p>
+    <//>`,
+    $error = html`<${Popup}>
+      <p
+        class="py-[2px] px-[8px] text-[14px]
+        text-[color:var(--theme--accent-secondary)]"
+      >
+        An error was encountered attempting to parse the uploaded file.
+      </p>
+    <//>`,
+    uploadProfile = (event) => {
       const file = event.target.files[0],
         reader = new FileReader();
       reader.onload = async (progress) => {
@@ -45,8 +65,11 @@ function Profile({ id }) {
             profileName: await getName(),
           });
           setState({ rerender: true, databaseUpdated: true });
+          $success.show();
+          setTimeout(() => $success.hide(), 2000);
         } catch (err) {
-          console.error(err);
+          $error.show();
+          setTimeout(() => $error.hide(), 2000);
         }
       };
       reader.readAsText(file);
@@ -87,25 +110,22 @@ function Profile({ id }) {
       } else setState({ rerender: true });
     };
 
-  const $name = html`<span
-      class="py-[2px] px-[4px] rounded-[3px]
-      bg-[color:var(--theme--bg-hover)]"
-    ></span>`,
-    $delete = html`<button
+  const $delete = html`<button
       class="h-[14px] transition duration-[20ms]
       text-[color:var(--theme--fg-secondary)]
       hover:text-[color:var(--theme--fg-primary)]"
     >
       <i class="i-x w-[14px] h-[14px]"></i>
     </button>`,
+    $confirmName = $successName.cloneNode(true),
     $confirm = html`<${Popup}
       trigger=${$delete}
-      onopen=${async () => ($name.innerText = await getName())}
+      onopen=${async () => ($confirmName.innerText = await getName())}
     >
-      <p class="text-[14px] pt-[2px] px-[8px]">
-        Are you sure you want to delete the profile ${$name} permanently?
+      <p class="text-[14px] py-[2px] px-[8px]">
+        Are you sure you want to delete the profile ${$confirmName} permanently?
       </p>
-      <div class="flex flex-col gap-[8px] p-[8px]">
+      <div class="flex flex-col gap-[8px] py-[6px] px-[8px]">
         <${Button}
           tabindex="0"
           icon="trash"
@@ -131,16 +151,16 @@ function Profile({ id }) {
       onchange=${(event) => (event.target.checked = true)}
     />
     <${Input} icon="file-cog" ...${{ _get: getName, _set: setName }} />
-    <${Button} size="sm" icon="import" tagName="label">
+    <${Button} variant="sm" icon="import" class="relative" tagName="label">
       <input
         type="file"
         class="hidden"
         accept=".json"
         onchange=${uploadProfile}
       />
-      Import
+      Import ${$success} ${$error}
     <//>
-    <${Button} size="sm" icon="upload" onclick=${downloadProfile}>Export<//>
+    <${Button} variant="sm" icon="upload" onclick=${downloadProfile}>Export<//>
     <div class="relative flex">${$delete}${$confirm}</div>
   </li>`;
 }

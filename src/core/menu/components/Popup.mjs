@@ -46,20 +46,22 @@ function Popup({ trigger, onopen, onclose, onbeforeclose }, ...children) {
   };
   $popup.querySelectorAll("[tabindex]").forEach(($el) => ($el.tabIndex = -1));
 
-  extendProps(trigger, {
-    onclick: $popup.show,
-    onkeydown(event) {
-      if (event.key === "Enter") $popup.show();
-    },
-  });
-  useState(["rerender"], () => {
-    if ($popup.hasAttribute("open")) $popup.hide();
-  });
+  if (trigger) {
+    extendProps(trigger, {
+      onclick: $popup.show,
+      onkeydown(event) {
+        if (event.key === "Enter") $popup.show();
+      },
+    });
+  }
   document.addEventListener("click", (event) => {
     if (!$popup.hasAttribute("open")) return;
     if ($popup.contains(event.target) || $popup === event.target) return;
-    if (trigger.contains(event.target) || trigger === event.target) return;
+    if (trigger?.contains(event.target) || trigger === event.target) return;
     $popup.hide();
+  });
+  useState(["rerender"], () => {
+    if ($popup.hasAttribute("open")) $popup.hide();
   });
 
   return $popup;
