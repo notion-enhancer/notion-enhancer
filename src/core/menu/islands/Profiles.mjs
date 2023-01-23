@@ -58,9 +58,11 @@ function Profile({ id }) {
       const file = event.target.files[0],
         reader = new FileReader();
       reader.onload = async (progress) => {
-        const res = progress.currentTarget.result;
         try {
-          await profile.import(JSON.parse(res));
+          let res = progress.currentTarget.result;
+          res = JSON.parse(res);
+          delete res["profileName"];
+          await profile.import(res);
           setState({ rerender: true, databaseUpdated: true });
           $uploadSuccess.show();
           setTimeout(() => $uploadSuccess.hide(), 2000);
@@ -68,6 +70,8 @@ function Profile({ id }) {
           $uploadError.show();
           setTimeout(() => $uploadError.hide(), 2000);
         }
+        // clear input value to allow repeat uploads
+        event.target.value = "";
       };
       reader.readAsText(file);
     },
