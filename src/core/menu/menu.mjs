@@ -118,22 +118,27 @@ const render = async () => {
     />`,
     $main = html`
       <main class="flex flex-col overflow-hidden transition-[height]">
-        <!-- wrapper necessary for transitions -->
-        <div class="grow relative overflow-hidden">
-          <${View} id="welcome"><${Banner} version=${enhancerVersion} /><//>
-          <${View} id="core">
-            <${Options} mod=${mods.find(({ _src }) => _src === "core")} />
-            <${Profiles} />
-          <//>
-          ${[...categories, ...mods]
-            .filter(({ view }) => view)
-            .map(({ view }) => view)}
+        <!-- wrappers necessary for transitions and breakpoints -->
+        <div class="grow overflow-auto">
+          <div class="relative h-full w-full">
+            <${View} id="welcome"><${Banner} version=${enhancerVersion} /><//>
+            <${View} id="core">
+              <${Options} mod=${mods.find(({ _src }) => _src === "core")} />
+              <${Profiles} />
+            <//>
+            ${[...categories, ...mods]
+              .filter(({ view }) => view)
+              .map(({ view }) => view)}
+          </div>
         </div>
         <${Footer} categories=${categories} />
       </main>
     `;
   useState(["footerOpen"], ([footerOpen]) => {
     $main.style.height = footerOpen ? "100%" : "calc(100% + 33px)";
+  });
+  useState(["transitionInProgress"], ([transitionInProgress]) => {
+    $main.children[0].style.overflow = transitionInProgress ? "hidden" : "";
   });
 
   const $skeleton = document.querySelector("#skeleton");

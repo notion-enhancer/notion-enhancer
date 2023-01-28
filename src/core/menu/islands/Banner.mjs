@@ -12,11 +12,13 @@ const rectToStyle = (rect) =>
     .map((prop) => `${prop}: ${rect[prop]};`)
     .join("");
 
-function Star(rect) {
+function Star({ from, ...rect }) {
   const { html } = globalThis.__enhancerApi;
   return html`<svg
     viewBox="0 0 24 24"
-    class="absolute fill-none skew-y-2"
+    class="absolute fill-none skew-y-2${from
+      ? ` hidden ${from}:inline-block`
+      : ""}"
     xmlns="http://www.w3.org/2000/svg"
     style=${rectToStyle(rect)}
   >
@@ -64,7 +66,8 @@ function Banner({ version }) {
   // gradient bg?
   // brand font? links?
   return html`<div
-    class="relative flex h-[192px] overflow-hidden rounded-[4px] border-(& [color:#c084fc]"
+    class="notion-enhancer--menu-banner relative flex
+    overflow-hidden h-[192px] rounded-[4px] border-(& [color:#c084fc]"
     style="background: linear-gradient(225deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%), #a855f7;"
   >
     <${Circle} width="128px" height="128px" bottom="-64px" left="-64px" />
@@ -73,17 +76,20 @@ function Banner({ version }) {
     <${Circle} width="144px" height="144px" bottom="-72px" right="144px" />
     <${Star} width="36px" height="36px" top="136px" left="190px" />
     <${Star} width="48px" height="48px" top="32px" left="336px" />
-    <${Star} width="64px" height="64px" top="90px" left="448px" />
+    <${Star} width="64px" height="64px" top="90px" left="448px" from="lg" />
 
     <h1
-      class="pl-[64px] pb-[24px] my-auto
-      font-bold leading-tight tracking-tight"
+      class="z-10 pl-[32px] md:pl-[48px] lg:pl-[64px] pb-[24px]
+      font-bold leading-tight tracking-tight my-auto"
     >
       <span class="text-[26px]">Welcome to</span><br />
       <span class="text-[28px]">the notion-enhancer</span>
     </h1>
 
-    <div class="flex flex-col pr-[64px] pb-[24px] absolute bottom-0 right-0">
+    <div
+      class="absolute flex bottom-0 right-0
+      flex-col pr-[32px] md:pr-[48px] lg:pr-[64px] pb-[24px]"
+    >
       <i class="i-notion-enhancer text-[42px] mx-auto mb-[8px]"></i>
       <span
         class="text-[12px] py-[2px] px-[6px]

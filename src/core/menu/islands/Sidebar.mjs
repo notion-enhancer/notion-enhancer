@@ -51,8 +51,8 @@ function SidebarButton({ id, icon, ...props }, ...children) {
 function Sidebar({ items, categories }) {
   const { html, isEnabled } = globalThis.__enhancerApi,
     $sidebar = html`<aside
-      class="notion-enhancer--menu-sidebar z-10 row-span-1
-    h-full overflow-y-auto bg-[color:var(--theme--bg-secondary)]"
+      class="notion-enhancer--menu-sidebar h-full row-span-1
+      overflow-y-auto bg-[color:var(--theme--bg-secondary)]"
     >
       ${items.map((item) => {
         if (typeof item === "object") {

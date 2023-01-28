@@ -537,6 +537,7 @@ const h = (type, props, ...children) => {
       ? document.createElementNS("http://www.w3.org/2000/svg", type)
       : document.createElement(type);
     for (const prop in props ?? {}) {
+      if (typeof props[prop] === "undefined") continue;
       if (htmlAttributes.includes(prop) || prop.startsWith("data-")) {
         if (typeof props[prop] === "boolean") {
           if (!props[prop]) continue;

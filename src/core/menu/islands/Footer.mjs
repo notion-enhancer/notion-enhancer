@@ -47,13 +47,13 @@ function Footer({ categories }) {
     updateFooter();
   });
 
-  return html`<div
-    class="flex w-full px-[60px] py-[16px]
-    border-t-(& [color:var(--theme--fg-border)])
-    bg-[color:var(--theme--bg-primary)]"
+  return html`<footer
+    class="notion-enhancer--menu-footer px-[60px] py-[16px]
+    flex w-full bg-[color:var(--theme--bg-primary)]
+    border-t-(& [color:var(--theme--fg-border)])"
   >
     ${buttons}
-  </div>`;
+  </footer>`;
 }
 
 export { Footer };
