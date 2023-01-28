@@ -7,6 +7,7 @@
 import { setState, useState } from "./state.mjs";
 import { Sidebar } from "./islands/Sidebar.mjs";
 import { Footer } from "./islands/Footer.mjs";
+import { Banner } from "./islands/Banner.mjs";
 import { View } from "./islands/View.mjs";
 import { List } from "./islands/List.mjs";
 import { Mod } from "./islands/Mod.mjs";
@@ -81,7 +82,8 @@ const categories = [
   ];
 
 const render = async () => {
-  const { html, getMods, isEnabled, setEnabled } = globalThis.__enhancerApi,
+  const { html, enhancerVersion } = globalThis.__enhancerApi,
+    { getMods, isEnabled, setEnabled } = globalThis.__enhancerApi,
     [icon, renderStarted] = useState(["icon", "renderStarted"]);
   if (!html || !getMods || !icon || renderStarted) return;
   if (icon === "Monochrome") sidebar[1].icon += "?mask";
@@ -118,7 +120,7 @@ const render = async () => {
       <main class="flex flex-col overflow-hidden transition-[height]">
         <!-- wrapper necessary for transitions -->
         <div class="grow relative overflow-hidden">
-          <${View} id="welcome">welcome<//>
+          <${View} id="welcome"><${Banner} version=${enhancerVersion} /><//>
           <${View} id="core">
             <${Options} mod=${mods.find(({ _src }) => _src === "core")} />
             <${Profiles} />
