@@ -4,7 +4,8 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { setState, useState } from "../state.mjs";
+import { Button } from "../components/Button.mjs";
+import { Description } from "../components/Description.mjs";
 
 const rectToStyle = (rect) =>
   ["width", "height", "top", "bottom", "left", "right"]
@@ -55,49 +56,86 @@ function Star({ from, ...rect }) {
 function Circle(rect) {
   const { html } = globalThis.__enhancerApi;
   return html`<div
-    class="absolute bg-[color:#c084fc]
-    border-(& [color:#a855f7]) rounded-full"
+    class="absolute rounded-full
+    border-(& purple-500) bg-purple-400"
     style=${rectToStyle(rect)}
   ></div>`;
 }
 
 function Banner({ version }) {
   const { html } = globalThis.__enhancerApi;
-  // gradient bg?
-  // brand font? links?
-  return html`<div
-    class="notion-enhancer--menu-banner relative flex
-    overflow-hidden h-[192px] rounded-[4px] border-(& [color:#c084fc]"
-    style="background: linear-gradient(225deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%), #a855f7;"
-  >
-    <${Circle} width="128px" height="128px" bottom="-64px" left="-64px" />
-    <${Circle} width="144px" height="144px" top="-108px" left="80px" />
-    <${Circle} width="208px" height="208px" bottom="-64px" right="-16px" />
-    <${Circle} width="144px" height="144px" bottom="-72px" right="144px" />
-    <${Star} width="36px" height="36px" top="136px" left="190px" />
-    <${Star} width="48px" height="48px" top="32px" left="336px" />
-    <${Star} width="64px" height="64px" top="90px" left="448px" from="lg" />
-
-    <h1
-      class="z-10 pl-[32px] md:pl-[48px] lg:pl-[64px] pb-[24px]
-      font-bold leading-tight tracking-tight my-auto"
+  return html`<section class="notion-enhancer--menu-banner">
+    <div
+      class="relative flex overflow-hidden h-[192px] rounded-t-[4px]
+      border-(& purple-400) bg-purple-500 from-white/20 to-transparent
+      text-white bg-[linear-gradient(225deg,var(--tw-gradient-stops))]"
     >
-      <span class="text-[26px]">Welcome to</span><br />
-      <span class="text-[28px]">the notion-enhancer</span>
-    </h1>
+      <${Circle} width="128px" height="128px" bottom="-64px" left="-64px" />
+      <${Circle} width="144px" height="144px" top="-108px" left="80px" />
+      <${Circle} width="208px" height="208px" bottom="-64px" right="-16px" />
+      <${Circle} width="144px" height="144px" bottom="-72px" right="144px" />
+      <${Star} width="36px" height="36px" top="136px" left="190px" />
+      <${Star} width="48px" height="48px" top="32px" left="336px" />
+      <${Star} width="64px" height="64px" top="90px" left="448px" from="lg" />
+
+      <h1
+        class="z-10 pl-[32px] md:pl-[48px] lg:pl-[64px]
+        font-bold leading-tight tracking-tight my-auto"
+      >
+        <span class="text-[26px]">Welcome to</span><br />
+        <span class="text-[28px]">the notion-enhancer</span>
+      </h1>
+
+      <div
+        class="flex flex-col absolute bottom-0 right-0
+        pr-[32px] md:pr-[48px] lg:pr-[64px] pb-[24px]"
+      >
+        <i class="i-notion-enhancer text-[42px] mx-auto mb-[8px]"></i>
+        <span
+          class="text-[12px] py-[2px] px-[6px]
+          font-medium leading-tight tracking-wide"
+          >v${version}
+        </span>
+      </div>
+    </div>
 
     <div
-      class="absolute flex bottom-0 right-0
-      flex-col pr-[32px] md:pr-[48px] lg:pr-[64px] pb-[24px]"
+      class="py-[18px] px-[16px] rounded-b-[4px]
+      border-(& [color:var(--theme--fg-border)]) bg-[color:var(--theme--bg-secondary)]"
     >
-      <i class="i-notion-enhancer text-[42px] mx-auto mb-[8px]"></i>
-      <span
-        class="text-[12px] py-[2px] px-[6px]
-        font-medium leading-tight tracking-wide"
-        >v${version}
-      </span>
+      <div class="flex items-center gap-[16px]">
+        <p class="text-[14px] font-semibold">
+          Enjoying the notion-enhancer?<br />
+          Support future development:
+        </p>
+        <${Button}
+          icon="coffee"
+          variant="brand"
+          class="grow justify-center"
+          href="https://www.buymeacoffee.com/dragonwocky"
+        >
+          Buy me a coffee
+        <//>
+        <${Button}
+          icon="calendar-heart"
+          variant="brand"
+          class="grow justify-center"
+          href="https://github.com/sponsors/dragonwocky"
+        >
+          Sponsor me
+        <//>
+      </div>
+      <!-- Disclaimer: these perks are only a draft, for anyone reading this.
+      This information may change at any time. -->
+      <${Description} class="mt-[6px]">
+        Sponsors receive access to priority support channels, private developer
+        previews, and role cosmetics on Discord. A one-time donation is
+        equivalent to 1 month of sponsorship perks. To claim your Discord role,
+        join the server <a href="https://discord.gg/sFWPXtA">here</a> and follow
+        the instructions in the <b>#welcome</b> channel.
+      <//>
     </div>
-  </div> `;
+  </section>`;
 }
 
 export { Banner };

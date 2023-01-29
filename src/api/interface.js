@@ -86,6 +86,14 @@ twind.install({
     ["\\[.+]", (match) => "&" + match.input],
     ["([a-z-]+):", ({ 1: $1 }) => "&::" + $1],
   ],
+  theme: {
+    extend: {
+      backgroundImage: {
+        "brand-gradient":
+          "linear-gradient(225deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%)",
+      },
+    },
+  },
 });
 
 // https://developer.mozilla.org/en-US/docs/Web/SVG/Element

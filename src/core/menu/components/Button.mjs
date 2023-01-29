@@ -11,8 +11,8 @@ function Button({ icon, variant, tagName, ...props }, ...children) {
   extendProps(props, {
     class: `notion-enhancer--menu-button shrink-0
     flex gap-[8px] items-center px-[12px] rounded-[4px]
-    h-[${variant === "sm" ? "28" : "32"}px] transition
-    duration-[20ms] ${
+    h-[${variant === "sm" ? "28" : "32"}px] select-none
+    transition duration-[20ms] ${
       variant === "primary"
         ? `text-[color:var(--theme--accent-primary\\_contrast)]
            font-medium bg-[color:var(--theme--accent-primary)]
@@ -21,10 +21,15 @@ function Button({ icon, variant, tagName, ...props }, ...children) {
         ? `text-[color:var(--theme--accent-secondary)]
            border-(& [color:var(--theme--accent-secondary)])
            hover:bg-[color:var(--theme--accent-secondary\\_hover)]`
+        : variant === "brand"
+        ? `text-white border-(& purple-400)
+           bg-purple-500 hover:(from-white/20 to-transparent
+           bg-[linear-gradient(225deg,var(--tw-gradient-stops))])`
         : `border-(& [color:var(--theme--fg-border)])
            hover:bg-[color:var(--theme--bg-hover)]`
     }`,
   });
+  if (props["href"]) tagName ??= "a";
   return html`<${tagName ?? "button"} tabindex="0" ...${props}>
     ${icon
       ? html`<i

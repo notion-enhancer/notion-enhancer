@@ -67,11 +67,6 @@ const categories = [
       title: "Source Code",
       href: "https://github.com/notion-enhancer",
     },
-    {
-      icon: "coffee",
-      title: "Sponsor",
-      href: "https://github.com/sponsors/dragonwocky",
-    },
     "Settings",
     {
       id: "core",

@@ -10,7 +10,7 @@ function Checkbox({ _get, _set, ...props }) {
   const { html } = globalThis.__enhancerApi,
     $input = html`<input
       type="checkbox"
-      class="hidden checked:sibling:(px-[1px]
+      class="hidden checked:sibling:(px-px
       bg-[color:var(--theme--accent-primary)])
       not-checked:sibling:(children:text-transparent
         border-(& [color:var(--theme--fg-primary)])

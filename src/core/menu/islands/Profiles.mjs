@@ -31,6 +31,7 @@ function Profile({ id }) {
       return id === (await getProfile());
     },
     setActive = async () => {
+      if (await isActive()) return;
       await db.set("activeProfile", id);
       setState({ rerender: true, databaseUpdated: true });
     };
