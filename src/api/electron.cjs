@@ -48,80 +48,96 @@ const sendMessage = (channel, message) => {
     ipcRenderer.on(channel, listener);
   };
 
-let __db;
+let __db, __statements, __transactions;
 const initDatabase = (namespace, fallbacks = {}) => {
   if (Array.isArray(namespace)) namespace = namespace.join("__");
   namespace = namespace ? namespace + "__" : "";
   const namespaceify = (key) =>
     key.startsWith(namespace) ? key : namespace + key;
 
-  //   schema:
-  // - ("profileIds") = $profileId[]
-  // - ("activeProfile") -> $profileId
-  // - $profileId: ("profileName") -> string
-  // - $profileId__enabledMods: ($modId) -> boolean
-  // - $profileId__$modId: ($optionKey) -> value
+  __db ??= (async () => {
+    const { app, ipcRenderer } = require("electron"),
+      isRenderer = process?.type === "renderer",
+      userData = isRenderer
+        ? await ipcRenderer.invoke("notion-enhancer", "get-user-data-folder")
+        : app.getPath("userData");
 
-  const table = "settings",
-    sqlite = require("better-sqlite3"),
-    db = __db ?? sqlite(path.resolve(`${os.homedir()}/.notion-enhancer.db`)),
-    init = db.prepare(`CREATE TABLE IF NOT EXISTS ${table} (
-      key     TEXT PRIMARY KEY,
-      value   TEXT
-    )`);
-  init.run();
-  __db = db;
+    const table = "settings",
+      sqlite = require("better-sqlite3"),
+      db = sqlite(path.resolve(`${userData}/notion-enhancer.db`)),
+      init = db.prepare(`CREATE TABLE IF NOT EXISTS ${table} (
+          key     TEXT PRIMARY KEY,
+          value   TEXT
+        )`);
+    init.run();
 
-  const insert = db.prepare(`INSERT INTO ${table} (key, value) VALUES (?, ?)`),
-    update = db.prepare(`UPDATE ${table} SET value = ? WHERE key = ?`),
-    select = db.prepare(`SELECT * FROM ${table} WHERE key = ? LIMIT 1`),
-    remove = db.prepare(`DELETE FROM ${table} WHERE key = ?`),
-    removeMany = db.transaction((arr) => arr.forEach((key) => remove.run(key))),
-    dump = db.prepare(`SELECT * FROM ${table}`),
-    populate = db.transaction((obj) => {
-      for (const key in obj) {
-        if (select.get(key)) update.run(obj[key], key);
-        else insert.run(key, obj[key]);
-      }
-    });
+    //   schema:
+    // - ("profileIds") = $profileId[]
+    // - ("activeProfile") -> $profileId
+    // - $profileId: ("profileName") -> string
+    // - $profileId__enabledMods: ($modId) -> boolean
+    // - $profileId__$modId: ($optionKey) -> value
+    __statements = {
+      insert: db.prepare(`INSERT INTO ${table} (key, value) VALUES (?, ?)`),
+      update: db.prepare(`UPDATE ${table} SET value = ? WHERE key = ?`),
+      select: db.prepare(`SELECT * FROM ${table} WHERE key = ? LIMIT 1`),
+      delete: db.prepare(`DELETE FROM ${table} WHERE key = ?`),
+      dump: db.prepare(`SELECT * FROM ${table}`),
+    };
+    __transactions = {
+      remove: db.transaction((arr) => {
+        arr.forEach((key) => __statements.delete.run(key));
+      }),
+      set: db.transaction((obj) => {
+        for (const key in obj) {
+          if (__statements.select.get(key) === undefined) {
+            __statements.insert.run(key, obj[key]);
+          } else __statements.update.run(obj[key], key);
+        }
+      }),
+    };
+    return db;
+  })();
 
   return {
-    // wrap methods in promises for consistency w/ chrome.storage
-    get: (key) => {
+    get: async (key) => {
+      await __db;
       const fallback = fallbacks[key];
       key = namespaceify(key);
       try {
-        const value = JSON.parse(select.get(key)?.value);
-        return Promise.resolve(value ?? fallback);
+        const value = JSON.parse(__statements.select.get(key)?.value);
+        return value ?? fallback;
       } catch {}
-      return Promise.resolve(fallback);
+      return fallback;
     },
-    set: (key, value) => {
+    set: async (key, value) => {
+      await __db;
       key = namespaceify(key);
       value = JSON.stringify(value);
-      if (select.get(key) === undefined) {
-        insert.run(key, value);
-      } else update.run(value, key);
-      return Promise.resolve(true);
+      __transactions.set({ [key]: value });
+      return true;
     },
-    remove: (keys) => {
+    remove: async (keys) => {
+      await __db;
       keys = Array.isArray(keys) ? keys : [keys];
       keys = keys.map(namespaceify);
-      removeMany(keys);
-      return Promise.resolve(true);
+      __transactions.remove(keys);
+      return true;
     },
-    export: () => {
-      const entries = dump
+    export: async () => {
+      await __db;
+      const entries = __statements.dump
         .all()
         .filter(({ key }) => key.startsWith(namespace))
         .map(({ key, value }) => [key.slice(namespace.length), value]);
-      return Promise.resolve(Object.fromEntries(entries));
+      return Object.fromEntries(entries);
     },
-    import: (obj) => {
+    import: async (obj) => {
+      await __db;
       const entries = Object.entries(obj) //
         .map(([key, value]) => [key.slice(namespace.length), value]);
-      populate(Object.fromEntries(entries));
-      return Promise.resolve(true);
+      __transactions.set(Object.fromEntries(entries));
+      return true;
     },
   };
 };

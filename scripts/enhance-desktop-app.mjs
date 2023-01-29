@@ -15,7 +15,7 @@ import { createRequire } from "node:module";
 
 import patch from "./patch-desktop-app.mjs";
 
-let __notionResources, __enhancerConfig;
+let __notionResources;
 const nodeRequire = createRequire(import.meta.url),
   manifest = nodeRequire("../package.json"),
   platform =
@@ -92,12 +92,6 @@ const setNotionPath = (path) => {
   getAppPath = () => ["app", "app.asar"].map(getResourcePath).find(existsSync),
   getBackupPath = () =>
     ["app.bak", "app.asar.bak"].map(getResourcePath).find(existsSync),
-  getConfigPath = () => {
-    if (__enhancerConfig) return __enhancerConfig;
-    const home = platform === "wsl" ? polyfillWslEnv("HOMEPATH") : os.homedir();
-    __enhancerConfig = resolve(`${home}/.notion-enhancer.db`);
-    return __enhancerConfig;
-  },
   checkEnhancementVersion = () => {
     // prettier-ignore
     const manifestPath = getResourcePath("app/node_modules/notion-enhancer/package.json");
@@ -125,8 +119,8 @@ const unpackApp = async () => {
     // call patch-desktop-app.mjs on each file
     // prettier-ignore
     const notionScripts = (await readdirDeep(appPath))
-    .filter((file) => file.endsWith(".js")),
-    scriptUpdates = [];
+      .filter((file) => file.endsWith(".js")),
+      scriptUpdates = [];
     for (const file of notionScripts) {
       const scriptId = file.slice(appPath.length + 1, -3).replace(/\\/g, "/"),
         scriptContent = await fsp.readFile(file, { encoding: "utf8" }),
@@ -170,23 +164,16 @@ const unpackApp = async () => {
     const appPath = getAppPath();
     if (destPath !== appPath) await fsp.rm(appPath, { recursive: true });
     return true;
-  },
-  removeConfig = async () => {
-    if (!existsSync(getConfigPath())) return;
-    await fsp.rm(getConfigPath());
-    return true;
   };
 
 export {
   getResourcePath,
   getAppPath,
   getBackupPath,
-  getConfigPath,
   checkEnhancementVersion,
   setNotionPath,
   unpackApp,
   applyEnhancements,
   takeBackup,
   restoreBackup,
-  removeConfig,
 };

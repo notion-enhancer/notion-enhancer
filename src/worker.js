@@ -21,11 +21,16 @@ if (isElectron()) {
       app.exit();
     };
 
-  ipcMain.on("notion-enhancer", (event, message) => {
+  ipcMain.on("notion-enhancer", (_event, message) => {
     if (message === "open-menu") {
       //
     } else if (message === "reload-app") {
       reloadApp();
+    }
+  });
+  ipcMain.handle("notion-enhancer", (_event, message) => {
+    if (message === "get-user-data-folder") {
+      return app.getPath("userData");
     }
   });
 } else {

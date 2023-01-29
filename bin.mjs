@@ -13,14 +13,12 @@ import { createRequire } from "node:module";
 import {
   getAppPath,
   getBackupPath,
-  getConfigPath,
   checkEnhancementVersion,
   setNotionPath,
   unpackApp,
   applyEnhancements,
   takeBackup,
   restoreBackup,
-  removeConfig,
 } from "./scripts/enhance-desktop-app.mjs";
 import { existsSync } from "node:fs";
 const nodeRequire = createRequire(import.meta.url),
@@ -218,7 +216,6 @@ try {
 
   const appPath = getAppPath(),
     backupPath = getBackupPath(),
-    configPath = getConfigPath(),
     insertVersion = checkEnhancementVersion();
 
   const messages = {
@@ -239,10 +236,6 @@ try {
     "manual-removal-instructions": `to remove the notion-enhancer from notion, uninstall notion and
     then install a vanilla version of the app from https://www.notion.so/desktop (mac,
     windows) or ${manifest.homepage}/getting-started/installation (linux)`,
-
-    "config-found": `config found`,
-    "config-not-found": `config not found: nothing to remove`,
-    "prompt-config-removal": `remove?`,
   };
   const SUCCESS = chalk`{bold.whiteBright SUCCESS} {green ✔}`,
     FAILURE = chalk`{bold.whiteBright FAILURE} {red ✘}`,
@@ -316,9 +309,8 @@ try {
       stopSpinner();
       print`  {grey * ${messages["version-applied"]}}\n`;
       return SUCCESS;
-    };
-
-  const interactiveRemoveEnhancements = async () => {
+    },
+    interactiveRemoveEnhancements = async () => {
       if (!appPath) {
         // notion not installed
         print`  {red * ${messages["notion-not-found"]}}\n`;
@@ -331,19 +323,6 @@ try {
       }
       print`  {grey * ${messages["notion-found"]}: ${messages["not-applied"]}}\n`;
       return SUCCESS;
-    },
-    promptConfigRemoval = async () => {
-      if (existsSync(configPath)) {
-        print`  {grey * ${messages["config-found"]}: ${configPath}}\n`;
-        // prettier-ignore
-        const promptRemoval = await promptConfirmation(messages["prompt-config-removal"]);
-        if (["Y", "y"].includes(promptRemoval)) {
-          print` `;
-          startSpinner();
-          await removeConfig();
-          stopSpinner();
-        } else print`\n`;
-      } else print`  {grey * ${messages["config-not-found"]}}\n`;
     };
 
   switch (args["_"][0]) {
@@ -357,7 +336,6 @@ try {
     case "remove": {
       print`{bold.whiteBright [NOTION-ENHANCER] REMOVE}\n`;
       const res = await interactiveRemoveEnhancements();
-      await promptConfigRemoval();
       print`${res}\n`;
       break;
     }
@@ -366,8 +344,6 @@ try {
         printObject({
           appPath,
           backupPath,
-          configPath,
-          configExists: existsSync(configPath),
           insertVersion,
           currentVersion: manifest.version,
         });
