@@ -8,6 +8,7 @@ import { setState, useState } from "./state.mjs";
 import { Sidebar } from "./islands/Sidebar.mjs";
 import { Footer } from "./islands/Footer.mjs";
 import { Banner } from "./islands/Banner.mjs";
+import { Telemetry } from "./islands/Telemetry.mjs";
 import { View } from "./islands/View.mjs";
 import { List } from "./islands/List.mjs";
 import { Mod } from "./islands/Mod.mjs";
@@ -77,7 +78,7 @@ const categories = [
   ];
 
 const render = async () => {
-  const { html, enhancerVersion } = globalThis.__enhancerApi,
+  const { html, platform } = globalThis.__enhancerApi,
     { getMods, isEnabled, setEnabled } = globalThis.__enhancerApi,
     [icon, renderStarted] = useState(["icon", "renderStarted"]);
   if (!html || !getMods || !icon || renderStarted) return;
@@ -116,9 +117,10 @@ const render = async () => {
         <!-- wrappers necessary for transitions and breakpoints -->
         <div class="grow overflow-auto">
           <div class="relative h-full w-full">
-            <${View} id="welcome"><${Banner} version=${enhancerVersion} /><//>
+            <${View} id="welcome"><${Banner} /><//>
             <${View} id="core">
               <${Options} mod=${mods.find(({ _src }) => _src === "core")} />
+              <${Telemetry} />
               <${Profiles} />
             <//>
             ${[...categories, ...mods]

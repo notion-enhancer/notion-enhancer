@@ -62,8 +62,9 @@ function Circle(rect) {
   ></div>`;
 }
 
-function Banner({ version }) {
-  const { html } = globalThis.__enhancerApi;
+function Banner() {
+  const { html, enhancerVersion } = globalThis.__enhancerApi;
+  // todo: show popup if update available
   return html`<section class="notion-enhancer--menu-banner">
     <div
       class="relative flex overflow-hidden h-[192px] rounded-t-[4px]
@@ -94,7 +95,7 @@ function Banner({ version }) {
         <span
           class="text-[12px] py-[2px] px-[6px]
           font-medium leading-tight tracking-wide"
-          >v${version}
+          >v${enhancerVersion}
         </span>
       </div>
     </div>

@@ -71,12 +71,14 @@ const initDatabase = (namespace, fallbacks = {}) => {
         )`);
     init.run();
 
-    //   schema:
-    // - ("profileIds") = $profileId[]
+    // schema:
+    // - ("profileIds") -> $profileId[]
     // - ("activeProfile") -> $profileId
     // - $profileId: ("profileName") -> string
+    // - $profileId: ("telemetryEnabled") -> boolean
     // - $profileId__enabledMods: ($modId) -> boolean
     // - $profileId__$modId: ($optionKey) -> value
+
     __statements = {
       insert: db.prepare(`INSERT INTO ${table} (key, value) VALUES (?, ?)`),
       update: db.prepare(`UPDATE ${table} SET value = ? WHERE key = ?`),

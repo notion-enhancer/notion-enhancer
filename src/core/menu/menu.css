@@ -94,17 +94,23 @@ body > #skeleton .row-group .shimmer {
   height: 11px;
 }
 
-.notion-enhancer--menu-description mark {
-  color: inherit;
+.typography mark {
   padding: 0 4px;
   border-radius: 3px;
   background-color: var(--theme--bg-hover);
+  color: inherit;
 }
-.notion-enhancer--menu-description a {
+.typography code {
+  padding: 0 4px;
+  border-radius: 3px;
+  background-color: var(--theme--code-inline_bg);
+  color: var(--theme--code-inline_fg);
+}
+.typography a {
   text-decoration: underline;
   transition: 100ms ease-in;
 }
-.notion-enhancer--menu-description a:hover {
+.typography a:hover {
   color: var(--theme--accent-secondary);
 }
 

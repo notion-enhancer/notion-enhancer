@@ -47,7 +47,9 @@ function Option({ _get, _set, ...opt }) {
             ...${{ _get, _set }}
           />`
         : ""}
-      <${Description} innerHTML=${opt.description} />
+      ${["string", "undefined"].includes(typeof opt.description)
+        ? html`<${Description} innerHTML=${opt.description} />`
+        : html`<${Description}>${opt.description}<//>`}
     </div>
     ${["number", "hotkey", "color"].includes(opt.type)
       ? html`<${Input}
@@ -83,4 +85,4 @@ function Options({ mod }) {
   });
 }
 
-export { Options };
+export { Options, Option };

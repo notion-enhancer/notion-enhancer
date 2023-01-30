@@ -6,11 +6,11 @@
 
 import { extendProps } from "../state.mjs";
 
-function Heading(props, children) {
+function Heading(props, ...children) {
   const { html } = globalThis.__enhancerApi;
   extendProps(props, {
-    class: `notion-enhancer--menu-heading font-semibold
-    mb-[16px] mt-[48px] first:mt-0 pb-[12px] text-[16px]
+    class: `notion-enhancer--menu-heading flex items-center gap-[4px]
+    text-[16px] font-semibold mb-[16px] mt-[48px] first:mt-0 pb-[12px]
     border-b-(& [color:var(--theme--fg-border)])`,
   });
   return html`<h4 ...${props}>${children}</h4>`;
