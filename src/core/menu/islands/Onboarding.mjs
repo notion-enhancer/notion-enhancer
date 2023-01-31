@@ -59,29 +59,25 @@ function Onboarding() {
       href="https://notion-enhancer.github.io/getting-started/basic-usage/"
       icon="graduation-cap"
       title="Stuck?"
-    >
-      Check out the basic usage guide.
+      >Check out the basic usage guide.
     <//>
     <${Tile}
       href="https://notion-enhancer.github.io/getting-started/basic-usage/"
       icon="package-plus"
       title="Something missing?"
-    >
-      Build your first extension.
+      >Build your own extension.
     <//>
     <${Tile}
       href="https://github.com/notion-enhancer/notion-enhancer/issues/new?template=BUG_REPORT.md"
       icon="bug"
       title="Something not working?"
-    >
-      Report a bug.
+      >Report a bug.
     <//>
     <${Tile}
       href="https://discord.gg/sFWPXtA"
       icon="help-circle"
       title="Got questions?"
-    >
-      Join the community.
+      >Join the community.
     <//>
   </div>`;
   useState(["rerender"], async () => {
