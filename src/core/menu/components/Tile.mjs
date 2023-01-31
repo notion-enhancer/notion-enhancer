@@ -9,10 +9,9 @@ import { extendProps } from "../state.mjs";
 function Tile({ icon, title, tagName, ...props }, ...children) {
   const { html } = globalThis.__enhancerApi;
   extendProps(props, {
-    class: `px-[16px] py-[12px]
-    flex items-center gap-[12px] rounded-[4px]
-    border-(& [color:var(--theme--fg-border)])
-    hover:bg-[color:var(--theme--bg-hover)]`,
+    class: `flex items-center gap-[12px] px-[16px] py-[12px]
+    bg-[color:var(--theme--bg-secondary)] hover:bg-[color:var(--theme--bg-hover)]
+    rounded-[4px] border-(& [color:var(--theme--fg-border)])`,
   });
   tagName ??= props["href"] ? "a" : "button";
   return html`<${tagName} ...${props}>
