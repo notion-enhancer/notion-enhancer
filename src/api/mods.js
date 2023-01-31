@@ -46,11 +46,15 @@ const getMods = async (category) => {
   };
 
 const isEnabled = async (id) => {
-    const mod = (await getMods()).find((mod) => mod.id === id);
+    const { version, initDatabase } = globalThis.__enhancerApi,
+      mod = (await getMods()).find((mod) => mod.id === id);
+    if (mod._src === "core") return true;
     // prettier-ignore
-    return mod._src === "core" || await globalThis.__enhancerApi
-      .initDatabase([await getProfile(), "enabledMods"])
-      .get(id);
+    const agreedToTerms = await initDatabase().get("agreedToTerms"),
+      enabledInProfile = await initDatabase([
+        await getProfile(), "enabledMods",
+      ]).get(id);
+    return agreedToTerms === version && enabledInProfile;
   },
   setEnabled = async (id, enabled) => {
     return await globalThis.__enhancerApi

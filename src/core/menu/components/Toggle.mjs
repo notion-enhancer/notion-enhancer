@@ -16,8 +16,9 @@ function Toggle({ _get, _set, ...props }) {
       ...${props}
     />`;
   extendProps($input, { onchange: () => _set?.($input.checked) });
-  useState(["rerender"], () => {
-    _get?.().then((checked) => ($input.checked = checked));
+  useState(["rerender"], async () => {
+    const checked = (await _get?.()) ?? $input.checked;
+    $input.checked = checked;
   });
 
   return html`<div class="notion-enhancer--menu-toggle shrink-0">

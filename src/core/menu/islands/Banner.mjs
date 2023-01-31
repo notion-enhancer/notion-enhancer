@@ -6,6 +6,7 @@
 
 import { Button } from "../components/Button.mjs";
 import { Description } from "../components/Description.mjs";
+import { useState } from "../state.mjs";
 
 const rectToStyle = (rect) =>
   ["width", "height", "top", "bottom", "left", "right"]
@@ -63,10 +64,8 @@ function Circle(rect) {
 }
 
 function Banner() {
-  const { html, enhancerVersion } = globalThis.__enhancerApi;
-  // todo: show popup if update available
-  return html`<section class="notion-enhancer--menu-banner">
-    <div
+  const { html, version, initDatabase } = globalThis.__enhancerApi,
+    $welcome = html`<div
       class="relative flex overflow-hidden h-[192px] rounded-t-[4px]
       border-(& purple-400) bg-purple-500 from-white/20 to-transparent
       text-white bg-[linear-gradient(225deg,var(--tw-gradient-stops))]"
@@ -83,8 +82,10 @@ function Banner() {
         class="z-10 pl-[32px] md:pl-[48px] lg:pl-[64px]
         font-bold leading-tight tracking-tight my-auto"
       >
-        <span class="text-[26px]">Welcome to</span><br />
-        <span class="text-[28px]">the notion-enhancer</span>
+        <a href="https://notion-enhancer.github.io/">
+          <span class="text-[26px]">Welcome to</span><br />
+          <span class="text-[28px]">the notion-enhancer</span>
+        </a>
       </h1>
 
       <div
@@ -92,15 +93,18 @@ function Banner() {
         pr-[32px] md:pr-[48px] lg:pr-[64px] pb-[24px]"
       >
         <i class="i-notion-enhancer text-[42px] mx-auto mb-[8px]"></i>
-        <span
-          class="text-[12px] py-[2px] px-[6px]
+        <a
+          href="https://github.com/notion-enhancer/notion-enhancer/releases/tag/v${version}"
+        >
+          <span
+            class="text-[12px] py-[2px] px-[6px]
           font-medium leading-tight tracking-wide"
-          >v${enhancerVersion}
-        </span>
+            >v${version}
+          </span>
+        </a>
       </div>
-    </div>
-
-    <div
+    </div>`,
+    $sponsorship = html`<div
       class="py-[18px] px-[16px] rounded-b-[4px]
       border-(& [color:var(--theme--fg-border)]) bg-[color:var(--theme--bg-secondary)]"
     >
@@ -135,7 +139,20 @@ function Banner() {
         join the server <a href="https://discord.gg/sFWPXtA">here</a> and follow
         the instructions in the <b>#welcome</b> channel.
       <//>
-    </div>
+    </div>`;
+
+  initDatabase()
+    .get("agreedToTerms")
+    .then((agreedToTerms) => {
+      // only show sponsorship if already agree to terms
+      // and opening menu after having reloaded since agreeing
+      $welcome.style.borderRadius = agreedToTerms === version ? "" : "4px";
+      $sponsorship.style.display = agreedToTerms === version ? "" : "none";
+    });
+
+  // todo: show popup if update available
+  return html`<section class="notion-enhancer--menu-banner">
+    ${$welcome}${$sponsorship}
   </section>`;
 }
 

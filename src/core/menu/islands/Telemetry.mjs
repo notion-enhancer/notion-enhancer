@@ -9,7 +9,7 @@ import { Option } from "./Options.mjs";
 
 const privacyPolicy = "https://notion-enhancer.github.io/about/privacy-policy/";
 function Telemetry() {
-  const { html, platform, getMods } = globalThis.__enhancerApi,
+  const { html, platform, version, getMods } = globalThis.__enhancerApi,
     { getProfile, isEnabled, initDatabase } = globalThis.__enhancerApi,
     timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
@@ -36,13 +36,14 @@ function Telemetry() {
   return html`<${Option}
     type="toggle"
     label="Telemetry"
-    description=${html`If telemetry is enabled, basic usage data will be
-      collected at a regular interval from your device in order to better
-      understand how and where the notion-enhancer is used. This data is
-      anonymous and includes only your platform (<code>"${platform}"</code>),
-      timezone (<code>"${timezone}"</code>) and enabled mods (${$enabledMods}).
-      You can opt in or out of telemetry at any time. For more information,
-      please read the <a href=${privacyPolicy}>privacy policy</a>.`}
+    description=${html`If telemetry is enabled, usage data will be collected
+      once a week from your device in order to better understand how and where
+      the notion-enhancer is used. This data is anonymous and includes only your
+      platform (<code>"${platform}"</code>), timezone
+      (<code>"${timezone}"</code>), notion-enhancer version
+      (<code>"${version}"</code>), and enabled mods (${$enabledMods}). You can
+      opt in or out of telemetry at any time. For more information, read the
+      notion-enhancer's <a href=${privacyPolicy}>privacy policy</a>.`}
     ...${{ _get, _set }}
   />`;
 }

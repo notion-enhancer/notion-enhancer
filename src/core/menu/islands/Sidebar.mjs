@@ -5,6 +5,7 @@
  */
 
 import { extendProps, setState, useState } from "../state.mjs";
+import { Description } from "../components/Description.mjs";
 
 function SidebarHeading({}, ...children) {
   const { html } = globalThis.__enhancerApi;
@@ -19,10 +20,10 @@ function SidebarHeading({}, ...children) {
 
 function SidebarButton({ id, icon, ...props }, ...children) {
   const { html } = globalThis.__enhancerApi,
-    $btn = html`<${props.href ? "a" : "button"}
-      class="flex select-none cursor-pointer w-full
-      items-center py-[5px] px-[15px] text-[14px] last:mb-[12px]
-      transition hover:bg-[color:var(--theme--bg-hover)]"
+    $btn = html`<${props["href"] ? "a" : "button"}
+      class="flex items-center select-none text-[14px]
+      py-[5px] px-[15px] last:mb-[12px] w-full transition
+      hover:bg-[color:var(--theme--bg-hover)] disabled:hidden"
       ...${props}
     >
       ${icon
@@ -35,7 +36,7 @@ function SidebarButton({ id, icon, ...props }, ...children) {
       <span class="leading-[20px]">${children}</span>
     <//>`;
 
-  if (!props.href) {
+  if (!props["href"]) {
     extendProps($btn, {
       onclick: () => setState({ transition: "fade", view: id }),
     });
@@ -49,18 +50,39 @@ function SidebarButton({ id, icon, ...props }, ...children) {
 }
 
 function Sidebar({ items, categories }) {
-  const { html, isEnabled } = globalThis.__enhancerApi,
+  const { html, version } = globalThis.__enhancerApi,
+    { initDatabase, isEnabled } = globalThis.__enhancerApi,
+    $agreeToUnlock = html`<span
+      class="pt-[2px] pb-[5px] px-[15px]
+      inline-block text-[color:var(--theme--fg-red)]"
+      >To unlock the notion-enhancer's full functionality, agree to the privacy
+      policy and terms & conditions on the welcome page.
+    </span>`,
     $sidebar = html`<aside
-      class="notion-enhancer--menu-sidebar h-full row-span-1
-      overflow-y-auto bg-[color:var(--theme--bg-secondary)]"
+      class="notion-enhancer--menu-sidebar flex flex-col row-span-1
+      h-full overflow-y-auto bg-[color:var(--theme--bg-secondary)]"
     >
       ${items.map((item) => {
-        if (typeof item === "object") {
+        if (Array.isArray(item)) {
+          const [title, desc] = Array.isArray(item) ? item : [item];
+          return html`
+            <${SidebarHeading}>${title}<//>
+            <${Description}>${desc}<//>
+          `;
+        } else if (typeof item === "object") {
           const { title, ...props } = item;
           return html`<${SidebarButton} ...${props}>${title}<//>`;
         } else return html`<${SidebarHeading}>${item}<//>`;
-      })}
+      })}${$agreeToUnlock}
     </aside>`;
+  useState(["rerender"], async () => {
+    const agreedToTerms = await initDatabase().get("agreedToTerms");
+    $agreeToUnlock.style.display = agreedToTerms === version ? "none" : "";
+    [...$sidebar.children].forEach(($btn) => {
+      if (!$btn.disableUntilAgreedToTerms) return;
+      $btn.disabled = agreedToTerms !== version;
+    });
+  });
 
   for (const { title, mods } of categories) {
     const $title = html`<${SidebarHeading}>${title}<//>`,
@@ -73,10 +95,8 @@ function Sidebar({ items, categories }) {
     useState(["rerender"], async () => {
       let sectionVisible = false;
       for (const [id, $btn] of $mods) {
-        if (await isEnabled(id)) {
-          $btn.style.display = "";
-          sectionVisible = true;
-        } else $btn.style.display = "none";
+        $btn.disabled = !(await isEnabled(id));
+        sectionVisible ||= !$btn.disabled;
       }
       $title.style.display = sectionVisible ? "" : "none";
     });

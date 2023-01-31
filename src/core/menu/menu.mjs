@@ -8,6 +8,7 @@ import { setState, useState } from "./state.mjs";
 import { Sidebar } from "./islands/Sidebar.mjs";
 import { Footer } from "./islands/Footer.mjs";
 import { Banner } from "./islands/Banner.mjs";
+import { Onboarding } from "./islands/Onboarding.mjs";
 import { Telemetry } from "./islands/Telemetry.mjs";
 import { View } from "./islands/View.mjs";
 import { List } from "./islands/List.mjs";
@@ -73,13 +74,19 @@ const categories = [
       id: "core",
       title: "Core",
       icon: "sliders-horizontal",
+      disableUntilAgreedToTerms: true,
     },
-    ...categories.map((c) => ({ id: c.id, title: c.title, icon: c.icon })),
+    ...categories.map((c) => ({
+      id: c.id,
+      title: c.title,
+      icon: c.icon,
+      disableUntilAgreedToTerms: true,
+    })),
   ];
 
 const render = async () => {
-  const { html, platform } = globalThis.__enhancerApi,
-    { getMods, isEnabled, setEnabled } = globalThis.__enhancerApi,
+  const { html, getMods } = globalThis.__enhancerApi,
+    { isEnabled, setEnabled } = globalThis.__enhancerApi,
     [icon, renderStarted] = useState(["icon", "renderStarted"]);
   if (!html || !getMods || !icon || renderStarted) return;
   if (icon === "Monochrome") sidebar[1].icon += "?mask";
@@ -117,7 +124,10 @@ const render = async () => {
         <!-- wrappers necessary for transitions and breakpoints -->
         <div class="grow overflow-auto">
           <div class="relative h-full w-full">
-            <${View} id="welcome"><${Banner} /><//>
+            <${View} id="welcome">
+              <${Banner} />
+              <${Onboarding} />
+            <//>
             <${View} id="core">
               <${Options} mod=${mods.find(({ _src }) => _src === "core")} />
               <${Telemetry} />

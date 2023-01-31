@@ -7,12 +7,11 @@
 "use strict";
 
 const fs = require("fs"),
-  os = require("os"),
   path = require("path"),
   notionRequire = (target) => require(`../../../${target}`);
 
 const platform = process.platform,
-  enhancerVersion = require("notion-enhancer/package.json").version,
+  version = require("notion-enhancer/package.json").version,
   enhancerUrl = (target) =>
     `notion://www.notion.so/__notion-enhancer/${target.replace(/^\//, "")}`;
 
@@ -72,6 +71,7 @@ const initDatabase = (namespace, fallbacks = {}) => {
     init.run();
 
     // schema:
+    // - ("agreedToTerms") -> boolean
     // - ("profileIds") -> $profileId[]
     // - ("activeProfile") -> $profileId
     // - $profileId: ("profileName") -> string
@@ -148,8 +148,8 @@ globalThis.__enhancerApi ??= {};
 Object.assign(globalThis.__enhancerApi, {
   notionRequire,
   platform,
+  version,
   enhancerUrl,
-  enhancerVersion,
   readFile,
   readJson,
   reloadApp,

@@ -25,12 +25,10 @@ function Option({ value, _get, _set }) {
         ${value}
       </div>
     </div>`;
-  useState(["rerender"], () => {
-    _get?.().then((actualValue) => {
-      if (actualValue === value) {
-        $option.append($selected);
-      } else $selected.remove();
-    });
+  useState(["rerender"], async () => {
+    if ((await _get?.()) === value) {
+      $option.append($selected);
+    } else $selected.remove();
   });
   return $option;
 }

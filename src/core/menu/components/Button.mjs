@@ -26,15 +26,16 @@ function Button({ icon, variant, tagName, ...props }, ...children) {
            bg-purple-500 hover:(from-white/20 to-transparent
            bg-[linear-gradient(225deg,var(--tw-gradient-stops))])`
         : `border-(& [color:var(--theme--fg-border)])
-           hover:bg-[color:var(--theme--bg-hover)]`
+           not-disabled:hover:bg-[color:var(--theme--bg-hover)]
+           disabled:text-[color:var(--theme--fg-secondary)]`
     }`,
   });
-  if (props["href"]) tagName ??= "a";
-  return html`<${tagName ?? "button"} tabindex="0" ...${props}>
+  tagName ??= props["href"] ? "a" : "button";
+  return html`<${tagName} ...${props}>
     ${icon
       ? html`<i
           class="i-${icon}
-          text-[${variant === "sm" && children.length ? "14" : "18"}px]"
+          text-[${variant === "sm" && children.length ? "13" : "17"}px]"
         ></i>`
       : ""}
     <span class="text-[${variant === "sm" ? "13" : "14"}px] empty:hidden">

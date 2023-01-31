@@ -10,6 +10,7 @@ export default async (api, db) => {
   const {
       html,
       platform,
+      version,
       getMods,
       isEnabled,
       enhancerUrl,
@@ -17,6 +18,7 @@ export default async (api, db) => {
       sendMessage,
       addMutationListener,
       addKeyListener,
+      initDatabase,
     } = api,
     openMenuHotkey = await db.get("openMenuHotkey"),
     menuButtonIconStyle = await db.get("menuButtonIconStyle"),
@@ -153,4 +155,8 @@ export default async (api, db) => {
   });
 
   sendMessage("notion-enhancer", "load-complete");
+
+  if ((await initDatabase().get("agreedToTerms")) === version) {
+    // telemetry
+  }
 };

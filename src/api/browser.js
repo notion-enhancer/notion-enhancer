@@ -7,7 +7,7 @@
 "use strict";
 
 const platform = "browser",
-  enhancerVersion = chrome.runtime.getManifest().version,
+  version = chrome.runtime.getManifest().version,
   enhancerUrl = (target) => chrome.runtime.getURL(target);
 
 const readFile = async (file) => {
@@ -75,8 +75,8 @@ const initDatabase = (namespace, fallbacks = {}) => {
 globalThis.__enhancerApi ??= {};
 Object.assign(globalThis.__enhancerApi, {
   platform,
+  version,
   enhancerUrl,
-  enhancerVersion,
   readFile,
   readJson,
   reloadApp,

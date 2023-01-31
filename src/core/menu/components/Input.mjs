@@ -124,14 +124,12 @@ function Input({
       } else _set?.($input.value);
     },
     onrerender: async () => {
-      _get?.().then((value) => {
-        value ??= "";
-        if (type === "file") {
-          $filename.innerText = value?.filename || "Upload a file";
-          $clear.style.display = value?.filename ? "" : "none";
-        } else if ($input.value !== value) $input.value = value;
-        if (type === "color") updateContrast($input, $icon);
-      });
+      const value = (await _get?.()) ?? $input.value ?? "";
+      if (type === "file") {
+        $filename.innerText = value?.filename || "Upload a file";
+        $clear.style.display = value?.filename ? "" : "none";
+      } else if ($input.value !== value) $input.value = value;
+      if (type === "color") updateContrast($input, $icon);
     },
     onkeydown: type === "hotkey" ? updateHotkey : undefined,
     oninput: type === "color" ? () => _set?.($input.value) : undefined,

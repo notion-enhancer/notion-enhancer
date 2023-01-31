@@ -547,7 +547,7 @@ const h = (type, props, ...children) => {
     for (const prop in props ?? {}) {
       if (typeof props[prop] === "undefined") continue;
       if (htmlAttributes.includes(prop) || prop.startsWith("data-")) {
-        if (typeof props[prop] === "boolean") {
+        if (typeof props[prop] === "boolean" && !prop.startsWith("data-")) {
           if (!props[prop]) continue;
           elem.setAttribute(prop, "");
         } else elem.setAttribute(prop, props[prop]);
