@@ -4,7 +4,7 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { useState, extendProps } from "../state.mjs";
+import { useState } from "../state.mjs";
 import { Popup } from "./Popup.mjs";
 
 function Option({ value, _get, _set }) {

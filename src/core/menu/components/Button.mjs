@@ -4,10 +4,8 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { extendProps } from "../state.mjs";
-
 function Button({ icon, variant, tagName, ...props }, ...children) {
-  const { html } = globalThis.__enhancerApi;
+  const { html, extendProps } = globalThis.__enhancerApi;
   extendProps(props, {
     class: `notion-enhancer--menu-button shrink-0
     flex gap-[8px] items-center px-[12px] rounded-[4px]

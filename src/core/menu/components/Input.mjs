@@ -4,7 +4,7 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { extendProps, useState } from "../state.mjs";
+import { useState } from "../state.mjs";
 
 const updateHotkey = (event) => {
     const keys = [];
@@ -75,7 +75,7 @@ function Input({
   ...props
 }) {
   let $filename, $clear;
-  const { html } = globalThis.__enhancerApi;
+  const { html, extendProps } = globalThis.__enhancerApi;
   Coloris({ format: "rgb" });
 
   type ??= "text";

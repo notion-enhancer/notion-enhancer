@@ -4,7 +4,45 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+import { checkForUpdate } from "./update.mjs";
+
 const notionSidebar = `.notion-sidebar-container .notion-sidebar > :nth-child(3) > div > :nth-child(2)`;
+
+function SidebarButton(
+  { icon, notifications, themeOverridesLoaded, ...props },
+  ...children
+) {
+  const { html } = globalThis.__enhancerApi;
+  return html`<div
+    tabindex="0"
+    role="button"
+    class="notion-enhancer--menu-button
+    flex select-none cursor-pointer rounded-[3px]
+    text-[14px] my-px mx-[4px] py-[2px] px-[10px]
+    transition hover:bg-[color:var(--theme--bg-hover)]"
+    ...${props}
+  >
+    <div class="flex items-center justify-center w-[22px] h-[22px] mr-[8px]">
+      <i class="i-${icon}"></i>
+    </div>
+    <div>${children}</div>
+
+    <div class="ml-auto my-auto${notifications > 0 ? "" : " hidden"}">
+      <!-- accents are squashed into one variable for theming:
+      use rgb to match notion if overrides not loaded -->
+      <div
+        class="flex justify-center w-[16px] h-[16px] font-semibold
+        text-([10px] [color:var(--theme--accent-secondary\\_contrast)])
+        bg-[color:var(--theme--accent-secondary)] rounded-[3px] mb-[2px]
+        dark:bg-[color:${themeOverridesLoaded
+          ? "var(--theme--accent-secondary)"
+          : "rgb(180,65,60)"}]"
+      >
+        <span class="ml-[-0.5px]">${notifications}</span>
+      </div>
+    </div>
+  </div>`;
+}
 
 export default async (api, db) => {
   const {
@@ -109,24 +147,14 @@ export default async (api, db) => {
   </div>`;
   document.body.append($menuModal);
 
-  const $menuButton = html`<div
+  const $menuButton = html`<${SidebarButton}
     onclick=${openMenu}
-    tabindex="0"
-    role="button"
-    class="notion-enhancer--menu-button
-    flex select-none cursor-pointer rounded-[3px]
-    text-[14px] my-px mx-[4px] py-[2px] px-[10px]
-    transition hover:bg-[color:var(--theme--bg-hover)]"
-  >
-    <div class="flex items-center justify-center w-[22px] h-[22px] mr-[8px]">
-      <i
-        class="i-notion-enhancer${menuButtonIconStyle === "Monochrome"
-          ? "?mask"
-          : " text-[16px]"}"
-      ></i>
-    </div>
-    <div>notion-enhancer</div>
-  </div>`;
+    notifications=${(await checkForUpdate()) ? 1 : 0}
+    icon="notion-enhancer${menuButtonIconStyle === "Monochrome"
+      ? "?mask"
+      : " text-[16px]"}"
+    >notion-enhancer
+  <//>`;
   addMutationListener(notionSidebar, () => {
     if (document.contains($menuButton)) return;
     document.querySelector(notionSidebar)?.append($menuButton);

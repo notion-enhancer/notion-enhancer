@@ -72,6 +72,7 @@ const encodeSvg = (svg) =>
     };
   };
 twind.install({
+  darkMode: "class",
   rules: [[/^i-((?:\w|-)+)(?:\?(mask|bg|auto))?$/, presetIcons]],
   variants: [
     // https://github.com/tw-in-js/twind/blob/main/packages/preset-ext/src/variants.ts
@@ -558,5 +559,22 @@ const h = (type, props, ...children) => {
   },
   html = htm.bind(h);
 
+const extendProps = (props, extend) => {
+  for (const key in extend) {
+    const { [key]: userProvided } = props;
+    if (typeof extend[key] === "function") {
+      props[key] = (...args) => {
+        extend[key](...args);
+        userProvided?.(...args);
+      };
+    } else if (key === "class") {
+      if (userProvided) props[key] += " ";
+      if (!userProvided) props[key] = "";
+      props[key] += extend[key];
+    } else props[key] = extend[key] ?? userProvided;
+  }
+  return props;
+};
+
 globalThis.__enhancerApi ??= {};
-Object.assign(globalThis.__enhancerApi, { html });
+Object.assign(globalThis.__enhancerApi, { html, extendProps });

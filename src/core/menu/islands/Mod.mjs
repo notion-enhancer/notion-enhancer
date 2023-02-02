@@ -37,7 +37,7 @@ function Mod({
           class="rounded-[4px] mr-[12px] h-[74px] my-auto"
         />`
       : ""}
-    <div class="flex flex-col max-w-[50%]">
+    <div class="flex-(& col) max-w-[50%]">
       <div class="flex items-center text-[14px] mb-[5px]">
         <h3 class="my-0">${name}</h3>
         ${[`v${version}`, ...tags].map((tag) => {
@@ -45,8 +45,7 @@ function Mod({
             class="text-([12px] [color:var(--theme--fg-secondary)])
             ml-[8px] py-[2px] px-[6px] leading-tight tracking-wide
             rounded-[3px] bg-[color:var(--theme--bg-hover)]"
-          >
-            ${tag}
+            >${tag}
           </span>`;
         })}
       </div>

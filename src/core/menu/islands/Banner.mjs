@@ -4,9 +4,13 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+import { Popup } from "../components/Popup.mjs";
 import { Button } from "../components/Button.mjs";
 import { Description } from "../components/Description.mjs";
 import { useState } from "../state.mjs";
+
+const updateGuide =
+  "https://notion-enhancer.github.io/getting-started/updating/";
 
 const rectToStyle = (rect) =>
   ["width", "height", "top", "bottom", "left", "right"]
@@ -63,9 +67,50 @@ function Circle(rect) {
   ></div>`;
 }
 
-function Banner() {
+function Banner({ updateAvailable, isDevelopmentBuild }) {
   const { html, version, initDatabase } = globalThis.__enhancerApi,
-    $welcome = html`<div
+    $version = html`<button
+      class="text-[12px] py-[2px] px-[6px] mt-[2px]
+      font-medium leading-tight tracking-wide rounded-[3px]
+      relative bg-purple-500 from-white/[0.18] to-white/[0.16]
+      bg-[linear-gradient(225deg,var(--tw-gradient-stops))]"
+    >
+      <div
+        class="notion-enhancer--menu-update-indicator
+        absolute h-[12px] w-[12px] right-[-6px] top-[-6px]
+        ${updateAvailable ? "" : "hidden"}"
+      >
+        <span
+          class="block rounded-full h-full w-full
+          absolute bg-purple-500/75 animate-ping"
+        ></span>
+        <span
+          class="block rounded-full h-full w-full
+          relative bg-purple-500"
+        ></span>
+      </div>
+      <span class="relative">v${version}</span>
+    </button>`,
+    $popup = html`<${Popup} trigger=${$version}>
+      <p
+        class="typography py-[2px] px-[8px] text-[14px]"
+        innerHTML=${updateAvailable
+          ? `<b>v${updateAvailable}</b> is available! <a href="${updateGuide}">Update now.</a>`
+          : isDevelopmentBuild
+          ? "This is a development build of the notion-enhancer. It may be unstable."
+          : "You're up to date!"}
+      />
+    <//>`;
+  $version.append($popup);
+  if (updateAvailable) {
+    useState(["focus", "view"], ([, view = "welcome"]) => {
+      if (view !== "welcome") return;
+      // delayed appearance = movement attracts eye
+      setTimeout(() => $version.lastElementChild.show(), 400);
+    });
+  }
+
+  const $welcome = html`<div
       class="relative flex overflow-hidden h-[192px] rounded-t-[4px]
       border-(& purple-400) bg-purple-500 from-white/20 to-transparent
       text-white bg-[linear-gradient(225deg,var(--tw-gradient-stops))]"
@@ -77,9 +122,8 @@ function Banner() {
       <${Star} width="36px" height="36px" top="136px" left="190px" />
       <${Star} width="48px" height="48px" top="32px" left="336px" />
       <${Star} width="64px" height="64px" top="90px" left="448px" from="lg" />
-
       <h1
-        class="z-10 pl-[32px] md:pl-[48px] lg:pl-[64px]
+        class="z-10 px-[32px] md:px-[48px] lg:px-[64px]
         font-bold leading-tight tracking-tight my-auto"
       >
         <a href="https://notion-enhancer.github.io/">
@@ -87,21 +131,14 @@ function Banner() {
           <span class="text-[28px]">the notion-enhancer</span>
         </a>
       </h1>
-
       <div
-        class="flex flex-col absolute bottom-0 right-0
-        pr-[32px] md:pr-[48px] lg:pr-[64px] pb-[24px]"
+        class="absolute bottom-0 right-0 py-[24px]
+        px-[32px] md:px-[48px] lg:px-[64px]"
       >
-        <i class="i-notion-enhancer text-[42px] mx-auto mb-[8px]"></i>
-        <a
-          href="https://github.com/notion-enhancer/notion-enhancer/releases/tag/v${version}"
-        >
-          <span
-            class="text-[12px] py-[2px] px-[6px]
-          font-medium leading-tight tracking-wide"
-            >v${version}
-          </span>
-        </a>
+        <div class="relative flex-(& col)">
+          <i class="i-notion-enhancer text-[42px] mx-auto mb-[8px]"></i>
+          ${$version}
+        </div>
       </div>
     </div>`,
     $sponsorship = html`<div
@@ -118,16 +155,14 @@ function Banner() {
           variant="brand"
           class="grow justify-center"
           href="https://www.buymeacoffee.com/dragonwocky"
-        >
-          Buy me a coffee
+          >Buy me a coffee
         <//>
         <${Button}
           icon="calendar-heart"
           variant="brand"
           class="grow justify-center"
           href="https://github.com/sponsors/dragonwocky"
-        >
-          Sponsor me
+          >Sponsor me
         <//>
       </div>
       <!-- Disclaimer: these perks are only a draft, for anyone reading this.
@@ -140,7 +175,6 @@ function Banner() {
         the instructions in the <b>#welcome</b> channel.
       <//>
     </div>`;
-
   initDatabase()
     .get("agreedToTerms")
     .then((agreedToTerms) => {

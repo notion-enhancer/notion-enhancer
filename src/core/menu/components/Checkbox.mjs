@@ -4,10 +4,10 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { useState, extendProps } from "../state.mjs";
+import { useState } from "../state.mjs";
 
 function Checkbox({ _get, _set, ...props }) {
-  const { html } = globalThis.__enhancerApi,
+  const { html, extendProps } = globalThis.__enhancerApi,
     $input = html`<input
       type="checkbox"
       class="hidden checked:sibling:(px-px

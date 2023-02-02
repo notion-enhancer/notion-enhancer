@@ -4,10 +4,8 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { extendProps } from "../state.mjs";
-
 function Tile({ icon, title, tagName, ...props }, ...children) {
-  const { html } = globalThis.__enhancerApi;
+  const { html, extendProps } = globalThis.__enhancerApi;
   extendProps(props, {
     class: `flex items-center gap-[12px] px-[16px] py-[12px]
     bg-[color:var(--theme--bg-secondary)] hover:bg-[color:var(--theme--bg-hover)]

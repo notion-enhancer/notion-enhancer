@@ -4,10 +4,8 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { extendProps } from "../state.mjs";
-
 function Description(props, ...children) {
-  const { html } = globalThis.__enhancerApi;
+  const { html, extendProps } = globalThis.__enhancerApi;
   extendProps(props, {
     class: `notion-enhancer--menu-description typography
     leading-[16px] text-([12px] [color:var(--theme--fg-secondary)])`,

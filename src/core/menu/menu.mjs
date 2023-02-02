@@ -5,6 +5,7 @@
  */
 
 import { setState, useState } from "./state.mjs";
+import { checkForUpdate, isDevelopmentBuild } from "../update.mjs";
 import { Sidebar } from "./islands/Sidebar.mjs";
 import { Footer } from "./islands/Footer.mjs";
 import { Banner } from "./islands/Banner.mjs";
@@ -120,12 +121,15 @@ const render = async () => {
       categories=${categories}
     />`,
     $main = html`
-      <main class="flex flex-col overflow-hidden transition-[height]">
+      <main class="flex-(& col) overflow-hidden transition-[height]">
         <!-- wrappers necessary for transitions and breakpoints -->
         <div class="grow overflow-auto">
           <div class="relative h-full w-full">
             <${View} id="welcome">
-              <${Banner} />
+              <${Banner}
+                updateAvailable=${await checkForUpdate()}
+                isDevelopmentBuild=${await isDevelopmentBuild()}
+              />
               <${Onboarding} />
             <//>
             <${View} id="core">
@@ -152,7 +156,9 @@ const render = async () => {
   $skeleton.replaceWith($sidebar, $main);
 };
 
-window.addEventListener("focus", () => setState({ rerender: true }));
+window.addEventListener("focus", () => {
+  setState({ focus: true, rerender: true });
+});
 window.addEventListener("message", (event) => {
   if (event.data?.namespace !== "notion-enhancer") return;
   const [hotkey, theme, icon] = useState(["hotkey", "theme", "icon"]);

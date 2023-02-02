@@ -133,7 +133,7 @@ function Profile({ id }) {
       <p class="text-[14px] py-[2px] px-[8px]">
         Are you sure you want to delete the profile ${$confirmName} permanently?
       </p>
-      <div class="flex flex-col gap-[8px] py-[6px] px-[8px]">
+      <div class="flex-(& col) gap-[8px] py-[6px] px-[8px]">
         <${Button}
           tabindex="0"
           icon="trash"

@@ -4,15 +4,15 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { setState, useState, extendProps } from "../state.mjs";
+import { setState, useState } from "../state.mjs";
 
 function Popup({ trigger, onopen, onclose, onbeforeclose }, ...children) {
-  const { html } = globalThis.__enhancerApi,
+  const { html, extendProps } = globalThis.__enhancerApi,
     $popup = html`<div
       class="notion-enhancer--menu-popup
       group absolute top-0 left-0 w-full h-full
-      flex flex-col justify-center items-end
-      pointer-events-none z-20"
+      flex-(& col) justify-center items-end z-20
+      pointer-events-none font-normal text-left"
     >
       <div class="relative right-[100%]">
         <div
@@ -34,10 +34,10 @@ function Popup({ trigger, onopen, onclose, onbeforeclose }, ...children) {
     onopen?.();
   };
   $popup.hide = () => {
+    onbeforeclose?.();
     $popup.removeAttribute("open");
     $popup.style.pointerEvents = "auto";
     $popup.querySelectorAll("[tabindex]").forEach(($el) => ($el.tabIndex = -1));
-    onbeforeclose?.();
     setTimeout(() => {
       $popup.style.pointerEvents = "";
       setState({ popupOpen: false });

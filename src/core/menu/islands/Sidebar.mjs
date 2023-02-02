@@ -4,7 +4,7 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { extendProps, setState, useState } from "../state.mjs";
+import { setState, useState } from "../state.mjs";
 import { Description } from "../components/Description.mjs";
 
 function SidebarHeading({}, ...children) {
@@ -19,7 +19,7 @@ function SidebarHeading({}, ...children) {
 }
 
 function SidebarButton({ id, icon, ...props }, ...children) {
-  const { html } = globalThis.__enhancerApi,
+  const { html, extendProps } = globalThis.__enhancerApi,
     $btn = html`<${props["href"] ? "a" : "button"}
       class="flex items-center select-none text-[14px]
       py-[5px] px-[15px] last:mb-[12px] w-full transition
@@ -59,7 +59,7 @@ function Sidebar({ items, categories }) {
       policy and terms & conditions on the welcome page.
     </span>`,
     $sidebar = html`<aside
-      class="notion-enhancer--menu-sidebar flex flex-col row-span-1
+      class="notion-enhancer--menu-sidebar flex-(& col) row-span-1
       h-full overflow-y-auto bg-[color:var(--theme--bg-secondary)]"
     >
       ${items.map((item) => {

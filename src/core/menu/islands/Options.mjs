@@ -38,7 +38,7 @@ function Option({ _get, _set, ...opt }) {
     class="notion-enhancer--menu-option flex items-center justify-between
     mb-[18px] ${opt.type === "toggle" ? "cursor-pointer" : ""}"
   >
-    <div class="flex flex-col ${opt.type === "text" ? "w-full" : "mr-[10%]"}">
+    <div class="flex-(& col) ${opt.type === "text" ? "w-full" : "mr-[10%]"}">
       <h5 class="text-[14px] mb-[2px] mt-0">${opt.label}</h5>
       ${opt.type === "text"
         ? html`<${Input}

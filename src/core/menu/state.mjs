@@ -21,21 +21,4 @@ const setState = (state) => {
     return state;
   };
 
-const extendProps = (props, extend) => {
-  for (const key in extend) {
-    const { [key]: userProvided } = props;
-    if (typeof extend[key] === "function") {
-      props[key] = (...args) => {
-        extend[key](...args);
-        userProvided?.(...args);
-      };
-    } else if (key === "class") {
-      if (userProvided) props[key] += " ";
-      if (!userProvided) props[key] = "";
-      props[key] += extend[key];
-    } else props[key] = extend[key] ?? userProvided;
-  }
-  return props;
-};
-
-export { setState, useState, extendProps };
+export { setState, useState };

@@ -4,7 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { Heading } from "../components/Heading.mjs";
 import { Description } from "../components/Description.mjs";
 import { Checkbox } from "../components/Checkbox.mjs";
 import { Button } from "../components/Button.mjs";
@@ -68,7 +67,7 @@ function Onboarding() {
       >Build your own extension.
     <//>
     <${Tile}
-      href="https://github.com/notion-enhancer/notion-enhancer/issues/new?template=BUG_REPORT.md"
+      href="https://github.com/notion-enhancer/notion-enhancer/issues"
       icon="bug"
       title="Something not working?"
       >Report a bug.
