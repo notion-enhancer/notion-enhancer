@@ -7,16 +7,17 @@
 function Tile({ icon, title, tagName, ...props }, ...children) {
   const { html, extendProps } = globalThis.__enhancerApi;
   extendProps(props, {
-    class: `flex items-center gap-[12px] px-[16px] py-[12px]
-    bg-[color:var(--theme--bg-secondary)] hover:bg-[color:var(--theme--bg-hover)]
-    rounded-[4px] border-(& [color:var(--theme--fg-border)])`,
+    class: `flex items-center gap-[12px] rounded-[4px]
+    border-(& [color:var(--theme--fg-border)]) px-[16px]
+    bg-[color:var(--theme--bg-secondary)] py-[12px]
+    hover:bg-[color:var(--theme--bg-hover)]`,
   });
   tagName ??= props["href"] ? "a" : "button";
   return html`<${tagName} ...${props}>
     <i class="i-${icon} text-[28px]"></i>
     <div>
       <h3 class="text-[14px] font-semibold">${title}</h3>
-      <div class="text-(left [12px] [color:var(--theme--fg-secondary)])">
+      <div class="text-([12px] [color:var(--theme--fg-secondary)])">
         ${children}
       </div>
     </div>

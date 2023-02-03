@@ -4,6 +4,7 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+import { Heading } from "../components/Heading.mjs";
 import { Description } from "../components/Description.mjs";
 import { Checkbox } from "../components/Checkbox.mjs";
 import { Button } from "../components/Button.mjs";
@@ -53,37 +54,45 @@ function Onboarding() {
   };
 
   const $regularGreeting = html`<div
-    class="mt-[32px] grid-(& rows-2 cols-2) gap-[16px]"
-  >
-    <${Tile}
-      href="https://notion-enhancer.github.io/getting-started/basic-usage/"
-      icon="graduation-cap"
-      title="Stuck?"
-      >Check out the basic usage guide.
-    <//>
-    <${Tile}
-      href="https://notion-enhancer.github.io/getting-started/basic-usage/"
-      icon="package-plus"
-      title="Something missing?"
-      >Build your own extension.
-    <//>
-    <${Tile}
-      href="https://github.com/notion-enhancer/notion-enhancer/issues"
-      icon="bug"
-      title="Something not working?"
-      >Report a bug.
-    <//>
-    <${Tile}
-      href="https://discord.gg/sFWPXtA"
-      icon="help-circle"
-      title="Got questions?"
-      >Join the community.
-    <//>
-  </div>`;
+      class="mt-[16px] grid-(& cols-3) gap-[16px]"
+    >
+      <${Tile}
+        href="https://notion-enhancer.github.io/getting-started/basic-usage/"
+        icon="graduation-cap"
+        title="Stuck?"
+        >Check out the usage guide.
+      <//>
+      <${Tile}
+        href="https://notion-enhancer.github.io/getting-started/basic-usage/"
+        icon="package-plus"
+        title="Something missing?"
+        >Build your own extension.
+      <//>
+      <${Tile}
+        href="https://github.com/notion-enhancer/notion-enhancer/issues"
+        icon="bug"
+        title="Something broken?"
+        >Report a bug.
+      <//>
+    </div>`,
+    $featuredSponsors = html`
+      <div class="mt-[32px]">
+        <${Heading} class="mt-[32px] mb-[8px]">Featured Sponsors<//>
+        <${Description}>
+          A few awesome companies out there have teamed up with me to provide
+          you with the notion-enhancer, free forever. Check them out!
+        <//>
+        <div class="mt-[16px] grid-(& cols-1) gap-[16px]"></div>
+        <${Description} class="mt-[12px]">
+          <a href="mailto:thedragonring.bod@gmail.com">Join this list.</a>
+        <//>
+      </div>
+    `;
   useState(["rerender"], async () => {
     const agreedToTerms = await initDatabase().get("agreedToTerms");
     $agreeToTerms.style.display = agreedToTerms === version ? "none" : "";
     $regularGreeting.style.display = agreedToTerms === version ? "" : "none";
+    $featuredSponsors.style.display = agreedToTerms === version ? "" : "none";
   });
 
   return html`${$agreeToTerms}${$regularGreeting}`;
