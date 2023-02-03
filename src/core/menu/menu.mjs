@@ -107,7 +107,7 @@ const render = async () => {
     const _get = () => isEnabled(mods[i].id),
       _set = async (enabled) => {
         await setEnabled(mods[i].id, enabled);
-        setState({ rerender: true, databaseUpdated: true });
+        setState({ rerender: true });
       };
     mods[i].view = html`<${View} id=${mods[i].id}>
       <!-- passing an empty options array hides the settings button -->

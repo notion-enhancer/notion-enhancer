@@ -9,8 +9,8 @@ import { Option } from "./Options.mjs";
 
 const privacyPolicy = "https://notion-enhancer.github.io/about/privacy-policy/";
 function Telemetry() {
-  const { html, platform, version, getMods } = globalThis.__enhancerApi,
-    { getProfile, isEnabled, initDatabase } = globalThis.__enhancerApi,
+  const { html, platform, version } = globalThis.__enhancerApi,
+    { getMods, isEnabled, initDatabase } = globalThis.__enhancerApi,
     timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
   const $enabledMods = html`<code></code>`;
@@ -29,7 +29,7 @@ function Telemetry() {
     },
     _set = async (value) => {
       await initDatabase().set("telemetryEnabled", value);
-      setState({ rerender: true, databaseUpdated: true });
+      setState({ rerender: true });
     };
 
   // todo: actually collect telemetry
@@ -44,7 +44,7 @@ function Telemetry() {
       (<code>"${version}"</code>), and enabled mods (${$enabledMods}). You can
       opt in or out of telemetry at any time. This setting syncs across
       configuration profiles. For more information, read the notion-enhancer's
-      <a href=${privacyPolicy}>privacy policy</a>.`}
+      <a href=${privacyPolicy} class="ml-[3px]">privacy policy</a>.`}
     ...${{ _get, _set }}
   />`;
 }

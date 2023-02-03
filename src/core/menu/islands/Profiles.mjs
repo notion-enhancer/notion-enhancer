@@ -33,7 +33,7 @@ function Profile({ id }) {
     setActive = async () => {
       if (await isActive()) return;
       await db.set("activeProfile", id);
-      setState({ rerender: true, databaseUpdated: true });
+      setState({ rerender: true });
     };
 
   const $successName = html`<span
@@ -64,7 +64,7 @@ function Profile({ id }) {
           res = JSON.parse(res);
           delete res["profileName"];
           await profile.import(res);
-          setState({ rerender: true, databaseUpdated: true });
+          setState({ rerender: true });
           $uploadSuccess.show();
           setTimeout(() => $uploadSuccess.hide(), 2000);
         } catch (err) {
@@ -113,10 +113,8 @@ function Profile({ id }) {
       const index = profileIds.indexOf(id);
       if (index > -1) profileIds.splice(index, 1);
       await db.set("profileIds", profileIds);
-      if (await isActive()) {
-        await db.remove("activeProfile");
-        setState({ rerender: true, databaseUpdated: true });
-      } else setState({ rerender: true });
+      if (await isActive()) await db.remove("activeProfile");
+      setState({ rerender: true });
     },
     $delete = html`<button
       class="h-[14px] transition duration-[20ms]
@@ -155,10 +153,13 @@ function Profile({ id }) {
 
   return html`<li class="flex items-center my-[14px] gap-[8px]" id=${id}>
     <${Checkbox}
-      ...${{ _get: isActive, _set: setActive }}
+      ...${{ _get: isActive, _set: setActive, _requireReload: false }}
       onchange=${(event) => (event.target.checked = true)}
     />
-    <${Input} icon="file-cog" ...${{ _get: getName, _set: setName }} />
+    <${Input}
+      icon="file-cog"
+      ...${{ _get: getName, _set: setName, _requireReload: false }}
+    />
     <${Button}
       icon="import"
       variant="sm"

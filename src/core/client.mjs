@@ -52,18 +52,17 @@ const insertMenu = async (db) => {
 
     let _contentWindow;
     const sendThemePing = () => {
-        if (!_contentWindow) return;
         const darkMode = document.body.classList.contains("dark"),
           notionTheme = darkMode ? "dark" : "light";
         if (renderPing.theme === notionTheme) return;
         renderPing.theme = notionTheme;
-        _contentWindow.postMessage(renderPing, "*");
+        _contentWindow?.postMessage?.(renderPing, "*");
       },
       sendRenderPing = (contentWindow) => {
         _contentWindow ??= contentWindow;
         if (!$modal.hasAttribute("open")) return;
         delete renderPing.theme;
-        _contentWindow.focus();
+        _contentWindow?.focus?.();
         sendThemePing();
       };
 

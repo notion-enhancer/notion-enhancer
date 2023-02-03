@@ -4,9 +4,10 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { useState } from "../state.mjs";
+import { setState, useState } from "../state.mjs";
 
-function Toggle({ _get, _set, ...props }) {
+function Toggle({ _get, _set, _requireReload = true, ...props }) {
+  let _initialValue;
   const { html, extendProps } = globalThis.__enhancerApi,
     $input = html`<input
       type="checkbox"
@@ -19,6 +20,10 @@ function Toggle({ _get, _set, ...props }) {
   useState(["rerender"], async () => {
     const checked = (await _get?.()) ?? $input.checked;
     $input.checked = checked;
+    if (_requireReload) {
+      _initialValue ??= checked;
+      if (checked !== _initialValue) setState({ databaseUpdated: true });
+    }
   });
 
   return html`<div class="notion-enhancer--menu-toggle shrink-0">

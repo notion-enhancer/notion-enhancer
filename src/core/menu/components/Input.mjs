@@ -4,7 +4,7 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { useState } from "../state.mjs";
+import { setState, useState } from "../state.mjs";
 
 const updateHotkey = (event) => {
     const keys = [];
@@ -72,6 +72,7 @@ function Input({
   class: className,
   _get,
   _set,
+  _requireReload = true,
   ...props
 }) {
   let $filename, $clear;
@@ -117,6 +118,7 @@ function Input({
       ><i class="i-${icon} w-[16px] h-[16px]"></i>
     </span>`;
 
+  let _initialValue;
   extendProps($input, {
     onchange: (event) => {
       if (_set && type === "file") {
@@ -128,8 +130,20 @@ function Input({
       if (type === "file") {
         $filename.innerText = value?.filename || "Upload a file";
         $clear.style.display = value?.filename ? "" : "none";
-      } else if ($input.value !== value) $input.value = value;
-      if (type === "color") updateContrast($input, $icon);
+        if (_requireReload) {
+          _initialValue ??= value?.content || "";
+          if ((value?.content || "") !== _initialValue) {
+            setState({ databaseUpdated: true });
+          }
+        }
+      } else {
+        if ($input.value !== value) $input.value = value;
+        if (_requireReload) {
+          _initialValue ??= value;
+          if (value !== _initialValue) setState({ databaseUpdated: true });
+        }
+        if (type === "color") updateContrast($input, $icon);
+      }
     },
     onkeydown: type === "hotkey" ? updateHotkey : undefined,
     oninput: type === "color" ? () => _set?.($input.value) : undefined,

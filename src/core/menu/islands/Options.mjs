@@ -79,7 +79,7 @@ function Options({ mod }) {
     const _get = async () => (await modDatabase(mod.id)).get(opt.key),
       _set = async (value) => {
         await (await modDatabase(mod.id)).set(opt.key, value);
-        setState({ rerender: true, databaseUpdated: true });
+        setState({ rerender: true });
       };
     return html`<${Option} ...${{ _get, _set, ...opt }} />`;
   });

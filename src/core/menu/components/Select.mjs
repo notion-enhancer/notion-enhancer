@@ -4,7 +4,7 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { useState } from "../state.mjs";
+import { setState, useState } from "../state.mjs";
 import { Popup } from "./Popup.mjs";
 
 function Option({ value, _get, _set }) {
@@ -33,7 +33,8 @@ function Option({ value, _get, _set }) {
   return $option;
 }
 
-function Select({ values, _get, _set, ...props }) {
+function Select({ values, _get, _set, _requireReload = true, ...props }) {
+  let _initialValue;
   const { html } = globalThis.__enhancerApi,
     // dir="rtl" overflows to the left during transition
     $select = html`<div
@@ -45,8 +46,13 @@ function Select({ values, _get, _set, ...props }) {
       transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
       ...${props}
     ></div>`;
-  useState(["rerender"], () => {
-    _get?.().then((value) => ($select.innerText = value));
+  useState(["rerender"], async () => {
+    const value = (await _get?.()) ?? $select.innerText;
+    $select.innerText = value;
+    if (_requireReload) {
+      _initialValue ??= value;
+      if (value !== _initialValue) setState({ databaseUpdated: true });
+    }
   });
 
   return html`<div class="notion-enhancer--menu-select relative">

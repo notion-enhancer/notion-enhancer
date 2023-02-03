@@ -58,7 +58,7 @@ function List({ id, mods, description }) {
               }
             }
           }
-          setState({ rerender: true, databaseUpdated: true });
+          setState({ rerender: true });
         };
       return html`<${Mod} ...${{ ...mod, _get, _set }} />`;
     });

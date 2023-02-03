@@ -4,9 +4,10 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { useState } from "../state.mjs";
+import { setState, useState } from "../state.mjs";
 
-function Checkbox({ _get, _set, ...props }) {
+function Checkbox({ _get, _set, _requireReload = true, ...props }) {
+  let _initialValue;
   const { html, extendProps } = globalThis.__enhancerApi,
     $input = html`<input
       type="checkbox"
@@ -21,6 +22,10 @@ function Checkbox({ _get, _set, ...props }) {
   useState(["rerender"], async () => {
     const checked = (await _get?.()) ?? $input.checked;
     $input.checked = checked;
+    if (_requireReload) {
+      _initialValue ??= checked;
+      if (checked !== _initialValue) setState({ databaseUpdated: true });
+    }
   });
 
   return html`<label
