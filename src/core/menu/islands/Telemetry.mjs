@@ -25,10 +25,10 @@ function Telemetry() {
 
   const _get = async () => {
       // defaults to true, must be explicitly set to false to disable
-      return initDatabase([await getProfile()]).get("telemetryEnabled") ?? true;
+      return initDatabase().get("telemetryEnabled") ?? true;
     },
     _set = async (value) => {
-      await initDatabase([await getProfile()]).set("telemetryEnabled", value);
+      await initDatabase().set("telemetryEnabled", value);
       setState({ rerender: true, databaseUpdated: true });
     };
 
@@ -42,8 +42,9 @@ function Telemetry() {
       platform (<code>"${platform}"</code>), timezone
       (<code>"${timezone}"</code>), notion-enhancer version
       (<code>"${version}"</code>), and enabled mods (${$enabledMods}). You can
-      opt in or out of telemetry at any time. For more information, read the
-      notion-enhancer's <a href=${privacyPolicy}>privacy policy</a>.`}
+      opt in or out of telemetry at any time. This setting syncs across
+      configuration profiles. For more information, read the notion-enhancer's
+      <a href=${privacyPolicy}>privacy policy</a>.`}
     ...${{ _get, _set }}
   />`;
 }

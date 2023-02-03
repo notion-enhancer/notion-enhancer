@@ -72,10 +72,10 @@ const initDatabase = (namespace, fallbacks = {}) => {
 
     // schema:
     // - ("agreedToTerms") -> boolean
+    // - ("telemetryEnabled") -> boolean
     // - ("profileIds") -> $profileId[]
     // - ("activeProfile") -> $profileId
     // - $profileId: ("profileName") -> string
-    // - $profileId: ("telemetryEnabled") -> boolean
     // - $profileId__enabledMods: ($modId) -> boolean
     // - $profileId__$modId: ($optionKey) -> value
 
