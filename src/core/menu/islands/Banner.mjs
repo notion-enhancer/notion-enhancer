@@ -10,7 +10,8 @@ import { Description } from "../components/Description.mjs";
 import { useState } from "../state.mjs";
 
 const updateGuide =
-  "https://notion-enhancer.github.io/getting-started/updating/";
+    "https://notion-enhancer.github.io/getting-started/updating/",
+  tsAndCs = "https://notion-enhancer.github.io/about/terms-and-conditions/";
 
 const rectToStyle = (rect) =>
   ["width", "height", "top", "bottom", "left", "right"]
@@ -168,11 +169,11 @@ function Banner({ updateAvailable, isDevelopmentBuild }) {
       <!-- Disclaimer: these perks are only a draft, for anyone reading this.
       This information may change at any time. -->
       <${Description} class="mt-[6px]">
-        Sponsors receive access to priority support channels, private developer
-        previews, and role cosmetics on Discord. A one-time donation is
-        equivalent to 1 month of sponsorship perks. To claim your Discord role,
-        join the server <a href="https://discord.gg/sFWPXtA">here</a> and follow
-        the instructions in the <b>#welcome</b> channel.
+        Sponsors help make open-source development sustainable and receive
+        access to priority support channels, private developer previews, and
+        role cosmetics on Discord. A one-time donation is equivalent to 1 month
+        of sponsor perks. To learn more about perks, read the
+        <a href=${tsAndCs} class="ml-[3px]">Terms & Conditions</a>.
       <//>
     </div>`;
   initDatabase()

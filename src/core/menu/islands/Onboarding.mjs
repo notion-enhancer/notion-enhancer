@@ -36,6 +36,7 @@ function Onboarding() {
       <div class="flex items-center my-[14px] gap-[8px]">
         <${Checkbox}
           _set=${(checked) => ($submitAgreement.disabled = !checked)}
+          _requireReload=${false}
         />
         <p class="typography text-[14px] mr-[16px]">
           I have read and agree to the
