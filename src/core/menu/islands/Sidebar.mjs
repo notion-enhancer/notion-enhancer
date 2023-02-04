@@ -86,10 +86,12 @@ function Sidebar({ items, categories }) {
 
   for (const { title, mods } of categories) {
     const $title = html`<${SidebarHeading}>${title}<//>`,
-      $mods = mods.map((mod) => [
-        mod.id,
-        html`<${SidebarButton} id=${mod.id}>${mod.name}<//>`,
-      ]);
+      $mods = mods
+        .filter((mod) => mod.options?.length)
+        .map((mod) => [
+          mod.id,
+          html`<${SidebarButton} id=${mod.id}>${mod.name}<//>`,
+        ]);
     $sidebar.append($title, ...$mods.map(([, $btn]) => $btn));
 
     useState(["rerender"], async () => {

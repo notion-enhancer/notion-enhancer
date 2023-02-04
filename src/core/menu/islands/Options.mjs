@@ -22,14 +22,18 @@ const camelToSentenceCase = (string) =>
       // ignore platform-specific options
       if (opt.platforms && !opt.platforms.includes(platform)) return options;
       // replace consective headings
-      const prev = options[options.length - 1];
-      if (opt.type === "heading" && prev?.type === opt.type) {
+      opt.autoremove ??= true;
+      const prev = options[options.length - 1],
+        canReplacePrev = prev?.autoremove && prev?.type === opt.type;
+      if (opt.type === "heading" && canReplacePrev) {
         options[options.length - 1] = opt;
       } else options.push(opt);
       return options;
     }, []);
     // remove trailing heading
-    return options.at(-1)?.type === "heading" ? options.slice(0, -1) : options;
+    return options.at(-1)?.type === "heading" && options.at(-1)?.autoremove
+      ? options.slice(0, -1)
+      : options;
   };
 
 function Option({ _get, _set, ...opt }) {

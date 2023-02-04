@@ -33,17 +33,17 @@ function Telemetry() {
     }
   });
 
-  // todo: actually collect telemetry
   return html`<${Option}
     type="toggle"
     label="Telemetry"
-    description=${html`If telemetry is enabled, usage data will be collected
-      once a week from your device in order to better understand how and where
-      the notion-enhancer is used. This data is anonymous and includes only your
-      platform (${$.platform}), notion-enhancer version (${$.version}), timezone
-      (${$.timezone}), and enabled mods (${$.enabledMods}). You can opt in or
-      out of telemetry at any time. This setting syncs across configuration
-      profiles. For more information, read the notion-enhancer's
+    description=${html`If telemetry is enabled, usage data will be collected at
+      a regular interval from your device in order to better understand how and
+      where the notion-enhancer is used. This data is anonymous and includes
+      only your platform (${$.platform}), notion-enhancer version
+      (${$.version}), timezone (${$.timezone}), and enabled mods
+      (${$.enabledMods}). You can opt in or out of telemetry at any time. This
+      setting syncs across configuration profiles. For more information, read
+      the notion-enhancer's
       <a href=${privacyPolicy} class="ml-[3px]">privacy policy</a>.`}
     ...${{ _get, _set }}
   />`;

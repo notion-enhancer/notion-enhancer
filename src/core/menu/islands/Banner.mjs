@@ -185,7 +185,6 @@ function Banner({ updateAvailable, isDevelopmentBuild }) {
       $sponsorship.style.display = agreedToTerms === version ? "" : "none";
     });
 
-  // todo: show popup if update available
   return html`<section class="notion-enhancer--menu-banner">
     ${$welcome}${$sponsorship}
   </section>`;

@@ -103,7 +103,7 @@ const render = async () => {
   }
   for (let i = 0; i < mods.length; i++) {
     const options = mods[i].options?.filter((opt) => opt.type !== "heading");
-    if (mods[i]._src === "core" || !options.length) continue;
+    if (mods[i]._src === "core" || !options?.length) continue;
     const _get = () => isEnabled(mods[i].id),
       _set = async (enabled) => {
         await setEnabled(mods[i].id, enabled);
