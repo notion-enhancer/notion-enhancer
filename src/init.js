@@ -45,7 +45,10 @@ if (isElectron()) {
       }
     }
   };
-
+} else {
   // clientStyles
   // clientScripts
-} else import("./api/browser.js").then(() => import("./load.mjs"));
+  import(chrome.runtime.getURL("/api/browser.js")).then(() => {
+    import(chrome.runtime.getURL("/load.mjs"));
+  });
+}

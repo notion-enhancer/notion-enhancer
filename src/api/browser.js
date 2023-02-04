@@ -6,7 +6,9 @@
 
 "use strict";
 
-const platform = "browser",
+const platform = navigator.userAgent.includes("Firefox")
+    ? "firefox"
+    : "chromium",
   version = chrome.runtime.getManifest().version,
   enhancerUrl = (target) => chrome.runtime.getURL(target);
 

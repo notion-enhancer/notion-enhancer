@@ -7,7 +7,6 @@
   "homepage_url": "https://notion-enhancer.github.io",
   "content_scripts": [{ "matches": ["*://*.notion.so/*"], "js": ["/init.js"] }],
   "background": { "service_worker": "/worker.js" },
-  "options_page": "/core/menu/index.html",
   "action": {},
   "icons": {
     "16": "/assets/colour-x16.png",

@@ -9,21 +9,21 @@
 export default (async () => {
   // prettier-ignore
   const { enhancerUrl } = globalThis.__enhancerApi,
-    isMenu = location.href.startsWith(enhancerUrl("/core/menu/index.html")),
+    isMenu = location.href.startsWith(enhancerUrl("core/menu/index.html")),
     pageLoaded = /(^\/$)|((-|\/)[0-9a-f]{32}((\?.+)|$))/.test(location.pathname),
     signedIn = localStorage["LRU:KeyValueStore2:current-user-id"];
   if (!isMenu && (!signedIn || !pageLoaded)) return;
   if (!isMenu) console.log("notion-enhancer: loading...");
 
   await Promise.all([
-    import("./assets/icons.svg.js"),
-    import("./vendor/twind.min.js"),
-    import("./vendor/lucide.min.js"),
-    import("./vendor/htm.min.js"),
-    import("./api/events.js"),
-    import("./api/mods.js"),
+    import(enhancerUrl("assets/icons.svg.js")),
+    import(enhancerUrl("vendor/twind.min.js")),
+    import(enhancerUrl("vendor/lucide.min.js")),
+    import(enhancerUrl("vendor/htm.min.js")),
+    import(enhancerUrl("api/events.js")),
+    import(enhancerUrl("api/mods.js")),
   ]);
-  await import("./api/interface.js");
+  await import(enhancerUrl("api/interface.js"));
   const { getMods, isEnabled, modDatabase } = globalThis.__enhancerApi;
 
   for (const mod of await getMods()) {

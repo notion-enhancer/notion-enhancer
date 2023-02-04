@@ -23,16 +23,23 @@ function Onboarding() {
       >Continue
     <//>`,
     $agreeToTerms = html`<div class="mt-[32px]">
+      <${Heading} class="mb-[8px]">
+        Thanks for installing the notion-enhancer!
+      <//>
       <${Description}>
-        Thanks for installing the notion-enhancer! It's been absolutely
-        incredible to see how the notion-enhancer has grown from small
-        beginnings to something used today by over 11,000 people around the
-        world, now including you. Before you begin, please read the privacy
-        policy to learn how the notion-enhancer uses your data and the terms &
-        conditions to understand what the notion-enhancer does and does not
-        offer. Ticking the box below and pressing <mark>Continue</mark> will
-        unlock the notion-enhancer's full functionality, accessible through the
-        sidebar.
+        In order for the notion-enhancer to function, it may access, collect,
+        process and/or store data on your device (including workspace content,
+        device metadata, and notion-enhancer configuration) according to its
+        privacy policy. Unless otherwise stated for telemetry purposes, the
+        notion-enhancer will never transmit any of your data from your device.
+        Telemetry can be disabled at any time through the menu.
+        <br />
+        <br />
+        The notion-enhancer is free and open-source software distributed under
+        the <a href="${tsAndCs}#license">MIT License</a> without warranty of any
+        kind. In no event shall the authors be liable for any consequences of
+        the software's use. Before continuing, you must read and agree to the
+        notion-enhancer's privacy policy and terms & conditions.
       <//>
       <div class="flex items-center my-[14px] gap-[8px]">
         <${Checkbox}
@@ -77,7 +84,7 @@ function Onboarding() {
     </div>`,
     $featuredSponsors = html`
       <div class="mt-[32px]">
-        <${Heading} class="mt-[32px] mb-[8px]">Featured Sponsors<//>
+        <${Heading} class="mb-[8px]">Featured Sponsors<//>
         <${Description}>
           A few awesome companies out there have teamed up with me to provide
           you with the notion-enhancer, free forever. Check them out!

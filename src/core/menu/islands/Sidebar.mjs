@@ -53,7 +53,7 @@ function Sidebar({ items, categories }) {
   const { html, version } = globalThis.__enhancerApi,
     { initDatabase, isEnabled } = globalThis.__enhancerApi,
     $agreeToUnlock = html`<span
-      class="pt-[2px] pb-[5px] px-[15px]
+      class="pt-[2px] pb-[5px] px-[15px] text-[12px]
       inline-block text-[color:var(--theme--fg-red)]"
       >To unlock the notion-enhancer's full functionality, agree to the privacy
       policy and terms & conditions on the welcome page.

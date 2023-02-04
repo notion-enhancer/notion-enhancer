@@ -25,18 +25,17 @@ const _isManifestValid = (modManifest) => {
 };
 
 let _mods;
-const getMods = async (category) => {
+const getMods = async (asyncFilter) => {
     const { readJson } = globalThis.__enhancerApi;
     // prettier-ignore
     _mods ??= (await Promise.all((await readJson("registry.json")).map(async (_src) => {
       const modManifest = { ...(await readJson(`${_src}/mod.json`)), _src };
       return _isManifestValid(modManifest) ? modManifest : undefined;
     }))).filter((mod) => mod);
-    return category
-      ? _mods.filter(({ _src }) => {
-          return _src === category || _src.startsWith(`${category}/`);
-        })
-      : _mods;
+    // prettier-ignore
+    return (await Promise.all(_mods.map(async (mod) => {
+      return !asyncFilter || (await asyncFilter(mod)) ? mod : undefined;
+    }))).filter((mod) => mod);
   },
   getProfile = async () => {
     const db = globalThis.__enhancerApi.initDatabase();
@@ -49,10 +48,10 @@ const isEnabled = async (id) => {
     const { version, initDatabase } = globalThis.__enhancerApi,
       mod = (await getMods()).find((mod) => mod.id === id);
     if (mod._src === "core") return true;
-    // prettier-ignore
     const agreedToTerms = await initDatabase().get("agreedToTerms"),
       enabledInProfile = await initDatabase([
-        await getProfile(), "enabledMods",
+        await getProfile(),
+        "enabledMods",
       ]).get(id);
     return agreedToTerms === version && enabledInProfile;
   },
@@ -63,10 +62,9 @@ const isEnabled = async (id) => {
   };
 
 const modDatabase = async (id) => {
-  // prettier-ignore
   const optionDefaults = (await getMods())
-    .find((mod) => mod.id === id)?.options
-    .map((opt) => [opt.key, opt.value ?? opt.values?.[0]])
+    .find((mod) => mod.id === id)
+    ?.options.map((opt) => [opt.key, opt.value ?? opt.values?.[0]])
     .filter(([, value]) => typeof value !== "undefined");
   return globalThis.__enhancerApi.initDatabase(
     [await getProfile(), id],

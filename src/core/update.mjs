@@ -8,8 +8,11 @@ let _release;
 const repo = "notion-enhancer/notion-enhancer",
   endpoint = `https://api.github.com/repos/${repo}/releases/latest`,
   getRelease = async () => {
-    const { readJson } = globalThis.__enhancerApi;
-    _release ??= (await readJson(endpoint))?.tag_name.replace(/^v/, "");
+    const { version, readJson } = globalThis.__enhancerApi;
+    try {
+      _release ??= (await readJson(endpoint))?.tag_name.replace(/^v/, "");
+    } catch {}
+    _release ??= version;
     return _release;
   };
 
