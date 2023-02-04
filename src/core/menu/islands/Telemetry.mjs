@@ -13,7 +13,7 @@ function Telemetry() {
   const { html, initDatabase } = globalThis.__enhancerApi,
     _get = async () => {
       // defaults to true, must be explicitly set to false to disable
-      return initDatabase().get("telemetryEnabled") ?? true;
+      return (await initDatabase().get("telemetryEnabled")) ?? true;
     },
     _set = async (value) => {
       await initDatabase().set("telemetryEnabled", value);

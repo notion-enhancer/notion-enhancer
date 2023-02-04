@@ -18,7 +18,7 @@ const collectTelemetryData = async () => {
   sendTelemetryPing = async () => {
     const db = globalThis.__enhancerApi.initDatabase(),
       agreedToTerms = await db.get("agreedToTerms"),
-      telemetryEnabled = await db.get("telemetryEnabled");
+      telemetryEnabled = (await db.get("telemetryEnabled")) ?? true;
     if (!telemetryEnabled || agreedToTerms !== version) return;
     // telemetry
     const telemetryData = await collectTelemetryData();
