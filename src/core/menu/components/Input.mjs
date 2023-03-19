@@ -120,9 +120,19 @@ function Input({
 
   let _initialValue;
   extendProps($input, {
+    onclick: () => {
+      // change text to "uploading..." until file has uploaded
+      // to reassure users experiencing latency while file is processed
+      if (type === "file") $filename.innerText = "Uploading...";
+    },
     onchange: (event) => {
       if (_set && type === "file") {
-        readUpload(event).then(_set);
+        readUpload(event)
+          .then(_set)
+          // refocus iframe after file has uploaded,
+          // sometimes switching back after opening the
+          // native file upload menu causes a loss of focus
+          .then(() => window.focus());
       } else _set?.($input.value);
     },
     onrerender: async () => {

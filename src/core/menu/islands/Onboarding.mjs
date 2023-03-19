@@ -42,6 +42,8 @@ function Onboarding() {
         notion-enhancer's privacy policy and terms & conditions.
       <//>
       <div class="flex items-center my-[14px] gap-[8px]">
+        <!-- _requireReload=${false} prevents the footer from
+        suggesting a reload of the app when the box is checked -->
         <${Checkbox}
           _set=${(checked) => ($submitAgreement.disabled = !checked)}
           _requireReload=${false}
