@@ -1,6 +1,6 @@
 {
   "name": "notion-enhancer",
-  "version": "0.11.1-dev",
+  "version": "0.11.1",
   "author": "dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)",
   "description": "an enhancer/customiser for the all-in-one productivity workspace notion.so",
   "homepage": "https://notion-enhancer.github.io",

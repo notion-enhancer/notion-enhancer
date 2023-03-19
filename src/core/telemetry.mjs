@@ -4,24 +4,42 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-const collectTelemetryData = async () => {
+const pingEndpoint = "https://notion-enhancer.deno.dev/api/ping",
+  collectTelemetryData = async () => {
     const { platform, version } = globalThis.__enhancerApi,
       { getMods, isEnabled } = globalThis.__enhancerApi,
       timezone = Intl.DateTimeFormat().resolvedOptions().timeZone,
       // prettier-ignore
-      enabledMods = (await getMods(async (mod) => {
+      enabled_mods = (await getMods(async (mod) => {
         if (mod._src === "core") return false;
         return await isEnabled(mod.id);
       })).map(mod => mod.id);
-    return { platform, version, timezone, enabledMods };
+    return { platform, version, timezone, enabled_mods };
   },
   sendTelemetryPing = async () => {
-    const db = globalThis.__enhancerApi.initDatabase(),
+    const db = __enhancerApi.initDatabase(),
+      { version } = globalThis.__enhancerApi,
       agreedToTerms = await db.get("agreedToTerms"),
       telemetryEnabled = (await db.get("telemetryEnabled")) ?? true;
     if (!telemetryEnabled || agreedToTerms !== version) return;
-    // telemetry
-    const telemetryData = await collectTelemetryData();
+
+    const lastTelemetryPing = await db.get("lastTelemetryPing");
+    if (lastTelemetryPing) {
+      const msSincePing = Date.now() - new Date(lastTelemetryPing);
+      // send ping only once a week
+      if (msSincePing / 8.64e7 < 7) return;
+    }
+
+    try {
+      const telemetryData = await collectTelemetryData(),
+        pingTimestamp = await fetch(pingEndpoint, {
+          method: "POST",
+          body: JSON.stringify(telemetryData),
+        }).then((res) => res.text());
+      await db.set("lastTelemetryPing", pingTimestamp);
+    } catch (err) {
+      console.error(err);
+    }
   };
 
 export { collectTelemetryData, sendTelemetryPing };

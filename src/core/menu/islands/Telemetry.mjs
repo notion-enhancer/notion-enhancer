@@ -24,7 +24,7 @@ function Telemetry() {
     platform: html`<code></code>`,
     version: html`<code></code>`,
     timezone: html`<code></code>`,
-    enabledMods: html`<code></code>`,
+    enabled_mods: html`<code></code>`,
   };
   useState(["rerender"], async () => {
     const telemetryData = await collectTelemetryData();
@@ -41,7 +41,7 @@ function Telemetry() {
       where the notion-enhancer is used. This data is anonymous and includes
       only your platform (${$.platform}), notion-enhancer version
       (${$.version}), timezone (${$.timezone}), and enabled mods
-      (${$.enabledMods}). You can opt in or out of telemetry at any time. This
+      (${$.enabled_mods}). You can opt in or out of telemetry at any time. This
       setting syncs across configuration profiles. For more information, read
       the notion-enhancer's
       <a href=${privacyPolicy} class="ml-[3px]">privacy policy</a>.`}

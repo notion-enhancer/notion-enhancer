@@ -363,11 +363,11 @@ try {
     default:
       printHelp(commands, options);
   }
-} catch (error) {
+} catch (err) {
   stopSpinner();
-  const message = error.message.split("\n")[0];
+  const message = err.message.split("\n")[0];
   if (__debug) {
-    print`{bold.red ${error.name}:} ${message}\n{grey ${error.stack
+    print`{bold.red ${err.name}:} ${message}\n{grey ${err.stack
       .split("\n")
       .splice(1)
       .map((at) => at.replace(/\s{4}/g, "  "))

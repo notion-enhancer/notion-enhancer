@@ -71,7 +71,8 @@ const initDatabase = (namespace, fallbacks = {}) => {
     init.run();
 
     // schema:
-    // - ("agreedToTerms") -> boolean
+    // - ("agreedToTerms") -> string: semver
+    // - ("lastTelemetryPing") -> string: iso
     // - ("telemetryEnabled") -> boolean
     // - ("profileIds") -> $profileId[]
     // - ("activeProfile") -> $profileId
