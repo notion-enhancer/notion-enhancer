@@ -99,8 +99,12 @@ const getComputedPropertyValue = (el, prop) => {
                  [style*="fill: ${value}"],
                  [style*="fill:${value}"]`
               : property === "background"
-              ? `[style*="background: ${value}"],
-                 [style*="background:${value}"],
+              ? `[style^="background: ${value}"],
+                 [style^="background:${value}"],
+                 [style*=";background: ${value}"],
+                 [style*=";background:${value}"],
+                 [style*=" background: ${value}"],
+                 [style*=" background:${value}"],
                  [style*="background-color: ${value}"],
                  [style*="background-color:${value}"]`
               : `[style*="${property}: ${value}"],
