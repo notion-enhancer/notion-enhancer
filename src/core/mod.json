@@ -51,9 +51,8 @@
     },
     {
       "type": "toggle",
-      "key": "debugMode",
-      "description": "Activates built-in debugging tools accessible through the application menu.",
-      "platforms": ["darwin", "win32", "linux"],
+      "key": "developerMode",
+      "description": "Activates built-in debugging tools accessible through the application menu in desktop environments and restores access to the DevTools console via the <kbd>Ctrl+Shift+I</kbd> hotkey.",
       "value": false
     }
   ],

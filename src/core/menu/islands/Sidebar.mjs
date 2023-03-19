@@ -10,9 +10,9 @@ import { Description } from "../components/Description.mjs";
 function SidebarHeading({}, ...children) {
   const { html } = globalThis.__enhancerApi;
   return html`<h2
-    class="text-([11px] [color:var(--theme--fg-secondary)])
-    py-[5px] px-[15px] mb-px mt-[18px] first:mt-[10px]
-    uppercase font-medium tracking-[0.03em] leading-none"
+    class="flex items-center font-semibold leading-none
+    text-([12px] [color:var(--theme--fg-secondary)])
+    h-[24px] px-[12px] mb-px mt-[18px] first:mt-[10px]"
   >
     ${children}
   </h2>`;
@@ -22,8 +22,9 @@ function SidebarButton({ id, icon, ...props }, ...children) {
   const { html, extendProps } = globalThis.__enhancerApi,
     $btn = html`<${props["href"] ? "a" : "button"}
       class="flex items-center select-none text-[14px]
-      py-[5px] px-[15px] last:mb-[12px] w-full transition
-      hover:bg-[color:var(--theme--bg-hover)] disabled:hidden"
+      min-h-[27px] px-[12px] my-px last:mb-[12px] w-full
+      transition hover:bg-[color:var(--theme--bg-hover)]
+      disabled:hidden rounded-[3px]"
       ...${props}
     >
       ${icon
@@ -59,8 +60,9 @@ function Sidebar({ items, categories }) {
       policy and terms & conditions on the welcome page.
     </span>`,
     $sidebar = html`<aside
-      class="notion-enhancer--menu-sidebar flex-(& col) row-span-1
-      h-full overflow-y-auto bg-[color:var(--theme--bg-secondary)]"
+      class="notion-enhancer--menu-sidebar h-full
+      px-[4px] overflow-y-auto flex-(& col) row-span-1
+      bg-[color:var(--theme--bg-secondary)]"
     >
       ${items.map((item) => {
         if (Array.isArray(item)) {

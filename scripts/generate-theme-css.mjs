@@ -407,6 +407,9 @@ const styleBackgrounds = () => {
       ? ["rgb(37, 37, 37)", "rgb(47, 47, 47)"]
       : ["rgb(253, 253, 253)"],
   });
+  // patch: remove overlay from settings sidebar
+  // to match notion-enhancer menu sidebar colour
+  cssBody += `.notion-overlay-container .notion-space-settings > div > div > [style*="height: 100%; background: rgba(255, 255, 255, 0.03);"] { background: transparent !important }`;
 
   // cards
   overrideStyle({
