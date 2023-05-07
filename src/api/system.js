@@ -123,7 +123,7 @@ const initDatabase = (namespace, fallbacks = {}) => {
       namespace,
       fallbacks,
       operation: type,
-      ...args,
+      args,
     });
   return {
     get: (key) => operation("get", { key }),
