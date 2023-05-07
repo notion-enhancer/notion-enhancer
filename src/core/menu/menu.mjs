@@ -197,9 +197,9 @@ useState(["rerender"], async () => {
   if (!theme || !icon) return;
   // chrome extensions run in an isolated execution context
   // but extension:// pages can access chrome apis
-  // ∴ notion-enhancer api is imported directly
+  // => notion-enhancer api is imported directly
   if (typeof globalThis.__enhancerApi === "undefined") {
-    await import("../../api/browser.js");
+    await import("../../api/system.js");
     // in electron this isn't necessary, as a) scripts are
     // not running in an isolated execution context and b)
     // the notion:// protocol csp bypass allows scripts to

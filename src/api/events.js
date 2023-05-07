@@ -49,7 +49,7 @@ attachObserver();
 let keyListeners = [];
 // accelerators approximately match electron accelerators.
 // logic used when recording hotkeys in menu matches logic used
-// when triggering hotkeys ∴ detection should be reliable.
+// when triggering hotkeys => detection should be reliable.
 // default hotkeys using "alt" may trigger an altcode or
 // accented character on some keyboard layouts (not recommended).
 const modifierAliases = [

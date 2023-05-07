@@ -1,6 +1,6 @@
 /**
  * notion-enhancer
- * (c) 2022 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2023 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
@@ -40,7 +40,7 @@ const patches = {
                 schemePrefix.length,
                 -(search.length + hash.length) || undefined
             )}\`;
-          callback({
+          return callback({
             data: require("fs").createReadStream(require("path").resolve(\`\${__dirname}/\${filePath}\`)),
             headers: { "content-type": require("notion-enhancer/vendor/content-types.min.js").get(fileExt) },
           });
@@ -52,8 +52,8 @@ const patches = {
 
   "main/systemMenu": async (scriptContent) => {
     // exposes template for modification
-    const searchValue = "electron_1.Menu.setApplicationMenu(menu);",
-      replaceValue = `${searchValue} return template;`;
+    const searchValue = "}\nexports.setupSystemMenu = setupSystemMenu;",
+      replaceValue = `    return template;\n${searchValue}`;
     if (scriptContent.includes(replaceValue)) return scriptContent;
     return scriptContent.replace(searchValue, replaceValue);
   },

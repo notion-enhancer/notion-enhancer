@@ -14,7 +14,7 @@ const isElectron = () => {
 };
 
 if (isElectron()) {
-  require("./api/electron.cjs");
+  require("./api/system.js");
   require("./api/mods.js");
   const { enhancerUrl } = globalThis.__enhancerApi,
     { getMods, isEnabled, modDatabase } = globalThis.__enhancerApi;
@@ -48,7 +48,7 @@ if (isElectron()) {
 } else {
   // clientStyles
   // clientScripts
-  import(chrome.runtime.getURL("/api/browser.js")).then(() => {
+  import(chrome.runtime.getURL("/api/system.js")).then(() => {
     import(chrome.runtime.getURL("/load.mjs"));
   });
 }

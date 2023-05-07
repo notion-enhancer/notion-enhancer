@@ -43,9 +43,9 @@ function List({ id, mods, description }) {
       const _get = () => isEnabled(mod.id),
         _set = async (enabled) => {
           await setEnabled(mod.id, enabled);
-          // only one theme of each mode may be
-          // enabled at a time ∴ disable others
-          // on theme of same mode enabled
+          // only one theme may be enabled per
+          // mode at a time => auto-disable other
+          // enabled themes of matching mode
           if (enabled && id === "themes") {
             const isDark = mod.tags.includes("dark"),
               isLight = mod.tags.includes("light");
