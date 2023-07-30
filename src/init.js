@@ -19,7 +19,24 @@ if (isElectron()) {
   const { enhancerUrl } = globalThis.__enhancerApi,
     { getMods, isEnabled, modDatabase } = globalThis.__enhancerApi;
 
+  // calling require("electron") in a process require()-d
+  // from these paths throws "websocket connection to __ failed"
+  // and triggers infinite loading => ignore for now, but
+  // requires further investigation later
+  const ignoredPaths = [
+    "shared/sqliteTypes",
+    "shared/TimeSource",
+    "shared/retryHelpers",
+    "shared/PromiseUtils",
+    "shared/typeUtils",
+    "shared/utils",
+    "shared/sqliteHelpers",
+    "main/sqlite/SqliteConnectionWrapper",
+    "main/sqlite/SqliteServer",
+  ];
+
   module.exports = async (target, __exports, __eval) => {
+    if (ignoredPaths.includes(target)) return;
     if (target === "main/main") require("./worker.js");
 
     // clientStyles
