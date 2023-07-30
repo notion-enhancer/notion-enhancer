@@ -124,10 +124,11 @@ const compileOptsToArgSpec = (options) => {
     });
   };
 
+let __json;
 const printHelp = (commands, options) => {
     const { name, version, homepage } = manifest,
       usage = `${name} <command> [options]`;
-    if (args["--json"]) {
+    if (__json) {
       printObject({
         name,
         version,
@@ -150,7 +151,7 @@ const printHelp = (commands, options) => {
     }
   },
   printVersion = () => {
-    if (args["--json"]) {
+    if (__json) {
       printObject({
         [manifest.name]: manifest.version,
         node: process.version.slice(1),
@@ -208,6 +209,7 @@ try {
   const args = arg(compileOptsToArgSpec(options));
   if (args["--debug"]) __debug = true;
   if (args["--quiet"]) __quiet = true;
+  if (args["--json"]) __json = true;
   if (args["--no"] || args["--quiet"]) __confirmation = "n";
   if (args["--yes"]) __confirmation = "y";
   if (args["--help"]) printHelp(commands, options), process.exit();
@@ -340,7 +342,7 @@ try {
       break;
     }
     case "check": {
-      if (args["--json"]) {
+      if (__json) {
         printObject({
           appPath,
           backupPath,
