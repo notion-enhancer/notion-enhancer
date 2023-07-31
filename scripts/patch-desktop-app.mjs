@@ -4,6 +4,9 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+const replaceIfNotFound = (string, search, replacement) =>
+  string.includes(replacement) ? string : string.replace(search, replacement);
+
 const patches = {
   "*": async (scriptId, scriptContent) => {
     const prevTriggerPattern = /require\(['|"]notion-enhancer['|"]\)/,
@@ -18,20 +21,19 @@ const patches = {
   "main/main": async (scriptContent) => {
     // https://github.com/notion-enhancer/desktop/issues/160
     // enable the notion:// url scheme/protocol on linux
-    const searchValue = /process.platform === "win32"/g,
+    const search = /process.platform === "win32"/g,
       // prettier-ignore
-      replaceValue = 'process.platform === "win32" || process.platform === "linux"';
-    if (scriptContent.includes(replaceValue)) return scriptContent;
-    return scriptContent.replace(searchValue, replaceValue);
+      replacement = 'process.platform === "win32" || process.platform === "linux"';
+    return replaceIfNotFound(scriptContent, search, replacement);
   },
 
   "main/schemeHandler": async (scriptContent) => {
     // https://github.com/notion-enhancer/desktop/issues/291
     // bypass csp issues by intercepting notion:// protocol
-    const searchValue =
-        "protocol.registerStreamProtocol(config_1.default.protocol, async (req, callback) => {",
-      replaceValue = `${searchValue}
-        { /* notion-enhancer */
+    // prettier-ignore
+    const protocolSearch = "protocol.registerStreamProtocol(config_1.default.protocol, async (req, callback) => {",
+      protocolReplacement = `${protocolSearch}
+        {/*notion-enhancer*/
         const schemePrefix = "notion://www.notion.so/__notion-enhancer/";
         if (req.url.startsWith(schemePrefix)) {
           const { search, hash, pathname } = new URL(req.url),
@@ -44,18 +46,21 @@ const patches = {
             data: require("fs").createReadStream(require("path").resolve(\`\${__dirname}/\${filePath}\`)),
             headers: { "content-type": require("notion-enhancer/vendor/content-types.min.js").get(fileExt) },
           });
-        }
-        }`;
-    if (scriptContent.includes(replaceValue)) return scriptContent;
-    return scriptContent.replace(searchValue, replaceValue);
+        }}`,
+      filterSearch = "function guardAgainstIFrameRequests(webRequest) {",
+      filterReplacement = `${filterSearch}/*notion-enhancer*/return;`;
+    return replaceIfNotFound(
+      replaceIfNotFound(scriptContent, filterSearch, filterReplacement),
+      protocolSearch,
+      protocolReplacement
+    );
   },
 
   "main/systemMenu": async (scriptContent) => {
     // exposes template for modification
-    const searchValue = "}\nexports.setupSystemMenu = setupSystemMenu;",
-      replaceValue = `    return template;\n${searchValue}`;
-    if (scriptContent.includes(replaceValue)) return scriptContent;
-    return scriptContent.replace(searchValue, replaceValue);
+    const search = "}\nexports.setupSystemMenu = setupSystemMenu;",
+      replacement = `    return template;\n${search}`;
+    return replaceIfNotFound(scriptContent, search, replacement);
   },
 };
 
