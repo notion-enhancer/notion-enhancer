@@ -43,12 +43,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"chalk-template@npm:^1.0.0":
-  version: 1.0.0
-  resolution: "chalk-template@npm:1.0.0"
+"chalk-template@npm:^1.1.0":
+  version: 1.1.0
+  resolution: "chalk-template@npm:1.1.0"
   dependencies:
     chalk: ^5.2.0
-  checksum: 2cd8ae86d7e2ccc546a8fa93871931f7e5731b812e867be1bb77487f83ad6bd657dd25483a99dd0e4d615163551fde4457e48995597b69d58b8f1f633bc21952
+  checksum: 868aae8d4e7556ad2f35de4e04fe65dbe1ea6c5c80ad783f1c156d0a5c33f444c6814f49cbb68fe348c78e99daf2bcf566b47ad7e13603e4691ca78b2f422824
   languageName: node
   linkType: hard
 
@@ -133,7 +133,7 @@ __metadata:
   dependencies:
     "@electron/asar": ^3.2.4
     arg: ^5.0.2
-    chalk-template: ^1.0.0
+    chalk-template: ^1.1.0
   bin:
     notion-enhancer: bin.mjs
   languageName: unknown
