@@ -160,7 +160,7 @@ window.addEventListener("focus", () => {
   setState({ focus: true, rerender: true });
 });
 window.addEventListener("message", (event) => {
-  if (event.data?.namespace !== "notion-enhancer") return;
+  if (event.data?.channel !== "notion-enhancer") return;
   const [hotkey, theme, icon] = useState(["hotkey", "theme", "icon"]);
   setState({
     rerender: true,
@@ -176,13 +176,13 @@ useState(["hotkey"], ([hotkey]) => {
   setState({ hotkeyRegistered: true });
   addKeyListener(hotkey, (event) => {
     event.preventDefault();
-    const msg = { namespace: "notion-enhancer", action: "open-menu" };
+    const msg = { channel: "notion-enhancer", action: "open-menu" };
     parent?.postMessage(msg, "*");
   });
   addKeyListener("Escape", () => {
     const [popupOpen] = useState(["popupOpen"]);
     if (!popupOpen) {
-      const msg = { namespace: "notion-enhancer", action: "close-menu" };
+      const msg = { channel: "notion-enhancer", action: "close-menu" };
       parent?.postMessage(msg, "*");
     } else setState({ rerender: true });
   });
@@ -199,7 +199,7 @@ useState(["rerender"], async () => {
   // but extension:// pages can access chrome apis
   // => notion-enhancer api is imported directly
   if (typeof globalThis.__enhancerApi === "undefined") {
-    await import("../../api/system.js");
+    await import("../../shared/system.js");
     // in electron this isn't necessary, as a) scripts are
     // not running in an isolated execution context and b)
     // the notion:// protocol csp bypass allows scripts to

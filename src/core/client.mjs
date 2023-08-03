@@ -37,14 +37,15 @@ const doThemeOverride = async (db) => {
     </style>`);
   };
 
-const insertMenu = async (db) => {
+const initMenu = async (db) => {
   const notionSidebar = `.notion-sidebar-container .notion-sidebar > :nth-child(3) > div > :nth-child(2)`,
+    notionSettingsAndMembers = `${notionSidebar} > [role="button"]:nth-child(3)`,
     { html, addKeyListener, addMutationListener } = globalThis.__enhancerApi,
     { platform, enhancerUrl, onMessage } = globalThis.__enhancerApi,
     menuButtonIconStyle = await db.get("menuButtonIconStyle"),
     openMenuHotkey = await db.get("openMenuHotkey"),
     renderPing = {
-      namespace: "notion-enhancer",
+      channel: "notion-enhancer",
       hotkey: openMenuHotkey,
       icon: menuButtonIconStyle,
     };
@@ -88,12 +89,15 @@ const insertMenu = async (db) => {
         : " text-[16px]"}"
       >notion-enhancer
     <//>`;
-  document.body.append($modal);
-  addMutationListener(notionSidebar, () => {
-    if (document.contains($button)) return;
-    document.querySelector(notionSidebar)?.append($button);
-  });
-  document.querySelector(notionSidebar)?.append($button);
+  const insertMenu = () => {
+    if (!document.contains($modal)) document.body.append($modal);
+    if (!document.querySelector(notionSidebar)?.contains($button)) {
+      document.querySelector(notionSettingsAndMembers)?.after($button);
+    }
+  };
+  addMutationListener(notionSidebar, insertMenu);
+  insertMenu();
+
   addMutationListener("body", sendThemePing);
   window.addEventListener("focus", sendRenderPing);
 
@@ -102,7 +106,7 @@ const insertMenu = async (db) => {
     $modal.open();
   });
   window.addEventListener("message", (event) => {
-    if (event.data?.namespace !== "notion-enhancer") return;
+    if (event.data?.channel !== "notion-enhancer") return;
     if (event.data?.action === "close-menu") $modal.close();
     if (event.data?.action === "open-menu") $modal.open();
   });
@@ -115,7 +119,7 @@ export default async (api, db) => {
   await Promise.all([
     overrideThemes(db),
     insertCustomStyles(db),
-    insertMenu(db),
+    initMenu(db),
     sendTelemetryPing(),
   ]);
   api.sendMessage("notion-enhancer", "load-complete");

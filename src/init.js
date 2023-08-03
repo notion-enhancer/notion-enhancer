@@ -14,15 +14,15 @@ const isElectron = () => {
 };
 
 if (isElectron()) {
-  require("./api/system.js");
-  require("./api/mods.js");
+  require("./shared/system.js");
+  require("./shared/registry.js");
   const { enhancerUrl } = globalThis.__enhancerApi,
     { getMods, isEnabled, modDatabase } = globalThis.__enhancerApi;
 
   // calling require("electron") in a process require()-d
   // from these paths throws "websocket connection to __ failed"
-  // and triggers infinite loading => ignore for now, but
-  // requires further investigation later
+  // and triggers infinite loading => ignore for now, but will
+  // require further investigation later
   const ignoredPaths = [
     "shared/sqliteTypes",
     "shared/TimeSource",
@@ -37,7 +37,7 @@ if (isElectron()) {
 
   module.exports = async (target, __exports, __eval) => {
     if (ignoredPaths.includes(target)) return;
-    if (target === "main/main") require("./worker.js");
+    if (target.startsWith("main/")) require("./worker.js");
 
     // clientStyles
     // clientScripts
@@ -63,9 +63,6 @@ if (isElectron()) {
     }
   };
 } else {
-  // clientStyles
-  // clientScripts
-  import(chrome.runtime.getURL("/api/system.js")).then(() => {
-    import(chrome.runtime.getURL("/load.mjs"));
-  });
+  import(chrome.runtime.getURL("/shared/system.js")) //
+    .then(() => import(chrome.runtime.getURL("/load.mjs")));
 }

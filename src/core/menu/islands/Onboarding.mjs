@@ -29,12 +29,12 @@ function Onboarding() {
       <${Description}>
         In order for the notion-enhancer to function, it may access, collect,
         process and/or store data on your device (including workspace content,
-        device metadata, and notion-enhancer configuration) according to its
-        privacy policy. Unless otherwise stated for telemetry purposes, the
-        notion-enhancer will never transmit any of your data from your device.
-        Telemetry can be disabled at any time through the menu.
-        <br />
-        <br />
+        device metadata, and notion-enhancer configuration) as described in its
+        privacy policy. Unless otherwise stated, the notion-enhancer will never
+        transmit your information from your device. Collection of anonymous
+        telemetry data is enabled by default and can be disabled at any time
+        through the menu.
+        <br /><br />
         The notion-enhancer is free and open-source software distributed under
         the <a href="${tsAndCs}#license">MIT License</a> without warranty of any
         kind. In no event shall the authors be liable for any consequences of
@@ -72,7 +72,7 @@ function Onboarding() {
         >Check out the usage guide.
       <//>
       <${Tile}
-        href="https://notion-enhancer.github.io/getting-started/basic-usage/"
+        href="https://notion-enhancer.github.io/documentation/mods/"
         icon="package-plus"
         title="Something missing?"
         >Build your own extension.

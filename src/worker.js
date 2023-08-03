@@ -54,7 +54,7 @@ const initDatabase = async () => {
     };
     return db;
   },
-  executeOperation = async (namespace, fallbacks, operation, args) => {
+  queryDatabase = async (namespace, query, args) => {
     namespace ??= "";
     if (Array.isArray(namespace)) namespace = namespace.join("__");
     if (namespace?.length) namespace += "__";
@@ -62,7 +62,7 @@ const initDatabase = async () => {
       key.startsWith(namespace) ? key : namespace + key;
 
     await (__db ??= initDatabase());
-    switch (operation) {
+    switch (query) {
       case "get": {
         const key = namespaceify(args.key);
         let value;
@@ -71,7 +71,7 @@ const initDatabase = async () => {
             value = JSON.parse(__statements.select.get(key)?.value);
           } catch {}
         } else value = (await chrome.storage.local.get([key]))[key];
-        return value ?? fallbacks[key];
+        return value ?? args.fallbacks[args.key];
       }
       case "set": {
         const key = namespaceify(args.key),
@@ -114,95 +114,61 @@ const initDatabase = async () => {
   };
 
 if (IS_ELECTRON) {
-  const { app, ipcMain } = require("electron"),
-    reloadApp = () => {
-      const args = process.argv.slice(1).filter((arg) => arg !== "--startup");
-      app.relaunch({ args });
-      app.exit();
-    };
-
-  ipcMain.handle("notion-enhancer:db", (_event, message) => {
-    return executeOperation(
-      message.namespace,
-      message.fallbacks,
-      message.operation,
-      message.args
-    );
+  const { ipcMain } = require("electron"),
+    { reloadApp } = globalThis.__enhancerApi;
+  ipcMain.handle("notion-enhancer:db", ({}, message) => {
+    if (message?.action !== "query-database") return;
+    const { namespace, query, args } = message.data;
+    return queryDatabase(namespace, query, args);
   });
-
-  ipcMain.on("notion-enhancer", (_event, message) => {
-    if (message === "open-menu") {
-      // todo
-    } else if (message === "reload-app") {
-      reloadApp();
-    }
+  ipcMain.on("notion-enhancer", ({ sender }, message) => {
+    if (message === "reload-app") reloadApp();
   });
 } else {
   const notionUrl = "https://www.notion.so/",
     isNotionTab = (tab) => tab?.url?.startsWith(notionUrl);
 
   const tabQueue = new Set(),
+    openMenu = { channel: "notion-enhancer", message: "open-menu" },
     openEnhancerMenu = async (tab) => {
       if (!isNotionTab(tab)) {
-        const openTabs = await chrome.tabs.query({
-          windowId: chrome.windows.WINDOW_ID_CURRENT,
-        });
-        tab = openTabs.find(isNotionTab);
+        const windowId = chrome.windows.WINDOW_ID_CURRENT,
+          windowTabs = await chrome.tabs.query({ windowId });
+        tab = windowTabs.find(isNotionTab);
         tab ??= await chrome.tabs.create({ url: notionUrl });
       }
       chrome.tabs.highlight({ tabs: [tab.index] });
       if (tab.status === "complete") {
-        chrome.tabs.sendMessage(tab.id, {
-          channel: "notion-enhancer",
-          message: "open-menu",
-        });
+        chrome.tabs.sendMessage(tab.id, openMenu);
       } else tabQueue.add(tab.id);
     },
     reloadNotionTabs = async () => {
-      const openTabs = await chrome.tabs.query({
-          windowId: chrome.windows.WINDOW_ID_CURRENT,
-        }),
-        notionTabs = openTabs.filter(isNotionTab);
-      notionTabs.forEach((tab) => chrome.tabs.reload(tab.id));
+      const windowId = chrome.windows.WINDOW_ID_CURRENT;
+      (await chrome.tabs.query({ windowId }))
+        .filter(isNotionTab)
+        .forEach((tab) => chrome.tabs.reload(tab.id));
     };
 
   // listen for invoke: https://developer.chrome.com/docs/extensions/mv3/messaging/
-  ipcMain.handle("notion-enhancer:db", (_event, message) => {
-    return executeOperation(
-      message.namespace,
-      message.fallbacks,
-      message.operation,
-      message.args
-    );
-  });
-
   chrome.action.onClicked.addListener(openEnhancerMenu);
   chrome.runtime.onConnect.addListener((port) => {
     port.onMessage.addListener((msg, sender) => {
-      if (msg?.channel === "notion-enhancer:db") {
-        const { invocation } = msg,
-          res = executeOperation(
-            msg.namespace,
-            msg.fallbacks,
-            msg.operation,
-            msg.args
-          );
+      if (msg?.channel !== "notion-enhancer") return;
+      const { message, invocation } = msg;
+      if (message.action === "query-database") {
+        const { namespace, query, args } = message.data,
+          res = queryDatabase(namespace, query, args);
         if (invocation) port.postMessage({ invocation, message: res });
       }
-
-      if (msg?.channel === "notion-enhancer") {
-        if (sender.tab && msg.message === "load-complete") {
-          if (tabQueue.has(sender.tab.id)) {
-            chrome.tabs.sendMessage(sender.tab.id, {
-              channel: "notion-enhancer",
-              message: "open-menu",
-            });
-            tabQueue.delete(sender.tab.id);
-          }
-        } else if (msg.message === "reload-app") {
-          reloadNotionTabs();
-        }
+      if (message === "load-complete") {
+        if (!tabQueue.has(sender?.tab?.id)) return;
+        chrome.tabs.sendMessage(sender.tab.id, openMenu);
+        tabQueue.delete(sender.tab.id);
       }
+      if (message === "reload-app") reloadNotionTabs();
     });
   });
 }
+
+globalThis.__enhancerApi ??= {};
+Object.assign(globalThis.__enhancerApi, { queryDatabase });

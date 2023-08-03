@@ -20,10 +20,12 @@ export default (async () => {
     import(enhancerUrl("vendor/twind.min.js")),
     import(enhancerUrl("vendor/lucide.min.js")),
     import(enhancerUrl("vendor/htm.min.js")),
-    import(enhancerUrl("api/events.js")),
-    import(enhancerUrl("api/mods.js")),
   ]);
-  await import(enhancerUrl("api/interface.js"));
+  await Promise.all([
+    import(enhancerUrl("shared/events.js")),
+    import(enhancerUrl("shared/registry.js")),
+    import(enhancerUrl("shared/markup.js")),
+  ]);
   const { getMods, isEnabled, modDatabase } = globalThis.__enhancerApi;
 
   for (const mod of await getMods()) {

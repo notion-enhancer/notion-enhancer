@@ -6,7 +6,8 @@
 
 "use strict";
 
-const IS_ELECTRON = typeof module !== "undefined";
+const IS_ELECTRON = typeof module !== "undefined",
+  IS_RENDERER = IS_ELECTRON && process.type === "renderer";
 
 // expected values: 'linux', 'win32', 'darwin' (== macos), 'firefox'
 // and 'chromium' (inc. chromium-based browsers like edge and brave)
@@ -26,16 +27,18 @@ const platform = IS_ELECTRON
     IS_ELECTRON
       ? `notion://www.notion.so/__notion-enhancer/${target.replace(/^\//, "")}`
       : chrome.runtime.getURL(target),
-  // should only be used from an electron main process, does nothing elsewhere
-  notionRequire = (target) => IS_ELECTRON && require(`../../../${target}`);
+  // require a file from the root of notion's app/ folder,
+  // only available in an electron main process
+  notionRequire = (target) =>
+    IS_ELECTRON && !IS_RENDERER ? require(`../../../${target}`) : undefined;
 
 let __port;
 const onMessage = (channel, listener) => {
     // from worker to client
-    if (IS_ELECTRON) {
+    if (IS_RENDERER) {
       const { ipcRenderer } = require("electron");
       ipcRenderer.on(channel, listener);
-    } else {
+    } else if (!IS_ELECTRON) {
       __port ??= chrome.runtime.connect();
       __port.onMessage.addListener((msg) => {
         if (msg?.channel !== channel || msg?.invocation) return;
@@ -45,19 +48,21 @@ const onMessage = (channel, listener) => {
   },
   sendMessage = (channel, message) => {
     // to worker from client
-    if (IS_ELECTRON) {
+    if (IS_RENDERER) {
       const { ipcRenderer } = require("electron");
       ipcRenderer.send(channel, message);
-    } else {
+    } else if (!IS_ELECTRON) {
       __port ??= chrome.runtime.connect();
       __port.postMessage({ channel, message });
     }
   },
   invokeInWorker = (channel, message) => {
-    if (IS_ELECTRON) {
+    // sends a payload to the worker/main
+    // process and waits for a response
+    if (IS_RENDERER) {
       const { ipcRenderer } = require("electron");
       return ipcRenderer.invoke(channel, message);
-    } else {
+    } else if (!IS_ELECTRON) {
       // polyfills the electron.ipcRenderer.invoke method in
       // the browser: uses a long-lived ipc connection to
       // pass messages and handle responses asynchronously
@@ -98,41 +103,41 @@ const readFile = (file) => {
     if (IS_ELECTRON) {
       if (!file.startsWith("http")) {
         const { resolve } = require("path");
-        return require(resolve(`${__dirname}/../${file}`), "utf-8");
+        return require(resolve(`${__dirname}/../${file}`));
       }
       const notionProtocol = "notion://www.notion.so/";
       file = file.replace(/^https:\/\/www\.notion\.so\//, notionProtocol);
     } else file = file.startsWith("http") ? file : enhancerUrl(file);
     return fetch(file).then((res) => res.json());
+  };
+
+const initDatabase = (namespace, fallbacks = {}) => {
+    // all db operations are performed via ipc:
+    // with nodeintegration disabled, sqlite cannot
+    // be require()-d from the renderer process
+    const query = (query, args = {}) =>
+      IS_ELECTRON && !IS_RENDERER
+        ? globalThis.__enhancerApi.queryDatabase(namespace, query, args)
+        : invokeInWorker("notion-enhancer:db", {
+            action: "query-database",
+            data: { namespace, query, args },
+          });
+    return {
+      get: (key) => query("get", { key, fallbacks }),
+      set: (key, value) => query("set", { key, value }),
+      remove: (keys) => query("remove", { keys }),
+      export: () => query("export"),
+      import: (obj) => query("import", { obj }),
+    };
   },
   reloadApp = () => {
-    if (IS_ELECTRON && require("electron").app) {
+    if (IS_ELECTRON && !IS_RENDERER) {
       const { app } = require("electron"),
         args = process.argv.slice(1).filter((arg) => arg !== "--startup");
       app.relaunch({ args });
       app.exit();
     } else sendMessage("notion-enhancer", "reload-app");
   };
-
-const initDatabase = (namespace, fallbacks = {}) => {
-  // all db operations are performed via ipc:
-  // with nodeintegration disabled, sqlite cannot
-  // be require()-d from the renderer process
-  const operation = (type, args = {}) =>
-    invokeInWorker("notion-enhancer:db", {
-      namespace,
-      fallbacks,
-      operation: type,
-      args,
-    });
-  return {
-    get: (key) => operation("get", { key }),
-    set: (key, value) => operation("set", { key, value }),
-    remove: (keys) => operation("remove", { keys }),
-    export: () => operation("export"),
-    import: (obj) => operation("import", { obj }),
-  };
-};
 
 globalThis.__enhancerApi ??= {};
 Object.assign(globalThis.__enhancerApi, {
@@ -145,6 +150,6 @@ Object.assign(globalThis.__enhancerApi, {
   invokeInWorker,
   readFile,
   readJson,
-  reloadApp,
   initDatabase,
+  reloadApp,
 });
