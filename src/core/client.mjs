@@ -116,11 +116,12 @@ const initMenu = async (db) => {
 };
 
 export default async (api, db) => {
+  const { sendMessage } = globalThis.__enhancerApi;
   await Promise.all([
     overrideThemes(db),
     insertCustomStyles(db),
     initMenu(db),
     sendTelemetryPing(),
   ]);
-  api.sendMessage("notion-enhancer", "load-complete");
+  sendMessage("notion-enhancer", "load-complete");
 };

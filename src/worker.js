@@ -116,7 +116,7 @@ const initDatabase = async () => {
 if (IS_ELECTRON) {
   const { ipcMain } = require("electron"),
     { reloadApp } = globalThis.__enhancerApi;
-  ipcMain.handle("notion-enhancer:db", ({}, message) => {
+  ipcMain.handle("notion-enhancer", ({}, message) => {
     if (message?.action !== "query-database") return;
     const { namespace, query, args } = message.data;
     return queryDatabase(namespace, query, args);
@@ -128,19 +128,19 @@ if (IS_ELECTRON) {
   const notionUrl = "https://www.notion.so/",
     isNotionTab = (tab) => tab?.url?.startsWith(notionUrl);
 
-  const tabQueue = new Set(),
+  const connectedTabs = new Set(),
+    openMenuInTabs = new Set(),
     openMenu = { channel: "notion-enhancer", message: "open-menu" },
     openEnhancerMenu = async (tab) => {
       if (!isNotionTab(tab)) {
-        const windowId = chrome.windows.WINDOW_ID_CURRENT,
-          windowTabs = await chrome.tabs.query({ windowId });
-        tab = windowTabs.find(isNotionTab);
+        const windowId = chrome.windows.WINDOW_ID_CURRENT;
+        tab = (await chrome.tabs.query({ windowId })).find(isNotionTab);
         tab ??= await chrome.tabs.create({ url: notionUrl });
       }
       chrome.tabs.highlight({ tabs: [tab.index] });
-      if (tab.status === "complete") {
+      if (connectedTabs.has(tab.id)) {
         chrome.tabs.sendMessage(tab.id, openMenu);
-      } else tabQueue.add(tab.id);
+      } else openMenuInTabs.add(tab.id);
     },
     reloadNotionTabs = async () => {
       const windowId = chrome.windows.WINDOW_ID_CURRENT;
@@ -149,24 +149,29 @@ if (IS_ELECTRON) {
         .forEach((tab) => chrome.tabs.reload(tab.id));
     };
 
-  // listen for invoke: https://developer.chrome.com/docs/extensions/mv3/messaging/
   chrome.action.onClicked.addListener(openEnhancerMenu);
+  // long-lived connection for rapid two-way messaging
+  // b/w client and worker, primarily used for db wrapper:
+  // https://developer.chrome.com/docs/extensions/mv3/messaging/
   chrome.runtime.onConnect.addListener((port) => {
-    port.onMessage.addListener((msg, sender) => {
+    const tabId = port.sender.tab.id;
+    connectedTabs.add(tabId);
+    port.onMessage.addListener(async (msg) => {
       if (msg?.channel !== "notion-enhancer") return;
       const { message, invocation } = msg;
       if (message.action === "query-database") {
         const { namespace, query, args } = message.data,
-          res = queryDatabase(namespace, query, args);
+          res = await queryDatabase(namespace, query, args);
         if (invocation) port.postMessage({ invocation, message: res });
       }
       if (message === "load-complete") {
-        if (!tabQueue.has(sender?.tab?.id)) return;
-        chrome.tabs.sendMessage(sender.tab.id, openMenu);
-        tabQueue.delete(sender.tab.id);
+        if (!openMenuInTabs.has(tabId)) return;
+        openMenuInTabs.delete(tabId);
+        port.postMessage(openMenu);
       }
       if (message === "reload-app") reloadNotionTabs();
     });
+    port.onDisconnect.addListener(() => connectedTabs.delete(tabId));
   });
 }
 

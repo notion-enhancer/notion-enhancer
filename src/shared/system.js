@@ -33,17 +33,24 @@ const platform = IS_ELECTRON
     IS_ELECTRON && !IS_RENDERER ? require(`../../../${target}`) : undefined;
 
 let __port;
-const onMessage = (channel, listener) => {
+const connectToPort = () => {
+    if (__port) return;
+    __port = chrome.runtime.connect();
+    __port.onDisconnect.addListener(() => (__port = null));
+  },
+  onMessage = (channel, listener) => {
     // from worker to client
     if (IS_RENDERER) {
       const { ipcRenderer } = require("electron");
       ipcRenderer.on(channel, listener);
     } else if (!IS_ELECTRON) {
-      __port ??= chrome.runtime.connect();
-      __port.onMessage.addListener((msg) => {
+      const onMessage = (msg) => {
         if (msg?.channel !== channel || msg?.invocation) return;
         listener(msg.message);
-      });
+      };
+      connectToPort();
+      __port.onMessage.addListener(onMessage);
+      chrome.runtime.onMessage.addListener(onMessage);
     }
   },
   sendMessage = (channel, message) => {
@@ -52,7 +59,7 @@ const onMessage = (channel, listener) => {
       const { ipcRenderer } = require("electron");
       ipcRenderer.send(channel, message);
     } else if (!IS_ELECTRON) {
-      __port ??= chrome.runtime.connect();
+      connectToPort();
       __port.postMessage({ channel, message });
     }
   },
@@ -67,7 +74,7 @@ const onMessage = (channel, listener) => {
       // the browser: uses a long-lived ipc connection to
       // pass messages and handle responses asynchronously
       let fulfilled;
-      __port ??= chrome.runtime.connect();
+      connectToPort();
       const id = crypto.randomUUID();
       return new Promise((res, rej) => {
         __port.onMessage.addListener((msg) => {
@@ -118,7 +125,7 @@ const initDatabase = (namespace, fallbacks = {}) => {
     const query = (query, args = {}) =>
       IS_ELECTRON && !IS_RENDERER
         ? globalThis.__enhancerApi.queryDatabase(namespace, query, args)
-        : invokeInWorker("notion-enhancer:db", {
+        : invokeInWorker("notion-enhancer", {
             action: "query-database",
             data: { namespace, query, args },
           });
