@@ -8,6 +8,7 @@ import { checkForUpdate } from "./updateCheck.mjs";
 import { sendTelemetryPing } from "./sendTelemetry.mjs";
 import { Modal, Frame } from "./islands/Modal.mjs";
 import { MenuButton } from "./islands/MenuButton.mjs";
+import { Panel } from "./islands/Panel.mjs";
 
 const shouldLoadThemeOverrides = async (db) => {
     const { getMods, isEnabled } = globalThis.__enhancerApi,
@@ -73,7 +74,7 @@ const insertMenu = async (db) => {
         src="${enhancerUrl("core/menu/index.html")}"
         onload=${function () {
           // pass notion-enhancer api to electron menu process
-          if (["darwin", "win32", "linux"].includes(platform)) {
+          if (["linux", "win32", "darwin"].includes(platform)) {
             const apiKey = "__enhancerApi";
             this.contentWindow[apiKey] = globalThis[apiKey];
           }
@@ -92,9 +93,8 @@ const insertMenu = async (db) => {
     <//>`;
   const appendToDom = () => {
     if (!document.contains($modal)) document.body.append($modal);
-    if (!document.querySelector(notionSidebar)?.contains($button)) {
+    if (!document.querySelector(notionSidebar)?.contains($button))
       document.querySelector(notionSettingsAndMembers)?.after($button);
-    }
   };
   addMutationListener(notionSidebar, appendToDom);
   addMutationListener("body", updateMenuTheme);
@@ -102,6 +102,7 @@ const insertMenu = async (db) => {
 
   addKeyListener(openMenuHotkey, (event) => {
     event.preventDefault();
+    event.stopPropagation();
     $modal.open();
   });
   window.addEventListener("focus", triggerMenuRender);
@@ -117,9 +118,40 @@ const insertMenu = async (db) => {
   });
 };
 
+const insertPanel = async (db) => {
+  const notionFrame = ".notion-frame",
+    { html, addKeyListener, addMutationListener } = globalThis.__enhancerApi,
+    togglePanelHotkey = await db.get("togglePanelHotkey");
+
+  const $panel = html`<${Panel}
+      _getWidth=${() => db.get("sidePanelWidth")}
+      _setWidth=${(width) => db.set("sidePanelWidth", width)}
+      _getOpen=${() => db.get("sidePanelOpen")}
+      _setOpen=${(open) => db.set("sidePanelOpen", open)}
+    />`,
+    appendToDom = () => {
+      const $frame = document.querySelector(notionFrame);
+      if (!$frame) return;
+      if (!$frame.contains($panel)) $frame.append($panel);
+      if (!$frame.style.flexDirection !== "row")
+        $frame.style.flexDirection = "row";
+    };
+  addMutationListener(notionFrame, appendToDom);
+  appendToDom();
+
+  addKeyListener(togglePanelHotkey, (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if ($panel.hasAttribute("open")) {
+      $panel.close();
+    } else $panel.open();
+  });
+};
+
 export default async (api, db) =>
   Promise.all([
     insertMenu(db),
+    insertPanel(db),
     insertCustomStyles(db),
     loadThemeOverrides(db),
     sendTelemetryPing(),

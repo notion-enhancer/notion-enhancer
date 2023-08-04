@@ -16,25 +16,25 @@ function Popup({ trigger, ...props }, ...children) {
   });
 
   const $popup = html`<div ...${props}>
-    <div class="relative right-[100%]">
+    <div class="relative right-[calc(100%+8px)]">
       <div
         class="bg-[color:var(--theme--bg-secondary)]
         w-[250px] max-w-[calc(100vw-24px)] max-h-[70vh]
         py-[6px] px-[4px] drop-shadow-xl overflow-y-auto
-        transition duration-[200ms] opacity-0 scale-95 rounded-[4px]
+        transition duration-200 opacity-0 scale-95 rounded-[4px]
         group-open:(pointer-events-auto opacity-100 scale-100)"
       >
         ${children}
       </div>
     </div>
   </div>`;
-  $popup.show = () => {
+  $popup.open = () => {
     $popup.setAttribute("open", true);
     $popup.querySelectorAll("[tabindex]").forEach(($el) => ($el.tabIndex = 0));
     setState({ popupOpen: true });
     $popup.onopen?.();
   };
-  $popup.hide = () => {
+  $popup.close = () => {
     $popup.onbeforeclose?.();
     $popup.removeAttribute("open");
     $popup.style.pointerEvents = "auto";
@@ -51,19 +51,19 @@ function Popup({ trigger, ...props }, ...children) {
     if (!$popup.hasAttribute("open")) return;
     if ($popup.contains(event.target) || $popup === event.target) return;
     if (trigger?.contains(event.target) || trigger === event.target) return;
-    $popup.hide();
+    $popup.close();
   });
   useState(["rerender"], () => {
-    if ($popup.hasAttribute("open")) $popup.hide();
+    if ($popup.hasAttribute("open")) $popup.close();
   });
 
   if (!trigger) return $popup;
   extendProps(trigger, {
-    onclick: $popup.show,
+    onclick: $popup.open,
     onkeydown(event) {
       if ([" ", "Enter"].includes(event.key)) {
         event.preventDefault();
-        $popup.show();
+        $popup.open();
       }
     },
   });

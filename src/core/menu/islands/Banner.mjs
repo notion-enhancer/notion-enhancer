@@ -107,7 +107,7 @@ function Banner({ updateAvailable, isDevelopmentBuild }) {
     useState(["focus", "view"], ([, view = "welcome"]) => {
       if (view !== "welcome") return;
       // delayed appearance = movement attracts eye
-      setTimeout(() => $version.lastElementChild.show(), 400);
+      setTimeout(() => $popup.open(), 400);
     });
   }
 

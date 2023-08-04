@@ -65,11 +65,11 @@ function Profile({ id }) {
           delete res["profileName"];
           await profile.import(res);
           setState({ rerender: true });
-          $uploadSuccess.show();
-          setTimeout(() => $uploadSuccess.hide(), 2000);
+          $uploadSuccess.open();
+          setTimeout(() => $uploadSuccess.close(), 2000);
         } catch (err) {
-          $uploadError.show();
-          setTimeout(() => $uploadError.hide(), 2000);
+          $uploadError.open();
+          setTimeout(() => $uploadError.close(), 2000);
         }
         // clear input value to allow repeat uploads
         event.target.value = "";
@@ -144,7 +144,7 @@ function Profile({ id }) {
         <${Button}
           tabindex="0"
           class="justify-center"
-          onclick=${() => $confirm.hide()}
+          onclick=${() => $confirm.close()}
         >
           Cancel
         <//>
