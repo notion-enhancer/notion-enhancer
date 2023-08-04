@@ -5,8 +5,8 @@
  */
 
 import { setState } from "../state.mjs";
-import { Description } from "../components/Description.mjs";
-import { Toggle } from "../components/Toggle.mjs";
+import { Description } from "./Description.mjs";
+import { Toggle } from "./Toggle.mjs";
 
 function Mod({
   id,

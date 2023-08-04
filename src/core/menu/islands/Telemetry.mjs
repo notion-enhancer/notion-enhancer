@@ -4,7 +4,7 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { collectTelemetryData } from "../../telemetry.mjs";
+import { collectTelemetryData } from "../../sendTelemetry.mjs";
 import { useState, setState } from "../state.mjs";
 import { Option } from "./Options.mjs";
 

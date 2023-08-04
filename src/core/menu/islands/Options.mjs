@@ -5,11 +5,11 @@
  */
 
 import { setState } from "../state.mjs";
-import { Heading } from "../components/Heading.mjs";
-import { Description } from "../components/Description.mjs";
-import { Input } from "../components/Input.mjs";
-import { Select } from "../components/Select.mjs";
-import { Toggle } from "../components/Toggle.mjs";
+import { Heading } from "./Heading.mjs";
+import { Description } from "./Description.mjs";
+import { Input } from "./Input.mjs";
+import { Select } from "./Select.mjs";
+import { Toggle } from "./Toggle.mjs";
 
 const camelToSentenceCase = (string) =>
     string[0].toUpperCase() +
@@ -22,16 +22,18 @@ const camelToSentenceCase = (string) =>
       // ignore platform-specific options
       if (opt.platforms && !opt.platforms.includes(platform)) return options;
       // replace consective headings
-      opt.autoremove ??= true;
+      opt._autoremoveIfSectionEmpty ??= true;
       const prev = options[options.length - 1],
-        canReplacePrev = prev?.autoremove && prev?.type === opt.type;
+        canReplacePrev =
+          prev?._autoremoveIfSectionEmpty && prev?.type === opt.type;
       if (opt.type === "heading" && canReplacePrev) {
         options[options.length - 1] = opt;
       } else options.push(opt);
       return options;
     }, []);
     // remove trailing heading
-    return options.at(-1)?.type === "heading" && options.at(-1)?.autoremove
+    return options.at(-1)?.type === "heading" &&
+      options.at(-1)?._autoremoveIfSectionEmpty
       ? options.slice(0, -1)
       : options;
   };

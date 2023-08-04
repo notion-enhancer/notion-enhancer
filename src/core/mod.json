@@ -1,7 +1,7 @@
 {
   "id": "0f0bf8b6-eae6-4273-b307-8fc43f2ee082",
   "name": "notion-enhancer",
-  "version": "0.11.1-dev",
+  "version": "0.11.1",
   "description": "an enhancer/customiser for the all-in-one productivity workspace notion.so",
   "tags": ["core"],
   "authors": [
@@ -35,7 +35,7 @@
     {
       "type": "select",
       "key": "loadThemeOverrides",
-      "description": "Loads the styling required for a theme to customise Notion's interface. Disabling this will increase client performance.",
+      "description": "Loads the styling required for a theme to customise Notion's interface. Disabling this may increase client performance, but will also disable all themes.",
       "values": ["Auto", "Enabled", "Disabled"]
     },
     {
@@ -47,16 +47,17 @@
     {
       "type": "heading",
       "label": "Advanced",
-      "autoremove": false
+      "_autoremoveIfSectionEmpty": false
     },
     {
       "type": "toggle",
       "key": "developerMode",
-      "description": "Activates built-in debugging tools accessible through the application menu in desktop environments and restores access to the DevTools console via the <kbd>Ctrl+Shift+I</kbd> hotkey.",
+      "description": "Activates built-in debugging tools accessible through the application menu.",
+      "platforms": ["linux", "win32", "darwin"],
       "value": false
     }
   ],
   "clientStyles": ["variables.css"],
   "clientScripts": ["client.mjs"],
-  "electronScripts": []
+  "electronScripts": [{ "source": "notionConfig.cjs", "target": "config.js" }]
 }

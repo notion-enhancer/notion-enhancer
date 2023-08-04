@@ -4,9 +4,9 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { Popup } from "../components/Popup.mjs";
-import { Button } from "../components/Button.mjs";
-import { Description } from "../components/Description.mjs";
+import { Popup } from "./Popup.mjs";
+import { Button } from "./Button.mjs";
+import { Description } from "./Description.mjs";
 import { useState } from "../state.mjs";
 
 const updateGuide =

@@ -5,7 +5,7 @@
  */
 
 import { setState, useState } from "./state.mjs";
-import { checkForUpdate, isDevelopmentBuild } from "../update.mjs";
+import { checkForUpdate, isDevelopmentBuild } from "../updateCheck.mjs";
 import { Sidebar } from "./islands/Sidebar.mjs";
 import { Footer } from "./islands/Footer.mjs";
 import { Banner } from "./islands/Banner.mjs";

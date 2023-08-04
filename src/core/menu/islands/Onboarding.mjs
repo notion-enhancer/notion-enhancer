@@ -4,11 +4,11 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { Heading } from "../components/Heading.mjs";
-import { Description } from "../components/Description.mjs";
-import { Checkbox } from "../components/Checkbox.mjs";
-import { Button } from "../components/Button.mjs";
-import { Tile } from "../components/Tile.mjs";
+import { Heading } from "./Heading.mjs";
+import { Description } from "./Description.mjs";
+import { Checkbox } from "./Checkbox.mjs";
+import { Button } from "./Button.mjs";
+import { Tile } from "./Tile.mjs";
 import { setState, useState } from "../state.mjs";
 
 const privacyPolicy = "https://notion-enhancer.github.io/about/privacy-policy/",

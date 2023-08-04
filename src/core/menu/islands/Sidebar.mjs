@@ -5,7 +5,7 @@
  */
 
 import { setState, useState } from "../state.mjs";
-import { Description } from "../components/Description.mjs";
+import { Description } from "./Description.mjs";
 
 function SidebarHeading({}, ...children) {
   const { html } = globalThis.__enhancerApi;

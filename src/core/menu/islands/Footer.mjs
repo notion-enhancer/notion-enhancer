@@ -5,7 +5,7 @@
  */
 
 import { setState, useState } from "../state.mjs";
-import { Button } from "../components/Button.mjs";
+import { Button } from "./Button.mjs";
 
 function Footer({ categories }) {
   const { html, reloadApp } = globalThis.__enhancerApi,

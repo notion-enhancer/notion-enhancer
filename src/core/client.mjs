@@ -4,25 +4,26 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { checkForUpdate } from "./update.mjs";
-import { sendTelemetryPing } from "./telemetry.mjs";
-import { Frame, Modal, Button } from "./components.mjs";
+import { checkForUpdate } from "./updateCheck.mjs";
+import { sendTelemetryPing } from "./sendTelemetry.mjs";
+import { Modal, Frame } from "./islands/Modal.mjs";
+import { MenuButton } from "./islands/MenuButton.mjs";
 
-const doThemeOverride = async (db) => {
+const shouldLoadThemeOverrides = async (db) => {
     const { getMods, isEnabled } = globalThis.__enhancerApi,
       loadThemeOverrides = await db.get("loadThemeOverrides");
     if (loadThemeOverrides === "Enabled") return true;
     if (loadThemeOverrides === "Disabled") return false;
     // prettier-ignore
+    // loadThemeOverrides === "Auto"
     return (await getMods(async (mod) => {
-      // loadThemeOverrides === "Auto"
       if (!mod._src.startsWith("themes/")) return false;
       return await isEnabled(mod.id);
     })).length;
   },
-  overrideThemes = async (db) => {
+  loadThemeOverrides = async (db) => {
     const { html, enhancerUrl } = globalThis.__enhancerApi;
-    if (!(await doThemeOverride(db))) return;
+    if (!(await shouldLoadThemeOverrides(db))) return;
     document.head.append(html`<link
       rel="stylesheet"
       href=${enhancerUrl("core/theme.css")}
@@ -37,36 +38,36 @@ const doThemeOverride = async (db) => {
     </style>`);
   };
 
-const initMenu = async (db) => {
+const insertMenu = async (db) => {
   const notionSidebar = `.notion-sidebar-container .notion-sidebar > :nth-child(3) > div > :nth-child(2)`,
     notionSettingsAndMembers = `${notionSidebar} > [role="button"]:nth-child(3)`,
     { html, addKeyListener, addMutationListener } = globalThis.__enhancerApi,
     { platform, enhancerUrl, onMessage } = globalThis.__enhancerApi,
     menuButtonIconStyle = await db.get("menuButtonIconStyle"),
     openMenuHotkey = await db.get("openMenuHotkey"),
-    renderPing = {
+    menuPing = {
       channel: "notion-enhancer",
       hotkey: openMenuHotkey,
       icon: menuButtonIconStyle,
     };
 
   let _contentWindow;
-  const sendThemePing = () => {
+  const updateMenuTheme = () => {
       const darkMode = document.body.classList.contains("dark"),
         notionTheme = darkMode ? "dark" : "light";
-      if (renderPing.theme === notionTheme) return;
-      renderPing.theme = notionTheme;
-      _contentWindow?.postMessage?.(renderPing, "*");
+      if (menuPing.theme === notionTheme) return;
+      menuPing.theme = notionTheme;
+      _contentWindow?.postMessage?.(menuPing, "*");
     },
-    sendRenderPing = (contentWindow) => {
+    triggerMenuRender = (contentWindow) => {
       _contentWindow ??= contentWindow;
       if (!$modal.hasAttribute("open")) return;
-      delete renderPing.theme;
       _contentWindow?.focus?.();
-      sendThemePing();
+      delete menuPing.theme;
+      updateMenuTheme();
     };
 
-  const $modal = html`<${Modal} onopen=${sendRenderPing}>
+  const $modal = html`<${Modal} onopen=${triggerMenuRender}>
       <${Frame}
         title="notion-enhancer menu"
         src="${enhancerUrl("core/menu/index.html")}"
@@ -76,52 +77,50 @@ const initMenu = async (db) => {
             const apiKey = "__enhancerApi";
             this.contentWindow[apiKey] = globalThis[apiKey];
           }
-          sendRenderPing(this.contentWindow);
+          triggerMenuRender(this.contentWindow);
         }}
       />
     <//>`,
-    $button = html`<${Button}
+    $button = html`<${MenuButton}
       onclick=${$modal.open}
       notifications=${(await checkForUpdate()) ? 1 : 0}
-      themeOverridesLoaded=${await doThemeOverride(db)}
+      themeOverridesLoaded=${await shouldLoadThemeOverrides(db)}
       icon="notion-enhancer${menuButtonIconStyle === "Monochrome"
         ? "?mask"
         : " text-[16px]"}"
       >notion-enhancer
     <//>`;
-  const insertMenu = () => {
+  const appendToDom = () => {
     if (!document.contains($modal)) document.body.append($modal);
     if (!document.querySelector(notionSidebar)?.contains($button)) {
       document.querySelector(notionSettingsAndMembers)?.after($button);
     }
   };
-  addMutationListener(notionSidebar, insertMenu);
-  insertMenu();
-
-  addMutationListener("body", sendThemePing);
-  window.addEventListener("focus", sendRenderPing);
+  addMutationListener(notionSidebar, appendToDom);
+  addMutationListener("body", updateMenuTheme);
+  appendToDom();
 
   addKeyListener(openMenuHotkey, (event) => {
     event.preventDefault();
     $modal.open();
   });
+  window.addEventListener("focus", triggerMenuRender);
   window.addEventListener("message", (event) => {
+    // from embedded menu
     if (event.data?.channel !== "notion-enhancer") return;
     if (event.data?.action === "close-menu") $modal.close();
     if (event.data?.action === "open-menu") $modal.open();
   });
   onMessage("notion-enhancer", (message) => {
+    // from worker
     if (message === "open-menu") $modal.open();
   });
 };
 
-export default async (api, db) => {
-  const { sendMessage } = globalThis.__enhancerApi;
-  await Promise.all([
-    overrideThemes(db),
+export default async (api, db) =>
+  Promise.all([
+    insertMenu(db),
     insertCustomStyles(db),
-    initMenu(db),
+    loadThemeOverrides(db),
     sendTelemetryPing(),
-  ]);
-  sendMessage("notion-enhancer", "load-complete");
-};
+  ]).then(() => api.sendMessage("notion-enhancer", "load-complete"));

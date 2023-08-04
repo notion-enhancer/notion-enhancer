@@ -5,8 +5,8 @@
  */
 
 import { setState } from "../state.mjs";
-import { Description } from "../components/Description.mjs";
-import { Input } from "../components/Input.mjs";
+import { Description } from "./Description.mjs";
+import { Input } from "./Input.mjs";
 import { Mod } from "./Mod.mjs";
 
 function Search({ items, itemType }) {

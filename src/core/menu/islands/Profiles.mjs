@@ -5,12 +5,12 @@
  */
 
 import { setState, useState } from "../state.mjs";
-import { Heading } from "../components/Heading.mjs";
-import { Description } from "../components/Description.mjs";
-import { Checkbox } from "../components/Checkbox.mjs";
-import { Button } from "../components/Button.mjs";
-import { Input } from "../components/Input.mjs";
-import { Popup } from "../components/Popup.mjs";
+import { Heading } from "./Heading.mjs";
+import { Description } from "./Description.mjs";
+import { Checkbox } from "./Checkbox.mjs";
+import { Button } from "./Button.mjs";
+import { Input } from "./Input.mjs";
+import { Popup } from "./Popup.mjs";
 
 function Profile({ id }) {
   const { html, getProfile, initDatabase } = globalThis.__enhancerApi,
