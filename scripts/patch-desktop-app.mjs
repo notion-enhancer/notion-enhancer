@@ -9,6 +9,7 @@ const replaceIfNotFound = (string, search, replacement) =>
 
 const patches = {
   "*": async (scriptId, scriptContent) => {
+    if (scriptId === 'forge.config.js') return scriptContent;
     const prevTriggerPattern = /require\(['|"]notion-enhancer['|"]\)/,
       prevTriggerFound = prevTriggerPattern.test(scriptContent);
     if (prevTriggerFound) return scriptContent;
