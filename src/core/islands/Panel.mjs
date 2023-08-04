@@ -17,50 +17,74 @@
 
 import { Tooltip } from "./Tooltip.mjs";
 
-function Panel(
-  {
-    _getWidth,
-    _setWidth,
-    _getOpen,
-    _setOpen,
-    minWidth = 260,
-    maxWidth = 520,
-    ...props
-  },
-  ...children
-) {
+function Panel({
+  _getWidth,
+  _setWidth,
+  _getOpen,
+  _setOpen,
+  minWidth = 260,
+  maxWidth = 640,
+  ...props
+}) {
   const { html, extendProps } = globalThis.__enhancerApi;
   extendProps(props, {
     class: `notion-enhancer--side-panel order-2 shrink-0
     transition-[width] open:w-[var(--side\\_panel--width)]
     w-0 border-l-1 border-[color:var(--theme--fg-border)]
-    relative bg-[color:var(--theme--bg-primary)]`,
+    relative bg-[color:var(--theme--bg-primary)] group`,
   });
+
+  const $resizeHandle = html`<div
+      class="absolute h-full w-[3px] left-[-3px]
+      z-10 transition duration-300 hover:(cursor-col-resize
+      shadow-[var(--theme--fg-border)_-2px_0px_0px_0px_inset])
+      active:cursor-text group-not-[open]:hidden"
+    ></div>`,
+    $panel = html`<aside ...${props}>
+      ${$resizeHandle}
+      <div>Hello world.</div>
+    </aside>`;
 
   const $tooltip = html`<${Tooltip}>
       <span>Drag</span> to resize<br />
       <span>Click</span> to closed
     <//>`,
-    $panel = html`<aside ...${props}>
-      <div
-        class="absolute h-full w-[3px] left-[-3px] z-10
-        transition duration-300 hover:(cursor-col-resize
-        shadow-[var(--theme--fg-border)_-2px_0px_0px_0px_inset])"
-        onmouseover=${function (event) {
-          setTimeout(() => {
-            const panelOpen = $panel.hasAttribute("open"),
-              handleHovered = this.matches(":hover");
-            console.log(panelOpen, handleHovered);
-            if (!panelOpen || !handleHovered) return;
-            const { x } = this.getBoundingClientRect();
-            $tooltip.show(x, event.clientY);
-          }, 200);
-        }}
-        onmouseout=${() => $tooltip.hide()}
-        onclick=${() => $panel.close()}
-      ></div>
-      <div>Hello world.</div>
-    </aside>`;
+    showTooltip = (event) => {
+      setTimeout(() => {
+        const panelOpen = $panel.hasAttribute("open"),
+          handleHovered = $resizeHandle.matches(":hover");
+        if (!panelOpen || !handleHovered) return;
+        const { x } = $resizeHandle.getBoundingClientRect();
+        $tooltip.show(x, event.clientY);
+      }, 200);
+    };
+  $resizeHandle.addEventListener("mouseover", showTooltip);
+  $resizeHandle.addEventListener("mouseout", $tooltip.hide);
+  $resizeHandle.addEventListener("click", $panel.close);
+
+  let preDragWidth,
+    dragStartX = 0;
+  const startDrag = async (event) => {
+      dragStartX = event.clientX;
+      preDragWidth = await _getWidth?.();
+      if (isNaN(preDragWidth)) preDragWidth = minWidth;
+      document.addEventListener("mousemove", onDrag);
+      document.addEventListener("mouseup", endDrag);
+      $panel.style.transitionDuration = "0ms";
+    },
+    onDrag = (event) => {
+      event.preventDefault();
+      const newWidth = preDragWidth + (dragStartX - event.clientX);
+      $panel.resize(newWidth, true);
+    },
+    endDrag = (event) => {
+      document.removeEventListener("mousemove", onDrag);
+      document.removeEventListener("mouseup", endDrag);
+      const finalWidth = preDragWidth + (dragStartX - event.clientX);
+      $panel.style.transitionDuration = "";
+      $panel.resize(finalWidth);
+    };
+  $resizeHandle.addEventListener("mousedown", startDrag);
 
   const notionHelp = ".notion-help-button",
     repositionHelp = async (attempts = 0) => {
@@ -80,12 +104,12 @@ function Panel(
       $notionHelp.animate(keyframes, options);
     };
 
-  $panel.resize = async (width) => {
+  $panel.resize = async (width, dragActive = false) => {
     $tooltip.hide();
     if (width) {
       width = Math.max(width, minWidth);
       width = Math.min(width, maxWidth);
-      _setWidth?.(width);
+      if (!dragActive) _setWidth?.(width);
     } else width = await _getWidth?.();
     if (isNaN(width)) width = minWidth;
     $panel.style.setProperty("--side_panel--width", `${width}px`);

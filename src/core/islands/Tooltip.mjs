@@ -29,7 +29,11 @@ function Tooltip(props, ...children) {
     if (!document.contains($tooltip)) $notionApp?.append($tooltip);
     requestAnimationFrame(() => {
       $tooltip.setAttribute("open", true);
-      $tooltip.style.left = `${x - $tooltip.clientWidth - 6}px`;
+      x -= $tooltip.clientWidth + 6;
+      if (x < 0) x += $tooltip.clientWidth + 12;
+      y -= $tooltip.clientHeight / 2;
+      if (y < 0) y += $tooltip.clientHeight / 2;
+      $tooltip.style.left = `${x}px`;
       $tooltip.style.top = `${y}px`;
       $tooltip.onshow?.();
     });
