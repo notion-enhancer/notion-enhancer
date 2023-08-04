@@ -142,9 +142,8 @@ const insertPanel = async (db) => {
   addKeyListener(togglePanelHotkey, (event) => {
     event.preventDefault();
     event.stopPropagation();
-    if ($panel.hasAttribute("open")) {
-      $panel.close();
-    } else $panel.open();
+    if ($panel.hasAttribute("open")) $panel.close();
+    else $panel.open();
   });
 };
 
