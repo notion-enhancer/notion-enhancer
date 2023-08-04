@@ -6,7 +6,7 @@
 
 "use strict";
 
-const { twind, htm } = globalThis,
+const { twind, htm, lucide } = globalThis,
   { readFile, iconColour, iconMonochrome } = globalThis.__enhancerApi;
 
 const kebabToPascalCase = (string) =>
@@ -45,8 +45,8 @@ const encodeSvg = (svg) =>
       svg = mode === "mask" ? iconMonochrome : iconColour;
     } else {
       icon = kebabToPascalCase(icon);
-      if (!globalThis.lucide[icon]) return;
-      const [type, props, children] = globalThis.lucide[icon];
+      if (!lucide[icon]) return;
+      const [type, props, children] = lucide[icon];
       svg = hToString(type, props, ...children);
     }
     // https://antfu.me/posts/icons-in-pure-css

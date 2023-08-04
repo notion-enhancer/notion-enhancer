@@ -171,8 +171,9 @@ window.addEventListener("message", (event) => {
 });
 useState(["hotkey"], ([hotkey]) => {
   const { addKeyListener } = globalThis.__enhancerApi ?? {},
-    [hotkeyRegistered] = useState(["hotkeyRegistered"]);
-  if (!hotkey || !addKeyListener || hotkeyRegistered) return;
+    [hotkeyRegistered] = useState(["hotkeyRegistered"]),
+    [renderStarted] = useState(["renderStarted"]);
+  if (!hotkey || !addKeyListener || hotkeyRegistered || !renderStarted) return;
   setState({ hotkeyRegistered: true });
   addKeyListener(hotkey, (event) => {
     event.preventDefault();
@@ -195,16 +196,7 @@ useState(["theme"], ([theme]) => {
 useState(["rerender"], async () => {
   const [theme, icon] = useState(["theme", "icon"]);
   if (!theme || !icon) return;
-  // chrome extensions run in an isolated execution context
-  // but extension:// pages can access chrome apis
-  // => notion-enhancer api is imported directly
-  if (typeof globalThis.__enhancerApi === "undefined") {
+  if (typeof globalThis.__enhancerApi === "undefined")
     await import("../../shared/system.js");
-    // in electron this isn't necessary, as a) scripts are
-    // not running in an isolated execution context and b)
-    // the notion:// protocol csp bypass allows scripts to
-    // set iframe globals via $iframe.contentWindow
-  }
-  // load stylesheets and api globals
   (await import("../../load.mjs")).default.then(render);
 });
