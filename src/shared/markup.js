@@ -6,6 +6,8 @@
 
 "use strict";
 
+// jump to
+
 const { twind, htm, lucide } = globalThis,
   { readFile, iconColour, iconMonochrome } = globalThis.__enhancerApi;
 
@@ -71,6 +73,14 @@ const encodeSvg = (svg) =>
           }),
     };
   };
+
+// at-runtime utility class evaluation w/ twind:
+// - feature parity w/ tailwind v3
+// - useful for building self-contained components
+//   (mods can extend interfaces w/out needing to
+//   import additional stylesheets)
+// - integrated with lucide to render icons w/out
+//   complex markup, e.g. `<i class="i-bookmark" />`
 twind.install({
   darkMode: "class",
   rules: [[/^i-((?:\w|-)+)(?:\?(mask|bg|auto))?$/, presetIcons]],
@@ -87,14 +97,6 @@ twind.install({
     ["\\[.+]", (match) => "&" + match.input],
     ["([a-z-]+):", ({ 1: $1 }) => "&::" + $1],
   ],
-  theme: {
-    extend: {
-      backgroundImage: {
-        "brand-gradient":
-          "linear-gradient(225deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0) 100%)",
-      },
-    },
-  },
 });
 
 // https://developer.mozilla.org/en-US/docs/Web/SVG/Element
@@ -535,7 +537,11 @@ const svgElements = [
     "zoomAndPan",
   ];
 
-// html`<div class=${className}></div>`
+// enables use of the jsx-like htm syntax
+// for building components and interfaces
+// with tagged templates. instantiates dom
+// elements directly, does not use a vdom.
+// e.g. html`<div class=${className}></div>`
 const h = (type, props, ...children) => {
     children = children.flat(Infinity);
     // html`<${Component} attr="value">Click Me<//>`
@@ -557,24 +563,61 @@ const h = (type, props, ...children) => {
     elem.append(...children);
     return elem;
   },
+  // combines instance-provided element props
+  // with a template of element props such that
+  // island/component/template props handlers
+  // and styles can be preserved and extended
+  // rather than overwritten
+  extendProps = (props, extend) => {
+    for (const key in extend) {
+      const { [key]: userProvided } = props;
+      if (typeof extend[key] === "function") {
+        props[key] = (...args) => {
+          extend[key](...args);
+          userProvided?.(...args);
+        };
+      } else if (key === "class") {
+        if (userProvided) props[key] += " ";
+        if (!userProvided) props[key] = "";
+        props[key] += extend[key];
+      } else props[key] = extend[key] ?? userProvided;
+    }
+    return props;
+  },
   html = htm.bind(h);
 
-const extendProps = (props, extend) => {
-  for (const key in extend) {
-    const { [key]: userProvided } = props;
-    if (typeof extend[key] === "function") {
-      props[key] = (...args) => {
-        extend[key](...args);
-        userProvided?.(...args);
-      };
-    } else if (key === "class") {
-      if (userProvided) props[key] += " ";
-      if (!userProvided) props[key] = "";
-      props[key] += extend[key];
-    } else props[key] = extend[key] ?? userProvided;
-  }
-  return props;
-};
+// provides basic key/value reactivity:
+// this is shared between all active mods,
+// i.e. mods can read and update other mods'
+// reactive states. this enables interop
+// between a mod's component islands and
+// supports inter-mod communication if so
+// required. caution should be used in
+// naming keys to avoid conflicts
+const _state = {},
+  _subscribers = [],
+  setState = (state) => {
+    Object.assign(_state, state);
+    const updates = Object.keys(state);
+    _subscribers
+      .filter(([keys]) => updates.some((key) => keys.includes(key)))
+      .forEach(([keys, callback]) => callback(keys.map((key) => _state[key])));
+  },
+  // useState(["keyA", "keyB"]) => returns [valueA, valueB]
+  // useState(["keyA", "keyB"], callback) => registers callback
+  // to be triggered after each update to either keyA or keyB,
+  // with [valueA, valueB] passed to the callback's first arg
+  useState = (keys, callback) => {
+    const state = keys.map((key) => _state[key]);
+    if (callback) _subscribers.push([keys, callback]);
+    callback?.(state);
+    return state;
+  };
 
 globalThis.__enhancerApi ??= {};
-Object.assign(globalThis.__enhancerApi, { html, extendProps });
+Object.assign(globalThis.__enhancerApi, {
+  html,
+  extendProps,
+  setState,
+  useState,
+});

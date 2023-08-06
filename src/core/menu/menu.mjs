@@ -4,7 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { setState, useState } from "./state.mjs";
 import { checkForUpdate, isDevelopmentBuild } from "../updateCheck.mjs";
 import { Sidebar } from "./islands/Sidebar.mjs";
 import { Footer } from "./islands/Footer.mjs";
@@ -16,6 +15,11 @@ import { List } from "./islands/List.mjs";
 import { Mod } from "./islands/Mod.mjs";
 import { Options } from "./islands/Options.mjs";
 import { Profiles } from "./islands/Profiles.mjs";
+
+let _apiImported = false,
+  _renderStarted = false,
+  _stateHookedInto = false,
+  _hotkeyRegistered = false;
 
 const categories = [
     {
@@ -85,118 +89,126 @@ const categories = [
     })),
   ];
 
-const render = async () => {
-  const { html, getMods } = globalThis.__enhancerApi,
-    { isEnabled, setEnabled } = globalThis.__enhancerApi,
-    [icon, renderStarted] = useState(["icon", "renderStarted"]);
-  if (!html || !getMods || !icon || renderStarted) return;
-  if (icon === "Monochrome") sidebar[1].icon += "?mask";
-  setState({ renderStarted: true });
+const renderMenu = async () => {
+    const { html, ...api } = globalThis.__enhancerApi,
+      [theme, icon] = api.useState(["theme", "icon"]);
+    if (!theme || !icon || _renderStarted) return;
+    if (icon === "Monochrome") sidebar[1].icon += "?mask";
+    _renderStarted = true;
 
-  const mods = await getMods();
-  for (let i = 0; i < categories.length; i++) {
-    const { id } = categories[i];
-    categories[i].mods = mods.filter(({ _src }) => _src.startsWith(`${id}/`));
-    categories[i].view = html`<${View} id=${id}>
-      <${List} ...${categories[i]} />
-    <//>`;
-  }
-  for (let i = 0; i < mods.length; i++) {
-    const options = mods[i].options?.filter((opt) => opt.type !== "heading");
-    if (mods[i]._src === "core" || !options?.length) continue;
-    const _get = () => isEnabled(mods[i].id),
-      _set = async (enabled) => {
-        await setEnabled(mods[i].id, enabled);
-        setState({ rerender: true });
-      };
-    mods[i].view = html`<${View} id=${mods[i].id}>
-      <!-- passing an empty options array hides the settings button -->
-      <${Mod} ...${{ ...mods[i], options: [], _get, _set }} />
-      <${Options} mod=${mods[i]} />
-    <//>`;
-  }
+    const mods = await api.getMods();
+    for (let i = 0; i < categories.length; i++) {
+      const { id } = categories[i];
+      categories[i].mods = mods.filter(({ _src }) => _src.startsWith(`${id}/`));
+      categories[i].view = html`<${View} id=${id}>
+        <${List} ...${categories[i]} />
+      <//>`;
+    }
+    for (let i = 0; i < mods.length; i++) {
+      const options = mods[i].options?.filter((opt) => opt.type !== "heading");
+      if (mods[i]._src === "core" || !options?.length) continue;
+      const _get = () => api.isEnabled(mods[i].id),
+        _set = async (enabled) => {
+          await api.setEnabled(mods[i].id, enabled);
+          api.setState({ rerender: true });
+        };
+      mods[i].view = html`<${View} id=${mods[i].id}>
+        <!-- passing an empty options array hides the settings button -->
+        <${Mod} ...${{ ...mods[i], options: [], _get, _set }} />
+        <${Options} mod=${mods[i]} />
+      <//>`;
+    }
 
-  const $sidebar = html`<${Sidebar}
-      items=${sidebar}
-      categories=${categories}
-    />`,
-    $main = html`
-      <main class="flex-(& col) overflow-hidden transition-[height]">
-        <!-- wrappers necessary for transitions and breakpoints -->
-        <div class="grow overflow-auto">
-          <div class="relative h-full w-full">
-            <${View} id="welcome">
-              <${Banner}
-                updateAvailable=${await checkForUpdate()}
-                isDevelopmentBuild=${await isDevelopmentBuild()}
-              />
-              <${Onboarding} />
-            <//>
-            <${View} id="core">
-              <${Options} mod=${mods.find(({ _src }) => _src === "core")} />
-              <${Telemetry} />
-              <${Profiles} />
-            <//>
-            ${[...categories, ...mods]
-              .filter(({ view }) => view)
-              .map(({ view }) => view)}
+    const $sidebar = html`<${Sidebar}
+        items=${sidebar}
+        categories=${categories}
+      />`,
+      $main = html`
+        <main class="flex-(& col) overflow-hidden transition-[height]">
+          <!-- wrappers necessary for transitions and breakpoints -->
+          <div class="grow overflow-auto">
+            <div class="relative h-full w-full">
+              <${View} id="welcome">
+                <${Banner}
+                  updateAvailable=${await checkForUpdate()}
+                  isDevelopmentBuild=${await isDevelopmentBuild()}
+                />
+                <${Onboarding} />
+              <//>
+              <${View} id="core">
+                <${Options} mod=${mods.find(({ _src }) => _src === "core")} />
+                <${Telemetry} />
+                <${Profiles} />
+              <//>
+              ${[...categories, ...mods]
+                .filter(({ view }) => view)
+                .map(({ view }) => view)}
+            </div>
           </div>
-        </div>
-        <${Footer} categories=${categories} />
-      </main>
-    `;
-  useState(["footerOpen"], ([footerOpen]) => {
-    $main.style.height = footerOpen ? "100%" : "calc(100% + 33px)";
-  });
-  useState(["transitionInProgress"], ([transitionInProgress]) => {
-    $main.children[0].style.overflow = transitionInProgress ? "hidden" : "";
-  });
+          <${Footer} categories=${categories} />
+        </main>
+      `;
+    api.useState(["footerOpen"], ([footerOpen]) => {
+      $main.style.height = footerOpen ? "100%" : "calc(100% + 33px)";
+    });
+    api.useState(["transitionInProgress"], ([transitionInProgress]) => {
+      $main.children[0].style.overflow = transitionInProgress ? "hidden" : "";
+    });
 
-  const $skeleton = document.querySelector("#skeleton");
-  $skeleton.replaceWith($sidebar, $main);
-};
-
-window.addEventListener("focus", () => {
-  setState({ focus: true, rerender: true });
-});
-window.addEventListener("message", (event) => {
-  if (event.data?.channel !== "notion-enhancer") return;
-  const [hotkey, theme, icon] = useState(["hotkey", "theme", "icon"]);
-  setState({
-    rerender: true,
-    hotkey: event.data?.hotkey ?? hotkey,
-    theme: event.data?.theme ?? theme,
-    icon: event.data?.icon ?? icon,
-  });
-});
-useState(["hotkey"], ([hotkey]) => {
-  const { addKeyListener } = globalThis.__enhancerApi ?? {},
-    [hotkeyRegistered] = useState(["hotkeyRegistered"]),
-    [renderStarted] = useState(["renderStarted"]);
-  if (!hotkey || !addKeyListener || hotkeyRegistered || !renderStarted) return;
-  setState({ hotkeyRegistered: true });
-  addKeyListener(hotkey, (event) => {
-    event.preventDefault();
-    const msg = { channel: "notion-enhancer", action: "open-menu" };
-    parent?.postMessage(msg, "*");
-  });
-  addKeyListener("Escape", () => {
-    const [popupOpen] = useState(["popupOpen"]);
-    if (!popupOpen) {
-      const msg = { channel: "notion-enhancer", action: "close-menu" };
+    const $skeleton = document.querySelector("#skeleton");
+    $skeleton.replaceWith($sidebar, $main);
+  },
+  registerHotkey = ([hotkey]) => {
+    const api = globalThis.__enhancerApi;
+    if (!hotkey || _hotkeyRegistered) return;
+    _hotkeyRegistered = true;
+    api.addKeyListener(hotkey, (event) => {
+      event.preventDefault();
+      const msg = { channel: "notion-enhancer", action: "open-menu" };
       parent?.postMessage(msg, "*");
-    } else setState({ rerender: true });
-  });
-});
-useState(["theme"], ([theme]) => {
-  if (theme === "dark") document.body.classList.add("dark");
-  if (theme === "light") document.body.classList.remove("dark");
-});
+    });
+    api.addKeyListener("Escape", () => {
+      const [popupOpen] = api.useState(["popupOpen"]);
+      if (!popupOpen) {
+        const msg = { channel: "notion-enhancer", action: "close-menu" };
+        parent?.postMessage(msg, "*");
+      } else api.setState({ rerender: true });
+    });
+  },
+  updateTheme = ([theme]) => {
+    if (theme === "dark") document.body.classList.add("dark");
+    if (theme === "light") document.body.classList.remove("dark");
+  };
 
-useState(["rerender"], async () => {
-  const [theme, icon] = useState(["theme", "icon"]);
-  if (!theme || !icon) return;
-  if (typeof globalThis.__enhancerApi === "undefined")
-    await import("../../shared/system.js");
-  (await import("../../load.mjs")).default.then(render);
+const importApi = async () => {
+    if (_apiImported) return;
+    _apiImported = true;
+    const api = globalThis.__enhancerApi;
+    if (typeof api === "undefined") await import("../../shared/system.js");
+    await import("../../load.mjs").then((i) => i.default);
+  },
+  hookIntoState = () => {
+    if (_stateHookedInto) return;
+    _stateHookedInto = true;
+    const api = globalThis.__enhancerApi;
+    api.useState(["rerender"], renderMenu);
+    api.useState(["hotkey"], registerHotkey);
+    api.useState(["theme"], updateTheme);
+  };
+
+window.addEventListener("focus", async () => {
+  await importApi().then(hookIntoState);
+  const api = globalThis.__enhancerApi;
+  api.setState({ focus: true, rerender: true });
+});
+window.addEventListener("message", async (event) => {
+  if (event.data?.channel !== "notion-enhancer") return;
+  await importApi().then(hookIntoState);
+  const api = globalThis.__enhancerApi;
+  api.setState({
+    rerender: true,
+    hotkey: event.data?.hotkey ?? api.useState(["hotkey"]),
+    theme: event.data?.theme ?? api.useState(["theme"]),
+    icon: event.data?.icon ?? api.useState(["icon"]),
+  });
 });

@@ -4,7 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { setState } from "../state.mjs";
 import { Description } from "./Description.mjs";
 import { Input } from "./Input.mjs";
 import { Mod } from "./Mod.mjs";
@@ -38,7 +37,7 @@ function Search({ items, itemType }) {
 }
 
 function List({ id, mods, description }) {
-  const { html, isEnabled, setEnabled } = globalThis.__enhancerApi,
+  const { html, isEnabled, setEnabled, setState } = globalThis.__enhancerApi,
     $mods = mods.map((mod) => {
       const _get = () => isEnabled(mod.id),
         _set = async (enabled) => {

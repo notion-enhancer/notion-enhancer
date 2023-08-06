@@ -4,10 +4,9 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { setState, useState } from "../state.mjs";
-
 function Popup({ trigger, ...props }, ...children) {
-  const { html, extendProps } = globalThis.__enhancerApi;
+  const { html, extendProps } = globalThis.__enhancerApi,
+    { setState, useState } = globalThis.__enhancerApi;
   extendProps(props, {
     class: `notion-enhancer--menu-popup
     group absolute top-0 left-0 w-full h-full

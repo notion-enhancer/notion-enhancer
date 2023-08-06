@@ -4,11 +4,11 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { setState, useState } from "../state.mjs";
 import { Button } from "./Button.mjs";
 
 function Footer({ categories }) {
   const { html, reloadApp } = globalThis.__enhancerApi,
+    { setState, useState } = globalThis.__enhancerApi,
     $reload = html`<${Button}
       class="ml-auto"
       variant="primary"

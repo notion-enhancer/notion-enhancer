@@ -9,13 +9,13 @@ import { Description } from "./Description.mjs";
 import { Checkbox } from "./Checkbox.mjs";
 import { Button } from "./Button.mjs";
 import { Tile } from "./Tile.mjs";
-import { setState, useState } from "../state.mjs";
 
 const privacyPolicy = "https://notion-enhancer.github.io/about/privacy-policy/",
   tsAndCs = "https://notion-enhancer.github.io/about/terms-and-conditions/";
 
 function Onboarding() {
   const { html, version, initDatabase } = globalThis.__enhancerApi,
+    { setState, useState } = globalThis.__enhancerApi,
     $submitAgreement = html`<${Button}
       icon="arrow-right"
       class="ml-auto"

@@ -4,11 +4,11 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { setState, useState } from "../state.mjs";
 import { Description } from "./Description.mjs";
 
 function SidebarHeading({}, ...children) {
-  const { html } = globalThis.__enhancerApi;
+  const { html } = globalThis.__enhancerApi,
+    { setState, useState } = globalThis.__enhancerApi;
   return html`<h2
     class="flex items-center font-semibold leading-none
     text-([12px] [color:var(--theme--fg-secondary)])
@@ -20,6 +20,7 @@ function SidebarHeading({}, ...children) {
 
 function SidebarButton({ id, icon, ...props }, ...children) {
   const { html, extendProps } = globalThis.__enhancerApi,
+    { setState, useState } = globalThis.__enhancerApi,
     $btn = html`<${props["href"] ? "a" : "button"}
       class="flex items-center select-none text-[14px]
       min-h-[27px] px-[12px] my-px last:mb-[12px] w-full
@@ -53,6 +54,7 @@ function SidebarButton({ id, icon, ...props }, ...children) {
 function Sidebar({ items, categories }) {
   const { html, version } = globalThis.__enhancerApi,
     { initDatabase, isEnabled } = globalThis.__enhancerApi,
+    { setState, useState } = globalThis.__enhancerApi,
     $agreeToUnlock = html`<span
       class="pt-[2px] pb-[5px] px-[15px] text-[12px]
       inline-block text-[color:var(--theme--fg-red)]"

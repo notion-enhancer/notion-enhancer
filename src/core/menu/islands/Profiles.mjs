@@ -4,7 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { setState, useState } from "../state.mjs";
 import { Heading } from "./Heading.mjs";
 import { Description } from "./Description.mjs";
 import { Checkbox } from "./Checkbox.mjs";
@@ -14,6 +13,7 @@ import { Popup } from "./Popup.mjs";
 
 function Profile({ id }) {
   const { html, getProfile, initDatabase } = globalThis.__enhancerApi,
+    { setState, useState } = globalThis.__enhancerApi,
     profile = initDatabase([id]),
     db = initDatabase();
 
@@ -180,6 +180,7 @@ function Profile({ id }) {
 
 function Profiles() {
   const { html, initDatabase } = globalThis.__enhancerApi,
+    { setState, useState } = globalThis.__enhancerApi,
     $input = html`<${Input} icon="file-cog" />`,
     $list = html`<ul></ul>`;
 

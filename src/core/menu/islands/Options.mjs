@@ -4,7 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { setState } from "../state.mjs";
 import { Heading } from "./Heading.mjs";
 import { Description } from "./Description.mjs";
 import { Input } from "./Input.mjs";
@@ -78,7 +77,7 @@ function Option({ _get, _set, ...opt }) {
 }
 
 function Options({ mod }) {
-  const { html, modDatabase } = globalThis.__enhancerApi;
+  const { html, modDatabase, setState } = globalThis.__enhancerApi;
   return filterOptionsForRender(mod.options).map((opt) => {
     opt.label ??= camelToSentenceCase(opt.key);
     if (opt.type === "heading") return html`<${Heading}>${opt.label}<//>`;

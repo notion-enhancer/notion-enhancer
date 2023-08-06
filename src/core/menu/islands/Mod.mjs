@@ -4,7 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { setState } from "../state.mjs";
 import { Description } from "./Description.mjs";
 import { Toggle } from "./Toggle.mjs";
 
@@ -21,7 +20,7 @@ function Mod({
   _set,
   _src,
 }) {
-  const { html, enhancerUrl } = globalThis.__enhancerApi,
+  const { html, enhancerUrl, setState } = globalThis.__enhancerApi,
     toggleId = Math.random().toString(36).slice(2, 5);
 
   return html`<label

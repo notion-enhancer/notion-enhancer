@@ -7,7 +7,6 @@
 import { Popup } from "./Popup.mjs";
 import { Button } from "./Button.mjs";
 import { Description } from "./Description.mjs";
-import { useState } from "../state.mjs";
 
 const updateGuide =
     "https://notion-enhancer.github.io/getting-started/updating/",
@@ -69,7 +68,7 @@ function Circle(rect) {
 }
 
 function Banner({ updateAvailable, isDevelopmentBuild }) {
-  const { html, version, initDatabase } = globalThis.__enhancerApi,
+  const { html, version, initDatabase, useState } = globalThis.__enhancerApi,
     $version = html`<button
       class="text-[12px] py-[2px] px-[6px] mt-[2px]
       font-medium leading-tight tracking-wide rounded-[3px]

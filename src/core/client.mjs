@@ -8,6 +8,7 @@ import { checkForUpdate } from "./updateCheck.mjs";
 import { sendTelemetryPing } from "./sendTelemetry.mjs";
 import { Modal, Frame } from "./islands/Modal.mjs";
 import { MenuButton } from "./islands/MenuButton.mjs";
+import { TopbarButton } from "./islands/TopbarButton.mjs";
 import { Panel } from "./islands/Panel.mjs";
 
 const shouldLoadThemeOverrides = async (db) => {
@@ -118,10 +119,11 @@ const insertMenu = async (db) => {
   });
 };
 
-const insertPanel = async (db) => {
+const insertPanel = async (api, db) => {
   const notionFrame = ".notion-frame",
-    { html, addKeyListener, addMutationListener } = globalThis.__enhancerApi,
-    togglePanelHotkey = await db.get("togglePanelHotkey");
+    notionTopbarBtn = ".notion-topbar-more-button",
+    togglePanelHotkey = await db.get("togglePanelHotkey"),
+    { html } = api;
 
   const $panel = html`<${Panel}
       _getWidth=${() => db.get("sidePanelWidth")}
@@ -129,28 +131,45 @@ const insertPanel = async (db) => {
       _getOpen=${() => db.get("sidePanelOpen")}
       _setOpen=${(open) => db.set("sidePanelOpen", open)}
     />`,
+    togglePanel = () => {
+      if ($panel.hasAttribute("open")) $panel.close();
+      else $panel.open();
+    };
+
+  const $panelTopbarBtn = html`<${TopbarButton}
+      aria-label="Open side panel"
+      icon="panel-right"
+      onclick=${togglePanel}
+    />`,
     appendToDom = () => {
       const $frame = document.querySelector(notionFrame);
       if (!$frame) return;
       if (!$frame.contains($panel)) $frame.append($panel);
       if (!$frame.style.flexDirection !== "row")
         $frame.style.flexDirection = "row";
+      if (!document.contains($panelTopbarBtn)) {
+        const $notionTopbarBtn = document.querySelector(notionTopbarBtn);
+        $notionTopbarBtn?.before($panelTopbarBtn);
+      }
     };
-  addMutationListener(notionFrame, appendToDom);
+  api.addMutationListener(`${notionFrame}, ${notionTopbarBtn}`, appendToDom);
+  api.useState(["panelOpen"], ([panelOpen]) => {
+    if (panelOpen) $panelTopbarBtn.setAttribute("data-active", true);
+    else $panelTopbarBtn.removeAttribute("data-active");
+  });
   appendToDom();
 
-  addKeyListener(togglePanelHotkey, (event) => {
+  api.addKeyListener(togglePanelHotkey, (event) => {
     event.preventDefault();
     event.stopPropagation();
-    if ($panel.hasAttribute("open")) $panel.close();
-    else $panel.open();
+    togglePanel();
   });
 };
 
 export default async (api, db) =>
   Promise.all([
     insertMenu(db),
-    insertPanel(db),
+    insertPanel(api, db),
     insertCustomStyles(db),
     loadThemeOverrides(db),
     sendTelemetryPing(),

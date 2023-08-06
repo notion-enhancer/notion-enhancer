@@ -5,12 +5,12 @@
  */
 
 import { collectTelemetryData } from "../../sendTelemetry.mjs";
-import { useState, setState } from "../state.mjs";
 import { Option } from "./Options.mjs";
 
 const privacyPolicy = "https://notion-enhancer.github.io/about/privacy-policy/";
 function Telemetry() {
   const { html, initDatabase } = globalThis.__enhancerApi,
+    { setState, useState } = globalThis.__enhancerApi,
     _get = async () => {
       // defaults to true, must be explicitly set to false to disable
       return (await initDatabase().get("telemetryEnabled")) ?? true;

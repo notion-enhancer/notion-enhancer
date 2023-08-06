@@ -4,11 +4,11 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-import { setState, useState } from "../state.mjs";
 import { Popup } from "./Popup.mjs";
 
 function Option({ value, _get, _set }) {
   const { html } = globalThis.__enhancerApi,
+    { setState, useState } = globalThis.__enhancerApi,
     $selected = html`<i class="ml-auto i-check w-[16px] h-[16px]"></i>`,
     $option = html`<div
       tabindex="0"
@@ -36,6 +36,7 @@ function Option({ value, _get, _set }) {
 function Select({ values, _get, _set, _requireReload = true, ...props }) {
   let _initialValue;
   const { html } = globalThis.__enhancerApi,
+    { setState, useState } = globalThis.__enhancerApi,
     // dir="rtl" overflows to the left during transition
     $select = html`<div
       dir="rtl"
