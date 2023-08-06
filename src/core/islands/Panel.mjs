@@ -1,3 +1,4 @@
+1;
 /**
  * notion-enhancer
  * (c) 2023 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
@@ -23,6 +24,7 @@ function Panel({
   _setOpen,
   minWidth = 260,
   maxWidth = 640,
+  transitionDuration = 300,
   ...props
 }) {
   const { html, ...api } = globalThis.__enhancerApi;
@@ -30,7 +32,8 @@ function Panel({
     class: `notion-enhancer--side-panel order-2 shrink-0
     transition-[width] open:w-[var(--side\\_panel--width)]
     w-0 border-l-1 border-[color:var(--theme--fg-border)]
-    relative bg-[color:var(--theme--bg-primary)] group`,
+    relative bg-[color:var(--theme--bg-primary)] group
+    duration-[${transitionDuration}ms]`,
   });
 
   const $resizeHandle = html`<div
@@ -71,10 +74,8 @@ function Panel({
   </aside>`;
 
   let preDragWidth,
-    userDragActive,
     dragStartX = 0;
   const startDrag = async (event) => {
-      userDragActive = true;
       dragStartX = event.clientX;
       preDragWidth = await _getWidth?.();
       if (isNaN(preDragWidth)) preDragWidth = minWidth;
@@ -89,9 +90,10 @@ function Panel({
     endDrag = (event) => {
       document.removeEventListener("mousemove", onDrag);
       document.removeEventListener("mouseup", endDrag);
-      $panel.resize(preDragWidth + (dragStartX - event.clientX));
       $panel.style.transitionDuration = "";
-      requestIdleCallback(() => (userDragActive = false));
+      $panel.resize(preDragWidth + (dragStartX - event.clientX));
+      // trigger panel close if not resized
+      if (dragStartX - event.clientX === 0) $panel.close();
     };
   $resizeHandle.addEventListener("mousedown", startDrag);
 
@@ -110,9 +112,6 @@ function Panel({
     };
   $resizeHandle.addEventListener("mouseover", showTooltip);
   $resizeHandle.addEventListener("mouseout", () => $tooltip.hide());
-  $resizeHandle.addEventListener("click", () => {
-    if (!userDragActive) $panel.close();
-  });
   $chevronClose.addEventListener("click", () => $panel.close());
 
   const notionHelp = ".notion-help-button",
@@ -125,7 +124,10 @@ function Panel({
       const position = $notionHelp.style.getPropertyValue("right"),
         destination = `${26 + width}px`,
         keyframes = [{ right: position }, { right: destination }],
-        options = { duration: 150, easing: "cubic-bezier(0.4, 0, 0.2, 1)" };
+        options = {
+          duration: transitionDuration,
+          easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+        };
       $notionHelp.style.setProperty("right", destination);
       $notionHelp.animate(keyframes, options);
       api.removeMutationListener(repositionHelp);
@@ -137,7 +139,7 @@ function Panel({
     if (width) {
       width = Math.max(width, minWidth);
       width = Math.min(width, maxWidth);
-      if (!userDragActive) _setWidth?.(width);
+      _setWidth?.(width);
     } else width = await _getWidth?.();
     if (isNaN(width)) width = minWidth;
     $panel.style.setProperty("--side_panel--width", `${width}px`);
@@ -163,7 +165,7 @@ function Panel({
     setTimeout(() => {
       $panel.style.pointerEvents = "";
       $panel.onclose?.();
-    }, 150);
+    }, transitionDuration);
   };
   _getOpen().then((open) => {
     if (open) $panel.open();
