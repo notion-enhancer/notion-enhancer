@@ -16,11 +16,10 @@ import { Mod } from "./islands/Mod.mjs";
 import { Options } from "./islands/Options.mjs";
 import { Profiles } from "./islands/Profiles.mjs";
 
-let _apiImported = false,
-  _renderStarted = false,
-  _stateHookedInto = false,
-  _hotkeyRegistered = false;
-
+let _apiImport, //
+  _renderStarted,
+  _stateHookedInto,
+  _hotkeyRegistered;
 const categories = [
     {
       icon: "palette",
@@ -180,12 +179,12 @@ const renderMenu = async () => {
     if (theme === "light") document.body.classList.remove("dark");
   };
 
-const importApi = async () => {
-    if (_apiImported) return;
-    _apiImported = true;
-    const api = globalThis.__enhancerApi;
-    if (typeof api === "undefined") await import("../../shared/system.js");
-    await import("../../load.mjs").then((i) => i.default);
+const importApi = () => {
+    return (_apiImport ??= (async () => {
+      const api = globalThis.__enhancerApi;
+      if (typeof api === "undefined") await import("../../shared/system.js");
+      await import("../../load.mjs").then((i) => i.default);
+    })());
   },
   hookIntoState = () => {
     if (_stateHookedInto) return;

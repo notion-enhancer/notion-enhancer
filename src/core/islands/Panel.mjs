@@ -87,11 +87,11 @@ function Panel({
       $panel.resize(preDragWidth + (dragStartX - event.clientX));
     },
     endDrag = (event) => {
-      userDragActive = false;
       document.removeEventListener("mousemove", onDrag);
       document.removeEventListener("mouseup", endDrag);
       $panel.resize(preDragWidth + (dragStartX - event.clientX));
       $panel.style.transitionDuration = "";
+      requestIdleCallback(() => (userDragActive = false));
     };
   $resizeHandle.addEventListener("mousedown", startDrag);
 
