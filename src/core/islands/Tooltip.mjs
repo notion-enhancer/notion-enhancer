@@ -8,7 +8,7 @@ function Tooltip(props, ...children) {
   const { html, extendProps } = globalThis.__enhancerApi;
   extendProps(props, {
     role: "dialog",
-    class: `absolute group z-[999] pointer-events-none`,
+    class: `absolute group/tooltip z-[999] pointer-events-none`,
   });
 
   const notionApp = ".notion-app-inner",
@@ -18,7 +18,7 @@ function Tooltip(props, ...children) {
         text-([color:var(--theme--fg-secondary)] [12px] center)
         leading-[1.4] font-medium py-[4px] px-[8px] rounded-[4px]
         drop-shadow-md transition duration-200 opacity-0
-        group-open:(pointer-events-auto opacity-100)
+        group-open/tooltip:(pointer-events-auto opacity-100)
         children:text-([color:var(--theme--fg-primary)]"
       >
         ${children}

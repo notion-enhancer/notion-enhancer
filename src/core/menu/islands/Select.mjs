@@ -32,21 +32,28 @@ function Option({ value, _get, _set }) {
   return $option;
 }
 
-function Select({ values, _get, _set, _requireReload = true, ...props }) {
+function Select({
+  values,
+  _get,
+  _set,
+  _requireReload = true,
+  maxWidth = 256,
+  ...props
+}) {
   let _initialValue;
-  const { html, setState, useState } = globalThis.__enhancerApi,
+  const { html, extendProps, setState, useState } = globalThis.__enhancerApi,
     // dir="rtl" overflows to the left during transition
     $select = html`<div
       dir="rtl"
       role="button"
       tabindex="0"
-      class="appearance-none bg-transparent rounded-[4px] cursor-pointer
-      text-[14px] leading-[28px] h-[28px] max-w-[256px] pl-[8px] pr-[28px]
-      transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
-      ...${props}
+      class="appearance-none bg-transparent rounded-[4px]
+      cursor-pointer text-[14px] leading-[28px] h-[28px]
+      max-w-[${maxWidth}px] pl-[8px] pr-[28px] transition
+      duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
     ></div>`;
   useState(["rerender"], async () => {
-    const value = (await _get?.()) ?? $select.innerText;
+    const value = (await _get?.()) ?? ($select.innerText || values[0]);
     $select.innerText = value;
     if (_requireReload) {
       _initialValue ??= value;
@@ -54,7 +61,8 @@ function Select({ values, _get, _set, _requireReload = true, ...props }) {
     }
   });
 
-  return html`<div class="notion-enhancer--menu-select relative">
+  extendProps(props, { class: "notion-enhancer--menu-select relative" });
+  return html`<div ...${props}>
     ${$select}
     <${Popup}
       trigger=${$select}

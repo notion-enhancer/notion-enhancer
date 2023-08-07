@@ -7,8 +7,8 @@
 function Modal(props, ...children) {
   const { html, extendProps, addKeyListener } = globalThis.__enhancerApi;
   extendProps(props, {
-    class: `notion-enhancer--menu-modal group
-    z-[999] fixed inset-0 w-screen h-screen
+    class: `notion-enhancer--menu-modal z-[999]
+    fixed inset-0 w-screen h-screen group/modal
     transition pointer-events-none opacity-0
     open:(pointer-events-auto opacity-100)`,
   });
@@ -30,6 +30,9 @@ function Modal(props, ...children) {
     _openQueued = true;
     while (!document.contains($modal)) {
       if (!_openQueued) return;
+      // dont trigger open until menu is in dom,
+      // to ensure transition is shown when menu
+      // does initially open
       await new Promise(requestAnimationFrame);
     }
     $modal.setAttribute("open", "");
@@ -55,11 +58,10 @@ function Modal(props, ...children) {
 function Frame(props) {
   const { html, extendProps } = globalThis.__enhancerApi;
   extendProps(props, {
-    class: `rounded-[5px] w-[1150px] h-[calc(100vh-100px)]
-    max-w-[calc(100vw-100px)] max-h-[715px] overflow-hidden
-    bg-[color:var(--theme--bg-primary)] drop-shadow-xl
-    group-open:(pointer-events-auto opacity-100 scale-100)
-    transition opacity-0 scale-95`,
+    class: `rounded-[5px] w-[1150px] h-[calc(100vh-100px)] opacity-0
+    max-w-[calc(100vw-100px)] max-h-[715px] overflow-hidden scale-95
+    bg-[color:var(--theme--bg-primary)] drop-shadow-xl transition
+    group-open/modal:(pointer-events-auto opacity-100 scale-100)`,
   });
   return html`<iframe ...${props}></iframe>`;
 }

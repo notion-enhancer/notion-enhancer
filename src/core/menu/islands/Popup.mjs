@@ -7,10 +7,10 @@
 function Popup({ trigger, ...props }, ...children) {
   const { html, extendProps, setState, useState } = globalThis.__enhancerApi;
   extendProps(props, {
-    class: `notion-enhancer--menu-popup
-    group absolute top-0 left-0 w-full h-full
-    flex-(& col) justify-center items-end z-20
-    pointer-events-none font-normal text-left`,
+    class: `notion-enhancer--menu-popup group/popup
+    absolute top-0 left-0 w-full h-full z-20 text-left
+    flex-(& col) justify-center items-end font-normal
+    pointer-events-none`,
   });
 
   const $popup = html`<div ...${props}>
@@ -20,7 +20,7 @@ function Popup({ trigger, ...props }, ...children) {
         w-[250px] max-w-[calc(100vw-24px)] max-h-[70vh]
         py-[6px] px-[4px] drop-shadow-xl overflow-y-auto
         transition duration-200 opacity-0 scale-95 rounded-[4px]
-        group-open:(pointer-events-auto opacity-100 scale-100)"
+        group-open/popup:(pointer-events-auto opacity-100 scale-100)"
       >
         ${children}
       </div>
