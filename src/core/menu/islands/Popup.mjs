@@ -5,8 +5,7 @@
  */
 
 function Popup({ trigger, ...props }, ...children) {
-  const { html, extendProps } = globalThis.__enhancerApi,
-    { setState, useState } = globalThis.__enhancerApi;
+  const { html, extendProps, setState, useState } = globalThis.__enhancerApi;
   extendProps(props, {
     class: `notion-enhancer--menu-popup
     group absolute top-0 left-0 w-full h-full

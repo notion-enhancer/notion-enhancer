@@ -11,8 +11,8 @@ import { MenuButton } from "./islands/MenuButton.mjs";
 import { TopbarButton } from "./islands/TopbarButton.mjs";
 import { Panel } from "./islands/Panel.mjs";
 
-const shouldLoadThemeOverrides = async (db) => {
-    const { getMods, isEnabled } = globalThis.__enhancerApi,
+const shouldLoadThemeOverrides = async (api, db) => {
+    const { getMods, isEnabled } = api,
       loadThemeOverrides = await db.get("loadThemeOverrides");
     if (loadThemeOverrides === "Enabled") return true;
     if (loadThemeOverrides === "Disabled") return false;
@@ -23,16 +23,16 @@ const shouldLoadThemeOverrides = async (db) => {
       return await isEnabled(mod.id);
     })).length;
   },
-  loadThemeOverrides = async (db) => {
-    const { html, enhancerUrl } = globalThis.__enhancerApi;
-    if (!(await shouldLoadThemeOverrides(db))) return;
+  loadThemeOverrides = async (api, db) => {
+    const { html, enhancerUrl } = api;
+    if (!(await shouldLoadThemeOverrides(api, db))) return;
     document.head.append(html`<link
       rel="stylesheet"
       href=${enhancerUrl("core/theme.css")}
     />`);
   },
-  insertCustomStyles = async (db) => {
-    const { html } = globalThis.__enhancerApi,
+  insertCustomStyles = async (api, db) => {
+    const { html } = api,
       customStyles = (await db.get("customStyles"))?.content;
     if (!customStyles) return;
     return document.head.append(html`<style>
@@ -40,11 +40,11 @@ const shouldLoadThemeOverrides = async (db) => {
     </style>`);
   };
 
-const insertMenu = async (db) => {
+const insertMenu = async (api, db) => {
   const notionSidebar = `.notion-sidebar-container .notion-sidebar > :nth-child(3) > div > :nth-child(2)`,
     notionSettingsAndMembers = `${notionSidebar} > [role="button"]:nth-child(3)`,
-    { html, addKeyListener, addMutationListener } = globalThis.__enhancerApi,
-    { platform, enhancerUrl, onMessage } = globalThis.__enhancerApi,
+    { html, addKeyListener, addMutationListener } = api,
+    { platform, enhancerUrl, onMessage } = api,
     menuButtonIconStyle = await db.get("menuButtonIconStyle"),
     openMenuHotkey = await db.get("openMenuHotkey"),
     menuPing = {
@@ -86,7 +86,7 @@ const insertMenu = async (db) => {
     $button = html`<${MenuButton}
       onclick=${$modal.open}
       notifications=${(await checkForUpdate()) ? 1 : 0}
-      themeOverridesLoaded=${await shouldLoadThemeOverrides(db)}
+      themeOverridesLoaded=${await shouldLoadThemeOverrides(api, db)}
       icon="notion-enhancer${menuButtonIconStyle === "Monochrome"
         ? "?mask"
         : " text-[16px]"}"
@@ -168,9 +168,9 @@ const insertPanel = async (api, db) => {
 
 export default async (api, db) =>
   Promise.all([
-    insertMenu(db),
+    insertMenu(api, db),
     insertPanel(api, db),
-    insertCustomStyles(db),
-    loadThemeOverrides(db),
+    insertCustomStyles(api, db),
+    loadThemeOverrides(api, db),
     sendTelemetryPing(),
   ]).then(() => api.sendMessage("notion-enhancer", "load-complete"));

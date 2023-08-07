@@ -37,7 +37,8 @@ function Search({ items, itemType }) {
 }
 
 function List({ id, mods, description }) {
-  const { html, isEnabled, setEnabled, setState } = globalThis.__enhancerApi,
+  const { html, setState } = globalThis.__enhancerApi,
+    { isEnabled, setEnabled } = globalThis.__enhancerApi,
     $mods = mods.map((mod) => {
       const _get = () => isEnabled(mod.id),
         _set = async (enabled) => {

@@ -14,8 +14,8 @@ const privacyPolicy = "https://notion-enhancer.github.io/about/privacy-policy/",
   tsAndCs = "https://notion-enhancer.github.io/about/terms-and-conditions/";
 
 function Onboarding() {
-  const { html, version, initDatabase } = globalThis.__enhancerApi,
-    { setState, useState } = globalThis.__enhancerApi,
+  const { html, setState, useState } = globalThis.__enhancerApi,
+    { version, initDatabase } = globalThis.__enhancerApi,
     $submitAgreement = html`<${Button}
       icon="arrow-right"
       class="ml-auto"

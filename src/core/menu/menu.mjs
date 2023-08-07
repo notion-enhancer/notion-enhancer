@@ -89,13 +89,14 @@ const categories = [
   ];
 
 const renderMenu = async () => {
-    const { html, ...api } = globalThis.__enhancerApi,
-      [theme, icon] = api.useState(["theme", "icon"]);
+    const { html, setState, useState } = globalThis.__enhancerApi,
+      { getMods, isEnabled, setEnabled } = globalThis.__enhancerApi,
+      [theme, icon] = useState(["theme", "icon"]);
     if (!theme || !icon || _renderStarted) return;
     if (icon === "Monochrome") sidebar[1].icon += "?mask";
     _renderStarted = true;
 
-    const mods = await api.getMods();
+    const mods = await getMods();
     for (let i = 0; i < categories.length; i++) {
       const { id } = categories[i];
       categories[i].mods = mods.filter(({ _src }) => _src.startsWith(`${id}/`));
@@ -106,10 +107,10 @@ const renderMenu = async () => {
     for (let i = 0; i < mods.length; i++) {
       const options = mods[i].options?.filter((opt) => opt.type !== "heading");
       if (mods[i]._src === "core" || !options?.length) continue;
-      const _get = () => api.isEnabled(mods[i].id),
+      const _get = () => isEnabled(mods[i].id),
         _set = async (enabled) => {
-          await api.setEnabled(mods[i].id, enabled);
-          api.setState({ rerender: true });
+          await setEnabled(mods[i].id, enabled);
+          setState({ rerender: true });
         };
       mods[i].view = html`<${View} id=${mods[i].id}>
         <!-- passing an empty options array hides the settings button -->
@@ -147,10 +148,10 @@ const renderMenu = async () => {
           <${Footer} categories=${categories} />
         </main>
       `;
-    api.useState(["footerOpen"], ([footerOpen]) => {
+    useState(["footerOpen"], ([footerOpen]) => {
       $main.style.height = footerOpen ? "100%" : "calc(100% + 33px)";
     });
-    api.useState(["transitionInProgress"], ([transitionInProgress]) => {
+    useState(["transitionInProgress"], ([transitionInProgress]) => {
       $main.children[0].style.overflow = transitionInProgress ? "hidden" : "";
     });
 
@@ -158,20 +159,20 @@ const renderMenu = async () => {
     $skeleton.replaceWith($sidebar, $main);
   },
   registerHotkey = ([hotkey]) => {
-    const api = globalThis.__enhancerApi;
+    const { addKeyListener, setState, useState } = globalThis.__enhancerApi;
     if (!hotkey || _hotkeyRegistered) return;
     _hotkeyRegistered = true;
-    api.addKeyListener(hotkey, (event) => {
+    addKeyListener(hotkey, (event) => {
       event.preventDefault();
       const msg = { channel: "notion-enhancer", action: "open-menu" };
       parent?.postMessage(msg, "*");
     });
-    api.addKeyListener("Escape", () => {
-      const [popupOpen] = api.useState(["popupOpen"]);
+    addKeyListener("Escape", () => {
+      const [popupOpen] = useState(["popupOpen"]);
       if (!popupOpen) {
         const msg = { channel: "notion-enhancer", action: "close-menu" };
         parent?.postMessage(msg, "*");
-      } else api.setState({ rerender: true });
+      } else setState({ rerender: true });
     });
   },
   updateTheme = ([theme]) => {
@@ -189,25 +190,25 @@ const importApi = () => {
   hookIntoState = () => {
     if (_stateHookedInto) return;
     _stateHookedInto = true;
-    const api = globalThis.__enhancerApi;
-    api.useState(["rerender"], renderMenu);
-    api.useState(["hotkey"], registerHotkey);
-    api.useState(["theme"], updateTheme);
+    const { useState } = globalThis.__enhancerApi;
+    useState(["theme"], updateTheme);
+    useState(["hotkey"], registerHotkey);
+    useState(["rerender"], renderMenu);
   };
 
 window.addEventListener("focus", async () => {
   await importApi().then(hookIntoState);
-  const api = globalThis.__enhancerApi;
-  api.setState({ focus: true, rerender: true });
+  const { setState } = globalThis.__enhancerApi;
+  setState({ focus: true, rerender: true });
 });
 window.addEventListener("message", async (event) => {
   if (event.data?.channel !== "notion-enhancer") return;
   await importApi().then(hookIntoState);
-  const api = globalThis.__enhancerApi;
-  api.setState({
+  const { setState, useState } = globalThis.__enhancerApi;
+  setState({
     rerender: true,
-    hotkey: event.data?.hotkey ?? api.useState(["hotkey"]),
-    theme: event.data?.theme ?? api.useState(["theme"]),
-    icon: event.data?.icon ?? api.useState(["icon"]),
+    hotkey: event.data?.hotkey ?? useState(["hotkey"]),
+    theme: event.data?.theme ?? useState(["theme"]),
+    icon: event.data?.icon ?? useState(["icon"]),
   });
 });

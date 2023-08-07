@@ -20,7 +20,7 @@ function Mod({
   _set,
   _src,
 }) {
-  const { html, enhancerUrl, setState } = globalThis.__enhancerApi,
+  const { html, setState, enhancerUrl } = globalThis.__enhancerApi,
     toggleId = Math.random().toString(36).slice(2, 5);
 
   return html`<label

@@ -24,11 +24,19 @@ function Modal(props, ...children) {
       ${children}
     </div>
   </div>`;
-  $modal.open = () => {
+
+  let _openQueued;
+  $modal.open = async () => {
+    _openQueued = true;
+    while (!document.contains($modal)) {
+      if (!_openQueued) return;
+      await new Promise(requestAnimationFrame);
+    }
     $modal.setAttribute("open", "");
     $modal.onopen?.();
   };
   $modal.close = () => {
+    _openQueued = false;
     $modal.onbeforeclose?.();
     $modal.removeAttribute("open");
     $modal.style.pointerEvents = "auto";

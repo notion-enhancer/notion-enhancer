@@ -5,8 +5,7 @@
  */
 
 function View({ id }, ...children) {
-  const { html } = globalThis.__enhancerApi,
-    { setState, useState } = globalThis.__enhancerApi,
+  const { html, setState, useState } = globalThis.__enhancerApi,
     // set padding on last child to maintain pad on overflow
     $view = html`<article
       id=${id}

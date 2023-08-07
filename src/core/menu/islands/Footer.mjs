@@ -7,8 +7,7 @@
 import { Button } from "./Button.mjs";
 
 function Footer({ categories }) {
-  const { html, reloadApp } = globalThis.__enhancerApi,
-    { setState, useState } = globalThis.__enhancerApi,
+  const { html, setState, useState, reloadApp } = globalThis.__enhancerApi,
     $reload = html`<${Button}
       class="ml-auto"
       variant="primary"

@@ -6,8 +6,7 @@
 
 function Checkbox({ _get, _set, _requireReload = true, ...props }) {
   let _initialValue;
-  const { html, extendProps } = globalThis.__enhancerApi,
-    { setState, useState } = globalThis.__enhancerApi,
+  const { html, extendProps, setState, useState } = globalThis.__enhancerApi,
     $input = html`<input
       type="checkbox"
       class="hidden checked:sibling:(px-px

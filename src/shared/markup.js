@@ -9,7 +9,7 @@
 // jump to
 
 const { twind, htm, lucide } = globalThis,
-  { readFile, iconColour, iconMonochrome } = globalThis.__enhancerApi;
+  { iconColour, iconMonochrome } = globalThis.__enhancerApi;
 
 const kebabToPascalCase = (string) =>
     string[0].toUpperCase() +

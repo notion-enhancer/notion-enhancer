@@ -74,8 +74,7 @@ function Input({
   ...props
 }) {
   let $filename, $clear;
-  const { html, extendProps } = globalThis.__enhancerApi,
-    { setState, useState } = globalThis.__enhancerApi;
+  const { html, extendProps, setState, useState } = globalThis.__enhancerApi;
   Coloris({ format: "rgb" });
 
   type ??= "text";

@@ -68,7 +68,8 @@ function Circle(rect) {
 }
 
 function Banner({ updateAvailable, isDevelopmentBuild }) {
-  const { html, version, initDatabase, useState } = globalThis.__enhancerApi,
+  const { html, useState } = globalThis.__enhancerApi,
+    { version, initDatabase } = globalThis.__enhancerApi,
     $version = html`<button
       class="text-[12px] py-[2px] px-[6px] mt-[2px]
       font-medium leading-tight tracking-wide rounded-[3px]
