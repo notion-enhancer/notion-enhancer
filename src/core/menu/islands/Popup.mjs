@@ -4,23 +4,34 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-function Popup({ trigger, ...props }, ...children) {
-  const { html, extendProps, setState, useState } = globalThis.__enhancerApi;
+function Popup(
+  { trigger, mode = "left", width = 250, maxWidth, ...props },
+  ...children
+) {
+  const { html, extendProps, setState, useState } = globalThis.__enhancerApi,
+    // known values for mode:
+    // dropdown => panel switcher
+    isDropdown = mode === "dropdown",
+    // left => menu option select
+    isLeft = mode === "left";
   extendProps(props, {
     class: `notion-enhancer--menu-popup group/popup
-    absolute top-0 left-0 w-full h-full z-20 text-left
-    flex-(& col) justify-center items-end font-normal
-    pointer-events-none`,
+    absolute top-0 left-0 z-20 text-left font-normal
+    flex-(& col) justify-center pointer-events-none
+    items-end w-full ${isDropdown ? "" : "h-full"}`,
   });
 
   const $popup = html`<div ...${props}>
-    <div class="relative right-[calc(100%+8px)]">
+    <div
+      class="relative ${isDropdown ? "w-full" : ""}
+      ${isLeft ? "right-[calc(100%+8px)]" : ""}"
+    >
       <div
         class="bg-[color:var(--theme--bg-secondary)]
-        w-[250px] max-w-[calc(100vw-24px)] max-h-[70vh]
-        py-[6px] px-[4px] drop-shadow-xl overflow-y-auto
-        transition duration-200 opacity-0 scale-95 rounded-[4px]
-        group-open/popup:(pointer-events-auto opacity-100 scale-100)"
+        rounded-[4px] overflow-y-auto drop-shadow-xl max-h-[70vh]
+        ${isDropdown ? "w-full" : "w-[250px] max-w-[calc(100vw-24px)]"} 
+        transition duration-200 opacity-0 scale-95 py-[6px] px-[4px]
+        group-open/popup:( pointer-events-auto opacity-100 scale-100)"
       >
         ${children}
       </div>

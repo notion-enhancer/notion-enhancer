@@ -37,6 +37,7 @@ function Select({
   _get,
   _set,
   _requireReload = true,
+  popupMode = "left",
   maxWidth = 256,
   ...props
 }) {
@@ -66,6 +67,7 @@ function Select({
     ${$select}
     <${Popup}
       trigger=${$select}
+      mode=${popupMode}
       onbeforeclose=${() => {
         $select.style.width = `${$select.offsetWidth}px`;
         $select.style.background = "transparent";

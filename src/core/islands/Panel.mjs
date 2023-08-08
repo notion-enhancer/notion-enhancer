@@ -1,4 +1,3 @@
-1;
 /**
  * notion-enhancer
  * (c) 2023 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
@@ -23,7 +22,7 @@ function Panel({
   _setWidth,
   _getOpen,
   _setOpen,
-  minWidth = 260,
+  minWidth = 250,
   maxWidth = 640,
   transitionDuration = 300,
   ...props
@@ -66,12 +65,14 @@ function Panel({
     ${$resizeHandle}
     <div
       class="flex justify-between items-center
-        border-(b [color:var(--theme--fg-border)])"
+      border-(b [color:var(--theme--fg-border)])"
     >
       <div
         class="relative flex grow font-medium items-center p-[8.5px] ml-[4px]"
       >
         <${Select}
+          popupMode="dropdown"
+          maxWidth="${maxWidth}"
           class="w-full text-left"
           ...${{ _get, _set, values, maxWidth: maxWidth - 56 }}
         />
