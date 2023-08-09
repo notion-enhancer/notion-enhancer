@@ -7,12 +7,7 @@
 import { Tooltip } from "./Tooltip.mjs";
 import { Select } from "../menu/islands/Select.mjs";
 
-function PanelView(props) {
-  const { html } = globalThis.__enhancerApi;
-  return html``;
-}
-
-function PanelSwitcher(props) {
+function View(props) {
   const { html } = globalThis.__enhancerApi;
   return html``;
 }
@@ -37,13 +32,36 @@ function Panel({
     duration-[${transitionDuration}ms] group/panel`,
   });
 
-  const $resizeHandle = html`<div
+  const values = [
+      {
+        icon: html`<i class="i-type h-[16px] w-[16px]" />`,
+        value: "word counter",
+      },
+      {
+        // prettier-ignore
+        icon: html`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+          <circle cx="5" cy="7" r="2.8"/>
+          <circle cx="5" cy="17" r="2.79"/>
+          <path d="M21,5.95H11c-0.55,0-1-0.45-1-1v0c0-0.55,0.45-1,1-1h10c0.55,0,1,0.45,1,1v0C22,5.5,21.55,5.95,21,5.95z"/>
+          <path d="M17,10.05h-6c-0.55,0-1-0.45-1-1v0c0-0.55,0.45-1,1-1h6c0.55,0,1,0.45,1,1v0C18,9.6,17.55,10.05,17,10.05z"/>
+          <path d="M21,15.95H11c-0.55,0-1-0.45-1-1v0c0-0.55,0.45-1,1-1h10c0.55,0,1,0.45,1,1v0C22,15.5,21.55,15.95,21,15.95z" />
+          <path d="M17,20.05h-6c-0.55,0-1-0.45-1-1v0c0-0.55,0.45-1,1-1h6c0.55,0,1,0.45,1,1v0C18,19.6,17.55,20.05,17,20.05z"/>
+        </svg>`,
+        value: "outliner",
+      },
+    ],
+    _get = () => useState(["panelView"])[0],
+    _set = (value) => {
+      setState({ panelView: value, rerender: true });
+    };
+
+  const $resize = html`<div
       class="absolute h-full w-[3px] left-[-3px]
       z-10 transition duration-300 hover:(cursor-col-resize
       shadow-[var(--theme--fg-border)_-2px_0px_0px_0px_inset])
       active:cursor-text group-not-[open]/panel:hidden"
     ></div>`,
-    $chevronClose = html`<button
+    $close = html`<button
       aria-label="Close side panel"
       class="user-select-none h-[24px] w-[24px] duration-[20ms]
       transition inline-flex items-center justify-center mr-[10px]
@@ -53,33 +71,29 @@ function Panel({
         class="i-chevrons-right w-[20px] h-[20px]
         text-[color:var(--theme--fg-secondary)]"
       />
-    </div>`;
-
-  const values = ["default", "outliner", "word counter"],
-    _get = () => useState(["panelView"])[0],
-    _set = (value) => {
-      setState({ panelView: value, rerender: true });
-    };
-
-  const $panel = html`<aside ...${props}>
-    ${$resizeHandle}
-    <div
-      class="flex justify-between items-center
-      border-(b [color:var(--theme--fg-border)])"
+    </div>`,
+    $switcher = html`<div
+      class="relative flex items-center
+      font-medium p-[8.5px] ml-[4px] grow"
     >
+      <${Select}
+        popupMode="dropdown"
+        maxWidth="${maxWidth}"
+        class="w-full text-left"
+        ...${{ _get, _set, values, maxWidth: maxWidth - 56 }}
+      />
+    </div>`,
+    $view = html`<div class="h-full overflow-y-auto"></div>`,
+    $panel = html`<aside ...${props}>
+      ${$resize}
       <div
-        class="relative flex grow font-medium items-center p-[8.5px] ml-[4px]"
+        class="flex justify-between items-center
+        border-(b [color:var(--theme--fg-border)])"
       >
-        <${Select}
-          popupMode="dropdown"
-          maxWidth="${maxWidth}"
-          class="w-full text-left"
-          ...${{ _get, _set, values, maxWidth: maxWidth - 56 }}
-        />
+        ${$switcher}${$close}
       </div>
-      ${$chevronClose}
-    </div>
-  </aside>`;
+      ${$view}
+    </aside>`;
 
   let preDragWidth,
     dragStartX = 0;
@@ -103,7 +117,7 @@ function Panel({
       // trigger panel close if not resized
       if (dragStartX - event.clientX === 0) $panel.close();
     };
-  $resizeHandle.addEventListener("mousedown", startDrag);
+  $resize.addEventListener("mousedown", startDrag);
 
   const $tooltip = html`<${Tooltip}>
       <span>Drag</span> to resize<br />
@@ -112,16 +126,18 @@ function Panel({
     showTooltip = (event) => {
       setTimeout(() => {
         const panelOpen = $panel.hasAttribute("open"),
-          handleHovered = $resizeHandle.matches(":hover");
+          handleHovered = $resize.matches(":hover");
         if (!panelOpen || !handleHovered) return;
-        const { x } = $resizeHandle.getBoundingClientRect();
+        const { x } = $resize.getBoundingClientRect();
         $tooltip.show(x, event.clientY);
       }, 200);
     };
-  $resizeHandle.addEventListener("mouseover", showTooltip);
-  $resizeHandle.addEventListener("mouseout", () => $tooltip.hide());
-  $chevronClose.addEventListener("click", () => $panel.close());
+  $resize.addEventListener("mouseover", showTooltip);
+  $resize.addEventListener("mouseout", () => $tooltip.hide());
+  $close.addEventListener("click", () => $panel.close());
 
+  // normally would place outside of an island, but in
+  // this case is necessary for syncing up animations
   const notionHelp = ".notion-help-button",
     repositionHelp = async () => {
       const $notionHelp = document.querySelector(notionHelp);

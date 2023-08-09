@@ -6,12 +6,12 @@
 
 import { Popup } from "./Popup.mjs";
 
-function Option({ value, _get, _set }) {
+function Option({ icon = "", value = "", _get, _set }) {
   const { html, useState } = globalThis.__enhancerApi,
     $selected = html`<i class="ml-auto i-check w-[16px] h-[16px]"></i>`,
     $option = html`<div
       tabindex="0"
-      role="button"
+      role="option"
       class="select-none cursor-pointer rounded-[3px]
       flex items-center w-full h-[28px] px-[12px] leading-[1.2]
       transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
@@ -20,8 +20,11 @@ function Option({ value, _get, _set }) {
         if (event.key === "Enter") _set?.(value);
       }}
     >
-      <div class="mr-[6px] text-[14px] text-ellipsis overflow-hidden">
-        ${value}
+      <div
+        class="mr-[6px] inline-flex items-center gap-[6px]
+        text-[14px] text-ellipsis overflow-hidden"
+      >
+        ${icon}<span>${value}</span>
       </div>
     </div>`;
   useState(["rerender"], async () => {
@@ -41,7 +44,6 @@ function Select({
   maxWidth = 256,
   ...props
 }) {
-  let _initialValue;
   const { html, extendProps, setState, useState } = globalThis.__enhancerApi,
     // dir="rtl" overflows to the left during transition
     $select = html`<div
@@ -53,9 +55,24 @@ function Select({
       max-w-[${maxWidth}px] pl-[8px] pr-[28px] transition
       duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
     ></div>`;
+
+  let _initialValue;
+  values = values.map((value) => {
+    value = typeof value === "string" ? { value } : value;
+    if (typeof value.icon === "string" && value.icon) {
+      value.icon = html`<i class="i-${value.icon} h-[16px] w-[16px]" />`;
+    } else value.icon ??= "";
+    value.value ??= "";
+    return value;
+  });
   useState(["rerender"], async () => {
-    const value = (await _get?.()) ?? ($select.innerText || values[0]);
-    $select.innerText = value;
+    const value = (await _get?.()) ?? ($select.innerText || values[0].value),
+      icon = values.find((v) => v.value === value)?.icon;
+    $select.innerHTML = "";
+    // swap icon/value order for correct display when dir="rtl"
+    $select.append(html`<div class="inline-flex items-center gap-[6px]">
+      <span>${value}</span>${icon?.cloneNode?.(true) || ""}
+    </div>`);
     if (_requireReload) {
       _initialValue ??= value;
       if (value !== _initialValue) setState({ databaseUpdated: true });
@@ -76,7 +93,9 @@ function Select({
         $select.style.width = "";
         $select.style.background = "";
       }}
-      >${values.map((value) => html`<${Option} ...${{ value, _get, _set }} />`)}
+      >${values.map((value) => {
+        return html`<${Option} ...${{ ...value, _get, _set }} />`;
+      })}
     <//>
     <i
       class="i-chevron-down pointer-events-none

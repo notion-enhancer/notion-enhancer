@@ -12,7 +12,7 @@ import { fileURLToPath } from "node:url";
 const dependencies = {
   "htm.min.js": "https://unpkg.com/htm@3.1.1/mini/index.js",
   "twind.min.js": "https://unpkg.com/@twind/cdn@1.0.8/cdn.global.js",
-  "lucide.min.js": "https://unpkg.com/lucide@0.263.0/dist/umd/lucide.min.js",
+  "lucide.min.js": "https://unpkg.com/lucide@0.264.0/dist/umd/lucide.min.js",
   "coloris.min.js":
     "https://cdn.jsdelivr.net/gh/mdbassit/Coloris@v0.21.0/dist/coloris.min.js",
   "coloris.min.css":
