@@ -25,8 +25,8 @@ function Panel({
   const { html, extendProps, setState, useState } = globalThis.__enhancerApi,
     { addMutationListener, removeMutationListener } = globalThis.__enhancerApi;
   extendProps(props, {
-    class: `notion-enhancer--side-panel order-2 shrink-0
-    transition-[width] open:w-[var(--side\\_panel--width)]
+    class: `notion-enhancer--panel order-2 shrink-0
+    transition-[width] open:w-[var(--panel--width)]
     border-l-1 border-[color:var(--theme--fg-border)]
     relative bg-[color:var(--theme--bg-primary)] w-0
     duration-[${transitionDuration}ms] group/panel`,
@@ -78,12 +78,16 @@ function Panel({
     >
       <${Select}
         popupMode="dropdown"
-        maxWidth="${maxWidth}"
         class="w-full text-left"
-        ...${{ _get, _set, values, maxWidth: maxWidth - 56 }}
+        maxWidth=${maxWidth - 56}
+        minWidth=${minWidth - 56}
+        ...${{ _get, _set, values }}
       />
     </div>`,
-    $view = html`<div class="h-full overflow-y-auto"></div>`,
+    $view = html`<div
+      class="overflow-(y-auto x-hidden)
+      h-full min-w-[var(--panel--width)]"
+    ></div>`,
     $panel = html`<aside ...${props}>
       ${$resize}
       <div
@@ -166,7 +170,7 @@ function Panel({
       _setWidth?.(width);
     } else width = await _getWidth?.();
     if (isNaN(width)) width = minWidth;
-    $panel.style.setProperty("--side_panel--width", `${width}px`);
+    $panel.style.setProperty("--panel--width", `${width}px`);
     repositionHelp();
   };
   $panel.open = () => {

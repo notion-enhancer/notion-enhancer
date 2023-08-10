@@ -43,6 +43,7 @@ function Select({
   _requireReload = true,
   popupMode = "left",
   maxWidth = 256,
+  minWidth = 48,
   ...props
 }) {
   const { html, extendProps, setState, useState } = globalThis.__enhancerApi,
@@ -52,9 +53,10 @@ function Select({
       role="button"
       tabindex="0"
       class="appearance-none bg-transparent rounded-[4px]
-      cursor-pointer text-[14px] leading-[28px] h-[28px]
-      max-w-[${maxWidth}px] pl-[8px] pr-[28px] transition
-      duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
+      h-[28px] max-w-[${maxWidth}px] min-w-[${minWidth}px]
+      cursor-pointer text-[14px] overflow-hidden pr-[28px]
+      transition duration-[20ms] leading-[28px] pl-[8px]
+      hover:bg-[color:var(--theme--bg-hover)]"
     ></div>`;
 
   const options = values.map((opt) => {
