@@ -19,6 +19,9 @@
 *:focus-visible {
   outline: 3px solid var(--theme--accent-primary);
 }
+*:focus-visible[role="option"] {
+  outline: none;
+}
 
 ::-webkit-scrollbar {
   width: 10px;

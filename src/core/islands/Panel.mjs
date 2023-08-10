@@ -34,12 +34,12 @@ function Panel({
 
   const values = [
       {
-        icon: html`<i class="i-type h-[16px] w-[16px]" />`,
+        icon: "type",
         value: "word counter",
       },
       {
         // prettier-ignore
-        icon: html`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+        $icon: html`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
           <circle cx="5" cy="7" r="2.8"/>
           <circle cx="5" cy="17" r="2.79"/>
           <path d="M21,5.95H11c-0.55,0-1-0.45-1-1v0c0-0.55,0.45-1,1-1h10c0.55,0,1,0.45,1,1v0C22,5.5,21.55,5.95,21,5.95z"/>

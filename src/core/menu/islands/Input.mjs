@@ -11,8 +11,8 @@ const updateHotkey = (event) => {
       const alias = modifier[0].toUpperCase() + modifier.slice(1, -3);
       keys.push(alias);
     }
-    // retain tab for keyboard navigation of menu
-    if (event.key === "Tab" && !keys.length) {
+    // retain keyboard navigation of menu
+    if (["Tab", "Escape"].includes(event.key) && !keys.length) {
       return;
     } else event.preventDefault();
     if (!keys.length && ["Backspace", "Delete"].includes(event.key)) {

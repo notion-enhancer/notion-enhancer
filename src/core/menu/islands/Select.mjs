@@ -6,7 +6,7 @@
 
 import { Popup } from "./Popup.mjs";
 
-function Option({ icon = "", value = "", _get, _set }) {
+function Option({ $icon = "", value = "", _get, _set }) {
   const { html, useState } = globalThis.__enhancerApi,
     $selected = html`<i class="ml-auto i-check w-[16px] h-[16px]"></i>`,
     $option = html`<div
@@ -14,17 +14,18 @@ function Option({ icon = "", value = "", _get, _set }) {
       role="option"
       class="select-none cursor-pointer rounded-[3px]
       flex items-center w-full h-[28px] px-[12px] leading-[1.2]
-      transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
+      transition duration-[20ms] focus:bg-[color:var(--theme--bg-hover)]"
+      onmouseover=${(event) => event.target.focus()}
       onclick=${() => _set?.(value)}
       onkeydown=${(event) => {
-        if (event.key === "Enter") _set?.(value);
+        if (["Enter", " "].includes(event.key)) _set?.(value);
       }}
     >
       <div
         class="mr-[6px] inline-flex items-center gap-[6px]
         text-[14px] text-ellipsis overflow-hidden"
       >
-        ${icon}<span>${value}</span>
+        ${$icon}<span>${value}</span>
       </div>
     </div>`;
   useState(["rerender"], async () => {
@@ -56,23 +57,52 @@ function Select({
       duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
     ></div>`;
 
+  const options = values.map((opt) => {
+      if (typeof opt === "string") opt = { value: opt };
+      if (!(opt?.$icon instanceof Element)) {
+        if (opt?.icon && typeof opt.icon === "string") {
+          opt.$icon = html`<i class="i-${opt.icon} h-[16px] w-[16px]" />`;
+        } else delete opt.$icon;
+      }
+      opt.$option = html`<${Option} ...${{ ...opt, _get, _set }} />`;
+      opt.$selection = html`<div class="inline-flex items-center gap-[6px]">
+        <!-- swap icon/value order for correct display when dir="rtl" -->
+        <span>${opt.value}</span>${opt.$icon?.cloneNode(true) ?? ""}
+      </div>`;
+      return opt;
+    }),
+    getSelected = async () => {
+      const value = (await _get?.()) ?? $select.innerText,
+        option = options.find((opt) => opt.value === value);
+      if (!option) _set(options[0].value);
+      return option || options[0];
+    },
+    onKeydown = (event) => {
+      const intercept = () => {
+        event.preventDefault();
+        event.stopPropagation();
+      };
+      if (event.key === "Escape") {
+        intercept(setState({ rerender: true }));
+      } else if (!options.length) return;
+      // prettier-ignore
+      const $next = options.find(({ $option }) => $option === event.target)
+          ?.$option.nextElementSibling ?? options.at(0).$option,
+        $prev = options.find(({ $option }) => $option === event.target)
+          ?.$option.previousElementSibling ?? options.at(-1).$option;
+      // overflow to opposite end of list from dir of travel
+      if (event.key === "ArrowUp") intercept($prev.focus());
+      if (event.key === "ArrowDown") intercept($next.focus());
+      // re-enable natural tab behaviour in notion interface
+      if (event.key === "Tab") event.stopPropagation();
+    };
+
   let _initialValue;
-  values = values.map((value) => {
-    value = typeof value === "string" ? { value } : value;
-    if (typeof value.icon === "string" && value.icon) {
-      value.icon = html`<i class="i-${value.icon} h-[16px] w-[16px]" />`;
-    } else value.icon ??= "";
-    value.value ??= "";
-    return value;
-  });
   useState(["rerender"], async () => {
-    const value = (await _get?.()) ?? ($select.innerText || values[0].value),
-      icon = values.find((v) => v.value === value)?.icon;
+    if (!options.length) return;
+    const { value, $selection } = await getSelected();
     $select.innerHTML = "";
-    // swap icon/value order for correct display when dir="rtl"
-    $select.append(html`<div class="inline-flex items-center gap-[6px]">
-      <span>${value}</span>${icon?.cloneNode?.(true) || ""}
-    </div>`);
+    $select.append($selection);
     if (_requireReload) {
       _initialValue ??= value;
       if (value !== _initialValue) setState({ databaseUpdated: true });
@@ -81,11 +111,13 @@ function Select({
 
   extendProps(props, { class: "notion-enhancer--menu-select relative" });
   return html`<div ...${props}>
-    ${$select}
-    <${Popup}
+    ${$select}<${Popup}
+      tabindex="0"
       trigger=${$select}
       mode=${popupMode}
+      onopen=${() => document.addEventListener("keydown", onKeydown, true)}
       onbeforeclose=${() => {
+        document.removeEventListener("keydown", onKeydown, true);
         $select.style.width = `${$select.offsetWidth}px`;
         $select.style.background = "transparent";
       }}
@@ -93,9 +125,7 @@ function Select({
         $select.style.width = "";
         $select.style.background = "";
       }}
-      >${values.map((value) => {
-        return html`<${Option} ...${{ ...value, _get, _set }} />`;
-      })}
+      >${options.map(({ $option }) => $option)}
     <//>
     <i
       class="i-chevron-down pointer-events-none

@@ -169,7 +169,9 @@ const renderMenu = async () => {
     });
     addKeyListener("Escape", () => {
       const [popupOpen] = useState(["popupOpen"]);
-      if (!popupOpen) {
+      if (document.activeElement?.tagName === "INPUT") {
+        document.activeElement.blur();
+      } else if (!popupOpen) {
         const msg = { channel: "notion-enhancer", action: "close-menu" };
         parent?.postMessage(msg, "*");
       } else setState({ rerender: true });
