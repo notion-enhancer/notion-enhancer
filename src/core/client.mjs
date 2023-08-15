@@ -123,7 +123,7 @@ const insertPanel = async (api, db) => {
   const notionFrame = ".notion-frame",
     notionTopbarBtn = ".notion-topbar-more-button",
     togglePanelHotkey = await db.get("togglePanelHotkey"),
-    { html, setState, addPanelView } = api;
+    { html, setState } = api;
 
   const $panel = html`<${Panel}
       ...${Object.assign(
@@ -161,6 +161,9 @@ const insertPanel = async (api, db) => {
   api.useState(["panelOpen"], ([panelOpen]) => {
     if (panelOpen) $panelTopbarBtn.setAttribute("data-active", true);
     else $panelTopbarBtn.removeAttribute("data-active");
+  });
+  api.useState(["panelViews"], ([panelViews = []]) => {
+    $panelTopbarBtn.style.display = panelViews.length ? "" : "none";
   });
   appendToDom();
 

@@ -58,7 +58,7 @@ function Switcher({ _get, _set, minWidth, maxWidth }) {
       _set?.(view);
       setState({ activePanelView: view });
     };
-  useState(["panelViews"], ([panelViews]) => {
+  useState(["panelViews"], ([panelViews = []]) => {
     const values = panelViews.map(([{ title, $icon }]) => {
       // panel switcher internally uses the select island,
       // which expects an option value rather than a title
@@ -100,6 +100,7 @@ function Panel({
         .notion-frame {
           flex-direction: row !important;
         }
+        /* prevent page load skeletons overlapping with panel */
         .notion-frame [role="progressbar"] {
           padding-right: var(--panel--width);
         }
@@ -212,6 +213,7 @@ function Panel({
     repositionHelp(width);
   };
   $panel.open = () => {
+    if (!panelViews.length) return;
     $panel.setAttribute("open", true);
     $panel.querySelectorAll("[tabindex]").forEach(($el) => ($el.tabIndex = 0));
     setState({ panelOpen: true });
@@ -227,14 +229,15 @@ function Panel({
     $panel.querySelectorAll("[tabindex]").forEach(($el) => ($el.tabIndex = -1));
     $panel.resize();
     setState({ panelOpen: false });
-    _setOpen(false);
+    if (panelViews.length) _setOpen(false);
     setTimeout(() => {
       $panel.style.pointerEvents = "";
       $panel.onclose?.();
     }, transitionDuration);
   };
-  _getOpen().then((open) => {
-    if (open) $panel.open();
+  useState(["panelViews"], async ([panelViews = []]) => {
+    if (panelViews.length && (await _getOpen())) $panel.open();
+    else $panel.close();
   });
   return $panel;
 }
