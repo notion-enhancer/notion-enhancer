@@ -210,6 +210,7 @@ function Panel({
     if (!$panel.hasAttribute("open")) width = 0;
     const $cssVarTarget = $panel.parentElement || $panel;
     $cssVarTarget.style.setProperty("--panel--width", `${width}px`);
+    if ($cssVarTarget !== $panel) $panel.style.removeProperty("--panel--width");
     repositionHelp(width);
   };
   $panel.open = () => {
