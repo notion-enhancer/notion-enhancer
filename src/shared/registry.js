@@ -65,7 +65,12 @@ const modDatabase = async (id) => {
   const optionDefaults =
     (await getMods())
       .find((mod) => mod.id === id)
-      ?.options?.map?.((opt) => [opt.key, opt.value ?? opt.values?.[0]])
+      ?.options?.map?.((opt) => {
+        let value = opt.value;
+        value ??= opt.values?.[0]?.value;
+        value ??= opt.values?.[0];
+        return [opt.key, value];
+      })
       ?.filter?.(([, value]) => typeof value !== "undefined") ?? {};
   return globalThis.__enhancerApi.initDatabase(
     [await getProfile(), id],

@@ -123,13 +123,18 @@ const insertPanel = async (api, db) => {
   const notionFrame = ".notion-frame",
     notionTopbarBtn = ".notion-topbar-more-button",
     togglePanelHotkey = await db.get("togglePanelHotkey"),
-    { html } = api;
+    { html, setState, addPanelView } = api;
 
   const $panel = html`<${Panel}
-      _getWidth=${() => db.get("sidePanelWidth")}
-      _setWidth=${(width) => db.set("sidePanelWidth", width)}
-      _getOpen=${() => db.get("sidePanelOpen")}
-      _setOpen=${(open) => db.set("sidePanelOpen", open)}
+      ...${Object.assign(
+        ...["Width", "Open", "View"].map((key) => ({
+          [`_get${key}`]: () => db.get(`sidePanel${key}`),
+          [`_set${key}`]: async (value) => {
+            await db.set(`sidePanel${key}`, value);
+            setState({ rerender: true });
+          },
+        }))
+      )}
     />`,
     togglePanel = () => {
       if ($panel.hasAttribute("open")) $panel.close();

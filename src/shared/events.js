@@ -6,6 +6,51 @@
 
 "use strict";
 
+// convenient util: batch event handling
+// every ___ ms to avoid over-handling &
+// any conflicts / perf.issues that may
+// otherwise result. a wait time of ~200ms
+// is recommended (the avg. human visual
+// reaction time is ~180-200ms)
+const debounce = (callback, wait = 200) => {
+  let timeoutId;
+  return (...args) => {
+    clearTimeout(timeoutId);
+    timeoutId = setTimeout(() => callback(...args), wait);
+  };
+};
+
+// provides basic key/value reactivity:
+// this is shared between all active mods,
+// i.e. mods can read and update other mods'
+// reactive states. this enables interop
+// between a mod's component islands and
+// supports inter-mod communication if so
+// required. caution should be used in
+// naming keys to avoid conflicts
+const _state = {},
+  _subscribers = [],
+  setState = (state) => {
+    Object.assign(_state, state);
+    const updates = Object.keys(state);
+    _subscribers
+      .filter(([keys]) => updates.some((key) => keys.includes(key)))
+      .forEach(([keys, callback]) => callback(keys.map((key) => _state[key])));
+  },
+  // useState(["keyA", "keyB"]) => returns [valueA, valueB]
+  // useState(["keyA", "keyB"], callback) => registers callback
+  // to be triggered after each update to either keyA or keyB,
+  // with [valueA, valueB] passed to the callback's first arg
+  useState = (keys, callback) => {
+    const state = keys.map((key) => _state[key]);
+    if (callback) {
+      callback = debounce(callback);
+      _subscribers.push([keys, callback]);
+      callback(state);
+    }
+    return state;
+  };
+
 let documentObserver,
   mutationListeners = [];
 const mutationQueue = [],
@@ -99,20 +144,21 @@ const modifierAliases = [
     }
   };
 document.addEventListener("keyup", (event) => {
-  const keyupListeners = keyListeners.filter(
-    ([, , waitForKeyup]) => waitForKeyup
-  );
+  const keyupListeners = keyListeners //
+    .filter(([, , waitForKeyup]) => waitForKeyup);
   handleKeypress(event, keyupListeners);
 });
 document.addEventListener("keydown", (event) => {
-  const keydownListeners = keyListeners.filter(
-    ([, , waitForKeyup]) => !waitForKeyup
-  );
+  const keydownListeners = keyListeners //
+    .filter(([, , waitForKeyup]) => !waitForKeyup);
   handleKeypress(event, keydownListeners);
 });
 
 globalThis.__enhancerApi ??= {};
 Object.assign(globalThis.__enhancerApi, {
+  debounce,
+  setState,
+  useState,
   addMutationListener,
   removeMutationListener,
   addKeyListener,

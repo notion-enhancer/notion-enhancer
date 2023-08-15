@@ -60,23 +60,25 @@ function Select({
     ></div>`;
 
   const options = values.map((opt) => {
-      if (typeof opt === "string") opt = { value: opt };
+      if (["string", "number"].includes(typeof opt)) opt = { value: opt };
       if (!(opt?.$icon instanceof Element)) {
-        if (opt?.icon && typeof opt.icon === "string") {
-          opt.$icon = html`<i class="i-${opt.icon} h-[16px] w-[16px]" />`;
+        if (typeof opt?.$icon === "string") {
+          opt.$icon = html`<i class="i-${opt.$icon} h-[16px] w-[16px]" />`;
         } else delete opt.$icon;
       }
-      opt.$option = html`<${Option} ...${{ ...opt, _get, _set }} />`;
-      opt.$selection = html`<div class="inline-flex items-center gap-[6px]">
-        <!-- swap icon/value order for correct display when dir="rtl" -->
-        <span>${opt.value}</span>${opt.$icon?.cloneNode(true) ?? ""}
-      </div>`;
-      return opt;
+      return {
+        ...opt,
+        $option: html`<${Option} ...${{ ...opt, _get, _set }} />`,
+        $value: html`<div class="inline-flex items-center gap-[6px]">
+          <!-- swap icon/value order for correct display when dir="rtl" -->
+          <span>${opt.value}</span>${opt.$icon?.cloneNode(true) ?? ""}
+        </div>`,
+      };
     }),
     getSelected = async () => {
       const value = (await _get?.()) ?? $select.innerText,
         option = options.find((opt) => opt.value === value);
-      if (!option) _set(options[0].value);
+      if (!option) _set?.(options[0].value);
       return option || options[0];
     },
     onKeydown = (event) => {
@@ -102,9 +104,9 @@ function Select({
   let _initialValue;
   useState(["rerender"], async () => {
     if (!options.length) return;
-    const { value, $selection } = await getSelected();
+    const { value, $value } = await getSelected();
     $select.innerHTML = "";
-    $select.append($selection);
+    $select.append($value);
     if (_requireReload) {
       _initialValue ??= value;
       if (value !== _initialValue) setState({ databaseUpdated: true });

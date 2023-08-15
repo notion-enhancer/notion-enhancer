@@ -560,7 +560,9 @@ const h = (type, props, ...children) => {
         } else elem.setAttribute(prop, props[prop]);
       } else elem[prop] = props[prop];
     }
-    elem.append(...children);
+    if (type === "style") {
+      elem.append(children.join("").replace(/\s+/g, " "));
+    } else elem.append(...children);
     return elem;
   },
   // combines instance-provided element props
@@ -586,38 +588,8 @@ const h = (type, props, ...children) => {
   },
   html = htm.bind(h);
 
-// provides basic key/value reactivity:
-// this is shared between all active mods,
-// i.e. mods can read and update other mods'
-// reactive states. this enables interop
-// between a mod's component islands and
-// supports inter-mod communication if so
-// required. caution should be used in
-// naming keys to avoid conflicts
-const _state = {},
-  _subscribers = [],
-  setState = (state) => {
-    Object.assign(_state, state);
-    const updates = Object.keys(state);
-    _subscribers
-      .filter(([keys]) => updates.some((key) => keys.includes(key)))
-      .forEach(([keys, callback]) => callback(keys.map((key) => _state[key])));
-  },
-  // useState(["keyA", "keyB"]) => returns [valueA, valueB]
-  // useState(["keyA", "keyB"], callback) => registers callback
-  // to be triggered after each update to either keyA or keyB,
-  // with [valueA, valueB] passed to the callback's first arg
-  useState = (keys, callback) => {
-    const state = keys.map((key) => _state[key]);
-    if (callback) _subscribers.push([keys, callback]);
-    callback?.(state);
-    return state;
-  };
-
 globalThis.__enhancerApi ??= {};
 Object.assign(globalThis.__enhancerApi, {
   html,
   extendProps,
-  setState,
-  useState,
 });
