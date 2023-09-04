@@ -1,6 +1,7 @@
 /**
  * notion-enhancer
  * (c) 2023 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2021 CloudHill <rl.cloudhill@gmail.com> (https://github.com/CloudHill)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
@@ -51,8 +52,8 @@ function View({ _get }) {
 function Switcher({ _get, _set, minWidth, maxWidth }) {
   const { html, extendProps, setState, useState } = globalThis.__enhancerApi,
     $switcher = html`<div
-      class="relative flex items-center
-      font-medium p-[8.5px] ml-[4px] grow"
+      class="relative flex items-center grow
+      font-medium p-[8.5px] ml-[4px] select-none"
     ></div>`,
     setView = (view) => {
       _set?.(view);
