@@ -64,6 +64,5 @@
     }
   ],
   "clientStyles": ["variables.css"],
-  "clientScripts": ["client.mjs"],
-  "electronScripts": [{ "source": "notionConfig.cjs", "target": "config.js" }]
+  "clientScripts": ["client.mjs"]
 }

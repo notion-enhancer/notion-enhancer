@@ -7,66 +7,60 @@
 const replaceIfNotFound = (string, search, replacement) =>
   string.includes(replacement) ? string : string.replace(search, replacement);
 
-const patches = {
-  "*": async (scriptId, scriptContent) => {
-    if (scriptId === 'forge.config.js') return scriptContent;
-    const prevTriggerPattern = /require\(['|"]notion-enhancer['|"]\)/,
-      prevTriggerFound = prevTriggerPattern.test(scriptContent);
-    if (prevTriggerFound) return scriptContent;
-    const enhancerTrigger =
-      '\n\n/*notion-enhancer*/require("notion-enhancer")' +
-      `('${scriptId}',exports,(js)=>eval(js));`;
-    return scriptContent + enhancerTrigger;
-  },
+// require()-ing the notion-enhancer in worker scripts
+// or in renderer scripts will throw errors => manually
+// inject trigger into only the necessary scripts
+// (avoid re-injection on re-enhancement)
+const injectTriggerOnce = (scriptId, scriptContent) =>
+  scriptContent +
+  (!/require\(['|"]notion-enhancer['|"]\)/.test(scriptContent)
+    ? `\n\nrequire("notion-enhancer")('${scriptId}',exports,(js)=>eval(js));`
+    : "");
 
-  "main/main": async (scriptContent) => {
-    // https://github.com/notion-enhancer/desktop/issues/160
-    // enable the notion:// url scheme/protocol on linux
-    const search = /process.platform === "win32"/g,
-      // prettier-ignore
-      replacement = 'process.platform === "win32" || process.platform === "linux"';
-    return replaceIfNotFound(scriptContent, search, replacement);
-  },
+const mainScript = ".webpack/main/index",
+  rendererScript = ".webpack/renderer/tab_browser_view/preload",
+  patches = {
+    [mainScript]: (scriptContent) => {
+      scriptContent = injectTriggerOnce(mainScript, scriptContent);
 
-  "main/schemeHandler": async (scriptContent) => {
-    // https://github.com/notion-enhancer/desktop/issues/291
-    // bypass csp issues by intercepting notion:// protocol
-    // prettier-ignore
-    const protocolSearch = "protocol.registerStreamProtocol(config_1.default.protocol, async (req, callback) => {",
-      protocolReplacement = `${protocolSearch}
-        {/*notion-enhancer*/
-        const schemePrefix = "notion://www.notion.so/__notion-enhancer/";
-        if (req.url.startsWith(schemePrefix)) {
-          const { search, hash, pathname } = new URL(req.url),
-            fileExt = pathname.split(".").reverse()[0],
-            filePath = \`../node_modules/notion-enhancer/\${req.url.slice(
-                schemePrefix.length,
-                -(search.length + hash.length) || undefined
-            )}\`;
-          return callback({
-            data: require("fs").createReadStream(require("path").resolve(\`\${__dirname}/\${filePath}\`)),
-            headers: { "content-type": require("notion-enhancer/vendor/content-types.min.js").get(fileExt) },
-          });
-        }}`,
-      filterSearch = "function guardAgainstIFrameRequests(webRequest) {",
-      filterReplacement = `${filterSearch}/*notion-enhancer*/return;`;
-    return replaceIfNotFound(
-      replaceIfNotFound(scriptContent, filterSearch, filterReplacement),
-      protocolSearch,
-      protocolReplacement
-    );
-  },
+      // https://github.com/notion-enhancer/notion-enhancer/issues/160:
+      // enable the notion:// protocol, windows-style tab layouts, and
+      // quitting the app when the last window is closed on linux
+      scriptContent = scriptContent.replace(
+        /(?:"win32"===process\.platform(?:(?=,isFullscreen)|(?=&&\w\.BrowserWindow)|(?=&&\(\w\.app\.requestSingleInstanceLock)))/g,
+        '["win32","linux"].includes(process.platform)'
+      );
 
-  "main/systemMenu": async (scriptContent) => {
-    // exposes template for modification
-    const search = "}\nexports.setupSystemMenu = setupSystemMenu;",
-      replacement = `    return template;\n${search}`;
-    return replaceIfNotFound(scriptContent, search, replacement);
-  },
-};
+      // restore node integration in the renderer process
+      // so the notion-enhancer can be require()-d into it
+      scriptContent = replaceIfNotFound(
+        scriptContent,
+        /spellcheck:!0,sandbox:!0/g,
+        "spellcheck:!0,nodeIntegration:true"
+      );
 
-export default async (scriptId, scriptContent) => {
-  if (patches["*"]) scriptContent = await patches["*"](scriptId, scriptContent);
-  if (patches[scriptId]) scriptContent = await patches[scriptId](scriptContent);
+      // https://github.com/notion-enhancer/desktop/issues/291
+      // bypass csp issues by intercepting the notion:// protocol
+      const protocolHandler =
+        "try{const t=await p.assetCache.handleRequest(e);";
+      scriptContent = replaceIfNotFound(
+        scriptContent,
+        protocolHandler,
+        `{const n="notion://www.notion.so/__notion-enhancer/";if(e.url.startsWith(n))return require("electron").net.fetch(\`file://\${require("path").join(__dirname,"..","..","node_modules","notion-enhancer",e.url.slice(n.length))}\`)}${protocolHandler}`
+      );
+
+      // bypass webRequest filter to load enhancer menu
+      return replaceIfNotFound(
+        scriptContent,
+        /r\.top!==r\?t\({cancel:!0}\)/g,
+        "r.top!==r?t({})"
+      );
+    },
+    [rendererScript]: (scriptContent) => injectTriggerOnce(rendererScript, scriptContent)
+  };
+
+export default (scriptId, scriptContent) => {
+  if (patches["*"]) scriptContent = patches["*"](scriptId, scriptContent);
+  if (patches[scriptId]) scriptContent = patches[scriptId](scriptContent);
   return scriptContent;
 };

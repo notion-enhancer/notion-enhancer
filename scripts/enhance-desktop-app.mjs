@@ -124,7 +124,7 @@ const unpackApp = async () => {
     for (const file of notionScripts) {
       const scriptId = file.slice(appPath.length + 1, -3).replace(/\\/g, "/"),
         scriptContent = await fsp.readFile(file, { encoding: "utf8" }),
-        patchedContent = await patch(scriptId, scriptContent),
+        patchedContent = patch(scriptId, scriptContent),
         changesMade = patchedContent !== scriptContent;
       if (changesMade) scriptUpdates.push(fsp.writeFile(file, patchedContent));
     }

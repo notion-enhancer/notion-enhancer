@@ -16,7 +16,7 @@
     "vendor": "node ./scripts/vendor-dependencies.mjs"
   },
   "engines": {
-    "node": ">=16.x.x"
+    "node": ">=18.x.x"
   },
   "keywords": [
     "windows",
@@ -35,7 +35,7 @@
     "notion-enhancer"
   ],
   "dependencies": {
-    "@electron/asar": "^3.2.4",
+    "@electron/asar": "^3.2.7",
     "arg": "^5.0.2",
     "chalk-template": "^1.1.0"
   }

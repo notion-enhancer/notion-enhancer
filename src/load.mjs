@@ -7,6 +7,11 @@
 "use strict";
 
 export default (async () => {
+  if (globalThis.__getEnhancerApi) {
+    globalThis.__enhancerApi ??= {};
+    Object.assign(globalThis.__enhancerApi, globalThis.__getEnhancerApi());
+  }
+
   // prettier-ignore
   const { enhancerUrl, platform } = globalThis.__enhancerApi,
     signedIn = localStorage["LRU:KeyValueStore2:current-user-id"],
