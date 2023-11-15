@@ -49,11 +49,7 @@ export default async function ({ web, components }, db) {
       const id = $header.dataset.blockId.replace(/-/g, ''),
         placeholder = $header.querySelector('[placeholder]').getAttribute('placeholder'),
         headerDepth = +[...placeholder].reverse()[0];
-      if (depth && depth < headerDepth) {
-        indent += 18;
-      } else if (depth > headerDepth) {
-        indent = Math.max(indent - 18, 0);
-      }
+      indent = (headerDepth-1) * 18;
       depth = headerDepth;
       const $outlineHeader = web.render(
         web.html`<a href="#${id}" class="outliner--header"
