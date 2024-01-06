@@ -5,6 +5,10 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+#enhancer--panel {
+  overflow: auto;
+}
+
 #outliner--notice {
   color: var(--theme--text_secondary);
   font-size: 14px;
@@ -39,8 +43,8 @@
 }
 
 /* indentation lines */
-.outliner--header:not([style='--outliner--indent:0px;'])::before {
-  content: '';
+.outliner--header:not([style="--outliner--indent:0px;"])::before {
+  content: "";
   height: 100%;
   position: absolute;
   left: calc((1rem + var(--outliner--indent)) - 11px);
