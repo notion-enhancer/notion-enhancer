@@ -42,11 +42,10 @@ function Modal(props, ...children) {
     _openQueued = false;
     $modal.onbeforeclose?.();
     $modal.removeAttribute("open");
-    $modal.style.pointerEvents = "auto";
-    setTimeout(() => {
-      $modal.style.pointerEvents = "";
-      $modal.onclose?.();
-    }, 200);
+    if ($modal.contains(document.activeElement)) {
+      document.activeElement.blur();
+    }
+    setTimeout(() => $modal.onclose?.(), 200);
   };
   addKeyListener("Escape", () => {
     if (document.activeElement?.nodeName === "INPUT") return;
@@ -58,7 +57,7 @@ function Modal(props, ...children) {
 function Frame(props) {
   const { html, extendProps } = globalThis.__enhancerApi;
   extendProps(props, {
-    class: `rounded-[5px] w-[1150px] h-[calc(100vh-100px)] opacity-0
+    class: `rounded-[12px] w-[1150px] h-[calc(100vh-100px)] opacity-0
     max-w-[calc(100vw-100px)] max-h-[715px] overflow-hidden scale-95
     bg-[color:var(--theme--bg-primary)] drop-shadow-xl transition
     group-open/modal:(pointer-events-auto opacity-100 scale-100)`,

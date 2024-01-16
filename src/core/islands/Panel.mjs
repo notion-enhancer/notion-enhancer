@@ -30,7 +30,7 @@ let panelViews = [],
   };
 
 function View({ _get }) {
-  const { html, setState, useState } = globalThis.__enhancerApi,
+  const { html, useState } = globalThis.__enhancerApi,
     $container = html`<div
       class="overflow-(y-auto x-hidden)
       h-full min-w-[var(--panel--width)]"
@@ -50,7 +50,7 @@ function View({ _get }) {
 }
 
 function Switcher({ _get, _set, minWidth, maxWidth }) {
-  const { html, extendProps, setState, useState } = globalThis.__enhancerApi,
+  const { html, setState, useState } = globalThis.__enhancerApi,
     $switcher = html`<div
       class="relative flex items-center grow
       font-medium p-[8.5px] ml-[4px] select-none"
@@ -84,18 +84,15 @@ function Panel({
   _setOpen,
   _getView,
   _setView,
-  minWidth = 250,
+  minWidth = 256,
   maxWidth = 640,
   transitionDuration = 300,
 }) {
   const { html, setState, useState } = globalThis.__enhancerApi,
     { addMutationListener, removeMutationListener } = globalThis.__enhancerApi,
     $panel = html`<aside
-      class="notion-enhancer--panel relative order-2
-      shrink-0 bg-[color:var(--theme--bg-primary)]
-      border-(l-1 [color:var(--theme--fg-border)])
-      transition-[width] w-[var(--panel--width,0)]
-      duration-[${transitionDuration}ms] group/panel"
+      class="notion-enhancer--panel group/panel
+      order-2 shrink-0 [open]:w-[var(--panel--width,0)]"
     >
       <style>
         .notion-frame {
@@ -110,46 +107,64 @@ function Panel({
         }
       </style>
       <div
-        class="flex justify-between items-center
-        border-(b [color:var(--theme--fg-border)])"
+        class="absolute right-0 bottom-0 bg-[color:var(--theme--bg-primary)]
+        z-20 border-(l-1 [color:var(--theme--fg-border)]) w-[var(--panel--width,0)]
+        transition-[width,bottom,top,border-radius] duration-[${transitionDuration}ms]
+        hover:transition-[height,width,bottom,top,border-radius] h-[calc(100vh-45px)]
+        group-not-[open]/panel:(bottom-[60px] h-[calc(100vh-120px)] rounded-l-[8px] border-(t-1 b-1)
+        shadow-[rgba(15,15,15,0.1)_0px_0px_0px_1px,rgba(15,15,15,0.2)_0px_3px_6px,rgba(15,15,15,0.4)_0px_9px_24px])"
       >
-        <${Switcher}
-          ...${{ _get: _getView, _set: _setView, minWidth, maxWidth }}
-        />
-        <button
-          aria-label="Close side panel"
-          class="user-select-none h-[24px] w-[24px] duration-[20ms]
-          transition inline-flex items-center justify-center mr-[10px]
-          rounded-[3px] hover:bg-[color:var(--theme--bg-hover)]"
-          onclick=${() => $panel.close()}
+        <div
+          class="flex justify-between items-center
+          border-(b [color:var(--theme--fg-border)])"
         >
-          <i
-            class="i-chevrons-right w-[20px] h-[20px]
-            text-[color:var(--theme--fg-secondary)]"
+          <${Switcher}
+            ...${{ _get: _getView, _set: _setView, minWidth, maxWidth }}
           />
-        </button>
+          <button
+            aria-label="Toggle side panel"
+            class="user-select-none h-[24px] w-[24px] duration-[20ms]
+            transition inline-flex items-center justify-center mr-[10px]
+            rounded-[3px] hover:bg-[color:var(--theme--bg-hover)]"
+            onclick=${() => $panel.toggle()}
+          >
+            <i
+              class="i-chevrons-left w-[20px] h-[20px]
+              group-[open]/panel:rotate-180 duration-[${transitionDuration}ms]
+              transition-transform text-[color:var(--theme--fg-secondary)]"
+            />
+          </button>
+        </div>
+        <${View} ...${{ _get: _getView }} />
       </div>
-      <${View} ...${{ _get: _getView }} />
     </aside>`;
 
   let preDragWidth,
     dragStartX = 0;
   const $resizeHandle = html`<div
-      class="absolute h-full w-[3px] left-[-3px]
-      z-10 transition duration-300 hover:(cursor-col-resize
-      shadow-[var(--theme--fg-border)_-2px_0px_0px_0px_inset])
-      active:cursor-text group-not-[open]/panel:hidden"
-    ></div>`,
+      class="absolute h-full w-[3px] left-[-2px]
+      z-20 active:cursor-text transition duration-300
+      bg-[color:var(--theme--fg-border)] opacity-0
+      group-not-[open]/panel:(w-[8px] left-[-1px] rounded-l-[7px])
+      hover:(cursor-col-resize opacity-100)"
+    >
+      <div
+        class="ml-[2px] bg-[color:var(--theme--bg-primary)]
+        group-not-[open]/panel:(my-px h-[calc(100%-2px)] rounded-l-[6px])"
+      ></div>
+    </div>`,
+    $onResizeClick = html`<span>close</span>`,
     $resizeTooltip = html`<${Tooltip}>
-      <span>Drag</span> to resize<br />
-      <span>Click</span> to closed
+      <b>Drag</b> to resize<br />
+      <b>Click</b> to ${$onResizeClick}
     <//>`,
     showTooltip = (event) => {
       setTimeout(() => {
+        const handleHovered = $resizeHandle.matches(":hover");
+        if (!handleHovered) return;
         const panelOpen = $panel.hasAttribute("open"),
-          handleHovered = $resizeHandle.matches(":hover");
-        if (!panelOpen || !handleHovered) return;
-        const { x } = $resizeHandle.getBoundingClientRect();
+          { x } = $resizeHandle.getBoundingClientRect();
+        $onResizeClick.innerText = panelOpen ? "close" : "lock open";
         $resizeTooltip.show(x, event.clientY);
       }, 200);
     },
@@ -170,13 +185,24 @@ function Panel({
       document.removeEventListener("mouseup", endDrag);
       $panel.style.transitionDuration = "";
       $panel.resize(preDragWidth + (dragStartX - event.clientX));
-      // trigger panel close if not resized
-      if (dragStartX - event.clientX === 0) $panel.close();
+      // toggle panel if not resized
+      if (dragStartX - event.clientX === 0) $panel.toggle();
     };
   $resizeHandle.addEventListener("mouseout", $resizeTooltip.hide);
   $resizeHandle.addEventListener("mousedown", startDrag);
   $resizeHandle.addEventListener("mouseover", showTooltip);
   $panel.prepend($resizeHandle);
+
+  // pop out panel preview when hovering near the right edge
+  // of the screen, otherwise collapse panel when closed
+  const $hoverTrigger = html`<div
+    class="z-10 absolute right-0 bottom-[60px] h-[calc(100vh-120px)]
+    w-[64px] transition-[width] duration-[${transitionDuration}ms]"
+  ></div>`;
+  $hoverTrigger.addEventListener("mouseover", () => $panel.resize(0, true));
+  $panel.addEventListener("mouseenter", () => $panel.resize());
+  $panel.addEventListener("mouseout", () => $panel.resize());
+  $panel.append($hoverTrigger);
 
   // normally would place outside of an island, but in
   // this case is necessary for syncing up animations
@@ -200,15 +226,20 @@ function Panel({
     };
   addMutationListener(notionHelp, repositionHelp);
 
-  $panel.resize = async (width) => {
+  $panel.resize = async (width, peek = false) => {
     $resizeTooltip.hide();
-    if (width) {
+    if (width && !isNaN(width)) {
       width = Math.max(width, minWidth);
       width = Math.min(width, maxWidth);
       _setWidth?.(width);
     } else width = await _getWidth?.();
     if (isNaN(width)) width = minWidth;
-    if (!$panel.hasAttribute("open")) width = 0;
+    const panelOpen = $panel.hasAttribute("open"),
+      panelHovered = $panel.matches(":hover");
+    if (panelOpen) {
+    } else {
+      if (!panelHovered && !peek) width = 0;
+    }
     const $cssVarTarget = $panel.parentElement || $panel;
     $cssVarTarget.style.setProperty("--panel--width", `${width}px`);
     if ($cssVarTarget !== $panel) $panel.style.removeProperty("--panel--width");
@@ -217,7 +248,7 @@ function Panel({
   $panel.open = () => {
     if (!panelViews.length) return;
     $panel.setAttribute("open", true);
-    $panel.querySelectorAll("[tabindex]").forEach(($el) => ($el.tabIndex = 0));
+    $panel.querySelectorAll("[tabindex]").forEach(($el) => ($el.tabIndex = 1));
     setState({ panelOpen: true });
     $panel.onopen?.();
     _setOpen(true);
@@ -236,6 +267,10 @@ function Panel({
       $panel.style.pointerEvents = "";
       $panel.onclose?.();
     }, transitionDuration);
+  };
+  $panel.toggle = () => {
+    if ($panel.hasAttribute("open")) $panel.close();
+    else $panel.open();
   };
   useState(["panelViews"], async ([panelViews = []]) => {
     if (panelViews.length && (await _getOpen())) $panel.open();

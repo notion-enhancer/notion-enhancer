@@ -42,7 +42,7 @@
 body {
   display: grid;
   grid-template-rows: 1fr;
-  grid-template-columns: 224.14px auto;
+  grid-template-columns: 240px auto;
   width: 100vw;
   height: 100vh;
   color: var(--theme--fg-primary);

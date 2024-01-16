@@ -105,7 +105,11 @@ function Input({
       class="h-full w-full pb-px text-[14px] leading-[1.2]
       ${variant === "lg" ? "pl-[12px] pr-[40px]" : "pl-[8px] pr-[32px]"}
       appearance-none bg-transparent ${type === "file" ? "hidden" : ""}
-      ${type === "color" ? "font-medium" : ""}"
+      ${type === "color"
+        ? "font-medium"
+        : type === "hotkey"
+        ? "text-[color:var(--theme--fg-secondary)] border-(& [color:var(--theme--fg-border)])"
+        : ""}"
       data-coloris=${type === "color"}
       ...${props}
     />`,

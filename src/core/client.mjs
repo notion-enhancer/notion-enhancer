@@ -123,28 +123,49 @@ const insertPanel = async (api, db) => {
   const notionFrame = ".notion-frame",
     notionTopbarBtn = ".notion-topbar-more-button",
     togglePanelHotkey = await db.get("togglePanelHotkey"),
-    { html, setState } = api;
+    { html, setState, addPanelView } = api;
 
   const $panel = html`<${Panel}
-      ...${Object.assign(
-        ...["Width", "Open", "View"].map((key) => ({
-          [`_get${key}`]: () => db.get(`sidePanel${key}`),
-          [`_set${key}`]: async (value) => {
-            await db.set(`sidePanel${key}`, value);
-            setState({ rerender: true });
-          },
-        }))
-      )}
-    />`,
-    togglePanel = () => {
-      if ($panel.hasAttribute("open")) $panel.close();
-      else $panel.open();
-    };
+    ...${Object.assign(
+      ...["Width", "Open", "View"].map((key) => ({
+        [`_get${key}`]: () => db.get(`sidePanel${key}`),
+        [`_set${key}`]: async (value) => {
+          await db.set(`sidePanel${key}`, value);
+          setState({ rerender: true });
+        },
+      }))
+    )}
+  />`;
+
+  const $helloThere = html`<div class="p-[16px]">hello there</div>`,
+    $generalKenobi = html`<div class="p-[16px]">general kenobi</div>`;
+  addPanelView({
+    title: "outliner",
+    // prettier-ignore
+    $icon: html`<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24">
+      <circle cx="5" cy="7" r="2.8"/>
+      <circle cx="5" cy="17" r="2.79"/>
+      <path d="M21,5.95H11c-0.55,0-1-0.45-1-1v0c0-0.55,0.45-1,1-1h10c0.55,0,1,0.45,1,1v0C22,5.5,21.55,5.95,21,5.95z"/>
+      <path d="M17,10.05h-6c-0.55,0-1-0.45-1-1v0c0-0.55,0.45-1,1-1h6c0.55,0,1,0.45,1,1v0C18,9.6,17.55,10.05,17,10.05z"/>
+      <path d="M21,15.95H11c-0.55,0-1-0.45-1-1v0c0-0.55,0.45-1,1-1h10c0.55,0,1,0.45,1,1v0C22,15.5,21.55,15.95,21,15.95z" />
+      <path d="M17,20.05h-6c-0.55,0-1-0.45-1-1v0c0-0.55,0.45-1,1-1h6c0.55,0,1,0.45,1,1v0C18,19.6,17.55,20.05,17,20.05z"/>
+    </svg>`,
+    $view: $helloThere,
+  });
+  addPanelView({
+    title: "word counter",
+    $icon: "type",
+    $view: $generalKenobi,
+  });
+  // setTimeout(() => {
+  //   removePanelView($helloThere);
+  //   removePanelView($generalKenobi);
+  // }, 5000);
 
   const $panelTopbarBtn = html`<${TopbarButton}
       aria-label="Open side panel"
       icon="panel-right"
-      onclick=${togglePanel}
+      onclick=${$panel.toggle}
     />`,
     appendToDom = () => {
       const $frame = document.querySelector(notionFrame);
@@ -170,7 +191,7 @@ const insertPanel = async (api, db) => {
   api.addKeyListener(togglePanelHotkey, (event) => {
     event.preventDefault();
     event.stopPropagation();
-    togglePanel();
+    $panel.toggle();
   });
 };
 

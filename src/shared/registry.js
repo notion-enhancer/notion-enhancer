@@ -7,7 +7,8 @@
 "use strict";
 
 const _isManifestValid = (modManifest) => {
-  const hasRequiredFields =
+  const { platform } = globalThis.__enhancerApi,
+    hasRequiredFields =
       modManifest.id &&
       modManifest.name &&
       modManifest.version &&

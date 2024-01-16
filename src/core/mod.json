@@ -24,6 +24,12 @@
     },
     {
       "type": "hotkey",
+      "key": "toggleWindowHotkey",
+      "description": "Toggles focus of the Notion window anywhere, even when your Notion app isn't active.",
+      "value": "Ctrl+Shift+A"
+    },
+    {
+      "type": "hotkey",
       "key": "togglePanelHotkey",
       "description": "Toggles the side panel used by some notion-enhancer extensions to display additional information and interfaces within the Notion app.",
       "value": "Ctrl+Shift+|"
