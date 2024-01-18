@@ -301,6 +301,12 @@ function Panel({
     if (isPeeked() || !panelViews.length) return;
     if (isClosed()) Object.assign(animationState, peekAnimation);
     animatePanel({ ...openWidth, ...peekAnimation });
+    // closing on mouseout is disabled mid-animation,
+    // queue close in case mouse is no longer peeking
+    // after the initial animation is complete
+    setTimeout(() => {
+      if (!isDragging() && !$panel.matches(":hover")) $panel.close();
+    }, transitionDuration);
     $panel.removeAttribute("data-pinned");
     $panel.dataset.peeked = true;
     setInteractive(true);
