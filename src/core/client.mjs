@@ -183,6 +183,7 @@ const insertPanel = async (api, db) => {
   appendToDom();
 
   useState(["panelOpen"], ([panelOpen]) => {
+    console.log(panelOpen);
     if (panelOpen) $panelTopbarBtn.setAttribute("data-active", true);
     else $panelTopbarBtn.removeAttribute("data-active");
   });

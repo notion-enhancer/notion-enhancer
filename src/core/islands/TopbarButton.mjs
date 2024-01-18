@@ -13,7 +13,7 @@ function TopbarButton({ icon, ...props }, ...children) {
     user-select-none h-[28px] w-[33px] duration-[20ms]
     transition inline-flex items-center justify-center mr-[2px]
     rounded-[3px] hover:bg-[color:var(--theme--bg-hover)]
-    [data-active]:bg-[color:var(--theme--bg-hover)]`,
+    &[data-active]:bg-[color:var(--theme--bg-hover)]`,
   });
   return html`<button ...${props}>
     <i

@@ -136,7 +136,7 @@ function Panel({
       </aside>
     </div>`;
 
-  let preDragWidth, dragStartX;
+  let preDragWidth, dragStartX, _animatedAt;
   const getWidth = async (width) => {
       if (width && !isNaN(width)) {
         width = Math.max(width, minWidth);
@@ -149,6 +149,10 @@ function Panel({
       $panel
         .querySelectorAll("[tabindex]")
         .forEach(($el) => ($el.tabIndex = interactive ? 1 : -1));
+    },
+    isAnimated = () => {
+      if (!_animatedAt) return false;
+      return Date.now() - _animatedAt <= transitionDuration;
     },
     isDragging = () => !isNaN(preDragWidth) && !isNaN(dragStartX),
     isPinned = () => $panel.hasAttribute("data-pinned"),
@@ -177,14 +181,14 @@ function Panel({
       boxShadow: "none",
     };
 
-  const animationState = {},
+  const animationState = { ...closedWidth },
     easing = "cubic-bezier(0.4, 0, 0.2, 1)",
     animate = ($target, keyframes) => {
       const opts = { fill: "forwards", duration: transitionDuration, easing };
       $target.animate(keyframes, opts);
-      console.log($target, keyframes);
     },
     animatePanel = (to) => {
+      _animatedAt = Date.now();
       animate($panel.lastElementChild, [animationState, to]);
       Object.assign(animationState, to);
     };
@@ -243,18 +247,22 @@ function Panel({
 
   // hovering over the peek trigger will temporarily
   // pop out an interactive preview of the panel
+  let _peekDebounce;
   const $peekTrigger = html`<div
-    class="absolute z-10 right-0 h-[calc(100vh-120px)] bottom-[60px] w-[64px]
+    class="absolute z-10 right-0 h-[calc(100vh-120px)] bottom-[60px] w-[96px]
     group-&[data-peeked]/panel:(w-[calc(var(--panel--width,0)+8px)])
     group-&[data-pinned]/panel:(w-[calc(var(--panel--width,0)+8px)])"
   ></div>`;
   $panel.prepend($peekTrigger);
   $panel.addEventListener("mouseout", () => {
-    if (isDragging() || isPinned()) return;
+    if (isDragging() || isAnimated() || isPinned()) return;
     if (!$panel.matches(":hover")) $panel.close();
   });
   $panel.addEventListener("mouseover", () => {
-    if (isClosed() && $panel.matches(":hover")) $panel.peek();
+    _peekDebounce ??= setTimeout(() => {
+      if (isClosed() && $panel.matches(":hover")) $panel.peek();
+      _peekDebounce = undefined;
+    }, 100);
   });
 
   // moves help button out of the way of open panel.
