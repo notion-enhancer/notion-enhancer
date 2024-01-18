@@ -8,11 +8,9 @@
 import { Tooltip } from "./Tooltip.mjs";
 import { Select } from "../menu/islands/Select.mjs";
 
-// note: these islands do not accept extensible
-// properties, i.e. they are not reusable.
-// please register your own interfaces via
-// globalThis.__enhancerApi.addPanelView and
-// not by re-instantiating additional panels
+// note: these islands are not reusable.
+// panel views can be added via addPanelView,
+// do not instantiate additional panels
 
 let panelViews = [],
   // "$icon" may either be an actual dom element,
@@ -90,9 +88,9 @@ function Panel({
 }) {
   const { html, setState, useState } = globalThis.__enhancerApi,
     { addMutationListener, removeMutationListener } = globalThis.__enhancerApi,
-    $panel = html`<aside
-      class="notion-enhancer--panel group/panel
-      order-2 shrink-0 [open]:w-[var(--panel--width,0)]"
+    $panel = html`<div
+      class="notion-enhancer--panel group/panel order-2
+      shrink-0 &[data-pinned]:w-[var(--panel--width,0)]"
     >
       <style>
         .notion-frame {
@@ -106,12 +104,11 @@ function Panel({
           overflow-x: clip;
         }
       </style>
-      <div
-        class="absolute right-0 bottom-0 bg-[color:var(--theme--bg-primary)]
-        z-20 border-(l-1 [color:var(--theme--fg-border)]) w-[var(--panel--width,0)]
-        transition-[width,bottom,top,border-radius] duration-[${transitionDuration}ms]
-        hover:transition-[height,width,bottom,top,border-radius] h-[calc(100vh-45px)]
-        group-not-[open]/panel:(bottom-[60px] h-[calc(100vh-120px)] rounded-l-[8px] border-(t-1 b-1)
+      <aside
+        class="border-(l-1 [color:var(--theme--fg-border)]) w-0
+        group-&[data-pinned]/panel:(w-[var(--panel--width,0)]) h-[calc(100vh-45px)] bottom-0)
+        absolute right-0 z-20 bg-[color:var(--theme--bg-primary)]  group-&[data-peeked]/panel:(
+        w-[var(--panel--width,0)] h-[calc(100vh-120px)] bottom-[60px] rounded-l-[8px] border-(t-1 b-1)
         shadow-[rgba(15,15,15,0.1)_0px_0px_0px_1px,rgba(15,15,15,0.2)_0px_3px_6px,rgba(15,15,15,0.4)_0px_9px_24px])"
       >
         <div
@@ -130,27 +127,79 @@ function Panel({
           >
             <i
               class="i-chevrons-left w-[20px] h-[20px]
-              group-[open]/panel:rotate-180 duration-[${transitionDuration}ms]
-              transition-transform text-[color:var(--theme--fg-secondary)]"
+              text-[color:var(--theme--fg-secondary)] transition-transform
+              group-&[data-pinned]/panel:rotate-180 duration-[${transitionDuration}ms]"
             />
           </button>
         </div>
         <${View} ...${{ _get: _getView }} />
-      </div>
-    </aside>`;
+      </aside>
+    </div>`;
 
-  let preDragWidth,
-    dragStartX = 0;
+  let preDragWidth, dragStartX;
+  const getWidth = async (width) => {
+      if (width && !isNaN(width)) {
+        width = Math.max(width, minWidth);
+        width = Math.min(width, maxWidth);
+      } else width = await _getWidth?.();
+      if (isNaN(width)) width = minWidth;
+      return width;
+    },
+    setInteractive = (interactive) => {
+      $panel
+        .querySelectorAll("[tabindex]")
+        .forEach(($el) => ($el.tabIndex = interactive ? 1 : -1));
+    },
+    isDragging = () => !isNaN(preDragWidth) && !isNaN(dragStartX),
+    isPinned = () => $panel.hasAttribute("data-pinned"),
+    isPeeked = () => $panel.hasAttribute("data-peeked"),
+    isClosed = () => !isPinned() && !isPeeked();
+
+  const closedWidth = { width: "0px" },
+    openWidth = { width: "var(--panel--width, 0px)" },
+    peekAnimation = {
+      height: "calc(100vh - 120px)",
+      bottom: "60px",
+      borderTopWidth: "1px",
+      borderBottomWidth: "1px",
+      borderTopLeftRadius: "8px",
+      borderBottomLeftRadius: "8px",
+      boxShadow:
+        "rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.2) 0px 3px 6px, rgba(15, 15, 15, 0.4) 0px 9px 24px",
+    },
+    pinAnimation = {
+      height: "calc(100vh - 45px)",
+      bottom: "0px",
+      borderTopWidth: "0px",
+      borderBottomWidth: "0px",
+      borderTopLeftRadius: "0px",
+      borderBottomLeftRadius: "0px",
+      boxShadow: "none",
+    };
+
+  const animationState = {},
+    easing = "cubic-bezier(0.4, 0, 0.2, 1)",
+    animate = ($target, keyframes) => {
+      const opts = { fill: "forwards", duration: transitionDuration, easing };
+      $target.animate(keyframes, opts);
+      console.log($target, keyframes);
+    },
+    animatePanel = (to) => {
+      animate($panel.lastElementChild, [animationState, to]);
+      Object.assign(animationState, to);
+    };
+
+  // dragging the resize handle horizontally will
+  // adjust the width of the panel correspondingly
   const $resizeHandle = html`<div
-      class="absolute h-full w-[3px] left-[-2px]
-      z-20 active:cursor-text transition duration-300
-      bg-[color:var(--theme--fg-border)] opacity-0
-      group-not-[open]/panel:(w-[8px] left-[-1px] rounded-l-[7px])
-      hover:(cursor-col-resize opacity-100)"
+      class="absolute opacity-0 h-full w-[3px] left-[-2px]
+      active:cursor-text bg-[color:var(--theme--fg-border)] z-20
+      transition duration-300 hover:(cursor-col-resize opacity-100)
+      group-&[data-peeked]/panel:(w-[8px] left-[-1px] rounded-l-[7px])"
     >
       <div
         class="ml-[2px] bg-[color:var(--theme--bg-primary)]
-        group-not-[open]/panel:(my-px h-[calc(100%-2px)] rounded-l-[6px])"
+        group-&[data-peeked]/panel:(my-px h-[calc(100%-2px)] rounded-l-[6px])"
       ></div>
     </div>`,
     $onResizeClick = html`<span>close</span>`,
@@ -160,120 +209,132 @@ function Panel({
     <//>`,
     showTooltip = (event) => {
       setTimeout(() => {
-        const handleHovered = $resizeHandle.matches(":hover");
-        if (!handleHovered) return;
-        const panelOpen = $panel.hasAttribute("open"),
+        if (!$resizeHandle.matches(":hover")) return;
+        const open = $panel.hasAttribute("open"),
           { x } = $resizeHandle.getBoundingClientRect();
-        $onResizeClick.innerText = panelOpen ? "close" : "lock open";
+        $onResizeClick.innerText = open ? "close" : "lock open";
         $resizeTooltip.show(x, event.clientY);
       }, 200);
     },
     startDrag = async (event) => {
       dragStartX = event.clientX;
-      preDragWidth = await _getWidth?.();
-      if (isNaN(preDragWidth)) preDragWidth = minWidth;
+      preDragWidth = await getWidth();
       document.addEventListener("mousemove", onDrag);
       document.addEventListener("mouseup", endDrag);
-      $panel.style.transitionDuration = "0ms";
     },
     onDrag = (event) => {
       event.preventDefault();
+      if (!isDragging()) return;
       $panel.resize(preDragWidth + (dragStartX - event.clientX));
     },
     endDrag = (event) => {
       document.removeEventListener("mousemove", onDrag);
       document.removeEventListener("mouseup", endDrag);
-      $panel.style.transitionDuration = "";
+      if (!isDragging()) return;
       $panel.resize(preDragWidth + (dragStartX - event.clientX));
       // toggle panel if not resized
       if (dragStartX - event.clientX === 0) $panel.toggle();
+      preDragWidth = dragStartX = undefined;
     };
   $resizeHandle.addEventListener("mouseout", $resizeTooltip.hide);
   $resizeHandle.addEventListener("mousedown", startDrag);
   $resizeHandle.addEventListener("mouseover", showTooltip);
-  $panel.prepend($resizeHandle);
+  $panel.lastElementChild.prepend($resizeHandle);
 
-  // pop out panel preview when hovering near the right edge
-  // of the screen, otherwise collapse panel when closed
-  const $hoverTrigger = html`<div
-    class="z-10 absolute right-0 bottom-[60px] h-[calc(100vh-120px)]
-    w-[64px] transition-[width] duration-[${transitionDuration}ms]"
+  // hovering over the peek trigger will temporarily
+  // pop out an interactive preview of the panel
+  const $peekTrigger = html`<div
+    class="absolute z-10 right-0 h-[calc(100vh-120px)] bottom-[60px] w-[64px]
+    group-&[data-peeked]/panel:(w-[calc(var(--panel--width,0)+8px)])
+    group-&[data-pinned]/panel:(w-[calc(var(--panel--width,0)+8px)])"
   ></div>`;
-  $hoverTrigger.addEventListener("mouseover", () => $panel.resize(0, true));
-  $panel.addEventListener("mouseenter", () => $panel.resize());
-  $panel.addEventListener("mouseout", () => $panel.resize());
-  $panel.append($hoverTrigger);
+  $panel.prepend($peekTrigger);
+  $panel.addEventListener("mouseout", () => {
+    if (isDragging() || isPinned()) return;
+    if (!$panel.matches(":hover")) $panel.close();
+  });
+  $panel.addEventListener("mouseover", () => {
+    if (isClosed() && $panel.matches(":hover")) $panel.peek();
+  });
 
+  // moves help button out of the way of open panel.
   // normally would place outside of an island, but in
   // this case is necessary for syncing up animations
   const notionHelp = ".notion-help-button",
     repositionHelp = async (width) => {
       const $notionHelp = document.querySelector(notionHelp);
       if (!$notionHelp) return;
-      width ??= await _getWidth?.();
+      width ??= await getWidth();
       if (isNaN(width)) width = minWidth;
       if (!$panel.hasAttribute("open")) width = 0;
-      const position = $notionHelp.style.getPropertyValue("right"),
-        destination = `${26 + width}px`,
-        keyframes = [{ right: position }, { right: destination }],
-        options = {
-          duration: transitionDuration,
-          easing: "cubic-bezier(0.4, 0, 0.2, 1)",
-        };
-      $notionHelp.style.setProperty("right", destination);
-      $notionHelp.animate(keyframes, options);
+      const to = `${26 + width}px`,
+        from = $notionHelp.style.getPropertyValue("right"),
+        opts = { duration: transitionDuration, easing };
+      if (from === to) return;
+      $notionHelp.style.setProperty("right", to);
+      animate($notionHelp, [({ right: from }, { right: to })]);
       removeMutationListener(repositionHelp);
     };
   addMutationListener(notionHelp, repositionHelp);
 
-  $panel.resize = async (width, peek = false) => {
-    $resizeTooltip.hide();
-    if (width && !isNaN(width)) {
-      width = Math.max(width, minWidth);
-      width = Math.min(width, maxWidth);
-      _setWidth?.(width);
-    } else width = await _getWidth?.();
-    if (isNaN(width)) width = minWidth;
-    const panelOpen = $panel.hasAttribute("open"),
-      panelHovered = $panel.matches(":hover");
-    if (panelOpen) {
-    } else {
-      if (!panelHovered && !peek) width = 0;
-    }
-    const $cssVarTarget = $panel.parentElement || $panel;
-    $cssVarTarget.style.setProperty("--panel--width", `${width}px`);
-    if ($cssVarTarget !== $panel) $panel.style.removeProperty("--panel--width");
-    repositionHelp(width);
-  };
-  $panel.open = () => {
-    if (!panelViews.length) return;
-    $panel.setAttribute("open", true);
-    $panel.querySelectorAll("[tabindex]").forEach(($el) => ($el.tabIndex = 1));
-    setState({ panelOpen: true });
-    $panel.onopen?.();
+  $panel.pin = () => {
+    if (isPinned() || !panelViews.length) return;
+    if (isClosed()) Object.assign(animationState, pinAnimation);
+    animatePanel({ ...openWidth, ...pinAnimation });
+    animate($panel, [closedWidth, openWidth]);
+    $panel.removeAttribute("data-peeked");
+    $panel.dataset.pinned = true;
+    setInteractive(true);
     _setOpen(true);
+    setState({ panelOpen: true });
     $panel.resize();
   };
-  $panel.close = () => {
-    $resizeTooltip.hide();
-    $panel.onbeforeclose?.();
-    $panel.removeAttribute("open");
-    $panel.style.pointerEvents = "auto";
-    $panel.querySelectorAll("[tabindex]").forEach(($el) => ($el.tabIndex = -1));
+  $panel.peek = () => {
+    if (isPeeked() || !panelViews.length) return;
+    if (isClosed()) Object.assign(animationState, peekAnimation);
+    animatePanel({ ...openWidth, ...peekAnimation });
+    $panel.removeAttribute("data-pinned");
+    $panel.dataset.peeked = true;
+    setInteractive(true);
     $panel.resize();
+  };
+  $panel.close = async () => {
+    if (isClosed()) return;
     setState({ panelOpen: false });
     if (panelViews.length) _setOpen(false);
-    setTimeout(() => {
-      $panel.style.pointerEvents = "";
-      $panel.onclose?.();
-    }, transitionDuration);
+    const width = (animationState.width = `${await getWidth()}px`);
+    // only animate container close if it is actually taking up space,
+    // otherwise will unnaturally grow + retrigger peek on peek mouseout
+    if (isPinned()) animate($panel, [{ width }, closedWidth]);
+    if (!$panel.matches(":hover")) {
+      $panel.removeAttribute("data-pinned");
+      $panel.removeAttribute("data-peeked");
+      animatePanel(closedWidth);
+      setInteractive(false);
+      $panel.resize();
+    } else $panel.peek();
   };
   $panel.toggle = () => {
-    if ($panel.hasAttribute("open")) $panel.close();
-    else $panel.open();
+    if (isPinned()) $panel.close();
+    else $panel.pin();
   };
+  // resizing handles visual resizes (inc. setting width to 0
+  // if closed) and actual resizes on drag (inc. saving to db)
+  $panel.resize = async (width) => {
+    $resizeTooltip.hide();
+    width = await getWidth(width);
+    _setWidth?.(width);
+    // works in conjunction with animations, acts as fallback
+    // plus updates dependent styles e.g. page skeleton padding
+    if (isClosed()) width = 0;
+    const $parent = $panel.parentElement || $panel;
+    $parent.style.setProperty("--panel--width", `${width}px`);
+    if ($parent !== $panel) $panel.style.removeProperty("--panel--width");
+    repositionHelp(width);
+  };
+
   useState(["panelViews"], async ([panelViews = []]) => {
-    if (panelViews.length && (await _getOpen())) $panel.open();
+    if (panelViews.length && (await _getOpen())) $panel.pin();
     else $panel.close();
   });
   return $panel;

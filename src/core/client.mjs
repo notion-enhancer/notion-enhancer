@@ -123,7 +123,8 @@ const insertPanel = async (api, db) => {
   const notionFrame = ".notion-frame",
     notionTopbarBtn = ".notion-topbar-more-button",
     togglePanelHotkey = await db.get("togglePanelHotkey"),
-    { html, setState, addPanelView } = api;
+    { addPanelView, addMutationListener, addKeyListener } = api,
+    { html, setState, useState } = api;
 
   const $panel = html`<${Panel}
     ...${Object.assign(
@@ -178,17 +179,18 @@ const insertPanel = async (api, db) => {
         $notionTopbarBtn?.before($panelTopbarBtn);
       }
     };
-  api.addMutationListener(`${notionFrame}, ${notionTopbarBtn}`, appendToDom);
-  api.useState(["panelOpen"], ([panelOpen]) => {
+  addMutationListener(`${notionFrame}, ${notionTopbarBtn}`, appendToDom);
+  appendToDom();
+
+  useState(["panelOpen"], ([panelOpen]) => {
     if (panelOpen) $panelTopbarBtn.setAttribute("data-active", true);
     else $panelTopbarBtn.removeAttribute("data-active");
   });
-  api.useState(["panelViews"], ([panelViews = []]) => {
+  useState(["panelViews"], ([panelViews = []]) => {
     $panelTopbarBtn.style.display = panelViews.length ? "" : "none";
   });
-  appendToDom();
 
-  api.addKeyListener(togglePanelHotkey, (event) => {
+  addKeyListener(togglePanelHotkey, (event) => {
     event.preventDefault();
     event.stopPropagation();
     $panel.toggle();

@@ -93,7 +93,6 @@ twind.install({
     ["children", "&>*"],
     ["siblings", "&~*"],
     ["sibling", "&+*"],
-    ["\\[.+]", (match) => "&" + match.input],
     [/^&/, (match) => match.input],
   ],
 });
