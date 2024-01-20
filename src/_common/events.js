@@ -112,6 +112,7 @@ const modifierAliases = [
     keyListeners = keyListeners.filter(([, c]) => c !== callback);
   },
   handleKeypress = (event, keyListeners) => {
+    console.log(event);
     for (const [accelerator, callback] of keyListeners) {
       const acceleratorModifiers = [],
         combinationTriggered =
@@ -125,6 +126,7 @@ const modifierAliases = [
             if (key === "space") key = " ";
             if (key === "plus") key = "equal";
             if (key === "minus") key = "-";
+            if (key === "\\") key = "backslash";
             if (key === ",") key = "comma";
             if (key === ".") key = "period";
             const keyPressed = [

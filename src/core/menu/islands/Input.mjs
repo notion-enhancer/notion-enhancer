@@ -22,6 +22,7 @@ const updateHotkey = (event) => {
       if (key === " ") key = "Space";
       if (["+", "="].includes(key)) key = "Plus";
       if (key === "-") key = "Minus";
+      if (key === "|") key = "\\";
       if (event.code === "Comma") key = ",";
       if (event.code === "Period") key = ".";
       if (key === "Control") key = "Ctrl";

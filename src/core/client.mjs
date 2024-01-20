@@ -121,22 +121,31 @@ const insertMenu = async (api, db) => {
 
 const insertPanel = async (api, db) => {
   const notionFrame = ".notion-frame",
-    notionTopbarBtn = ".notion-topbar-more-button",
     togglePanelHotkey = await db.get("togglePanelHotkey"),
-    { addPanelView, addMutationListener, addKeyListener } = api,
-    { html, setState, useState } = api;
+    { addPanelView, addMutationListener } = api,
+    { html, setState } = api;
 
   const $panel = html`<${Panel}
-    ...${Object.assign(
-      ...["Width", "Open", "View"].map((key) => ({
-        [`_get${key}`]: () => db.get(`sidePanel${key}`),
-        [`_set${key}`]: async (value) => {
-          await db.set(`sidePanel${key}`, value);
-          setState({ rerender: true });
-        },
-      }))
-    )}
-  />`;
+      hotkey="${togglePanelHotkey}"
+      ...${Object.assign(
+        ...["Width", "Open", "View"].map((key) => ({
+          [`_get${key}`]: () => db.get(`sidePanel${key}`),
+          [`_set${key}`]: async (value) => {
+            await db.set(`panel${key}`, value);
+            setState({ rerender: true });
+          },
+        }))
+      )}
+    />`,
+    appendToDom = () => {
+      const $frame = document.querySelector(notionFrame);
+      if (!$frame) return;
+      if (!$frame.contains($panel)) $frame.append($panel);
+      if (!$frame.style.flexDirection !== "row")
+        $frame.style.flexDirection = "row";
+    };
+  addMutationListener(notionFrame, appendToDom);
+  appendToDom();
 
   const $helloThere = html`<div class="p-[16px]">hello there</div>`,
     $generalKenobi = html`<div class="p-[16px]">general kenobi</div>`;
@@ -157,43 +166,6 @@ const insertPanel = async (api, db) => {
     title: "word counter",
     $icon: "type",
     $view: $generalKenobi,
-  });
-  // setTimeout(() => {
-  //   removePanelView($helloThere);
-  //   removePanelView($generalKenobi);
-  // }, 5000);
-
-  const $panelTopbarBtn = html`<${TopbarButton}
-      aria-label="Open side panel"
-      icon="panel-right"
-      onclick=${$panel.toggle}
-    />`,
-    appendToDom = () => {
-      const $frame = document.querySelector(notionFrame);
-      if (!$frame) return;
-      if (!$frame.contains($panel)) $frame.append($panel);
-      if (!$frame.style.flexDirection !== "row")
-        $frame.style.flexDirection = "row";
-      if (!document.contains($panelTopbarBtn)) {
-        const $notionTopbarBtn = document.querySelector(notionTopbarBtn);
-        $notionTopbarBtn?.before($panelTopbarBtn);
-      }
-    };
-  addMutationListener(`${notionFrame}, ${notionTopbarBtn}`, appendToDom);
-  appendToDom();
-
-  useState(["panelOpen"], ([panelOpen]) => {
-    if (panelOpen) $panelTopbarBtn.setAttribute("data-active", true);
-    else $panelTopbarBtn.removeAttribute("data-active");
-  });
-  useState(["panelViews"], ([panelViews = []]) => {
-    $panelTopbarBtn.style.display = panelViews.length ? "" : "none";
-  });
-
-  addKeyListener(togglePanelHotkey, (event) => {
-    event.preventDefault();
-    event.stopPropagation();
-    $panel.toggle();
   });
 };
 

@@ -24,25 +24,25 @@
     },
     {
       "type": "hotkey",
-      "key": "toggleWindowHotkey",
-      "description": "Toggles focus of the Notion window anywhere, even when your Notion app isn't active.",
-      "value": "Ctrl+Shift+A"
+      "key": "togglePanelHotkey",
+      "description": "Toggles the side panel used by some notion-enhancer extensions to display additional information and interfaces within the Notion app.",
+      "value": "Ctrl+Shift+\\"
     },
     {
       "type": "hotkey",
-      "key": "togglePanelHotkey",
-      "description": "Toggles the side panel used by some notion-enhancer extensions to display additional information and interfaces within the Notion app.",
-      "value": "Ctrl+Shift+|"
+      "key": "toggleWindowHotkey",
+      "description": "Toggles focus of the Notion window anywhere, even when your Notion app isn't active.",
+      "value": "Ctrl+Shift+A"
     },
     {
       "type": "heading",
       "label": "Appearance"
     },
     {
-      "type": "select",
-      "key": "menuButtonIconStyle",
-      "description": "Sets whether the notion-enhancer icon added to Notion's sidebar should be coloured or monochrome. The latter style will match the theme's icon colour for users who would like the icon to be less noticeable.",
-      "values": ["Colour", "Monochrome"]
+      "type": "file",
+      "key": "customStyles",
+      "description": "Adds the styles from an uploaded .css file to Notion. Use this if you would like to customise the current theme or <a href=\"https://notion-enhancer.github.io/advanced/tweaks\">otherwise tweak Notion's appearance</a>.",
+      "extensions": ["css"]
     },
     {
       "type": "select",
@@ -51,10 +51,10 @@
       "values": ["Auto", "Enabled", "Disabled"]
     },
     {
-      "type": "file",
-      "key": "customStyles",
-      "description": "Adds the styles from an uploaded .css file to Notion. Use this if you would like to customise the current theme or <a href=\"https://notion-enhancer.github.io/advanced/tweaks\">otherwise tweak Notion's appearance</a>.",
-      "extensions": ["css"]
+      "type": "select",
+      "key": "menuButtonIconStyle",
+      "description": "Sets whether the notion-enhancer icon added to Notion's sidebar should be coloured or monochrome. The latter style will match the theme's icon colour for users who would like the icon to be less noticeable.",
+      "values": ["Colour", "Monochrome"]
     },
     {
       "type": "heading",
@@ -66,7 +66,7 @@
       "key": "developerMode",
       "description": "Activates built-in debugging tools accessible through the application menu.",
       "platforms": ["linux", "win32", "darwin"],
-      "value": false
+      "value": true
     }
   ],
   "clientStyles": ["variables.css"],

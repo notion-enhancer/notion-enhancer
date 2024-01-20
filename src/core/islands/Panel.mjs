@@ -6,6 +6,7 @@
  */
 
 import { Tooltip } from "./Tooltip.mjs";
+import { TopbarButton } from "./TopbarButton.mjs";
 import { Select } from "../menu/islands/Select.mjs";
 
 // note: these islands are not reusable.
@@ -48,15 +49,12 @@ function View({ _get }) {
 }
 
 function Switcher({ _get, _set, minWidth, maxWidth }) {
-  const { html, setState, useState } = globalThis.__enhancerApi,
+  const { html, useState } = globalThis.__enhancerApi,
     $switcher = html`<div
       class="relative flex items-center grow
       font-medium p-[8.5px] ml-[4px] select-none"
     ></div>`,
-    setView = (view) => {
-      _set?.(view);
-      setState({ activePanelView: view });
-    };
+    setView = (view) => _set?.(view);
   useState(["panelViews"], ([panelViews = []]) => {
     const values = panelViews.map(([{ title, $icon }]) => {
       // panel switcher internally uses the select island,
@@ -76,6 +74,7 @@ function Switcher({ _get, _set, minWidth, maxWidth }) {
 }
 
 function Panel({
+  hotkey,
   _getWidth,
   _setWidth,
   _getOpen,
@@ -86,8 +85,24 @@ function Panel({
   maxWidth = 640,
   transitionDuration = 300,
 }) {
-  const { html, setState, useState } = globalThis.__enhancerApi,
+  const { html, useState, addKeyListener } = globalThis.__enhancerApi,
     { addMutationListener, removeMutationListener } = globalThis.__enhancerApi,
+    $topbarToggle = html`<${TopbarButton}
+      aria-label="Toggle side panel"
+      icon="panel-right"
+    />`,
+    $panelToggle = html`<button
+      aria-label="Toggle side panel"
+      class="user-select-none h-[24px] w-[24px] duration-[20ms]
+      transition inline-flex items-center justify-center mr-[10px]
+      rounded-[3px] hover:bg-[color:var(--theme--bg-hover)]"
+    >
+      <i
+        class="i-chevrons-left w-[20px] h-[20px]
+        text-[color:var(--theme--fg-secondary)] transition-transform
+        group-&[data-pinned]/panel:rotate-180 duration-[${transitionDuration}ms]"
+      />
+    </button>`,
     $panel = html`<div
       class="notion-enhancer--panel group/panel order-2
       shrink-0 &[data-pinned]:w-[var(--panel--width,0)]"
@@ -118,23 +133,13 @@ function Panel({
           <${Switcher}
             ...${{ _get: _getView, _set: _setView, minWidth, maxWidth }}
           />
-          <button
-            aria-label="Toggle side panel"
-            class="user-select-none h-[24px] w-[24px] duration-[20ms]
-            transition inline-flex items-center justify-center mr-[10px]
-            rounded-[3px] hover:bg-[color:var(--theme--bg-hover)]"
-            onclick=${() => $panel.toggle()}
-          >
-            <i
-              class="i-chevrons-left w-[20px] h-[20px]
-              text-[color:var(--theme--fg-secondary)] transition-transform
-              group-&[data-pinned]/panel:rotate-180 duration-[${transitionDuration}ms]"
-            />
-          </button>
+          ${$panelToggle}
         </div>
         <${View} ...${{ _get: _getView }} />
       </aside>
     </div>`;
+  $panelToggle.onclick = $topbarToggle.onclick = () => $panel.toggle();
+  $topbarToggle.addToTopbar();
 
   let preDragWidth, dragStartX, _animatedAt;
   const getWidth = async (width) => {
@@ -206,20 +211,6 @@ function Panel({
         group-&[data-peeked]/panel:(my-px h-[calc(100%-2px)] rounded-l-[6px])"
       ></div>
     </div>`,
-    $onResizeClick = html`<span>close</span>`,
-    $resizeTooltip = html`<${Tooltip}>
-      <b>Drag</b> to resize<br />
-      <b>Click</b> to ${$onResizeClick}
-    <//>`,
-    showTooltip = (event) => {
-      setTimeout(() => {
-        if (!$resizeHandle.matches(":hover")) return;
-        const open = $panel.hasAttribute("open"),
-          { x } = $resizeHandle.getBoundingClientRect();
-        $onResizeClick.innerText = open ? "close" : "lock open";
-        $resizeTooltip.show(x, event.clientY);
-      }, 200);
-    },
     startDrag = async (event) => {
       dragStartX = event.clientX;
       preDragWidth = await getWidth();
@@ -240,10 +231,42 @@ function Panel({
       if (dragStartX - event.clientX === 0) $panel.toggle();
       preDragWidth = dragStartX = undefined;
     };
-  $resizeHandle.addEventListener("mouseout", $resizeTooltip.hide);
   $resizeHandle.addEventListener("mousedown", startDrag);
-  $resizeHandle.addEventListener("mouseover", showTooltip);
   $panel.lastElementChild.prepend($resizeHandle);
+
+  // add tooltips to panel pin/unpin toggles
+  const $resizeTooltipClick = html`<span></span>`,
+    $resizeTooltip = html`<${Tooltip}
+      onbeforeshow=${() => {
+        $resizeTooltipClick.innerText = isPinned() ? "close" : "lock open";
+      }}
+      ><b>Drag</b> to resize<br />
+      <b>Click</b> to ${$resizeTooltipClick}
+    <//>`,
+    $toggleTooltipClick = html`<b></b>`,
+    $toggleTooltip = html`<${Tooltip}
+      class="text-start"
+      onbeforeshow=${() => {
+        $toggleTooltipClick.innerText = isPinned()
+          ? "Close sidebar"
+          : "Lock sidebar open";
+      }}
+      >${$toggleTooltipClick}<br />
+      ${hotkey}
+    <//>`,
+    alignTooltipBelow = ($target) => {
+      const rect = $target.getBoundingClientRect();
+      return {
+        x: rect.right,
+        y: rect.bottom + $toggleTooltip.clientHeight / 2 + 6,
+      };
+    };
+  $resizeTooltip.attach($resizeHandle, () => {
+    const rect = $resizeHandle.getBoundingClientRect();
+    return { x: rect.x - 6 };
+  });
+  $toggleTooltip.attach($topbarToggle, () => alignTooltipBelow($topbarToggle));
+  $toggleTooltip.attach($panelToggle, () => alignTooltipBelow($panelToggle));
 
   // hovering over the peek trigger will temporarily
   // pop out an interactive preview of the panel
@@ -274,10 +297,9 @@ function Panel({
       if (!$notionHelp) return;
       width ??= await getWidth();
       if (isNaN(width)) width = minWidth;
-      if (!$panel.hasAttribute("open")) width = 0;
+      if (isClosed()) width = 0;
       const to = `${26 + width}px`,
-        from = $notionHelp.style.getPropertyValue("right"),
-        opts = { duration: transitionDuration, easing };
+        from = $notionHelp.style.getPropertyValue("right");
       if (from === to) return;
       $notionHelp.style.setProperty("right", to);
       animate($notionHelp, [({ right: from }, { right: to })]);
@@ -292,9 +314,9 @@ function Panel({
     animate($panel, [closedWidth, openWidth]);
     $panel.removeAttribute("data-peeked");
     $panel.dataset.pinned = true;
+    $topbarToggle.setAttribute("data-active", true);
     setInteractive(true);
     _setOpen(true);
-    setState({ panelOpen: true });
     $panel.resize();
   };
   $panel.peek = () => {
@@ -314,8 +336,8 @@ function Panel({
   };
   $panel.close = async () => {
     if (isClosed()) return;
-    setState({ panelOpen: false });
     if (panelViews.length) _setOpen(false);
+    $topbarToggle.removeAttribute("data-active");
     const width = (animationState.width = `${await getWidth()}px`);
     // only animate container close if it is actually taking up space,
     // otherwise will unnaturally grow + retrigger peek on peek mouseout
@@ -348,9 +370,18 @@ function Panel({
   };
 
   useState(["panelViews"], async ([panelViews = []]) => {
+    $topbarToggle.style.display = panelViews.length ? "" : "none";
     if (panelViews.length && (await _getOpen())) $panel.pin();
     else $panel.close();
   });
+
+  if (!hotkey) return $panel;
+  addKeyListener(hotkey, (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    $panel.toggle();
+  });
+
   return $panel;
 }
 

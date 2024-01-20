@@ -8,16 +8,16 @@ function Tooltip(props, ...children) {
   const { html, extendProps } = globalThis.__enhancerApi;
   extendProps(props, {
     role: "dialog",
-    class: `absolute group/tooltip z-[999] pointer-events-none`,
+    class: `absolute group/tooltip z-[999] text-center pointer-events-none`,
   });
 
   const notionApp = ".notion-app-inner",
     $tooltip = html`<div ...${props}>
       <div
         class="bg-[color:var(--theme--bg-secondary)]
-        text-([color:var(--theme--fg-secondary)] [12px] center)
+        text-([color:var(--theme--fg-secondary)] [12px] nowrap)
         leading-[1.4] font-medium py-[4px] px-[8px] rounded-[4px]
-        drop-shadow-md transition duration-200 opacity-0
+        drop-shadow-md transition duration-100 opacity-0
         group-open/tooltip:(pointer-events-auto opacity-100)
         &>b:text-[color:var(--theme--fg-primary)]"
       >
@@ -27,12 +27,14 @@ function Tooltip(props, ...children) {
   $tooltip.show = (x, y) => {
     const $notionApp = document.querySelector(notionApp);
     if (!document.contains($tooltip)) $notionApp?.append($tooltip);
+    if ($tooltip.hasAttribute("open")) return;
     requestAnimationFrame(() => {
+      $tooltip.onbeforeshow?.();
       $tooltip.setAttribute("open", true);
-      x -= $tooltip.clientWidth + 6;
-      if (x < 0) x += $tooltip.clientWidth + 12;
+      x -= $tooltip.clientWidth;
+      if (x < 0) x = $tooltip.clientWidth + 12;
       y -= $tooltip.clientHeight / 2;
-      if (y < 0) y += $tooltip.clientHeight / 2;
+      if (y < 0) y = $tooltip.clientHeight + 12;
       $tooltip.style.left = `${x}px`;
       $tooltip.style.top = `${y}px`;
       $tooltip.onshow?.();
@@ -44,6 +46,16 @@ function Tooltip(props, ...children) {
     setTimeout(() => {
       $tooltip.onhide?.();
     }, 200);
+  };
+  $tooltip.attach = ($target, calcPos) => {
+    $target.addEventListener("mouseover", (event) => {
+      setTimeout(() => {
+        if (!$target.matches(":hover")) return;
+        const { x = event.clientX, y = event.clientY } = calcPos?.(event) ?? {};
+        $tooltip.show(x, y);
+      }, 200);
+    });
+    $target.addEventListener("mouseout", $tooltip.hide);
   };
 
   return $tooltip;
