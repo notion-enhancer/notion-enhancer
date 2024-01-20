@@ -112,7 +112,6 @@ const modifierAliases = [
     keyListeners = keyListeners.filter(([, c]) => c !== callback);
   },
   handleKeypress = (event, keyListeners) => {
-    console.log(event);
     for (const [accelerator, callback] of keyListeners) {
       const acceleratorModifiers = [],
         combinationTriggered =

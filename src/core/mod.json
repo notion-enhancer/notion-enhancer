@@ -58,6 +58,17 @@
     },
     {
       "type": "heading",
+      "label": "Experimental"
+    },
+    {
+      "type": "toggle",
+      "key": "draggableTabs",
+      "description": "Enables reordering tabs within the Notion app via drag and drop.",
+      "platforms": ["linux", "win32", "darwin"],
+      "value": false
+    },
+    {
+      "type": "heading",
       "label": "Advanced",
       "_autoremoveIfSectionEmpty": false
     },
@@ -70,5 +81,6 @@
     }
   ],
   "clientStyles": ["variables.css"],
-  "clientScripts": ["client.mjs"]
+  "clientScripts": ["client.mjs"],
+  "electronScripts": [[".webpack/main/index", "electron.cjs"]]
 }

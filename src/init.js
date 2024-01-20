@@ -1,6 +1,6 @@
 /**
  * notion-enhancer
- * (c) 2023 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2024 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
@@ -44,8 +44,9 @@ if (isElectron()) {
     for (const mod of await getMods()) {
       if (!mod.electronScripts || !(await isEnabled(mod.id))) continue;
       const db = await modDatabase(mod.id);
-      for (let script of mod.clientScripts ?? []) {
-        script = require(`notion-enhancer/${mod._src}/${source}`);
+      for (let [scriptTarget, script] of mod.electronScripts ?? []) {
+        if (target !== scriptTarget) continue;
+        script = require(`./${mod._src}/${script}`);
         script(globalThis.__enhancerApi, db, __exports, __eval);
       }
     }
