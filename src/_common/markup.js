@@ -6,8 +6,6 @@
 
 "use strict";
 
-// jump to
-
 const { twind, htm, lucide } = globalThis,
   { iconColour, iconMonochrome } = globalThis.__enhancerApi;
 
@@ -83,7 +81,10 @@ const encodeSvg = (svg) =>
 //   complex markup, e.g. `<i class="i-bookmark" />`
 twind.install({
   darkMode: "class",
-  rules: [[/^i-((?:\w|-)+)(?:\?(mask|bg|auto))?$/, presetIcons]],
+  rules: [
+    ["text-(wrap|nowrap|balance|pretty)", "textWrap"],
+    [/^i-((?:\w|-)+)(?:\?(mask|bg|auto))?$/, presetIcons],
+  ],
   variants: [
     // https://github.com/tw-in-js/twind/blob/main/packages/preset-ext/src/variants.ts
     [

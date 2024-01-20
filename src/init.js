@@ -14,8 +14,8 @@ const isElectron = () => {
 };
 
 if (isElectron()) {
-  require("./shared/system.js");
-  require("./shared/registry.js");
+  require("./_common/system.js");
+  require("./_common/registry.js");
   const { enhancerUrl } = globalThis.__enhancerApi,
     { getMods, isEnabled, modDatabase } = globalThis.__enhancerApi;
 
@@ -24,15 +24,12 @@ if (isElectron()) {
 
   module.exports = async (target, __exports, __eval) => {
     if (target === mainScript) require("./worker.js");
-
     if (target === rendererScript) {
       // expose globalThis.__enhancerApi to scripts
-      const { contextBridge } = require("electron");
-      contextBridge.exposeInMainWorld(
-        "__getEnhancerApi",
-        () => globalThis.__enhancerApi
-      );
-      
+      const { contextBridge } = require("electron"),
+        __getEnhancerApi = () => globalThis.__enhancerApi;
+      contextBridge.exposeInMainWorld("__getEnhancerApi", __getEnhancerApi);
+
       // load clientStyles, clientScripts
       document.addEventListener("readystatechange", () => {
         if (document.readyState !== "complete") return false;
@@ -54,6 +51,6 @@ if (isElectron()) {
     }
   };
 } else {
-  import(chrome.runtime.getURL("/shared/system.js")) //
+  import(chrome.runtime.getURL("/_common/system.js")) //
     .then(() => import(chrome.runtime.getURL("/load.mjs")));
 }

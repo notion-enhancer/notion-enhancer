@@ -69,7 +69,7 @@ function Select({
       return {
         ...opt,
         $option: html`<${Option} ...${{ ...opt, _get, _set }} />`,
-        $value: html`<div class="inline-flex items-center gap-[6px]">
+        $value: html`<div class="inline-flex text-nowrap items-center gap-[6px]">
           <!-- swap icon/value order for correct display when dir="rtl" -->
           <span>${opt.value}</span>${opt.$icon?.cloneNode(true) ?? ""}
         </div>`,

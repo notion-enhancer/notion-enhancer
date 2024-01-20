@@ -44,15 +44,15 @@ export default (async () => {
 
   await Promise.all([
     // i.e. if (not_menu) or (is_menu && not_electron), then import
-    !(!IS_MENU || !IS_ELECTRON) || import(enhancerUrl("assets/icons.svg.js")),
-    import(enhancerUrl("vendor/twind.min.js")),
-    import(enhancerUrl("vendor/lucide.min.js")),
-    import(enhancerUrl("vendor/htm.min.js")),
+    !(!IS_MENU || !IS_ELECTRON) || import(enhancerUrl("_assets/icons.svg.js")),
+    import(enhancerUrl("_vendor/twind.min.js")),
+    import(enhancerUrl("_vendor/lucide.min.js")),
+    import(enhancerUrl("_vendor/htm.min.js")),
   ]);
   await Promise.all([
-    !(!IS_MENU || !IS_ELECTRON) || import(enhancerUrl("shared/registry.js")),
-    import(enhancerUrl("shared/events.js")),
-    import(enhancerUrl("shared/markup.js")),
+    !(!IS_MENU || !IS_ELECTRON) || import(enhancerUrl("_common/registry.js")),
+    import(enhancerUrl("_common/events.js")),
+    import(enhancerUrl("_common/markup.js")),
   ]);
 
   const { getMods, isEnabled, modDatabase } = globalThis.__enhancerApi;

@@ -105,11 +105,10 @@ function Input({
       class="h-full w-full pb-px text-[14px] leading-[1.2]
       ${variant === "lg" ? "pl-[12px] pr-[40px]" : "pl-[8px] pr-[32px]"}
       appearance-none bg-transparent ${type === "file" ? "hidden" : ""}
+      ${type === "hotkey" ? "text-[color:var(--theme--fg-secondary)]" : ""}
       ${type === "color"
         ? "font-medium"
-        : type === "hotkey"
-        ? "text-[color:var(--theme--fg-secondary)] border-(& [color:var(--theme--fg-border)])"
-        : ""}"
+        : "border-(& [color:var(--theme--fg-border)])"}"
       data-coloris=${type === "color"}
       ...${props}
     />`,
@@ -170,9 +169,11 @@ function Input({
         <label
           tabindex="0"
           class="flex items-center cursor-pointer select-none
-          h-[28px] px-[8px] bg-[color:var(--theme--bg-secondary)]
-          text-([14px] [color:var(--theme--fg-secondary)]) rounded-[4px]
-          transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
+          px-[8px] bg-[color:var(--theme--bg-secondary)]
+          h-[28px] rounded-[4px] transition duration-[20ms]
+          text-([14px] [color:var(--theme--fg-secondary)])
+          border-(& [color:var(--theme--fg-border)])
+          hover:bg-[color:var(--theme--bg-hover)]"
           onkeydown=${(event) => {
             if ([" ", "Enter"].includes(event.key)) {
               event.preventDefault();
