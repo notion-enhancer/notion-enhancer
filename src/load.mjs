@@ -16,9 +16,10 @@ export default (async () => {
     signedIn = localStorage["LRU:KeyValueStore2:current-user-id"],
     pageLoaded = /(^\/$)|((-|\/)[0-9a-f]{32}((\?.+)|$))/.test(location.pathname),
     IS_MENU = location.href.startsWith(enhancerUrl("core/menu/index.html")),
+    IS_TABS = /\/app\/\.webpack\/renderer\/(draggable_)?tabs\/index.html$/.test(location.href),
     IS_ELECTRON = ['linux', 'win32', 'darwin'].includes(platform);
 
-  if (!IS_MENU) {
+  if (!IS_MENU && !IS_TABS) {
     if (!signedIn || !pageLoaded) return;
     console.log("notion-enhancer: loading...");
   }
@@ -43,15 +44,15 @@ export default (async () => {
 
   await Promise.all([
     // i.e. if (not_menu) or (is_menu && not_electron), then import
-    !(!IS_MENU || !IS_ELECTRON) || import(enhancerUrl("_assets/icons.svg.js")),
-    import(enhancerUrl("_vendor/twind.min.js")),
-    import(enhancerUrl("_vendor/lucide.min.js")),
-    import(enhancerUrl("_vendor/htm.min.js")),
+    !(!IS_MENU || !IS_ELECTRON) || import(enhancerUrl("assets/icons.svg.js")),
+    import(enhancerUrl("vendor/twind.min.js")),
+    import(enhancerUrl("vendor/lucide.min.js")),
+    import(enhancerUrl("vendor/htm.min.js")),
   ]);
   await Promise.all([
-    !(!IS_MENU || !IS_ELECTRON) || import(enhancerUrl("_common/registry.js")),
-    import(enhancerUrl("_common/events.js")),
-    import(enhancerUrl("_common/markup.js")),
+    !(!IS_MENU || !IS_ELECTRON) || import(enhancerUrl("common/registry.js")),
+    import(enhancerUrl("common/events.js")),
+    import(enhancerUrl("common/markup.js")),
   ]);
 
   const { getMods, isEnabled, modDatabase } = globalThis.__enhancerApi;
@@ -69,7 +70,7 @@ export default (async () => {
     }
 
     // clientScripts
-    if (IS_MENU) continue;
+    if (IS_MENU || IS_TABS) continue;
     const db = await modDatabase(mod.id);
     for (let script of mod.clientScripts ?? []) {
       script = await import(enhancerUrl(`${mod._src}/${script}`));
@@ -78,4 +79,5 @@ export default (async () => {
   }
 
   if (IS_MENU) console.log("notion-enhancer: ready");
+  globalThis.__enhancerApi.__isReady(globalThis.__enhancerApi);
 })();

@@ -4,6 +4,8 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+"use strict";
+
 function Button({ icon, variant, tagName, ...props }, ...children) {
   const { html, extendProps } = globalThis.__enhancerApi;
   extendProps(props, {

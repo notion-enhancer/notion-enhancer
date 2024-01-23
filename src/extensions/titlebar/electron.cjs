@@ -7,7 +7,6 @@
 "use strict";
 
 module.exports = async ({}, db) => {
-  const titlebarStyle = await db.get("titlebarStyle");
   Object.assign((globalThis.__notionConfig ??= {}), {
     titlebarStyle: "hidden",
   });

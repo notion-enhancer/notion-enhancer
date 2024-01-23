@@ -4,6 +4,8 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+"use strict";
+
 function TopbarButton({ icon, ...props }) {
   const { html, extendProps, addMutationListener } = globalThis.__enhancerApi;
   extendProps(props, {
@@ -16,20 +18,20 @@ function TopbarButton({ icon, ...props }) {
     &[data-active]:bg-[color:var(--theme--bg-hover)]`,
   });
 
-  const notionTopbar = ".notion-topbar-favorite-button",
+  const topbarFavorite = ".notion-topbar-favorite-button",
     $button = html`<button ...${props}>
       <i
         class="i-${icon} w-[20px] h-[20px]
         fill-[color:var(--theme--fg-secondary)]"
       />
     </button>`,
-    addToTopbar = () => {
+    addToTopbar = (after = topbarFavorite) => {
       if (document.contains($button)) return;
-      document.querySelector(notionTopbar)?.after($button);
+      document.querySelector(after)?.after($button);
     };
-  $button.addToTopbar = () => {
-    addToTopbar();
-    addMutationListener(notionTopbar, addToTopbar);
+  $button.addToTopbar = (after = topbarFavorite) => {
+    addMutationListener(after, () => addToTopbar(after));
+    addToTopbar(after);
   };
   return $button;
 }

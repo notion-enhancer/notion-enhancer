@@ -4,6 +4,8 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+"use strict";
+
 function MenuButton(
   { icon, notifications, themeOverridesLoaded, ...props },
   ...children

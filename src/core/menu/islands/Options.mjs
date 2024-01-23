@@ -4,6 +4,8 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+"use strict";
+
 import { Heading } from "./Heading.mjs";
 import { Description } from "./Description.mjs";
 import { Input } from "./Input.mjs";

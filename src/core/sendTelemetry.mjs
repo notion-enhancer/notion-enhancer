@@ -4,6 +4,8 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+"use strict";
+
 const pingEndpoint = "https://notion-enhancer.deno.dev/api/ping",
   collectTelemetryData = async () => {
     const { platform, version } = globalThis.__enhancerApi,

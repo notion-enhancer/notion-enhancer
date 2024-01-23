@@ -9,12 +9,12 @@
   "background": { "service_worker": "/worker.js" },
   "action": {},
   "icons": {
-    "16": "/_assets/colour-x16.png",
-    "32": "/_assets/colour-x32.png",
-    "48": "/_assets/colour-x48.png",
-    "128": "/_assets/colour-x128.png",
-    "256": "/_assets/colour-x256.png",
-    "512": "/_assets/colour-x512.png"
+    "16": "/assets/colour-x16.png",
+    "32": "/assets/colour-x32.png",
+    "48": "/assets/colour-x48.png",
+    "128": "/assets/colour-x128.png",
+    "256": "/assets/colour-x256.png",
+    "512": "/assets/colour-x512.png"
   },
   "permissions": [
     "tabs",

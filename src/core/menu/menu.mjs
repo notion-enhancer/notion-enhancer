@@ -4,6 +4,8 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+"use strict";
+
 import { checkForUpdate, isDevelopmentBuild } from "../updateCheck.mjs";
 import { Sidebar } from "./islands/Sidebar.mjs";
 import { Footer } from "./islands/Footer.mjs";
@@ -124,7 +126,7 @@ const renderMenu = async () => {
         categories=${categories}
       />`,
       $main = html`
-        <main class="flex-(& col) overflow-hidden transition-[height]">
+        <main class="flex-(& col) overflow-hidden transition-[height]" style="height: calc(100% + 65px)">
           <!-- wrappers necessary for transitions and breakpoints -->
           <div class="grow overflow-auto">
             <div class="relative h-full w-full">
@@ -182,7 +184,7 @@ const renderMenu = async () => {
 const importApi = () => {
     return (_apiImport ??= (async () => {
       const api = globalThis.__enhancerApi;
-      if (typeof api === "undefined") await import("../../_common/system.js");
+      if (typeof api === "undefined") await import("../../common/system.js");
       await import("../../load.mjs").then((i) => i.default);
     })());
   },

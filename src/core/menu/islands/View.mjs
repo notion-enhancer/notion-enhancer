@@ -4,6 +4,8 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+"use strict";
+
 function View({ id }, ...children) {
   const { html, setState, useState } = globalThis.__enhancerApi,
     // set padding on last child to maintain pad on overflow

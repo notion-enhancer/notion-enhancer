@@ -18,7 +18,11 @@ const injectTriggerOnce = (scriptId, scriptContent) =>
     : "");
 
 const mainScript = ".webpack/main/index",
-  rendererScript = ".webpack/renderer/tab_browser_view/preload",
+  rendererScripts = [
+    ".webpack/renderer/tab_browser_view/preload",
+    ".webpack/renderer/draggable_tabs/preload",
+    ".webpack/renderer/tabs/preload",
+  ],
   patches = {
     [mainScript]: (scriptContent) => {
       scriptContent = injectTriggerOnce(mainScript, scriptContent);
@@ -35,7 +39,7 @@ const mainScript = ".webpack/main/index",
 
       // restore node integration in the renderer process
       // so the notion-enhancer can be require()-d into it
-      replace("spellcheck:!0,sandbox:!0", "spellcheck:!0,nodeIntegration:true");
+      replace(/sandbox:!0/g, `sandbox:!1,nodeIntegration:!0,session:require('electron').session.fromPartition("persist:notion")`);
 
       // bypass webRequest filter to load enhancer menu
       replace("r.top!==r?t({cancel:!0})", "r.top!==r?t({})");
@@ -67,8 +71,10 @@ const mainScript = ".webpack/main/index",
 
       return scriptContent;
     },
-    [rendererScript]: (scriptContent) =>
-      injectTriggerOnce(rendererScript, scriptContent),
+    ["*"]: (scriptId, scriptContent) => {
+      if (!rendererScripts.includes(scriptId)) return scriptContent;
+      return injectTriggerOnce(scriptId, scriptContent);
+    },
   };
 
 export default (scriptId, scriptContent) => {

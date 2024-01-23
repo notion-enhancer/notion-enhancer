@@ -4,6 +4,8 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+"use strict";
+
 function Tile({ icon, title, tagName, ...props }, ...children) {
   const { html, extendProps } = globalThis.__enhancerApi;
   extendProps(props, {

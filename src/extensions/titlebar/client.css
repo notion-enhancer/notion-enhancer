@@ -4,10 +4,12 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+.notion-tabs,
 .notion-topbar {
   user-select: none;
   -webkit-app-region: drag;
 }
+.notion-tabs :is([aria-label], [draggable]),
 .notion-topbar > div > * {
   -webkit-app-region: no-drag;
 }

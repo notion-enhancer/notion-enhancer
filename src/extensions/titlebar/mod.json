@@ -48,5 +48,9 @@
   ],
   "clientStyles": ["client.css"],
   "clientScripts": ["client.mjs"],
-  "electronScripts": [[".webpack/main/index", "electron.cjs"]]
+  "electronScripts": [
+    [".webpack/main/index", "electron.cjs"],
+    [".webpack/renderer/draggable_tabs/preload", "tabs.cjs"],
+    [".webpack/renderer/tabs/preload", "tabs.cjs"]
+  ]
 }

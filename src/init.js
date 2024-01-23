@@ -6,16 +6,23 @@
 
 "use strict";
 
-const isElectron = () => {
-  try {
-    return typeof module !== "undefined";
-  } catch {}
-  return false;
-};
+globalThis.__enhancerApi ??= {};
+const whenReady = new Promise((res, rej) => {
+    globalThis.__enhancerApi.__isReady = res;
+  }),
+  isElectron = () => {
+    try {
+      return typeof module !== "undefined";
+    } catch {}
+    return false;
+  };
+Object.assign((globalThis.__enhancerApi ??= {}), {
+  whenReady: (callback) => whenReady.then(callback),
+});
 
 if (isElectron()) {
-  require("./_common/system.js");
-  require("./_common/registry.js");
+  require("./common/system.js");
+  require("./common/registry.js");
   const { enhancerUrl } = globalThis.__enhancerApi,
     { getMods, isEnabled, modDatabase } = globalThis.__enhancerApi;
 
@@ -24,7 +31,7 @@ if (isElectron()) {
 
   module.exports = async (target, __exports, __eval) => {
     if (target === mainScript) require("./worker.js");
-    if (target === rendererScript) {
+    else {
       // expose globalThis.__enhancerApi to scripts
       const { contextBridge } = require("electron"),
         __getEnhancerApi = () => globalThis.__enhancerApi;
@@ -52,6 +59,6 @@ if (isElectron()) {
     }
   };
 } else {
-  import(chrome.runtime.getURL("/_common/system.js")) //
+  import(chrome.runtime.getURL("/common/system.js")) //
     .then(() => import(chrome.runtime.getURL("/load.mjs")));
 }

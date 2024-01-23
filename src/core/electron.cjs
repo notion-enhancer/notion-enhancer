@@ -4,6 +4,8 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+"use strict";
+
 const getPreference = (key) => {
     const { preferences = {} } = globalThis.__notionStore?.getState()?.app;
     return preferences[key];

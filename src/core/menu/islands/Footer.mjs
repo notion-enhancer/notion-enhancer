@@ -4,6 +4,8 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+"use strict";
+
 import { Button } from "./Button.mjs";
 
 function Footer({ categories }) {
@@ -30,7 +32,7 @@ function Footer({ categories }) {
     });
 
   useState(["view"], ([view]) => {
-    let footerOpen = $reload.style.display !== "none";
+    let [footerOpen] = useState(["databaseUpdated"]);
     for (const [ids, $btn] of $categories) {
       const modInCategory = ids.some((id) => id === view);
       if (modInCategory) footerOpen = true;
@@ -40,7 +42,7 @@ function Footer({ categories }) {
   });
   useState(["databaseUpdated"], ([databaseUpdated]) => {
     $reload.style.display = databaseUpdated ? "" : "none";
-    setState({ footerOpen: true });
+    if (databaseUpdated) setState({ footerOpen: true });
   });
 
   return html`<footer

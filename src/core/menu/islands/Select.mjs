@@ -4,6 +4,8 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
+"use strict";
+
 import { Popup } from "./Popup.mjs";
 
 function Option({ $icon = "", value = "", _get, _set }) {
