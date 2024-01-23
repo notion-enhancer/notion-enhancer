@@ -1,73 +1,49 @@
 /**
- * notion-enhancer: integrated titlebar
- * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * notion-enhancer: titlebar
+ * (c) 2024 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-'use strict';
+"use strict";
 
-export const createWindowButtons = async ({ electron, web, components }, db) => {
-  let minimizeIcon = (await db.get(['minimize_icon'])) || (await components.feather('minus')),
-    maximizeIcon = (await db.get(['maximize_icon'])) || (await components.feather('maximize')),
-    unmaximizeIcon =
-      (await db.get(['unmaximize_icon'])) || (await components.feather('minimize')),
-    closeIcon = (await db.get(['close_icon'])) || (await components.feather('x'));
-  minimizeIcon = minimizeIcon.trim();
-  maximizeIcon = maximizeIcon.trim();
-  unmaximizeIcon = unmaximizeIcon.trim();
-  closeIcon = closeIcon.trim();
+import { Tooltip } from "../../core/islands/Tooltip.mjs";
+import { TopbarButton } from "../../core/islands/TopbarButton.mjs";
 
-  minimizeIcon =
-    minimizeIcon.startsWith('<svg') && minimizeIcon.endsWith('</svg>')
-      ? minimizeIcon
-      : web.escape(minimizeIcon);
-  maximizeIcon =
-    maximizeIcon.startsWith('<svg') && maximizeIcon.endsWith('</svg>')
-      ? maximizeIcon
-      : web.escape(maximizeIcon);
-  unmaximizeIcon =
-    unmaximizeIcon.startsWith('<svg') && unmaximizeIcon.endsWith('</svg>')
-      ? unmaximizeIcon
-      : web.escape(unmaximizeIcon);
-  closeIcon =
-    closeIcon.startsWith('<svg') && closeIcon.endsWith('</svg>')
-      ? closeIcon
-      : web.escape(closeIcon);
+const minimizeLabel = "Minimize window",
+  maximizeLabel = "Maximize window",
+  unmaximizeLabel = "Unmaximize window",
+  closeLabel = "Close window";
 
-  const $windowButtons = web.html`<div class="integrated_titlebar--buttons"></div>`,
-    $minimize = web.html`<button id="integrated_titlebar--minimize">
-      ${minimizeIcon}
-    </button>`,
-    $maximize = web.html`<button id="integrated_titlebar--maximize">
-      ${maximizeIcon}
-    </button>`,
-    $unmaximize = web.html`<button id="integrated_titlebar--unmaximize">
-      ${unmaximizeIcon}
-    </button>`,
-    $close = web.html`<button id="integrated_titlebar--close">
-      ${closeIcon}
-    </button>`;
-  components.addTooltip($minimize, '**Minimize window**');
-  components.addTooltip($maximize, '**Maximize window**');
-  components.addTooltip($unmaximize, '**Unmaximize window**');
-  components.addTooltip($close, '**Close window**');
-
-  $minimize.addEventListener('click', () => electron.browser.minimize());
-  $maximize.addEventListener('click', () => electron.browser.maximize());
-  $unmaximize.addEventListener('click', () => electron.browser.unmaximize());
-  $close.addEventListener('click', () => electron.browser.close());
-  electron.browser.on('maximize', () => {
-    $maximize.replaceWith($unmaximize);
-  });
-  electron.browser.on('unmaximize', () => {
-    $unmaximize.replaceWith($maximize);
-  });
-
-  web.render(
-    $windowButtons,
-    $minimize,
-    electron.browser.isMaximized() ? $unmaximize : $maximize,
-    $close
-  );
-  return $windowButtons;
+const createWindowButtons = () => {
+  const { html } = globalThis.__enhancerApi,
+    $minimize = html`<${TopbarButton}
+      aria-label="${minimizeLabel}"
+      icon="minus"
+    />`,
+    $maximize = html`<${TopbarButton}
+      aria-label="${maximizeLabel}"
+      icon="maximize"
+    />`,
+    $unmaximize = html`<${TopbarButton}
+      aria-label="${unmaximizeLabel}"
+      icon="minimize"
+    />`,
+    $close = html`<${TopbarButton}
+      class="!hover:(bg-red-600 text-white)"
+      aria-label="${closeLabel}"
+      icon="x"
+    />`;
+  html`<${Tooltip}><b>${minimizeLabel}</b><//>`.attach($minimize, "bottom");
+  html`<${Tooltip}><b>${maximizeLabel}</b><//>`.attach($maximize, "bottom");
+  html`<${Tooltip}><b>${unmaximizeLabel}</b><//>`.attach($unmaximize, "bottom");
+  html`<${Tooltip}><b>${closeLabel}</b><//>`.attach($close, "bottom");
+  return html`<div>${$minimize}${$maximize}${$unmaximize}${$close}</div>`;
 };
+
+if (globalThis.IS_TABS) {
+  const appendAfter = ".hide-scrollbar",
+    $buttons = createWindowButtons();
+  document.querySelector(appendAfter)?.after($buttons);
+}
+
+export { createWindowButtons };

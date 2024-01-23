@@ -18,6 +18,7 @@ export default (async () => {
     IS_MENU = location.href.startsWith(enhancerUrl("core/menu/index.html")),
     IS_TABS = /\/app\/\.webpack\/renderer\/(draggable_)?tabs\/index.html$/.test(location.href),
     IS_ELECTRON = ['linux', 'win32', 'darwin'].includes(platform);
+  if (IS_TABS) globalThis.IS_TABS = true;
 
   if (!IS_MENU && !IS_TABS) {
     if (!signedIn || !pageLoaded) return;

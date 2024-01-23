@@ -26,19 +26,26 @@ function Tooltip(props, ...children) {
         ${children}
       </div>
     </div>`;
+  // can pass each coord as a number or a function
   $tooltip.show = (x, y) => {
     const $notionApp = document.querySelector(notionApp);
     if (!document.contains($tooltip)) $notionApp?.append($tooltip);
     if ($tooltip.hasAttribute("open")) return;
+    $tooltip.onbeforeshow?.();
+    const edgePadding = 12,
+      { clientHeight, clientWidth } = document.documentElement;
     requestAnimationFrame(() => {
-      $tooltip.onbeforeshow?.();
-      $tooltip.setAttribute("open", true);
-      x -= $tooltip.clientWidth;
-      if (x < 0) x = $tooltip.clientWidth + 12;
-      y -= $tooltip.clientHeight / 2;
-      if (y < 0) y = $tooltip.clientHeight + 12;
+      if (typeof x === "function") x = x();
+      if (typeof y === "function") y = y();
+      if (x < edgePadding) x = $tooltip.clientWidth + edgePadding;
+      if (x + $tooltip.clientWidth > clientWidth + edgePadding)
+        x = clientWidth - $tooltip.clientWidth - edgePadding;
+      if (y < edgePadding) y = $tooltip.clientHeight + edgePadding;
+      if (y + $tooltip.clientHeight > clientHeight + edgePadding)
+        y = clientHeight - $tooltip.clientHeight - edgePadding;
       $tooltip.style.left = `${x}px`;
       $tooltip.style.top = `${y}px`;
+      $tooltip.setAttribute("open", true);
       $tooltip.onshow?.();
     });
   };
@@ -49,11 +56,30 @@ function Tooltip(props, ...children) {
       $tooltip.onhide?.();
     }, 200);
   };
-  $tooltip.attach = ($target, calcPos) => {
+  $tooltip.attach = ($target, alignment = "") => {
     $target.addEventListener("mouseover", (event) => {
       setTimeout(() => {
         if (!$target.matches(":hover")) return;
-        const { x = event.clientX, y = event.clientY } = calcPos?.(event) ?? {};
+        const x = () => {
+            const rect = $target.getBoundingClientRect();
+            if (["top", "bottom"].includes(alignment)) {
+              return rect.left + rect.width / 2 - $tooltip.clientWidth / 2;
+            } else if (alignment === "left") {
+              return rect.left - $tooltip.clientWidth - 6;
+            } else if (alignment === "right") {
+              return rect.right + 6;
+            } else return event.clientX;
+          },
+          y = () => {
+            const rect = $target.getBoundingClientRect();
+            if (["left", "right"].includes(alignment)) {
+              return event.clientY - $tooltip.clientHeight / 2;
+            } else if (alignment === "top") {
+              return rect.top - $tooltip.clientHeight - 6;
+            } else if (alignment === "bottom") {
+              return rect.bottom + 6;
+            } else return event.clientY;
+          };
         $tooltip.show(x, y);
       }, 200);
     });

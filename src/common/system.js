@@ -42,7 +42,7 @@ const connectToPort = () => {
     // from worker to client
     if (IS_RENDERER) {
       const { ipcRenderer } = require("electron");
-      ipcRenderer.on(channel, listener);
+      ipcRenderer.on(channel, (event, message) => listener(message));
     } else if (!IS_ELECTRON) {
       const onMessage = (msg) => {
         if (msg?.channel !== channel || msg?.invocation) return;

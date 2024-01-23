@@ -9,7 +9,10 @@
   user-select: none;
   -webkit-app-region: drag;
 }
-.notion-tabs :is([aria-label], [draggable]),
+.notion-tabs :is([aria-label], [draggable], .notion-enhancer--topbar-button),
 .notion-topbar > div > * {
   -webkit-app-region: no-drag;
+}
+.notion-tabs .notion-enhancer--topbar-button:last-child {
+  margin-right: 12px;
 }

@@ -125,8 +125,7 @@ function Panel({
         class="border-(l-1 [color:var(--theme--fg-border)]) w-0
         group-&[data-pinned]/panel:(w-[var(--panel--width,0)]) h-[calc(100vh-45px)] bottom-0)
         absolute right-0 z-20 bg-[color:var(--theme--bg-primary)]  group-&[data-peeked]/panel:(
-        w-[var(--panel--width,0)] h-[calc(100vh-120px)] bottom-[60px] rounded-l-[8px] border-(t-1 b-1)
-        shadow-[rgba(15,15,15,0.1)_0px_0px_0px_1px,rgba(15,15,15,0.2)_0px_3px_6px,rgba(15,15,15,0.4)_0px_9px_24px])"
+        w-[var(--panel--width,0)] h-[calc(100vh-120px)] bottom-[60px] rounded-l-[8px] border-(t-1 b-1))"
       >
         <div
           class="flex justify-between items-center
@@ -141,7 +140,14 @@ function Panel({
       </aside>
     </div>`;
   $panelToggle.onclick = $topbarToggle.onclick = () => $panel.toggle();
-  $topbarToggle.addToTopbar();
+
+  const topbarFavorite = ".notion-topbar-favorite-button",
+    addToTopbar = () => {
+      if (document.contains($topbarToggle)) return;
+      document.querySelector(topbarFavorite)?.after($topbarToggle);
+    };
+  addMutationListener(topbarFavorite, addToTopbar);
+  addToTopbar(topbarFavorite);
 
   let preDragWidth, dragStartX, _animatedAt;
   const getWidth = async (width) => {
@@ -175,8 +181,9 @@ function Panel({
       borderBottomWidth: "1px",
       borderTopLeftRadius: "8px",
       borderBottomLeftRadius: "8px",
-      boxShadow:
-        "rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.2) 0px 3px 6px, rgba(15, 15, 15, 0.4) 0px 9px 24px",
+      boxShadow: document.body.classList.contains("dark")
+        ? "rgba(15, 15, 15, 0.1) 0px 0px 0px 1px, rgba(15, 15, 15, 0.2) 0px 3px 6px, rgba(15, 15, 15, 0.4) 0px 9px 24px"
+        : "rgba(15, 15, 15, 0.05) 0px 0px 0px 1px, rgba(15, 15, 15, 0.1) 0px 3px 6px, rgba(15, 15, 15, 0.2) 0px 9px 24px",
     },
     pinAnimation = {
       height: "calc(100vh - 45px)",
@@ -247,7 +254,6 @@ function Panel({
     <//>`,
     $toggleTooltipClick = html`<b></b>`,
     $toggleTooltip = html`<${Tooltip}
-      class="text-start"
       onbeforeshow=${() => {
         $toggleTooltipClick.innerText = isPinned()
           ? "Close sidebar"
@@ -255,20 +261,10 @@ function Panel({
       }}
       >${$toggleTooltipClick}<br />
       ${hotkey}
-    <//>`,
-    alignTooltipBelow = ($target) => {
-      const rect = $target.getBoundingClientRect();
-      return {
-        x: rect.right,
-        y: rect.bottom + $toggleTooltip.clientHeight / 2 + 6,
-      };
-    };
-  $resizeTooltip.attach($resizeHandle, () => {
-    const rect = $resizeHandle.getBoundingClientRect();
-    return { x: rect.x - 6 };
-  });
-  $toggleTooltip.attach($topbarToggle, () => alignTooltipBelow($topbarToggle));
-  $toggleTooltip.attach($panelToggle, () => alignTooltipBelow($panelToggle));
+    <//>`;
+  $resizeTooltip.attach($resizeHandle, "left");
+  $toggleTooltip.attach($topbarToggle, "bottom");
+  $toggleTooltip.attach($panelToggle, "bottom");
 
   // hovering over the peek trigger will temporarily
   // pop out an interactive preview of the panel

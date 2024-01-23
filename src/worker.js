@@ -121,7 +121,7 @@ if (IS_ELECTRON) {
     const { namespace, query, args } = message.data;
     return queryDatabase(namespace, query, args);
   });
-  ipcMain.on("notion-enhancer", ({ sender }, message) => {
+  ipcMain.on("notion-enhancer", ({}, message) => {
     if (message === "reload-app") reloadApp();
   });
 } else {
