@@ -29,29 +29,26 @@ function Footer({ categories }) {
       ];
     });
 
-  const buttons = [...$categories.map(([, $btn]) => $btn), $reload],
-    updateFooter = () => {
-      const buttonsVisible = buttons.some(($el) => $el.style.display === "");
-      setState({ footerOpen: buttonsVisible });
-    };
   useState(["view"], ([view]) => {
+    let footerOpen = $reload.style.display !== "none";
     for (const [ids, $btn] of $categories) {
-      const modActive = ids.some((id) => id === view);
-      $btn.style.display = modActive ? "" : "none";
+      const modInCategory = ids.some((id) => id === view);
+      if (modInCategory) footerOpen = true;
+      $btn.style.display = modInCategory ? "" : "none";
     }
-    updateFooter();
+    setState({ footerOpen });
   });
   useState(["databaseUpdated"], ([databaseUpdated]) => {
     $reload.style.display = databaseUpdated ? "" : "none";
-    updateFooter();
+    setState({ footerOpen: true });
   });
 
   return html`<footer
     class="notion-enhancer--menu-footer px-[60px] py-[16px]
-    flex w-full bg-[color:var(--theme--bg-primary)]
+    flex w-full bg-[color:var(--theme--bg-primary)] h-[64px]
     border-t-(& [color:var(--theme--fg-border)])"
   >
-    ${buttons}
+    ${$categories.map(([, $btn]) => $btn)}${$reload}
   </footer>`;
 }
 

@@ -61,6 +61,10 @@ const mainScript = ".webpack/main/index",
       replace(storeDeclaration, storeInterceptor);
       replace(updateDeclaration, updateInterceptor);
 
+      // conditionally create frameless windows
+      const titlebarStyle = `titleBarStyle:globalThis.__notionConfig?.titlebarStyle??"hiddenInset"`;
+      replace(`titleBarStyle:"hiddenInset"`, titlebarStyle);
+
       return scriptContent;
     },
     [rendererScript]: (scriptContent) =>

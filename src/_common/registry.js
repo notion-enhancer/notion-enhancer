@@ -79,8 +79,7 @@ const modDatabase = async (id) => {
   );
 };
 
-globalThis.__enhancerApi ??= {};
-Object.assign(globalThis.__enhancerApi, {
+Object.assign((globalThis.__enhancerApi ??= {}), {
   getMods,
   getProfile,
   isEnabled,

@@ -12,10 +12,7 @@
     }
   ],
   "options": [
-    {
-      "type": "heading",
-      "label": "Hotkeys"
-    },
+    { "type": "heading", "label": "Hotkeys" },
     {
       "type": "hotkey",
       "key": "openMenuHotkey",
@@ -34,10 +31,7 @@
       "description": "Toggles focus of the Notion window anywhere, even when your Notion app isn't active.",
       "value": "Ctrl+Shift+A"
     },
-    {
-      "type": "heading",
-      "label": "Appearance"
-    },
+    { "type": "heading", "label": "Appearance" },
     {
       "type": "file",
       "key": "customStyles",
@@ -56,10 +50,7 @@
       "description": "Sets whether the notion-enhancer icon added to Notion's sidebar should be coloured or monochrome. The latter style will match the theme's icon colour for users who would like the icon to be less noticeable.",
       "values": ["Colour", "Monochrome"]
     },
-    {
-      "type": "heading",
-      "label": "Experimental"
-    },
+    { "type": "heading", "label": "Experimental" },
     {
       "type": "toggle",
       "key": "draggableTabs",

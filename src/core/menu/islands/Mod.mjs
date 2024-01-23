@@ -28,7 +28,8 @@ function Mod({
     class="notion-enhancer--menu-mod flex items-stretch rounded-[4px]
     bg-[color:var(--theme--bg-secondary)] w-full py-[18px] px-[16px]
     border border-[color:var(--theme--fg-border)] cursor-pointer
-    transition duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]"
+    duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]
+    transition &+.notion-enhancer--menu-option:mt-[24px]"
   >
     ${thumbnail
       ? html`<img

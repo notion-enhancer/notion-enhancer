@@ -149,10 +149,7 @@ const renderMenu = async () => {
         </main>
       `;
     useState(["footerOpen"], ([footerOpen]) => {
-      $main.style.height = footerOpen ? "100%" : "calc(100% + 33px)";
-    });
-    useState(["transitionInProgress"], ([transitionInProgress]) => {
-      $main.children[0].style.overflow = transitionInProgress ? "hidden" : "";
+      $main.style.height = footerOpen ? "100%" : "calc(100% + 65px)";
     });
 
     const $skeleton = document.querySelector("#skeleton");

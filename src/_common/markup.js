@@ -587,8 +587,7 @@ const h = (type, props, ...children) => {
   },
   html = htm.bind(h);
 
-globalThis.__enhancerApi ??= {};
-Object.assign(globalThis.__enhancerApi, {
+Object.assign((globalThis.__enhancerApi ??= {}), {
   html,
   extendProps,
 });

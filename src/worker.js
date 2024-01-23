@@ -175,5 +175,4 @@ if (IS_ELECTRON) {
   });
 }
 
-globalThis.__enhancerApi ??= {};
-Object.assign(globalThis.__enhancerApi, { queryDatabase });
+Object.assign((globalThis.__enhancerApi ??= {}), { queryDatabase });

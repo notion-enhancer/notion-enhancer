@@ -22,8 +22,7 @@ module.exports = async ({}, db) => {
   setPreference("isDraggableTabsEnabled", draggableTabs);
 
   // enable developer mode, access extra debug tools
-  globalThis.__notionConfig ??= {};
-  Object.assign(globalThis.__notionConfig, {
+  Object.assign((globalThis.__notionConfig ??= {}), {
     env: developerMode ? "development" : "production",
   });
 

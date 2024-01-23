@@ -155,8 +155,7 @@ document.addEventListener("keydown", (event) => {
   handleKeypress(event, keydownListeners);
 });
 
-globalThis.__enhancerApi ??= {};
-Object.assign(globalThis.__enhancerApi, {
+Object.assign((globalThis.__enhancerApi ??= {}), {
   debounce,
   setState,
   useState,

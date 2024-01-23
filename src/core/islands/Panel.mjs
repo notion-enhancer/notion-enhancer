@@ -385,8 +385,7 @@ function Panel({
   return $panel;
 }
 
-globalThis.__enhancerApi ??= {};
-Object.assign(globalThis.__enhancerApi, {
+Object.assign((globalThis.__enhancerApi ??= {}), {
   addPanelView,
   removePanelView,
 });

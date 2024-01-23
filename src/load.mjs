@@ -7,10 +7,9 @@
 "use strict";
 
 export default (async () => {
-  if (globalThis.__getEnhancerApi) {
-    globalThis.__enhancerApi ??= {};
-    Object.assign(globalThis.__enhancerApi, globalThis.__getEnhancerApi());
-  }
+  Object.assign((globalThis.__enhancerApi ??= {}), {
+    ...(globalThis.__getEnhancerApi?.() ?? {}),
+  });
 
   // prettier-ignore
   const { enhancerUrl, platform } = globalThis.__enhancerApi,

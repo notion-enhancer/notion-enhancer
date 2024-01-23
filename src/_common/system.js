@@ -146,8 +146,7 @@ const initDatabase = (namespace, fallbacks = {}) => {
     } else sendMessage("notion-enhancer", "reload-app");
   };
 
-globalThis.__enhancerApi ??= {};
-Object.assign(globalThis.__enhancerApi, {
+Object.assign((globalThis.__enhancerApi ??= {}), {
   platform,
   version,
   enhancerUrl,

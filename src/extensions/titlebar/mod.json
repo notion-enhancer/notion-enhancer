@@ -1,0 +1,52 @@
+{
+  "id": "a5658d03-21c6-4088-bade-fa4780459133",
+  "name": "Titlebar",
+  "version": "0.11.1",
+  "environments": ["linux", "win32"],
+  "description": "Replaces the operating system's default window titlebar with buttons inset into the app.",
+  "thumbnail": "integrated-titlebar.jpg",
+  "tags": ["extension", "layout"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    }
+  ],
+  "options": [
+    {
+      "type": "select",
+      "key": "titlebarStyle",
+      "description": "The integrated titlebar replaces the operating system's default window titlebar with buttons inset into the app's interface. Tiling window manager users may choose to fully disable the titlebar instead.",
+      "values": ["Integrated", "Disabled"]
+    },
+    { "type": "heading", "label": "Icons" },
+    {
+      "type": "file",
+      "key": "minimizeIcon",
+      "description": "Replaces the default icon used for the integrated titlebar's maximize button with an uploaded .svg image.",
+      "extensions": ["svg"]
+    },
+    {
+      "type": "file",
+      "key": "maximizeIcon",
+      "description": "Replaces the default icon used for the integrated titlebar's maximize button with an uploaded .svg image.",
+      "extensions": ["svg"]
+    },
+    {
+      "type": "file",
+      "key": "unmaximizeIcon",
+      "description": "Replaces the default icon used for the integrated titlebar's maximize button with an uploaded .svg image.",
+      "extensions": ["svg"]
+    },
+    {
+      "type": "file",
+      "key": "closeIcon",
+      "description": "Replaces the default icon used for the integrated titlebar's maximize button with an uploaded .svg image.",
+      "extensions": ["svg"]
+    }
+  ],
+  "clientStyles": ["client.css"],
+  "clientScripts": ["client.mjs"],
+  "electronScripts": [[".webpack/main/index", "electron.cjs"]]
+}
