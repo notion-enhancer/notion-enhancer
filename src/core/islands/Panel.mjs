@@ -295,7 +295,7 @@ function Panel({
       if (!$notionHelp) return;
       width ??= await getWidth();
       if (isNaN(width)) width = minWidth;
-      if (isClosed()) width = 0;
+      if (!isPinned()) width = 0;
       const to = `${26 + width}px`,
         from = $notionHelp.style.getPropertyValue("right");
       if (from === to) return;
