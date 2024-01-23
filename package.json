@@ -35,7 +35,7 @@
     "notion-enhancer"
   ],
   "dependencies": {
-    "@electron/asar": "^3.2.7",
+    "@electron/asar": "^3.2.8",
     "arg": "^5.0.2",
     "chalk-template": "^1.1.0"
   }

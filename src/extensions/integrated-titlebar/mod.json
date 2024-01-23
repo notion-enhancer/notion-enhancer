@@ -1,8 +1,8 @@
 {
-  "name": "integrated titlebar",
+  "name": "Titlebar",
   "id": "a5658d03-21c6-4088-bade-fa4780459133",
   "environments": ["linux", "win32"],
-  "version": "0.11.0",
+  "version": "0.11.1",
   "description": "replaces the native window titlebar with buttons inset into the app.",
   "preview": "integrated-titlebar.jpg",
   "tags": ["extension", "layout"],
@@ -23,7 +23,9 @@
     "frame": ["frame.mjs"],
     "client": ["client.mjs"],
     "menu": ["menu.mjs"],
-    "electron": [{ "source": "createWindow.cjs", "target": "main/createWindow.js" }]
+    "electron": [
+      { "source": "createWindow.cjs", "target": "main/createWindow.js" }
+    ]
   },
   "options": [
     {

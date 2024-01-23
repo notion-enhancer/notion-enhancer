@@ -20,11 +20,11 @@
   },
   "options": [
     {
-      "type": "file",
-      "key": "insert.css",
-      "label": "css insert",
-      "tooltip": "**upload a css file that will be applied to the notion client**",
-      "extensions": [".css"]
+      "type": "toggle",
+      "key": "remember_last_open",
+      "label": "remember last open tabs",
+      "tooltip": "**a continue-where-you-left-off experience** (reopens recently active tabs after an app relaunch)",
+      "value": true
     },
     {
       "type": "number",
