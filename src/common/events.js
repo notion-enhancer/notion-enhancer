@@ -6,19 +6,28 @@
 
 "use strict";
 
-// convenient util: batch event handling
-// every ___ ms to avoid over-handling &
-// any conflicts / perf.issues that may
-// otherwise result. a wait time of ~200ms
-// is recommended (the avg. human visual
+// batch event callbacks to avoid over-handling
+// and any conflicts / perf.issues that may
+// otherwise result. initial call is immediate,
+// following calls are delayed. a wait time of
+// ~200ms is recommended (the avg. human visual
 // reaction time is ~180-200ms)
-const debounce = (callback, wait = 200) => {
-  let timeoutId;
-  return (...args) => {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => callback(...args), wait);
+const sleep = async (ms) => {
+    return new Promise((res, rej) => setTimeout(res, ms));
+  },
+  debounce = (callback, ms = 200) => {
+    let delay, update;
+    const next = () =>
+      sleep(ms).then(() => {
+        if (!update) return (delay = undefined);
+        update(), (update = undefined);
+        delay = next();
+      });
+    return (...args) => {
+      if (delay) update = callback.bind(this, ...args);
+      return delay || ((delay = next()), callback(...args));
+    };
   };
-};
 
 // provides basic key/value reactivity:
 // this is shared between all active mods,
@@ -156,6 +165,7 @@ document.addEventListener("keydown", (event) => {
 });
 
 Object.assign((globalThis.__enhancerApi ??= {}), {
+  sleep,
   debounce,
   setState,
   useState,

@@ -8,7 +8,7 @@
 
 import { Button } from "./Button.mjs";
 
-function Footer({ categories }) {
+function Footer({ categories, transitionDuration = 150 }) {
   const { html, setState, useState, reloadApp } = globalThis.__enhancerApi,
     $reload = html`<${Button}
       class="ml-auto"
@@ -33,12 +33,16 @@ function Footer({ categories }) {
 
   useState(["view"], ([view]) => {
     let [footerOpen] = useState(["databaseUpdated"]);
-    for (const [ids, $btn] of $categories) {
-      const modInCategory = ids.some((id) => id === view);
-      if (modInCategory) footerOpen = true;
-      $btn.style.display = modInCategory ? "" : "none";
-    }
+    footerOpen ||= $categories.some(([ids]) => ids.some((id) => id === view));
     setState({ footerOpen });
+    if (!footerOpen) return;
+
+    // only toggle buttons if footer is open,
+    // otherwise leave as is during transition
+    for (const [ids, $btn] of $categories) {
+      const viewInCategory = ids.some((id) => id === view);
+      $btn.style.display = viewInCategory ? "" : "none";
+    }
   });
   useState(["databaseUpdated"], ([databaseUpdated]) => {
     $reload.style.display = databaseUpdated ? "" : "none";
