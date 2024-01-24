@@ -19,11 +19,8 @@ if (isElectron()) {
   const { enhancerUrl } = globalThis.__enhancerApi,
     { getMods, isEnabled, modDatabase } = globalThis.__enhancerApi;
 
-  const mainScript = ".webpack/main/index",
-    rendererScript = ".webpack/renderer/tab_browser_view/preload";
-
   module.exports = async (target, __exports, __eval) => {
-    if (target === mainScript) require("./worker.js");
+    if (target === ".webpack/main/index") require("./worker.js");
     else {
       // expose globalThis.__enhancerApi to scripts
       const { contextBridge } = require("electron"),

@@ -1,7 +1,7 @@
 {
-  "id": "0f0bf8b6-eae6-4273-b307-8fc43f2ee082",
   "name": "notion-enhancer",
   "version": "0.11.1",
+  "id": "0f0bf8b6-eae6-4273-b307-8fc43f2ee082",
   "description": "an enhancer/customiser for the all-in-one productivity workspace notion.so",
   "tags": ["core"],
   "authors": [

@@ -87,15 +87,12 @@ function Panel({
   maxWidth = 640,
   transitionDuration = 300,
 }) {
-  const { html, useState, addKeyListener } = globalThis.__enhancerApi,
+  const { modDatabase, isEnabled } = globalThis.__enhancerApi,
+    { html, useState, addKeyListener } = globalThis.__enhancerApi,
     { addMutationListener, removeMutationListener } = globalThis.__enhancerApi,
-    $topbarToggle = html`<${TopbarButton}
-      aria-label="Toggle side panel"
-      icon="panel-right"
-    />`,
     $panelToggle = html`<button
       aria-label="Toggle side panel"
-      class="user-select-none h-[24px] w-[24px] duration-[20ms]
+      class="select-none h-[24px] w-[24px] duration-[20ms]
       transition inline-flex items-center justify-center mr-[10px]
       rounded-[3px] hover:bg-[color:var(--theme--bg-hover)]"
     >
@@ -139,15 +136,30 @@ function Panel({
         <${View} ...${{ _get: _getView }} />
       </aside>
     </div>`;
-  $panelToggle.onclick = $topbarToggle.onclick = () => $panel.toggle();
 
-  const topbarFavorite = ".notion-topbar-favorite-button",
+  const topbarId = "e0700ce3-a9ae-45f5-92e5-610ded0e348d",
+    topbarFavorite = ".notion-topbar-favorite-button",
+    $topbarToggle = html`<${TopbarButton}
+      aria-label="Toggle side panel"
+      icon="panel-right"
+    />`,
     addToTopbar = () => {
       if (document.contains($topbarToggle)) return;
       document.querySelector(topbarFavorite)?.after($topbarToggle);
     };
+  $panelToggle.onclick = $topbarToggle.onclick = () => $panel.toggle();
   addMutationListener(topbarFavorite, addToTopbar);
   addToTopbar(topbarFavorite);
+
+  isEnabled(topbarId).then(async (topbarEnabled) => {
+    if (!topbarEnabled) return;
+    const topbarDatabase = await modDatabase(topbarId),
+      panelButton = await topbarDatabase.get("panelButton"),
+      panelIcon = await topbarDatabase.get("panelIcon");
+    if (panelButton === "Text") {
+      $topbarToggle.innerHTML = `<span>${$topbarToggle.ariaLabel}</span>`;
+    } else if (panelIcon.content) $topbarToggle.innerHTML = panelIcon.content;
+  });
 
   let preDragWidth, dragStartX, _animatedAt;
   const getWidth = async (width) => {

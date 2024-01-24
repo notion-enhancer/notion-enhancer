@@ -1,11 +1,10 @@
 {
-  "id": "a5658d03-21c6-4088-bade-fa4780459133",
   "name": "Titlebar",
   "version": "0.11.1",
-  "platforms": ["linux", "win32"],
+  "id": "a5658d03-21c6-4088-bade-fa4780459133",
   "description": "Replaces the operating system's default window titlebar with buttons inset into the app.",
   "thumbnail": "integrated-titlebar.jpg",
-  "tags": ["extension", "layout"],
+  "platforms": ["linux", "win32"],
   "authors": [
     {
       "name": "dragonwocky",
@@ -24,25 +23,25 @@
     {
       "type": "file",
       "key": "minimizeIcon",
-      "description": "Replaces the default icon used for the integrated titlebar's maximize button with an uploaded .svg image.",
+      "description": "Replaces the icon used for the integrated titlebar's maximize button with the uploaded .svg image.",
       "extensions": ["svg"]
     },
     {
       "type": "file",
       "key": "maximizeIcon",
-      "description": "Replaces the default icon used for the integrated titlebar's maximize button with an uploaded .svg image.",
+      "description": "Replaces the icon used for the integrated titlebar's maximize button with the uploaded .svg image.",
       "extensions": ["svg"]
     },
     {
       "type": "file",
       "key": "unmaximizeIcon",
-      "description": "Replaces the default icon used for the integrated titlebar's maximize button with an uploaded .svg image.",
+      "description": "Replaces the icon used for the integrated titlebar's maximize button with the uploaded .svg image.",
       "extensions": ["svg"]
     },
     {
       "type": "file",
       "key": "closeIcon",
-      "description": "Replaces the default icon used for the integrated titlebar's maximize button with an uploaded .svg image.",
+      "description": "Replaces the icon used for the integrated titlebar's maximize button with the uploaded .svg image.",
       "extensions": ["svg"]
     }
   ],

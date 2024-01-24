@@ -15,7 +15,10 @@ export default async (api, db) => {
   const { onMessage, addMutationListener } = api,
     $buttons = await createWindowButtons(),
     topbarMore = ".notion-topbar-more-button",
-    addToTopbar = () => document.querySelector(topbarMore)?.after($buttons),
+    addToTopbar = () => {
+      if (document.contains($buttons)) return;
+      document.querySelector(topbarMore)?.after($buttons)
+    },
     showIfNoTabBar = async () => {
       const { isShowingTabBar } = await __electronApi.electronAppFeatures.get();
       $buttons.style.display = isShowingTabBar ? "none" : "";

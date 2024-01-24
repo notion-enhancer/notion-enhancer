@@ -95,6 +95,7 @@ twind.install({
     ["siblings", "&~*"],
     ["sibling", "&+*"],
     [/^&/, (match) => match.input],
+    [/^has-\[([^\]]+)\]/, (match) => `&:has(${match[1]})`],
   ],
 });
 
@@ -552,7 +553,11 @@ const h = (type, props, ...children) => {
       : document.createElement(type);
     for (const prop in props ?? {}) {
       if (typeof props[prop] === "undefined") continue;
-      if (htmlAttributes.includes(prop) || prop.startsWith("data-")) {
+      const isAttr =
+        htmlAttributes.includes(prop) ||
+        prop.startsWith("data-") ||
+        prop.startsWith("aria-");
+      if (isAttr) {
         if (typeof props[prop] === "boolean") {
           if (!props[prop]) continue;
           elem.setAttribute(prop, "");

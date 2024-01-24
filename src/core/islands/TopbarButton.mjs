@@ -13,9 +13,10 @@ function TopbarButton({ icon, ...props }, ...children) {
     role: "button",
     class: `notion-enhancer--topbar-button
     text-[color:var(--theme--fg-primary)] mr-[2px]
-    user-select-none h-[28px] w-[33px] duration-[20ms]
+    select-none h-[28px] w-[33px] duration-[20ms]
     transition inline-flex items-center justify-center
     rounded-[3px] hover:bg-[color:var(--theme--bg-hover)]
+    has-[span]:w-auto &>span:(text-[14px] leading-[1.2] px-[8px])
     &[data-active]:bg-[color:var(--theme--bg-hover)]`,
   });
 

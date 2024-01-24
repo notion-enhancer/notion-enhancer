@@ -38,10 +38,10 @@ function Tooltip(props, ...children) {
       if (typeof x === "function") x = x();
       if (typeof y === "function") y = y();
       if (x < edgePadding) x = $tooltip.clientWidth + edgePadding;
-      if (x + $tooltip.clientWidth > clientWidth + edgePadding)
+      if (x + $tooltip.clientWidth > clientWidth - edgePadding)
         x = clientWidth - $tooltip.clientWidth - edgePadding;
       if (y < edgePadding) y = $tooltip.clientHeight + edgePadding;
-      if (y + $tooltip.clientHeight > clientHeight + edgePadding)
+      if (y + $tooltip.clientHeight > clientHeight - edgePadding)
         y = clientHeight - $tooltip.clientHeight - edgePadding;
       $tooltip.style.left = `${x}px`;
       $tooltip.style.top = `${y}px`;

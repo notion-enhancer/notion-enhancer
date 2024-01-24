@@ -1,0 +1,123 @@
+{
+  "name": "Topbar",
+  "version": "0.4.0",
+  "id": "e0700ce3-a9ae-45f5-92e5-610ded0e348d",
+  "description": "Customise the Notion interface's topbar and add an always on top toggle to the window on desktop.",
+  "thumbnail": "topbar-icons.jpg",
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    },
+    {
+      "name": "CloudHill",
+      "homepage": "https://github.com/CloudHill",
+      "avatar": "https://avatars.githubusercontent.com/u/54142180"
+    }
+  ],
+  "options": [
+    { "type": "heading", "label": "Share" },
+    {
+      "type": "select",
+      "key": "shareButton",
+      "description": "Configures how the share button in the Notion topbar is displayed.",
+      "values": ["Text", "Icon", "Disabled"]
+    },
+    {
+      "type": "file",
+      "key": "shareIcon",
+      "description": "Replaces the icon used for the share button with the uploaded .svg image.",
+      "extensions": ["svg"]
+    },
+    { "type": "heading", "label": "Comments" },
+    {
+      "type": "select",
+      "key": "commentsButton",
+      "description": "Configures how the comments button in the Notion topbar is displayed.",
+      "values": ["Icon", "Text", "Disabled"]
+    },
+    {
+      "type": "file",
+      "key": "commentsIcon",
+      "description": "Replaces the icon used for the comments button with the uploaded .svg image.",
+      "extensions": ["svg"]
+    },
+    { "type": "heading", "label": "Updates" },
+    {
+      "type": "select",
+      "key": "updatesButton",
+      "description": "Configures how the updates button in the Notion topbar is displayed.",
+      "values": ["Icon", "Text", "Disabled"]
+    },
+    {
+      "type": "file",
+      "key": "updatesIcon",
+      "description": "Replaces the icon used for the updates button with the uploaded .svg image.",
+      "extensions": ["svg"]
+    },
+    { "type": "heading", "label": "Favorite" },
+    {
+      "type": "select",
+      "key": "favoriteButton",
+      "description": "Configures how the favorite button in the Notion topbar is displayed.",
+      "values": ["Icon", "Text", "Disabled"]
+    },
+    {
+      "type": "file",
+      "key": "favoriteIcon",
+      "description": "Replaces the icon used for the favorite button with the uploaded .svg image.",
+      "extensions": ["svg"]
+    },
+    { "type": "heading", "label": "Always on Top" },
+    {
+      "type": "select",
+      "key": "alwaysOnTopButton",
+      "description": "Adds a button to the topbar that can be used to pin the Notion window above all other windows regardless of which window currently has focus.",
+      "platforms": ["linux", "win32", "darwin"],
+      "values": ["Icon", "Text", "Disabled"]
+    },
+    {
+      "type": "file",
+      "key": "pinIcon",
+      "description": "Replaces the icon used for the always on top pin button with the uploaded .svg image.",
+      "platforms": ["linux", "win32", "darwin"],
+      "extensions": ["svg"]
+    },
+    {
+      "type": "file",
+      "key": "unpinIcon",
+      "description": "Replaces the icon used for the always on top unpin button with the uploaded .svg image.",
+      "platforms": ["linux", "win32", "darwin"],
+      "extensions": ["svg"]
+    },
+    { "type": "heading", "label": "Panel" },
+    {
+      "type": "select",
+      "key": "panelButton",
+      "description": "This button activates an additional sidebar on the right-hand side of the screen and will appear in the topbar only if an extension is enabled that displays information through this panel (e.g. the Outliner).",
+      "values": ["Icon", "Text"]
+    },
+    {
+      "type": "file",
+      "key": "panelIcon",
+      "description": "Replaces the icon used for the panel button with the uploaded .svg image.",
+      "extensions": ["svg"]
+    },
+    { "type": "heading", "label": "More" },
+    {
+      "type": "select",
+      "key": "moreButton",
+      "description": "Configures how the more button in the Notion topbar is displayed.",
+      "values": ["Icon", "Text", "Disabled"]
+    },
+    {
+      "type": "file",
+      "key": "moreIcon",
+      "description": "Replaces the icon used for the more button with the uploaded .svg image.",
+      "extensions": ["svg"]
+    }
+  ],
+  "clientScripts": ["client.mjs"],
+  "electronScripts": [[".webpack/main/index", "electron.cjs"]]
+}
