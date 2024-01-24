@@ -20,7 +20,7 @@ function TopbarButton({ icon, ...props }, ...children) {
   });
 
   return html`<button ...${props}>
-    ${children.length
+    ${props.innerHTML || children.length
       ? children
       : html`<i class="i-${icon} w-[20px] h-[20px]" />`}
   </button>`;

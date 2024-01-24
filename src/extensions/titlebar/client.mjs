@@ -8,9 +8,12 @@
 
 import { createWindowButtons } from "./buttons.mjs";
 
-export default (api, db) => {
+export default async (api, db) => {
+  const titlebarStyle = await db.get("titlebarStyle");
+  if (titlebarStyle === "Disabled") return;
+
   const { onMessage, addMutationListener } = api,
-    $buttons = createWindowButtons(),
+    $buttons = await createWindowButtons(),
     topbarMore = ".notion-topbar-more-button",
     addToTopbar = () => document.querySelector(topbarMore)?.after($buttons),
     showIfNoTabBar = async () => {

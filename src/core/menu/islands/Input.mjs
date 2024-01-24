@@ -92,7 +92,7 @@ function Input({
     $clear = html`<button
       style="display: none"
       class="h-[14px] transition duration-[20ms]
-      text-[color:var(--theme--fg-secondary)]
+      flex text-[color:var(--theme--fg-secondary)]
       hover:text-[color:var(--theme--fg-primary)]"
       onclick=${() => _set?.({ filename: "", content: "" })}
     >
