@@ -6,19 +6,12 @@
 
 "use strict";
 
-globalThis.__enhancerApi ??= {};
-const whenReady = new Promise((res, rej) => {
-    globalThis.__enhancerApi.__isReady = res;
-  }),
-  isElectron = () => {
-    try {
-      return typeof module !== "undefined";
-    } catch {}
-    return false;
-  };
-Object.assign((globalThis.__enhancerApi ??= {}), {
-  whenReady: (callback) => whenReady.then(callback),
-});
+const isElectron = () => {
+  try {
+    return typeof module !== "undefined";
+  } catch {}
+  return false;
+};
 
 if (isElectron()) {
   require("./common/system.js");
