@@ -16,8 +16,7 @@ function Footer({ categories, transitionDuration = 150 }) {
       icon="refresh-cw"
       onclick=${reloadApp}
       style="display: none"
-    >
-      Reload & Apply Changes
+      >Reload & Apply Changes
     <//>`,
     $categories = categories.map(({ id, title, mods }) => {
       return [
@@ -25,8 +24,7 @@ function Footer({ categories, transitionDuration = 150 }) {
         html`<${Button}
           icon="chevron-left"
           onclick=${() => setState({ transition: "slide-to-left", view: id })}
-        >
-          ${title}
+          >${title}
         <//>`,
       ];
     });
@@ -35,18 +33,20 @@ function Footer({ categories, transitionDuration = 150 }) {
     let [footerOpen] = useState(["databaseUpdated"]);
     footerOpen ||= $categories.some(([ids]) => ids.some((id) => id === view));
     setState({ footerOpen });
-    if (!footerOpen) return;
-
-    // only toggle buttons if footer is open,
-    // otherwise leave as is during transition
-    for (const [ids, $btn] of $categories) {
-      const viewInCategory = ids.some((id) => id === view);
-      $btn.style.display = viewInCategory ? "" : "none";
-    }
   });
   useState(["databaseUpdated"], ([databaseUpdated]) => {
     $reload.style.display = databaseUpdated ? "" : "none";
     if (databaseUpdated) setState({ footerOpen: true });
+  });
+  useState(["footerOpen"], ([footerOpen]) => {
+    // only toggle buttons if footer is open,
+    // otherwise leave as is during transition
+    if (!footerOpen) return;
+    const [view] = useState(["view"]);
+    for (const [ids, $btn] of $categories) {
+      const viewInCategory = ids.some((id) => id === view);
+      $btn.style.display = viewInCategory ? "" : "none";
+    }
   });
 
   return html`<footer

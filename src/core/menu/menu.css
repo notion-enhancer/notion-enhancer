@@ -51,7 +51,7 @@ body {
 }
 
 body > #skeleton {
-  background: var(--theme--bg-secondary);
+  background: rgba(86, 86, 86, 0.1);
 }
 body > #skeleton .row {
   display: flex;
@@ -64,7 +64,7 @@ body > #skeleton .shimmer {
   overflow: hidden;
   position: relative;
   border-radius: 4px;
-  background: var(--theme--bg-hover);
+  background: rgba(86, 86, 86, 0.1);
 }
 body > #skeleton .shimmer.icon {
   margin-left: 1px;
@@ -82,7 +82,7 @@ body > #skeleton .shimmer::before {
   background: linear-gradient(
     90deg,
     transparent 0,
-    var(--theme--bg-hover) 50%,
+    rgba(86, 86, 86, 0.1) 50%,
     transparent 100%
   );
 }
