@@ -1,42 +1,40 @@
 {
-  "name": "scroll to top",
+  "name": "Scroll To Top",
+  "version": "0.4.0",
   "id": "0a958f5a-17c5-48b5-8713-16190cae1959",
-  "version": "0.3.0",
-  "description": "adds an arrow in the bottom right corner to scroll back to the top of a page.",
-  "preview": "scroll-to-top.png",
-  "tags": ["extension", "shortcut"],
+  "description": "Adds an arrow in the bottom right corner of the screen for scrolling back to the top of the current page.",
+  "thumbnail": "scroll-to-top.png",
   "authors": [
     {
+      "name": "dragonwocky",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    },
+    {
       "name": "CloudHill",
-      "email": "rh.cloudhill@gmail.com",
       "homepage": "https://github.com/CloudHill",
       "avatar": "https://avatars.githubusercontent.com/u/54142180"
     }
   ],
-  "css": {},
-  "js": {
-    "client": ["client.mjs"]
-  },
   "options": [
     {
       "type": "toggle",
-      "key": "smooth",
-      "label": "smooth scrolling",
+      "key": "smoothScrolling",
+      "description": "Animates the return to the top of the page smoothly. Disable this to jump instantly to the top of the page when clicking the scroll to top button.",
       "value": true
     },
     {
       "type": "number",
-      "key": "top_distance_px",
-      "label": "distance scrolled until button shown (px)",
-      "tooltip": "**the distance in pixels that must be scrolled down before the button appears**",
-      "value": 5000
+      "key": "distanceScrolledUntilShown",
+      "description": "How far down a page you must be scrolled for the scroll to top button to appear.",
+      "value": 50
     },
     {
-      "type": "number",
-      "key": "top_distance_percent",
-      "label": "distance scrolled until button shown (%)",
-      "tooltip": "**the percentage of the page that must be scrolled down before the button appears**",
-      "value": 80
+      "type": "select",
+      "key": "scrollDistanceUnits",
+      "description": "The unit to measure the above distance in, e.g. you may wish the button to appear at 90% down any page or only on pages that scroll down further than a certain number of pixels.",
+      "values": ["Percent", "Pixels"]
     }
-  ]
+  ],
+  "clientScripts": ["client.mjs"]
 }

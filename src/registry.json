@@ -1,1 +1,7 @@
-["core", "extensions/titlebar", "extensions/topbar", "themes/classic-dark"]
+[
+  "core",
+  "extensions/titlebar",
+  "extensions/topbar",
+  "extensions/scroll-to-top",
+  "themes/classic-dark"
+]
