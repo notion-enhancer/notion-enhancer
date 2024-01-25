@@ -144,7 +144,7 @@ function Panel({
       icon="panel-right"
     />`,
     addToTopbar = () => {
-      if (document.contains($topbarToggle)) return;
+      if (document.contains($topbarToggle)) removeMutationListener(addToTopbar);
       document.querySelector(topbarFavorite)?.after($topbarToggle);
     };
   $panelToggle.onclick = $topbarToggle.onclick = () => $panel.toggle();
@@ -158,7 +158,7 @@ function Panel({
       panelIcon = await topbarDatabase.get("panelIcon");
     if (panelButton === "Text") {
       $topbarToggle.innerHTML = `<span>${$topbarToggle.ariaLabel}</span>`;
-    } else if (panelIcon.content) $topbarToggle.innerHTML = panelIcon.content;
+    } else if (panelIcon?.content) $topbarToggle.innerHTML = panelIcon.content;
   });
 
   let preDragWidth, dragStartX, _animatedAt;

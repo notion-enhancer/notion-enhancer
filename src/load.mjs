@@ -43,6 +43,7 @@ export default (async () => {
   // their local states will be cleared (e.g.,
   // references to registered hotkeys)
 
+  const _state = globalThis.__enhancerApi?.dumpState?.();
   await Promise.all([
     // i.e. if (not_menu) or (is_menu && not_electron), then import
     !(!IS_MENU || !IS_ELECTRON) || import(enhancerUrl("assets/icons.svg.js")),
@@ -55,6 +56,10 @@ export default (async () => {
     import(enhancerUrl("common/events.js")),
     import(enhancerUrl("common/markup.js")),
   ]);
+  // copy across state from prev. module imports if
+  // useState / setState are called early, otherwise
+  // e.g. menu will not persist theme from initial msg
+  globalThis.__enhancerApi.setState(_state ?? {});
 
   const { getMods, isEnabled, modDatabase } = globalThis.__enhancerApi;
   for (const mod of await getMods()) {

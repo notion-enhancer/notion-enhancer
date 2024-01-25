@@ -7,7 +7,7 @@
 "use strict";
 
 function TopbarButton({ icon, ...props }, ...children) {
-  const { html, extendProps, addMutationListener } = globalThis.__enhancerApi;
+  const { html, extendProps } = globalThis.__enhancerApi;
   extendProps(props, {
     tabindex: 0,
     role: "button",

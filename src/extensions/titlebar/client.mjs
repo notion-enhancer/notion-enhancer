@@ -12,12 +12,12 @@ export default async (api, db) => {
   const titlebarStyle = await db.get("titlebarStyle");
   if (titlebarStyle === "Disabled") return;
 
-  const { onMessage, addMutationListener } = api,
+  const { onMessage, addMutationListener, removeMutationListener } = api,
     $buttons = await createWindowButtons(),
     topbarMore = ".notion-topbar-more-button",
     addToTopbar = () => {
-      if (document.contains($buttons)) return;
-      document.querySelector(topbarMore)?.after($buttons)
+      if (document.contains($buttons)) removeMutationListener(addToTopbar);
+      document.querySelector(topbarMore)?.after($buttons);
     },
     showIfNoTabBar = async () => {
       const { isShowingTabBar } = await __electronApi.electronAppFeatures.get();

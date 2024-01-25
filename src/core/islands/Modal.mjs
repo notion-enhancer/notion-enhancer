@@ -38,11 +38,10 @@ function Modal(props, ...children) {
       await new Promise(requestAnimationFrame);
     }
     $modal.setAttribute("open", "");
-    $modal.onopen?.();
+    setTimeout(() => $modal.onopen?.(), 200);
   };
   $modal.close = () => {
     _openQueued = false;
-    $modal.onbeforeclose?.();
     $modal.removeAttribute("open");
     if ($modal.contains(document.activeElement)) {
       document.activeElement.blur();

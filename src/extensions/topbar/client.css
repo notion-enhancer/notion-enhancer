@@ -1,0 +1,28 @@
+/**
+ * notion-enhancer: topbar
+ * (c) 2024 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (https://notion-enhancer.github.io/) under the MIT license
+ */
+
+/* overflow topbar to the left when comments & updates sidebars are open */
+.notion-topbar-action-buttons {
+  flex-direction: row-reverse;
+}
+.notion-topbar-action-buttons > div {
+  flex-wrap: nowrap;
+}
+.notion-topbar-action-buttons > :nth-child(1) {
+  order: 2;
+}
+
+/* position comments & updates sidebars below topbar */
+.notion-cursor-listener
+  aside[style*="align-self: flex-end"][style*="height: 100vh"] {
+  height: calc(100vh - 45px) !important;
+  top: 45px !important;
+}
+.notion-cursor-listener
+  aside[style*="align-self: flex-end"][style*="height: 100vh"]
+  [style*="margin-top: 45px"] {
+  margin-top: 0 !important;
+}

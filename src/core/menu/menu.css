@@ -58,7 +58,8 @@ body > #skeleton .row {
   display: flex;
   align-items: center;
   padding: 0 15px;
-  height: 30px;
+  margin: 2px 0;
+  height: 27px;
 }
 body > #skeleton .shimmer {
   height: 14px;
@@ -88,7 +89,7 @@ body > #skeleton .shimmer::before {
   );
 }
 body > #skeleton .row-group {
-  height: 21px;
+  height: 24px;
   margin-top: 18px;
 }
 body > #skeleton .row-group:first-child {

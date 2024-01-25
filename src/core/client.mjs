@@ -11,6 +11,7 @@ import { sendTelemetryPing } from "./sendTelemetry.mjs";
 import { Modal, Frame } from "./islands/Modal.mjs";
 import { MenuButton } from "./islands/MenuButton.mjs";
 import { TopbarButton } from "./islands/TopbarButton.mjs";
+import { Tooltip } from "./islands/Tooltip.mjs";
 import { Panel } from "./islands/Panel.mjs";
 
 const shouldLoadThemeOverrides = async (api, db) => {
@@ -45,8 +46,8 @@ const shouldLoadThemeOverrides = async (api, db) => {
 const insertMenu = async (api, db) => {
   const notionSidebar = `.notion-sidebar-container .notion-sidebar > :nth-child(3) > div > :nth-child(2)`,
     notionSettingsAndMembers = `${notionSidebar} > [role="button"]:nth-child(3)`,
-    { html, addKeyListener, addMutationListener } = api,
-    { platform, enhancerUrl, onMessage } = api,
+    { html, addMutationListener, removeMutationListener } = api,
+    { addKeyListener, platform, enhancerUrl, onMessage } = api,
     menuButtonIconStyle = await db.get("menuButtonIconStyle"),
     openMenuHotkey = await db.get("openMenuHotkey"),
     menuPing = {
@@ -59,19 +60,11 @@ const insertMenu = async (api, db) => {
   const updateMenuTheme = () => {
       const darkMode = document.body.classList.contains("dark"),
         notionTheme = darkMode ? "dark" : "light";
-      if (menuPing.theme === notionTheme) return;
       menuPing.theme = notionTheme;
       _contentWindow?.postMessage?.(menuPing, "*");
-    },
-    triggerMenuRender = (contentWindow) => {
-      _contentWindow ??= contentWindow;
-      if (!$modal.hasAttribute("open")) return;
-      _contentWindow?.focus?.();
-      delete menuPing.theme;
-      updateMenuTheme();
     };
 
-  const $modal = html`<${Modal} onopen=${triggerMenuRender}>
+  const $modal = html`<${Modal}>
       <${Frame}
         title="notion-enhancer menu"
         src="${enhancerUrl("core/menu/index.html")}"
@@ -81,7 +74,8 @@ const insertMenu = async (api, db) => {
             const apiKey = "__enhancerApi";
             this.contentWindow[apiKey] = globalThis[apiKey];
           }
-          triggerMenuRender(this.contentWindow);
+          _contentWindow = this.contentWindow;
+          updateMenuTheme();
         }}
       />
     <//>`,
@@ -95,12 +89,17 @@ const insertMenu = async (api, db) => {
       >notion-enhancer
     <//>`;
   const appendToDom = () => {
-    if (!document.contains($modal)) document.body.append($modal);
-    if (!document.querySelector(notionSidebar)?.contains($button))
-      document.querySelector(notionSettingsAndMembers)?.after($button);
+    const $settings = document.querySelector(notionSettingsAndMembers);
+    document.body.append($modal);
+    $settings?.after($button);
+    const appended = document.contains($modal) && document.contains($button);
+    if (appended) removeMutationListener(appendToDom);
   };
+  html`<${Tooltip}>
+    <b>Configure the notion-enhancer and its mods</b>
+  <//>`.attach($button, "right");
   addMutationListener(notionSidebar, appendToDom);
-  addMutationListener("body", updateMenuTheme);
+  addMutationListener(".notion-app-inner", updateMenuTheme, true);
   appendToDom();
 
   addKeyListener(openMenuHotkey, (event) => {
@@ -108,7 +107,6 @@ const insertMenu = async (api, db) => {
     event.stopPropagation();
     $modal.open();
   });
-  window.addEventListener("focus", triggerMenuRender);
   window.addEventListener("message", (event) => {
     // from embedded menu
     if (event.data?.channel !== "notion-enhancer") return;
@@ -124,8 +122,8 @@ const insertMenu = async (api, db) => {
 const insertPanel = async (api, db) => {
   const notionFrame = ".notion-frame",
     togglePanelHotkey = await db.get("togglePanelHotkey"),
-    { addPanelView, addMutationListener } = api,
-    { html, setState } = api;
+    { addMutationListener, removeMutationListener } = api,
+    { html, setState, addPanelView } = api;
 
   const $panel = html`<${Panel}
       hotkey="${togglePanelHotkey}"
@@ -142,9 +140,9 @@ const insertPanel = async (api, db) => {
     appendToDom = () => {
       const $frame = document.querySelector(notionFrame);
       if (!$frame) return;
-      if (!$frame.contains($panel)) $frame.append($panel);
-      if (!$frame.style.flexDirection !== "row")
-        $frame.style.flexDirection = "row";
+      $frame.append($panel);
+      $frame.style.flexDirection = "row";
+      removeMutationListener(appendToDom);
     };
   addMutationListener(notionFrame, appendToDom);
   appendToDom();

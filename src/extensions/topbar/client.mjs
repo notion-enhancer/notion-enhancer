@@ -16,7 +16,8 @@ const pinLabel = "Pin always on top",
   unpinTooltip = "Unpin window from always on top";
 
 export default async function (api, db) {
-  const { html, sendMessage, addMutationListener } = api,
+  const { html, sendMessage } = api,
+    { addMutationListener, removeMutationListener } = api,
     displayLabel = ($btn) => {
       if ($btn.innerHTML === $btn.ariaLabel) return;
       $btn.style.width = "auto";
@@ -42,7 +43,8 @@ export default async function (api, db) {
     let icon = shareIcon?.content;
     icon ??= `<i class="i-share2 w-[20px] h-[20px]"></i>`;
     if (shareButton === "Icon") displayIcon($btn, icon);
-    if (shareButton === "Disabled") $btn.style.display = "none";
+    if (shareButton === "Disabled" && $btn.style.display !== "none")
+      $btn.style.display = "none";
   });
 
   const commentsSelector = ".notion-topbar-comments-button",
@@ -53,7 +55,8 @@ export default async function (api, db) {
       icon = commentsIcon?.content;
     if (commentsButton === "Text") displayLabel($btn);
     if (commentsButton === "Icon" && icon) displayIcon($btn, icon);
-    if (commentsButton === "Disabled") $btn.style.display = "none";
+    if (commentsButton === "Disabled" && $btn.style.display !== "none")
+      $btn.style.display = "none";
   });
 
   const updatesSelector = ".notion-topbar-updates-button",
@@ -64,7 +67,8 @@ export default async function (api, db) {
       icon = updatesIcon?.content;
     if (updatesButton === "Text") displayLabel($btn);
     if (updatesButton === "Icon" && icon) displayIcon($btn, icon);
-    if (updatesButton === "Disabled") $btn.style.display = "none";
+    if (updatesButton === "Disabled" && $btn.style.display !== "none")
+      $btn.style.display = "none";
   });
 
   const favoriteSelector = ".notion-topbar-favorite-button",
@@ -75,7 +79,8 @@ export default async function (api, db) {
       icon = favoriteIcon?.content;
     if (favoriteButton === "Text") displayLabel($btn);
     if (favoriteButton === "Icon" && icon) displayIcon($btn, icon);
-    if (favoriteButton === "Disabled") $btn.style.display = "none";
+    if (favoriteButton === "Disabled" && $btn.style.display !== "none")
+      $btn.style.display = "none";
   });
 
   const moreSelector = ".notion-topbar-more-button",
@@ -87,7 +92,8 @@ export default async function (api, db) {
     $btn.ariaLabel = "More";
     if (moreButton === "Text") displayLabel($btn);
     if (moreButton === "Icon" && icon) displayIcon($btn, icon);
-    if (moreButton === "Disabled") $btn.style.display = "none";
+    if (moreButton === "Disabled" && $btn.style.display !== "none")
+      $btn.style.display = "none";
   });
 
   const alwaysOnTopButton = await db.get("alwaysOnTopButton");
@@ -122,8 +128,10 @@ export default async function (api, db) {
       icon="pin-off"
     />`,
     addToTopbar = () => {
-      if (document.contains($pin) && document.contains($unpin)) return;
-      document.querySelector(topbarFavorite)?.after($pin, $unpin);
+      const $topbarFavorite = document.querySelector(topbarFavorite);
+      if (!$topbarFavorite) return;
+      $topbarFavorite.after($pin, $unpin);
+      removeMutationListener(addToTopbar);
     };
   html`<${Tooltip}><b>${pinTooltip}</b><//>`.attach($pin, "bottom");
   html`<${Tooltip}><b>${unpinTooltip}</b><//>`.attach($unpin, "bottom");

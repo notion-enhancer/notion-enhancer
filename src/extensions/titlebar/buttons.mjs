@@ -63,7 +63,7 @@ const createWindowButtons = async () => {
   window.addEventListener("resize", resizeWindow);
   resizeWindow();
 
-  return html`<div>${$minimize}${$maximize}${$unmaximize}${$close}</div>`;
+  return html`<div class="flex flex-nowrap">${$minimize}${$maximize}${$unmaximize}${$close}</div>`;
 };
 
 if (globalThis.IS_TABS) {

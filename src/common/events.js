@@ -58,30 +58,36 @@ const _state = {},
       callback(state);
     }
     return state;
-  };
+  },
+  dumpState = () => _state;
 
 let documentObserver,
   mutationListeners = [];
 const mutationQueue = [],
-  addMutationListener = (selector, callback) => {
-    mutationListeners.push([selector, callback]);
+  addMutationListener = (selector, callback, attributesOnly = false) => {
+    mutationListeners.push([selector, callback, attributesOnly]);
   },
   removeMutationListener = (callback) => {
     mutationListeners = mutationListeners.filter(([, c]) => c !== callback);
   },
-  onSelectorMutated = (mutation, selector) =>
-    mutation.target?.matches(`${selector}, ${selector} *`) ||
-    [...(mutation.addedNodes || [])].some(
-      (node) =>
-        node instanceof HTMLElement &&
-        (node?.matches(`${selector}, ${selector} *`) ||
-          node?.querySelector(selector))
-    ),
+  selectorMutated = (mutation, selector, attributesOnly) => {
+    const matchesTarget = mutation.target?.matches(selector);
+    if (attributesOnly) return matchesTarget;
+    const descendsFromTarget = mutation.target?.matches(`${selector} *`),
+      addedToTarget = [...(mutation.addedNodes || [])].some(
+        (node) =>
+          node instanceof HTMLElement &&
+          (node?.matches(`${selector}, ${selector} *`) ||
+            node?.querySelector(selector))
+      );
+    return matchesTarget || descendsFromTarget || addedToTarget;
+  },
   handleMutations = () => {
     while (mutationQueue.length) {
       const mutation = mutationQueue.shift();
-      for (const [selector, callback] of mutationListeners) {
-        if (onSelectorMutated(mutation, selector)) callback(mutation);
+      for (const [selector, callback, attributesOnly] of mutationListeners) {
+        const matches = selectorMutated(mutation, selector, attributesOnly);
+        if (matches) callback(mutation);
       }
     }
   },
@@ -169,6 +175,7 @@ Object.assign((globalThis.__enhancerApi ??= {}), {
   debounce,
   setState,
   useState,
+  dumpState,
   addMutationListener,
   removeMutationListener,
   addKeyListener,

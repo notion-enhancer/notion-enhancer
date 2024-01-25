@@ -118,6 +118,7 @@
       "extensions": ["svg"]
     }
   ],
+  "clientStyles": ["client.css"],
   "clientScripts": ["client.mjs"],
   "electronScripts": [[".webpack/main/index", "electron.cjs"]]
 }

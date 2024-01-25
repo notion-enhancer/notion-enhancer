@@ -126,7 +126,10 @@ const renderMenu = async () => {
         categories=${categories}
       />`,
       $main = html`
-        <main class="flex-(& col) overflow-hidden transition-[height]" style="height: calc(100% + 65px)">
+        <main
+          class="flex-(& col) overflow-hidden transition-[height]"
+          style="height: calc(100% + 65px)"
+        >
           <!-- wrappers necessary for transitions and breakpoints -->
           <div class="grow overflow-auto">
             <div class="relative h-full w-full">
@@ -197,19 +200,14 @@ const importApi = () => {
     useState(["rerender"], renderMenu);
   };
 
-window.addEventListener("focus", async () => {
-  await importApi().then(hookIntoState);
-  const { setState } = globalThis.__enhancerApi;
-  setState({ focus: true, rerender: true });
-});
 window.addEventListener("message", async (event) => {
   if (event.data?.channel !== "notion-enhancer") return;
   await importApi().then(hookIntoState);
   const { setState, useState } = globalThis.__enhancerApi;
   setState({
     rerender: true,
-    hotkey: event.data?.hotkey ?? useState(["hotkey"]),
-    theme: event.data?.theme ?? useState(["theme"]),
-    icon: event.data?.icon ?? useState(["icon"]),
+    hotkey: event.data?.hotkey ?? useState(["hotkey"])[0],
+    theme: event.data?.theme ?? useState(["theme"])[0],
+    icon: event.data?.icon ?? useState(["icon"])[0],
   });
 });

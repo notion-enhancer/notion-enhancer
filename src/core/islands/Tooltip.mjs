@@ -73,7 +73,11 @@ function Tooltip(props, ...children) {
           y = () => {
             const rect = $target.getBoundingClientRect();
             if (["left", "right"].includes(alignment)) {
-              return event.clientY - $tooltip.clientHeight / 2;
+              // match mouse alignment if hovering over large
+              // target e.g. panel resize handle, otherwise centre
+              return rect.height > $tooltip.clientHeight * 2
+                ? event.clientY - $tooltip.clientHeight / 2
+                : rect.top + rect.height / 2 - $tooltip.clientHeight / 2;
             } else if (alignment === "top") {
               return rect.top - $tooltip.clientHeight - 6;
             } else if (alignment === "bottom") {
