@@ -1,5 +1,6 @@
 /**
  * notion-enhancer: tweaks
+ * (c) 2024 1280px
  * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (c) 2020 arecsu
  * (https://notion-enhancer.github.io/) under the MIT license
@@ -57,6 +58,13 @@
 
 .enhancer--tweak-hide_slash_for_commands [contenteditable]:empty:after {
   content: ' ' !important;
+}
+
+.enhancer--tweak-hide_default_page_icons
+  .notion-sidebar a > div > div:has(.notion-record-icon svg.page),
+.enhancer--tweak-hide_default_page_icons
+  .layout a > div > div > div > div:has(.notion-record-icon svg.page) {
+  display: none !important;
 }
 
 .enhancer--tweak-thicker_bold .notion-page-content span[style*='font-weight:600'] {

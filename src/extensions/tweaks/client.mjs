@@ -34,6 +34,7 @@ export default async function ({ web }, db) {
     'normalise_table_scroll',
     'hide_help',
     'hide_slash_for_commands',
+    'hide_default_page_icons',
     'snappy_transitions',
     'thicker_bold',
     'spaced_lines',

@@ -1,7 +1,7 @@
 {
   "name": "tweaks",
   "id": "5174a483-c88d-4bf8-a95f-35cd330b76e2",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "common style/layout changes and custom code insertion. check out the [tweaks page](https://notion-enhancer.github.io/advanced/tweaks) for more.",
   "tags": ["extension", "customisation"],
   "authors": [
@@ -72,6 +72,13 @@
       "key": "tweak.hide_slash_for_commands",
       "label": "hide \"Type '/' for commands\"",
       "value": false
+    },
+    {
+      "type": "toggle",
+      "key": "tweak.hide_default_page_icons",
+      "label": "hide default page icons",
+      "tooltip": "hide **default (svg.page)** page icons, both in sidebar and opened pages, to save some space",
+      "value": true
     },
     {
       "type": "toggle",
