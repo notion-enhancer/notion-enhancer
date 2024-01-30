@@ -48,6 +48,7 @@ function FloatingButton({ icon, ...props }, ...children) {
   return html`<button ...${props}>${children}</button>`;
 }
 
+if (globalThis.document) setupWrapper();
 Object.assign((globalThis.__enhancerApi ??= {}), {
   addFloatingButton,
   removeFloatingButton,
