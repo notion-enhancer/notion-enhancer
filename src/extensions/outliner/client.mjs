@@ -43,18 +43,12 @@ export default async function ({ web, components }, db) {
     $headingList.style.display = '';
     const $headerBlocks = $page.querySelectorAll('[class^="notion-"][class*="header-block"]'),
       $fragment = web.html`<div></div>`;
-    let depth = 0,
-      indent = 0;
+    let indent = 0;
     for (const $header of $headerBlocks) {
       const id = $header.dataset.blockId.replace(/-/g, ''),
         placeholder = $header.querySelector('[placeholder]').getAttribute('placeholder'),
         headerDepth = +[...placeholder].reverse()[0];
-      if (depth && depth < headerDepth) {
-        indent += 18;
-      } else if (depth > headerDepth) {
-        indent = Math.max(indent - 18, 0);
-      }
-      depth = headerDepth;
+      indent = (headerDepth-1) * 18;
       const $outlineHeader = web.render(
         web.html`<a href="#${id}" class="outliner--header"
               placeholder="${web.escape(placeholder)}"
