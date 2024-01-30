@@ -73,7 +73,7 @@ function Mod({
               setState({ transition: "slide-to-right", view: id });
             }}
           >
-            <i class="i-settings w-[18px] h-[18px]"></i>
+            <i class="i-settings size-[18px]"></i>
           </button>`
         : ""}
       <div class="my-auto scale-[1.15]">

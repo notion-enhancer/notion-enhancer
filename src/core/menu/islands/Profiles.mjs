@@ -123,7 +123,7 @@ function Profile({ id }) {
       text-[color:var(--theme--fg-secondary)]
       hover:text-[color:var(--theme--fg-primary)]"
     >
-      <i class="i-x w-[14px] h-[14px]"></i>
+      <i class="i-x size-[14px]"></i>
     </button>`,
     $confirmName = $successName.cloneNode(true),
     $confirm = html`<${Popup}

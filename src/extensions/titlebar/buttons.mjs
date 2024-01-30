@@ -60,7 +60,7 @@ const createWindowButtons = async () => {
     $maximize.style.display = isMaximized ? "none" : "";
     $unmaximize.style.display = isMaximized ? "" : "none";
   };
-  window.addEventListener("resize", resizeWindow);
+  addEventListener("resize", resizeWindow);
   resizeWindow();
 
   return html`<div class="flex flex-nowrap">${$minimize}${$maximize}${$unmaximize}${$close}</div>`;

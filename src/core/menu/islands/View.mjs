@@ -12,7 +12,7 @@ function View({ id }, ...children) {
     $view = html`<article
       id=${id}
       class="notion-enhancer--menu-view absolute h-full w-full
-      min-w-[580px] px-[60px] pt-[36px] !children:last:pb-[36px]"
+      min-w-[580px] px-[60px] pt-[36px] !&>*:last:pb-[36px]"
     >
       ${children}
     </article>`;

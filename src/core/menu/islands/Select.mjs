@@ -10,7 +10,7 @@ import { Popup } from "./Popup.mjs";
 
 function Option({ $icon = "", value = "", _get, _set }) {
   const { html, useState } = globalThis.__enhancerApi,
-    $selected = html`<i class="ml-auto i-check w-[16px] h-[16px]"></i>`,
+    $selected = html`<i class="ml-auto i-check size-[16px]"></i>`,
     $option = html`<div
       tabindex="0"
       role="option"
@@ -65,7 +65,7 @@ function Select({
       if (["string", "number"].includes(typeof opt)) opt = { value: opt };
       if (!(opt?.$icon instanceof Element)) {
         if (typeof opt?.$icon === "string") {
-          opt.$icon = html`<i class="i-${opt.$icon} h-[16px] w-[16px]" />`;
+          opt.$icon = html`<i class="i-${opt.$icon} size-[16px]" />`;
         } else delete opt.$icon;
       }
       return {
@@ -135,7 +135,7 @@ function Select({
     <//>
     <i
       class="i-chevron-down pointer-events-none
-      absolute right-[6px] top-[6px] w-[16px] h-[16px]
+      absolute right-[6px] top-[6px] size-[16px]
       text-[color:var(--theme--fg-secondary)]"
     ></i>
   </div>`;

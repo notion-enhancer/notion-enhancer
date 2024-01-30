@@ -200,7 +200,7 @@ const importApi = () => {
     useState(["rerender"], renderMenu);
   };
 
-window.addEventListener("message", async (event) => {
+addEventListener("message", async (event) => {
   if (event.data?.channel !== "notion-enhancer") return;
   await importApi().then(hookIntoState);
   const { setState, useState } = globalThis.__enhancerApi;

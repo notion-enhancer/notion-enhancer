@@ -96,7 +96,7 @@ function Input({
       hover:text-[color:var(--theme--fg-primary)]"
       onclick=${() => _set?.({ filename: "", content: "" })}
     >
-      <i class="i-x w-[14px] h-[14px]"></i>
+      <i class="i-x size-[14px]"></i>
     </button>`;
     props.accept = extensions
       ?.map((ext) => (ext.startsWith(".") ? ext : `.${ext}`))
@@ -119,7 +119,7 @@ function Input({
       class="${variant === "lg" ? "pr-[12px]" : "pr-[8px]"}
       absolute flex items-center h-full pointer-events-none
       text-[color:var(--theme--fg-secondary)] right-0 top-0"
-      ><i class="i-${icon} w-[16px] h-[16px]"></i>
+      ><i class="i-${icon} size-[16px]"></i>
     </span>`;
 
   let _initialValue;

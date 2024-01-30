@@ -107,7 +107,7 @@ const insertMenu = async (api, db) => {
     event.stopPropagation();
     $modal.open();
   });
-  window.addEventListener("message", (event) => {
+  addEventListener("message", (event) => {
     // from embedded menu
     if (event.data?.channel !== "notion-enhancer") return;
     if (event.data?.action === "close-menu") $modal.close();

@@ -80,7 +80,7 @@ function Banner({ updateAvailable, isDevelopmentBuild }) {
     >
       <div
         class="notion-enhancer--menu-update-indicator
-        absolute h-[12px] w-[12px] right-[-6px] top-[-6px]
+        absolute size-[12px] right-[-6px] top-[-6px]
         ${updateAvailable ? "" : "hidden"}"
       >
         <span

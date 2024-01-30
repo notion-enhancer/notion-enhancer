@@ -142,10 +142,8 @@ const initDatabase = (namespace, fallbacks = {}) => {
   },
   reloadApp = () => {
     if (IS_ELECTRON && !IS_RENDERER) {
-      const { app } = require("electron"),
-        args = process.argv.slice(1).filter((arg) => arg !== "--startup");
-      app.relaunch({ args });
-      app.exit();
+      const { app } = require("electron");
+      app.relaunch(), app.exit();
     } else sendMessage("notion-enhancer", "reload-app");
   };
 

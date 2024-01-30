@@ -92,12 +92,12 @@ function Panel({
     { addMutationListener, removeMutationListener } = globalThis.__enhancerApi,
     $panelToggle = html`<button
       aria-label="Toggle side panel"
-      class="select-none h-[24px] w-[24px] duration-[20ms]
+      class="select-none size-[24px] duration-[20ms]
       transition inline-flex items-center justify-center mr-[10px]
       rounded-[3px] hover:bg-[color:var(--theme--bg-hover)]"
     >
       <i
-        class="i-chevrons-left w-[20px] h-[20px]
+        class="i-chevrons-left size-[20px]
         text-[color:var(--theme--fg-secondary)] transition-transform
         group-&[data-pinned]/panel:rotate-180 duration-[${transitionDuration}ms]"
       />
@@ -301,21 +301,22 @@ function Panel({
   // moves help button out of the way of open panel.
   // normally would place outside of an island, but in
   // this case is necessary for syncing up animations
-  const notionHelp = ".notion-help-button",
-    repositionHelp = async (width) => {
-      const $notionHelp = document.querySelector(notionHelp);
-      if (!$notionHelp) return;
+  const floatingButtons =
+      ".notion-enhancer--floating-buttons, .notion-help-button",
+    repositionFloatingButtons = async (width) => {
+      const $floatingButtons = document.querySelector(floatingButtons);
+      if (!$floatingButtons) return;
       width ??= await getWidth();
       if (isNaN(width)) width = minWidth;
       if (!isPinned()) width = 0;
       const to = `${26 + width}px`,
-        from = $notionHelp.style.getPropertyValue("right");
+        from = $floatingButtons.style.getPropertyValue("right");
       if (from === to) return;
-      $notionHelp.style.setProperty("right", to);
-      animate($notionHelp, [({ right: from }, { right: to })]);
-      removeMutationListener(repositionHelp);
+      $floatingButtons.style.setProperty("right", to);
+      animate($floatingButtons, [({ right: from }, { right: to })]);
+      removeMutationListener(repositionFloatingButtons);
     };
-  addMutationListener(notionHelp, repositionHelp);
+  addMutationListener(floatingButtons, repositionFloatingButtons);
 
   $panel.pin = () => {
     if (isPinned() || !panelViews.length) return;
@@ -376,7 +377,7 @@ function Panel({
     const $parent = $panel.parentElement || $panel;
     $parent.style.setProperty("--panel--width", `${width}px`);
     if ($parent !== $panel) $panel.style.removeProperty("--panel--width");
-    repositionHelp(width);
+    repositionFloatingButtons(width);
   };
 
   useState(["panelViews"], async ([panelViews = []]) => {

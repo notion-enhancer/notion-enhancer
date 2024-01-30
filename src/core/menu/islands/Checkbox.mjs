@@ -11,9 +11,9 @@ function Checkbox({ _get, _set, _requireReload = true, ...props }) {
   const { html, extendProps, setState, useState } = globalThis.__enhancerApi,
     $input = html`<input
       type="checkbox"
-      class="hidden checked:sibling:(px-px
+      class="hidden checked:&+div:(px-px
       bg-[color:var(--theme--accent-primary)])
-      not-checked:sibling:(children:text-transparent
+      not-checked:&+div:(&>div:text-transparent
         border-(& [color:var(--theme--fg-primary)])
         hover:bg-[color:var(--theme--bg-hover)])"
       ...${props}
@@ -39,9 +39,9 @@ function Checkbox({ _get, _set, _requireReload = true, ...props }) {
     }}
   >
     ${$input}
-    <div class="flex items-center h-[16px] transition duration-[200ms]">
+    <div class="flex items-center h-[16px] transition duration-200">
       <i
-        class="i-check w-[14px] h-[14px]
+        class="i-check size-[14px]
         text-[color:var(--theme--accent-primary\\_contrast)]"
       ></i>
     </div>

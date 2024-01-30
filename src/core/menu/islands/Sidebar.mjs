@@ -31,8 +31,8 @@ function SidebarButton({ id, icon, ...props }, ...children) {
       ${icon
         ? html`<i
             class="i-${icon} ${icon.startsWith("notion-enhancer")
-              ? "w-[17px] h-[17px] ml-[1.5px] mr-[9.5px]"
-              : "w-[18px] h-[18px] ml-px mr-[9px]"}"
+              ? "size-[17px] ml-[1.5px] mr-[9.5px]"
+              : "size-[18px] ml-px mr-[9px]"}"
           ></i>`
         : ""}
       <span class="leading-[20px]">${children}</span>

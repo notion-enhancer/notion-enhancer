@@ -20,7 +20,7 @@ function MenuButton(
     transition hover:bg-[color:var(--theme--bg-hover)]`,
   });
   return html`<div ...${props}>
-    <div class="flex items-center justify-center w-[22px] h-[22px] mr-[8px]">
+    <div class="flex items-center justify-center size-[22px] mr-[8px]">
       <i class="i-${icon}"></i>
     </div>
     <div>${children}</div>
@@ -29,9 +29,9 @@ function MenuButton(
       <!-- accents are squashed into one variable for theming:
       use rgb to match notion if overrides not loaded -->
       <div
-        class="flex justify-center w-[16px] h-[16px] font-semibold
+        class="flex justify-center size-[16px] font-semibold mb-[2px]
         text-([10px] [color:var(--theme--accent-secondary\\_contrast)])
-        bg-[color:var(--theme--accent-secondary)] rounded-[3px] mb-[2px]
+        bg-[color:var(--theme--accent-secondary)] rounded-[3px]
         dark:bg-[color:${themeOverridesLoaded
           ? "var(--theme--accent-secondary)"
           : "rgb(180,65,60)"}]"

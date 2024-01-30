@@ -26,7 +26,7 @@ export default async function ({ web }, db) {
         document.body.classList.add('enhancer--tweak-responsive_breakpoint');
       }
     };
-  window.addEventListener('resize', addResponsiveBreakpoint);
+  addEventListener('resize', addResponsiveBreakpoint);
   addResponsiveBreakpoint();
 
   const tweaks = [

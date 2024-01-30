@@ -11,7 +11,7 @@ function Toggle({ _get, _set, _requireReload = true, ...props }) {
   const { html, extendProps, setState, useState } = globalThis.__enhancerApi,
     $input = html`<input
       type="checkbox"
-      class="hidden checked:sibling:children:(
+      class="hidden checked:&+div>div:(
       bg-[color:var(--theme--accent-primary)]
       after:translate-x-[12px])"
       ...${props}
@@ -43,9 +43,9 @@ function Toggle({ _get, _set, _requireReload = true, ...props }) {
         class="w-full h-full rounded-[44px] text-[12px]
         p-[2px] hover:bg-[color:var(--theme--bg-hover)]
         transition duration-200 after:(
-          inline-block w-[14px] h-[14px] rounded-[44px]
+          inline-block size-[14px] rounded-[44px]
           bg-[color:var(--theme--accent-primary\\_contrast)]
-          transition duration-200
+          transition duration-200 content-empty
         )"
       ></div>
     </div>

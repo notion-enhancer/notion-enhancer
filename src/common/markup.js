@@ -84,18 +84,18 @@ twind.install({
   rules: [
     ["text-(wrap|nowrap|balance|pretty)", "textWrap"],
     [/^i-((?:\w|-)+)(?:\?(mask|bg|auto))?$/, presetIcons],
+    [/^size-\[([^\]]+)\]$/, ({ 1: $1 }) => ({ height: $1, width: $1 })],
   ],
   variants: [
-    // https://github.com/tw-in-js/twind/blob/main/packages/preset-ext/src/variants.ts
-    [
-      "not-([a-z-]+|\\[.+\\])",
-      ({ 1: $1 }) => `&:not(${($1[0] == "[" ? "" : ":") + $1})`,
-    ],
     ["children", "&>*"],
     ["siblings", "&~*"],
     ["sibling", "&+*"],
     [/^&/, (match) => match.input],
     [/^has-\[([^\]]+)\]/, (match) => `&:has(${match[1]})`],
+    [
+      /^not-([a-z-]+|\[.+\])/,
+      ({ 1: $1 }) => `&:not(${($1[0] == "[" ? "" : ":") + $1})`,
+    ],
   ],
 });
 

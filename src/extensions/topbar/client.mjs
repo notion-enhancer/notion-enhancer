@@ -41,7 +41,8 @@ export default async function (api, db) {
   addMutationListener(shareSelector, () => {
     const $btn = document.querySelector(shareSelector);
     let icon = shareIcon?.content;
-    icon ??= `<i class="i-share2 w-[20px] h-[20px]"></i>`;
+    icon ??= `<i class="i-share2 size-[20px]"></i>`;
+    if (!$btn) return;
     if (shareButton === "Icon") displayIcon($btn, icon);
     if (shareButton === "Disabled" && $btn.style.display !== "none")
       $btn.style.display = "none";
@@ -53,6 +54,7 @@ export default async function (api, db) {
   addMutationListener(commentsSelector, () => {
     const $btn = document.querySelector(commentsSelector),
       icon = commentsIcon?.content;
+    if (!$btn) return;
     if (commentsButton === "Text") displayLabel($btn);
     if (commentsButton === "Icon" && icon) displayIcon($btn, icon);
     if (commentsButton === "Disabled" && $btn.style.display !== "none")
@@ -65,6 +67,7 @@ export default async function (api, db) {
   addMutationListener(updatesSelector, () => {
     const $btn = document.querySelector(updatesSelector),
       icon = updatesIcon?.content;
+    if (!$btn) return;
     if (updatesButton === "Text") displayLabel($btn);
     if (updatesButton === "Icon" && icon) displayIcon($btn, icon);
     if (updatesButton === "Disabled" && $btn.style.display !== "none")
@@ -77,6 +80,7 @@ export default async function (api, db) {
   addMutationListener(favoriteSelector, () => {
     const $btn = document.querySelector(favoriteSelector),
       icon = favoriteIcon?.content;
+    if (!$btn) return;
     if (favoriteButton === "Text") displayLabel($btn);
     if (favoriteButton === "Icon" && icon) displayIcon($btn, icon);
     if (favoriteButton === "Disabled" && $btn.style.display !== "none")
@@ -89,6 +93,7 @@ export default async function (api, db) {
   addMutationListener(moreSelector, () => {
     const $btn = document.querySelector(moreSelector),
       icon = moreIcon?.content;
+    if (!$btn) return;
     $btn.ariaLabel = "More";
     if (moreButton === "Text") displayLabel($btn);
     if (moreButton === "Icon" && icon) displayIcon($btn, icon);
