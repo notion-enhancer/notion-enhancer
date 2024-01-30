@@ -2,6 +2,7 @@
   "core",
   "extensions/titlebar",
   "extensions/topbar",
+  "extensions/outliner",
   "extensions/scroll-to-top",
   "themes/classic-dark"
 ]

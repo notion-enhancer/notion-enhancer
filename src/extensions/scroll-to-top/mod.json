@@ -27,7 +27,7 @@
       "type": "number",
       "key": "distanceScrolledUntilShown",
       "description": "How far down a page you must be scrolled for the scroll to top button to appear.",
-      "value": 50
+      "value": 0
     },
     {
       "type": "select",
