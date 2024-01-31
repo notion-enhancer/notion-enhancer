@@ -64,16 +64,20 @@ const _state = {},
 let documentObserver,
   mutationListeners = [];
 const mutationQueue = [],
-  addMutationListener = (selector, callback, attributesOnly = false) => {
-    mutationListeners.push([selector, callback, attributesOnly]);
+  addMutationListener = (selector, callback, subtree = true) => {
+    mutationListeners.push([selector, callback, subtree]);
   },
   removeMutationListener = (callback) => {
     mutationListeners = mutationListeners.filter(([, c]) => c !== callback);
   },
-  selectorMutated = (mutation, selector, attributesOnly) => {
-    const matchesTarget = mutation.target?.matches(selector);
-    if (attributesOnly) return matchesTarget;
-    const descendsFromTarget = mutation.target?.matches(`${selector} *`),
+  selectorMutated = (mutation, selector, subtree) => {
+    const target =
+        mutation.type === "characterData"
+          ? mutation.target.parentElement
+          : mutation.target,
+      matchesTarget = target?.matches(selector);
+    if (!subtree) return matchesTarget;
+    const descendsFromTarget = target?.matches(`${selector} *`),
       addedToTarget = [...(mutation.addedNodes || [])].some(
         (node) =>
           node instanceof HTMLElement &&
@@ -85,8 +89,8 @@ const mutationQueue = [],
   handleMutations = () => {
     while (mutationQueue.length) {
       const mutation = mutationQueue.shift();
-      for (const [selector, callback, attributesOnly] of mutationListeners) {
-        const matches = selectorMutated(mutation, selector, attributesOnly);
+      for (const [selector, callback, subtree] of mutationListeners) {
+        const matches = selectorMutated(mutation, selector, subtree);
         if (matches) callback(mutation);
       }
     }
@@ -99,6 +103,7 @@ const mutationQueue = [],
     });
     documentObserver.observe(document.body, {
       attributes: true,
+      characterData: true,
       childList: true,
       subtree: true,
     });

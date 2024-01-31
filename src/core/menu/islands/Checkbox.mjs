@@ -13,7 +13,7 @@ function Checkbox({ _get, _set, _requireReload = true, ...props }) {
       type="checkbox"
       class="hidden checked:&+div:(px-px
       bg-[color:var(--theme--accent-primary)])
-      not-checked:&+div:(&>div:text-transparent
+      not-checked:&+div:(&>i:text-transparent
         border-(& [color:var(--theme--fg-primary)])
         hover:bg-[color:var(--theme--bg-hover)])"
       ...${props}

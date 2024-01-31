@@ -99,7 +99,7 @@ const insertMenu = async (api, db) => {
     <b>Configure the notion-enhancer and its mods</b>
   <//>`.attach($button, "right");
   addMutationListener(notionSidebar, appendToDom);
-  addMutationListener(".notion-app-inner", updateMenuTheme, true);
+  addMutationListener(".notion-app-inner", updateMenuTheme, false);
   appendToDom();
 
   addKeyListener(openMenuHotkey, (event) => {

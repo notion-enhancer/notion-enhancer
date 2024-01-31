@@ -17,5 +17,13 @@
       "avatar": "https://avatars.githubusercontent.com/u/54142180"
     }
   ],
+  "options": [
+    {
+      "type": "toggle",
+      "key": "smoothScrolling",
+      "description": "Animates scrolling to a heading smoothly. Disable this to jump to a heading instantly when clicking it in the Outliner's table of contents.",
+      "value": true
+    }
+  ],
   "clientScripts": ["client.mjs"]
 }

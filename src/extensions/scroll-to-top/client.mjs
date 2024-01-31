@@ -19,7 +19,7 @@ export default async (api, db) => {
 
   let $scroller;
   const $btn = html`<${FloatingButton}
-      onclick=${() => $scroller?.scroll({ top: 0, left: 0, behavior })}
+      onclick=${() => $scroller?.scroll({ top: 0, behavior })}
       aria-label="Scroll to top"
       ><i class="i-chevrons-up" />
     <//>`,
@@ -38,6 +38,6 @@ export default async (api, db) => {
       $scroller?.addEventListener("scroll", onScroll);
       onScroll();
     };
-  addMutationListener(scroller, setup, true);
+  addMutationListener(scroller, setup, false);
   setup();
 };

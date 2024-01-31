@@ -20,7 +20,7 @@
     {
       "type": "toggle",
       "key": "smoothScrolling",
-      "description": "Animates the return to the top of the page smoothly. Disable this to jump instantly to the top of the page when clicking the scroll to top button.",
+      "description": "Animates the return to the top of the page smoothly. Disable this to jump to the top of the page instantly when clicking the scroll to top button.",
       "value": true
     },
     {
