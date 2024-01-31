@@ -1,23 +1,29 @@
 {
-  "name": "word counter",
+  "name": "Word Counter",
+  "version": "0.4.0",
   "id": "b99deb52-6955-43d2-a53b-a31540cd19a5",
-  "version": "0.3.0",
-  "description": "view word/character/sentence/block count & speaking/reading times in the side panel.",
-  "preview": "word-counter.jpg",
-  "tags": ["extension", "panel"],
+  "description": "Adds word, character, sentence and block counts with average reading and speaking times to the panel.",
+  "thumbnail": "word-counter.jpg",
+  "tags": ["panel"],
   "authors": [
     {
       "name": "dragonwocky",
-      "email": "thedragonring.bod@gmail.com",
       "homepage": "https://dragonwocky.me/",
       "avatar": "https://dragonwocky.me/avatar.jpg"
     }
   ],
-  "js": {
-    "client": ["client.mjs"]
-  },
-  "css": {
-    "client": ["client.css"]
-  },
-  "options": []
+  "options": [
+    {
+      "type": "number",
+      "key": "readingSpeed",
+      "description": "The average number of words read per minute, used in calculating a page's reading time.",
+      "value": 275
+    },
+    {
+      "type": "number",
+      "key": "speakingSpeed",
+      "description": "The average number of words spoken per minute, used in calculating a page's speaking time.",
+      "value": 180
+    }
+  ]
 }
