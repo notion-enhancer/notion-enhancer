@@ -34,7 +34,7 @@ function View({ _get }) {
   const { html, useState } = globalThis.__enhancerApi,
     $container = html`<div
       class="overflow-(y-auto x-hidden)
-      h-full min-w-[var(--panel--width)]"
+      h-[calc(100%-46px)] min-w-[var(--panel--width)]"
     ></div>`;
   useState(["rerender"], async () => {
     const openView = await _get?.(),

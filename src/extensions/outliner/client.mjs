@@ -48,7 +48,7 @@ export default async (api, db) => {
       decoration-(2 [color:var(--theme--fg-border)])
       hover:bg-[color:var(--theme--bg-hover)]
       py-[6px] pr-[2px] pl-[${indent * 18}px]
-      underline-(& offset-4)"
+      underline-(& offset-4) last:mb-[24px]"
       ...${props}
     >
       ${children}
