@@ -25,9 +25,12 @@ export default async (api, db) => {
     <//>`,
     onScroll = () => {
       if (!$scroller) return;
-      const { scrollTop, scrollHeight, clientHeight } = $scroller,
-        scrollPercent = (scrollTop / (scrollHeight - clientHeight)) * 100,
-        scrollDist = scrollUnits === "Percent" ? scrollPercent : scrollTop;
+      const { scrollTop, scrollHeight, clientHeight } = $scroller;
+      let scrollDist = scrollTop;
+      if (scrollUnits === "Percent") {
+        scrollDist = (scrollTop / (scrollHeight - clientHeight)) * 100;
+        if (isNaN(scrollDist)) scrollDist = 0;
+      }
       if (distanceUntilShown <= scrollDist) addFloatingButton($btn);
       else removeFloatingButton($btn);
     },
