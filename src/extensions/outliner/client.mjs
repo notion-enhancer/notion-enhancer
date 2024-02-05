@@ -11,6 +11,10 @@ export default async (api, db) => {
   const { html, debounce, addMutationListener, addPanelView } = api,
     behavior = (await db.get("smoothScrolling")) ? "smooth" : "auto",
     scroller = ".notion-frame > .notion-scroller",
+    equation = ".notion-text-equation-token",
+    annotation = (await db.get("equationRendering"))
+      ? ".katex-html"
+      : ".katex-mathml annotation",
     page = ".notion-page-content",
     headings = [
       ".notion-header-block",
@@ -69,18 +73,30 @@ export default async (api, db) => {
       for (let i = 0; i < headings.length; i++)
         if ($heading.matches(headings[i])) return i + 1;
     },
+    getHeadingTitle = ($heading) => {
+      if (!$heading.innerText) return "Untitled";
+      let title = "";
+      for (const node of $heading.querySelector("h2, h3, h4").childNodes) {
+        if (node.nodeType === 3) title += node.textContent;
+        else if (node.matches(equation)) {
+          // https://github.com/notion-enhancer/repo/issues/39
+          const $katex = node.querySelector(annotation);
+          title += $katex.textContent;
+        } else title += node.innerText;
+      }
+      return title;
+    },
     updateHeadings = debounce(() => {
       $toc.innerHTML = "";
       if (!$page) return;
       const $frag = document.createDocumentFragment();
       for (const $heading of getHeadings()) {
-        const title = $heading.innerText,
-          indent = getHeadingLevel($heading);
-        if (!title) continue;
-        const $h = html`<${Heading} indent=${indent} onclick=${() => {
-          const $scroller = document.querySelector(scroller);
-          $scroller.scrollTo({ top: $heading.offsetTop - 24, behavior });
-        }}>${title}</p>`;
+        const $h = html`<${Heading}
+          indent=${getHeadingLevel($heading)}
+          onclick=${() => {
+            const $scroller = document.querySelector(scroller);
+            $scroller.scrollTo({ top: $heading.offsetTop - 24, behavior });
+          }}>${getHeadingTitle($heading)}</p>`;
         $frag.append($h);
       }
       $toc.append($frag);
@@ -89,4 +105,5 @@ export default async (api, db) => {
   const semanticHeadings = '[class$="header-block"] :is(h2, h3, h4)';
   addMutationListener(`${page} ${semanticHeadings}`, updateHeadings);
   addMutationListener(`${page}, ${scroller}`, updatePage, false);
+  updatePage();
 };

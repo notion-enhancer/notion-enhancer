@@ -23,6 +23,12 @@
       "key": "smoothScrolling",
       "description": "Animates scrolling to a heading smoothly. Disable this to jump to a heading instantly when clicking it in the Outliner's table of contents.",
       "value": true
+    },
+    {
+      "type": "toggle",
+      "key": "equationRendering",
+      "description": "Attempts to render special symbols from inline equations in headings. Note that position- and size-based formatting will be lost when displaying equations in the Outliner's table of contents. Disable this to display the raw TeX equation instead.",
+      "value": true
     }
   ],
   "clientScripts": ["client.mjs"]
