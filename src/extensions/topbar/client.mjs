@@ -27,12 +27,12 @@ export default async function (api, db) {
       $btn.innerHTML = $btn.ariaLabel;
     },
     displayIcon = ($btn, $icon) => {
-      if ($btn.contains($icon)) return;
+      if ($btn.style.width === "33px") return;
       $btn.style.width = "33px";
       $btn.style.padding = "0px";
       $btn.style.justifyContent = "center";
       $btn.innerHTML = "";
-      $btn.append($icon);
+      $btn.append($icon.cloneNode(true));
     };
 
   // share button is text by default
@@ -43,11 +43,11 @@ export default async function (api, db) {
       ? html(shareIcon.content)
       : html`<i class="i-share2 size-[20px]"></i>`;
   addMutationListener(shareSelector, () => {
-    const $btn = document.querySelector(shareSelector);
-    if (!$btn) return;
-    if (shareButton === "Icon") displayIcon($btn, $shareIcon);
-    if (shareButton === "Disabled" && $btn.style.display !== "none")
-      $btn.style.display = "none";
+    for (const $btn of document.querySelectorAll(shareSelector)) {
+      if (shareButton === "Icon") displayIcon($btn, $shareIcon);
+      if (shareButton === "Disabled" && $btn.style.display !== "none")
+        $btn.style.display = "none";
+    }
   });
 
   const commentsSelector = ".notion-topbar-comments-button",
@@ -55,13 +55,13 @@ export default async function (api, db) {
     commentsIcon = await db.get("commentsIcon"),
     $commentsIcon = commentsIcon ? html(commentsIcon.content) : undefined;
   addMutationListener(commentsSelector, () => {
-    const $btn = document.querySelector(commentsSelector);
-    if (!$btn) return;
-    if (commentsButton === "Text") displayLabel($btn);
-    if (commentsButton === "Icon" && commentsIcon)
-      displayIcon($btn, $commentsIcon);
-    if (commentsButton === "Disabled" && $btn.style.display !== "none")
-      $btn.style.display = "none";
+    for (const $btn of document.querySelectorAll(commentsSelector)) {
+      if (commentsButton === "Text") displayLabel($btn);
+      if (commentsButton === "Icon" && commentsIcon)
+        displayIcon($btn, $commentsIcon);
+      if (commentsButton === "Disabled" && $btn.style.display !== "none")
+        $btn.style.display = "none";
+    }
   });
 
   const updatesSelector = ".notion-topbar-updates-button",
@@ -69,27 +69,27 @@ export default async function (api, db) {
     updatesIcon = await db.get("updatesIcon"),
     $updatesIcon = updatesIcon ? html(updatesIcon.content) : undefined;
   addMutationListener(updatesSelector, () => {
-    const $btn = document.querySelector(updatesSelector);
-    if (!$btn) return;
-    if (updatesButton === "Text") displayLabel($btn);
-    if (updatesButton === "Icon" && updatesIcon)
-      displayIcon($btn, $updatesIcon);
-    if (updatesButton === "Disabled" && $btn.style.display !== "none")
-      $btn.style.display = "none";
+    for (const $btn of document.querySelectorAll(updatesSelector)) {
+      if (updatesButton === "Text") displayLabel($btn);
+      if (updatesButton === "Icon" && updatesIcon)
+        displayIcon($btn, $updatesIcon);
+      if (updatesButton === "Disabled" && $btn.style.display !== "none")
+        $btn.style.display = "none";
+    }
   });
 
-  const favoriteSelector = ".notion-topbar-favorite-button",
+  const favoriteSelector = "  n",
     favoriteButton = await db.get("favoriteButton"),
     favoriteIcon = await db.get("favoriteIcon"),
     $favoriteIcon = favoriteIcon ? html(favoriteIcon.content) : undefined;
   addMutationListener(favoriteSelector, () => {
-    const $btn = document.querySelector(favoriteSelector);
-    if (!$btn) return;
-    if (favoriteButton === "Text") displayLabel($btn);
-    if (favoriteButton === "Icon" && favoriteIcon)
-      displayIcon($btn, $favoriteIcon);
-    if (favoriteButton === "Disabled" && $btn.style.display !== "none")
-      $btn.style.display = "none";
+    for (const $btn of document.querySelectorAll(favoriteSelector)) {
+      if (favoriteButton === "Text") displayLabel($btn);
+      if (favoriteButton === "Icon" && favoriteIcon)
+        displayIcon($btn, $favoriteIcon);
+      if (favoriteButton === "Disabled" && $btn.style.display !== "none")
+        $btn.style.display = "none";
+    }
   });
 
   const moreSelector = ".notion-topbar-more-button",
@@ -97,13 +97,13 @@ export default async function (api, db) {
     moreIcon = await db.get("moreIcon"),
     $moreIcon = moreIcon ? html(moreIcon.content) : undefined;
   addMutationListener(moreSelector, () => {
-    const $btn = document.querySelector(moreSelector);
-    if (!$btn) return;
-    if (!$btn.ariaLabel) $btn.ariaLabel = "More";
-    if (moreButton === "Text") displayLabel($btn);
-    if (moreButton === "Icon" && moreIcon) displayIcon($btn, $moreIcon);
-    if (moreButton === "Disabled" && $btn.style.display !== "none")
-      $btn.style.display = "none";
+    for (const $btn of document.querySelectorAll(moreSelector)) {
+      if (!$btn.ariaLabel) $btn.ariaLabel = "More";
+      if (moreButton === "Text") displayLabel($btn);
+      if (moreButton === "Icon" && moreIcon) displayIcon($btn, $moreIcon);
+      if (moreButton === "Disabled" && $btn.style.display !== "none")
+        $btn.style.display = "none";
+    }
   });
 
   const alwaysOnTopButton = await db.get("alwaysOnTopButton");

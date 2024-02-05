@@ -10,6 +10,7 @@
   -webkit-app-region: drag;
 }
 .notion-tabs :is([aria-label], [draggable], .notion-enhancer--topbar-button),
+.notion-peek-renderer [style*="height: 44px;"] > div,
 .notion-topbar > div > * {
   -webkit-app-region: no-drag;
 }
