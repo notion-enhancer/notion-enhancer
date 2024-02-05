@@ -1,108 +1,84 @@
 /**
  * notion-enhancer: word counter
- * (c) 2021 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2024 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
 const humanTime = (mins) => {
-  let readable = '';
-  if (1 <= mins) {
+  let readable = "";
+  if (1 <= mins || !mins) {
     readable += `${Math.floor(mins)} min`;
-    if (2 <= mins) readable += 's';
+    if (2 <= mins) readable += "s";
   }
   const secs = Math.round((mins % 1) * 60);
   if (1 <= secs) {
-    if (1 <= mins) readable += ' ';
+    if (1 <= mins) readable += " ";
     readable += `${secs} sec`;
-    if (2 <= secs) readable += 's';
+    if (2 <= secs) readable += "s";
   }
   return readable;
 };
 
-export default async function ({ web, components }, db) {
-  const dbNoticeText = 'Open a page to see its word count.',
-    pageNoticeText = 'Click a stat to copy it.',
-    $notice = web.html`<p id="word-counter--notice">${dbNoticeText}</p>`;
-
-  const $wordCount = web.html`<b>12</b>`,
-    $characterCount = web.html`<b>12</b>`,
-    $sentenceCount = web.html`<b>12</b>`,
-    $blockCount = web.html`<b>12</b>`,
-    $readingTime = web.html`<b>10 mins</b>`,
-    $readingTooltip = web.html`${await components.feather('info')}`,
-    $speakingTime = web.html`<b>18 secs</b>`,
-    $speakingTooltip = web.html`${await components.feather('info')}`,
-    $statList = web.render(
-      web.html`<div></div>`,
-      web.render(web.html`<p class="word-counter--stat"></p>`, $wordCount, ' words'),
-      web.render(web.html`<p class="word-counter--stat"></p>`, $characterCount, ' characters'),
-      web.render(web.html`<p class="word-counter--stat"></p>`, $sentenceCount, ' sentences'),
-      web.render(web.html`<p class="word-counter--stat"></p>`, $blockCount, ' blocks'),
-      web.render(
-        web.html`<p class="word-counter--stat"></p>`,
-        $readingTooltip,
-        $readingTime,
-        ' reading time'
-      ),
-      web.render(
-        web.html`<p class="word-counter--stat"></p>`,
-        $speakingTooltip,
-        $speakingTime,
-        ' speaking time'
-      )
-    );
-  $statList.querySelectorAll('.word-counter--stat').forEach(($stat) => {
-    $stat.addEventListener('click', () => web.copyToClipboard($stat.innerText));
+function Stat(props, ...children) {
+  const { html } = globalThis.__enhancerApi,
+    $stat = html`<div
+      role="button"
+      class="select-none cursor-pointer rounded-[3px]
+      transition hover:bg-[color:var(--theme--bg-hover)]
+      text-[14px] my-[6px] mx-[12px] py-[2px] px-[10px]"
+      ...${props}
+    >
+      ${children}
+    </div>`;
+  $stat.addEventListener("click", () => {
+    navigator.clipboard.writeText($stat.innerText);
   });
-  components.addTooltip($readingTooltip, '**~ 275 wpm**', { offsetDirection: 'left' });
-  components.addTooltip($speakingTooltip, '**~ 180 wpm**', { offsetDirection: 'left' });
-
-  let viewFocused = false,
-    $page;
-  await components.addPanelView({
-    id: 'b99deb52-6955-43d2-a53b-a31540cd19a5',
-    icon: await components.feather('type'),
-    title: 'Word Counter',
-    $content: web.render(web.html`<div></div>`, $notice, $statList),
-    onFocus: () => {
-      viewFocused = true;
-      $page = document.getElementsByClassName('notion-page-content')[0];
-      updateStats();
-    },
-    onBlur: () => {
-      viewFocused = false;
-    },
-  });
-
-  function updateStats() {
-    if (!$page) return;
-    const words = $page.innerText.split(/[^\w]+/).length;
-    $wordCount.innerText = words;
-    $characterCount.innerText = $page.innerText.length;
-    $sentenceCount.innerText = $page.innerText.split('.').length;
-    $blockCount.innerText = $page.querySelectorAll('[data-block-id]').length;
-    $readingTime.innerText = humanTime(words / 275);
-    $speakingTime.innerText = humanTime(words / 180);
-  }
-  const pageObserver = () => {
-    if (!viewFocused) return;
-    if (document.contains($page)) {
-      updateStats();
-    } else {
-      $page = document.getElementsByClassName('notion-page-content')[0];
-      if ($page) {
-        $notice.innerText = pageNoticeText;
-        $statList.style.display = '';
-        updateStats();
-      } else {
-        $notice.innerText = dbNoticeText;
-        $statList.style.display = 'none';
-      }
-    }
-  };
-  web.addDocumentObserver(pageObserver, [
-    '.notion-page-content',
-    '.notion-collection_view_page-block',
-  ]);
-  pageObserver();
+  return $stat;
 }
+
+export default async (api, db) => {
+  const { html, debounce, addMutationListener, addPanelView } = api,
+    readingSpeed = await db.get("readingSpeed"),
+    speakingSpeed = await db.get("speakingSpeed"),
+    $wordCount = html`<b>0</b>`,
+    $characterCount = html`<b>0</b>`,
+    $sentenceCount = html`<b>0</b>`,
+    $blockCount = html`<b>0</b>`,
+    $readingTime = html`<b>${humanTime(0)}</b>`,
+    $speakingTime = html`<b>${humanTime(0)}</b>`,
+    page = ".notion-page-content";
+  addPanelView({
+    title: "Word Counter",
+    $icon: "type",
+    $view: html`<section>
+      <p
+        class="py-[12px] px-[18px]
+        text-([color:var(--theme--fg-secondary)] [13px])"
+      >
+        Click on a stat to copy it.
+      </p>
+      <${Stat}>${$wordCount} words<//>
+      <${Stat}>${$characterCount} characters<//>
+      <${Stat}>${$sentenceCount} sentences<//>
+      <${Stat}>${$blockCount} blocks<//>
+      <${Stat}>${$readingTime} reading time<//>
+      <${Stat}>${$speakingTime} speaking time<//>
+    </section>`,
+  });
+
+  let $page;
+  const updateStats = debounce(() => {
+    if (!document.contains($page)) $page = document.querySelector(page);
+    if (!$page) return;
+    const text = $page.innerText,
+      words = text.split(/[^\w]+/).length;
+    $wordCount.innerText = words;
+    $characterCount.innerText = text.length;
+    $sentenceCount.innerText = text.split(".").filter((s) => s.trim()).length;
+    $blockCount.innerText = $page.querySelectorAll("[data-block-id]").length;
+    $readingTime.innerText = humanTime(words / readingSpeed);
+    $speakingTime.innerText = humanTime(words / speakingSpeed);
+  });
+  addMutationListener(page, updateStats);
+  updateStats();
+};

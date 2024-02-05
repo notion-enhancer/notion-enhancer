@@ -7,6 +7,22 @@
 
 "use strict";
 
+function Heading({ indent, ...props }, ...children) {
+  const { html } = globalThis.__enhancerApi;
+  return html`<div
+    role="button"
+    class="notion-enhancer--outliner-heading
+    block cursor-pointer select-none text-[14px]
+    decoration-(2 [color:var(--theme--fg-border)])
+    hover:bg-[color:var(--theme--bg-hover)]
+    py-[6px] pr-[2px] pl-[${indent * 18}px]
+    underline-(& offset-4) last:mb-[24px]"
+    ...${props}
+  >
+    ${children}
+  </div>`;
+}
+
 export default async (api, db) => {
   const { html, debounce, addMutationListener, addPanelView } = api,
     behavior = (await db.get("smoothScrolling")) ? "smooth" : "auto",
@@ -35,7 +51,7 @@ export default async (api, db) => {
     </svg>`,
     $view: html`<section>
       <p
-        class="py-[12px] pl-[18px]
+        class="py-[12px] px-[18px]
         text-([color:var(--theme--fg-secondary)] [13px])"
       >
         Click on a heading to jump to it.
@@ -43,21 +59,6 @@ export default async (api, db) => {
       ${$toc}
     </section>`,
   });
-
-  function Heading({ indent, ...props }, ...children) {
-    return html`<div
-      role="button"
-      class="notion-enhancer--outliner-heading
-      block cursor-pointer select-none text-[14px]
-      decoration-(2 [color:var(--theme--fg-border)])
-      hover:bg-[color:var(--theme--bg-hover)]
-      py-[6px] pr-[2px] pl-[${indent * 18}px]
-      underline-(& offset-4) last:mb-[24px]"
-      ...${props}
-    >
-      ${children}
-    </div>`;
-  }
 
   let $page;
   const updatePage = () => {

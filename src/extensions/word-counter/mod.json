@@ -25,5 +25,6 @@
       "description": "The average number of words spoken per minute, used in calculating a page's speaking time.",
       "value": 180
     }
-  ]
+  ],
+  "clientScripts": ["client.mjs"]
 }
