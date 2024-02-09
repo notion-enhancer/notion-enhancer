@@ -50,6 +50,12 @@
       "description": "Sets whether the notion-enhancer icon added to Notion's sidebar should be coloured or monochrome. The latter style will match the theme's icon colour for users who would like the icon to be less noticeable.",
       "values": ["Colour", "Monochrome"]
     },
+    {
+      "type": "toggle",
+      "key": "peekPanelOnHover",
+      "description": "Pops the side panel out to preview its content when hovering near the right edge of the window, in the same way that Notion's left-hand sidebar will slide out on hover. Disable this if you prefer to view the panel only by pinning it.",
+      "value": true
+    },
     { "type": "heading", "label": "Experimental" },
     {
       "type": "toggle",

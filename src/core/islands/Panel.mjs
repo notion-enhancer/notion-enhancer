@@ -280,13 +280,17 @@ function Panel({
 
   // hovering over the peek trigger will temporarily
   // pop out an interactive preview of the panel
-  let _peekDebounce;
-  const $peekTrigger = html`<div
-    class="absolute z-10 right-0 h-[calc(100vh-120px)] bottom-[60px] w-[96px]
+  let _peekDebounce, _peekPanelOnHover;
+  const coreId = "0f0bf8b6-eae6-4273-b307-8fc43f2ee082",
+    $peekTrigger = html`<div
+      class="absolute z-10 right-0 h-[calc(100vh-120px)] bottom-[60px] w-[96px]
     group-&[data-peeked]/panel:(w-[calc(var(--panel--width,0)+8px)])
     group-&[data-pinned]/panel:(w-[calc(var(--panel--width,0)+8px)])"
-  ></div>`;
-  $panel.prepend($peekTrigger);
+    ></div>`;
+  modDatabase(coreId).then(async (db) => {
+    _peekPanelOnHover = await db.get("peekPanelOnHover");
+    if (_peekPanelOnHover) $panel.prepend($peekTrigger);
+  });
   $panel.addEventListener("mouseout", () => {
     if (isDragging() || isAnimated() || isPinned()) return;
     if (!$panel.matches(":hover")) $panel.close();
@@ -331,6 +335,7 @@ function Panel({
     $panel.resize();
   };
   $panel.peek = () => {
+    if (!_peekPanelOnHover) return;
     if (isPeeked() || !panelViews.length) return;
     if (isClosed()) Object.assign(animationState, peekAnimation);
     animatePanel({ ...openWidth, ...peekAnimation });
@@ -353,7 +358,7 @@ function Panel({
     // only animate container close if it is actually taking up space,
     // otherwise will unnaturally grow + retrigger peek on peek mouseout
     if (isPinned()) animate($panel, [{ width }, closedWidth]);
-    if (!$panel.matches(":hover")) {
+    if (!$panel.matches(":hover") || !_peekPanelOnHover) {
       $panel.removeAttribute("data-pinned");
       $panel.removeAttribute("data-peeked");
       animatePanel(closedWidth);
