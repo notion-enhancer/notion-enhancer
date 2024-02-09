@@ -11,8 +11,8 @@ function Heading({ indent, ...props }, ...children) {
   const { html } = globalThis.__enhancerApi;
   return html`<div
     role="button"
-    class="notion-enhancer--outliner-heading
-    block cursor-pointer select-none text-[14px]
+    class="notion-enhancer--outliner-heading block
+    relative cursor-pointer select-none text-[14px]
     decoration-(2 [color:var(--theme--fg-border)])
     hover:bg-[color:var(--theme--bg-hover)]
     py-[6px] pr-[2px] pl-[${indent * 18}px]
@@ -60,13 +60,7 @@ export default async (api, db) => {
     </section>`,
   });
 
-  let $page;
-  const updatePage = () => {
-    if (document.contains($page)) return;
-    $page = document.querySelector(page);
-    updateHeadings();
-  };
-
+  let $page, $scroller;
   const getHeadings = () => {
       return [...$page.querySelectorAll(headings.join(", "))];
     },
@@ -87,24 +81,57 @@ export default async (api, db) => {
       }
       return title;
     },
+    getBlockOffset = ($block) => {
+      let offset = 0;
+      while (!$block.matches("[data-content-editable-root]")) {
+        offset += $block.offsetTop;
+        $block = $block.offsetParent;
+      }
+      return offset;
+    },
     updateHeadings = debounce(() => {
       $toc.innerHTML = "";
       if (!$page) return;
       const $frag = document.createDocumentFragment();
       for (const $heading of getHeadings()) {
-        const $h = html`<${Heading}
+        $heading._$outline = html`<${Heading}
           indent=${getHeadingLevel($heading)}
           onclick=${() => {
-            const $scroller = document.querySelector(scroller);
-            $scroller.scrollTo({ top: $heading.offsetTop - 24, behavior });
-          }}>${getHeadingTitle($heading)}</p>`;
-        $frag.append($h);
+            $scroller.scrollTo({
+              top: getBlockOffset($heading) - 24,
+              behavior,
+            });
+          }}
+          >${getHeadingTitle($heading)}
+        <//>`;
+        $frag.append($heading._$outline);
       }
       $toc.append($frag);
+      onScroll();
     });
+
+  const $progressMarker = html`<span
+      class="absolute block left-[6px] top-[calc(50%-1px)]
+      size-[6px] rounded-full bg-[color:var(--theme--fg-secondary)]"
+    ></span>`,
+    onScroll = () => {
+      const $h = getHeadings().find(($h) => {
+        return $scroller.scrollTop < getBlockOffset($h) - 16;
+      })?._$outline;
+      if ($h) $h.prepend($progressMarker);
+    },
+    setup = () => {
+      if (document.contains($page)) return;
+      $page = document.querySelector(page);
+      console.log($page);
+      $scroller = document.querySelector(scroller);
+      $scroller?.removeEventListener("scroll", onScroll);
+      $scroller?.addEventListener("scroll", onScroll);
+      updateHeadings();
+    };
 
   const semanticHeadings = '[class$="header-block"] :is(h2, h3, h4)';
   addMutationListener(`${page} ${semanticHeadings}`, updateHeadings);
-  addMutationListener(`${page}, ${scroller}`, updatePage, false);
-  updatePage();
+  addMutationListener(`${page}, ${scroller}`, setup, false);
+  setup();
 };
