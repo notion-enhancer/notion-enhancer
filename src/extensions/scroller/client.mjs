@@ -12,14 +12,21 @@ import { FloatingButton } from "../../core/islands/FloatingButton.mjs";
 export default async (api, db) => {
   const { html, addFloatingButton, removeFloatingButton } = api,
     { addMutationListener, removeMutationListener } = api,
-    distanceUntilShown = await db.get("distanceScrolledUntilShown"),
+    showScrollToBottom = await db.get("showScrollToBottom"),
+    distanceUntilShown = await db.get("distanceUntilScrollToTopShown"),
     scrollUnits = await db.get("scrollDistanceUnits"),
     behavior = (await db.get("smoothScrolling")) ? "smooth" : "auto",
     scroller = ".notion-frame > .notion-scroller";
 
   let $scroller;
-  const $btn = html`<${FloatingButton}
-      onclick=${() => $scroller?.scroll({ top: 0, behavior })}
+  const scrollTo = (top) => $scroller?.scroll({ top, behavior }),
+    $scrollToBottom = html`<${FloatingButton}
+      onclick="${() => scrollTo($scroller.scrollHeight)}"
+      aria-label="Scroll to bottom"
+      ><i class="i-chevrons-down" />
+    <//>`,
+    $scrollToTop = html`<${FloatingButton}
+      onclick=${() => scrollTo(0)}
       aria-label="Scroll to top"
       ><i class="i-chevrons-up" />
     <//>`,
@@ -31,8 +38,15 @@ export default async (api, db) => {
         scrollDist = (scrollTop / (scrollHeight - clientHeight)) * 100;
         if (isNaN(scrollDist)) scrollDist = 0;
       }
-      if (distanceUntilShown <= scrollDist) addFloatingButton($btn);
-      else removeFloatingButton($btn);
+      if (distanceUntilShown <= scrollDist) {
+        if (document.contains($scrollToBottom))
+          $scrollToBottom.replaceWith($scrollToTop);
+        else addFloatingButton($scrollToTop);
+      } else if (showScrollToBottom) {
+        if (document.contains($scrollToTop))
+          $scrollToTop.replaceWith($scrollToBottom);
+        else addFloatingButton($scrollToBottom);
+      } else removeFloatingButton($scrollToTop);
     },
     setup = () => {
       if (document.contains($scroller)) return;

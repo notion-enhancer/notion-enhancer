@@ -3,7 +3,8 @@
   "version": "0.4.0",
   "id": "e0700ce3-a9ae-45f5-92e5-610ded0e348d",
   "description": "Customise the Notion interface's topbar and add an always on top toggle to the window in-app.",
-  "thumbnail": "topbar-icons.jpg",
+  "thumbnail": "topbar.jpg",
+  "tags": ["topbar-icons", "always-on-top"],
   "authors": [
     {
       "name": "dragonwocky",

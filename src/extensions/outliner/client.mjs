@@ -123,7 +123,6 @@ export default async (api, db) => {
     setup = () => {
       if (document.contains($page)) return;
       $page = document.querySelector(page);
-      console.log($page);
       $scroller = document.querySelector(scroller);
       $scroller?.removeEventListener("scroll", onScroll);
       $scroller?.addEventListener("scroll", onScroll);

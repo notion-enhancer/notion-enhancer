@@ -1,0 +1,48 @@
+{
+  "name": "Scroller",
+  "version": "0.4.0",
+  "id": "0a958f5a-17c5-48b5-8713-16190cae1959",
+  "description": "Adds buttons to pages and full-page calendars to jump across content easily.",
+  "thumbnail": "scroller.png",
+  "tags": ["scroll-to-top", "scroll-to-bottom", "calendar-scroll"],
+  "authors": [
+    {
+      "name": "dragonwocky",
+      "homepage": "https://dragonwocky.me/",
+      "avatar": "https://dragonwocky.me/avatar.jpg"
+    },
+    {
+      "name": "CloudHill",
+      "homepage": "https://github.com/CloudHill",
+      "avatar": "https://avatars.githubusercontent.com/u/54142180"
+    }
+  ],
+  "options": [
+    {
+      "type": "toggle",
+      "key": "smoothScrolling",
+      "description": "Smoothly animates any scrolling triggered by this extension. Disable this to jump across pages instantly.",
+      "value": true
+    },
+    { "type": "heading", "label": "Pages" },
+    {
+      "type": "toggle",
+      "key": "showScrollToBottom",
+      "description": "Adds a button to the bottom right corner of the screen (beside the help button) to jump directly to the bottom of a page.",
+      "value": false
+    },
+    {
+      "type": "number",
+      "key": "distanceUntilScrollToTopShown",
+      "description": "How far down a page you must be scrolled for the scroll to top button to appear in the bottom right corner of the screen. This will replace the scroll to bottom button (if it is enabled).",
+      "value": 50
+    },
+    {
+      "type": "select",
+      "key": "scrollDistanceUnits",
+      "description": "The unit to measure the above distance in, e.g. you may wish the button to appear at 90% down any page or only on pages that scroll down further than a certain number of pixels.",
+      "values": ["Percent", "Pixels"]
+    }
+  ],
+  "clientScripts": ["client.mjs"]
+}

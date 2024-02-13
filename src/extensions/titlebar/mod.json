@@ -3,8 +3,9 @@
   "version": "0.11.1",
   "id": "a5658d03-21c6-4088-bade-fa4780459133",
   "description": "Replaces the operating system's default window titlebar with buttons inset into the app.",
-  "thumbnail": "integrated-titlebar.jpg",
+  "thumbnail": "titlebar.jpg",
   "platforms": ["linux", "win32"],
+  "tags": ["app-only", "integrated-titlebar"],
   "authors": [
     {
       "name": "dragonwocky",

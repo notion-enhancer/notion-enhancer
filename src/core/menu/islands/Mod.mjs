@@ -39,19 +39,19 @@ function Mod({
           class="rounded-[4px] mr-[12px] h-[74px] my-auto"
         />`
       : ""}
-    <div class="flex-(& col) max-w-[50%]">
-      <div class="flex items-center text-[14px] mb-[5px]">
+    <div class="flex-(& col) w-full">
+      <div class="flex flex-wrap items-center gap-[8px] text-[14px] mb-[5px]">
         <h3 class="my-0">${name}</h3>
         ${[`v${version}`, ...tags].map((tag) => {
           return html`<span
-            class="text-([12px] [color:var(--theme--fg-secondary)])
-            ml-[8px] py-[2px] px-[6px] leading-tight tracking-wide
+            class="text-([12px] [color:var(--theme--fg-secondary)]
+            nowrap) leading-tight tracking-wide py-[2px] px-[6px]
             rounded-[3px] bg-[color:var(--theme--bg-hover)]"
             >${tag}
           </span>`;
         })}
       </div>
-      <${Description} class="mb-[6px]" innerHTML=${description} />
+      <${Description} class="mb-[6px] max-w-[80%]" innerHTML=${description} />
       <div class="mt-auto flex gap-x-[8px] text-[12px] leading-[16px]">
         ${authors.map((author) => {
           return html`<a href=${author.homepage} class="flex items-center">
