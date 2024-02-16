@@ -11,8 +11,8 @@ function View({ id }, ...children) {
     // set padding on last child to maintain pad on overflow
     $view = html`<article
       id=${id}
-      class="notion-enhancer--menu-view h-full w-full min-w-[580px]
-      absolute px-[60px] pt-[36px] important:[&>*]:last:pb-[36px]"
+      class="notion-enhancer--menu-view min-h-full w-full
+      absolute px-[60px] py-[36px] min-w-[580px]"
     >
       ${children}
     </article>`;

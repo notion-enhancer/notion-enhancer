@@ -1,6 +1,6 @@
 /**
  * notion-enhancer
- * (c) 2023 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
+ * (c) 2024 dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
@@ -8,9 +8,10 @@
 
 const IS_ELECTRON = typeof module !== "undefined",
   IS_RENDERER = IS_ELECTRON && process.type === "renderer",
-  whenReady = new Promise((res, rej) => {
+  API_LOADED = new Promise((res, rej) => {
     (globalThis.__enhancerApi ??= {}).__isReady = res;
-  });
+  }),
+  whenReady = (callback) => API_LOADED.then(callback);
 
 // expected values: 'linux', 'win32', 'darwin' (== macos), 'firefox'
 // and 'chromium' (inc. chromium-based browsers like edge and brave)
@@ -159,5 +160,5 @@ Object.assign((globalThis.__enhancerApi ??= {}), {
   readJson,
   initDatabase,
   reloadApp,
-  whenReady: (callback) => whenReady.then(callback),
+  whenReady,
 });

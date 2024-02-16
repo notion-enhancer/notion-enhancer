@@ -39,12 +39,11 @@ export default (async () => {
 
   // in both situations, modules that attach to
   // the dom must be re-imported
+
   await Promise.all([
-    // i.e. if (not_menu) or (is_menu && not_electron), then import
-    !(!IS_MENU || !IS_ELECTRON) || import(enhancerUrl("assets/icons.svg.js")),
-    !(!IS_MENU || !IS_ELECTRON) || import(enhancerUrl("common/registry.js")),
-    import(enhancerUrl("common/scaffold.mjs")),
-    import(enhancerUrl("common/events.js")),
+    IS_ELECTRON || import(enhancerUrl("common/registry.js")),
+    (IS_ELECTRON && IS_MENU) || import(enhancerUrl("api/state.js")),
+    import(enhancerUrl("api/interface.mjs")),
   ]);
 
   globalThis.__enhancerApi.__isReady(globalThis.__enhancerApi);
