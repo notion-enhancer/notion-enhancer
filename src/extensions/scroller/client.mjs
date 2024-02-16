@@ -55,6 +55,6 @@ export default async (api, db) => {
       $scroller?.addEventListener("scroll", onScroll);
       onScroll();
     };
-  addMutationListener(scroller, setup, false);
+  addMutationListener(scroller, setup, { subtree: false });
   setup();
 };

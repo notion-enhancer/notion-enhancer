@@ -10,7 +10,7 @@ function Tile({ icon, title, tagName, ...props }, ...children) {
   const { html, extendProps } = globalThis.__enhancerApi;
   extendProps(props, {
     class: `flex items-center gap-[12px] rounded-[4px]
-    border-(& [color:var(--theme--fg-border)]) px-[16px]
+    border-(~ [color:var(--theme--fg-border)]) px-[16px]
     bg-[color:var(--theme--bg-secondary)] py-[12px]
     hover:bg-[color:var(--theme--bg-hover)]`,
   });

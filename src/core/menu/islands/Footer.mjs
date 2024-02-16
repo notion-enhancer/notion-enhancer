@@ -52,7 +52,7 @@ function Footer({ categories, transitionDuration = 150 }) {
   return html`<footer
     class="notion-enhancer--menu-footer px-[60px] py-[16px]
     flex w-full bg-[color:var(--theme--bg-primary)] h-[64px]
-    border-t-(& [color:var(--theme--fg-border)])"
+    border-t-(~ [color:var(--theme--fg-border)])"
   >
     ${$categories.map(([, $btn]) => $btn)}${$reload}
   </footer>`;

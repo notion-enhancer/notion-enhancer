@@ -15,9 +15,9 @@ function TopbarButton({ icon, ...props }, ...children) {
     select-none h-[28px] w-[33px] duration-[20ms]
     transition inline-flex items-center justify-center
     rounded-[3px] hover:bg-[color:var(--theme--bg-hover)]
-    has-[span]:w-auto &>span:(text-[14px] leading-[1.2] px-[8px])
-    &[data-active]:bg-[color:var(--theme--bg-hover)]
-    &>i:size-[20px]`,
+    has-[span]:w-auto [&>span]:(text-[14px] leading-[1.2] px-[8px])
+    [&[data-active]]:bg-[color:var(--theme--bg-hover)]
+    [&>i]:size-[20px]`,
   });
 
   return html`<button ...${props}>

@@ -65,7 +65,7 @@ function Onboarding() {
   };
 
   const $regularGreeting = html`<div
-      class="mt-[16px] grid-(& cols-3) gap-[16px]"
+      class="mt-[16px] grid-(~ cols-3) gap-[16px]"
     >
       <${Tile}
         href="https://notion-enhancer.github.io/getting-started/basic-usage/"
@@ -93,7 +93,7 @@ function Onboarding() {
           A few awesome companies out there have teamed up with me to provide
           you with the notion-enhancer, free forever. Check them out!
         <//>
-        <div class="mt-[16px] grid-(& cols-1) gap-[16px]"></div>
+        <div class="mt-[16px] grid-(~ cols-1) gap-[16px]"></div>
         <${Description} class="mt-[12px]">
           <a href="mailto:thedragonring.bod@gmail.com">Join this list.</a>
         <//>

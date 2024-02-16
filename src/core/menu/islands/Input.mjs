@@ -111,7 +111,7 @@ function Input({
       ${type === "hotkey" ? "text-[color:var(--theme--fg-secondary)]" : ""}
       ${type === "color"
         ? "font-medium"
-        : "border-(& [color:var(--theme--fg-border)])"}"
+        : "border-(~ [color:var(--theme--fg-border)])"}"
       data-coloris=${type === "color"}
       ...${props}
     />`,
@@ -175,7 +175,7 @@ function Input({
           px-[8px] bg-[color:var(--theme--bg-secondary)]
           h-[28px] rounded-[4px] transition duration-[20ms]
           text-([14px] [color:var(--theme--fg-secondary)])
-          border-(& [color:var(--theme--fg-border)])
+          border-(~ [color:var(--theme--fg-border)])
           hover:bg-[color:var(--theme--bg-hover)]"
           onkeydown=${(event) => {
             if ([" ", "Enter"].includes(event.key)) {
@@ -191,7 +191,7 @@ function Input({
         class="notion-enhancer--menu-input 
         ${variant === "lg" ? "h-[32px]" : "h-[28px]"}
         relative overflow-hidden rounded-[4px] w-full inline-block
-        focus-within:ring-(& [color:var(--theme--accent-primary)])
+        focus-within:ring-(~ [color:var(--theme--accent-primary)])
         ${className ?? ""} ${type === "color"
           ? "bg-([image:repeating-linear-gradient(45deg,#aaa_25%,transparent_25%,transparent_75%,#aaa_75%,#aaa),repeating-linear-gradient(45deg,#aaa_25%,#fff_25%,#fff_75%,#aaa_75%,#aaa)] [position:0_0,4px_4px] [size:8px_8px])"
           : "bg-[color:var(--theme--bg-hover)]"}"

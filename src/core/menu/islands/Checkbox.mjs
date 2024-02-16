@@ -11,11 +11,9 @@ function Checkbox({ _get, _set, _requireReload = true, ...props }) {
   const { html, extendProps, setState, useState } = globalThis.__enhancerApi,
     $input = html`<input
       type="checkbox"
-      class="hidden checked:&+div:(px-px
-      bg-[color:var(--theme--accent-primary)])
-      not-checked:&+div:(&>i:text-transparent
-        border-(& [color:var(--theme--fg-primary)])
-        hover:bg-[color:var(--theme--bg-hover)])"
+      class="hidden [&:checked+div]:(px-px bg-[color:var(--theme--accent-primary)])
+      [&:not(:checked)+div>i]:text-transparent [&:not(:checked)+div]:(border-(~
+      [color:var(--theme--fg-primary)]) hover:bg-[color:var(--theme--bg-hover)])"
       ...${props}
     />`;
   extendProps($input, { onchange: () => _set?.($input.checked) });

@@ -78,7 +78,7 @@ export default async function (api, db) {
     }
   });
 
-  const favoriteSelector = "  n",
+  const favoriteSelector = ".notion-topbar-favorite-button",
     favoriteButton = await db.get("favoriteButton"),
     favoriteIcon = await db.get("favoriteIcon"),
     $favoriteIcon = favoriteIcon ? html(favoriteIcon.content) : undefined;
@@ -108,8 +108,7 @@ export default async function (api, db) {
 
   const alwaysOnTopButton = await db.get("alwaysOnTopButton");
   if (alwaysOnTopButton === "Disabled") return;
-
-  const topbarFavorite = ".notion-topbar-favorite-button",
+  const topbarFavorite = `.notion-topbar ${favoriteSelector}`,
     pinIcon = await db.get("pinIcon"),
     unpinIcon = await db.get("unpinIcon"),
     $pin = html`<${TopbarButton}
@@ -138,10 +137,8 @@ export default async function (api, db) {
       icon="pin-off"
     />`,
     addToTopbar = () => {
-      const $topbarFavorite = document.querySelector(topbarFavorite);
-      if (!$topbarFavorite) return;
-      $topbarFavorite.after($pin, $unpin);
-      removeMutationListener(addToTopbar);
+      if (document.contains($pin)) removeMutationListener(addToTopbar);
+      document.querySelector(topbarFavorite)?.after($pin, $unpin);
     };
   html`<${Tooltip}><b>${pinTooltip}</b><//>`.attach($pin, "bottom");
   html`<${Tooltip}><b>${unpinTooltip}</b><//>`.attach($unpin, "bottom");

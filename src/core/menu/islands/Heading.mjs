@@ -11,7 +11,7 @@ function Heading(props, ...children) {
   extendProps(props, {
     class: `notion-enhancer--menu-heading text-[16px]
     font-semibold mb-[16px] mt-[48px] first:mt-0 pb-[12px]
-    border-b-(& [color:var(--theme--fg-border)])`,
+    border-b-(~ [color:var(--theme--fg-border)])`,
   });
   return html`<h4 ...${props}>${children}</h4>`;
 }

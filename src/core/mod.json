@@ -77,7 +77,7 @@
       "value": true
     }
   ],
-  "clientStyles": ["variables.css"],
+  "clientStyles": ["variables.css", "../vendor/@unocss-preflight-tailwind.css"],
   "clientScripts": ["client.mjs"],
   "electronScripts": [[".webpack/main/index", "electron.cjs"]]
 }

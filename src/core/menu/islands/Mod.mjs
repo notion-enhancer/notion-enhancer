@@ -31,7 +31,7 @@ function Mod({
     bg-[color:var(--theme--bg-secondary)] w-full py-[18px] px-[16px]
     border border-[color:var(--theme--fg-border)] cursor-pointer
     duration-[20ms] hover:bg-[color:var(--theme--bg-hover)]
-    transition &+.notion-enhancer--menu-option:mt-[24px]"
+    transition [&+.notion-enhancer--menu-option]:mt-[24px]"
   >
     ${thumbnail
       ? html`<img
@@ -39,7 +39,7 @@ function Mod({
           class="rounded-[4px] mr-[12px] h-[74px] my-auto"
         />`
       : ""}
-    <div class="flex-(& col) w-full">
+    <div class="flex-(~ col) w-full">
       <div class="flex flex-wrap items-center gap-[8px] text-[14px] mb-[5px]">
         <h3 class="my-0">${name}</h3>
         ${[`v${version}`, ...tags].map((tag) => {

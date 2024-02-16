@@ -61,56 +61,6 @@ const _state = {},
   },
   dumpState = () => _state;
 
-let documentObserver,
-  mutationListeners = [];
-const mutationQueue = [],
-  addMutationListener = (selector, callback, subtree = true) => {
-    mutationListeners.push([selector, callback, subtree]);
-  },
-  removeMutationListener = (callback) => {
-    mutationListeners = mutationListeners.filter(([, c]) => c !== callback);
-  },
-  selectorMutated = (mutation, selector, subtree) => {
-    const target =
-        mutation.type === "characterData"
-          ? mutation.target.parentElement
-          : mutation.target,
-      matchesTarget = target?.matches(selector);
-    if (!subtree) return matchesTarget;
-    const descendsFromTarget = target?.matches(`${selector} *`),
-      addedToTarget = [...(mutation.addedNodes || [])].some(
-        (node) =>
-          node instanceof HTMLElement &&
-          (node?.matches(`${selector}, ${selector} *`) ||
-            node?.querySelector(selector))
-      );
-    return matchesTarget || descendsFromTarget || addedToTarget;
-  },
-  handleMutations = () => {
-    while (mutationQueue.length) {
-      const mutation = mutationQueue.shift();
-      for (const [selector, callback, subtree] of mutationListeners) {
-        const matches = selectorMutated(mutation, selector, subtree);
-        if (matches) callback(mutation);
-      }
-    }
-  },
-  attachObserver = () => {
-    if (document.readyState !== "complete") return;
-    documentObserver ??= new MutationObserver((mutations, _observer) => {
-      if (!mutationQueue.length) requestIdleCallback(handleMutations);
-      mutationQueue.push(...mutations);
-    });
-    documentObserver.observe(document.body, {
-      attributes: true,
-      characterData: true,
-      childList: true,
-      subtree: true,
-    });
-  };
-document.addEventListener("readystatechange", attachObserver);
-attachObserver();
-
 let keyListeners = [];
 // accelerators approximately match electron accelerators.
 // logic used when recording hotkeys in menu matches logic used
@@ -163,17 +113,21 @@ const modifierAliases = [
           });
       if (combinationTriggered) callback(event);
     }
+  },
+  onKeyup = (event) => {
+    const keyupListeners = keyListeners //
+      .filter(([, , waitForKeyup]) => waitForKeyup);
+    handleKeypress(event, keyupListeners);
+  },
+  onKeydown = (event) => {
+    const keydownListeners = keyListeners //
+      .filter(([, , waitForKeyup]) => !waitForKeyup);
+    handleKeypress(event, keydownListeners);
   };
-document.addEventListener("keyup", (event) => {
-  const keyupListeners = keyListeners //
-    .filter(([, , waitForKeyup]) => waitForKeyup);
-  handleKeypress(event, keyupListeners);
-});
-document.addEventListener("keydown", (event) => {
-  const keydownListeners = keyListeners //
-    .filter(([, , waitForKeyup]) => !waitForKeyup);
-  handleKeypress(event, keydownListeners);
-});
+document.removeEventListener("keyup", onKeyup);
+document.removeEventListener("keydown", onKeydown);
+document.addEventListener("keyup", onKeyup);
+document.addEventListener("keydown", onKeydown);
 
 Object.assign((globalThis.__enhancerApi ??= {}), {
   sleep,
@@ -181,8 +135,6 @@ Object.assign((globalThis.__enhancerApi ??= {}), {
   setState,
   useState,
   dumpState,
-  addMutationListener,
-  removeMutationListener,
   addKeyListener,
   removeKeyListener,
 });

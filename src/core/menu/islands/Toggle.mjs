@@ -11,7 +11,7 @@ function Toggle({ _get, _set, _requireReload = true, ...props }) {
   const { html, extendProps, setState, useState } = globalThis.__enhancerApi,
     $input = html`<input
       type="checkbox"
-      class="hidden checked:&+div>div:(
+      class="hidden [&:checked+div>div]:(
       bg-[color:var(--theme--accent-primary)]
       after:translate-x-[12px])"
       ...${props}

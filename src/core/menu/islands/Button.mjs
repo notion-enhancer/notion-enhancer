@@ -19,13 +19,13 @@ function Button({ icon, variant, tagName, ...props }, ...children) {
            hover:bg-[color:var(--theme--accent-primary\\_hover)]`
         : variant === "secondary"
         ? `text-[color:var(--theme--accent-secondary)]
-           border-(& [color:var(--theme--accent-secondary)])
+           border-(~ [color:var(--theme--accent-secondary)])
            hover:bg-[color:var(--theme--accent-secondary\\_hover)]`
         : variant === "brand"
-        ? `text-white border-(& purple-400)
+        ? `text-white border-(~ purple-400)
            bg-purple-500 hover:(from-white/20 to-transparent
            bg-[linear-gradient(225deg,var(--tw-gradient-stops))])`
-        : `border-(& [color:var(--theme--fg-border)])
+        : `border-(~ [color:var(--theme--fg-border)])
            not-disabled:hover:bg-[color:var(--theme--bg-hover)]
            disabled:text-[color:var(--theme--fg-secondary)]`
     }`,

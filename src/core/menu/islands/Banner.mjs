@@ -64,7 +64,7 @@ function Circle(rect) {
   const { html } = globalThis.__enhancerApi;
   return html`<div
     class="absolute rounded-full
-    border-(& purple-500) bg-purple-400"
+    border-(~ purple-500) bg-purple-400"
     style=${rectToStyle(rect)}
   ></div>`;
 }
@@ -115,7 +115,7 @@ function Banner({ updateAvailable, isDevelopmentBuild }) {
 
   const $welcome = html`<div
       class="relative flex overflow-hidden h-[192px] rounded-t-[4px]
-      border-(& purple-400) bg-purple-500 from-white/20 to-transparent
+      border-(~ purple-400) bg-purple-500 from-white/20 to-transparent
       text-white bg-[linear-gradient(225deg,var(--tw-gradient-stops))]"
     >
       <${Circle} width="128px" height="128px" bottom="-64px" left="-64px" />
@@ -138,7 +138,7 @@ function Banner({ updateAvailable, isDevelopmentBuild }) {
         class="absolute bottom-0 right-0 py-[24px]
         px-[32px] md:px-[48px] lg:px-[64px]"
       >
-        <div class="relative flex-(& col)">
+        <div class="relative flex-(~ col)">
           <i class="i-notion-enhancer text-[42px] mx-auto mb-[8px]"></i>
           ${$version}
         </div>
@@ -146,7 +146,7 @@ function Banner({ updateAvailable, isDevelopmentBuild }) {
     </div>`,
     $sponsorship = html`<div
       class="py-[18px] px-[16px] rounded-b-[4px]
-      border-(& [color:var(--theme--fg-border)]) bg-[color:var(--theme--bg-secondary)]"
+      border-(~ [color:var(--theme--fg-border)]) bg-[color:var(--theme--bg-secondary)]"
     >
       <div class="flex items-center gap-[16px]">
         <p class="text-[14px] font-semibold">

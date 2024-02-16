@@ -21,7 +21,7 @@ function Tooltip(props, ...children) {
         leading-[1.4] font-medium py-[4px] px-[8px] rounded-[4px]
         drop-shadow-md transition duration-100 opacity-0
         group-open/tooltip:(pointer-events-auto opacity-100)
-        &>b:text-[color:var(--theme--fg-primary)]"
+        [&>b]:text-[color:var(--theme--fg-primary)]"
       >
         ${children}
       </div>

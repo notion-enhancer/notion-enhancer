@@ -18,7 +18,7 @@ const setupWrapper = () => {
         const $wrapper = html`<div
           class="notion-enhancer--floating-buttons z-50
           absolute bottom-[calc(26px+env(safe-area-inset-bottom))]
-          flex gap-[12px] !(&>.notion-help-button:static)"
+          flex gap-[12px] important:[&>.notion-help-button]:static"
           style="right:${$help.style.right}"
         ></div>`;
         removeMutationListener(addToDom);

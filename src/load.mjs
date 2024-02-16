@@ -38,29 +38,16 @@ export default (async () => {
   // extension:// pages can access chrome apis
 
   // in both situations, modules that attach to
-  // the dom must be re-imported, and should not
-  // be used until import is complete, otherwise
-  // their local states will be cleared (e.g.,
-  // references to registered hotkeys)
-
-  const _state = globalThis.__enhancerApi?.dumpState?.();
+  // the dom must be re-imported
   await Promise.all([
     // i.e. if (not_menu) or (is_menu && not_electron), then import
     !(!IS_MENU || !IS_ELECTRON) || import(enhancerUrl("assets/icons.svg.js")),
-    import(enhancerUrl("vendor/twind.min.js")),
-    import(enhancerUrl("vendor/lucide.min.js")),
-    import(enhancerUrl("vendor/htm.min.js")),
-  ]);
-  await Promise.all([
     !(!IS_MENU || !IS_ELECTRON) || import(enhancerUrl("common/registry.js")),
+    import(enhancerUrl("common/scaffold.mjs")),
     import(enhancerUrl("common/events.js")),
-    import(enhancerUrl("common/markup.js")),
   ]);
-  // copy across state from prev. module imports if
-  // useState / setState are called early, otherwise
-  // e.g. menu will not persist theme from initial msg
-  globalThis.__enhancerApi.setState(_state ?? {});
 
+  globalThis.__enhancerApi.__isReady(globalThis.__enhancerApi);
   const { getMods, isEnabled, modDatabase } = globalThis.__enhancerApi;
   for (const mod of await getMods()) {
     if (!(await isEnabled(mod.id))) continue;
@@ -85,5 +72,4 @@ export default (async () => {
   }
 
   if (IS_MENU) console.log("notion-enhancer: ready");
-  globalThis.__enhancerApi.__isReady(globalThis.__enhancerApi);
 })();

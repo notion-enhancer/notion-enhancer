@@ -14,7 +14,7 @@ export default async (api, db) => {
 
   const { onMessage, addMutationListener, removeMutationListener } = api,
     $buttons = await createWindowButtons(),
-    topbarMore = ".notion-topbar-more-button",
+    topbarMore = ".notion-topbar .notion-topbar-more-button",
     addToTopbar = () => {
       if (document.contains($buttons)) removeMutationListener(addToTopbar);
       document.querySelector(topbarMore)?.after($buttons);

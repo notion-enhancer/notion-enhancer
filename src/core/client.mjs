@@ -72,7 +72,7 @@ const insertMenu = async (api, db) => {
           // pass notion-enhancer api to electron menu process
           if (["linux", "win32", "darwin"].includes(platform)) {
             const apiKey = "__enhancerApi";
-            this.contentWindow[apiKey] = globalThis[apiKey];
+            this.contentWindow[apiKey] = { ...globalThis[apiKey] };
           }
           _contentWindow = this.contentWindow;
           updateMenuTheme();
@@ -99,7 +99,7 @@ const insertMenu = async (api, db) => {
     <b>Configure the notion-enhancer and its mods</b>
   <//>`.attach($button, "right");
   addMutationListener(notionSidebar, appendToDom);
-  addMutationListener(".notion-app-inner", updateMenuTheme, false);
+  addMutationListener(".notion-app-inner", updateMenuTheme, { subtree: false });
   appendToDom();
 
   addKeyListener(openMenuHotkey, (event) => {

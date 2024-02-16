@@ -62,7 +62,7 @@ function Sidebar({ items, categories }) {
     </span>`,
     $sidebar = html`<aside
       class="notion-enhancer--menu-sidebar h-full
-      px-[4px] overflow-y-auto flex-(& col) row-span-1
+      px-[4px] overflow-y-auto flex-(~ col) row-span-1
       bg-[color:var(--theme--bg-secondary)]"
     >
       ${items.map((item) => {

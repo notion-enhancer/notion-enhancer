@@ -127,7 +127,7 @@ const renderMenu = async () => {
       />`,
       $main = html`
         <main
-          class="flex-(& col) overflow-hidden transition-[height]"
+          class="flex-(~ col) overflow-hidden transition-[height]"
           style="height: calc(100% + 65px)"
         >
           <!-- wrappers necessary for transitions and breakpoints -->

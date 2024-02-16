@@ -64,7 +64,7 @@ function List({ id, mods, description }) {
         };
       return html`<${Mod} ...${{ ...mod, _get, _set }} />`;
     });
-  return html`<div class="flex-(& col) gap-y-[14px]">
+  return html`<div class="flex-(~ col) gap-y-[14px]">
     <${Search} items=${$mods} itemType=${id} />
     <${Description} innerHTML=${description} />
     ${$mods}

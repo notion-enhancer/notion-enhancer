@@ -19,7 +19,7 @@ function Popup(
   extendProps(props, {
     class: `notion-enhancer--menu-popup group/popup
     absolute top-0 left-0 z-20 text-left font-normal
-    flex-(& col) justify-center pointer-events-none
+    flex-(~ col) justify-center pointer-events-none
     items-end w-full ${isDropdown ? "" : "h-full"}`,
   });
 

@@ -16,7 +16,7 @@ function Heading({ indent, ...props }, ...children) {
     decoration-(2 [color:var(--theme--fg-border)])
     hover:bg-[color:var(--theme--bg-hover)]
     py-[6px] pr-[2px] pl-[${indent * 18}px]
-    underline-(& offset-4) last:mb-[24px]"
+    underline-(~ offset-4) last:mb-[24px]"
     ...${props}
   >
     ${children}
@@ -131,6 +131,6 @@ export default async (api, db) => {
 
   const semanticHeadings = '[class$="header-block"] :is(h2, h3, h4)';
   addMutationListener(`${page} ${semanticHeadings}`, updateHeadings);
-  addMutationListener(`${page}, ${scroller}`, setup, false);
+  addMutationListener(`${page}, ${scroller}`, setup, { subtree: false });
   setup();
 };

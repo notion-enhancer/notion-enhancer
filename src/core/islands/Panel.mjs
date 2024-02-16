@@ -99,12 +99,12 @@ function Panel({
       <i
         class="i-chevrons-left size-[20px]
         text-[color:var(--theme--fg-secondary)] transition-transform
-        group-&[data-pinned]/panel:rotate-180 duration-[${transitionDuration}ms]"
+        group-[&[data-pinned]]/panel:rotate-180 duration-[${transitionDuration}ms]"
       />
     </button>`,
     $panel = html`<div
       class="notion-enhancer--panel group/panel order-2
-      shrink-0 &[data-pinned]:w-[var(--panel--width,0)]"
+      shrink-0 [&[data-pinned]]:w-[var(--panel--width,0)]"
     >
       <style>
         .notion-frame {
@@ -120,8 +120,8 @@ function Panel({
       </style>
       <aside
         class="border-(l-1 [color:var(--theme--fg-border)]) w-0
-        group-&[data-pinned]/panel:(w-[var(--panel--width,0)]) h-[calc(100vh-45px)] bottom-0)
-        absolute right-0 z-20 bg-[color:var(--theme--bg-primary)]  group-&[data-peeked]/panel:(
+        group-[&[data-pinned]]/panel:(w-[var(--panel--width,0)]) h-[calc(100vh-45px)] bottom-0)
+        absolute right-0 z-20 bg-[color:var(--theme--bg-primary)]  group-[&[data-peeked]]/panel:(
         w-[var(--panel--width,0)] h-[calc(100vh-120px)] bottom-[60px] rounded-l-[8px] border-(t-1 b-1))"
       >
         <div
@@ -138,7 +138,7 @@ function Panel({
     </div>`;
 
   const topbarId = "e0700ce3-a9ae-45f5-92e5-610ded0e348d",
-    topbarFavorite = ".notion-topbar-favorite-button",
+    topbarFavorite = ".notion-topbar .notion-topbar-favorite-button",
     $topbarToggle = html`<${TopbarButton}
       aria-label="Toggle side panel"
       icon="panel-right"
@@ -149,7 +149,7 @@ function Panel({
     };
   $panelToggle.onclick = $topbarToggle.onclick = () => $panel.toggle();
   addMutationListener(topbarFavorite, addToTopbar);
-  addToTopbar(topbarFavorite);
+  addToTopbar();
 
   isEnabled(topbarId).then(async (topbarEnabled) => {
     if (!topbarEnabled) return;
@@ -225,11 +225,11 @@ function Panel({
       class="absolute opacity-0 h-full w-[3px] left-[-2px]
       active:cursor-text bg-[color:var(--theme--fg-border)] z-20
       transition duration-300 hover:(cursor-col-resize opacity-100)
-      group-&[data-peeked]/panel:(w-[8px] left-[-1px] rounded-l-[7px])"
+      group-[&[data-peeked]]/panel:(w-[8px] left-[-1px] rounded-l-[7px])"
     >
       <div
         class="ml-[2px] bg-[color:var(--theme--bg-primary)]
-        group-&[data-peeked]/panel:(my-px h-[calc(100%-2px)] rounded-l-[6px])"
+        group-[&[data-peeked]]/panel:(my-px h-[calc(100%-2px)] rounded-l-[6px])"
       ></div>
     </div>`,
     startDrag = async (event) => {
@@ -284,8 +284,8 @@ function Panel({
   const coreId = "0f0bf8b6-eae6-4273-b307-8fc43f2ee082",
     $peekTrigger = html`<div
       class="absolute z-10 right-0 h-[calc(100vh-120px)] bottom-[60px] w-[96px]
-    group-&[data-peeked]/panel:(w-[calc(var(--panel--width,0)+8px)])
-    group-&[data-pinned]/panel:(w-[calc(var(--panel--width,0)+8px)])"
+    group-[&[data-peeked]]/panel:(w-[calc(var(--panel--width,0)+8px)])
+    group-[&[data-pinned]]/panel:(w-[calc(var(--panel--width,0)+8px)])"
     ></div>`;
   modDatabase(coreId).then(async (db) => {
     _peekPanelOnHover = await db.get("peekPanelOnHover");

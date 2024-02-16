@@ -9,10 +9,41 @@ import { existsSync } from "node:fs";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
+const esmVersion = "135",
+  esTarget = "es2022",
+  esmBundle = ({ name, version, path = "", exports = [] }) => {
+    const scopedName = name;
+    if (name.startsWith("@")) name = name.split("/")[1];
+    path ||= `${name}.bundle.mjs`;
+    let bundleSrc = `https://esm.sh/v${esmVersion}/${scopedName}@${version}/${esTarget}/${path}`;
+    if (exports.length) bundleSrc += `?bundle&exports=${exports.join()}`;
+    return { [`${scopedName.replace(/\//g, "-")}.mjs`]: bundleSrc };
+  };
+
 const dependencies = {
-  "htm.min.js": "https://unpkg.com/htm@3.1.1/mini/index.js",
-  "twind.min.js": "https://unpkg.com/@twind/cdn@1.0.8/cdn.global.js",
-  "lucide.min.js": "https://unpkg.com/lucide@0.319.0/dist/umd/lucide.min.js",
+  ...esmBundle({ name: "htm", version: "3.1.1" }),
+  ...esmBundle({
+    name: "lucide",
+    version: "0.319.0",
+    path: "dist/umd/lucide.mjs",
+  }),
+  ...esmBundle({
+    name: "@unocss/core",
+    version: "0.58.5",
+    exports: ["createGenerator", "expandVariantGroup"],
+  }),
+  ...esmBundle({
+    name: "@unocss/preset-uno",
+    version: "0.58.5",
+    exports: ["presetUno"],
+  }),
+  ...esmBundle({
+    name: "@unocss/preset-icons",
+    version: "0.58.5",
+    exports: ["presetIcons"],
+  }),
+  "@unocss-preflight-tailwind.css":
+    "https://esm.sh/@unocss/reset@0.58.5/tailwind.css",
   "coloris.min.js":
     "https://cdn.jsdelivr.net/gh/mdbassit/Coloris@v0.22.0/dist/coloris.min.js",
   "coloris.min.css":
@@ -29,22 +60,3 @@ for (const file in dependencies) {
     res = await (await fetch(source)).text();
   await write(file, res);
 }
-
-// expose vendored twind cdn
-await append("twind.min.js", `\n;globalThis.twind = twind;`);
-
-// build content type lookup script from mime-db to avoid
-// re-processing entire the database every time a file is
-// requested via notion://www.notion.so/__notion-enhancer/
-let contentTypes = [];
-for (const [type, { extensions, charset }] of Object.entries(
-  await (await fetch("https://unpkg.com/mime-db@1.52.0/db.json")).json()
-)) {
-  if (!extensions) continue;
-  const contentType = charset
-    ? `${type}; charset=${charset.toLowerCase()}`
-    : type;
-  for (const ext of extensions) contentTypes.push([ext, contentType]);
-}
-contentTypes = `module.exports=new Map(${JSON.stringify(contentTypes)});`;
-await write("content-types.min.js", contentTypes);
