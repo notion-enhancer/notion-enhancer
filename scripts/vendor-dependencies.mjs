@@ -37,11 +37,6 @@ const dependencies = {
     version: "0.58.5",
     exports: ["presetUno"],
   }),
-  ...esmBundle({
-    name: "@unocss/preset-icons",
-    version: "0.58.5",
-    exports: ["presetIcons"],
-  }),
   "@unocss-preflight-tailwind.css":
     "https://esm.sh/@unocss/reset@0.58.5/tailwind.css",
   "coloris.min.js":

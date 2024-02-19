@@ -17,8 +17,12 @@ export default (async () => {
     pageLoaded = /(^\/$)|((-|\/)[0-9a-f]{32}((\?.+)|$))/.test(location.pathname),
     IS_MENU = location.href.startsWith(enhancerUrl("core/menu/index.html")),
     IS_TABS = /\/app\/\.webpack\/renderer\/(draggable_)?tabs\/index.html$/.test(location.href),
-    IS_ELECTRON = ['linux', 'win32', 'darwin'].includes(platform);
-  if (IS_TABS) globalThis.IS_TABS = true;
+    IS_ELECTRON = ['linux', 'win32', 'darwin'].includes(platform),
+    API_LOADED = new Promise((res, rej) => {
+      const onReady = globalThis.__enhancerReady;
+      globalThis.__enhancerReady = () => (onReady?.(), res());
+    });
+  globalThis.IS_TABS = IS_TABS;
 
   if (!IS_MENU && !IS_TABS) {
     if (!signedIn || !pageLoaded) return;
@@ -42,16 +46,16 @@ export default (async () => {
 
   await Promise.all([
     IS_ELECTRON || import(enhancerUrl("common/registry.js")),
-    (IS_ELECTRON && IS_MENU) || import(enhancerUrl("api/state.js")),
     import(enhancerUrl("api/interface.mjs")),
+    import(enhancerUrl("api/state.js")),
   ]);
 
-  globalThis.__enhancerApi.__isReady(globalThis.__enhancerApi);
   const { getMods, isEnabled, modDatabase } = globalThis.__enhancerApi;
   for (const mod of await getMods()) {
     if (!(await isEnabled(mod.id))) continue;
-    const isTheme = mod._src.startsWith("themes/");
-    if (IS_MENU && !(mod._src === "core" || isTheme)) continue;
+    const isCore = mod._src === "core",
+      isTheme = mod._src.startsWith("themes/");
+    if (IS_MENU && !(isCore || isTheme)) continue;
 
     // clientStyles
     for (let stylesheet of mod.clientStyles ?? []) {
@@ -65,10 +69,18 @@ export default (async () => {
     if (IS_MENU || IS_TABS) continue;
     const db = await modDatabase(mod.id);
     for (let script of mod.clientScripts ?? []) {
-      script = await import(enhancerUrl(`${mod._src}/${script}`));
-      script.default(globalThis.__enhancerApi, db);
+      // execute mod scripts after core has
+      // loaded and api is ready to use
+      Promise.resolve(isCore || API_LOADED)
+        .then(() => import(enhancerUrl(`${mod._src}/${script}`)))
+        .then((script) => script.default(globalThis.__enhancerApi, db))
+        .then(() => !isCore || globalThis.__enhancerReady?.());
     }
   }
 
-  if (IS_MENU) console.log("notion-enhancer: ready");
+  if (IS_MENU || IS_TABS) globalThis.__enhancerReady?.();
+  return API_LOADED.then(() => {
+    if (IS_MENU) console.log("notion-enhancer: ready");
+    return globalThis.__enhancerApi;
+  });
 })();

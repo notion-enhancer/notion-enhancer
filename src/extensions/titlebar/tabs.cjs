@@ -6,9 +6,8 @@
 
 "use strict";
 
-module.exports = async ({ whenReady }, db) => {
-  const api = await whenReady(),
-    { html, addMutationListener } = api,
+module.exports = async (api, db) => {
+  const { html, addMutationListener } = api,
     { enhancerUrl, onMessage, sendMessage } = api,
     titlebarStyle = await db.get("titlebarStyle");
 

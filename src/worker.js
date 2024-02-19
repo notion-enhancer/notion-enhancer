@@ -176,3 +176,4 @@ if (IS_ELECTRON) {
 }
 
 Object.assign((globalThis.__enhancerApi ??= {}), { queryDatabase });
+globalThis.__enhancerReady?.();

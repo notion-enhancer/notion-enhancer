@@ -37,29 +37,29 @@ const sleep = async (ms) => {
 // supports inter-mod communication if so
 // required. caution should be used in
 // naming keys to avoid conflicts
-const _state = {},
-  _subscribers = [],
+const _subscribers = [],
+  dumpState = () => (document.__enhancerState ??= {}),
+  getKeysFromState = (keys) => keys.map((key) => dumpState()[key]),
   setState = (state) => {
-    Object.assign(_state, state);
+    Object.assign(dumpState(), state);
     const updates = Object.keys(state);
     _subscribers
       .filter(([keys]) => updates.some((key) => keys.includes(key)))
-      .forEach(([keys, callback]) => callback(keys.map((key) => _state[key])));
+      .forEach(([keys, callback]) => callback(getKeysFromState(keys)));
   },
   // useState(["keyA", "keyB"]) => returns [valueA, valueB]
   // useState(["keyA", "keyB"], callback) => registers callback
   // to be triggered after each update to either keyA or keyB,
   // with [valueA, valueB] passed to the callback's first arg
   useState = (keys, callback) => {
-    const state = keys.map((key) => _state[key]);
+    const state = getKeysFromState(keys);
     if (callback) {
       callback = debounce(callback);
       _subscribers.push([keys, callback]);
       callback(state);
     }
     return state;
-  },
-  dumpState = () => _state;
+  };
 
 Object.assign((globalThis.__enhancerApi ??= {}), {
   sleep,

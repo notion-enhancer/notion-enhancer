@@ -7,11 +7,7 @@
 "use strict";
 
 const IS_ELECTRON = typeof module !== "undefined",
-  IS_RENDERER = IS_ELECTRON && process.type === "renderer",
-  API_LOADED = new Promise((res, rej) => {
-    (globalThis.__enhancerApi ??= {}).__isReady = res;
-  }),
-  whenReady = (callback) => API_LOADED.then(callback);
+  IS_RENDERER = IS_ELECTRON && process.type === "renderer";
 
 // expected values: 'linux', 'win32', 'darwin' (== macos), 'firefox'
 // and 'chromium' (inc. chromium-based browsers like edge and brave)
@@ -160,5 +156,4 @@ Object.assign((globalThis.__enhancerApi ??= {}), {
   readJson,
   initDatabase,
   reloadApp,
-  whenReady,
 });

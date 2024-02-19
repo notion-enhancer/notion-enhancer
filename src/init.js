@@ -16,16 +16,21 @@ const isElectron = () => {
 if (isElectron()) {
   require("./api/system.js");
   require("./api/registry.js");
+
   const { enhancerUrl } = globalThis.__enhancerApi,
-    { getMods, isEnabled, modDatabase } = globalThis.__enhancerApi;
+    { getMods, isEnabled, modDatabase } = globalThis.__enhancerApi,
+    API_LOADED = new Promise((res, rej) => {
+      const onReady = globalThis.__enhancerReady;
+      globalThis.__enhancerReady = () => (onReady?.(), res());
+    });
 
   module.exports = async (target, __exports, __eval) => {
+    const __getApi = () => globalThis.__enhancerApi;
     if (target === ".webpack/main/index") require("./worker.js");
     else {
       // expose globalThis.__enhancerApi to scripts
-      const { contextBridge } = require("electron"),
-        __getEnhancerApi = () => globalThis.__enhancerApi;
-      contextBridge.exposeInMainWorld("__getEnhancerApi", __getEnhancerApi);
+      const { contextBridge } = require("electron");
+      contextBridge.exposeInMainWorld("__getEnhancerApi", __getApi);
 
       // load clientStyles, clientScripts
       document.addEventListener("readystatechange", () => {
@@ -44,7 +49,7 @@ if (isElectron()) {
       for (let [scriptTarget, script] of mod.electronScripts ?? []) {
         if (target !== scriptTarget) continue;
         script = require(`./${mod._src}/${script}`);
-        script(globalThis.__enhancerApi, db, __exports, __eval);
+        API_LOADED.then(() => script(__getApi(), db, __exports, __eval));
       }
     }
   };
