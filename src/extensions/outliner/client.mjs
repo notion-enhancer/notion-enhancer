@@ -42,6 +42,7 @@ export default async (api, db) => {
 
   let $page, $scroller;
   const getHeadings = () => {
+      if (!$page) return [];
       return [...$page.querySelectorAll(headings.join(", "))];
     },
     getHeadingLevel = ($heading) => {

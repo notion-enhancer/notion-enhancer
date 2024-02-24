@@ -50,27 +50,27 @@ function View({ _get }) {
 
 function Switcher({ _get, _set, minWidth, maxWidth }) {
   const { html, useState } = globalThis.__enhancerApi,
-    $switcher = html`<div
-      class="relative flex items-center grow
-      font-medium p-[8.5px] ml-[4px] select-none"
-    ></div>`,
-    setView = (view) => _set?.(view);
+    $select = html`<${Select}
+      popupMode="dropdown"
+      class="w-full text-left"
+      maxWidth=${maxWidth - 56}
+      minWidth=${minWidth - 56}
+      ...${{ _get, _set }}
+    />`;
   useState(["panelViews"], ([panelViews = []]) => {
     const values = panelViews.map(([{ title, $icon }]) => {
       // panel switcher internally uses the select island,
       // which expects an option value rather than a title
       return { value: title, $icon };
     });
-    $switcher.innerHTML = "";
-    $switcher.append(html`<${Select}
-      popupMode="dropdown"
-      class="w-full text-left"
-      maxWidth=${maxWidth - 56}
-      minWidth=${minWidth - 56}
-      ...${{ _get, _set: setView, values }}
-    />`);
+    $select.setValues(values);
   });
-  return $switcher;
+  return html`<div
+    class="relative flex items-center grow
+    font-medium p-[8.5px] ml-[4px] select-none"
+  >
+    ${$select}
+  </div>`;
 }
 
 function Panel({
