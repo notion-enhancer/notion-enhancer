@@ -56,14 +56,6 @@
       "description": "Pops the side panel out to preview its content when hovering near the right edge of the window, in the same way that Notion's left-hand sidebar will slide out on hover. Disable this if you prefer to view the panel only by pinning it.",
       "value": true
     },
-    { "type": "heading", "label": "Experimental" },
-    {
-      "type": "toggle",
-      "key": "draggableTabs",
-      "description": "Enables reordering tabs within the Notion app via drag and drop.",
-      "platforms": ["linux", "win32", "darwin"],
-      "value": false
-    },
     {
       "type": "heading",
       "label": "Advanced",

@@ -17,11 +17,7 @@ const getPreference = (key) => {
 
 module.exports = async ({}, db) => {
   const toggleWindowHotkey = await db.get("toggleWindowHotkey"),
-    developerMode = await db.get("developerMode"),
-    draggableTabs = await db.get("draggableTabs");
-
-  // experimental: enable tab reordering from notion's hidden preferences
-  setPreference("isDraggableTabsEnabled", draggableTabs);
+    developerMode = await db.get("developerMode");
 
   // enable developer mode, access extra debug tools
   Object.assign((globalThis.__notionConfig ??= {}), {
