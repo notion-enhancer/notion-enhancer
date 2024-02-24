@@ -4,8 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 import { createWindowButtons } from "./buttons.mjs";
 
 export default async (api, db) => {

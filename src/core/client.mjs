@@ -4,8 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 import { checkForUpdate } from "./updateCheck.mjs";
 import { sendTelemetryPing } from "./sendTelemetry.mjs";
 import { Modal, Frame } from "./islands/Modal.mjs";
@@ -45,7 +43,7 @@ const shouldLoadThemeOverrides = async (api, db) => {
 
 const insertMenu = async (api, db) => {
   const notionSidebar = `.notion-sidebar-container .notion-sidebar > :nth-child(3) > div > :nth-child(2)`,
-    notionSettingsAndMembers = `${notionSidebar} > [role="button"]:nth-child(3)`,
+    notionSidebarButtons = `${notionSidebar} > [role="button"]`,
     { html, addMutationListener, removeMutationListener } = api,
     { addKeyListener, platform, enhancerUrl, onMessage } = api,
     menuButtonIconStyle = await db.get("menuButtonIconStyle"),
@@ -89,9 +87,11 @@ const insertMenu = async (api, db) => {
       >notion-enhancer
     <//>`;
   const appendToDom = () => {
-    const $settings = document.querySelector(notionSettingsAndMembers);
     document.body.append($modal);
-    $settings?.after($button);
+    const btns = document.querySelectorAll(notionSidebarButtons);
+    for (const $btn of btns) {
+      if ($btn.textContent.includes("Settings")) $btn.after($button);
+    }
     const appended = document.contains($modal) && document.contains($button);
     if (appended) removeMutationListener(appendToDom);
   };

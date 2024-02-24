@@ -4,8 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 function Tooltip(props, ...children) {
   const { html, extendProps } = globalThis.__enhancerApi;
   extendProps(props, {

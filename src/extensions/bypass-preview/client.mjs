@@ -4,8 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 export default function ({ web, notion }, db) {
   let _openPage = {};
 

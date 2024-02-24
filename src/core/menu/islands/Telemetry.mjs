@@ -4,8 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 import { collectTelemetryData } from "../../sendTelemetry.mjs";
 import { Option } from "./Options.mjs";
 

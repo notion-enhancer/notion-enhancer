@@ -5,8 +5,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 import { Tooltip } from "./Tooltip.mjs";
 import { TopbarButton } from "./TopbarButton.mjs";
 import { Select } from "../menu/islands/Select.mjs";

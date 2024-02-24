@@ -4,8 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 export default (async () => {
   Object.assign((globalThis.__enhancerApi ??= {}), {
     ...(globalThis.__getEnhancerApi?.() ?? {}),

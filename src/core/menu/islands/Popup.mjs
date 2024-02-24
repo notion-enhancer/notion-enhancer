@@ -4,8 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 function Popup(
   { trigger, mode = "left", width = 250, maxWidth, ...props },
   ...children

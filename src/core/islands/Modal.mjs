@@ -4,8 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 function Modal(props, ...children) {
   const { html, extendProps, addKeyListener } = globalThis.__enhancerApi;
   extendProps(props, {

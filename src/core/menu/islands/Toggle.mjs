@@ -4,8 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 function Toggle({ _get, _set, _requireReload = true, ...props }) {
   let _initialValue;
   const { html, extendProps, setState, useState } = globalThis.__enhancerApi,

@@ -4,8 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 import { Popup } from "./Popup.mjs";
 
 function Option({ $icon = "", value = "", _get, _set }) {
@@ -20,7 +18,7 @@ function Option({ $icon = "", value = "", _get, _set }) {
       onmouseover=${(event) => event.target.focus()}
       onclick=${() => _set?.(value)}
       onkeydown=${(event) => {
-        if (["Enter", " "].includes(event.key)) _set?.(value);
+        // if (["Enter", " "].includes(event.key)) _set?.(value);
       }}
     >
       <div
@@ -61,6 +59,7 @@ function Select({
       hover:bg-[color:var(--theme--bg-hover)]"
     ></div>`;
 
+  let xyz;
   const options = values.map((opt) => {
       if (["string", "number"].includes(typeof opt)) opt = { value: opt };
       if (!(opt?.$icon instanceof Element)) {
@@ -71,7 +70,9 @@ function Select({
       return {
         ...opt,
         $option: html`<${Option} ...${{ ...opt, _get, _set }} />`,
-        $value: html`<div class="inline-flex text-nowrap items-center gap-[6px]">
+        $value: html`<div
+          class="inline-flex text-nowrap items-center gap-[6px]"
+        >
           <!-- swap icon/value order for correct display when dir="rtl" -->
           <span>${opt.value}</span>${opt.$icon?.cloneNode(true) ?? ""}
         </div>`,
@@ -80,28 +81,33 @@ function Select({
     getSelected = async () => {
       const value = (await _get?.()) ?? $select.innerText,
         option = options.find((opt) => opt.value === value);
-      if (!option) _set?.(options[0].value);
+      if (!option) {
+        console.log(1, options, options.length, options === xyz);
+        _set?.(options[0].value);
+      }
       return option || options[0];
     },
     onKeydown = (event) => {
-      const intercept = () => {
-        event.preventDefault();
-        event.stopPropagation();
-      };
-      if (event.key === "Escape") {
-        intercept(setState({ rerender: true }));
-      } else if (!options.length) return;
-      // prettier-ignore
-      const $next = options.find(({ $option }) => $option === event.target)
-          ?.$option.nextElementSibling ?? options.at(0).$option,
-        $prev = options.find(({ $option }) => $option === event.target)
-          ?.$option.previousElementSibling ?? options.at(-1).$option;
-      // overflow to opposite end of list from dir of travel
-      if (event.key === "ArrowUp") intercept($prev.focus());
-      if (event.key === "ArrowDown") intercept($next.focus());
-      // re-enable natural tab behaviour in notion interface
-      if (event.key === "Tab") event.stopPropagation();
+      // const intercept = () => {
+      //   event.preventDefault();
+      //   event.stopPropagation();
+      // };
+      // if (event.key === "Escape") {
+      //   intercept(setState({ rerender: true }));
+      // } else if (!options.length) return;
+      // // prettier-ignore
+      // const $next = options.find(({ $option }) => $option === event.target)
+      //     ?.$option.nextElementSibling ?? options.at(0).$option,
+      //   $prev = options.find(({ $option }) => $option === event.target)
+      //     ?.$option.previousElementSibling ?? options.at(-1).$option;
+      // // overflow to opposite end of list from dir of travel
+      // if (event.key === "ArrowUp") intercept($prev.focus());
+      // if (event.key === "ArrowDown") intercept($next.focus());
+      // // re-enable natural tab behaviour in notion interface
+      // if (event.key === "Tab") event.stopPropagation();
     };
+  xyz = options;
+  console.log(2, options, options.length, options === xyz);
 
   let _initialValue;
   useState(["rerender"], async () => {

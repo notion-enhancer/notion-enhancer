@@ -4,8 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 const updateHotkey = (event) => {
     const keys = [];
     for (const modifier of ["metaKey", "ctrlKey", "altKey", "shiftKey"]) {

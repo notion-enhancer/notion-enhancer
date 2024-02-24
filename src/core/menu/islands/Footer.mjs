@@ -4,8 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 import { Button } from "./Button.mjs";
 
 function Footer({ categories, transitionDuration = 150 }) {

@@ -4,8 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 let __$wrapper;
 const setupWrapper = () => {
     const notionHelp = ".notion-help-button",

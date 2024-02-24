@@ -4,8 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 import { Popup } from "./Popup.mjs";
 import { Button } from "./Button.mjs";
 import { Description } from "./Description.mjs";

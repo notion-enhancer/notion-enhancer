@@ -4,8 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 let _release;
 const repo = "notion-enhancer/notion-enhancer",
   endpoint = `https://api.github.com/repos/${repo}/releases/latest`,

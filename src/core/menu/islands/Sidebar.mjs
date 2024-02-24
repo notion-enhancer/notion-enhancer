@@ -4,8 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 import { Description } from "./Description.mjs";
 
 function SidebarHeading({}, ...children) {

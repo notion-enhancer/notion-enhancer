@@ -5,8 +5,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 import { FloatingButton } from "../../core/islands/FloatingButton.mjs";
 
 export default async (api, db) => {

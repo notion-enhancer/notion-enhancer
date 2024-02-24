@@ -4,8 +4,6 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
 import htm from "../vendor/htm.mjs";
 import lucide from "../vendor/lucide.mjs";
 import {

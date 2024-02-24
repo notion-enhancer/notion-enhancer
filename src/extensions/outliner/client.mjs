@@ -5,23 +5,8 @@
  * (https://notion-enhancer.github.io/) under the MIT license
  */
 
-"use strict";
-
-function Heading({ indent, ...props }, ...children) {
-  const { html } = globalThis.__enhancerApi;
-  return html`<div
-    role="button"
-    class="notion-enhancer--outliner-heading block
-    relative cursor-pointer select-none text-[14px]
-    decoration-(2 [color:var(--theme--fg-border)])
-    hover:bg-[color:var(--theme--bg-hover)]
-    py-[6px] pr-[2px] pl-[${indent * 18}px]
-    underline-(~ offset-4) last:mb-[24px]"
-    ...${props}
-  >
-    ${children}
-  </div>`;
-}
+import { Heading } from "./islands/Heading.mjs";
+import { PanelDescription } from "./islands/PanelDescription.mjs";
 
 export default async (api, db) => {
   const { html, debounce, addMutationListener, addPanelView } = api,
@@ -50,12 +35,7 @@ export default async (api, db) => {
       <path d="M17,20.05h-6c-0.55,0-1-0.45-1-1v0c0-0.55,0.45-1,1-1h6c0.55,0,1,0.45,1,1v0C18,19.6,17.55,20.05,17,20.05z"/>
     </svg>`,
     $view: html`<section>
-      <p
-        class="py-[12px] px-[18px]
-        text-([color:var(--theme--fg-secondary)] [13px])"
-      >
-        Click on a heading to jump to it.
-      </p>
+      <${PanelDescription}>Click on a heading to jump to it.<//>
       ${$toc}
     </section>`,
   });
