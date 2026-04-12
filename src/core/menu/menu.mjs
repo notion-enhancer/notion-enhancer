@@ -21,31 +21,31 @@ let _apiImport, //
   _stateHookedInto,
   _hotkeyRegistered;
 const categories = [
-    {
-      icon: "palette",
-      id: "themes",
-      title: "Themes",
-      description: `Themes override Notion's colour schemes. Dark themes require
+  {
+    icon: "palette",
+    id: "themes",
+    title: "Themes",
+    description: `Themes override Notion's colour schemes. Dark themes require
         Notion to be in dark mode and light themes require Notion to be in light
         mode. To switch between dark mode and light mode, go to <mark>Settings &
         members → My notifications & settings → My settings → Appearance</mark>.`,
-    },
-    {
-      icon: "zap",
-      id: "extensions",
-      title: "Extensions",
-      description: `Extensions add to the functionality and layout of the Notion
+  },
+  {
+    icon: "zap",
+    id: "extensions",
+    title: "Extensions",
+    description: `Extensions add to the functionality and layout of the Notion
         client, interacting with and modifying existing interfaces.`,
-    },
-    // {
-    //   icon: "plug",
-    //   id: "integrations",
-    //   title: "Integrations",
-    //   description: `<span class="text-[color:var(--theme--fg-red)]">
-    //     Integrations access and modify Notion content. They interact directly with
-    //     <mark>https://www.notion.so/api/v3</mark>. Use at your own risk.</span>`,
-    // },
-  ],
+  },
+  // {
+  //   icon: "plug",
+  //   id: "integrations",
+  //   title: "Integrations",
+  //   description: `<span class="text-[color:var(--theme--fg-red)]">
+  //     Integrations access and modify Notion content. They interact directly with
+  //     <mark>https://www.notion.so/api/v3</mark>. Use at your own risk.</span>`,
+  // },
+],
   sidebar = [
     "notion-enhancer",
     {
@@ -89,41 +89,41 @@ const categories = [
   ];
 
 const renderMenu = async () => {
-    const { html, setState, useState } = globalThis.__enhancerApi,
-      { getMods, isEnabled, setEnabled } = globalThis.__enhancerApi,
-      [theme, icon] = useState(["theme", "icon"]);
-    if (!theme || !icon || _renderStarted) return;
-    if (icon === "Monochrome") sidebar[1].icon += "?mask";
-    _renderStarted = true;
+  const { html, setState, useState } = globalThis.__enhancerApi,
+    { getMods, isEnabled, setEnabled } = globalThis.__enhancerApi,
+    [theme, icon] = useState(["theme", "icon"]);
+  if (!theme || !icon || _renderStarted) return;
+  if (icon === "Monochrome") sidebar[1].icon += "?mask";
+  _renderStarted = true;
 
-    const mods = await getMods();
-    for (let i = 0; i < categories.length; i++) {
-      const { id } = categories[i];
-      categories[i].mods = mods.filter(({ _src }) => _src.startsWith(`${id}/`));
-      categories[i].view = html`<${View} id=${id}>
+  const mods = await getMods();
+  for (let i = 0; i < categories.length; i++) {
+    const { id } = categories[i];
+    categories[i].mods = mods.filter(({ _src }) => _src.startsWith(`${id}/`));
+    categories[i].view = html`<${View} id=${id}>
         <${List} ...${categories[i]} />
       <//>`;
-    }
-    for (let i = 0; i < mods.length; i++) {
-      const options = mods[i].options?.filter((opt) => opt.type !== "heading");
-      if (mods[i]._src === "core" || !options?.length) continue;
-      const _get = () => isEnabled(mods[i].id),
-        _set = async (enabled) => {
-          await setEnabled(mods[i].id, enabled);
-          setState({ rerender: true });
-        };
-      mods[i].view = html`<${View} id=${mods[i].id}>
+  }
+  for (let i = 0; i < mods.length; i++) {
+    const options = mods[i].options?.filter((opt) => opt.type !== "heading");
+    if (mods[i]._src === "core" || !options?.length) continue;
+    const _get = () => isEnabled(mods[i].id),
+      _set = async (enabled) => {
+        await setEnabled(mods[i].id, enabled);
+        setState({ rerender: true });
+      };
+    mods[i].view = html`<${View} id=${mods[i].id}>
         <!-- passing an empty options array hides the settings button -->
         <${Mod} ...${{ ...mods[i], options: [], _get, _set }} />
         <${Options} mod=${mods[i]} />
       <//>`;
-    }
+  }
 
-    const $sidebar = html`<${Sidebar}
+  const $sidebar = html`<${Sidebar}
         items=${sidebar}
         categories=${categories}
       />`,
-      $main = html`
+    $main = html`
         <main
           class="flex-(~ col) overflow-hidden transition-[height]"
           style="height: calc(100% + 65px)"
@@ -177,10 +177,10 @@ const renderMenu = async () => {
                   </ul>
                   <br />
                   In the meantime, the styling for these themes can be
-                  found <a href="https://github.com/notion-enhancer/repo"
+                  found <a href="https://github.com/notion-enhancer/notion-enhancer"
                   >here</a> and
                   copy/pasted into your custom styles alongside the <a
-                    href="https://github.com/notion-enhancer/repo/blob/dev/theming/theme.css"
+                    href="https://github.com/notion-enhancer/notion-enhancer/blob/dev/theming/theme.css"
                     >old theming system</a>, if you wish.
                   <br />
                   <br />
@@ -210,20 +210,20 @@ const renderMenu = async () => {
                 <${Profiles} />
               <//>
               ${[...categories, ...mods]
-                .filter(({ view }) => view)
-                .map(({ view }) => view)}
+        .filter(({ view }) => view)
+        .map(({ view }) => view)}
             </div>
           </div>
           <${Footer} categories=${categories} />
         </main>
       `;
-    useState(["footerOpen"], ([footerOpen]) => {
-      $main.style.height = footerOpen ? "100%" : "calc(100% + 65px)";
-    });
+  useState(["footerOpen"], ([footerOpen]) => {
+    $main.style.height = footerOpen ? "100%" : "calc(100% + 65px)";
+  });
 
-    const $skeleton = document.querySelector("#skeleton");
-    $skeleton.replaceWith($sidebar, $main);
-  },
+  const $skeleton = document.querySelector("#skeleton");
+  $skeleton.replaceWith($sidebar, $main);
+},
   registerHotkey = ([hotkey]) => {
     const { addKeyListener, setState, useState } = globalThis.__enhancerApi;
     if (!hotkey || _hotkeyRegistered) return;
@@ -249,12 +249,12 @@ const renderMenu = async () => {
   };
 
 const importApi = () => {
-    return (_apiImport ??= (async () => {
-      const api = globalThis.__enhancerApi;
-      if (typeof api === "undefined") await import("../../api/system.js");
-      await import("../../load.mjs").then((i) => i.default);
-    })());
-  },
+  return (_apiImport ??= (async () => {
+    const api = globalThis.__enhancerApi;
+    if (typeof api === "undefined") await import("../../api/system.js");
+    await import("../../load.mjs").then((i) => i.default);
+  })());
+},
   hookIntoState = () => {
     if (_stateHookedInto) return;
     _stateHookedInto = true;

@@ -53,9 +53,9 @@ export default async (api, db) => {
 
   let $page, $scroller;
   const getHeadings = () => {
-      if (!$page) return [];
-      return [...$page.querySelectorAll(headings.join(", "))];
-    },
+    if (!$page) return [];
+    return [...$page.querySelectorAll(headings.join(", "))];
+  },
     getHeadingLevel = ($heading) => {
       for (let i = 0; i < headings.length; i++)
         if ($heading.matches(headings[i])) return i + 1;
@@ -66,7 +66,7 @@ export default async (api, db) => {
       for (const node of $heading.querySelector("h2, h3, h4").childNodes) {
         if (node.nodeType === 3) title += node.textContent;
         else if (node.matches(equation)) {
-          // https://github.com/notion-enhancer/repo/issues/39
+          // https://github.com/notion-enhancer/notion-enhancer/issues/39
           const $katex = node.querySelector(annotation);
           title += $katex.textContent;
         } else title += node.innerText;
