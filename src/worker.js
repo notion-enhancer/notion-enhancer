@@ -141,7 +141,8 @@ if (IS_ELECTRON) {
   });
 } else {
   const notionUrl = "https://www.notion.so/",
-    isNotionTab = (tab) => tab?.url?.startsWith(notionUrl);
+    notionUrls = [notionUrl, "https://app.notion.com/"],
+    isNotionTab = (tab) => notionUrls.some((u) => tab?.url?.startsWith(u));
 
   const connectedTabs = new Set(),
     openMenuInTabs = new Set(),
@@ -179,7 +180,7 @@ if (IS_ELECTRON) {
       // enhancer apis are not available in the worker in-browser,
       // manual steps are required to get nested values from the db
       const key = "customScript",
-        matches = ["*://*.notion.so/*"],
+        matches = ["*://*.notion.so/*", "*://*.notion.com/*"],
         coreId = "0f0bf8b6-eae6-4273-b307-8fc43f2ee082",
         profileId =
           (await queryDatabase([], "get", { key: "activeProfile" })) ??

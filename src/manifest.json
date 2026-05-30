@@ -5,7 +5,7 @@
   "author": "dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)",
   "description": "Customise the all-in-one productivity workspace Notion.",
   "homepage_url": "https://notion-enhancer.github.io",
-  "content_scripts": [{ "matches": ["*://*.notion.so/*"], "js": ["/init.js"] }],
+  "content_scripts": [{ "matches": ["*://*.notion.so/*", "*://*.notion.com/*"], "js": ["/init.js"] }],
   "background": { "service_worker": "/worker.js" },
   "action": {},
   "icons": {
@@ -23,8 +23,8 @@
     "clipboardWrite",
     "unlimitedStorage"
   ],
-  "host_permissions": ["*://*.notion.so/*"],
+  "host_permissions": ["*://*.notion.so/*", "*://*.notion.com/*"],
   "web_accessible_resources": [
-    { "matches": ["*://*.notion.so/*"], "resources": ["/*"] }
+    { "matches": ["*://*.notion.so/*", "*://*.notion.com/*"], "resources": ["/*"] }
   ]
 }
