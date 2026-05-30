@@ -11,7 +11,8 @@
   "bin": "bin.mjs",
   "type": "module",
   "scripts": {
-    "build": "./scripts/build-browser-extension.sh",
+    "build": "./scripts/build-browser-extension.sh chrome",
+    "build:firefox": "./scripts/build-browser-extension.sh firefox",
     "vendor": "node ./scripts/vendor-dependencies.mjs"
   },
   "engines": {

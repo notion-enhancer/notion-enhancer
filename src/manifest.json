@@ -1,5 +1,11 @@
 {
   "manifest_version": 3,
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "notion-enhancer@notion-enhancer.github.io",
+      "strict_min_version": "138.0"
+    }
+  },
   "name": "notion-enhancer",
   "version": "0.11.1",
   "author": "dragonwocky <thedragonring.bod@gmail.com> (https://dragonwocky.me/)",
