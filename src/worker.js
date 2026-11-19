@@ -113,35 +113,80 @@ const initDatabase = async () => {
   };
 
 if (IS_ELECTRON) {
-  const { reloadApp, enhancerUrl } = globalThis.__enhancerApi,
-    { ipcMain, session, app, net } = require("electron");
-  app.on("ready", () => {
-    // proxies notion-enhancer sources over www.notion.so via https
-    const { protocol } = session.fromPartition("persist:notion");
-    protocol.handle("https", (req) => {
-      if (req.url.startsWith(enhancerUrl())) {
-        let url = req.url.slice(enhancerUrl().length);
-        url = `file://${require("path").join(__dirname, url)}`;
-        return net.fetch(url);
-      } else return net.fetch(req);
-    });
-    // webRequest.onHeadersReceived(({ details: { responseHeaders }, callback }) => {
-    //   delete responseHeaders["content-security-policy"];
-    //   return callback({ responseHeaders });
-    // });
+  const { reloadApp, parseEnhancerUrl } = globalThis.__enhancerApi,
+    { ipcMain, session, app, net } = require("electron"),
+    { resolve, sep } = require("path"),
+    { pathToFileURL } = require("url"),
+    { readFileSync } = require("fs");
 
-    ipcMain.handle("notion-enhancer", ({}, message) => {
-      if (message?.action !== "query-database") return;
-      const { namespace, query, args } = message.data;
-      return queryDatabase(namespace, query, args);
+  // resolves a path relative to the notion-enhancer's
+  // sources, disallowing access to files outside of them
+  const resolveSource = (target) => {
+      if (typeof target !== "string") return null;
+      const file = resolve(__dirname, target);
+      return file.startsWith(__dirname + sep) ? file : null;
+    },
+    readSource = (target) => {
+      try {
+        return readFileSync(resolveSource(target), "utf-8");
+      } catch {
+        return null;
+      }
+    };
+
+  // notion's renderer processes are sandboxed and cannot require()
+  // from disk: sources are sent to preload scripts on request instead.
+  // registered immediately to be available before the first window opens
+  ipcMain.on("notion-enhancer:read-source", (event, target) => {
+    event.returnValue = readSource(target);
+  });
+  ipcMain.handle("notion-enhancer", ({}, message) => {
+    if (message?.action === "read-file") return readSource(message.data?.file);
+    if (message?.action !== "query-database") return;
+    const { namespace, query, args } = message.data;
+    return queryDatabase(namespace, query, args);
+  });
+  ipcMain.on("notion-enhancer", ({}, message) => {
+    if (message === "reload-app") reloadApp();
+  });
+
+  // proxies notion-enhancer sources over notion's own origin
+  // (app.notion.com, www.notion.so or an enterprise domain) via https
+  const proxySources = (targetSession) => {
+    if (targetSession.protocol.isProtocolHandled("https")) return;
+    targetSession.protocol.handle("https", async (req) => {
+      const target = parseEnhancerUrl(req.url);
+      // all other requests are passed through to the network via the
+      // same session, so cookies and proxy settings are preserved
+      if (target === null) {
+        return targetSession.fetch(req, { bypassCustomProtocolHandlers: true });
+      }
+      const file = resolveSource(target);
+      if (!file) return new Response(null, { status: 403 });
+      try {
+        const res = await net.fetch(pathToFileURL(file).href),
+          headers = new Headers(res.headers);
+        // the tab bar is served from file://, so module scripts
+        // loaded into it from a https:// origin require cors
+        headers.set("access-control-allow-origin", "*");
+        return new Response(res.body, { status: res.status, headers });
+      } catch (err) {
+        console.error(`notion-enhancer: failed to serve ${target}`, err);
+        return new Response(null, { status: 404 });
+      }
     });
-    ipcMain.on("notion-enhancer", ({}, message) => {
-      if (message === "reload-app") reloadApp();
-    });
+  };
+  app.whenReady().then(() => {
+    // notion's tabs are loaded within a persistent session,
+    // the tab bar is loaded within the default session
+    proxySources(session.fromPartition("persist:notion"));
+    proxySources(session.defaultSession);
   });
 } else {
-  const notionUrl = "https://www.notion.so/",
-    isNotionTab = (tab) => tab?.url?.startsWith(notionUrl);
+  const notionUrl = "https://app.notion.com/",
+    notionMatches = ["*://*.notion.so/*", "*://*.notion.com/*"],
+    isNotionTab = (tab) =>
+      /^https:\/\/([\w-]+\.)*notion\.(so|com)\//.test(tab?.url ?? "");
 
   const connectedTabs = new Set(),
     openMenuInTabs = new Set(),
@@ -179,7 +224,7 @@ if (IS_ELECTRON) {
       // enhancer apis are not available in the worker in-browser,
       // manual steps are required to get nested values from the db
       const key = "customScript",
-        matches = ["*://*.notion.so/*"],
+        matches = notionMatches,
         coreId = "0f0bf8b6-eae6-4273-b307-8fc43f2ee082",
         profileId =
           (await queryDatabase([], "get", { key: "activeProfile" })) ??

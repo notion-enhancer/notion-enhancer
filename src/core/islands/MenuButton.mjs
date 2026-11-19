@@ -15,7 +15,8 @@ function MenuButton(
     class: `notion-enhancer--menu-button flex select-none
     cursor-pointer rounded-[6px] text-[14px] font-medium
     transition hover:bg-[color:var(--theme--bg-hover)]
-    w-full h-[30px] px-[10px] py-[4px] items-center`,
+    mx-[8px] w-[calc(100%-16px)] h-[30px] px-[10px] py-[4px]
+    shrink-0 items-center`,
   });
   return html`<div ...${props}>
     <div class="flex items-center justify-center text-[18px] mr-[10px]">

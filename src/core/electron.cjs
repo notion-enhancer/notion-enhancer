@@ -11,7 +11,7 @@ const getPreference = (key) => {
     return preferences[key];
   },
   setPreference = (key, value) => {
-    const action = globalThis.__updatePreferences?.({ [key]: value });
+    const action = { type: "app/updatePreferences", payload: { [key]: value } };
     globalThis.__notionStore?.dispatch?.(action);
   };
 

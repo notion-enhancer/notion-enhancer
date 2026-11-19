@@ -21,12 +21,41 @@ const platform = IS_ELECTRON
   version = IS_ELECTRON
     ? require("notion-enhancer/package.json").version
     : chrome.runtime.getManifest().version,
+  // notion serves its client from app.notion.com (previously
+  // www.notion.so) or from an enterprise subdomain of notion.com
+  ENHANCER_PATH = "/api/__notion-enhancer/",
+  FALLBACK_ORIGIN = "https://www.notion.so",
+  isNotionOrigin = (origin) =>
+    /^https:\/\/([\w-]+\.)*notion\.(so|com)$/.test(origin ?? ""),
+  // enhancer sources must be served from the same origin as the
+  // page they are loaded into, otherwise they are blocked by
+  // notion's content security policy and by cors (module scripts)
+  enhancerOrigin = () => {
+    let origin;
+    try {
+      origin = IS_RENDERER
+        ? location.origin
+        : new URL(globalThis.__notionConfig?.domainBaseUrl).origin;
+    } catch {}
+    return isNotionOrigin(origin) ? origin : FALLBACK_ORIGIN;
+  },
+  // checks if a url points to proxied notion-enhancer sources,
+  // returns the path of the target relative to notion-enhancer/src
+  parseEnhancerUrl = (url) => {
+    try {
+      const { origin, pathname } = new URL(url);
+      if (!isNotionOrigin(origin)) return null;
+      if (!pathname.startsWith(ENHANCER_PATH)) return null;
+      return decodeURIComponent(pathname.slice(ENHANCER_PATH.length));
+    } catch {
+      return null;
+    }
+  },
   // packages a url to access notion-enhancer assets and sources,
   // proxies via api in desktop app to bypass service worker cache
   enhancerUrl = (target = "") =>
     IS_ELECTRON
-      ? "https://www.notion.so/api/__notion-enhancer/" +
-        target.replace(/^\//, "")
+      ? enhancerOrigin() + ENHANCER_PATH + target.replace(/^\//, "")
       : chrome.runtime.getURL(target),
   // require a file from the root of notion's app/ folder,
   // only available in an electron main process
@@ -88,11 +117,22 @@ const connectToPort = () => {
     }
   };
 
-const readFile = (file) => {
+const readSource = (file) =>
+    // sandboxed renderer processes cannot access the filesys,
+    // sources are read on their behalf by the main process
+    invokeInWorker("notion-enhancer", {
+      action: "read-file",
+      data: { file },
+    }).then((content) => {
+      if (typeof content === "string") return content;
+      throw new Error(`notion-enhancer: file not found: ${file}`);
+    }),
+  readFile = (file) => {
     if (IS_ELECTRON) {
       // read directly from filesys if possible,
       // treating notion-enhancer/src as fs root
       if (!file.startsWith("http")) {
+        if (IS_RENDERER) return readSource(file);
         const fsp = require("fs/promises"),
           { resolve } = require("path");
         return fsp.readFile(resolve(`${__dirname}/../${file}`), "utf-8");
@@ -106,6 +146,7 @@ const readFile = (file) => {
     // json content of file in object form
     if (IS_ELECTRON) {
       if (!file.startsWith("http")) {
+        if (IS_RENDERER) return readSource(file).then(JSON.parse);
         const { resolve } = require("path");
         return require(resolve(`${__dirname}/../${file}`));
       }
@@ -143,6 +184,8 @@ Object.assign((globalThis.__enhancerApi ??= {}), {
   platform,
   version,
   enhancerUrl,
+  parseEnhancerUrl,
+  isNotionOrigin,
   notionRequire,
   onMessage,
   sendMessage,
