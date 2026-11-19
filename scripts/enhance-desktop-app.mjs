@@ -6,7 +6,7 @@
 
 import os from "node:os";
 import fsp from "node:fs/promises";
-import { resolve } from "node:path";
+import { resolve, extname } from "node:path";
 import { existsSync } from "node:fs";
 import { execSync } from "node:child_process";
 import { createRequire } from "node:module";
@@ -95,7 +95,10 @@ const backupApp = async () => {
   },
   enhanceApp = async (debug = false, directoryMode = false) => {
     const app = getResourcePath("app"),
-      archive = getResourcePath("app.asar");
+      archive = getResourcePath("app.asar"),
+      // native modules must stay outside of the archive
+      // (in app.asar.unpacked) to be loadable by electron
+      unpackedExts = new Set();
     // directory mode acts on pre-extracted sources
     // as part of the notion-repackaged build process
     if (directoryMode) {
@@ -121,10 +124,11 @@ const backupApp = async () => {
           isSymlink = !!stat.link,
           isExecutable = stat.executable,
           appPath = resolve(app, file);
+        if (stat.unpacked && !isFolder) unpackedExts.add(extname(file));
         if (isFolder) {
           await fsp.mkdir(appPath);
         } else if (isSymlink) {
-          await fsp.symlink(appPath, resolve(app, link));
+          await fsp.symlink(resolve(app, stat.link), appPath);
         } else {
           await fsp.writeFile(appPath, patch(file, extractFile(file)));
           if (isExecutable) await fsp.chmod(appPath, "755");
@@ -143,7 +147,10 @@ const backupApp = async () => {
     await fsp.writeFile(insertManifest, JSON.stringify(manifest));
     if (!directoryMode) {
       // re-package enhanced sources into executable archive
-      await asar.createPackage(app, archive);
+      const exts = [...unpackedExts].filter((ext) => ext),
+        unpack =
+          exts.length > 1 ? `*{${exts.join(",")}}` : exts[0] && `*${exts[0]}`;
+      await asar.createPackageWithOptions(app, archive, { unpack });
       // cleanup extracted files unless in debug mode
       if (!debug) await fsp.rm(app, { recursive: true });
     }

@@ -10,8 +10,16 @@
 module.exports = async (api, db) => {
   const { ipcMain, BrowserWindow } = require("electron"),
     channel = "notion-enhancer:focus";
+  // notion's tabs and tab bar are nested views within the window
+  // (BrowserWindow.getBrowserViews() no longer returns them)
+  const getViews = (view) =>
+    view ? [view, ...(view.children ?? []).flatMap(getViews)] : [];
   ipcMain.on(channel, ({ sender }, message) => {
-    const views = BrowserWindow.fromWebContents(sender).getBrowserViews();
-    for (const view of views) view.webContents.send(channel, message);
+    const window = BrowserWindow.fromWebContents(sender);
+    for (const view of getViews(window?.contentView)) {
+      if (view.webContents?.isDestroyed() === false) {
+        view.webContents.send(channel, message);
+      }
+    }
   });
 };
