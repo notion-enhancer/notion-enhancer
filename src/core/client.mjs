@@ -45,7 +45,20 @@ const shouldLoadThemeOverrides = async (api, db) => {
   };
 
 const insertMenu = async (api, db) => {
-  const inviteMember = `.notion-sidebar-container .notion-sidebar [role="button"]:has(.inviteMember)`,
+  // the menu button is inserted above the footer of notion's sidebar
+  // (the bar containing the workspace switcher and help button)
+  const sidebarSwitcher = `.notion-sidebar-container .notion-sidebar .notion-sidebar-switcher`,
+    sidebarScroller = ".notion-scroller",
+    getSidebarFooter = () => {
+      let $footer = document.querySelector(sidebarSwitcher);
+      // climb to the footer: the outermost ancestor of the workspace
+      // switcher that sits beside the sidebar's scrollable page list
+      while ($footer?.parentElement) {
+        if ($footer.parentElement.querySelector(sidebarScroller)) break;
+        $footer = $footer.parentElement;
+      }
+      return $footer;
+    },
     { html, addMutationListener, removeMutationListener } = api,
     { addKeyListener, platform, enhancerUrl, onMessage } = api,
     menuButtonIconStyle = await db.get("menuButtonIconStyle"),
@@ -92,13 +105,13 @@ const insertMenu = async (api, db) => {
   const appendToDom = () => {
     if (!document.body.contains($modal)) document.body.append($modal);
     else if (!document.body.contains($button)) {
-      document.querySelector(inviteMember)?.after($button);
+      getSidebarFooter()?.before($button);
     } else removeMutationListener(appendToDom);
   };
   html`<${Tooltip}>
     <b>Configure the notion-enhancer and its mods</b>
   <//>`.attach($button, "right");
-  addMutationListener(inviteMember, appendToDom);
+  addMutationListener(sidebarSwitcher, appendToDom);
   addMutationListener(".notion-app-inner", updateMenuTheme, { subtree: false });
   appendToDom();
 

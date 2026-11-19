@@ -61,7 +61,12 @@ function Frame(props) {
     bg-[color:var(--theme--bg-primary)] drop-shadow-xl transition
     group-open/modal:(pointer-events-auto opacity-100 scale-100)`,
   });
-  return html`<iframe ...${props}></iframe>`;
+  const $frame = html`<iframe ...${props}></iframe>`;
+  // notion sets a dark color-scheme on its page: unless the frame's
+  // color-scheme matches that of the document embedded within it,
+  // the frame is given an opaque white backdrop by the browser
+  $frame.style.colorScheme = "normal";
+  return $frame;
 }
 
 export { Modal, Frame };
